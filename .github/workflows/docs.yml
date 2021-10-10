@@ -1,0 +1,42 @@
+name: Build and deploy documentation
+
+on:
+  workflow_run:
+    workflows: [ "Build, lint and test package" ]
+    branches: [ main ]
+    types: [ completed ]
+
+env:
+  WORKFLOWS_DIR: .github/workflows
+
+jobs:
+  docs:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: Build and deploy documentation
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: Build lambeq
+      run: pip install .
+    - name: Install documentation dependencies
+      run: |
+        sudo apt-get install pandoc
+        pip install -r docs/requirements.txt
+    - name: Build documentation
+      run: ${{ env.WORKFLOWS_DIR }}/build-docs
+    - name: Move install script
+      run: mv install.sh docs/_build/html
+    - name: Deploy documentation
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: docs
+        FOLDER: docs/_build/html/
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        CLEAR_GLOBS_FILE: ${{ env.WORKFLOWS_DIR }}/clear-target-files

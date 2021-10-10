@@ -1,0 +1,104 @@
+name: Build, lint and test package
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  SRC_DIR: lambeq
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.7, 3.8, 3.9 ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install linter
+      run:
+        python -m pip install flake8
+    - name: Check for errors
+      run:
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 ${{ env.SRC_DIR }} --count --select=E9,F63,F7,F82 --show-source --statistics
+    - name: Lint with flake8
+      run:
+        # exit-zero treats all errors as warnings
+        flake8 ${{ env.SRC_DIR }} --count --exit-zero --max-complexity=10 --statistics
+  build_and_test:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.7, 3.8, 3.9 ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Locate pip cache
+      id: loc-pip-cache
+      run: echo "::set-output name=dir::$(pip cache dir)"
+    - name: Restore pip dependencies from cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.loc-pip-cache.outputs.dir }}
+        key: build_and_test-${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.cfg') }}
+        restore-keys: |
+          build_and_test-${{ runner.os }}-pip-${{ matrix.python-version }}-
+          build_and_test-${{ runner.os }}-pip-
+    - name: Install package and tester
+      run: |
+        bash install.sh --global
+    - name: Locate depccg pre-trained model cache
+      id: loc-depccg-cache
+      run: echo "::set-output name=dir::$(python -c 'from depccg.download import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
+    - name: Restore depccg pre-trained model from cache
+      id: depccg-cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.loc-depccg-cache.outputs.dir }}
+        key: depccg
+    - name: Download pre-trained model if needed
+      if: steps.depccg-cache.outputs.cache-hit != 'true'
+      run: python -m depccg en download
+    - name: Test with pytest
+      run:
+        # run test of depccg parser separately because it keeps breaking
+        coverage run --source=${{ env.SRC_DIR }} -m pytest --doctest-modules --ignore-glob=*/test_depccg_parser.py
+    - name: Test DepCCGParser
+      continue-on-error: true
+      run:
+        coverage run --append --source=${{ env.SRC_DIR }} -m pytest -k test_depccg_parser.py
+    - name: Coverage report
+      run:
+        coverage report -m
+  type_check:
+    needs: lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.7, 3.8, 3.9 ]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies with type hints
+      run: python -m pip install numpy pytket
+    - name: Install type checker
+      run: python -m pip install mypy
+    - name: Type check with mypy
+      run: mypy ${{ env.SRC_DIR }}
+    - name: View strict type errors
+      continue-on-error: true  # this is expected to fail but the job should still succeed
+      run: mypy --strict ${{ env.SRC_DIR }}

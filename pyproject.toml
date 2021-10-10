@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=42.0", "wheel", "setuptools_scm[toml]>=3.4"]
+
+[tool.coverage.report]
+exclude_lines = [
+    'pragma: no cover',
+    'def __repr__',
+    'def __str__',
+    'if TYPE_CHECKING'
+]
+
+[tool.mypy]
+pretty = true
+show_error_codes = true
+warn_unused_configs = true
+
+[[tool.mypy.overrides]]
+module = ["depccg.*", "discopy.*", "sympy.*", "tensornetwork"]
+ignore_missing_imports = true
+
+[tool.setuptools_scm]
+write_to = "lambeq/version.py"
