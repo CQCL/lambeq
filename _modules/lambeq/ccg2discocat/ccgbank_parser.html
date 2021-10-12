@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lambeq.ccg2discocat.ccgbank_parser &mdash; lambeq 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> lambeq
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../sentence_input.html">Step 1: Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../rewrite.html">Step 2: Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parameterise.html">Step 3: Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4. Training</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lambeq</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>lambeq.ccg2discocat.ccgbank_parser</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lambeq.ccg2discocat.ccgbank_parser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">CCGBank parser</span>
+<span class="sd">--------------</span>
+
+<span class="sd">The CCGBank is a translation of the Penn Treebank into a corpus of</span>
+<span class="sd">Combinatory Categorial Grammar derivations, created by Julia Hockenmaier</span>
+<span class="sd">and Mark Steedman.</span>
+
+<span class="sd">This module provides a parser that automatically turns parses from</span>
+<span class="sd">CCGBank into :py:class:`.CCGTree` s.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CCGBankParseError&#39;</span><span class="p">,</span> <span class="s1">&#39;CCGBankParser&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Diagram</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.ccg2discocat.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
+<span class="kn">from</span> <span class="nn">lambeq.ccg2discocat.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span>
+<span class="kn">from</span> <span class="nn">lambeq.ccg2discocat.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
+<span class="kn">from</span> <span class="nn">lambeq.ccg2discocat.ccg_types</span> <span class="kn">import</span> <span class="n">CONJ_TAG</span><span class="p">,</span> <span class="n">CCGAtomicType</span><span class="p">,</span> <span class="n">str2biclosed</span>
+
+
+<div class="viewcode-block" id="CCGBankParseError"><a class="viewcode-back" href="../../../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError">[docs]</a><span class="k">class</span> <span class="nc">CCGBankParseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Error raised if parsing fails in CCGBank.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CCGBankParseError.__init__"><a class="viewcode-back" href="../../../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">sentence</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Failed to parse &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="si">}</span><span class="s1">&quot;: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s1">.&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">message</span></div>
+
+
+<div class="viewcode-block" id="CCGBankParser"><a class="viewcode-back" href="../../../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser">[docs]</a><span class="k">class</span> <span class="nc">CCGBankParser</span><span class="p">(</span><span class="n">CCGParser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A parser for CCGBank trees.&quot;&quot;&quot;</span>
+
+    <span class="n">ccg_type_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="sa">r</span><span class="s1">&#39;((?P&lt;bare_cat&gt;N|NP|S|PP)(\[[a-z]+])?|conj|LRB|RRB|[,.:;])&#39;</span><span class="p">)</span>
+
+    <span class="n">id_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;ID=(?P&lt;id&gt;\S+)  # line begins with &quot;ID=&lt;id&gt;&quot;</span>
+<span class="s1">                              .*              # rest of the line is ignored</span>
+<span class="s1">                           &#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+
+    <span class="n">tree_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        \(&lt;                                 # begin with literal &quot;(&lt;&quot;</span>
+<span class="s1">           ((?P&lt;is_leaf&gt;        L)|T) \s+   # &quot;L&quot; or &quot;T&quot; depending on node type</span>
+<span class="s1">           (?P&lt;ccg_str&gt;          \S+) \s+   # the CCG category</span>
+<span class="s1">           (?(is_leaf)                      # if node is a leaf, then the</span>
+<span class="s1">               (?P&lt;mod_pos&gt;      \S+) \s+   #    following 4 fields are present</span>
+<span class="s1">               (?P&lt;orig_pos&gt;     \S+) \s+</span>
+<span class="s1">               (?P&lt;word&gt;         \S+) \s+</span>
+<span class="s1">               (?P&lt;pred_arg_cat&gt; \S+)</span>
+<span class="s1">           |                                # otherwise, the following 2 fields</span>
+<span class="s1">               (?P&lt;head&gt;         0|1) \s+   #    are present</span>
+<span class="s1">               (?P&lt;children&gt;     \d+)</span>
+<span class="s1">           )</span>
+<span class="s1">          &gt;                                 # close with &quot;&gt;&quot;</span>
+<span class="s1">        (?(is_leaf)\)|) \s*                 # if node is a leaf, then there is</span>
+<span class="s1">                                            #    a matching &quot;)&quot;</span>
+<span class="s1">        &#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CCGBankParser.__init__"><a class="viewcode-back" href="../../../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">root</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]]):</span>
+        <span class="sd">&quot;&quot;&quot;Initialise a CCGBank parser.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        root : str or os.PathLike</span>
+<span class="sd">            Path to the root of the corpus. The sections must be located</span>
+<span class="sd">            in `&lt;root&gt;/data/AUTO`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CCGBankParser.section2trees"><a class="viewcode-back" href="../../../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.section2trees">[docs]</a>    <span class="k">def</span> <span class="nf">section2trees</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">section_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into trees.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        section_id : int</span>
+<span class="sd">            The section to parse.</span>
+<span class="sd">        suppress_exceptions : bool, default: False</span>
+<span class="sd">            Stop exceptions from being raised, instead returning</span>
+<span class="sd">            :py:obj:`None` for a tree.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        trees : dict</span>
+<span class="sd">            A dictionary of trees labelled by their ID in CCGBank. If a</span>
+<span class="sd">            tree fails to parse and exceptions are suppressed, that</span>
+<span class="sd">            entry is :py:obj:`None`.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        CCGBankParseError</span>
+<span class="sd">            If parsing fails and exceptions are not suppressed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">/</span> <span class="s1">&#39;data&#39;</span> <span class="o">/</span> <span class="s1">&#39;AUTO&#39;</span> <span class="o">/</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">section_id</span><span class="si">:</span><span class="s1">02</span><span class="si">}</span><span class="s1">&#39;</span>
+        <span class="n">trees</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">():</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">line_no</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">line_no</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id_regex</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+                        <span class="n">line_no</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">tree</span> <span class="o">=</span> <span class="kc">None</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentence2tree</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                        <span class="k">except</span> <span class="n">CCGBankParseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="ow">not</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
+                                <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span>
+                                        <span class="sa">f</span><span class="s1">&#39;Failed to parse tree in &quot;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s1">&quot; &#39;</span>
+                                        <span class="sa">f</span><span class="s1">&#39;line </span><span class="si">{</span><span class="n">line_no</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="n">trees</span><span class="p">[</span><span class="n">match</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">tree</span>
+                    <span class="k">elif</span> <span class="ow">not</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span><span class="s1">&#39;Failed to parse ID in &#39;</span>
+                                                <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">file</span><span class="si">}</span><span class="s1">&quot; line </span><span class="si">{</span><span class="n">line_no</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">trees</span></div>
+
+<div class="viewcode-block" id="CCGBankParser.section2diagrams"><a class="viewcode-back" href="../../../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.section2diagrams">[docs]</a>    <span class="k">def</span> <span class="nf">section2diagrams</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">section_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">planar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into diagrams.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        section_id : int</span>
+<span class="sd">            The section to parse.</span>
+<span class="sd">        planar : bool, default: False</span>
+<span class="sd">            Force diagrams to be planar when they contain</span>
+<span class="sd">            crossed composition.</span>
+<span class="sd">        suppress_exceptions : bool, default: False</span>
+<span class="sd">            Stop exceptions from being raised, instead returning</span>
+<span class="sd">            :py:obj:`None` for a diagram.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        diagrams : dict</span>
+<span class="sd">            A dictionary of diagrams labelled by their ID in CCGBank. If</span>
+<span class="sd">            a diagram fails to draw and exceptions are suppressed, that</span>
+<span class="sd">            entry is replaced by :py:obj:`None`.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        CCGBankParseError</span>
+<span class="sd">            If parsing fails and exceptions are not suppressed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">trees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">section2trees</span><span class="p">(</span><span class="n">section_id</span><span class="p">,</span> <span class="n">suppress_exceptions</span><span class="p">)</span>
+        <span class="n">diagrams</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">trees</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">tree</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">diagrams</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">(</span><span class="n">planar</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
+                        <span class="n">diagrams</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">diagrams</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">diagrams</span></div>
+
+<div class="viewcode-block" id="CCGBankParser.sentences2trees"><a class="viewcode-back" href="../../../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentences2trees">[docs]</a>    <span class="k">def</span> <span class="nf">sentences2trees</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+            <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse a CCGBank sentence derivation into a CCGTree.</span>
+
+<span class="sd">        The sentence must be in the format outlined in the CCGBank</span>
+<span class="sd">        manual section D.2 and not just a list of words.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sentences : list of str</span>
+<span class="sd">            List of sentences to parse.</span>
+<span class="sd">        suppress_exceptions : bool, default: False</span>
+<span class="sd">            Stop exceptions from being raised, instead returning</span>
+<span class="sd">            :py:obj:`None` for a tree.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        trees : list of CCGTree</span>
+<span class="sd">            A list of trees. If a tree fails to parse and exceptions are</span>
+<span class="sd">            suppressed, that entry is :py:obj:`None`.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        CCGBankParseError</span>
+<span class="sd">            If parsing fails and exceptions are not suppressed.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">trees</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">tree</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">pos</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span><span class="s1">&#39;extra text starting at character &#39;</span>
+                                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">pos</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> - &quot;</span><span class="si">{</span><span class="n">sentence</span><span class="p">[</span><span class="n">pos</span><span class="p">:]</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">trees</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_ccgtree</span><span class="p">(</span><span class="n">sentence</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="n">tree_match</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">tree_regex</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="n">start</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tree_match</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span><span class="s1">&#39;malformed tree starting from character &#39;</span>
+                                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">start</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> - &quot;</span><span class="si">{</span><span class="n">sentence</span><span class="p">[</span><span class="n">start</span><span class="p">:]</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+
+        <span class="n">biclosed_type</span> <span class="o">=</span> <span class="n">str2biclosed</span><span class="p">(</span><span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;ccg_str&#39;</span><span class="p">],</span>
+                                     <span class="n">str2type</span><span class="o">=</span><span class="n">CCGBankParser</span><span class="o">.</span><span class="n">_parse_atomic_type</span><span class="p">)</span>
+        <span class="n">pos</span> <span class="o">=</span> <span class="n">tree_match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;is_leaf&#39;</span><span class="p">]:</span>
+            <span class="n">ccg_tree</span> <span class="o">=</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">],</span>
+                               <span class="n">biclosed_type</span><span class="o">=</span><span class="n">biclosed_type</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="n">sentence</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
+                <span class="n">child</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+                <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;ccg_str&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">CONJ_TAG</span><span class="p">):</span>
+                <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">CONJUNCTION</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">infer_rule</span><span class="p">(</span>
+                    <span class="n">Ty</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">)),</span>
+                    <span class="n">biclosed_type</span><span class="p">)</span>
+            <span class="n">ccg_tree</span> <span class="o">=</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
+                               <span class="n">biclosed_type</span><span class="o">=</span><span class="n">biclosed_type</span><span class="p">,</span>
+                               <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">)</span>
+            <span class="n">pos</span> <span class="o">+=</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">ccg_tree</span><span class="p">,</span> <span class="n">pos</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_parse_atomic_type</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>
+        <span class="n">match</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">ccg_type_regex</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;failed to parse atomic type &quot;</span><span class="si">{</span><span class="n">cat</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;bare_cat&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">cat</span>
+        <span class="k">if</span> <span class="n">cat</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">NOUN</span>
+        <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
+        <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;PP&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">PREPOSITION</span>
+        <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;conj&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">CONJUNCTION</span>
+        <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">PUNCTUATION</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lambeq.rewrite &mdash; lambeq 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> lambeq
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../discopy.html">DisCoPy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sentence_input.html">Step 1: Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rewrite.html">Step 2: Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parameterise.html">Step 3: Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../training.html">Step 4. Training</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">lambeq</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>lambeq.rewrite</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for lambeq.rewrite</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Rewrite</span>
+<span class="sd">=======</span>
+<span class="sd">A rewrite rule is a schema for transforming/simplifying a diagram.</span>
+
+<span class="sd">The :py:class:`Rewriter` applies a set of rewrite rules functorially to</span>
+<span class="sd">a given diagram.</span>
+
+<span class="sd">Subclass :py:class:`RewriteRule` to define a custom rewrite rule. An</span>
+<span class="sd">example rewrite rule :py:class:`SimpleRewriteRule` has been provided for</span>
+<span class="sd">basic rewrites, as well as a number of example rules. These can be used</span>
+<span class="sd">by specifying their name when instantiating a :py:class:`Reader`. A list</span>
+<span class="sd">of provided rules can be retrieved using</span>
+<span class="sd">:py:meth:`Rewriter.available_rules`. They are:</span>
+
+<span class="sd">.. glossary::</span>
+
+<span class="sd">    auxiliary</span>
+<span class="sd">        The auxiliary rule removes auxiliary verbs (such as &quot;do&quot;) by</span>
+<span class="sd">        replacing them with caps.</span>
+
+<span class="sd">    connector</span>
+<span class="sd">        The connector rule removes sentence connectors (such as &quot;that&quot;)</span>
+<span class="sd">        by replacing them with caps.</span>
+
+<span class="sd">    determiner</span>
+<span class="sd">        The determiner rule removes determiners (such as &quot;the&quot;) by</span>
+<span class="sd">        replacing them with caps.</span>
+
+<span class="sd">    postadverb, preadverb</span>
+<span class="sd">        The adverb rules simplify adverbs by passing through the noun</span>
+<span class="sd">        wire transparently using a cup.</span>
+
+<span class="sd">    prepositional_phrase</span>
+<span class="sd">        The prepositional phrase rule simplifies the preposition in a</span>
+<span class="sd">        prepositional phrase by passing through the noun wire</span>
+<span class="sd">        transparently using a cup.</span>
+
+<span class="sd">See `examples/rewrite.ipynb` for illustrative usage.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Rewriter&#39;</span><span class="p">,</span> <span class="s1">&#39;RewriteRule&#39;</span><span class="p">,</span> <span class="s1">&#39;SimpleRewriteRule&#39;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Container</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Word</span>
+<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
+
+
+<div class="viewcode-block" id="RewriteRule"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.RewriteRule">[docs]</a><span class="k">class</span> <span class="nc">RewriteRule</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for rewrite rules.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="RewriteRule.matches"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.RewriteRule.matches">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Check if the given box matches the requirements for rewriting.&quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="RewriteRule.rewrite"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.RewriteRule.rewrite">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Rewrite the given box.&quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="RewriteRule.__call__"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.RewriteRule.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Apply the rewrite rule to a box.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        box : discopy.rigid.Box</span>
+<span class="sd">            The candidate box to be tested against this rewrite rule.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        discopy.rigid.Diagram, optional</span>
+<span class="sd">            The rewritten diagram, or :py:obj:`None` if rule</span>
+<span class="sd">            does not apply.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The default implementation uses the :py:meth:`matches` and</span>
+<span class="sd">        :py:meth:`rewrite`  methods, but derived classes may choose to</span>
+<span class="sd">        not use them, since the default :py:class:`Rewriter`</span>
+<span class="sd">        implementation does not call those methods directly, only this</span>
+<span class="sd">        one.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rewrite</span><span class="p">(</span><span class="n">box</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">box</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span></div></div>
+
+
+<div class="viewcode-block" id="SimpleRewriteRule"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.SimpleRewriteRule">[docs]</a><span class="k">class</span> <span class="nc">SimpleRewriteRule</span><span class="p">(</span><span class="n">RewriteRule</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A simple rewrite rule.</span>
+
+<span class="sd">    This rule matches each box against a required codomain and, if</span>
+<span class="sd">    provided, a set of words. If they match, the word box is rewritten</span>
+<span class="sd">    into a set template.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">PLACEHOLDER_WORD</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+<div class="viewcode-block" id="SimpleRewriteRule.__init__"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.SimpleRewriteRule.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
+                 <span class="n">template</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">,</span>
+                 <span class="n">words</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Container</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">case_sensitive</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate a simple rewrite rule.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cod : discopy.rigid.Ty</span>
+<span class="sd">            The type that the codomain of each box is matched against.</span>
+<span class="sd">        template : discopy.rigid.Diagram</span>
+<span class="sd">            The diagram that a matching box is replaced with. A special</span>
+<span class="sd">            placeholder box is replaced by the word in the matched box,</span>
+<span class="sd">            and can be created using</span>
+<span class="sd">            :py:meth:`SimpleRewriteRule.placeholder`.</span>
+<span class="sd">        words : container of str, optional</span>
+<span class="sd">            If provided, this is a list of words that are rewritten by</span>
+<span class="sd">            this rule. If a box does not have one of these words, it is</span>
+<span class="sd">            not rewritten, even if the codomain matches.  If omitted,</span>
+<span class="sd">            all words are permitted.</span>
+<span class="sd">        case_sensitive : bool, default: False</span>
+<span class="sd">            This indicates whether the list of words specified above are</span>
+<span class="sd">            compared case-sensitively. The default is :py:obj:`False`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cod</span> <span class="o">=</span> <span class="n">cod</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">words</span> <span class="o">=</span> <span class="n">words</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">case_sensitive</span> <span class="o">=</span> <span class="n">case_sensitive</span></div>
+
+<div class="viewcode-block" id="SimpleRewriteRule.matches"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.SimpleRewriteRule.matches">[docs]</a>    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">word</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">case_sensitive</span> <span class="k">else</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">words</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span>
+                                        <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">words</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SimpleRewriteRule.rewrite"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.SimpleRewriteRule.rewrite">[docs]</a>    <span class="k">def</span> <span class="nf">rewrite</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">replace_placeholder</span><span class="p">(</span><span class="n">ar</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Box</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ar</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PLACEHOLDER_WORD</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">Word</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ar</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ar</span>
+
+        <span class="k">return</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ob</span><span class="p">:</span> <span class="n">ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">replace_placeholder</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">template</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SimpleRewriteRule.placeholder"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.SimpleRewriteRule.placeholder">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">placeholder</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Word</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Helper function to generate the placeholder for a template.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        cod : discopy.rigid.Ty</span>
+<span class="sd">            The codomain of the placeholder, and hence the word in the</span>
+<span class="sd">            resulting rewritten diagram.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        discopy.rigid.Box</span>
+<span class="sd">            A placeholder box with the given codomain.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Box</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">PLACEHOLDER_WORD</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(),</span> <span class="n">cod</span><span class="p">)</span></div></div>
+
+
+<span class="n">connector_rule</span> <span class="o">=</span> <span class="n">SimpleRewriteRule</span><span class="p">(</span>
+        <span class="n">cod</span><span class="o">=</span><span class="n">S</span> <span class="o">&lt;&lt;</span> <span class="n">S</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="n">Cap</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">l</span><span class="p">),</span>
+        <span class="n">words</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;but&#39;</span><span class="p">,</span> <span class="s1">&#39;however&#39;</span><span class="p">,</span> <span class="s1">&#39;if&#39;</span><span class="p">,</span> <span class="s1">&#39;that&#39;</span><span class="p">,</span> <span class="s1">&#39;whether&#39;</span><span class="p">])</span>
+<span class="n">determiner_rule</span> <span class="o">=</span> <span class="n">SimpleRewriteRule</span><span class="p">(</span><span class="n">cod</span><span class="o">=</span><span class="n">N</span> <span class="o">&lt;&lt;</span> <span class="n">N</span><span class="p">,</span>
+                                    <span class="n">words</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;an&#39;</span><span class="p">,</span> <span class="s1">&#39;the&#39;</span><span class="p">],</span>
+                                    <span class="n">template</span><span class="o">=</span><span class="n">Cap</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">))</span>
+<span class="n">postadverb_rule</span> <span class="o">=</span> <span class="n">SimpleRewriteRule</span><span class="p">(</span>
+        <span class="n">cod</span><span class="o">=</span><span class="p">(</span><span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">),</span>
+        <span class="n">template</span><span class="o">=</span><span class="p">(</span><span class="n">SimpleRewriteRule</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">S</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+                  <span class="n">Id</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cap</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">S</span><span class="p">)))</span>
+<span class="n">preadverb_rule</span> <span class="o">=</span> <span class="n">SimpleRewriteRule</span><span class="p">(</span>
+        <span class="n">cod</span><span class="o">=</span><span class="p">(</span><span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">),</span>
+        <span class="n">template</span><span class="o">=</span><span class="p">(</span><span class="n">Cap</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+                  <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">SimpleRewriteRule</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">S</span> <span class="o">&lt;&lt;</span> <span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="p">)))</span>
+<span class="n">auxiliary_rule</span> <span class="o">=</span> <span class="n">SimpleRewriteRule</span><span class="p">(</span>
+        <span class="n">cod</span><span class="o">=</span><span class="n">preadverb_rule</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
+        <span class="n">template</span><span class="o">=</span><span class="n">Diagram</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span><span class="n">preadverb_rule</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">preadverb_rule</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">2</span><span class="p">:]),</span>
+        <span class="n">words</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;am&#39;</span><span class="p">,</span> <span class="s1">&#39;are&#39;</span><span class="p">,</span> <span class="s1">&#39;be&#39;</span><span class="p">,</span> <span class="s1">&#39;been&#39;</span><span class="p">,</span> <span class="s1">&#39;being&#39;</span><span class="p">,</span> <span class="s1">&#39;is&#39;</span><span class="p">,</span> <span class="s1">&#39;was&#39;</span><span class="p">,</span> <span class="s1">&#39;were&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;did&#39;</span><span class="p">,</span> <span class="s1">&#39;do&#39;</span><span class="p">,</span> <span class="s1">&#39;does&#39;</span><span class="p">,</span>
+               <span class="s2">&quot;&#39;d&quot;</span><span class="p">,</span> <span class="s1">&#39;had&#39;</span><span class="p">,</span> <span class="s1">&#39;has&#39;</span><span class="p">,</span> <span class="s1">&#39;have&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;may&#39;</span><span class="p">,</span> <span class="s1">&#39;might&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;will&#39;</span><span class="p">])</span>
+<span class="n">prepositional_phrase_rule</span> <span class="o">=</span> <span class="n">SimpleRewriteRule</span><span class="p">(</span>
+    <span class="n">cod</span><span class="o">=</span><span class="p">(</span><span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span> <span class="o">&lt;&lt;</span> <span class="n">N</span><span class="p">),</span>
+    <span class="n">template</span><span class="o">=</span><span class="p">(</span><span class="n">SimpleRewriteRule</span><span class="o">.</span><span class="n">placeholder</span><span class="p">(</span><span class="n">S</span> <span class="o">&gt;&gt;</span> <span class="n">S</span> <span class="o">&lt;&lt;</span> <span class="n">N</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
+              <span class="n">Id</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cap</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">S</span> <span class="o">@</span> <span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="Rewriter"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.Rewriter">[docs]</a><span class="k">class</span> <span class="nc">Rewriter</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Class that rewrites diagrams.</span>
+
+<span class="sd">    Comes with a set of default rules.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_default_rules</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;auxiliary&#39;</span><span class="p">:</span> <span class="n">auxiliary_rule</span><span class="p">,</span>
+        <span class="s1">&#39;connector&#39;</span><span class="p">:</span> <span class="n">connector_rule</span><span class="p">,</span>
+        <span class="s1">&#39;determiner&#39;</span><span class="p">:</span> <span class="n">determiner_rule</span><span class="p">,</span>
+        <span class="s1">&#39;postadverb&#39;</span><span class="p">:</span> <span class="n">postadverb_rule</span><span class="p">,</span>
+        <span class="s1">&#39;preadverb&#39;</span><span class="p">:</span> <span class="n">preadverb_rule</span><span class="p">,</span>
+        <span class="s1">&#39;prepositional_phrase&#39;</span><span class="p">:</span> <span class="n">prepositional_phrase_rule</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="Rewriter.__init__"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.Rewriter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">rules</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RewriteRule</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialise a rewriter.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        rules : iterable of str or RewriteRule, optional</span>
+<span class="sd">            A list of rewrite rules to use. :py:class:`RewriteRule`</span>
+<span class="sd">            instances are used directly, `str` objects are used as names</span>
+<span class="sd">            of the default rules. See</span>
+<span class="sd">            :py:meth:`Rewriter.available_rules` for the list of rule</span>
+<span class="sd">            names. If omitted, all the default rules are used.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">rules</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">RewriteRule</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_rules</span><span class="o">.</span><span class="n">values</span><span class="p">()]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rules</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_rules</span><span class="p">(</span><span class="o">*</span><span class="n">rules</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">apply_rewrites</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Rewriter.available_rules"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.Rewriter.available_rules">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">available_rules</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;The list of default rule names.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="o">*</span><span class="bp">cls</span><span class="o">.</span><span class="n">_default_rules</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="Rewriter.add_rules"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.Rewriter.add_rules">[docs]</a>    <span class="k">def</span> <span class="nf">add_rules</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">rules</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">RewriteRule</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add rules to this rewriter.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="n">rules</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rule</span><span class="p">,</span> <span class="n">RewriteRule</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_rules</span><span class="p">[</span><span class="n">rule</span><span class="p">])</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">rule</span><span class="si">}</span><span class="s1">` is not a valid rewrite rule.&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Rewriter.__call__"><a class="viewcode-back" href="../../lambeq.html#lambeq.rewrite.Rewriter.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Apply the rewrite rules to the given diagram.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_rewrites</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">rule</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rules</span><span class="p">:</span>
+            <span class="n">rewritten_box</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">rewritten_box</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">rewritten_box</span>
+        <span class="k">return</span> <span class="n">box</span>
+
+    <span class="k">def</span> <span class="nf">_ob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ob</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

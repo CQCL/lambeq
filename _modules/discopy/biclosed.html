@@ -1,0 +1,572 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>discopy.biclosed &mdash; lambeq 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> lambeq
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../discopy.html">DisCoPy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sentence_input.html">Step 1: Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rewrite.html">Step 2: Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parameterise.html">Step 3: Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../training.html">Step 4. Training</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">lambeq</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>discopy.biclosed</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for discopy.biclosed</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements the free biclosed monoidal category.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">messages</span><span class="p">,</span> <span class="n">monoidal</span><span class="p">,</span> <span class="n">rigid</span>
+<span class="kn">from</span> <span class="nn">discopy.cat</span> <span class="kn">import</span> <span class="n">AxiomError</span>
+<span class="kn">from</span> <span class="nn">discopy.monoidal</span> <span class="kn">import</span> <span class="n">BinaryBoxConstructor</span>
+<span class="kn">from</span> <span class="nn">discopy.utils</span> <span class="kn">import</span> <span class="n">factory_name</span><span class="p">,</span> <span class="n">from_tree</span>
+
+
+<span class="k">class</span> <span class="nc">Ty</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Ty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Objects in a free biclosed monoidal category.</span>
+<span class="sd">    Generated by the following grammar:</span>
+
+<span class="sd">        ty ::= Ty(name) | ty @ ty | ty &gt;&gt; ty | ty &lt;&lt; ty</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; x, y = Ty(&#39;x&#39;), Ty(&#39;y&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; print(y &lt;&lt; x &gt;&gt; y)</span>
+<span class="sd">    ((y &lt;&lt; x) &gt;&gt; y)</span>
+<span class="sd">    &gt;&gt;&gt; print((y &lt;&lt; x &gt;&gt; y) @ x)</span>
+<span class="sd">    ((y &lt;&lt; x) &gt;&gt; y) @ x</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">old</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">old</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">old</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">(</span><span class="n">Over</span><span class="p">,</span> <span class="n">Under</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">old</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">Ty</span><span class="p">(</span><span class="o">*</span><span class="n">old</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">objects</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">objects</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__lshift__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Over</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__rshift__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Under</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BinaryTyConstructor</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Ty constructor with left and right as input. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
+
+    <span class="k">def</span> <span class="nf">to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;factory&#39;</span><span class="p">:</span> <span class="n">factory_name</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+            <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">to_tree</span><span class="p">(),</span>
+            <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">to_tree</span><span class="p">()}</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_tree</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">from_tree</span><span class="p">,</span> <span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">],</span> <span class="n">tree</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">])))</span>
+
+
+<span class="k">class</span> <span class="nc">Over</span><span class="p">(</span><span class="n">BinaryTyConstructor</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Forward slash types. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">Ty</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">BinaryTyConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Over(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2"> &lt;&lt; </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">left</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">right</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">Under</span><span class="p">(</span><span class="n">BinaryTyConstructor</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Backward slash types. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">Ty</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">BinaryTyConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Under(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;(</span><span class="si">{}</span><span class="s2"> &gt;&gt; </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">left</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">right</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+
+<span class="nd">@monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">subclass</span>
+<span class="k">class</span> <span class="nc">Diagram</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Diagrams in a biclosed monoidal category. &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fa</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Forward application. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FA</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">ba</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Backward application. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BA</span><span class="p">(</span><span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fc</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Forward composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FC</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">middle</span><span class="p">,</span> <span class="n">middle</span> <span class="o">&lt;&lt;</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">bc</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Backward composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BC</span><span class="p">(</span><span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="n">middle</span><span class="p">,</span> <span class="n">middle</span> <span class="o">&gt;&gt;</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fx</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Forward crossed composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FX</span><span class="p">(</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="n">middle</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">bx</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Backward crossed composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">BX</span><span class="p">(</span><span class="n">middle</span> <span class="o">&lt;&lt;</span> <span class="n">left</span><span class="p">,</span> <span class="n">middle</span> <span class="o">&gt;&gt;</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">curry</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">n_wires</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Diagram currying. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Curry</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">n_wires</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Id</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Identity diagram in a biclosed monoidal category. &quot;&quot;&quot;</span>
+
+
+<span class="n">Diagram</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">Id</span>
+
+
+<span class="k">class</span> <span class="nc">Box</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Boxes in a biclosed monoidal category. &quot;&quot;&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">Curry</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Curried diagram.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    diagram : :class:`Diagram`</span>
+<span class="sd">        to curry.</span>
+<span class="sd">    n_wires : int, optional</span>
+<span class="sd">        Number :code:`&lt;= len(diagram.dom)` of wires to curry,</span>
+<span class="sd">        default is :code:`1`.</span>
+<span class="sd">    left : bool, optional</span>
+<span class="sd">        Whether to curry to the left, default is :code:`False`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">,</span> <span class="n">n_wires</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">left</span><span class="p">:</span>
+            <span class="n">dom</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">n_wires</span><span class="p">:]</span>
+            <span class="n">cod</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="n">n_wires</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">diagram</span><span class="o">.</span><span class="n">cod</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dom</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="o">-</span><span class="n">n_wires</span><span class="p">]</span>
+            <span class="n">cod</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">cod</span> <span class="o">&lt;&lt;</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="o">-</span><span class="n">n_wires</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">):]</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Curry(</span><span class="si">{}{}{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">diagram</span><span class="p">,</span> <span class="s2">&quot;, n_wires=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_wires</span><span class="p">)</span> <span class="k">if</span> <span class="n">n_wires</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;, left=True&quot;</span> <span class="k">if</span> <span class="n">left</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagram</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_wires</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">diagram</span><span class="p">,</span> <span class="n">n_wires</span><span class="p">,</span> <span class="n">left</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">unaryBoxConstructor</span><span class="p">(</span><span class="n">attr</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Constructor</span><span class="p">:</span>
+        <span class="nd">@classmethod</span>
+        <span class="k">def</span> <span class="nf">from_tree</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">from_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">[</span><span class="n">attr</span><span class="p">]))</span>
+
+        <span class="k">def</span> <span class="nf">to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s1">&#39;factory&#39;</span><span class="p">:</span> <span class="n">factory_name</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
+                <span class="n">attr</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span><span class="o">.</span><span class="n">to_tree</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">Constructor</span>
+
+
+<span class="k">class</span> <span class="nc">FA</span><span class="p">(</span><span class="n">unaryBoxConstructor</span><span class="p">(</span><span class="s2">&quot;over&quot;</span><span class="p">),</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Forward application box. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">over</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">over</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Over</span><span class="p">,</span> <span class="n">over</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">over</span> <span class="o">=</span> <span class="n">over</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">over</span> <span class="o">@</span> <span class="n">over</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">over</span><span class="o">.</span><span class="n">left</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;FA</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">over</span><span class="p">),</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;FA(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]))</span>
+
+
+<span class="k">class</span> <span class="nc">BA</span><span class="p">(</span><span class="n">unaryBoxConstructor</span><span class="p">(</span><span class="s2">&quot;under&quot;</span><span class="p">),</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Backward application box. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">under</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">under</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">Under</span><span class="p">,</span> <span class="n">under</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">under</span> <span class="o">=</span> <span class="n">under</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">under</span><span class="o">.</span><span class="n">left</span> <span class="o">@</span> <span class="n">under</span><span class="p">,</span> <span class="n">under</span><span class="o">.</span><span class="n">right</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s2">&quot;BA</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">under</span><span class="p">),</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;BA(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+
+
+<span class="k">class</span> <span class="nc">FC</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Forward composition box. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Over</span><span class="p">,</span> <span class="n">left</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Over</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">does_not_compose</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FC(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+        <span class="n">BinaryBoxConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BC</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Backward composition box. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Under</span><span class="p">,</span> <span class="n">left</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Under</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">does_not_compose</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;BC(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+        <span class="n">BinaryBoxConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">FX</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Forward crossed composition box. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Over</span><span class="p">,</span> <span class="n">left</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Over</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">does_not_compose</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FX(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+        <span class="n">BinaryBoxConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">BX</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Backward crossed composition box. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Under</span><span class="p">,</span> <span class="n">left</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Under</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">does_not_compose</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;BX(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span> <span class="o">&lt;&lt;</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+        <span class="n">BinaryBoxConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Functor</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Functor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Functors into biclosed monoidal categories.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from discopy import rigid</span>
+<span class="sd">    &gt;&gt;&gt; x, y = Ty(&#39;x&#39;), Ty(&#39;y&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; F = Functor(</span>
+<span class="sd">    ...     ob={x: x, y: y}, ar={},</span>
+<span class="sd">    ...     ob_factory=rigid.Ty,</span>
+<span class="sd">    ...     ar_factory=rigid.Diagram)</span>
+<span class="sd">    &gt;&gt;&gt; print(F(y &gt;&gt; x &lt;&lt; y))</span>
+<span class="sd">    y.r @ x @ y.l</span>
+<span class="sd">    &gt;&gt;&gt; assert F((y &gt;&gt; x) &lt;&lt; y) == F(y &gt;&gt; (x &lt;&lt; y))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob</span><span class="p">,</span> <span class="n">ar</span><span class="p">,</span> <span class="n">ob_factory</span><span class="o">=</span><span class="n">Ty</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob</span><span class="p">,</span> <span class="n">ar</span><span class="p">,</span> <span class="n">ob_factory</span><span class="p">,</span> <span class="n">ar_factory</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Ty</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ob_factory</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">[</span>
+                <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="p">[</span><span class="n">i</span><span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="p">))])</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Curry</span><span class="p">):</span>
+            <span class="n">n_wires</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span>
+                <span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span> <span class="k">if</span> <span class="n">diagram</span><span class="o">.</span><span class="n">left</span> <span class="k">else</span> <span class="s1">&#39;right&#39;</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">diagram</span><span class="p">),</span> <span class="n">n_wires</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+        <span class="k">for</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">FA</span><span class="p">,</span> <span class="s1">&#39;fa&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">BA</span><span class="p">,</span> <span class="s1">&#39;ba&#39;</span><span class="p">)]:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span>
+                    <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+        <span class="k">for</span> <span class="bp">cls</span><span class="p">,</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">FC</span><span class="p">,</span> <span class="s1">&#39;fc&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">BC</span><span class="p">,</span> <span class="s1">&#39;bc&#39;</span><span class="p">)]:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="bp">cls</span><span class="p">):</span>
+                <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">right</span>
+                <span class="n">middle</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">right</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="p">,</span> <span class="n">method</span><span class="p">)(</span>
+                    <span class="bp">self</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">middle</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">FX</span><span class="p">):</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">left</span>
+            <span class="n">middle</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">right</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="p">,</span> <span class="s1">&#39;fx&#39;</span><span class="p">)(</span>
+                <span class="bp">self</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">middle</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">BX</span><span class="p">):</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">right</span>
+            <span class="n">middle</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">left</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="p">,</span> <span class="s1">&#39;bx&#39;</span><span class="p">)(</span>
+                <span class="bp">self</span><span class="p">(</span><span class="n">left</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">middle</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">right</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+
+
+<span class="n">biclosed2rigid_ob</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span>
+    <span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Ty</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="n">ar</span><span class="o">=</span><span class="p">{},</span> <span class="n">ob_factory</span><span class="o">=</span><span class="n">rigid</span><span class="o">.</span><span class="n">Ty</span><span class="p">)</span>
+
+
+<span class="n">biclosed2rigid</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span>
+    <span class="n">ob</span><span class="o">=</span><span class="n">biclosed2rigid_ob</span><span class="p">,</span>
+    <span class="n">ar</span><span class="o">=</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">biclosed2rigid_ob</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="n">biclosed2rigid_ob</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">cod</span><span class="p">)),</span>
+    <span class="n">ob_factory</span><span class="o">=</span><span class="n">rigid</span><span class="o">.</span><span class="n">Ty</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

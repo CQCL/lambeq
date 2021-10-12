@@ -1,0 +1,1652 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>lambeq.ccg2discocat package &mdash; lambeq 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="lambeq.core package" href="lambeq.core.html" />
+    <link rel="prev" title="lambeq package" href="lambeq.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> lambeq
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="sentence_input.html">Step 1: Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewrite.html">Step 2: Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3: Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4. Training</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolkit</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">API Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="lambeq.html">lambeq package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="lambeq.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">lambeq.ccg2discocat package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lambeq.core.html">lambeq.core package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#module-lambeq.ansatz">lambeq.ansatz module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#module-lambeq.circuit">lambeq.circuit module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#module-lambeq.reader">lambeq.reader module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#module-lambeq.rewrite">lambeq.rewrite module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#module-lambeq.tensor">lambeq.tensor module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#module-lambeq.version">lambeq.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lambeq.html#module-lambeq">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">API Reference</a> &raquo;</li>
+        
+          <li><a href="lambeq.html">lambeq package</a> &raquo;</li>
+        
+      <li>lambeq.ccg2discocat package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/lambeq.ccg2discocat.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="lambeq-ccg2discocat-package">
+<h1>lambeq.ccg2discocat package<a class="headerlink" href="#lambeq-ccg2discocat-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-lambeq.ccg2discocat.ccg_parser">
+<span id="lambeq-ccg2discocat-ccg-parser-module"></span><h2>lambeq.ccg2discocat.ccg_parser module<a class="headerlink" href="#module-lambeq.ccg2discocat.ccg_parser" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.ccg_parser.CCGParser">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_parser.</code><code class="sig-name descname">CCGParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_parser.html#CCGParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_parser.CCGParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for CCG parsers.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_parser.CCGParser.__init__">
+<em class="property">abstract </em><code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_parser.html#CCGParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_parser.CCGParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise the CCG parser.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_parser.CCGParser.sentence2diagram">
+<code class="sig-name descname">sentence2diagram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_parser.html#CCGParser.sentence2diagram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_parser.CCGParser.sentence2diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a DisCoPy diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.Diagram or None</dt><dd><p>The parsed diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_parser.CCGParser.sentence2tree">
+<code class="sig-name descname">sentence2tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_parser.html#CCGParser.sentence2tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_parser.CCGParser.sentence2tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>CCGTree or None</dt><dd><p>The parsed tree, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_parser.CCGParser.sentences2diagrams">
+<code class="sig-name descname">sentences2diagrams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_parser.html#CCGParser.sentences2diagrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_parser.CCGParser.sentences2diagrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of discopy diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of discopy.Diagram or None</dt><dd><p>The parsed diagrams. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if
+exceptions are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_parser.CCGParser.sentences2trees">
+<em class="property">abstract </em><code class="sig-name descname">sentences2trees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_parser.html#CCGParser.sentences2trees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_parser.CCGParser.sentences2trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of CCGTree or None</dt><dd><p>The parsed trees. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if exceptions
+are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lambeq.ccg2discocat.ccg_rule">
+<span id="lambeq-ccg2discocat-ccg-rule-module"></span><h2>lambeq.ccg2discocat.ccg_rule module<a class="headerlink" href="#module-lambeq.ccg2discocat.ccg_rule" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_rule.</code><code class="sig-name descname">CCGRule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_rule.html#CCGRule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">enum.Enum</span></code></p>
+<p>An enumeration of the available CCG rules.</p>
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_APPLICATION">
+<code class="sig-name descname">BACKWARD_APPLICATION</code><em class="property"> = 'BA'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_APPLICATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_COMPOSITION">
+<code class="sig-name descname">BACKWARD_COMPOSITION</code><em class="property"> = 'BC'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_CROSSED_COMPOSITION">
+<code class="sig-name descname">BACKWARD_CROSSED_COMPOSITION</code><em class="property"> = 'BX'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_CROSSED_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_TYPE_RAISING">
+<code class="sig-name descname">BACKWARD_TYPE_RAISING</code><em class="property"> = 'BTR'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.BACKWARD_TYPE_RAISING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.CONJUNCTION">
+<code class="sig-name descname">CONJUNCTION</code><em class="property"> = 'CONJ'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.CONJUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_APPLICATION">
+<code class="sig-name descname">FORWARD_APPLICATION</code><em class="property"> = 'FA'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_APPLICATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_COMPOSITION">
+<code class="sig-name descname">FORWARD_COMPOSITION</code><em class="property"> = 'FC'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_CROSSED_COMPOSITION">
+<code class="sig-name descname">FORWARD_CROSSED_COMPOSITION</code><em class="property"> = 'FX'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_CROSSED_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_TYPE_RAISING">
+<code class="sig-name descname">FORWARD_TYPE_RAISING</code><em class="property"> = 'FTR'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.FORWARD_TYPE_RAISING" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_BACKWARD_COMPOSITION">
+<code class="sig-name descname">GENERALIZED_BACKWARD_COMPOSITION</code><em class="property"> = 'GBC'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_BACKWARD_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION">
+<code class="sig-name descname">GENERALIZED_BACKWARD_CROSSED_COMPOSITION</code><em class="property"> = 'GBX'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_FORWARD_COMPOSITION">
+<code class="sig-name descname">GENERALIZED_FORWARD_COMPOSITION</code><em class="property"> = 'GFC'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_FORWARD_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION">
+<code class="sig-name descname">GENERALIZED_FORWARD_CROSSED_COMPOSITION</code><em class="property"> = 'GFX'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.LEXICAL">
+<code class="sig-name descname">LEXICAL</code><em class="property"> = 'L'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.LEXICAL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.REMOVE_PUNCTUATION_LEFT">
+<code class="sig-name descname">REMOVE_PUNCTUATION_LEFT</code><em class="property"> = 'LP'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.REMOVE_PUNCTUATION_LEFT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.REMOVE_PUNCTUATION_RIGHT">
+<code class="sig-name descname">REMOVE_PUNCTUATION_RIGHT</code><em class="property"> = 'RP'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.REMOVE_PUNCTUATION_RIGHT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.UNARY">
+<code class="sig-name descname">UNARY</code><em class="property"> = 'U'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.UNARY" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.UNKNOWN">
+<code class="sig-name descname">UNKNOWN</code><em class="property"> = 'UNK'</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.UNKNOWN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.__call__">
+<code class="sig-name descname">__call__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cod</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em>, <em class="sig-param"><span class="n">dom</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em><span class="sig-paren">)</span> &#x2192; discopy.biclosed.Diagram<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_rule.html#CCGRule.__call__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.__call__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a DisCoPy diagram for this rule.</p>
+<p>If it is not possible to produce a valid diagram with the given
+parameters, the codomain may be rewritten.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cod</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The expected codomain of the diagram.</p>
+</dd>
+<dt><strong>dom</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The expected domain of the diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.biclosed.Diagram</dt><dd><p>The resulting diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGRuleUseError</dt><dd><p>If a diagram cannot be produced.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.check_match">
+<code class="sig-name descname">check_match</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">left</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em>, <em class="sig-param"><span class="n">right</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_rule.html#CCGRule.check_match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.check_match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise an exception if <cite>left</cite> does not match <cite>right</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRule.infer_rule">
+<em class="property">classmethod </em><code class="sig-name descname">infer_rule</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cod</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em>, <em class="sig-param"><span class="n">dom</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="lambeq.ccg2discocat.ccg_rule.CCGRule">lambeq.ccg2discocat.ccg_rule.CCGRule</a><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_rule.html#CCGRule.infer_rule"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.infer_rule" title="Permalink to this definition">¶</a></dt>
+<dd><p>Infer the CCG rule that admits the given codomain and domain.</p>
+<p>Return <a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.UNKNOWN" title="lambeq.ccg2discocat.ccg_rule.CCGRule.UNKNOWN"><code class="xref py py-attr docutils literal notranslate"><span class="pre">CCGRule.UNKNOWN</span></code></a> if no other rule matches.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cod</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The codomain of the rule.</p>
+</dd>
+<dt><strong>dom</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The domain of the rule.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>CCGRule</dt><dd><p>A CCG rule that admits the required codomain and domain.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRuleUseError">
+<em class="property">exception </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_rule.</code><code class="sig-name descname">CCGRuleUseError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rule</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="lambeq.ccg2discocat.ccg_rule.CCGRule">lambeq.ccg2discocat.ccg_rule.CCGRule</a></span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_rule.html#CCGRuleUseError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRuleUseError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error raised when a <a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="lambeq.ccg2discocat.ccg_rule.CCGRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGRule</span></code></a> is applied incorrectly.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRuleUseError.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rule</span><span class="p">:</span> <span class="n"><a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="lambeq.ccg2discocat.ccg_rule.CCGRule">lambeq.ccg2discocat.ccg_rule.CCGRule</a></span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_rule.html#CCGRuleUseError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRuleUseError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRuleUseError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRuleUseError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_rule.CCGRuleUseError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lambeq.ccg2discocat.ccg_rule.CCGRuleUseError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lambeq.ccg2discocat.ccg_tree">
+<span id="lambeq-ccg2discocat-ccg-tree-module"></span><h2>lambeq.ccg2discocat.ccg_tree module<a class="headerlink" href="#module-lambeq.ccg2discocat.ccg_tree" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_tree.</code><code class="sig-name descname">CCGTree</code><span class="sig-paren">(</span><em class="sig-param">text: Optional[str] = None</em>, <em class="sig-param">*</em>, <em class="sig-param">rule: Union[str</em>, <em class="sig-param">lambeq.ccg2discocat.ccg_rule.CCGRule] = &lt;CCGRule.UNKNOWN: 'UNK'&gt;</em>, <em class="sig-param">biclosed_type: discopy.biclosed.Ty</em>, <em class="sig-param">children: Optional[Sequence[lambeq.ccg2discocat.ccg_tree.CCGTree]] = None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_tree.html#CCGTree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Derivation tree for a CCG.</p>
+<p>This provides a standard derivation interface between the parser and
+the rest of the model.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">text: Optional[str] = None</em>, <em class="sig-param">*</em>, <em class="sig-param">rule: Union[str</em>, <em class="sig-param">lambeq.ccg2discocat.ccg_rule.CCGRule] = &lt;CCGRule.UNKNOWN: 'UNK'&gt;</em>, <em class="sig-param">biclosed_type: discopy.biclosed.Ty</em>, <em class="sig-param">children: Optional[Sequence[lambeq.ccg2discocat.ccg_tree.CCGTree]] = None</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_tree.html#CCGTree.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise a CCG tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>text</strong><span class="classifier">str or None, default: None</span></dt><dd><p>The word or phrase associated to the whole tree. If
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, it is inferred from its children.</p>
+</dd>
+<dt><strong>rule</strong><span class="classifier">CCGRule, default: CCGRule.UNKNOWN</span></dt><dd><p>The final <a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="lambeq.ccg2discocat.ccg_rule.CCGRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGRule</span></code></a> used in the derivation.</p>
+</dd>
+<dt><strong>biclosed_type</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The type associated to the derived phrase.</p>
+</dd>
+<dt><strong>children</strong><span class="classifier">list of CCGTree or None, default: None</span></dt><dd><p>A list of JSON subtrees. The types of these subtrees can be
+combined with the <code class="xref py py-obj docutils literal notranslate"><span class="pre">rule</span></code> to produce the output
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code>. A leaf node has an empty list of children.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree.deriv">
+<code class="sig-name descname">deriv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">use_slashes</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">_prefix</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_tree.html#CCGTree.deriv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree.deriv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Produce a string representation of the tree.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>use_slashes</strong><span class="classifier">bool, default: False</span></dt><dd><p>Use slashes for CCG types instead of arrows.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree.from_json">
+<em class="property">classmethod </em><code class="sig-name descname">from_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_tree.html#CCGTree.from_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree.from_json" title="Permalink to this definition">¶</a></dt>
+<dt>
+<em class="property">classmethod </em><code class="sig-name descname">from_json</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a></dt>
+<dd><p>Create a <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> from a JSON representation.</p>
+<p>A JSON representation of a derivation contains the following
+fields:</p>
+<blockquote>
+<div><dl>
+<dt><cite>text</cite><span class="classifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code> or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>The word or phrase associated to the whole tree. If
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>, it is inferred from its children.</p>
+</dd>
+<dt><cite>rule</cite><span class="classifier"><a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="lambeq.ccg2discocat.ccg_rule.CCGRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGRule</span></code></a></span></dt><dd><p>The final <a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule" title="lambeq.ccg2discocat.ccg_rule.CCGRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGRule</span></code></a> used in the derivation.</p>
+</dd>
+<dt><cite>type</cite><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.biclosed.Ty</span></code></span></dt><dd><p>The type associated to the derived phrase.</p>
+</dd>
+<dt><cite>children</cite><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">None</span></code></span></dt><dd><p>A list of JSON subtrees. The types of these subtrees can
+be combined with the <code class="xref py py-obj docutils literal notranslate"><span class="pre">rule</span></code> to produce the
+output <code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code>. A leaf node has an empty list of
+children.</p>
+</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree.text">
+<em class="property">property </em><code class="sig-name descname">text</code><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree.text" title="Permalink to this definition">¶</a></dt>
+<dd><p>The word or phrase associated to the tree.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree.to_biclosed_diagram">
+<code class="sig-name descname">to_biclosed_diagram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; discopy.biclosed.Diagram<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_tree.html#CCGTree.to_biclosed_diagram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree.to_biclosed_diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert tree to a derivation in DisCoPy form.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>planar</strong><span class="classifier">bool, default: False</span></dt><dd><p>Force the diagram to be planar. This only affects trees
+using cross composition.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree.to_diagram">
+<code class="sig-name descname">to_diagram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; discopy.rigid.Diagram<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_tree.html#CCGTree.to_diagram"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree.to_diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert tree to a DisCoCat diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>planar</strong><span class="classifier">bool, default: False</span></dt><dd><p>Force the diagram to be planar. This only affects trees
+using cross composition.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_tree.CCGTree.to_json">
+<code class="sig-name descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Any<span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_tree.html#CCGTree.to_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_tree.CCGTree.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert tree into JSON form.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lambeq.ccg2discocat.ccg_types">
+<span id="lambeq-ccg2discocat-ccg-types-module"></span><h2>lambeq.ccg2discocat.ccg_types module<a class="headerlink" href="#module-lambeq.ccg2discocat.ccg_types" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGAtomicType">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_types.</code><code class="sig-name descname">CCGAtomicType</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">value</span></em><span class="sig-paren">)</span><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGAtomicType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.ccg_types._CCGAtomicTypeMeta</span></code></p>
+<p>Standard CCG atomic types mapping to their biclosed type.</p>
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGAtomicType.CONJUNCTION">
+<code class="sig-name descname">CONJUNCTION</code><em class="property"> = Ty('conj')</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGAtomicType.CONJUNCTION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGAtomicType.NOUN">
+<code class="sig-name descname">NOUN</code><em class="property"> = Ty('n')</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGAtomicType.NOUN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGAtomicType.NOUN_PHRASE">
+<code class="sig-name descname">NOUN_PHRASE</code><em class="property"> = Ty('n')</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGAtomicType.NOUN_PHRASE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGAtomicType.PREPOSITION">
+<code class="sig-name descname">PREPOSITION</code><em class="property"> = Ty('p')</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGAtomicType.PREPOSITION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGAtomicType.PUNCTUATION">
+<code class="sig-name descname">PUNCTUATION</code><em class="property"> = Ty('punc')</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGAtomicType.PUNCTUATION" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGAtomicType.SENTENCE">
+<code class="sig-name descname">SENTENCE</code><em class="property"> = Ty('s')</em><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGAtomicType.SENTENCE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGParseError">
+<em class="property">exception </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_types.</code><code class="sig-name descname">CCGParseError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cat</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_types.html#CCGParseError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGParseError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error when parsing a CCG type string.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGParseError.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cat</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_types.html#CCGParseError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGParseError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGParseError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGParseError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccg_types.CCGParseError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.CCGParseError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="lambeq.ccg2discocat.ccg_types.replace_cat_result">
+<code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_types.</code><code class="sig-name descname">replace_cat_result</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cat</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em>, <em class="sig-param"><span class="n">original</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em>, <em class="sig-param"><span class="n">replacement</span><span class="p">:</span> <span class="n">discopy.biclosed.Ty</span></em>, <em class="sig-param"><span class="n">direction</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'|'</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>discopy.biclosed.Ty<span class="p">, </span>Optional<span class="p">[</span>discopy.biclosed.Ty<span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_types.html#replace_cat_result"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.replace_cat_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the innermost category result with a new category.</p>
+<p>This attempts to replace the specified result category with a
+replacement. If the specified category cannot be found, it replaces
+the innermost category possible. In both cases, the replaced
+category is returned alongside the new category.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cat</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The category whose result is replaced.</p>
+</dd>
+<dt><strong>original</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The category that should be replaced.</p>
+</dd>
+<dt><strong>replacement</strong><span class="classifier">discopy.biclosed.Ty</span></dt><dd><p>The replacement for the new category.</p>
+</dd>
+<dt><strong>direction</strong><span class="classifier">str</span></dt><dd><p>Used to check the operations in the category. Consists of either
+1 or 2 characters, each being one of ‘&lt;’, ‘&gt;’, ‘|’. If 2
+characters, the first checks the innermost operation, and the
+second checks the rest. If only 1 character, it is used for all
+checks.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.biclosed.Ty</dt><dd><p>The new category.</p>
+</dd>
+<dt>discopy.biclosed.Ty</dt><dd><p>The replaced result category.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This function is mainly used for substituting inner types in
+generalised versions of CCG rules. (See <a class="reference internal" href="#lambeq.ccg2discocat.ccg_rule.CCGRule.infer_rule" title="lambeq.ccg2discocat.ccg_rule.CCGRule.infer_rule"><code class="xref py py-meth docutils literal notranslate"><span class="pre">infer_rule()</span></code></a>)</p>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="s1">&#39;abcxy&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Example 1</strong>: <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">&gt;&gt;</span> <span class="pre">c</span></code> in <code class="docutils literal notranslate"><span class="pre">a</span> <span class="pre">&gt;&gt;</span> <span class="pre">(b</span> <span class="pre">&gt;&gt;</span> <span class="pre">c)</span></code> is matched and
+replaced with <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="o">&gt;&gt;</span> <span class="n">c</span><span class="p">),</span> <span class="n">b</span> <span class="o">&gt;&gt;</span> <span class="n">c</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span><span class="p">)</span>
+<span class="go">(a &gt;&gt; x) (b &gt;&gt; c)</span>
+</pre></div>
+</div>
+<p><strong>Example 2</strong>: <code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">&gt;&gt;</span> <span class="pre">a</span></code> cannot be matched, so the innermost
+category <code class="docutils literal notranslate"><span class="pre">c</span></code> is replaced instead.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">b</span> <span class="o">&gt;&gt;</span> <span class="n">c</span><span class="p">),</span> <span class="n">b</span> <span class="o">&gt;&gt;</span> <span class="n">a</span><span class="p">,</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span><span class="p">)</span>
+<span class="go">(a &gt;&gt; (b &gt;&gt; (x &lt;&lt; y))) c</span>
+</pre></div>
+</div>
+<p><strong>Example 3</strong>: if not all operators are <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code>, then nothing is
+replaced.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span><span class="p">)</span>
+<span class="go">(a &gt;&gt; (c &lt;&lt; b)) None</span>
+</pre></div>
+</div>
+<p><strong>Example 4</strong>: the innermost use of <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> is on <code class="docutils literal notranslate"><span class="pre">c</span></code> and <code class="docutils literal notranslate"><span class="pre">b</span></code>,
+so the target <code class="docutils literal notranslate"><span class="pre">c</span></code> is replaced with <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;&lt;|&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span><span class="p">)</span>
+<span class="go">(a &gt;&gt; (y &lt;&lt; b)) c</span>
+</pre></div>
+</div>
+<p><strong>Example 5</strong>: the innermost use of <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> is on <code class="docutils literal notranslate"><span class="pre">a</span></code> and
+<code class="docutils literal notranslate"><span class="pre">(c</span> <span class="pre">&lt;&lt;</span> <span class="pre">b)</span></code>, so its target <code class="docutils literal notranslate"><span class="pre">(c</span> <span class="pre">&lt;&lt;</span> <span class="pre">b)</span></code> is replaced by <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">a</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">c</span> <span class="o">&lt;&lt;</span> <span class="n">b</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;&gt;|&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">replaced</span><span class="p">)</span>
+<span class="go">(a &gt;&gt; y) (c &lt;&lt; b)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="lambeq.ccg2discocat.ccg_types.str2biclosed">
+<code class="sig-prename descclassname">lambeq.ccg2discocat.ccg_types.</code><code class="sig-name descname">str2biclosed</code><span class="sig-paren">(</span><em class="sig-param">cat: str, str2type: Callable[[str], discopy.biclosed.Ty] = &lt;class 'discopy.biclosed.Ty'&gt;</em><span class="sig-paren">)</span> &#x2192; discopy.biclosed.Ty<a class="reference internal" href="_modules/lambeq/ccg2discocat/ccg_types.html#str2biclosed"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccg_types.str2biclosed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a CCG category string into a biclosed type.</p>
+<p>The string should follow the following grammar:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>atomic_cat    = { &lt;any character except &quot;(&quot;, &quot;)&quot;, &quot;/&quot; and &quot;\&quot;&gt; }
+op            = &quot;/&quot; | &quot;\&quot;
+bracketed_cat = atomic_cat | &quot;(&quot; bracketed_cat [ op bracketed_cat ] &quot;)&quot;
+cat           = bracketed_cat [ op bracketed_cat ] [ &quot;[conj]&quot; ]
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>cat</strong><span class="classifier">str</span></dt><dd><p>The string to be parsed.</p>
+</dd>
+<dt><strong>str2type: callable, default: discopy.biclosed.Ty</strong></dt><dd><p>A function that parses an atomic category into a biclosed type.
+The default uses <code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.biclosed.Ty</span></code> to produce a
+type with the same name as the atomic category.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.biclosed.Ty</dt><dd><p>The parsed category as a biclosed type.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGParseError</dt><dd><p>If parsing fails.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Conjunctions follow the CCGBank convention of:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>x   and  y
+C  conj  C
+ \    \ /
+  \ C[conj]
+   \ /
+    C
+</pre></div>
+</div>
+<p>thus <code class="docutils literal notranslate"><span class="pre">C[conj]</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">C\C</span></code>.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lambeq.ccg2discocat.ccgbank_parser">
+<span id="lambeq-ccg2discocat-ccgbank-parser-module"></span><h2>lambeq.ccg2discocat.ccgbank_parser module<a class="headerlink" href="#module-lambeq.ccg2discocat.ccgbank_parser" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ccgbank-parser">
+<h3>CCGBank parser<a class="headerlink" href="#ccgbank-parser" title="Permalink to this headline">¶</a></h3>
+<p>The CCGBank is a translation of the Penn Treebank into a corpus of
+Combinatory Categorial Grammar derivations, created by Julia Hockenmaier
+and Mark Steedman.</p>
+<p>This module provides a parser that automatically turns parses from
+CCGBank into <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> s.</p>
+<dl class="py exception">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError">
+<em class="property">exception </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccgbank_parser.</code><code class="sig-name descname">CCGBankParseError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParseError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>Error raised if parsing fails in CCGBank.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">message</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParseError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParseError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.ccgbank_parser.</code><code class="sig-name descname">CCGBankParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.ccg2discocat.ccg_parser.CCGParser" title="lambeq.ccg2discocat.ccg_parser.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.ccg_parser.CCGParser</span></code></a></p>
+<p>A parser for CCGBank trees.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise a CCGBank parser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>root</strong><span class="classifier">str or os.PathLike</span></dt><dd><p>Path to the root of the corpus. The sections must be located
+in <cite>&lt;root&gt;/data/AUTO</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.ccg_type_regex">
+<code class="sig-name descname">ccg_type_regex</code><em class="property"> = re.compile('((?P&lt;bare_cat&gt;N|NP|S|PP)(\\[[a-z]+])?|conj|LRB|RRB|[,.:;])')</em><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.ccg_type_regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.id_regex">
+<code class="sig-name descname">id_regex</code><em class="property"> = re.compile('ID=(?P&lt;id&gt;\\S+)  # line begins with &quot;ID=&lt;id&gt;&quot;\n                              .*              # rest of the line is ignored\n                           ', re.DOTALL|re.VERBOSE)</em><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.id_regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.section2diagrams">
+<code class="sig-name descname">section2diagrams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">section_id</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.section2diagrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.section2diagrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a CCGBank section into diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>section_id</strong><span class="classifier">int</span></dt><dd><p>The section to parse.</p>
+</dd>
+<dt><strong>planar</strong><span class="classifier">bool, default: False</span></dt><dd><p>Force diagrams to be planar when they contain
+crossed composition.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Stop exceptions from being raised, instead returning
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> for a diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>diagrams</strong><span class="classifier">dict</span></dt><dd><p>A dictionary of diagrams labelled by their ID in CCGBank. If
+a diagram fails to draw and exceptions are suppressed, that
+entry is replaced by <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGBankParseError</dt><dd><p>If parsing fails and exceptions are not suppressed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.section2trees">
+<code class="sig-name descname">section2trees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">section_id</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.section2trees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.section2trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a CCGBank section into trees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>section_id</strong><span class="classifier">int</span></dt><dd><p>The section to parse.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Stop exceptions from being raised, instead returning
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> for a tree.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>trees</strong><span class="classifier">dict</span></dt><dd><p>A dictionary of trees labelled by their ID in CCGBank. If a
+tree fails to parse and exceptions are suppressed, that
+entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGBankParseError</dt><dd><p>If parsing fails and exceptions are not suppressed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentence2diagram">
+<code class="sig-name descname">sentence2diagram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentence2diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a DisCoPy diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.Diagram or None</dt><dd><p>The parsed diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentence2tree">
+<code class="sig-name descname">sentence2tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentence2tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>CCGTree or None</dt><dd><p>The parsed tree, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentences2diagrams">
+<code class="sig-name descname">sentences2diagrams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentences2diagrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of discopy diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of discopy.Diagram or None</dt><dd><p>The parsed diagrams. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if
+exceptions are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentences2trees">
+<code class="sig-name descname">sentences2trees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.sentences2trees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.sentences2trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a CCGBank sentence derivation into a CCGTree.</p>
+<p>The sentence must be in the format outlined in the CCGBank
+manual section D.2 and not just a list of words.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">list of str</span></dt><dd><p>List of sentences to parse.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Stop exceptions from being raised, instead returning
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> for a tree.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>trees</strong><span class="classifier">list of CCGTree</span></dt><dd><p>A list of trees. If a tree fails to parse and exceptions are
+suppressed, that entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGBankParseError</dt><dd><p>If parsing fails and exceptions are not suppressed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.tree_regex">
+<code class="sig-name descname">tree_regex</code><em class="property"> = re.compile('\n        \\(&lt;                                 # begin with literal &quot;(&lt;&quot;\n           ((?P&lt;is_leaf&gt;        L)|T) \\s+   # &quot;L&quot; or &quot;T&quot; depending on node type\n           (?P&lt;ccg_str&gt;          \\S+) \\s+, re.VERBOSE)</em><a class="headerlink" href="#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser.tree_regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="module-lambeq.ccg2discocat.depccg_parser">
+<span id="lambeq-ccg2discocat-depccg-parser-module"></span><h2>lambeq.ccg2discocat.depccg_parser module<a class="headerlink" href="#module-lambeq.ccg2discocat.depccg_parser" title="Permalink to this headline">¶</a></h2>
+<dl class="py exception">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParseError">
+<em class="property">exception </em><code class="sig-prename descclassname">lambeq.ccg2discocat.depccg_parser.</code><code class="sig-name descname">DepCCGParseError</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParseError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParseError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParseError.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParseError.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParseError.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParseError.args">
+<code class="sig-name descname">args</code><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParseError.args" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParseError.with_traceback">
+<code class="sig-name descname">with_traceback</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParseError.with_traceback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception.with_traceback(tb) –
+set self.__traceback__ to tb and return self.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParser">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.depccg_parser.</code><code class="sig-name descname">DepCCGParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>EnglishCCGParser<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">use_model_unary_rules</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.ccg2discocat.ccg_parser.CCGParser" title="lambeq.ccg2discocat.ccg_parser.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.ccg_parser.CCGParser</span></code></a></p>
+<p>CCG parser using depccg as the backend.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>EnglishCCGParser<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">use_model_unary_rules</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise a parser based on <cite>depccg.parser.EnglishCCGParser</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>model</strong><span class="classifier">str or depccg.parser.EnglishCCGParser, default: ‘’</span></dt><dd><dl class="simple">
+<dt>Can be either:</dt><dd><ul class="simple">
+<li><p>The name of a pre-trained model downloaded by depccg.
+By default, it uses the “tri_headfirst” model.</p></li>
+<li><p>A pre-instantiated EnglishCCGParser.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><strong>use_model_unary_rules</strong><span class="classifier">bool, default: False</span></dt><dd><p>Use the unary rules supplied by the model instead of the
+ones included with <cite>DepCCGParser</cite>.</p>
+</dd>
+<dt><strong>kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Optional arguments passed to <cite>depccg.parser.EnglishCCGParser</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>TypeError</dt><dd><p>If the <cite>model</cite> argument is not of the right type.</p>
+</dd>
+<dt>RuntimeError</dt><dd><p>If the provided model name is not valid.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentence2diagram">
+<code class="sig-name descname">sentence2diagram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentence2diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a DisCoPy diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.Diagram or None</dt><dd><p>The parsed diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentence2tree">
+<code class="sig-name descname">sentence2tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentence2tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>CCGTree or None</dt><dd><p>The parsed tree, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentences2diagrams">
+<code class="sig-name descname">sentences2diagrams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentences2diagrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of discopy diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of discopy.Diagram or None</dt><dd><p>The parsed diagrams. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if
+exceptions are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentences2trees">
+<code class="sig-name descname">sentences2trees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParser.sentences2trees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.depccg_parser.DepCCGParser.sentences2trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of CCGTree or None</dt><dd><p>The parsed trees. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if exceptions
+are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lambeq.ccg2discocat">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lambeq.ccg2discocat" title="Permalink to this headline">¶</a></h2>
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.CCGBankParser">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.</code><code class="sig-name descname">CCGBankParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.ccg2discocat.ccg_parser.CCGParser" title="lambeq.ccg2discocat.ccg_parser.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.ccg_parser.CCGParser</span></code></a></p>
+<p>A parser for CCGBank trees.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.CCGBankParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">root</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>os.PathLike<span class="p">[</span>str<span class="p">]</span><span class="p">]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise a CCGBank parser.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>root</strong><span class="classifier">str or os.PathLike</span></dt><dd><p>Path to the root of the corpus. The sections must be located
+in <cite>&lt;root&gt;/data/AUTO</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.CCGBankParser.ccg_type_regex">
+<code class="sig-name descname">ccg_type_regex</code><em class="property"> = re.compile('((?P&lt;bare_cat&gt;N|NP|S|PP)(\\[[a-z]+])?|conj|LRB|RRB|[,.:;])')</em><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.ccg_type_regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.CCGBankParser.id_regex">
+<code class="sig-name descname">id_regex</code><em class="property"> = re.compile('ID=(?P&lt;id&gt;\\S+)  # line begins with &quot;ID=&lt;id&gt;&quot;\n                              .*              # rest of the line is ignored\n                           ', re.DOTALL|re.VERBOSE)</em><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.id_regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.CCGBankParser.section2diagrams">
+<code class="sig-name descname">section2diagrams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">section_id</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.section2diagrams"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.section2diagrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a CCGBank section into diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>section_id</strong><span class="classifier">int</span></dt><dd><p>The section to parse.</p>
+</dd>
+<dt><strong>planar</strong><span class="classifier">bool, default: False</span></dt><dd><p>Force diagrams to be planar when they contain
+crossed composition.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Stop exceptions from being raised, instead returning
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> for a diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>diagrams</strong><span class="classifier">dict</span></dt><dd><p>A dictionary of diagrams labelled by their ID in CCGBank. If
+a diagram fails to draw and exceptions are suppressed, that
+entry is replaced by <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGBankParseError</dt><dd><p>If parsing fails and exceptions are not suppressed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.CCGBankParser.section2trees">
+<code class="sig-name descname">section2trees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">section_id</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Dict<span class="p">[</span>str<span class="p">, </span>Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.section2trees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.section2trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a CCGBank section into trees.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>section_id</strong><span class="classifier">int</span></dt><dd><p>The section to parse.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Stop exceptions from being raised, instead returning
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> for a tree.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>trees</strong><span class="classifier">dict</span></dt><dd><p>A dictionary of trees labelled by their ID in CCGBank. If a
+tree fails to parse and exceptions are suppressed, that
+entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGBankParseError</dt><dd><p>If parsing fails and exceptions are not suppressed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.CCGBankParser.sentence2diagram">
+<code class="sig-name descname">sentence2diagram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.sentence2diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a DisCoPy diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.Diagram or None</dt><dd><p>The parsed diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.CCGBankParser.sentence2tree">
+<code class="sig-name descname">sentence2tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.sentence2tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>CCGTree or None</dt><dd><p>The parsed tree, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.CCGBankParser.sentences2diagrams">
+<code class="sig-name descname">sentences2diagrams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.sentences2diagrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of discopy diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of discopy.Diagram or None</dt><dd><p>The parsed diagrams. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if
+exceptions are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.CCGBankParser.sentences2trees">
+<code class="sig-name descname">sentences2trees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/ccgbank_parser.html#CCGBankParser.sentences2trees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.sentences2trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a CCGBank sentence derivation into a CCGTree.</p>
+<p>The sentence must be in the format outlined in the CCGBank
+manual section D.2 and not just a list of words.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">list of str</span></dt><dd><p>List of sentences to parse.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Stop exceptions from being raised, instead returning
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> for a tree.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>trees</strong><span class="classifier">list of CCGTree</span></dt><dd><p>A list of trees. If a tree fails to parse and exceptions are
+suppressed, that entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>CCGBankParseError</dt><dd><p>If parsing fails and exceptions are not suppressed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="lambeq.ccg2discocat.CCGBankParser.tree_regex">
+<code class="sig-name descname">tree_regex</code><em class="property"> = re.compile('\n        \\(&lt;                                 # begin with literal &quot;(&lt;&quot;\n           ((?P&lt;is_leaf&gt;        L)|T) \\s+   # &quot;L&quot; or &quot;T&quot; depending on node type\n           (?P&lt;ccg_str&gt;          \\S+) \\s+, re.VERBOSE)</em><a class="headerlink" href="#lambeq.ccg2discocat.CCGBankParser.tree_regex" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="lambeq.ccg2discocat.DepCCGParser">
+<em class="property">class </em><code class="sig-prename descclassname">lambeq.ccg2discocat.</code><code class="sig-name descname">DepCCGParser</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>EnglishCCGParser<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">use_model_unary_rules</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.DepCCGParser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.ccg2discocat.ccg_parser.CCGParser" title="lambeq.ccg2discocat.ccg_parser.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.ccg_parser.CCGParser</span></code></a></p>
+<p>CCG parser using depccg as the backend.</p>
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.DepCCGParser.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span></em>, <em class="sig-param"><span class="n">model</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>EnglishCCGParser<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">use_model_unary_rules</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParser.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.DepCCGParser.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise a parser based on <cite>depccg.parser.EnglishCCGParser</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>model</strong><span class="classifier">str or depccg.parser.EnglishCCGParser, default: ‘’</span></dt><dd><dl class="simple">
+<dt>Can be either:</dt><dd><ul class="simple">
+<li><p>The name of a pre-trained model downloaded by depccg.
+By default, it uses the “tri_headfirst” model.</p></li>
+<li><p>A pre-instantiated EnglishCCGParser.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt><strong>use_model_unary_rules</strong><span class="classifier">bool, default: False</span></dt><dd><p>Use the unary rules supplied by the model instead of the
+ones included with <cite>DepCCGParser</cite>.</p>
+</dd>
+<dt><strong>kwargs</strong><span class="classifier">dict, optional</span></dt><dd><p>Optional arguments passed to <cite>depccg.parser.EnglishCCGParser</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><dl class="simple">
+<dt>TypeError</dt><dd><p>If the <cite>model</cite> argument is not of the right type.</p>
+</dd>
+<dt>RuntimeError</dt><dd><p>If the provided model name is not valid.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.DepCCGParser.sentence2diagram">
+<code class="sig-name descname">sentence2diagram</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.DepCCGParser.sentence2diagram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a DisCoPy diagram.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>discopy.Diagram or None</dt><dd><p>The parsed diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.DepCCGParser.sentence2tree">
+<code class="sig-name descname">sentence2tree</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentence</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.DepCCGParser.sentence2tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse a sentence into a <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>The sentence to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
+the sentence fails to parse, instead of raising an
+exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>CCGTree or None</dt><dd><p>The parsed tree, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.DepCCGParser.sentences2diagrams">
+<code class="sig-name descname">sentences2diagrams</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">planar</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span>discopy.rigid.Diagram<span class="p">]</span><span class="p">]</span><a class="headerlink" href="#lambeq.ccg2discocat.DepCCGParser.sentences2diagrams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of discopy diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of discopy.Diagram or None</dt><dd><p>The parsed diagrams. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if
+exceptions are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="lambeq.ccg2discocat.DepCCGParser.sentences2trees">
+<code class="sig-name descname">sentences2trees</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">sentences</span><span class="p">:</span> <span class="n">Iterable<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">suppress_exceptions</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>Optional<span class="p">[</span><a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree">lambeq.ccg2discocat.ccg_tree.CCGTree</a><span class="p">]</span><span class="p">]</span><a class="reference internal" href="_modules/lambeq/ccg2discocat/depccg_parser.html#DepCCGParser.sentences2trees"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lambeq.ccg2discocat.DepCCGParser.sentences2trees" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse multiple sentences into a list of <a class="reference internal" href="#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> s.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>sentences</strong><span class="classifier">iterable of str</span></dt><dd><p>The sentences to be parsed.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of CCGTree or None</dt><dd><p>The parsed trees. (may contain <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if exceptions
+are suppressed)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="lambeq.core.html" class="btn btn-neutral float-right" title="lambeq.core package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="lambeq.html" class="btn btn-neutral float-left" title="lambeq package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

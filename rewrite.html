@@ -1,0 +1,329 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Step 2: Diagram rewriting &mdash; lambeq 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Step 3: Parameterisation" href="parameterise.html" />
+    <link rel="prev" title="Step 1: Sentence input" href="sentence_input.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> lambeq
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sentence_input.html">Step 1: Sentence input</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Step 2: Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3: Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4. Training</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Step 2: Diagram rewriting</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/rewrite.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="step-2-diagram-rewriting">
+<span id="sec-rewrite"></span><h1>Step 2: Diagram rewriting<a class="headerlink" href="#step-2-diagram-rewriting" title="Permalink to this headline">¶</a></h1>
+<p>Syntactic derivations in pregroup form can become extremely complicated, which may lead to excessive use of hardware resources and prohibitively long training times. The purpose of the <a class="reference internal" href="lambeq.html#module-lambeq.rewrite" title="lambeq.rewrite"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rewrite</span></code></a> module is to provide a means to the user to address some of these problems, via rewriting rules that simplify the string diagram. As an example, consider again the sentence “John walks in the park”.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.ccg2discocat</span> <span class="kn">import</span> <span class="n">DepCCGParser</span>
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">grammar</span>
+
+<span class="n">sentence</span> <span class="o">=</span> <span class="s1">&#39;John walks in the park&#39;</span>
+
+<span class="c1"># Parse the sentence and convert it into a string diagram</span>
+<span class="n">depccg_parser</span> <span class="o">=</span> <span class="n">DepCCGParser</span><span class="p">()</span>
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">depccg_parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+
+<span class="n">grammar</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">17</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>the string diagram of which is the following:</p>
+<img alt="_images/john1.png" src="_images/john1.png" />
+<p>Note that the representation of the preposition is a tensor of order 5 in the “classical” case, or a state of 5 quantum systems in the quantum case. Applying the <code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code> rewriting rule to the diagram takes advantage of the underlying compact-closed monoidal structure, by using a “cap” to bridge the discontinued subject noun wire within the preposition tensor. Furthermore, the <code class="docutils literal notranslate"><span class="pre">determiner</span></code> rewriting rule will apply a cap on type <span class="math notranslate nohighlight">\(n \cdot n^l\)</span>, eliminating completely the determiner “the”.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.rewrite</span> <span class="kn">import</span> <span class="n">Rewriter</span>
+
+<span class="c1"># Apply rewrite rule for prepositional phrases and determiners</span>
+<span class="n">rewriter</span> <span class="o">=</span> <span class="n">Rewriter</span><span class="p">([</span><span class="s1">&#39;prepositional_phrase&#39;</span><span class="p">,</span> <span class="s1">&#39;determiner&#39;</span><span class="p">])</span>
+<span class="n">rewritten_diagram</span> <span class="o">=</span> <span class="n">rewriter</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+
+<span class="n">rewritten_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> will print the following monoidal diagram:</p>
+<img alt="_images/john2.png" src="_images/john2.png" />
+<p>We will now ask <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to normalise the diagram, by “stretching” the wires and re-arranging the boxes if required:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">normalised_diagram</span> <span class="o">=</span> <span class="n">rewritten_diagram</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span>
+<span class="n">normalised_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>which gives the following result:</p>
+<a class="reference internal image-reference" href="_images/john3.png"><img alt="_images/john3.png" src="_images/john3.png" style="width: 472.5px; height: 202.5px;" /></a>
+<p>In the simplified diagram, the order of the preposition tensor is reduced by 2, which at least for a classical experiment, is a substantial improvement. Note also that the determiner is now eliminated, equating the meaning of the noun phrase “the park” with that of the noun “park”.</p>
+<p>These examples clearly demonstrate the flexibility of string diagrams compared to simple tensor networks, which was one of the main reasons for choosing them as <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s representation format. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> comes with a number of standard rewrite rules covering auxiliary verbs, connectors, adverbs, determiners and prepositional phrases.</p>
+<table class="colwidths-given docutils align-default" id="id1">
+<caption><span class="caption-number">Table 1 </span><span class="caption-text">Rewriting rules</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 75%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Rewrite rule</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">auxiliary</span></code></p></td>
+<td><p>Removes auxiliary verbs (such as “do”) by replacing them with caps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">connector</span></code></p></td>
+<td><p>Removes sentence connectors (such as “that”) by replacing them with caps.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">determiner</span></code></p></td>
+<td><p>Removes determiners (such as “the”) by replacing them with caps.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">postadverb</span></code>, <code class="docutils literal notranslate"><span class="pre">preadverb</span></code></p></td>
+<td><p>Simplifies adverbs by passing through the noun wire transparently using a cap.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code></p></td>
+<td><p>Simplifies prepositions by passing through the noun wire using a cap.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Custom rewriting rules can be added by extending the <a class="reference internal" href="lambeq.html#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a> class.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="parameterise.html" class="btn btn-neutral float-right" title="Step 3: Parameterisation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sentence_input.html" class="btn btn-neutral float-left" title="Step 1: Sentence input" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

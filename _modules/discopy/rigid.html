@@ -1,0 +1,878 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>discopy.rigid &mdash; lambeq 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> lambeq
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../discopy.html">DisCoPy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../sentence_input.html">Step 1: Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../rewrite.html">Step 2: Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../parameterise.html">Step 3: Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../training.html">Step 4. Training</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">lambeq</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>discopy.rigid</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for discopy.rigid</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Implements the free rigid monoidal category.</span>
+
+<span class="sd">The objects are given by the free pregroup, the arrows by planar diagrams.</span>
+
+<span class="sd">&gt;&gt;&gt; unit, s, n = Ty(), Ty(&#39;s&#39;), Ty(&#39;n&#39;)</span>
+<span class="sd">&gt;&gt;&gt; t = n.r @ s @ n.l</span>
+<span class="sd">&gt;&gt;&gt; assert t @ unit == t == unit @ t</span>
+<span class="sd">&gt;&gt;&gt; assert t.l.r == t == t.r.l</span>
+<span class="sd">&gt;&gt;&gt; left_snake, right_snake = Id(n.r).transpose(left=True), Id(n.l).transpose()</span>
+<span class="sd">&gt;&gt;&gt; assert left_snake.normal_form() == Id(n) == right_snake.normal_form()</span>
+<span class="sd">&gt;&gt;&gt; from discopy import drawing</span>
+<span class="sd">&gt;&gt;&gt; drawing.equation(</span>
+<span class="sd">...     left_snake, Id(n), right_snake, figsize=(4, 2),</span>
+<span class="sd">...     path=&#39;docs/_static/imgs/rigid/snake-equation.png&#39;)</span>
+
+<span class="sd">.. image:: ../_static/imgs/rigid/snake-equation.png</span>
+<span class="sd">    :align: center</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">cat</span><span class="p">,</span> <span class="n">monoidal</span><span class="p">,</span> <span class="n">messages</span><span class="p">,</span> <span class="n">rewriting</span>
+<span class="kn">from</span> <span class="nn">discopy.cat</span> <span class="kn">import</span> <span class="n">AxiomError</span>
+
+
+<span class="k">class</span> <span class="nc">Ob</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">Ob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements simple pregroup types: basic types and their iterated adjoints.</span>
+
+<span class="sd">    &gt;&gt;&gt; a = Ob(&#39;a&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; assert a.l.r == a.r.l == a and a != a.l.l != a.r.r</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Winding number &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Left adjoint &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Ob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Right adjoint &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Ob</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Ob</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">cat</span><span class="o">.</span><span class="n">Ob</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="k">else</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Ob(</span><span class="si">{}{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="s2">&quot;, z=&quot;</span> <span class="o">+</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+            <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">*</span> <span class="s1">&#39;.l&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">*</span> <span class="s1">&#39;.r&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">to_tree</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">:</span>
+            <span class="n">tree</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span>
+        <span class="k">return</span> <span class="n">tree</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_tree</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">tree</span><span class="p">):</span>
+        <span class="n">name</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">tree</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span> <span class="n">tree</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;z&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Ty</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Ty</span><span class="p">,</span> <span class="n">Ob</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Implements pregroup types as lists of simple types.</span>
+
+<span class="sd">    &gt;&gt;&gt; s, n = Ty(&#39;s&#39;), Ty(&#39;n&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; assert n.l.r == n == n.r.l</span>
+<span class="sd">    &gt;&gt;&gt; assert (s @ n).l == n.l @ s.l and (s @ n).r == n.r @ s.r</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">old</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Ty</span><span class="p">(</span><span class="o">*</span><span class="n">old</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Ty</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">l</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Ty</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">r</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">no_winding_number_for_complex_types</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">z</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">t</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Ob</span><span class="p">)</span>
+             <span class="k">else</span> <span class="n">Ob</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">cat</span><span class="o">.</span><span class="n">Ob</span><span class="p">)</span>
+             <span class="k">else</span> <span class="n">Ob</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
+        <span class="n">monoidal</span><span class="o">.</span><span class="n">Ty</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">t</span><span class="p">)</span>
+        <span class="n">Ob</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Ty(</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="nb">repr</span><span class="p">(</span><span class="n">x</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">z</span> <span class="k">else</span> <span class="n">x</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__lshift__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span> <span class="o">@</span> <span class="n">other</span><span class="o">.</span><span class="n">l</span>
+
+    <span class="k">def</span> <span class="fm">__rshift__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">other</span>
+
+
+<span class="k">class</span> <span class="nc">PRO</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">PRO</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Objects of the free rigid monoidal category generated by 1.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">old</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">PRO</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">PRO</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">old</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; assert PRO(2).l == PRO(2)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+
+<span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">upgrade</span><span class="p">(</span><span class="n">old</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Layer</span><span class="p">(</span><span class="n">old</span><span class="o">.</span><span class="n">_left</span><span class="p">,</span> <span class="n">old</span><span class="o">.</span><span class="n">_box</span><span class="p">,</span> <span class="n">old</span><span class="o">.</span><span class="n">_right</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_right</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Layer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_right</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_left</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+
+
+<span class="nd">@monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">subclass</span>
+<span class="k">class</span> <span class="nc">Diagram</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Implements diagrams in the free rigid monoidal category.</span>
+
+<span class="sd">    &gt;&gt;&gt; I, n, s = Ty(), Ty(&#39;n&#39;), Ty(&#39;s&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; Alice, jokes = Box(&#39;Alice&#39;, I, n), Box(&#39;jokes&#39;, I, n.r @ s)</span>
+<span class="sd">    &gt;&gt;&gt; boxes, offsets = [Alice, jokes, Cup(n, n.r)], [0, 1, 0]</span>
+<span class="sd">    &gt;&gt;&gt; d = Diagram(Alice.dom @ jokes.dom, s, boxes, offsets)</span>
+<span class="sd">    &gt;&gt;&gt; print(d)</span>
+<span class="sd">    Alice &gt;&gt; Id(n) @ jokes &gt;&gt; Cup(n, n.r) @ Id(s)</span>
+
+<span class="sd">    &gt;&gt;&gt; d.draw(figsize=(3, 2),</span>
+<span class="sd">    ...        path=&#39;docs/_static/imgs/rigid/diagram-example.png&#39;)</span>
+
+<span class="sd">    .. image:: ../_static/imgs/rigid/diagram-example.png</span>
+<span class="sd">        :align: center</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">swap_factory</span><span class="o">=</span><span class="n">Swap</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">permutation</span><span class="p">(</span><span class="n">perm</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dom</span> <span class="o">=</span> <span class="n">PRO</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">perm</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">perm</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">foliate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yield_slices</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; x = Ty(&#39;x&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; f = Box(&#39;f&#39;, x, x)</span>
+<span class="sd">        &gt;&gt;&gt; gen = (f @ Id(x) &gt;&gt; (f @ f)).foliate()</span>
+<span class="sd">        &gt;&gt;&gt; print(next(gen))</span>
+<span class="sd">        f @ Id(x) &gt;&gt; Id(x) @ f &gt;&gt; f @ Id(x)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">foliate</span><span class="p">(</span><span class="n">yield_slices</span><span class="o">=</span><span class="n">yield_slices</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">cat</span><span class="o">.</span><span class="n">Arrow</span><span class="p">):</span>
+                <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">diagram</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="p">))]</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructs nested cups witnessing adjointness of x and y.</span>
+
+<span class="sd">        &gt;&gt;&gt; a, b = Ty(&#39;a&#39;), Ty(&#39;b&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; assert Diagram.cups(a, a.r) == Cup(a, a.r)</span>
+<span class="sd">        &gt;&gt;&gt; assert Diagram.cups(a @ b, (a @ b).r) ==\\</span>
+<span class="sd">        ...     Id(a) @ Cup(b, b.r) @ Id(a.r) &gt;&gt; Cup(a, a.r)</span>
+
+<span class="sd">        &gt;&gt;&gt; Diagram.cups(a @ b, (a @ b).r).draw(figsize=(3, 1),\\</span>
+<span class="sd">        ... margins=(0.3, 0.05), path=&#39;docs/_static/imgs/rigid/cups.png&#39;)</span>
+
+<span class="sd">    .. image:: ../_static/imgs/rigid/cups.png</span>
+<span class="sd">        :align: center</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">caps</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructs nested cups witnessing adjointness of x and y.</span>
+
+<span class="sd">        &gt;&gt;&gt; a, b = Ty(&#39;a&#39;), Ty(&#39;b&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; assert Diagram.caps(a, a.l) == Cap(a, a.l)</span>
+<span class="sd">        &gt;&gt;&gt; assert Diagram.caps(a @ b, (a @ b).l) == (Cap(a, a.l)</span>
+<span class="sd">        ...                 &gt;&gt; Id(a) @ Cap(b, b.l) @ Id(a.l))</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">caps</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fa</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Forward application. &quot;&quot;&quot;</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">[:</span><span class="n">off</span><span class="p">])</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">left</span><span class="p">[</span><span class="n">off</span><span class="p">:],</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">ba</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Backward application. &quot;&quot;&quot;</span>
+        <span class="n">off</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="ow">or</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">[:</span><span class="n">off</span><span class="p">])</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">[</span><span class="n">off</span><span class="p">:])</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fc</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Forward composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">middle</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">middle</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">bc</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Backward composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">middle</span><span class="p">,</span> <span class="n">middle</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">fx</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Forward crossed composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">middle</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">middle</span><span class="p">)</span> <span class="o">&gt;&gt;</span>\
+            <span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">middle</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">middle</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">bx</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">middle</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Backward crossed composition. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">middle</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">middle</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span> <span class="o">&gt;&gt;</span>\
+            <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">middle</span><span class="p">,</span> <span class="n">middle</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">curry</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">n_wires</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Diagram currying. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">left</span><span class="p">:</span>
+            <span class="n">wires</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="n">n_wires</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span><span class="n">wires</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">wires</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">n_wires</span><span class="p">:])</span>\
+                <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="n">wires</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">diagram</span>
+        <span class="n">wires</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="o">-</span><span class="n">n_wires</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">):]</span>
+        <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="o">-</span><span class="n">n_wires</span><span class="p">])</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span><span class="n">wires</span><span class="p">,</span> <span class="n">wires</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>\
+            <span class="o">&gt;&gt;</span> <span class="n">diagram</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">wires</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_conjugate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_left</span><span class="p">):</span>
+        <span class="n">layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span>
+        <span class="n">list_of_layers</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">layers</span><span class="o">.</span><span class="n">_boxes</span><span class="p">:</span>
+            <span class="n">layer_adj</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">l</span> <span class="k">if</span> <span class="n">use_left</span> <span class="k">else</span> <span class="n">layer</span><span class="o">.</span><span class="n">r</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">layer_adj</span>
+            <span class="n">list_of_layers</span> <span class="o">+=</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">box</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">))</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">boxes</span>
+
+        <span class="n">dom</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">l</span> <span class="k">if</span> <span class="n">use_left</span> <span class="k">else</span> <span class="n">layers</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">r</span>
+        <span class="n">cod</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">l</span> <span class="k">if</span> <span class="n">use_left</span> <span class="k">else</span> <span class="n">layers</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">r</span>
+        <span class="n">layers_adj</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">layers</span><span class="p">)(</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="n">list_of_layers</span><span class="p">)</span>
+        <span class="n">boxes_and_offsets</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">))</span> <span class="k">for</span> <span class="n">left</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">layers_adj</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">([],</span> <span class="p">[])</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span> <span class="o">+</span> <span class="n">boxes_and_offsets</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">Diagram</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="n">layers_adj</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conjugate</span><span class="p">(</span><span class="n">use_left</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conjugate</span><span class="p">(</span><span class="n">use_left</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span>
+        <span class="n">d</span><span class="o">.</span><span class="n">_layers</span><span class="o">.</span><span class="n">_boxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">Layer</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">_layers</span><span class="o">.</span><span class="n">_boxes</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">d</span>
+
+    <span class="k">def</span> <span class="nf">transpose_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">bend_left</span> <span class="o">=</span> <span class="n">left</span>
+        <span class="n">layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span>
+        <span class="k">if</span> <span class="n">bend_left</span><span class="p">:</span>
+            <span class="n">box_T</span> <span class="o">=</span> <span class="n">layers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">box_T</span> <span class="o">=</span> <span class="n">layers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">left</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">layers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">layers_T</span> <span class="o">=</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">box_T</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">))</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">boxes</span>
+        <span class="n">list_of_layers</span> <span class="o">=</span> <span class="n">layers</span><span class="o">.</span><span class="n">_boxes</span><span class="p">[:</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">layers_T</span> <span class="o">+</span> <span class="n">layers</span><span class="o">.</span><span class="n">_boxes</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:]</span>
+        <span class="n">layers</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">layers</span><span class="p">)(</span><span class="n">layers</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">layers</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">list_of_layers</span><span class="p">)</span>
+        <span class="n">boxes_and_offsets</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">))</span> <span class="k">for</span> <span class="n">left</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">layers</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">([],</span> <span class="p">[])</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">(</span><span class="n">layers</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">layers</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">+</span> <span class="n">boxes_and_offsets</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">upgrade</span><span class="p">(</span><span class="n">Diagram</span><span class="p">(</span><span class="o">*</span><span class="n">inputs</span><span class="p">,</span> <span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">transpose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &gt;&gt;&gt; a, b = Ty(&#39;a&#39;), Ty(&#39;b&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; double_snake = Id(a @ b).transpose()</span>
+<span class="sd">        &gt;&gt;&gt; two_snakes = Id(b).transpose() @ Id(a).transpose()</span>
+<span class="sd">        &gt;&gt;&gt; double_snake == two_snakes</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; *_, two_snakes_nf = monoidal.Diagram.normalize(two_snakes)</span>
+<span class="sd">        &gt;&gt;&gt; assert double_snake == two_snakes_nf</span>
+<span class="sd">        &gt;&gt;&gt; f = Box(&#39;f&#39;, a, b)</span>
+
+<span class="sd">        &gt;&gt;&gt; a, b = Ty(&#39;a&#39;), Ty(&#39;b&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; double_snake = Id(a @ b).transpose(left=True)</span>
+<span class="sd">        &gt;&gt;&gt; snakes = Id(b).transpose(left=True) @ Id(a).transpose(left=True)</span>
+<span class="sd">        &gt;&gt;&gt; double_snake == two_snakes</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; *_, two_snakes_nf = monoidal.Diagram.normalize(</span>
+<span class="sd">        ...     snakes, left=True)</span>
+<span class="sd">        &gt;&gt;&gt; assert double_snake == two_snakes_nf</span>
+<span class="sd">        &gt;&gt;&gt; f = Box(&#39;f&#39;, a, b)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">left</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>\
+                <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>\
+                <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>\
+            <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>\
+            <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">normal_form</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normalizer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Implements the normalisation of rigid monoidal categories,</span>
+<span class="sd">        see arxiv:1601.05372, definition 2.12.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">normal_form</span><span class="p">(</span>
+            <span class="n">normalizer</span><span class="o">=</span><span class="n">normalizer</span> <span class="ow">or</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">normalize</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="n">normalize</span> <span class="o">=</span> <span class="n">rewriting</span><span class="o">.</span><span class="n">snake_removal</span>
+    <span class="n">layer_factory</span> <span class="o">=</span> <span class="n">Layer</span>
+
+
+<span class="n">Sum</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">Sum</span>
+
+<span class="n">Sum</span><span class="o">.</span><span class="n">l</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">Sum</span><span class="o">.</span><span class="n">fmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">l</span><span class="p">))</span>
+<span class="n">Sum</span><span class="o">.</span><span class="n">r</span> <span class="o">=</span> <span class="nb">property</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">Sum</span><span class="o">.</span><span class="n">fmap</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">r</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">Id</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Define an identity arrow in a free rigid category</span>
+
+<span class="sd">    &gt;&gt;&gt; t = Ty(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; assert Id(t) == Diagram(t, t, [], [])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="n">Ty</span><span class="p">()):</span>
+        <span class="n">monoidal</span><span class="o">.</span><span class="n">Id</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dom</span><span class="p">)</span>
+        <span class="n">Diagram</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="p">[],</span> <span class="p">[],</span> <span class="n">layers</span><span class="o">=</span><span class="n">cat</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">dom</span><span class="p">))</span>
+
+
+<span class="n">Diagram</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">Id</span>
+
+
+<span class="k">class</span> <span class="nc">Box</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Implements generators of rigid monoidal diagrams.</span>
+
+<span class="sd">    &gt;&gt;&gt; a, b = Ty(&#39;a&#39;), Ty(&#39;b&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; Box(&#39;f&#39;, a, b.l @ b, data={42})</span>
+<span class="sd">    Box(&#39;f&#39;, Ty(&#39;a&#39;), Ty(Ob(&#39;b&#39;, z=-1), &#39;b&#39;), data={42})</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="n">monoidal</span><span class="o">.</span><span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">Diagram</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="p">[</span><span class="bp">self</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">layers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;_z&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_z</span> <span class="ow">and</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Box</span><span class="o">.</span><span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">boxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span>\
+                <span class="ow">and</span> <span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">==</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">z</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_z</span>
+
+    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">_dagger</span><span class="o">=</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dagger</span><span class="p">,</span> <span class="n">_z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_z</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">l</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">_dagger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dagger</span><span class="p">,</span> <span class="n">_z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">r</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">_dagger</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_dagger</span><span class="p">,</span> <span class="n">_z</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_z</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Swap</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Swap</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Implements swaps of basic types in a rigid category. &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="n">monoidal</span><span class="o">.</span><span class="n">Swap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Cup</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Defines cups for simple types.</span>
+
+<span class="sd">    &gt;&gt;&gt; n = Ty(&#39;n&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; Cup(n, n.r)</span>
+<span class="sd">    Cup(Ty(&#39;n&#39;), Ty(Ob(&#39;n&#39;, z=1)))</span>
+
+<span class="sd">    &gt;&gt;&gt; Cup(n, n.r).draw(figsize=(2,1), margins=(0.5, 0.05),\\</span>
+<span class="sd">    ... path=&#39;docs/_static/imgs/rigid/cup.png&#39;)</span>
+
+<span class="sd">    .. image:: ../_static/imgs/rigid/cup.png</span>
+<span class="sd">        :align: center</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">left</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">cup_vs_cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">r</span> <span class="o">!=</span> <span class="n">right</span> <span class="ow">and</span> <span class="n">left</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">r</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AxiomError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">are_not_adjoints</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="n">monoidal</span><span class="o">.</span><span class="n">BinaryBoxConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Cup(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">Ty</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_as_wires</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Cap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Cup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Cup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Cup(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">Cap</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Defines cups for simple types.</span>
+
+<span class="sd">    &gt;&gt;&gt; n = Ty(&#39;n&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; Cap(n, n.l)</span>
+<span class="sd">    Cap(Ty(&#39;n&#39;), Ty(Ob(&#39;n&#39;, z=-1)))</span>
+
+<span class="sd">    &gt;&gt;&gt; Cap(n, n.l).draw(figsize=(2,1), margins=(0.5, 0.05),\\</span>
+<span class="sd">    ... path=&#39;docs/_static/imgs/rigid/cap.png&#39;)</span>
+
+<span class="sd">    .. image:: ../_static/imgs/rigid/cap.png</span>
+<span class="sd">        :align: center</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">left</span><span class="p">))</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">cap_vs_caps</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">left</span> <span class="o">!=</span> <span class="n">right</span><span class="o">.</span><span class="n">r</span> <span class="ow">and</span> <span class="n">left</span><span class="o">.</span><span class="n">r</span> <span class="o">!=</span> <span class="n">right</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AxiomError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">are_not_adjoints</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+        <span class="n">monoidal</span><span class="o">.</span><span class="n">BinaryBoxConstructor</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Cap(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="n">Ty</span><span class="p">(),</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">draw_as_wires</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Cup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Cap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Cap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Cap(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">Spider</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Spider box.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_legs_in, n_legs_out : int</span>
+<span class="sd">        Number of legs in and out.</span>
+<span class="sd">    typ : discopy.rigid.Ty</span>
+<span class="sd">        The type of the spider, needs to be atomic.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; x = Ty(&#39;x&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; spider = Spider(1, 2, x)</span>
+<span class="sd">    &gt;&gt;&gt; assert spider.dom == x and spider.cod == x @ x</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">typ</span> <span class="o">=</span> <span class="n">typ</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">typ</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Spider boxes can only have len(typ) == 1, &quot;</span>
+                <span class="s2">&quot;try Diagram.spiders instead.&quot;</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;Spider(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">,</span> <span class="n">typ</span><span class="p">)</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">typ</span> <span class="o">**</span> <span class="n">n_legs_in</span><span class="p">,</span> <span class="n">typ</span> <span class="o">**</span> <span class="n">n_legs_out</span>
+        <span class="n">cup_like</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">)</span> <span class="ow">in</span> <span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">draw_as_spider</span><span class="o">=</span><span class="ow">not</span> <span class="n">cup_like</span><span class="p">,</span>
+            <span class="n">draw_as_wires</span><span class="o">=</span><span class="n">cup_like</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">drawing_name</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Spider(</span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">, </span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">typ</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">typ</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">l</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">r</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">typ</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Functor</span><span class="p">(</span><span class="n">monoidal</span><span class="o">.</span><span class="n">Functor</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Implements rigid monoidal functors, i.e. preserving cups and caps.</span>
+
+<span class="sd">    &gt;&gt;&gt; s, n = Ty(&#39;s&#39;), Ty(&#39;n&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; Alice, Bob = Box(&quot;Alice&quot;, Ty(), n), Box(&quot;Bob&quot;, Ty(), n)</span>
+<span class="sd">    &gt;&gt;&gt; loves = Box(&#39;loves&#39;, Ty(), n.r @ s @ n.l)</span>
+<span class="sd">    &gt;&gt;&gt; love_box = Box(&#39;loves&#39;, n @ n, s)</span>
+<span class="sd">    &gt;&gt;&gt; ob = {s: s, n: n}</span>
+<span class="sd">    &gt;&gt;&gt; ar = {Alice: Alice, Bob: Bob}</span>
+<span class="sd">    &gt;&gt;&gt; ar.update({loves: Cap(n.r, n) @ Cap(n, n.l)</span>
+<span class="sd">    ...                   &gt;&gt; Id(n.r) @ love_box @ Id(n.l)})</span>
+<span class="sd">    &gt;&gt;&gt; F = Functor(ob, ar)</span>
+<span class="sd">    &gt;&gt;&gt; sentence = Alice @ loves @ Bob &gt;&gt; Cup(n, n.r) @ Id(s) @ Cup(n.l, n)</span>
+<span class="sd">    &gt;&gt;&gt; assert F(sentence).normal_form() == Alice &gt;&gt; Id(n) @ Bob &gt;&gt; love_box</span>
+<span class="sd">    &gt;&gt;&gt; from discopy import drawing</span>
+<span class="sd">    &gt;&gt;&gt; drawing.equation(</span>
+<span class="sd">    ...     sentence, F(sentence), symbol=&#39;$\\\\mapsto$&#39;, figsize=(5, 2),</span>
+<span class="sd">    ...     path=&#39;docs/_static/imgs/rigid/functor-example.png&#39;)</span>
+
+<span class="sd">    .. image:: ../_static/imgs/rigid/functor-example.png</span>
+<span class="sd">        :align: center</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob</span><span class="p">,</span> <span class="n">ar</span><span class="p">,</span> <span class="n">ob_factory</span><span class="o">=</span><span class="n">Ty</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob</span><span class="p">,</span> <span class="n">ar</span><span class="p">,</span> <span class="n">ob_factory</span><span class="o">=</span><span class="n">ob_factory</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">ar_factory</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Ty</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">adjoint</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">z</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ob</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">diagram</span><span class="p">)(</span><span class="n">obj</span><span class="p">)]</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ob</span><span class="p">[</span><span class="nb">type</span><span class="p">(</span><span class="n">diagram</span><span class="p">)(</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">))]</span>
+                <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">obj</span><span class="o">.</span><span class="n">z</span><span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">l</span>
+                <span class="k">elif</span> <span class="n">obj</span><span class="o">.</span><span class="n">z</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">z</span><span class="p">):</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">r</span>
+                <span class="k">return</span> <span class="n">result</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ob_factory</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">adjoint</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">objects</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Cup</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Cap</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="mi">1</span><span class="p">]),</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Spider</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ar_factory</span><span class="o">.</span><span class="n">spiders</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span> <span class="bp">self</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">typ</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">diagram</span><span class="o">.</span><span class="n">z</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">z</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)):</span>
+                <span class="n">diagram</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">l</span> <span class="k">if</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">diagram</span><span class="o">.</span><span class="n">r</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">z</span><span class="p">)):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">l</span> <span class="k">if</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">result</span><span class="o">.</span><span class="n">r</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">diagram</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">cup_factory</span><span class="o">=</span><span class="n">Cup</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Constructs a diagram of nested cups. &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">Ty</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">type_err</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">typ</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">r</span> <span class="o">!=</span> <span class="n">right</span> <span class="ow">and</span> <span class="n">right</span><span class="o">.</span><span class="n">r</span> <span class="o">!=</span> <span class="n">left</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AxiomError</span><span class="p">(</span><span class="n">messages</span><span class="o">.</span><span class="n">are_not_adjoints</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">))</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">ar_factory</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)):</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">cup</span> <span class="o">=</span> <span class="n">cup_factory</span><span class="p">(</span><span class="n">left</span><span class="p">[</span><span class="n">j</span><span class="p">:</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">right</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">ar_factory</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">left</span><span class="p">[:</span><span class="n">j</span><span class="p">])</span> <span class="o">@</span> <span class="n">cup</span> <span class="o">@</span> <span class="n">ar_factory</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">right</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">layer</span> <span class="k">if</span> <span class="n">reverse</span> <span class="k">else</span> <span class="n">result</span> <span class="o">&gt;&gt;</span> <span class="n">layer</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+
+<span class="k">def</span> <span class="nf">caps</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">cap_factory</span><span class="o">=</span><span class="n">Cap</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Constructs a diagram of nested caps. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">ar_factory</span><span class="p">,</span> <span class="n">cap_factory</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

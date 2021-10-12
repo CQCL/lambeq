@@ -1,0 +1,3992 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Circuit &mdash; lambeq 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tensor" href="tensor.html" />
+    <link rel="prev" title="Rewrite" href="rewrite.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> lambeq
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sentence_input.html">Step 1: Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rewrite.html">Step 2: Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parameterise.html">Step 3: Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4. Training</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Toolkit</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">API Reference</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="doc_tutorial.html">lambeq high-level tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html">Training tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccg2discocat.html">From sentence to diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reader.html">Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rewrite.html">Rewrite</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor.html">Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classical_pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline_jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline_tket.html">Quantum pipeline using t|ket&gt; backend</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">lambeq</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../notebooks.html">Examples</a> &raquo;</li>
+        
+      <li>Circuit</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/examples/circuit.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Circuit">
+<h1>Circuit<a class="headerlink" href="#Circuit" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">grammar</span>
+<span class="kn">from</span> <span class="nn">pytket.circuit.display</span> <span class="kn">import</span> <span class="n">render_circuit_jupyter</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.ccg2discocat</span> <span class="kn">import</span> <span class="n">DepCCGParser</span>
+<span class="kn">from</span> <span class="nn">lambeq.circuit</span> <span class="kn">import</span> <span class="n">IQPAnsatz</span>
+<span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
+
+<span class="n">N</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
+<span></span><span class="n">depccg_parser</span> <span class="o">=</span> <span class="n">DepCCGParser</span><span class="p">()</span>
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">depccg_parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="s1">&#39;Alice runs&#39;</span><span class="p">)</span>
+<span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_circuit_2_0.png" src="../_images/examples_circuit_2_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ansatz</span> <span class="o">=</span> <span class="n">IQPAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">n_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">discopy_circuit</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">discopy_circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_circuit_3_0.png" src="../_images/examples_circuit_3_0.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tket_circuit</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">to_tk</span><span class="p">()</span>
+
+<span class="c1"># This does not render properly on GitHub, please view it at:</span>
+<span class="c1"># https://cqcl.github.io/lambeq/examples/circuit.html</span>
+<span class="n">render_circuit_jupyter</span><span class="p">(</span><span class="n">tket_circuit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+<style>
+body, .circuit__preview-body {
+    font-family: "roboto", system-ui, sans-serif;
+    --accent-col: green;
+    --accent-col-fill: darkseagreen;
+    --accent-col-alt: #aca;
+    --accent-col-emph: limegreen;
+    --accent-col-overlay: rgba(130,255,140,0.2);
+    --accent-col-outline: rgba(30, 250, 30,0.2);
+    --main-col: black;
+    --mid-col: #bbb;
+    --faint-col: #eee;
+    --faint-col-overlay: rgba(0, 0, 0, 0.05);
+    --main-bg: white;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--faint-col);
+    position: relative;
+}
+.row-item{
+    flex-grow: 1
+}
+.row-item-l{
+    text-align: left;
+}
+.row-item-r{
+    text-align: right;
+}
+.row-sub-heading{
+    border-color: var(--accent-col-emph);
+}
+
+/* FOR DISPLAYING CIRCUITS */
+/* Main preview container */
+.circuit-preview {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: black;
+}
+.circuit_variables {
+    /* Define some variables */
+    --box-height: 40px;
+    --wire-col: black;
+    --c-wire-col: #bbb;
+    --box-col: #ccc;
+    --box-col-overlay: rgba(0,0,0,0.05);
+    --c-box-col: #ddd;
+    --index-col: #888;
+}
+.circuit-preview.condensed{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+/* Box colours */
+.h {
+    --box-col: #ffee00;
+    --box-col-overlay: rgba(255, 255, 0, 0.2);
+    --c-box-col: #ffee88;
+    --index-col: #ffcc00;
+}
+.x {
+    --box-col: #ff8888;
+    --box-col-overlay: rgba(255, 0, 0, 0.2);
+    --c-box-col: #e8a6a6;
+    --index-col: red;
+}
+.y {
+    --box-col: #6699ff;
+    --box-col-overlay: rgba(0, 0, 255, 0.2);
+    --c-box-col: #86c6f6;
+    --index-col: blue;
+}
+.z {
+    --box-col: #ccffcc;
+    --box-col-overlay: rgba(0, 255, 0, 0.2);
+    --c-box-col: #e2ffe2;
+    --index-col: green;
+}
+
+.circuit-container{
+    max-width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: flex-start;
+    margin: auto;
+    width: -moz-fit-content;
+    width: fit-content;
+    background: rgba(255, 255, 255, 1);
+}
+.circuit-preview.condensed > .circuit-container{
+    flex-wrap: nowrap;
+    min-width: fit-content;
+}
+.circuit-container.nested{
+    position: relative;
+    flex-wrap: nowrap;
+    margin: -2px 0;
+}
+.nested-circuit-container{
+    display: flex;
+    overflow: auto;
+    max-width: 400px;
+    background: var(--box-col-overlay);
+    border: 1px solid var(--box-col);
+}
+.nested-circuit-container::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+}
+.circuit-inner-scroll{
+    overflow: visible;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    margin-top: 2px;
+}
+.circuit-end{
+    width: 2px;
+    height: auto;
+    border: 2px solid var(--wire-col);
+    margin: calc(var(--box-height)/2) 0 calc(var(--box-height)/2 + 20px);
+}
+.circuit-layer{
+    min-width: 40px;
+    width: max-content;
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+.circuit-container:not(.nested) > .circuit-layer:nth-child(2),
+.circuit-container:not(.nested) > .circuit-layer:nth-last-child(2),
+.circuit-container.nested > .circuit-layer:nth-child(2),
+.circuit-container.nested > .circuit-layer:nth-last-child(2),
+.gate_container.nested > .circuit-layer:first-child,
+.gate_container.nested > .circuit-layer:last-child{
+    min-width: 10px;
+}
+.nested .circuit-layer{
+    margin-bottom: 0;
+}
+.flex_wire{
+    flex-grow: 1;
+}
+/* Display qubit names at start of circuit */
+.circuit-layer.qubits{
+    flex-grow: 0;
+    color: var(--wire-col);
+}
+.qubit{
+    height: calc(var(--box-height) - 20px);
+    padding: 10px;
+    text-align: center;
+    font-family: monospace;
+    box-sizing: content-box;
+}
+.wire{
+    height: 0;
+    border: 1px solid var(--wire-col);
+    background: var(--wire-col);
+    margin: calc(var(--box-height)/2) 0;
+}
+.wire.classical{
+    border-color: var(--c-wire-col) !important;
+    background: var(--c-wire-col) !important;
+}
+.wire.transparent-wire{
+    border-color: transparent;
+    background: transparent;
+}
+
+/* Generic base for our gates */
+.gate_container{
+    position: relative;
+    min-width: -moz-fit-content;
+    min-width: fit-content;
+}
+.gate_container.nested{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.gate_container.nested:after{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.gate_container .classical{
+    background: var(--c-box-col);
+    border-color: var(--index-col);
+}
+.gate{
+    position: relative;
+    height: calc(var(--box-height) - 16px);
+    margin: 0 9px;
+    padding: 9px 5px;
+    border: 1px solid var(--index-col);
+    border-bottom: none;
+    border-top: none;
+    text-align: left;
+    background: var(--box-col);
+    display: flex;
+    box-sizing: content-box;
+    z-index: 1;
+}
+.wire-label{
+    color: var(--index-col);
+    width: -moz-fit-content;
+    width: fit-content;
+    height: calc(var(--box-height) - 18px);
+    padding-right: 5px;
+}
+.gate_top > .wire-label,
+.gate_bottom > .wire-label {
+    padding-top: 0;
+}
+.nested-label-layer{
+    background: var(--box-col);
+    padding: 0 5px;
+}
+.nested-label-layer .wire-label{
+    padding: 10px 0;
+}
+
+/* Multi-qubit gates */
+.gate_bottom{
+    height: calc(var(--box-height) - 18px);
+    margin-bottom: 10px;
+    padding-bottom: 0;
+    border-bottom: 1px solid var(--index-col);
+}
+.gate_top{
+    height: calc(var(--box-height) - 18px);
+    margin-top: 10px;
+    padding-top: 0;
+    border-top: 1px solid var(--index-col);
+}
+.gate_name{
+    text-align: center;
+    flex-grow: 1;
+}
+/* Single qubit gate*/
+.gate_box{
+    height: calc(var(--box-height) - 20px);
+    margin: 10px;
+    padding: 0 5px;
+    border: 1px solid var(--index-col);
+    text-align: center;
+}
+
+/* Special gates */
+.gate_connection {
+    position: absolute;
+    top: -3px;
+    left: -1px;
+    border: none;
+    margin: calc(var(--box-height)/2) calc(50% - 5px);
+    padding: 0;
+}
+.gate_swap {
+    height: 20px;
+    width: 20px;
+    margin: calc(var(--box-height)/2 - 6px) calc(50% - 9px);
+    background: url(
+data:image/svg+xml;utf8,%0A%3C%21--%20Generated%20with%20http%3A//jxnblk.com/paths%20--%3E%0A%3Csvg%0A%20%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%0A%20%20viewBox%3D%270%200%2064%2064%27%0A%20%20width%3D%2764%27%20height%3D%2764%27%0A%20%20fill%3D%27currentcolor%27%3E%0A%20%20%3Cpath%20d%3D%27M60%200%20L32%2028%20L4%200%20L0%204%20L28%2032%20L0%2060%20L4%2064%20L32%2036%20L60%2064%20L64%2060%20L36%2032%20L64%204%27%20/%3E%0A%3C/svg%3E
+) center;
+    background-size: cover;
+}
+.gate_measure {
+    height: 20px;
+    width: 25px;
+    margin: calc(var(--box-height)/2 - 10px) calc(50% - 11px);
+    background: url(
+data:image/svg+xml;utf8,%0A%3C%21--%20Generated%20with%20http%3A//jxnblk.com/paths%20--%3E%0A%3Csvg%0A%20%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%0A%20%20viewBox%3D%27-10%20-10%2084%2084%27%0A%20%20width%3D%2764%27%20height%3D%2764%27%0A%20%20fill%3D%27white%27%0A%20%20stroke%3D%22black%22%0A%20%20stroke-width%3D%224px%22%0A%3E%0A%20%20%3Cpath%20d%3D%27M63%2C63%20C63%2C32%2048%2C16%2032%2C16%20C16%2C16%201%2C32%201%2C63%20L63%2C63%27%20/%3E%0A%20%20%3Cpath%20d%3D%22M32%2C63%20L56%2C16%22%20/%3E%0A%3C/svg%3E
+) center;
+    background-size: cover;
+}
+.gate_control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    margin: calc(var(--box-height)/2 - 3px) calc(50% - 5px);
+    padding: 0;
+    border: 2px solid var(--wire-col);
+    background: var(--box-col);
+}
+.gate_control.classical{
+    background: var(--c-wire-col);
+    border-color: var(--c-wire-col);
+}
+.control_index{
+    position: absolute;
+    right: calc(50% - 1em);
+    top: calc(50% - 1.4em);
+    color: var(--c-wire-col);
+    font-size: 0.8em;
+}
+.control_index.measure{
+    right: calc(50% - 1.2em);
+    top: calc(50% - 1.8em);
+    color: var(--index-col);
+}
+.gate_x {
+    top: -10px;
+    left: -6px;
+    border-radius: 50%;
+    border: 1px solid var(--wire-col);
+    width: 20px;
+    background: url(
+data:image/svg+xml;utf8,%0A%3C%21--%20Generated%20with%20http%3A//jxnblk.com/paths%20--%3E%0A%3Csvg%0A%20%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%0A%20%20viewBox%3D%270%200%2064%2064%27%0A%20%20width%3D%2764%27%20height%3D%2764%27%0A%20%20fill%3D%27currentcolor%27%3E%0A%20%20%3Cpath%20d%3D%27M36%2064%20L36%2036%20L64%2036%20L64%2028%20L36%2028%20L36%200%20L28%200%20L28%2028%20L0%2028%20L0%2036%20L28%2036%20L28%2064%27%20/%3E%0A%3C/svg%3E
+) center;
+    background-color: var(--box-col);
+    background-size: cover;
+}
+.gate_reset{
+    margin: 11px 10px;
+    padding: 0 0 0 10px;
+    border: none !important;
+    border-left: 2px solid var(--wire-col) !important;
+    background: transparent;
+}
+.gate_reset_spider{
+    width: calc(var(--box-height) - 24px);
+    height: calc(var(--box-height) - 24px);
+    background: var(--box-col);
+    border: 2px solid var(--wire-col);
+    border-radius: 50%;
+    font-size: 0.75em;
+}
+
+/* Add wire sections coming in and out of the gate */
+.gate_in:before, .gate_in:after{
+    content: '';
+    position: absolute;
+    display: block;
+    top: calc(50% - 1px);
+    border: 1px solid var(--wire-col);
+    width: 9px;
+    height: 0;
+    background: var(--wire-col);
+    box-sizing: content-box;
+}
+.classical.gate_in:before,
+.classical.gate_in:after{
+    border-color: var(--c-wire-col);
+}
+
+.gate_in:before{
+    left: -12px;
+}
+.gate_out:after{
+    right: -12px;
+}
+.gate_top.gate_in:before, .gate_top.gate_out:after{
+    top:calc(50% - 6.5px)
+}
+.gate_bottom.gate_in:before, .gate_bottom.gate_out:after{
+    top:calc(50% + 4.5px)
+}
+
+
+.link-bottom, .link-top {
+    height: var(--box-height);
+    width: 0;
+    border: 1px solid var(--wire-col);
+    background: var(--wire-col);
+    position: absolute;
+    display: block;
+    left: calc(50% - 1px);
+    box-sizing: content-box;
+}
+.link-top{
+    top: calc(0px - var(--box-height)/2);
+}
+.link-bottom{
+    top: calc(var(--box-height)/2)
+}
+.half-link {
+    height: calc(var(--box-height) - 9px);
+}
+.half-link.link-bottom{
+    top: calc(var(--box-height)/2 + 11px)
+}
+.half-link.link-top{
+    top: calc(-2px - var(--box-height)/2);
+}
+.link-bottom.measurement{
+    width: 3px;
+    left: calc(50% - 0.5px);
+    border: none;
+    background: var(--c-wire-col);
+    height: calc(var(--box-height) + 2px);
+    z-index: 1;
+}
+
+
+
+/* tool tips */
+.tool-tip-container{
+    margin: calc(0px - var(--box-height)) auto 0;
+    padding-top: var(--box-height);
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    z-index: 4;
+    width: fit-content;
+    overflow: hidden;
+}
+.tool-tip-container.no-js{
+    overflow: visible;
+}
+.tool-tip-container.no-js:hover{
+    z-index: 10;
+}
+.nested > .tool-tip-container{
+    position: absolute;
+    bottom: -10px;
+}
+.tool-tip{
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0.2s, opacity 0.2s;
+    -moz-transition: visibility 0.2s, opacity 0.2s;
+    transition: visibility 0.2s, opacity 0.2s;
+    max-width: 250px;
+}
+.tool-tip-container.no-js:hover > .tool-tip{
+    visibility: visible;
+    opacity: 1;
+}
+.tool-tip-content{
+    background: var(--main-bg);
+    margin: 0 auto;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 100%;
+}
+.no-js > .tool-tip > .tool-tip-content{
+    height: auto;
+    padding: 20px;
+    margin: 0 auto;
+}
+.tool-tip-container.no-js:hover > .tool-tip > .tool-tip-content,
+.no-js > tool-tip > .tool-tip-content:hover{
+    box-shadow: 0 -5px 20px 5px var(--faint-col-overlay);
+}
+.tool-tip:after{
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent var(--main-bg) transparent;
+}
+.tool-tip .complex-number{
+    padding: 4px;
+}
+.tool-tip-content > .gate_container.nested{
+    width: 100%;
+    min-width: unset;
+}
+.nested-label-layer.as-height{
+    padding: 0;
+}
+.tool-tip-content > .gate_container.nested > .nested-circuit-container,
+.circuit-preview.condensed > .nested-circuit-container{
+    background: transparent;
+    border: none;
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+}
+
+/* Tool-tip modal */
+.circuit-grid{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+    align-content: stretch;
+}
+.circuit-grid-circuit{
+    flex: 1 1 auto;
+    margin-top: 30px;
+    overflow: auto;
+    max-height: inherit;
+}
+
+
+
+
+/*  FOR DISPLAYING CHARTS  */
+table{
+    border-collapse: collapse;
+}
+.table-container{
+    margin: auto;
+}
+.bar-chart-container{
+    min-width: 300px;
+    width: 60%;
+}
+.square-chart-container{
+    width: auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Make sure we can see the rightmost border */
+.square-chart-container tbody{
+    position: relative;
+    left: -1px;
+    display: block;
+}
+thead > tr{
+    background: transparent !important;
+}
+tr:hover, tr {
+    background: initial !important;
+}
+
+td, th{
+    padding: 10px;
+    position: relative;
+}
+
+/* COMPLEX NUMBERS AND MATRICES */
+.complex-number{
+    padding: 10px;
+}
+.mid-number{
+    padding: 5px;
+    font-size: 0.75em;
+}
+.large-number{
+    padding: 2px;
+    font-size: 0.75em;
+}
+.matrix_container{
+    border: 2px solid var(--mid-col);
+    border-top: 0;
+    border-bottom: 0;
+    margin: auto !important;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+
+/* LIST RESULTS NICELY */
+.list{
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    padding: 0;
+}
+.list > *{
+    margin: 10px;
+}
+.list > .row-sub-heading{
+    margin: 10px 0;
+}
+</style>
+
+</head>
+<body>
+    <div class="row circuit-grid circuit__preview-body">
+        <div class="circuit-grid-circuit thin-scrollbar"  style="">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="circuit-preview circuit_variables condensed">
+
+
+            <div class="nested-label-layer as-height">
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+            </div>
+            <div class="nested-circuit-container"><div class="circuit-inner-scroll">
+
+        <div class="circuit-container nested">
+            <div class="circuit-layer qubits">
+
+            <div class="qubit">q[0]</div>
+
+            <div class="qubit">q[1]</div>
+
+            <div class="qubit">q[2]</div>
+
+
+            <div class="qubit bit">c[0]</div>
+
+            <div class="qubit bit">c[1]</div>
+
+    </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container x">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rx(2*Alice__n_0)</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container z">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rz(2*Alice__n_1)</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+                <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+                <div class="gate gate_control z"></div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container z">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rz(2*runs__n.r@s_0)</span>
+                </div>
+
+
+
+                <div class="link-top"></div>
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container x">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rx(2*Alice__n_2)</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+                <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+                <div class="gate gate_control z"></div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container z">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rz(2*runs__n.r@s_1)</span>
+                </div>
+
+
+
+                <div class="link-top"></div>
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+                <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+                <div class="gate gate_control z"></div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container x">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">X</span>
+                </div>
+
+
+
+                <div class="link-top"></div>
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection gate_measure"></div>
+
+            <div class="control_index measure z">z</div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+        <div class="gate_container">
+
+
+
+        <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+        <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection gate_measure"></div>
+
+            <div class="control_index measure z">z</div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+        <div class="gate_container">
+
+
+
+        <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+            <div class="circuit-layer qubits">
+
+            <div class="qubit">q[0]</div>
+
+            <div class="qubit">q[1]</div>
+
+            <div class="qubit">q[2]</div>
+
+
+            <div class="qubit bit">c[0]</div>
+
+            <div class="qubit bit">c[1]</div>
+
+    </div>
+        </div>
+
+            </div></div>
+
+    </div>
+
+
+
+
+        </div>
+    </div>
+</body>
+</html></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">default_sort_key</span>
+
+<span class="c1"># Make sure you sort your symbols as they are returned as a set.</span>
+<span class="n">parameters</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tket_circuit</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="n">default_sort_key</span><span class="p">)</span>
+
+<span class="n">param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">p</span><span class="p">:</span> <span class="n">i</span> <span class="o">*</span> <span class="mf">0.001</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">parameters</span><span class="p">)}</span>
+<span class="n">param_dict</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{Alice__n_0: 0.0,
+ Alice__n_1: 0.001,
+ Alice__n_2: 0.002,
+ runs__n.r@s_0: 0.003,
+ runs__n.r@s_1: 0.004}
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
+<span></span><span class="n">tket_circuit</span><span class="o">.</span><span class="n">symbol_substitution</span><span class="p">(</span><span class="n">param_dict</span><span class="p">)</span>
+
+<span class="c1"># This does not render properly on GitHub, please view it at:</span>
+<span class="c1"># https://cqcl.github.io/lambeq/examples/circuit.html</span>
+<span class="n">render_circuit_jupyter</span><span class="p">(</span><span class="n">tket_circuit</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+<style>
+body, .circuit__preview-body {
+    font-family: "roboto", system-ui, sans-serif;
+    --accent-col: green;
+    --accent-col-fill: darkseagreen;
+    --accent-col-alt: #aca;
+    --accent-col-emph: limegreen;
+    --accent-col-overlay: rgba(130,255,140,0.2);
+    --accent-col-outline: rgba(30, 250, 30,0.2);
+    --main-col: black;
+    --mid-col: #bbb;
+    --faint-col: #eee;
+    --faint-col-overlay: rgba(0, 0, 0, 0.05);
+    --main-bg: white;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--faint-col);
+    position: relative;
+}
+.row-item{
+    flex-grow: 1
+}
+.row-item-l{
+    text-align: left;
+}
+.row-item-r{
+    text-align: right;
+}
+.row-sub-heading{
+    border-color: var(--accent-col-emph);
+}
+
+/* FOR DISPLAYING CIRCUITS */
+/* Main preview container */
+.circuit-preview {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: black;
+}
+.circuit_variables {
+    /* Define some variables */
+    --box-height: 40px;
+    --wire-col: black;
+    --c-wire-col: #bbb;
+    --box-col: #ccc;
+    --box-col-overlay: rgba(0,0,0,0.05);
+    --c-box-col: #ddd;
+    --index-col: #888;
+}
+.circuit-preview.condensed{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+/* Box colours */
+.h {
+    --box-col: #ffee00;
+    --box-col-overlay: rgba(255, 255, 0, 0.2);
+    --c-box-col: #ffee88;
+    --index-col: #ffcc00;
+}
+.x {
+    --box-col: #ff8888;
+    --box-col-overlay: rgba(255, 0, 0, 0.2);
+    --c-box-col: #e8a6a6;
+    --index-col: red;
+}
+.y {
+    --box-col: #6699ff;
+    --box-col-overlay: rgba(0, 0, 255, 0.2);
+    --c-box-col: #86c6f6;
+    --index-col: blue;
+}
+.z {
+    --box-col: #ccffcc;
+    --box-col-overlay: rgba(0, 255, 0, 0.2);
+    --c-box-col: #e2ffe2;
+    --index-col: green;
+}
+
+.circuit-container{
+    max-width: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-content: flex-start;
+    margin: auto;
+    width: -moz-fit-content;
+    width: fit-content;
+    background: rgba(255, 255, 255, 1);
+}
+.circuit-preview.condensed > .circuit-container{
+    flex-wrap: nowrap;
+    min-width: fit-content;
+}
+.circuit-container.nested{
+    position: relative;
+    flex-wrap: nowrap;
+    margin: -2px 0;
+}
+.nested-circuit-container{
+    display: flex;
+    overflow: auto;
+    max-width: 400px;
+    background: var(--box-col-overlay);
+    border: 1px solid var(--box-col);
+}
+.nested-circuit-container::-webkit-scrollbar {
+    height: 0;
+    width: 0;
+}
+.circuit-inner-scroll{
+    overflow: visible;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    margin-top: 2px;
+}
+.circuit-end{
+    width: 2px;
+    height: auto;
+    border: 2px solid var(--wire-col);
+    margin: calc(var(--box-height)/2) 0 calc(var(--box-height)/2 + 20px);
+}
+.circuit-layer{
+    min-width: 40px;
+    width: max-content;
+    display: flex;
+    flex-flow: column nowrap;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+.circuit-container:not(.nested) > .circuit-layer:nth-child(2),
+.circuit-container:not(.nested) > .circuit-layer:nth-last-child(2),
+.circuit-container.nested > .circuit-layer:nth-child(2),
+.circuit-container.nested > .circuit-layer:nth-last-child(2),
+.gate_container.nested > .circuit-layer:first-child,
+.gate_container.nested > .circuit-layer:last-child{
+    min-width: 10px;
+}
+.nested .circuit-layer{
+    margin-bottom: 0;
+}
+.flex_wire{
+    flex-grow: 1;
+}
+/* Display qubit names at start of circuit */
+.circuit-layer.qubits{
+    flex-grow: 0;
+    color: var(--wire-col);
+}
+.qubit{
+    height: calc(var(--box-height) - 20px);
+    padding: 10px;
+    text-align: center;
+    font-family: monospace;
+    box-sizing: content-box;
+}
+.wire{
+    height: 0;
+    border: 1px solid var(--wire-col);
+    background: var(--wire-col);
+    margin: calc(var(--box-height)/2) 0;
+}
+.wire.classical{
+    border-color: var(--c-wire-col) !important;
+    background: var(--c-wire-col) !important;
+}
+.wire.transparent-wire{
+    border-color: transparent;
+    background: transparent;
+}
+
+/* Generic base for our gates */
+.gate_container{
+    position: relative;
+    min-width: -moz-fit-content;
+    min-width: fit-content;
+}
+.gate_container.nested{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.gate_container.nested:after{
+    display: flex;
+    flex-wrap: nowrap;
+}
+.gate_container .classical{
+    background: var(--c-box-col);
+    border-color: var(--index-col);
+}
+.gate{
+    position: relative;
+    height: calc(var(--box-height) - 16px);
+    margin: 0 9px;
+    padding: 9px 5px;
+    border: 1px solid var(--index-col);
+    border-bottom: none;
+    border-top: none;
+    text-align: left;
+    background: var(--box-col);
+    display: flex;
+    box-sizing: content-box;
+    z-index: 1;
+}
+.wire-label{
+    color: var(--index-col);
+    width: -moz-fit-content;
+    width: fit-content;
+    height: calc(var(--box-height) - 18px);
+    padding-right: 5px;
+}
+.gate_top > .wire-label,
+.gate_bottom > .wire-label {
+    padding-top: 0;
+}
+.nested-label-layer{
+    background: var(--box-col);
+    padding: 0 5px;
+}
+.nested-label-layer .wire-label{
+    padding: 10px 0;
+}
+
+/* Multi-qubit gates */
+.gate_bottom{
+    height: calc(var(--box-height) - 18px);
+    margin-bottom: 10px;
+    padding-bottom: 0;
+    border-bottom: 1px solid var(--index-col);
+}
+.gate_top{
+    height: calc(var(--box-height) - 18px);
+    margin-top: 10px;
+    padding-top: 0;
+    border-top: 1px solid var(--index-col);
+}
+.gate_name{
+    text-align: center;
+    flex-grow: 1;
+}
+/* Single qubit gate*/
+.gate_box{
+    height: calc(var(--box-height) - 20px);
+    margin: 10px;
+    padding: 0 5px;
+    border: 1px solid var(--index-col);
+    text-align: center;
+}
+
+/* Special gates */
+.gate_connection {
+    position: absolute;
+    top: -3px;
+    left: -1px;
+    border: none;
+    margin: calc(var(--box-height)/2) calc(50% - 5px);
+    padding: 0;
+}
+.gate_swap {
+    height: 20px;
+    width: 20px;
+    margin: calc(var(--box-height)/2 - 6px) calc(50% - 9px);
+    background: url(
+data:image/svg+xml;utf8,%0A%3C%21--%20Generated%20with%20http%3A//jxnblk.com/paths%20--%3E%0A%3Csvg%0A%20%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%0A%20%20viewBox%3D%270%200%2064%2064%27%0A%20%20width%3D%2764%27%20height%3D%2764%27%0A%20%20fill%3D%27currentcolor%27%3E%0A%20%20%3Cpath%20d%3D%27M60%200%20L32%2028%20L4%200%20L0%204%20L28%2032%20L0%2060%20L4%2064%20L32%2036%20L60%2064%20L64%2060%20L36%2032%20L64%204%27%20/%3E%0A%3C/svg%3E
+) center;
+    background-size: cover;
+}
+.gate_measure {
+    height: 20px;
+    width: 25px;
+    margin: calc(var(--box-height)/2 - 10px) calc(50% - 11px);
+    background: url(
+data:image/svg+xml;utf8,%0A%3C%21--%20Generated%20with%20http%3A//jxnblk.com/paths%20--%3E%0A%3Csvg%0A%20%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%0A%20%20viewBox%3D%27-10%20-10%2084%2084%27%0A%20%20width%3D%2764%27%20height%3D%2764%27%0A%20%20fill%3D%27white%27%0A%20%20stroke%3D%22black%22%0A%20%20stroke-width%3D%224px%22%0A%3E%0A%20%20%3Cpath%20d%3D%27M63%2C63%20C63%2C32%2048%2C16%2032%2C16%20C16%2C16%201%2C32%201%2C63%20L63%2C63%27%20/%3E%0A%20%20%3Cpath%20d%3D%22M32%2C63%20L56%2C16%22%20/%3E%0A%3C/svg%3E
+) center;
+    background-size: cover;
+}
+.gate_control {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    margin: calc(var(--box-height)/2 - 3px) calc(50% - 5px);
+    padding: 0;
+    border: 2px solid var(--wire-col);
+    background: var(--box-col);
+}
+.gate_control.classical{
+    background: var(--c-wire-col);
+    border-color: var(--c-wire-col);
+}
+.control_index{
+    position: absolute;
+    right: calc(50% - 1em);
+    top: calc(50% - 1.4em);
+    color: var(--c-wire-col);
+    font-size: 0.8em;
+}
+.control_index.measure{
+    right: calc(50% - 1.2em);
+    top: calc(50% - 1.8em);
+    color: var(--index-col);
+}
+.gate_x {
+    top: -10px;
+    left: -6px;
+    border-radius: 50%;
+    border: 1px solid var(--wire-col);
+    width: 20px;
+    background: url(
+data:image/svg+xml;utf8,%0A%3C%21--%20Generated%20with%20http%3A//jxnblk.com/paths%20--%3E%0A%3Csvg%0A%20%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%0A%20%20viewBox%3D%270%200%2064%2064%27%0A%20%20width%3D%2764%27%20height%3D%2764%27%0A%20%20fill%3D%27currentcolor%27%3E%0A%20%20%3Cpath%20d%3D%27M36%2064%20L36%2036%20L64%2036%20L64%2028%20L36%2028%20L36%200%20L28%200%20L28%2028%20L0%2028%20L0%2036%20L28%2036%20L28%2064%27%20/%3E%0A%3C/svg%3E
+) center;
+    background-color: var(--box-col);
+    background-size: cover;
+}
+.gate_reset{
+    margin: 11px 10px;
+    padding: 0 0 0 10px;
+    border: none !important;
+    border-left: 2px solid var(--wire-col) !important;
+    background: transparent;
+}
+.gate_reset_spider{
+    width: calc(var(--box-height) - 24px);
+    height: calc(var(--box-height) - 24px);
+    background: var(--box-col);
+    border: 2px solid var(--wire-col);
+    border-radius: 50%;
+    font-size: 0.75em;
+}
+
+/* Add wire sections coming in and out of the gate */
+.gate_in:before, .gate_in:after{
+    content: '';
+    position: absolute;
+    display: block;
+    top: calc(50% - 1px);
+    border: 1px solid var(--wire-col);
+    width: 9px;
+    height: 0;
+    background: var(--wire-col);
+    box-sizing: content-box;
+}
+.classical.gate_in:before,
+.classical.gate_in:after{
+    border-color: var(--c-wire-col);
+}
+
+.gate_in:before{
+    left: -12px;
+}
+.gate_out:after{
+    right: -12px;
+}
+.gate_top.gate_in:before, .gate_top.gate_out:after{
+    top:calc(50% - 6.5px)
+}
+.gate_bottom.gate_in:before, .gate_bottom.gate_out:after{
+    top:calc(50% + 4.5px)
+}
+
+
+.link-bottom, .link-top {
+    height: var(--box-height);
+    width: 0;
+    border: 1px solid var(--wire-col);
+    background: var(--wire-col);
+    position: absolute;
+    display: block;
+    left: calc(50% - 1px);
+    box-sizing: content-box;
+}
+.link-top{
+    top: calc(0px - var(--box-height)/2);
+}
+.link-bottom{
+    top: calc(var(--box-height)/2)
+}
+.half-link {
+    height: calc(var(--box-height) - 9px);
+}
+.half-link.link-bottom{
+    top: calc(var(--box-height)/2 + 11px)
+}
+.half-link.link-top{
+    top: calc(-2px - var(--box-height)/2);
+}
+.link-bottom.measurement{
+    width: 3px;
+    left: calc(50% - 0.5px);
+    border: none;
+    background: var(--c-wire-col);
+    height: calc(var(--box-height) + 2px);
+    z-index: 1;
+}
+
+
+
+/* tool tips */
+.tool-tip-container{
+    margin: calc(0px - var(--box-height)) auto 0;
+    padding-top: var(--box-height);
+    position: relative;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    z-index: 4;
+    width: fit-content;
+    overflow: hidden;
+}
+.tool-tip-container.no-js{
+    overflow: visible;
+}
+.tool-tip-container.no-js:hover{
+    z-index: 10;
+}
+.nested > .tool-tip-container{
+    position: absolute;
+    bottom: -10px;
+}
+.tool-tip{
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: visibility 0.2s, opacity 0.2s;
+    -moz-transition: visibility 0.2s, opacity 0.2s;
+    transition: visibility 0.2s, opacity 0.2s;
+    max-width: 250px;
+}
+.tool-tip-container.no-js:hover > .tool-tip{
+    visibility: visible;
+    opacity: 1;
+}
+.tool-tip-content{
+    background: var(--main-bg);
+    margin: 0 auto;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 100%;
+}
+.no-js > .tool-tip > .tool-tip-content{
+    height: auto;
+    padding: 20px;
+    margin: 0 auto;
+}
+.tool-tip-container.no-js:hover > .tool-tip > .tool-tip-content,
+.no-js > tool-tip > .tool-tip-content:hover{
+    box-shadow: 0 -5px 20px 5px var(--faint-col-overlay);
+}
+.tool-tip:after{
+    content: " ";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent var(--main-bg) transparent;
+}
+.tool-tip .complex-number{
+    padding: 4px;
+}
+.tool-tip-content > .gate_container.nested{
+    width: 100%;
+    min-width: unset;
+}
+.nested-label-layer.as-height{
+    padding: 0;
+}
+.tool-tip-content > .gate_container.nested > .nested-circuit-container,
+.circuit-preview.condensed > .nested-circuit-container{
+    background: transparent;
+    border: none;
+    width: 100%;
+    min-width: unset;
+    max-width: unset;
+}
+
+/* Tool-tip modal */
+.circuit-grid{
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+    align-content: stretch;
+}
+.circuit-grid-circuit{
+    flex: 1 1 auto;
+    margin-top: 30px;
+    overflow: auto;
+    max-height: inherit;
+}
+
+
+
+
+/*  FOR DISPLAYING CHARTS  */
+table{
+    border-collapse: collapse;
+}
+.table-container{
+    margin: auto;
+}
+.bar-chart-container{
+    min-width: 300px;
+    width: 60%;
+}
+.square-chart-container{
+    width: auto;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Make sure we can see the rightmost border */
+.square-chart-container tbody{
+    position: relative;
+    left: -1px;
+    display: block;
+}
+thead > tr{
+    background: transparent !important;
+}
+tr:hover, tr {
+    background: initial !important;
+}
+
+td, th{
+    padding: 10px;
+    position: relative;
+}
+
+/* COMPLEX NUMBERS AND MATRICES */
+.complex-number{
+    padding: 10px;
+}
+.mid-number{
+    padding: 5px;
+    font-size: 0.75em;
+}
+.large-number{
+    padding: 2px;
+    font-size: 0.75em;
+}
+.matrix_container{
+    border: 2px solid var(--mid-col);
+    border-top: 0;
+    border-bottom: 0;
+    margin: auto !important;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+
+/* LIST RESULTS NICELY */
+.list{
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: stretch;
+    padding: 0;
+}
+.list > *{
+    margin: 10px;
+}
+.list > .row-sub-heading{
+    margin: 10px 0;
+}
+</style>
+
+</head>
+<body>
+    <div class="row circuit-grid circuit__preview-body">
+        <div class="circuit-grid-circuit thin-scrollbar"  style="">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="circuit-preview circuit_variables condensed">
+
+
+            <div class="nested-label-layer as-height">
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+                    <div class="wire-label"></div>
+
+            </div>
+            <div class="nested-circuit-container"><div class="circuit-inner-scroll">
+
+        <div class="circuit-container nested">
+            <div class="circuit-layer qubits">
+
+            <div class="qubit">q[0]</div>
+
+            <div class="qubit">q[1]</div>
+
+            <div class="qubit">q[2]</div>
+
+
+            <div class="qubit bit">c[0]</div>
+
+            <div class="qubit bit">c[1]</div>
+
+    </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container x">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rx(0.0)</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container z">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rz(0.002)</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+                <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+                <div class="gate gate_control z"></div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container z">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rz(0.006)</span>
+                </div>
+
+
+
+                <div class="link-top"></div>
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container x">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rx(0.004)</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+                <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+                <div class="gate gate_control z"></div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container z">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">Rz(0.008)</span>
+                </div>
+
+
+
+                <div class="link-top"></div>
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+                <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+                <div class="gate gate_control z"></div>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container x">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">X</span>
+                </div>
+
+
+
+                <div class="link-top"></div>
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection gate_measure"></div>
+
+            <div class="control_index measure z">z</div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+        <div class="gate_container">
+
+
+
+        <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container nested">
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+        <div class="gate_container h">
+
+
+                <div class="gate gate_box gate_in gate_out ">
+                    <span class="gate_name">H</span>
+                </div>
+
+
+
+        </div>
+        <div class="flex_wire">
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+        <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection gate_measure"></div>
+
+            <div class="control_index measure z">z</div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+            <div class="gate_container">
+
+            <div class="link-bottom measurement"></div>
+
+
+
+        <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+        <div class="gate_container">
+
+
+
+        <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+        <div class="gate gate_connection "></div>
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+                <div class="circuit-layer hover-highlight-circuit">
+
+
+
+
+
+
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire "></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+            <div class="gate_container">
+        <div class="wire classical"></div>
+
+    </div>
+
+
+
+
+
+
+
+            </div>
+
+            <div class="circuit-layer qubits">
+
+            <div class="qubit">q[0]</div>
+
+            <div class="qubit">q[1]</div>
+
+            <div class="qubit">q[2]</div>
+
+
+            <div class="qubit bit">c[0]</div>
+
+            <div class="qubit bit">c[1]</div>
+
+    </div>
+        </div>
+
+            </div></div>
+
+    </div>
+
+
+
+
+        </div>
+    </div>
+</body>
+</html></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="tensor.html" class="btn btn-neutral float-right" title="Tensor" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="rewrite.html" class="btn btn-neutral float-left" title="Rewrite" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
