@@ -1,11 +1,18 @@
 # lambeq
 
+[![lambeq logo](docs/_static/images/lambeq_logo.png)](//cqcl.github.io/lambeq)
+
+![Build status](https://github.com/CQCL/lambeq/actions/workflows/build_test.yml/badge.svg)
+[![License](https://img.shields.io/github/license/CQCL/lambeq)](LICENSE)
+[![PyPI version](https://img.shields.io/pypi/v/lambeq)](//pypi.org/project/lambeq)
+[![PyPI downloads](https://img.shields.io/pypi/dm/lambeq)](//pypi.org/project/lambeq)
+[![arXiv](https://img.shields.io/badge/arXiv-2110.04236-green)](//arxiv.org/abs/2110.04236)
+
 ## About
 
 lambeq is a toolkit for quantum natural language processing (QNLP).
 
-This project is in early development, so there is no guarantee of
-stability.
+Documentation: https://cqcl.github.io/lambeq/
 
 ## Getting started
 
@@ -149,7 +156,7 @@ sphinx-apidoc --force -o docs lambeq
 
 ## License
 
-Distributed under the Apache 2.0 license. See `LICENSE.md` for more details.
+Distributed under the Apache 2.0 license. See `LICENSE` for more details.
 
 ## Citation
 

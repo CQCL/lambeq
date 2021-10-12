@@ -74,7 +74,7 @@ fi
 # determine installation source
 lambeq="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd -P)"
 if [ ! -r "$lambeq/pyproject.toml" ]; then
-    lambeq='git+https://github.com/CQCL/lambeq'
+    lambeq='lambeq'
 fi
 
 echo 'Preparing installation environment...'
@@ -88,12 +88,7 @@ if [ "$install_option" != 2 ]; then
         extras='all,test'
     fi
 
-    if [ "$lambeq" = "${lambeq#git}" ]; then
-        lambeq_extras="$lambeq""[$extras]"
-    else
-        lambeq_extras="lambeq[$extras] @ $lambeq"
-    fi
-    python3 -m pip install --use-feature=in-tree-build "$lambeq_extras"
+    python3 -m pip install --use-feature=in-tree-build "$lambeq""[$extras]"
 
     echo 'Downloading pre-trained depccg parser...'
     python3 -m depccg en download
