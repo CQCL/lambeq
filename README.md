@@ -1,6 +1,6 @@
 # lambeq
 
-[![lambeq logo](docs/_static/images/lambeq_logo.png)](//cqcl.github.io/lambeq)
+[![lambeq logo](https://cqcl.github.io/lambeq/_static/lambeq_logo.png)](//cqcl.github.io/lambeq)
 
 ![Build status](https://github.com/CQCL/lambeq/actions/workflows/build_test.yml/badge.svg)
 [![License](https://img.shields.io/github/license/CQCL/lambeq)](LICENSE)
