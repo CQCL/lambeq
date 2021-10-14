@@ -217,7 +217,6 @@ Let's read the datasets:
 
    train_data, train_targets = read_data('examples/datasets/mc_train_data.txt')
    test_data, test_targets = read_data('examples/datasets/mc_test_data.txt')
-   dev_data, dev_targets = read_data('examples/datasets/mc_dev_data.txt')
 
 The first few lines of the train dataset:
 
@@ -426,9 +425,7 @@ The process when working with quantum circuits is very similar, with two importa
 
 Complete examples in training quantum circuits can be found in the following notebooks:
 
-- `Quantum pipeline with JAX <examples/quantum_pipeline_simulation.ipynb>`_
-- `Quantum pipeline with tket <examples/quantum_pipeline_emulation.ipynb>`_
-
-
+- `Quantum pipeline with JAX <examples/quantum_pipeline_jax.ipynb>`_
+- `Quantum pipeline with tket <examples/quantum_pipeline_tket.ipynb>`_
 
 .. [1] Lorenz, Pearson, Meichanetzidis, Kartsaklis, Coecke. 2021. `QNLP in Practice: Running Compositional Models of Meaning on a Quantum Computer`. `arXiv:2102.12846 <https://arxiv.org/abs/2102.12846>`_

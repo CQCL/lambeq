@@ -48,12 +48,12 @@ destination and configuration.
 
 1. Run:
    ```bash
-   bash <(curl 'https://cqcl.github.io/lambeq/install.sh')
+   sh <(curl 'https://cqcl.github.io/lambeq/install.sh')
    ```
 
 #### Git installation
 
-This required Git to be installed.
+This requires Git to be installed.
 
 1. Download this repository:
    ```bash
@@ -156,7 +156,7 @@ sphinx-apidoc --force -o docs lambeq
 
 ## License
 
-Distributed under the Apache 2.0 license. See `LICENSE` for more details.
+Distributed under the Apache 2.0 license. See [`LICENSE`](LICENSE) for more details.
 
 ## Citation
 
