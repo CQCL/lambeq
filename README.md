@@ -36,7 +36,7 @@ for `lambeq.ccg2discocat.DepCCGParser`.
 To install lambeq with depccg, run instead:
 ```bash
 pip install cython numpy
-pip install "lambeq[depccg]"
+pip install 'lambeq[depccg]'
 depccg_en download
 ```
 See below for further options.
