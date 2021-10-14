@@ -88,7 +88,7 @@ if [ "$install_option" != 2 ]; then
         extras='all,test'
     fi
 
-    python3 -m pip install --use-feature=in-tree-build "$lambeq""[$extras]"
+    python3 -m pip install --use-feature=in-tree-build "${lambeq}[$extras]"
 
     echo 'Downloading pre-trained depccg parser...'
     python3 -m depccg en download
