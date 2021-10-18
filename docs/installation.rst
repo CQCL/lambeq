@@ -15,7 +15,7 @@ This does not include optional dependencies such as DepCCG and PyTorch, which ha
 To install ``lambeq`` with DepCCG, run instead::
 
    pip install cython numpy
-   pip install lambeq[depccg]
+   pip install 'lambeq[depccg]'
    depccg_en download
 
 See below for further options.
@@ -25,7 +25,7 @@ Automatic installation (recommended)
 
 This runs an interactive installer to help pick the installation destination and configuration::
 
-   bash <(curl 'https://cqcl.github.io/lambeq/install.sh')
+   sh <(curl 'https://cqcl.github.io/lambeq/install.sh')
 
 
 Git installation
