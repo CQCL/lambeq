@@ -12,7 +12,7 @@ lambeq
 User support
 ------------
 
-If you need help with ``lambeq`` or you think you have found a bug, please send an email to lambeq-support@cambridgequantum.com. You can also open an issue at ``lambeq``'s `GitHub repository <https://github.com/CQCL/lambeq>`_. Someone from the development team will respond to you as soon as possible.
+If you need help with ``lambeq`` or you think you have found a bug, please send an email to lambeq-support@cambridgequantum.com. You can also open an issue at ``lambeq``'s `GitHub repository <https://github.com/CQCL/lambeq>`_. Someone from the development team will respond to you as soon as possible. Further, if you want to subscribe to lambeq's mailing list, send an email to lambeq-users@cambridgequantum.com with the word "subscribe" as subject.
 
 Licence
 -------
