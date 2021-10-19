@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Syntactic parsing &mdash; lambeq 0.1.3.dev3+g852f3f3 documentation</title>
+  <title>Syntactic parsing &mdash; lambeq 0.1.3.dev4+gc7bccba documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev3+g852f3f3
+                0.1.3.dev4+gc7bccba
               </div>
             
           
@@ -218,7 +218,7 @@
 <div class="section" id="syntactic-parsing">
 <span id="sec-parsing"></span><h1>Syntactic parsing<a class="headerlink" href="#syntactic-parsing" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="string_diagrams.html#sec-string-diagrams"><span class="std std-ref">string diagrams</span></a> are based on a pregroup grammar to keep track of the types and the interactions between the words in a sentence. When a detailed syntactic derivation is required (as in the case of DisCoCat), a syntax tree needs to be provided by a statistical parser. However, since the pregroup grammar formalism is not particularly well-known in the NLP community, there is currently no wide-coverage pregroup parser that can automatically provide the syntactic derivations. To address this problem, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a passage from a derivation in the closest alternative grammar formalism, namely <em>Combinatory Categorial Grammar</em> (CCG), to a string diagram which faithfully encodes the syntactic structure of the sentence in a pregroup-like form. Due to the availability of many robust CCG parsing tools, this allows the conversion of large corpora with sentences of arbitrary length and syntactic structure into pregroup and DisCoCat form.</p>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> does not use its own statistical CCG parser, but instead implements a detailed interface in the <a class="reference internal" href="lambeq.ccg2discocat.html#module-lambeq.ccg2discocat" title="lambeq.ccg2discocat"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code></a> package that allows connection to one of the many external CCG parsing tools that are currently available. By default, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is shipped with support for <em>DepCCG</em> <a class="footnote-reference brackets" href="#id2" id="id1">1</a>, a state-of-the-art efficient parser which comes with a convenient Python interface.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> does not use its own statistical CCG parser, but instead implements a detailed interface in the <a class="reference internal" href="lambeq.ccg2discocat.html#module-lambeq.ccg2discocat" title="lambeq.ccg2discocat"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code></a> package that allows connection to one of the many external CCG parsing tools that are currently available. By default, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is shipped with support for <em>depccg</em> <a class="footnote-reference brackets" href="#id2" id="id1">1</a>, a state-of-the-art efficient parser which comes with a convenient Python interface.</p>
 <p>Other external parsers can be made available to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> by extending  the <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccg_parser.CCGParser" title="lambeq.ccg2discocat.ccg_parser.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGParser</span></code></a> class in order to create a wrapper subclass that encapsulates the necessary calls and translates the respective parser’s output into <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> format.</p>
 <p>Instructions for the proper installation of the parser dependencies can be found in <a class="reference internal" href="installation.html#sec-installation"><span class="std std-ref">Installation</span></a>.</p>
 <dl class="footnote brackets">

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Installation &mdash; lambeq 0.1.3.dev3+g852f3f3 documentation</title>
+  <title>Installation &mdash; lambeq 0.1.3.dev4+gc7bccba documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev3+g852f3f3
+                0.1.3.dev4+gc7bccba
               </div>
             
           
@@ -228,8 +228,12 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">lambeq</span>
 </pre></div>
 </div>
-<p>This does not include optional dependencies such as DepCCG and PyTorch, which have to be installed separately. In particular, DepCCG is required for <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.DepCCGParser" title="lambeq.ccg2discocat.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.DepCCGParser</span></code></a>.</p>
-<p>To install <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> with DepCCG, run instead:</p>
+<p>This does not include optional dependencies such as depccg and PyTorch, which have to be installed separately. In particular, depccg is required for <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.DepCCGParser" title="lambeq.ccg2discocat.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.DepCCGParser</span></code></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>depccg is available only on MacOS and Linux. If you are using Windows, please install the base <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>. This means that the <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.depccg_parser.DepCCGParser" title="lambeq.ccg2discocat.depccg_parser.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">DepCCGParser</span></code></a> class will not be available on Windows, but you can still use all other compositional models from the <a class="reference internal" href="lambeq.html#module-lambeq.reader" title="lambeq.reader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reader</span></code></a> module. Support for parsing on Windows will be added in a future version.</p>
+</div>
+<p>To install <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> with depccg, run instead:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span> <span class="n">numpy</span>
 <span class="n">pip</span> <span class="n">install</span> <span class="s1">&#39;lambeq[depccg]&#39;</span>
 <span class="n">depccg_en</span> <span class="n">download</span>
@@ -266,12 +270,12 @@
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
-<li><p>(Optional) If installing the optional DepCCG dependency, the following packages must be installed before installing depccg:</p></li>
+<li><p>(Optional) If installing the optional depccg dependency, the following packages must be installed <strong>before</strong> depccg:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span> <span class="n">numpy</span>
 </pre></div>
 </div>
-<p>Further information can be found on the <a class="reference external" href="https://github.com/masashi-y/depccg">DepCCG homepage</a>.</p>
+<p>Further information can be found on the <a class="reference external" href="https://github.com/masashi-y/depccg">depccg homepage</a>.</p>
 <ol class="arabic simple" start="5">
 <li><p>Install <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> from the local repository using pip:</p></li>
 </ol>
