@@ -35,6 +35,11 @@ This does not include optional dependencies such as depccg and PyTorch,
 which have to be installed separately. In particular, depccg is required
 for `lambeq.ccg2discocat.DepCCGParser`.
 
+---
+**Warning:** depccg is available only on MacOS and Linux. If you are using Windows, please install the base lambeq. This means that the `DepCCGParser` class will not be available on Windows, but you can still use all other compositional models from the `reader` module. Support for parsing on Windows will be added in a future version.
+
+---
+
 To install lambeq with depccg, run instead:
 ```bash
 pip install cython numpy
@@ -73,8 +78,8 @@ This requires Git to be installed.
    pip install --upgrade pip wheel
    ```
 
-4. (Optional) If installing the optional dependency `depccg`, the
-   following packages must be installed *before* installing `depccg`:
+4. (Optional) If installing the optional depccg dependency, the
+   following packages must be installed *before* depccg:
    ```bash
    pip install cython numpy
    ```
