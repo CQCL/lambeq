@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Step 4. Training &mdash; lambeq 0.1.3.dev4+gc7bccba documentation</title>
+  <title>Step 4: Training &mdash; lambeq 0.1.3.dev5+g3feba14 documentation</title>
   
 
   
@@ -44,8 +44,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API Reference" href="modules.html" />
-    <link rel="prev" title="Step 3: Parameterisation" href="parameterise.html" /> 
+    <link rel="next" title="Introduction to symbols" href="tutorials/training-symbols.html" />
+    <link rel="prev" title="Step 3. Parameterisation" href="tutorials/parameterise.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev4+gc7bccba
+                0.1.3.dev5+g3feba14
               </div>
             
           
@@ -107,22 +107,12 @@
 </ul>
 <p class="caption"><span class="caption-text">Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="sentence_input.html">Step 1: Sentence input</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewrite.html">Step 2: Diagram rewriting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3: Parameterisation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Step 4. Training</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#symbols">Symbols</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#from-symbols-to-tensors">From symbols to tensors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#a-complete-use-case">A complete use case</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#preparation">Preparation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#creating-a-vocabulary">Creating a vocabulary</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#defining-a-loss-function">Defining a loss function</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#training-loop">Training loop</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#testing">Testing</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#working-with-quantum-circuits">Working with quantum circuits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Step 4: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-symbols.html">Introduction to symbols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html">A complete use case</a></li>
 </ul>
 </li>
 </ul>
@@ -184,7 +174,7 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Step 4. Training</li>
+      <li>Step 4: Training</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -230,372 +220,39 @@
 }
 </style>
 <div class="section" id="step-4-training">
-<span id="sec-training"></span><h1>Step 4. Training<a class="headerlink" href="#step-4-training" title="Permalink to this headline">¶</a></h1>
+<span id="sec-training"></span><h1>Step 4: Training<a class="headerlink" href="#step-4-training" title="Permalink to this headline">¶</a></h1>
 <p>There are many ways to train a <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> model, and the right one to use depends on the task at hand, the type of experiment (quantum or classical), and even other factors, such as hardware requirements. In general, the process involves the following steps (for the classical case):</p>
 <ol class="arabic">
 <li><p>Extract the word symbols from all diagrams in a set to create a vocabulary.</p></li>
 <li><p>Assign tensors to each one of the words in the vocabulary.</p></li>
 <li><p>Training loop:</p>
-<p>3.1. For each diagram, associate tensors from the vocabulary with words.</p>
+<blockquote>
+<div><p>3.1. For each diagram, associate tensors from the vocabulary with words.</p>
 <p>3.2. Contract the diagram to get a result.</p>
 <p>3.3. Use the result to compute loss.</p>
 <p>3.4. Use loss to compute gradient and update tensors.</p>
+</div></blockquote>
 </li>
 </ol>
-<p>In the quantum case we do not explicitly have tensors, but circuit parameters that need to be associated with concrete numbers; these are also represented by symbols. We will start this tutorial with a short introduction to symbols and their use.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The code of this tutorial can be found in <a class="reference internal" href="examples/training.html"><span class="doc">this notebook</span></a>.</p>
-</div>
-<div class="section" id="symbols">
-<h2>Symbols<a class="headerlink" href="#symbols" title="Permalink to this headline">¶</a></h2>
-<p>The parameterisable parts of a diagram are represented by <em>symbols</em>; these are instances of the <a class="reference internal" href="lambeq.html#lambeq.ansatz.Symbol" title="lambeq.ansatz.Symbol"><code class="xref py py-class docutils literal notranslate"><span class="pre">Symbol</span></code></a> class. Let’s create a tensor diagram for a sentence:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.ccg2discocat</span> <span class="kn">import</span> <span class="n">DepCCGParser</span>
-<span class="kn">from</span> <span class="nn">lambeq.tensor</span> <span class="kn">import</span> <span class="n">TensorAnsatz</span>
-<span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Dim</span>
-
-<span class="c1"># Define atomic types</span>
-<span class="n">N</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
-
-<span class="c1"># Parse a sentence</span>
-<span class="n">parser</span> <span class="o">=</span> <span class="n">DepCCGParser</span><span class="p">()</span>
-<span class="n">diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="s2">&quot;John walks in the park&quot;</span><span class="p">)</span>
-
-<span class="c1"># Apply a tensor ansatz</span>
-<span class="n">ansatz</span> <span class="o">=</span> <span class="n">TensorAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">S</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)})</span>
-<span class="n">tensor_diagram</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
-<span class="n">tensor_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/training_0_1.png" src="_images/training_0_1.png" />
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Class <a class="reference internal" href="lambeq.html#lambeq.ansatz.Symbol" title="lambeq.ansatz.Symbol"><code class="xref py py-class docutils literal notranslate"><span class="pre">Symbol</span></code></a> inherits from <code class="xref py py-class docutils literal notranslate"><span class="pre">sympy.Symbol</span></code>.</p>
-</div>
-<p>The symbols of the diagram can be accessed by the <code class="xref py py-attr docutils literal notranslate"><span class="pre">free_symbols</span></code> attribute:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor_diagram</span><span class="o">.</span><span class="n">free_symbols</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">{John__n, in__s.r@n.r.r@n.r@s@n.l, park__n, the__n@n.l, walks__n.r@s}</span>
-</pre></div>
-</div>
-<p>Each symbol is associated with a specific size, which is defined from the applied ansatz.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">tensor_diagram</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[(in__s.r@n.r.r@n.r@s@n.l, 256),</span>
-<span class="go"> (John__n, 4),</span>
-<span class="go"> (the__n@n.l, 16),</span>
-<span class="go"> (walks__n.r@s, 8),</span>
-<span class="go"> (park__n, 4)]</span>
-</pre></div>
-</div>
-<p>For example, you see that preposition “in” has been assigned 256 dimensions, which is derived by multiplying the dimensions of each individual wire (<span class="math notranslate nohighlight">\(2 \cdot 4 \cdot 4 \cdot 2 \cdot 4\)</span>), nouns are assigned 4 dimensions, and the determiner 16 dimensions.</p>
-<p id="param-circuits">We will now convert the original diagram into a quantum circuit and examine its parameters:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.circuit</span> <span class="kn">import</span> <span class="n">IQPAnsatz</span>
-
-<span class="n">iqp_ansatz</span> <span class="o">=</span> <span class="n">IQPAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">n_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">circuit</span> <span class="o">=</span> <span class="n">iqp_ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
-<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/training_3_0.png" src="_images/training_3_0.png" />
-<p>Let’s see the symbols of the circuit and their sizes:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[(</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">circuit</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[(John__n_0, 1),</span>
-<span class="go"> (walks__n.r@s_0, 1),</span>
-<span class="go"> (park__n_0, 1),</span>
-<span class="go"> (John__n_2, 1),</span>
-<span class="go"> (in__s.r@n.r.r@n.r@s@n.l_0, 1),</span>
-<span class="go"> (the__n@n.l_0, 1),</span>
-<span class="go"> (John__n_1, 1),</span>
-<span class="go"> (in__s.r@n.r.r@n.r@s@n.l_1, 1),</span>
-<span class="go"> (park__n_1, 1),</span>
-<span class="go"> (in__s.r@n.r.r@n.r@s@n.l_3, 1),</span>
-<span class="go"> (in__s.r@n.r.r@n.r@s@n.l_2, 1),</span>
-<span class="go"> (park__n_2, 1)]</span>
-</pre></div>
-</div>
-<p>Note that all sizes are equal to 1, indicating that the parameters of the circuit are just numbers.</p>
-</div>
-<div class="section" id="from-symbols-to-tensors">
-<h2>From symbols to tensors<a class="headerlink" href="#from-symbols-to-tensors" title="Permalink to this headline">¶</a></h2>
-<p>In this section we will create actual tensors and associate them with the symbols of the diagram. In order to do this, we first need to fix the order of the symbols, since they are represented as a set. We can use <code class="docutils literal notranslate"><span class="pre">sympy</span></code>’s <code class="xref py py-data docutils literal notranslate"><span class="pre">default_sort_key</span></code> for this purpose.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">default_sort_key</span>
-
-<span class="n">parameters</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">tensor_diagram</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">default_sort_key</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>We will use <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays for the tensors, initialised randomly:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="n">tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">]</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[0.19612337 0.29034877 0.57755078 0.50898555]</span>
-</pre></div>
-</div>
-<p>Associating the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays with the symbols in the diagram can be done by using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">lambdify()</span></code> method:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tensor_diagram_np</span> <span class="o">=</span> <span class="n">tensor_diagram</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="n">parameters</span><span class="p">)(</span><span class="o">*</span><span class="n">tensors</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Before lambdify:&quot;</span><span class="p">,</span> <span class="n">tensor_diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;After lambdify:&quot;</span><span class="p">,</span> <span class="n">tensor_diagram_np</span><span class="o">.</span><span class="n">boxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Before lambdify: John__n</span>
-<span class="go">After lambdify: [0.19612337 0.29034877 0.57755078 0.50898555]</span>
-</pre></div>
-</div>
-<p>To contract the tensor network and compute a representation for the sentence, we will use <code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">tensor_diagram_np</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Tensor(dom=Dim(1), cod=Dim(2), array=[5.34118341, 6.41315789])</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The result is a 2-dimensional array, based on the fact that we have assigned a dimension of 2 to the sentence space when applying the ansatz.</p>
-</div>
-<p>The result is an instance of the class <code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.tensor.Tensor</span></code>, and the array can be accessed via the <code class="xref py py-attr docutils literal notranslate"><span class="pre">array</span></code> attribute.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">array</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">array([5.34118341, 6.41315789])</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="a-complete-use-case">
-<h2>A complete use case<a class="headerlink" href="#a-complete-use-case" title="Permalink to this headline">¶</a></h2>
-<p>In this section we present a complete use case, based on the meaning classification dataset introduced in Lorenz et al. (2021) QNLP paper <a class="footnote-reference brackets" href="#id2" id="id1">1</a>. The goal is to classify simple sentences (such as “skillful programmer creates software” and “chef prepares delicious meal”) into two categories, food or IT. The dataset consists of 130 sentences created using a simple context-free grammar.</p>
-<p>We will use a <a class="reference internal" href="lambeq.html#lambeq.tensor.SpiderAnsatz" title="lambeq.tensor.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a> to split large tensors into chains of smaller ones. For differentiation we will use JAX, and we will apply simple gradient-descent optimisation to train the tensors.</p>
-<div class="section" id="preparation">
-<h3>Preparation<a class="headerlink" href="#preparation" title="Permalink to this headline">¶</a></h3>
-<p>We start with a few essential imports.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
-
-<span class="n">np</span><span class="o">.</span><span class="n">random</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span>
-<span class="n">Tensor</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">np</span>
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Note the <code class="docutils literal notranslate"><span class="pre">Tensor.np</span> <span class="pre">=</span> <span class="pre">np</span></code> assignment in the last line. This is required to let <code class="docutils literal notranslate"><span class="pre">discopy</span></code> know that from now on we use JAX’s version of <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
-</div>
-<p>Let’s read the datasets:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read data</span>
-<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">fname</span><span class="p">):</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-    <span class="n">data</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">ln</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
-        <span class="n">t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">ln</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ln</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-        <span class="n">targets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="ow">not</span><span class="p">(</span><span class="n">t</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span>
-
-<span class="n">train_data</span><span class="p">,</span> <span class="n">train_targets</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">&#39;examples/datasets/mc_train_data.txt&#39;</span><span class="p">)</span>
-<span class="n">test_data</span><span class="p">,</span> <span class="n">test_targets</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">&#39;examples/datasets/mc_test_data.txt&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The first few lines of the train dataset:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[&#39;skillful man prepares sauce&#39;,</span>
-<span class="go"> &#39;skillful man bakes dinner&#39;,</span>
-<span class="go"> &#39;woman cooks tasty meal&#39;,</span>
-<span class="go"> &#39;man prepares meal&#39;,</span>
-<span class="go"> &#39;skillful woman debugs program&#39;,</span>
-<span class="go"> &#39;woman prepares tasty meal&#39;,</span>
-<span class="go"> &#39;person runs program&#39;,</span>
-<span class="go"> &#39;person runs useful application&#39;,</span>
-<span class="go"> &#39;woman prepares sauce&#39;,</span>
-<span class="go"> &#39;woman prepares dinner&#39;]</span>
-</pre></div>
-</div>
-<p>Targets are represented as 2-dimensional arrays:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_targets</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">DeviceArray([[1., 0.],</span>
-<span class="go">             [1., 0.],</span>
-<span class="go">             [1., 0.],</span>
-<span class="go">             ...,</span>
-<span class="go">             [0., 1.],</span>
-<span class="go">             [1., 0.],</span>
-<span class="go">             [0., 1.]], dtype=float32)</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="creating-and-parameterising-diagrams">
-<h3>Creating and parameterising diagrams<a class="headerlink" href="#creating-and-parameterising-diagrams" title="Permalink to this headline">¶</a></h3>
-<p>First step is to convert sentences into string diagrams:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Parse sentences to diagrams</span>
-
-<span class="kn">from</span> <span class="nn">lambeq.ccg2discocat</span> <span class="kn">import</span> <span class="n">DepCCGParser</span>
-
-<span class="n">parser</span> <span class="o">=</span> <span class="n">DepCCGParser</span><span class="p">()</span>
-<span class="n">train_diagrams</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
-<span class="n">test_diagrams</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
-
-<span class="n">train_diagrams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/training_14_0.png" src="_images/training_14_0.png" />
-<p>The produced diagrams need to be parameterised by a specific ansatz. For this experiment we will use a <a class="reference internal" href="lambeq.html#lambeq.tensor.SpiderAnsatz" title="lambeq.tensor.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create ansatz and convert to tensor diagrams</span>
-
-<span class="kn">from</span> <span class="nn">lambeq.tensor</span> <span class="kn">import</span> <span class="n">SpiderAnsatz</span>
-<span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Dim</span>
-
-<span class="n">N</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span>
-<span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
-
-<span class="c1"># Create an ansatz by assigning 2 dimensions to both</span>
-<span class="c1"># noun and sentence spaces</span>
-<span class="n">ansatz</span> <span class="o">=</span> <span class="n">SpiderAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">S</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)})</span>
-
-<span class="n">train_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">ansatz</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_diagrams</span><span class="p">]</span>
-<span class="n">test_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">ansatz</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">test_diagrams</span><span class="p">]</span>
-
-<span class="n">all_circuits</span> <span class="o">=</span> <span class="n">train_circuits</span> <span class="o">+</span> <span class="n">test_circuits</span>
-
-<span class="n">all_circuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
-</pre></div>
-</div>
-<img alt="_images/training_15_0.png" src="_images/training_15_0.png" />
-</div>
-<div class="section" id="creating-a-vocabulary">
-<h3>Creating a vocabulary<a class="headerlink" href="#creating-a-vocabulary" title="Permalink to this headline">¶</a></h3>
-<p>We are now ready to create a vocabulary.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create vocabulary</span>
-
-<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">default_sort_key</span>
-
-<span class="n">vocab</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
-   <span class="p">{</span><span class="n">sym</span> <span class="k">for</span> <span class="n">circ</span> <span class="ow">in</span> <span class="n">all_circuits</span> <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">circ</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">},</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">default_sort_key</span>
-<span class="p">)</span>
-<span class="n">tensors</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">vocab</span><span class="p">]</span>
-
-<span class="n">tensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">array([0.29773968, 0.20845003])</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="defining-a-loss-function">
-<h3>Defining a loss function<a class="headerlink" href="#defining-a-loss-function" title="Permalink to this headline">¶</a></h3>
-<p>This is a binary classification task, so we will use binary cross entropy as the loss.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">))</span>
-
-<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">tensors</span><span class="p">):</span>
-    <span class="c1"># Lambdify</span>
-    <span class="n">np_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="n">vocab</span><span class="p">)(</span><span class="o">*</span><span class="n">tensors</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">train_circuits</span><span class="p">]</span>
-    <span class="c1"># Compute predictions</span>
-    <span class="n">predictions</span> <span class="o">=</span>  <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">array</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np_circuits</span><span class="p">]))</span>
-
-    <span class="c1"># binary cross-entropy loss</span>
-    <span class="n">cost</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">train_targets</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">predictions</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_targets</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cost</span>
-</pre></div>
-</div>
-<p>The loss function follows the steps below:</p>
-<ol class="arabic simple">
-<li><p>The symbols in the train diagrams are replaced with concrete <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays.</p></li>
-<li><p>The resulting tensor networks are evaluated and produce results.</p></li>
-<li><p>Based on the predictions, an average loss is computed for the specific iteration.</p></li>
-</ol>
-<p>We use JAX in order to get a gradient function on the loss, and “just-in-time” compile it to improve speed:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span><span class="p">,</span> <span class="n">grad</span>
-
-<span class="n">training_loss</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span>
-<span class="n">gradient</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">grad</span><span class="p">(</span><span class="n">loss</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="training-loop">
-<h3>Training loop<a class="headerlink" href="#training-loop" title="Permalink to this headline">¶</a></h3>
-<p>We are now ready to start training. The following loop computes gradients and  uses them to update the tensors associated with the symbols.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">training_losses</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="n">epochs</span> <span class="o">=</span> <span class="mi">90</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
-
-    <span class="n">gr</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">tensors</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tensors</span><span class="p">)):</span>
-        <span class="n">tensors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tensors</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-</span> <span class="n">gr</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="mf">1.0</span>
-
-    <span class="n">training_losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">training_loss</span><span class="p">(</span><span class="n">tensors</span><span class="p">)))</span>
-
-    <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Epoch </span><span class="si">{</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s2"> - loss </span><span class="si">{</span><span class="n">training_losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Epoch 10 - loss 0.06685008108615875</span>
-<span class="go">Epoch 20 - loss 0.019171809777617455</span>
-<span class="go">Epoch 30 - loss 0.010309514589607716</span>
-<span class="go">Epoch 40 - loss 0.006651447154581547</span>
-<span class="go">Epoch 50 - loss 0.004739918280392885</span>
-<span class="go">Epoch 60 - loss 0.0036025135777890682</span>
-<span class="go">Epoch 70 - loss 0.0028640141244977713</span>
-<span class="go">Epoch 80 - loss 0.002353237010538578</span>
-<span class="go">Epoch 90 - loss 0.0019826283678412437</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="testing">
-<h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
-<p>Finally, we use the trained model on the test dataset:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Testing</span>
-
-<span class="n">np_test_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="n">vocab</span><span class="p">)(</span><span class="o">*</span><span class="n">tensors</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">test_circuits</span><span class="p">]</span>
-<span class="n">test_predictions</span> <span class="o">=</span>  <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">array</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np_test_circuits</span><span class="p">]))</span>
-
-<span class="n">hits</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np_test_circuits</span><span class="p">)):</span>
-    <span class="n">target</span> <span class="o">=</span> <span class="n">test_targets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">pred</span> <span class="o">=</span> <span class="n">test_predictions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">target</span><span class="p">)</span> <span class="o">==</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">pred</span><span class="p">):</span>
-        <span class="n">hits</span> <span class="o">+=</span> <span class="mi">1</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set:&quot;</span><span class="p">,</span> <span class="n">hits</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">np_test_circuits</span><span class="p">))</span>
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Accuracy on test set: 0.9333333333333333</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="working-with-quantum-circuits">
-<h2>Working with quantum circuits<a class="headerlink" href="#working-with-quantum-circuits" title="Permalink to this headline">¶</a></h2>
-<p>The process when working with quantum circuits is very similar, with two important differences:</p>
-<ol class="arabic simple">
-<li><p>The parameterisable part of the circuit is an array of parameters, as described <a class="reference internal" href="#param-circuits"><span class="std std-ref">above</span></a>, instead of tensors associated to words.</p></li>
-<li><p>If optimisation takes place on quantum hardware, standard automatic differentiation cannot be used. An alternative is to use a gradient-approximation technique, such as <a class="reference external" href="https://en.wikipedia.org/wiki/Simultaneous_perturbation_stochastic_approximation">Simultaneous Perturbation Stochastic Approximation (SPSA)</a>.</p></li>
-</ol>
-<p>Complete examples in training quantum circuits can be found in the following notebooks:</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="examples/quantum_pipeline_jax.html"><span class="doc">Quantum pipeline with JAX</span></a></p></li>
-<li><p><a class="reference internal" href="examples/quantum_pipeline_tket.html"><span class="doc">Quantum pipeline with tket</span></a></p></li>
+<p>In the quantum case we do not explicitly have tensors, but circuit parameters defining rotation angles on qubits, that need to be associated with concrete numbers; these are also represented by symbols. The first part of this tutorial provides a short introduction to symbols and their use, while in the second part we will go through all stages of a complete experiment.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/training-symbols.html">Introduction to symbols</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-symbols.html#Circuit-symbols">Circuit symbols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-symbols.html#From-symbols-to-tensors">From symbols to tensors</a></li>
 </ul>
-<dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
-<dd><p>Lorenz, Pearson, Meichanetzidis, Kartsaklis, Coecke. 2021. <cite>QNLP in Practice: Running Compositional Models of Meaning on a Quantum Computer</cite>. <a class="reference external" href="https://arxiv.org/abs/2102.12846">arXiv:2102.12846</a></p>
-</dd>
-</dl>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/training-usecase.html">A complete use case</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html#Preparation">Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html#Creating-a-vocabulary">Creating a vocabulary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html#Defining-a-loss-function">Defining a loss function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html#Training-loop">Training loop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html#Testing">Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html#Working-with-quantum-circuits">Working with quantum circuits</a></li>
+</ul>
+</li>
+</ul>
 </div>
 </div>
 
@@ -605,8 +262,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="modules.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="parameterise.html" class="btn btn-neutral float-left" title="Step 3: Parameterisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tutorials/training-symbols.html" class="btn btn-neutral float-right" title="Introduction to symbols" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorials/parameterise.html" class="btn btn-neutral float-left" title="Step 3. Parameterisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Syntactic parsing &mdash; lambeq 0.1.3.dev4+gc7bccba documentation</title>
+  <title>Syntactic parsing &mdash; lambeq 0.1.3.dev5+g3feba14 documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev4+gc7bccba
+                0.1.3.dev5+g3feba14
               </div>
             
           
@@ -101,16 +101,19 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Syntactic parsing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Syntactic parsing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reading-ccgbank">Reading CCGBank</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="sentence_input.html">Step 1: Sentence input</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewrite.html">Step 2: Diagram rewriting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3: Parameterisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4. Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolkit</span></p>
 <ul>
@@ -218,14 +221,28 @@
 <div class="section" id="syntactic-parsing">
 <span id="sec-parsing"></span><h1>Syntactic parsing<a class="headerlink" href="#syntactic-parsing" title="Permalink to this headline">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="string_diagrams.html#sec-string-diagrams"><span class="std std-ref">string diagrams</span></a> are based on a pregroup grammar to keep track of the types and the interactions between the words in a sentence. When a detailed syntactic derivation is required (as in the case of DisCoCat), a syntax tree needs to be provided by a statistical parser. However, since the pregroup grammar formalism is not particularly well-known in the NLP community, there is currently no wide-coverage pregroup parser that can automatically provide the syntactic derivations. To address this problem, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a passage from a derivation in the closest alternative grammar formalism, namely <em>Combinatory Categorial Grammar</em> (CCG), to a string diagram which faithfully encodes the syntactic structure of the sentence in a pregroup-like form. Due to the availability of many robust CCG parsing tools, this allows the conversion of large corpora with sentences of arbitrary length and syntactic structure into pregroup and DisCoCat form.</p>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> does not use its own statistical CCG parser, but instead implements a detailed interface in the <a class="reference internal" href="lambeq.ccg2discocat.html#module-lambeq.ccg2discocat" title="lambeq.ccg2discocat"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code></a> package that allows connection to one of the many external CCG parsing tools that are currently available. By default, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is shipped with support for <em>depccg</em> <a class="footnote-reference brackets" href="#id2" id="id1">1</a>, a state-of-the-art efficient parser which comes with a convenient Python interface.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> does not use its own statistical CCG parser, but instead implements a detailed interface in the <a class="reference internal" href="lambeq.ccg2discocat.html#module-lambeq.ccg2discocat" title="lambeq.ccg2discocat"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code></a> package that allows connection to one of the many external CCG parsing tools that are currently available. By default, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is shipped with support for <em>depccg</em> <a class="footnote-reference brackets" href="#id3" id="id1">1</a>, a state-of-the-art efficient parser which comes with a convenient Python interface.</p>
 <p>Other external parsers can be made available to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> by extending  the <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccg_parser.CCGParser" title="lambeq.ccg2discocat.ccg_parser.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGParser</span></code></a> class in order to create a wrapper subclass that encapsulates the necessary calls and translates the respective parser’s output into <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccg_tree.CCGTree" title="lambeq.ccg2discocat.ccg_tree.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> format.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Instructions for the proper installation of the parser dependencies can be found in <a class="reference internal" href="installation.html#sec-installation"><span class="std std-ref">Installation</span></a>.</p>
+</div>
+<div class="section" id="reading-ccgbank">
+<h2>Reading CCGBank<a class="headerlink" href="#reading-ccgbank" title="Permalink to this headline">¶</a></h2>
+<p>The CCG compatibility makes immediately available to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> a wide range of language-related resources. For example, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> features a <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccgbank_parser.CCGBankParser" title="lambeq.ccg2discocat.ccgbank_parser.CCGBankParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a> class, which allows conversion of the entire <em>CCGBank</em> corpus <a class="footnote-reference brackets" href="#id4" id="id2">2</a> into string diagrams. CCGBank consists of 49,000 human-annotated CCG syntax trees, converted from the original Penn Treebank into CCG form. Having a gold standard corpus of string diagrams allows various supervised learning scenarios involving automatic diagram generation. <a class="reference internal" href="#fig-ccgbank"><span class="std std-numref">Fig. 2</span></a> below shows the first tree of CCGBank’s Section 00 converted into a string diagram.</p>
+<div class="figure align-default" id="id5">
+<span id="fig-ccgbank"></span><img alt="_images/ccgbank.png" src="_images/ccgbank.png" />
+<p class="caption"><span class="caption-number">Fig. 2 </span><span class="caption-text">The first derivation of CCGBank as a string diagram.</span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
+</div>
 <dl class="footnote brackets">
-<dt class="label" id="id2"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p><a class="reference external" href="https://github.com/masashi-y/depccg">https://github.com/masashi-y/depccg</a></p>
 </dd>
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p><a class="reference external" href="https://catalog.ldc.upenn.edu/LDC2005T13">https://catalog.ldc.upenn.edu/LDC2005T13</a></p>
+</dd>
 </dl>
+</div>
 </div>
 
 

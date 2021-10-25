@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Installation &mdash; lambeq 0.1.3.dev4+gc7bccba documentation</title>
+  <title>Installation &mdash; lambeq 0.1.3.dev5+g3feba14 documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev4+gc7bccba
+                0.1.3.dev5+g3feba14
               </div>
             
           
@@ -112,10 +112,10 @@
 </ul>
 <p class="caption"><span class="caption-text">Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="sentence_input.html">Step 1: Sentence input</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rewrite.html">Step 2: Diagram rewriting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3: Parameterisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4. Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolkit</span></p>
 <ul>
@@ -225,7 +225,7 @@
 <div class="section" id="direct-pip-install">
 <h2>Direct pip install<a class="headerlink" href="#direct-pip-install" title="Permalink to this headline">¶</a></h2>
 <p>The base <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can be installed with the command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">lambeq</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install lambeq
 </pre></div>
 </div>
 <p>This does not include optional dependencies such as depccg and PyTorch, which have to be installed separately. In particular, depccg is required for <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.DepCCGParser" title="lambeq.ccg2discocat.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.DepCCGParser</span></code></a>.</p>
@@ -234,9 +234,9 @@
 <p>depccg is available only on MacOS and Linux. If you are using Windows, please install the base <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>. This means that the <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.depccg_parser.DepCCGParser" title="lambeq.ccg2discocat.depccg_parser.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">DepCCGParser</span></code></a> class will not be available on Windows, but you can still use all other compositional models from the <a class="reference internal" href="lambeq.html#module-lambeq.reader" title="lambeq.reader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reader</span></code></a> module. Support for parsing on Windows will be added in a future version.</p>
 </div>
 <p>To install <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> with depccg, run instead:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span> <span class="n">numpy</span>
-<span class="n">pip</span> <span class="n">install</span> <span class="s1">&#39;lambeq[depccg]&#39;</span>
-<span class="n">depccg_en</span> <span class="n">download</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install cython numpy
+pip install <span class="s1">&#39;lambeq[depccg]&#39;</span>
+depccg_en download
 </pre></div>
 </div>
 <p>See below for further options.</p>
@@ -244,7 +244,7 @@
 <div class="section" id="automatic-installation-recommended">
 <h2>Automatic installation (recommended)<a class="headerlink" href="#automatic-installation-recommended" title="Permalink to this headline">¶</a></h2>
 <p>This runs an interactive installer to help pick the installation destination and configuration:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sh</span> <span class="o">&lt;</span><span class="p">(</span><span class="n">curl</span> <span class="s1">&#39;https://cqcl.github.io/lambeq/install.sh&#39;</span><span class="p">)</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sh &lt;<span class="o">(</span>curl <span class="s1">&#39;https://cqcl.github.io/lambeq/install.sh&#39;</span><span class="o">)</span>
 </pre></div>
 </div>
 </div>
@@ -254,42 +254,42 @@
 <ol class="arabic simple">
 <li><p>Download this repository:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">CQCL</span><span class="o">/</span><span class="n">lambeq</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/CQCL/lambeq
 </pre></div>
 </div>
 <ol class="arabic simple" start="2">
 <li><p>Enter the repository:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">lambeq</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span> lambeq
 </pre></div>
 </div>
 <ol class="arabic simple" start="3">
 <li><p>Make sure pip is up-to-date:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">upgrade</span> <span class="n">pip</span> <span class="n">wheel</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --upgrade pip wheel
 </pre></div>
 </div>
 <ol class="arabic simple" start="4">
 <li><p>(Optional) If installing the optional depccg dependency, the following packages must be installed <strong>before</strong> depccg:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cython</span> <span class="n">numpy</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install cython numpy
 </pre></div>
 </div>
 <p>Further information can be found on the <a class="reference external" href="https://github.com/masashi-y/depccg">depccg homepage</a>.</p>
 <ol class="arabic simple" start="5">
 <li><p>Install <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> from the local repository using pip:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">use</span><span class="o">-</span><span class="n">feature</span><span class="o">=</span><span class="ow">in</span><span class="o">-</span><span class="n">tree</span><span class="o">-</span><span class="n">build</span> <span class="o">.</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --use-feature<span class="o">=</span><span class="k">in</span>-tree-build .
 </pre></div>
 </div>
 <p>To include all optional dependencies, run instead:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">--</span><span class="n">use</span><span class="o">-</span><span class="n">feature</span><span class="o">=</span><span class="ow">in</span><span class="o">-</span><span class="n">tree</span><span class="o">-</span><span class="n">build</span> <span class="o">.</span><span class="p">[</span><span class="nb">all</span><span class="p">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --use-feature<span class="o">=</span><span class="k">in</span>-tree-build .<span class="o">[</span>all<span class="o">]</span>
 </pre></div>
 </div>
 <ol class="arabic simple" start="6">
 <li><p>If using a pretrained depccg parser, download a <a class="reference external" href="https://github.com/masashi-y/depccg#using-a-pretrained-english-parser">pretrained model</a>:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">depccg_en</span> <span class="n">download</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>depccg_en download
 </pre></div>
 </div>
 </div>
