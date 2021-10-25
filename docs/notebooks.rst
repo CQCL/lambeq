@@ -5,8 +5,6 @@ Examples
 
 .. toctree::
 
-    ../examples/doc_tutorial.ipynb
-    ../examples/training.ipynb
     ../examples/ccg2discocat.ipynb
     ../examples/reader.ipynb
     ../examples/rewrite.ipynb

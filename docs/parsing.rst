@@ -9,6 +9,18 @@ Syntactic parsing
 
 Other external parsers can be made available to ``lambeq`` by extending  the :py:class:`.CCGParser` class in order to create a wrapper subclass that encapsulates the necessary calls and translates the respective parser's output into :py:class:`.CCGTree` format.
 
-Instructions for the proper installation of the parser dependencies can be found in :ref:`sec-installation`.
+.. note::
+   Instructions for the proper installation of the parser dependencies can be found in :ref:`sec-installation`.
+
+Reading CCGBank
+---------------
+
+The CCG compatibility makes immediately available to ``lambeq`` a wide range of language-related resources. For example, ``lambeq`` features a :py:class:`.CCGBankParser` class, which allows conversion of the entire *CCGBank* corpus [2]_ into string diagrams. CCGBank consists of 49,000 human-annotated CCG syntax trees, converted from the original Penn Treebank into CCG form. Having a gold standard corpus of string diagrams allows various supervised learning scenarios involving automatic diagram generation. :numref:`fig-ccgbank` below shows the first tree of CCGBank's Section 00 converted into a string diagram.
+
+.. _fig-ccgbank:
+.. figure:: _static/images/ccgbank.png
+
+   The first derivation of CCGBank as a string diagram.
 
 .. [1] https://github.com/masashi-y/depccg
+.. [2] https://catalog.ldc.upenn.edu/LDC2005T13

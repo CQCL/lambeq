@@ -3,6 +3,8 @@
 Installation
 ============
 
+.. highlight:: bash
+
 Direct pip install
 ------------------
 
