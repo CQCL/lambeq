@@ -52,6 +52,7 @@ If you use ``lambeq`` for your research, please cite the following paper:
    ../tutorials/rewrite.ipynb
    ../tutorials/parameterise.ipynb
    training
+   advanced
 
 .. toctree::
    :caption: Toolkit
