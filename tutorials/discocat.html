@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>DisCoCat in DisCoPy &mdash; lambeq 0.1.3.dev6+gdfc64c5 documentation</title>
+  <title>DisCoCat in DisCoPy &mdash; lambeq 0.1.3.dev7+g4d89cae documentation</title>
   
 
   
@@ -44,7 +44,7 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API Reference" href="../modules.html" />
+    <link rel="next" title="Advanced: Extending lambeq" href="extend-lambeq.html" />
     <link rel="prev" title="Monoidal categories in DisCoPy" href="monoidal.html" /> 
 </head>
 
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev6+gdfc64c5
+                0.1.3.dev7+g4d89cae
               </div>
             
           
@@ -126,6 +126,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="extend-lambeq.html">Advanced: Extending lambeq</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Toolkit</span></p>
 <ul>
@@ -483,8 +484,12 @@ div.rendered_html tbody tr:hover {
 <p>In the previous tutorial, we learnt the basics of monoidal categories and how to represent them in DisCoPy. In this tutorial, we look at the <em>Distributional Compositional Categorical</em> model (<a class="reference external" href="https://arxiv.org/abs/1003.4394">DisCoCat</a>), which uses functors to map diagrams from the <a class="reference internal" href="monoidal.html#Rigid-monoidal-categories"><span class="std std-ref">rigid category</span></a> of <a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">pregroup grammars</span></a> to vector space semantics.</p>
 <div class="section" id="Pregroup-grammars">
 <h2>Pregroup grammars<a class="headerlink" href="#Pregroup-grammars" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">Pregroup grammar</span></a> is a grammatical formalism devised by Joachim Lambek in 1999. In pregroups, each word is a morphism with type <span class="math notranslate nohighlight">\(I \to T\)</span> where <span class="math notranslate nohighlight">\(I\)</span> is the monoidal unit and <span class="math notranslate nohighlight">\(T\)</span> is a rigid type, referred to as the <em>pregroup type</em>. Here are some examples for pregroup type assignments: * a noun is given the base type <span class="math notranslate nohighlight">\(n\)</span>. * an adjective consumes a noun on the noun’s left to return another noun, so it is given the type
-<span class="math notranslate nohighlight">\(n\cdot n^l\)</span>. * a transitive verb consumes a noun on its left and another noun on its right to give a sentence, so is given the type <span class="math notranslate nohighlight">\(n^r \cdot s \cdot n^l\)</span>.</p>
+<p><a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">Pregroup grammar</span></a> is a grammatical formalism devised by Joachim Lambek in 1999. In pregroups, each word is a morphism with type <span class="math notranslate nohighlight">\(I \to T\)</span> where <span class="math notranslate nohighlight">\(I\)</span> is the monoidal unit and <span class="math notranslate nohighlight">\(T\)</span> is a rigid type, referred to as the <em>pregroup type</em>. Here are some examples for pregroup type assignments:</p>
+<ul class="simple">
+<li><p>a noun is given the base type <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
+<li><p>an adjective consumes a noun on the noun’s left to return another noun, so it is given the type <span class="math notranslate nohighlight">\(n\cdot n^l\)</span>.</p></li>
+<li><p>a transitive verb consumes a noun on its left and another noun on its right to give a sentence, so is given the type <span class="math notranslate nohighlight">\(n^r \cdot s \cdot n^l\)</span>.</p></li>
+</ul>
 <p>In the context of pregroups, the adjoints <span class="math notranslate nohighlight">\(n^l\)</span> and <span class="math notranslate nohighlight">\(n^r\)</span> can be thought of as the left and right inverses of a type <span class="math notranslate nohighlight">\(n\)</span> respectively. In a pregroup derivation, the words are concatenated using the monoidal product <span class="math notranslate nohighlight">\(\otimes\)</span> and linked using cups, which are special morphisms that exist in any rigid category. A sentence is grammatically sound if its derivation has a single uncontracted sentence wire.</p>
 <p>In DisCoPy, words are defined using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html">Word</a> class. <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html">Word</a>s are just <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html">Box</a>es where the input type is fixed to be the monoidal unit <span class="math notranslate nohighlight">\(I\)</span> (or <code class="docutils literal notranslate"><span class="pre">Ty()</span></code>). A pregroup derivation diagram can be drawn using either the
 <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw">diagram.draw()</a> method or <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html">grammar.draw(diagram)</a>.</p>
@@ -1128,7 +1133,7 @@ CQMap(dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)), array=[1.+0.j, 0.+0.j, 0.+0.j, ..., 0.
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="../modules.html" class="btn btn-neutral float-right" title="API Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="extend-lambeq.html" class="btn btn-neutral float-right" title="Advanced: Extending lambeq" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="monoidal.html" class="btn btn-neutral float-left" title="Monoidal categories in DisCoPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

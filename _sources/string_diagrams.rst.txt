@@ -8,7 +8,7 @@ Motivation and connection to tensor networks
 
 "Programming" a quantum computer requires from developers the ability to manipulate *quantum gates* (which can be seen as the "atomic" units of computation in this paradigm) in order to create quantum circuits, which can be further grouped into higher-order constructions. Working at such a low level compares to writing assembly in a classical computer, and is extremely hard for humans -- especially on NLP tasks which contain many levels of abstractions. 
 
-In order to simplify NLP design on quantum hardware, ``lambeq`` represents sentences as string diagrams (:numref:`fig-stringdiagram`). This choice stems from the fact that a string diagram expresses computations in a *monoidal category*, an abstraction well-suited to model the way a quantum computer works and processes data. 
+In order to simplify NLP design on quantum hardware, ``lambeq`` represents sentences as string diagrams (:numref:`fig-stringdiagram`). This choice stems from the fact that a string diagram expresses computations in a :ref:`monoidal category </tutorials/monoidal.ipynb#Monoidal-categories>`, an abstraction well-suited to model the way a quantum computer works and processes data.
 
 From a more practical point of view, a string diagram can be seen as an enriched *tensor network*, a mathematical structure with many applications in quantum physics. Compared to tensor networks, string diagrams have some additional convenient properties, for example they respect the order of words, and allow easy rewriting/modification of their structure.
 
@@ -45,3 +45,7 @@ The transition from pregroups to vector space semantics is achieved by a mapping
 
 .. note::
    ``lambeq``'s string diagrams are objects of the class :py:class:`discopy.rigid.Diagram`.
+
+**See also**:
+
+- :ref:`Pregroup grammars in DisCoPy </tutorials/discocat.ipynb#Pregroup-grammars>`
