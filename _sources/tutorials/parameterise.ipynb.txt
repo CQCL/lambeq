@@ -32,7 +32,7 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "In order to create an [IQPAnsatz](../lambeq.rst#lambeq.circuit.IQPAnsatz) instance, we need to define the number of qubits for all atomic types that occur in the diagram -- in this case, for the noun type and the sentence type. The following code produces a circuit by assigning 1 qubit to the noun type and 1 qubit to the sentence type. Further, the number of IQP layers (`n_layers`) is set to 1."
+    "In order to create an [IQPAnsatz](../lambeq.rst#lambeq.circuit.IQPAnsatz) instance, we need to define the number of qubits for all atomic types that occur in the diagram -- in this case, for the noun type and the sentence type. The following code produces a circuit by assigning 1 qubit to the noun type and 1 qubit to the sentence type. Further, the number of IQP layers (`n_layers`) is set to 2."
    ]
   },
   {
@@ -7362,6 +7362,19 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "<div class=\"alert alert-info\">\n",
+    "\n",
+    "**Note**\n",
+    "\n",
+    "To use `tk_to_qiskit`, first install the `pytket-qiskit` extension by running `pip install pytket-qiskit`. For more information see https://cqcl.github.io/tket/pytket/api/#extensions.\n",
+    "\n",
+    "</div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "## Classical case\n",
     "\n",
     "In the case of a classical experiment, instantiating one of the tensor ansätze requires the user to assign dimensions to each one of the atomic types occurring in the diagram. In the following code, we parameterise a [TensorAnsatz](../lambeq.rst#lambeq.tensor.TensorAnsatz) instance with $d_n=4$ for the base dimension of the noun space, and $d_s=2$ as the dimension of the sentence space:"
@@ -7476,7 +7489,9 @@
     "**See also:**\n",
     "\n",
     "- [tensor.ipynb](../examples/tensor.ipynb)\n",
-    "- [circuit.ipynb](../examples/circuit.ipynb)"
+    "- [circuit.ipynb](../examples/circuit.ipynb)\n",
+    "- [discocat.ipynb](./discocat.ipynb)\n",
+    "- [extend-lambeq.ipynb](./extend-lambeq.ipynb)"
    ]
   }
  ],
