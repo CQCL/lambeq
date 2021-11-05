@@ -45,7 +45,7 @@ If you use ``lambeq`` for your research, please cite the following paper:
    discopy
 
 .. toctree::
-   :caption: Tutorial
+   :caption: Tutorials
    :maxdepth: 2
 
    ../tutorials/sentence-input.ipynb
