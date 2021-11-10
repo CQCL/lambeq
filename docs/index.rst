@@ -7,7 +7,7 @@ lambeq
 
 ``lambeq`` is an open-source, modular, extensible high-level Python library for experimental Quantum Natural Language Processing (QNLP), created by `Cambridge Quantum <https://cambridgequantum.com>`_'s QNLP team. At a high level, the library allows the conversion of any sentence to a quantum circuit, based on a given compositional model and certain parameterisation and choices of ansätze.
 
-``lambeq`` is available for Python 3.7, 3.8 and 3.9, on Linux, MacOS and Windows. To install, see :ref:`sec-installation`. To start the tutorial, go to `Step 1: Sentence Input <tutorials/sentence-input.ipynb>`_. To see the example notebooks, go to :ref:`sec-examples`.
+``lambeq`` is available for Python 3.7, 3.8 and 3.9, on Linux, MacOS and Windows. To install, see :ref:`sec-installation`. To start the tutorial, go to `Step 1: Sentence Input <tutorials/sentence-input.ipynb>`_. To see the example notebooks, go to :ref:`sec-examples`. To make your own contributions to ``lambeq``, see :ref:`sec-contributing`.
 
 User support
 ------------
@@ -43,6 +43,7 @@ If you use ``lambeq`` for your research, please cite the following paper:
    parsing
    string_diagrams
    discopy
+   CONTRIBUTING
 
 .. toctree::
    :caption: Tutorials

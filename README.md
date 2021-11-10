@@ -14,6 +14,7 @@ lambeq is a toolkit for quantum natural language processing (QNLP).
 
 - Documentation: https://cqcl.github.io/lambeq/
 - User support: <lambeq-support@cambridgequantum.com>
+- Contributions: Please read [our guide](https://cqcl.github.io/lambeq/CONTRIBUTING.html).
 - If you want to subscribe to lambeq's mailing list, send an email to <lambeq-users@cambridgequantum.com> with the word "subscribe" as subject.
 
 ## Getting started
@@ -139,7 +140,7 @@ pytest
 Note: if you have installed in a virtual environment, remember to
 install pytest in the same environment using pip.
 
-## Building Documentation
+## Building documentation
 
 To build the documentation, first install the required dependencies:
 
