@@ -35,7 +35,12 @@ extensions = [
     'numpydoc',
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'sphinx.ext.intersphinx',
 ]
+
+intersphinx_mapping = {
+    'discopy': ("https://discopy.readthedocs.io/en/main/", None)
+}
 
 autodoc_default_options = {
     'members': True,
