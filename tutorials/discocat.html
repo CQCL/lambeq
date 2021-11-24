@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>DisCoCat in DisCoPy &mdash; lambeq 0.1.3.dev11+g5027523 documentation</title>
+  <title>DisCoCat in DisCoPy &mdash; lambeq 0.1.3.dev12+g1c6fdf7 documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev11+g5027523
+                0.1.3.dev12+g1c6fdf7
               </div>
             
           
@@ -117,11 +117,11 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DisCoCat in DisCoPy</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Pregroup-grammars">Pregroup grammars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Functors">Functors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Example-1:-“Very”-functor">Example 1: “Very” functor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Example-1:-&quot;Very&quot;-functor">Example 1: “Very” functor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Example-2:-Twist-functor">Example 2: Twist functor</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#“Classical”-DisCoCat:-Tensor-networks">“Classical” DisCoCat: Tensor networks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Classical-DisCoCat:-Tensor-networks">Classical DisCoCat: Tensor networks</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Quantum-DisCoCat:-Quantum-circuits">Quantum DisCoCat: Quantum circuits</a></li>
 </ul>
 </li>
@@ -133,6 +133,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Links</span></p>
 <ul>
@@ -482,18 +488,17 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="DisCoCat-in-DisCoPy">
 <h1>DisCoCat in DisCoPy<a class="headerlink" href="#DisCoCat-in-DisCoPy" title="Permalink to this headline">¶</a></h1>
-<p>In the previous tutorial, we learnt the basics of monoidal categories and how to represent them in DisCoPy. In this tutorial, we look at the <em>Distributional Compositional Categorical</em> model (<a class="reference external" href="https://arxiv.org/abs/1003.4394">DisCoCat</a>), which uses functors to map diagrams from the <a class="reference internal" href="monoidal.html#Rigid-monoidal-categories"><span class="std std-ref">rigid category</span></a> of <a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">pregroup grammars</span></a> to vector space semantics.</p>
+<p>In the previous tutorial, we learnt the basics of <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal categories</span></a> and how to represent them in <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>. In this tutorial, we look at the <cite>Distributional Compositional Categorical</cite> model <a class="reference internal" href="../bibliography.html#csc2010" id="id1"><span>[CSC2010]</span></a>, which uses functors to map diagrams from the <a class="reference internal" href="monoidal.html#Rigid-monoidal-categories"><span class="std std-ref">rigid category</span></a> of <a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">pregroup grammars</span></a> to vector space semantics.</p>
 <div class="section" id="Pregroup-grammars">
 <h2>Pregroup grammars<a class="headerlink" href="#Pregroup-grammars" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">Pregroup grammar</span></a> is a grammatical formalism devised by Joachim Lambek in 1999. In pregroups, each word is a morphism with type <span class="math notranslate nohighlight">\(I \to T\)</span> where <span class="math notranslate nohighlight">\(I\)</span> is the monoidal unit and <span class="math notranslate nohighlight">\(T\)</span> is a rigid type, referred to as the <em>pregroup type</em>. Here are some examples for pregroup type assignments:</p>
+<p><a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">Pregroup grammar</span></a> is a grammatical formalism devised by Joachim Lambek in 1999 <a class="reference internal" href="../bibliography.html#lam1999" id="id3"><span>[Lam1999]</span></a>. In pregroups, each word is a morphism with type <span class="math notranslate nohighlight">\(I \to T\)</span> where <span class="math notranslate nohighlight">\(I\)</span> is the monoidal unit and <span class="math notranslate nohighlight">\(T\)</span> is a rigid type, referred to as the <em>pregroup type</em>. Here are some examples for pregroup type assignments:</p>
 <ul class="simple">
 <li><p>a noun is given the base type <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
 <li><p>an adjective consumes a noun on the noun’s left to return another noun, so it is given the type <span class="math notranslate nohighlight">\(n\cdot n^l\)</span>.</p></li>
 <li><p>a transitive verb consumes a noun on its left and another noun on its right to give a sentence, so is given the type <span class="math notranslate nohighlight">\(n^r \cdot s \cdot n^l\)</span>.</p></li>
 </ul>
-<p>In the context of pregroups, the adjoints <span class="math notranslate nohighlight">\(n^l\)</span> and <span class="math notranslate nohighlight">\(n^r\)</span> can be thought of as the left and right inverses of a type <span class="math notranslate nohighlight">\(n\)</span> respectively. In a pregroup derivation, the words are concatenated using the monoidal product <span class="math notranslate nohighlight">\(\otimes\)</span> and linked using cups, which are special morphisms that exist in any rigid category. A sentence is grammatically sound if its derivation has a single uncontracted sentence wire.</p>
-<p>In DisCoPy, words are defined using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html">Word</a> class. <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html">Word</a>s are just <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html">Box</a>es where the input type is fixed to be the monoidal unit <span class="math notranslate nohighlight">\(I\)</span> (or <code class="docutils literal notranslate"><span class="pre">Ty()</span></code>). A pregroup derivation diagram can be drawn using either the
-<a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw">diagram.draw()</a> method or <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html">grammar.draw(diagram)</a>.</p>
+<p>In the context of pregroups, the <a class="reference internal" href="../glossary.html#term-adjoint"><span class="xref std std-term">adjoints</span></a> <span class="math notranslate nohighlight">\(n^l\)</span> and <span class="math notranslate nohighlight">\(n^r\)</span> can be thought of as the left and right inverses of a type <span class="math notranslate nohighlight">\(n\)</span> respectively. In a pregroup derivation, the words are concatenated using the monoidal product <span class="math notranslate nohighlight">\(\otimes\)</span> and linked using <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a>, which are special morphisms that exist in any <a class="reference internal" href="../glossary.html#term-rigid-category"><span class="xref std std-term">rigid category</span></a>. A sentence is grammatically sound if its derivation has a single uncontracted sentence wire.</p>
+<p>In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, words are defined using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> class. A <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> is just a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> where the input type is fixed to be the monoidal unit <span class="math notranslate nohighlight">\(I\)</span> (or <code class="docutils literal notranslate"><span class="pre">Ty()</span></code>). A pregroup derivation diagram can be drawn using either the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">monoidal.Diagram.draw()</span></code></a> method or the <code class="xref py py-func docutils literal notranslate"><span class="pre">grammar.draw()</span></code> function.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -525,10 +530,10 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_1_0.png" src="../_images/tutorials_discocat_1_0.png" />
+<img alt="../_images/tutorials_discocat_3_0.png" src="../_images/tutorials_discocat_3_0.png" />
 </div>
 </div>
-<p>Note that only diagrams of the form <code class="docutils literal notranslate"><span class="pre">word</span> <span class="pre">&#64;</span> <span class="pre">...</span> <span class="pre">&#64;</span> <span class="pre">word</span> <span class="pre">&gt;&gt;</span> <span class="pre">cups_and_swaps</span></code> can be drawn using <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html">grammar.draw()</a>. Applying functors or normal forms will often cause the diagram to deviate from this form, in which case <code class="docutils literal notranslate"><span class="pre">diagram.draw()</span></code> should be used.</p>
+<p>Note that only diagrams of the form <code class="docutils literal notranslate"><span class="pre">word</span> <span class="pre">&#64;</span> <span class="pre">...</span> <span class="pre">&#64;</span> <span class="pre">word</span> <span class="pre">&gt;&gt;</span> <span class="pre">cups_and_swaps</span></code> can be drawn using <code class="xref py py-func docutils literal notranslate"><span class="pre">grammar.draw()</span></code>. Applying functors or normal forms will often cause the diagram to deviate from this form, in which case <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">monoidal.Diagram.draw()</span></code></a> should be used.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -565,33 +570,34 @@ After normal form: [Word(&#39;she&#39;, Ty(&#39;n&#39;)), Word(&#39;goes&#39;, T
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_3_1.png" src="../_images/tutorials_discocat_3_1.png" />
+<img alt="../_images/tutorials_discocat_5_1.png" src="../_images/tutorials_discocat_5_1.png" />
 </div>
 </div>
-<p>In the example above, the application of normal form to the diagram introduces a cup before the word “home”, so the normalised version cannot be drawn with <code class="docutils literal notranslate"><span class="pre">grammar.draw()</span></code> anymore.</p>
+<p>In the example above, the application of normal form to the diagram introduces a <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a> before the word “home”, so the normalised version cannot be drawn with <code class="xref py py-func docutils literal notranslate"><span class="pre">grammar.draw()</span></code> anymore.</p>
 </div>
 <div class="section" id="Functors">
 <h2>Functors<a class="headerlink" href="#Functors" title="Permalink to this headline">¶</a></h2>
-<p>Given monoidal categories <span class="math notranslate nohighlight">\(\mathcal{C}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, a monoidal functor <span class="math notranslate nohighlight">\(F: \mathcal{C} \to \mathcal{D}\)</span> satisfies the following properties:</p>
+<p>Given <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal categories</span></a> <span class="math notranslate nohighlight">\(\mathcal{C}\)</span> and <span class="math notranslate nohighlight">\(\mathcal{D}\)</span>, a monoidal <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> <span class="math notranslate nohighlight">\(F: \mathcal{C} \to \mathcal{D}\)</span> satisfies the following properties:</p>
 <ul class="simple">
 <li><p>monoidal structure of objects is preserved: <span class="math notranslate nohighlight">\(F(A \otimes B) = F(A) \otimes F(B)\)</span></p></li>
-<li><p>adjoints are preserved: <span class="math notranslate nohighlight">\(F(A^l) = F(A)^l\)</span>, <span class="math notranslate nohighlight">\(F(A^r) = F(A)^r\)</span></p></li>
+<li><p><a class="reference internal" href="../glossary.html#term-adjoint"><span class="xref std std-term">adjoints</span></a> are preserved: <span class="math notranslate nohighlight">\(F(A^l) = F(A)^l\)</span>, <span class="math notranslate nohighlight">\(F(A^r) = F(A)^r\)</span></p></li>
 <li><p>monoidal structure of morphism is preserved: <span class="math notranslate nohighlight">\(F(g \otimes f) = F(g) \otimes F(f)\)</span></p></li>
 <li><p>compositonal structure of morphisms is preserved: <span class="math notranslate nohighlight">\(F(g \circ f) = F(g) \circ F(f)\)</span></p></li>
 </ul>
-<p>Put simply, a functor is a structure-preserving transformation. In a free monoidal category, applying a functor to a diagram amounts to simply providing a mapping for each generating object and morphism. In DisCoPy, a functor is defined by passing mappings (dictionaries or functions) as arguments <code class="docutils literal notranslate"><span class="pre">ob</span></code> and <code class="docutils literal notranslate"><span class="pre">ar</span></code> to the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Functor.html">Functor</a> class.</p>
-<p>Functors are one of the most powerful concepts in category theory. In fact, the encoding, rewriting and parameterisation steps of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="../pipeline.html"><span class="doc">pipeline</span></a> are implemented individually as functors, resulting in an overall functorial transformation from parse trees to tensor networks and circuits. More specifically:</p>
+<p>Put simply, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is a structure-preserving transformation. In a free <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal category</span></a>, applying a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to a diagram amounts to simply providing a mapping for each generating object and morphism. In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is defined by passing mappings (dictionaries or functions) as arguments <code class="docutils literal notranslate"><span class="pre">ob</span></code> and <code class="docutils literal notranslate"><span class="pre">ar</span></code> to the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Functor.html#discopy.monoidal.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Functor</span></code></a> class.</p>
+<p><a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">Functors</span></a> are one of the most powerful concepts in category theory. In fact, the encoding, rewriting and parameterisation steps of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="../pipeline.html#sec-pipeline"><span class="std std-ref">pipeline</span></a> are implemented individually as <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functors</span></a>, resulting in an overall functorial transformation from <a class="reference internal" href="../glossary.html#term-syntax-tree"><span class="xref std std-term">parse trees</span></a> to <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a> and <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a>. More specifically:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://cqcl.github.io/lambeq/lambeq.ccg2discocat.html#module-lambeq.ccg2discocat.ccg_parser">lambeq.ccg2discocat.CCGParser</a> uses a functor (see <a class="reference external" href="https://arxiv.org/abs/2105.07720">the related paper</a>) to transform a biclosed CCG diagram to a rigid DisCoCat diagram.</p></li>
-<li><p><a class="reference external" href="https://cqcl.github.io/lambeq/lambeq.html#lambeq.rewrite.Rewriter">lambeq.rewrite.Rewriter</a> functorially transforms a rigid DisCoCat diagram to a simpler rigid DisCoCat diagram.</p></li>
-<li><p><a class="reference external" href="https://cqcl.github.io/lambeq/lambeq.html#lambeq.tensor.TensorAnsatz">lambeq.tensor.TensorAnsatz</a> functorially transforms a rigid DisCoCat diagram to a tensor diagram, which can be evaluated as a tensor network using NumPy, JAX or PyTorch.</p></li>
-<li><p><a class="reference external" href="https://cqcl.github.io/lambeq/lambeq.html#lambeq.circuit.CircuitAnsatz">lambeq.circuit.CircuitAnsatz</a> functorially transforms a rigid DisCoCat diagram to a quantum circuit, for evaluation on a quantum device.</p></li>
+<li><p><a class="reference internal" href="../lambeq.ccg2discocat.html#lambeq.ccg2discocat.ccg_parser.CCGParser" title="lambeq.ccg2discocat.ccg_parser.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.ccg2discocat.CCGParser</span></code></a> uses a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to transform a biclosed CCG diagram to a rigid DisCoCat diagram <a class="reference internal" href="../bibliography.html#yk2021" id="id4"><span>[YK2021]</span></a>.</p></li>
+<li><p><a class="reference internal" href="../lambeq.html#lambeq.rewrite.Rewriter" title="lambeq.rewrite.Rewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.rewrite.Rewriter</span></code></a> functorially transforms a rigid DisCoCat diagram to a simpler rigid DisCoCat diagram.</p></li>
+<li><p><a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz" title="lambeq.tensor.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.tensor.TensorAnsatz</span></code></a> functorially transforms a rigid DisCoCat diagram to a tensor diagram, which can be evaluated as a tensor network using NumPy, JAX or PyTorch.</p></li>
+<li><p><a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz" title="lambeq.circuit.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.circuit.CircuitAnsatz</span></code></a> functorially transforms a rigid DisCoCat diagram to a <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a>, for evaluation on a quantum device.</p></li>
 </ul>
-<p>Below we present two examples of functors, implemented in DisCoPy.</p>
-<div class="section" id="Example-1:-“Very”-functor">
-<h3>Example 1: “Very” functor<a class="headerlink" href="#Example-1:-“Very”-functor" title="Permalink to this headline">¶</a></h3>
-<p>This functor adds the word “very” in front of every adjective in a DisCoCat diagram. Since the mapping is from a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">rigid.Diagram</a> to another <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">rigid.Diagram</a>, a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html">rigid.Functor</a> should be used. Further, the word “very” modifies an adjective to return
-another adjective, so it should have type <span class="math notranslate nohighlight">\((n \otimes n^l) \otimes (n \otimes n^l)^l = n \otimes n^l \otimes n^{ll} \otimes n^l\)</span>.</p>
+<p>Below we present two examples of <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functors</span></a>, implemented in <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>.</p>
+<div class="section" id="Example-1:-&quot;Very&quot;-functor">
+<h3>Example 1: “Very” functor<a class="headerlink" href="#Example-1:-"Very"-functor" title="Permalink to this headline">¶</a></h3>
+<p>This <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> adds the word “very” in front of every adjective in a <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> diagram.
+Since the mapping is from a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a> to another <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a>, a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html#discopy.rigid.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Functor</span></code></a> should be used. Further, the word “very” modifies an adjective to return another adjective, so it should have type
+<span class="math notranslate nohighlight">\((n \otimes n^l) \otimes (n \otimes n^l)^l = n \otimes n^l \otimes n^{ll} \otimes n^l\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -641,15 +647,14 @@ another adjective, so it should have type <span class="math notranslate nohighli
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_6_0.png" src="../_images/tutorials_discocat_6_0.png" />
+<img alt="../_images/tutorials_discocat_8_0.png" src="../_images/tutorials_discocat_8_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="Example-2:-Twist-functor">
 <h3>Example 2: Twist functor<a class="headerlink" href="#Example-2:-Twist-functor" title="Permalink to this headline">¶</a></h3>
-<p>In this functor, cups and caps are treated specially and are not passed to the <code class="docutils literal notranslate"><span class="pre">ar</span></code> function; instead they are passed to methods <code class="docutils literal notranslate"><span class="pre">ar_factory.cups(left,</span> <span class="pre">right)</span></code> and <code class="docutils literal notranslate"><span class="pre">ar_factory.caps(left,</span> <span class="pre">right)</span></code>, respectively. By default, the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html">rigid.Functor</a> uses <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">rigid.Diagram</a> to implement the <a class="reference external" href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory
-pattern</a>, with methods such as <code class="docutils literal notranslate"><span class="pre">cups</span></code>, <code class="docutils literal notranslate"><span class="pre">caps</span></code>, <code class="docutils literal notranslate"><span class="pre">id</span></code>, and <code class="docutils literal notranslate"><span class="pre">swap</span></code>. For example, for a functor <code class="docutils literal notranslate"><span class="pre">F</span></code> that uses the default arrow factory <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">Diagram</a>, <code class="docutils literal notranslate"><span class="pre">F(Cup(a,</span> <span class="pre">a.r))</span> <span class="pre">==</span> <span class="pre">Diagram.cups(F(a),</span> <span class="pre">F(a.r))</span></code>.</p>
-<p>Here is an example of how to map a cup to a custom diagram, such as a “twisted” cup. Note that it is up to the user to ensure the new cups and caps satisfy the snake equations.</p>
+<p>In this <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a>, <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> and <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">caps</span></a> are treated specially and are not passed to the <code class="docutils literal notranslate"><span class="pre">ar</span></code> function; instead they are passed to methods <code class="docutils literal notranslate"><span class="pre">ar_factory.cups(left,</span> <span class="pre">right)</span></code> and <code class="docutils literal notranslate"><span class="pre">ar_factory.caps(left,</span> <span class="pre">right)</span></code>, respectively. By default, the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html#discopy.rigid.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Functor</span></code></a> uses <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a> to implement the <a class="reference external" href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory pattern</a>, with methods such as <code class="docutils literal notranslate"><span class="pre">cups()</span></code>, <code class="docutils literal notranslate"><span class="pre">caps()</span></code>, <code class="docutils literal notranslate"><span class="pre">id()</span></code>, and <code class="docutils literal notranslate"><span class="pre">swap()</span></code>. For example, for a functor <code class="docutils literal notranslate"><span class="pre">F</span></code> that uses the default arrow factory <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diagram</span></code></a>, <code class="docutils literal notranslate"><span class="pre">F(Cup(a,</span> <span class="pre">a.r))</span> <span class="pre">==</span> <span class="pre">Diagram.cups(F(a),</span> <span class="pre">F(a.r))</span></code>.</p>
+<p>Here is an example of how to map a <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a> to a custom diagram, such as a “twisted” <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a>. Note that it is up to the user to ensure the new <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> and <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">caps</span></a> satisfy the <a class="reference internal" href="../glossary.html#term-snake-equations"><span class="xref std std-term">snake equations</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -693,37 +698,34 @@ pattern</a>, with methods such as <code class="docutils literal notranslate"><sp
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_8_0.png" src="../_images/tutorials_discocat_8_0.png" />
+<img alt="../_images/tutorials_discocat_10_0.png" src="../_images/tutorials_discocat_10_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_8_1.png" src="../_images/tutorials_discocat_8_1.png" />
+<img alt="../_images/tutorials_discocat_10_1.png" src="../_images/tutorials_discocat_10_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_8_2.png" src="../_images/tutorials_discocat_8_2.png" />
+<img alt="../_images/tutorials_discocat_10_2.png" src="../_images/tutorials_discocat_10_2.png" />
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle"><strong>Note</strong></p>
-<p>Twisting the nested cups for “is” and “twisted” together is <strong>not</strong> a functorial operation, so it cannot be implemented using <code class="docutils literal notranslate"><span class="pre">rigid.Functor</span></code>.</p>
+<p class="admonition-title">Note</p>
+<p>Twisting the nested <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> for “is” and “twisted” together is <strong>not</strong> a functorial operation, so it cannot be implemented using a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html#discopy.rigid.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Functor</span></code></a>.</p>
 </div>
 </div>
 </div>
-<div class="section" id="“Classical”-DisCoCat:-Tensor-networks">
-<h2>“Classical” DisCoCat: Tensor networks<a class="headerlink" href="#“Classical”-DisCoCat:-Tensor-networks" title="Permalink to this headline">¶</a></h2>
-<p>The classical version of DisCoCat sends diagrams in the category of pregroup derivations to tensors in the category of vector spaces <strong>FVect</strong>. <strong>FVect</strong> is a monoidal category with vector spaces (e.g. <span class="math notranslate nohighlight">\(\mathbb{R}^2 \otimes \mathbb{R}^2\)</span>) as objects and linear maps between vector spaces as morphisms. It is in fact a <em>compact-closed category</em>, which is a special case of rigid categories where <span class="math notranslate nohighlight">\(A^l = A^r = A^*\)</span>.</p>
-<p>Using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/tensor.html">discopy.tensor</a> module, you can define a free category of vector spaces: objects are defined with the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Dim.html">Dim</a> class and morphisms with the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Box.html">Box</a> class. Composite morphisms are constructed by freely combining the generating morphisms using the <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>
-operators. This is similar to how <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">rigid.Diagram</a>s and <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html">monoidal.Diagram</a>s are defined. The concrete value of the tensor is passed to the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute as an unshaped list; DisCoPy will reshape it later based on the input and output dimensions.</p>
-<p>Apart of diagrams, the <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/tensor.html">discopy.tensor</a> module has another class that can be tensored and composed: <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">tensor.Tensor</a>. The key difference is that <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Box.html">tensor.Box</a>es in the diagrams compose together to make
-<a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html">tensor.Diagram</a>s, while <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">tensor.Tensor</a>s compose together to make another <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">tensor.Tensor</a>. In other words, <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">tensor.Tensor</a> computes tensor contractions directly,
-while <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html">tensor.Diagram</a> delays the computation until <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram.eval">.eval()</a> is called.</p>
+<div class="section" id="Classical-DisCoCat:-Tensor-networks">
+<h2>Classical DisCoCat: Tensor networks<a class="headerlink" href="#Classical-DisCoCat:-Tensor-networks" title="Permalink to this headline">¶</a></h2>
+<p>The classical version of <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> sends diagrams in the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of pregroup derivations to tensors in the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of vector spaces <strong>FVect</strong>. <strong>FVect</strong> is a <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal category</span></a> with vector spaces (e.g. <span class="math notranslate nohighlight">\(\mathbb{R}^2 \otimes \mathbb{R}^2\)</span>) as objects and linear maps between vector spaces as morphisms. It is in fact a <a class="reference internal" href="../glossary.html#term-compact-closed-category"><span class="xref std std-term">compact closed category</span></a>, which is a special case of rigid categories where <span class="math notranslate nohighlight">\(A^l = A^r = A^*\)</span>.</p>
+<p>Using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/tensor.html#module-discopy.tensor" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.tensor</span></code></a> module, you can define a free <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of vector spaces: objects are defined with the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Dim.html#discopy.tensor.Dim" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dim</span></code></a> class and morphisms with the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Box.html#discopy.tensor.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> class. Composite morphisms are constructed by freely combining the generating morphisms using the <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operators. This is similar to how <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a>s and <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">monoidal.Diagram</span></code></a>s are defined. The concrete value of the tensor is passed to the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute as an unshaped list; <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> will reshape it later based on the input and output dimensions.</p>
+<p>Apart of diagrams, the <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/tensor.html#module-discopy.tensor" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.tensor</span></code></a> module has another class that can be tensored and composed: <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>. The key difference is that <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Box.html#discopy.tensor.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Box</span></code></a>es in the diagrams compose together to make <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a>s, while <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>s compose together to make another <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>. In other words, <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a> computes tensor contractions directly, while <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> delays the computation until <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram.eval" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a> is called.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -756,7 +758,7 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_11_1.png" src="../_images/tutorials_discocat_11_1.png" />
+<img alt="../_images/tutorials_discocat_15_1.png" src="../_images/tutorials_discocat_15_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -791,7 +793,7 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_12_0.png" src="../_images/tutorials_discocat_12_0.png" />
+<img alt="../_images/tutorials_discocat_16_0.png" src="../_images/tutorials_discocat_16_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -807,7 +809,7 @@ Tensor(dom=Dim(2, 2), cod=Dim(2), array=[0., 1., 2., 3., 4., 5., 6., 7.])
   [6. 7.]]]
 </pre></div></div>
 </div>
-<p>In the category of vector spaces, cups, caps and swaps take on concrete values as tensors.</p>
+<p>In the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of vector spaces, <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a>, <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">caps</span></a> and <a class="reference internal" href="../glossary.html#term-swap"><span class="xref std std-term">swaps</span></a> take on concrete values as tensors.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -857,7 +859,7 @@ array([[[[1., 0.],
          [0., 1.]]]])
 </pre></div></div>
 </div>
-<p>To implement a functor from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">rigid.Diagram</a> to <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">tensor.Tensor</a>, use a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Functor.html">tensor.Functor</a>. This functor will automatically contract the resulting tensor network.</p>
+<p>To implement a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a> to <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>, use a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Functor.html#discopy.tensor.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Functor</span></code></a>. This <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> will automatically contract the resulting <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -917,14 +919,12 @@ array([[[[1., 0.],
 Tensor(dom=Dim(1), cod=Dim(2), array=[8., 8.])
 </pre></div></div>
 </div>
-<p>Sometimes, defining a functor from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">rigid.Diagram</a> to <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html">tensor.Diagram</a> offers more flexibility, since a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html">tensor.Diagram</a> can be instantiated with concrete values to be evaluated later using a custom tensor contractor. Such a functor can be defined
-using a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html">rigid.Functor</a> with <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Dim.html">tensor.Dim</a> and <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">tensor.Diagram</a> as <code class="docutils literal notranslate"><span class="pre">ob_factory</span></code> and <code class="docutils literal notranslate"><span class="pre">ar_factory</span></code>, respectively. See the implementation of <a class="reference external" href="https://cqcl.github.io/lambeq/_modules/lambeq/tensor.html#TensorAnsatz">TensorAnsatz</a> for an example.</p>
+<p>Sometimes, defining a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a> to <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> offers more flexibility, since a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> can be instantiated with concrete values to be evaluated later using a custom tensor contractor. Such a functor can be defined using a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html#discopy.rigid.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Functor</span></code></a> with <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Dim.html#discopy.tensor.Dim" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Dim</span></code></a> and <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> as <code class="docutils literal notranslate"><span class="pre">ob_factory</span></code> and <code class="docutils literal notranslate"><span class="pre">ar_factory</span></code>, respectively. See the implementation of <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz" title="lambeq.tensor.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> for an example.</p>
 </div>
 <div class="section" id="Quantum-DisCoCat:-Quantum-circuits">
 <h2>Quantum DisCoCat: Quantum circuits<a class="headerlink" href="#Quantum-DisCoCat:-Quantum-circuits" title="Permalink to this headline">¶</a></h2>
-<p>The quantum version of DisCoCat sends diagrams in the category of pregroup derivations to circuits in the category of Hilbert spaces <strong>FHilb</strong>. This is a compact-closed monoidal category with Hilbert spaces (e.g. <span class="math notranslate nohighlight">\(\mathbb{C}^{2^n}\)</span>) as objects and unitary maps between Hilbert spaces as morphisms.</p>
-<p>The <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.html">discopy.quantum</a> module is a framework for the free category of quantum circuits: objects are generated using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Ob.html">Ob</a> class and morphisms by using <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.gates.html">quantum.gates</a>. In DiCoPy, rotation values range from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span> rather than from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2\pi\)</span>. The
-circuit can then either be evaluated using tensor contraction with the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit.eval">.eval()</a> method, or exported to <code class="docutils literal notranslate"><span class="pre">pytket</span></code> using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit.to_tk">.to_tk()</a> method, which supports multiple hardware backends.</p>
+<p>The quantum version of <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> sends diagrams in the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of pregroup derivations to <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> in the category of Hilbert spaces <strong>FHilb</strong>. This is a <a class="reference internal" href="../glossary.html#term-compact-closed-category"><span class="xref std std-term">compact closed</span></a> monoidal category with Hilbert spaces (e.g. <span class="math notranslate nohighlight">\(\mathbb{C}^{2^n}\)</span>) as objects and unitary maps between Hilbert spaces as morphisms.</p>
+<p>The <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.html#module-discopy.quantum" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.quantum</span></code></a> module is a framework for the free <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a>: objects are generated using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Ob.html#discopy.quantum.circuit.Ob" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.circuit.Ob</span></code></a> class and morphisms by using <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.gates.html#module-discopy.quantum.gates" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">quantum.gates</span></code></a>. In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, rotation values range from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span> rather than from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2\pi\)</span>. The circuit can then either be evaluated using tensor contraction with the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit.eval" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a> method, or exported to <a class="reference internal" href="../glossary.html#term-pytket"><span class="xref std std-term">pytket</span></a> using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit.to_tk" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tk()</span></code></a> method, which supports multiple hardware backends.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -947,7 +947,7 @@ circuit can then either be evaluated using tensor contraction with the <a class=
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_20_0.png" src="../_images/tutorials_discocat_20_0.png" />
+<img alt="../_images/tutorials_discocat_26_0.png" src="../_images/tutorials_discocat_26_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -959,7 +959,7 @@ circuit can then either be evaluated using tensor contraction with the <a class=
 tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).Rz(0.8, 3)
 </pre></div></div>
 </div>
-<p>To apply multi-qubit gates to non-consecutive qubits, use swaps to permute the wires, apply the gate, then unpermute the wires. These swaps are only logical swaps and do not result in more gates when converted to <code class="docutils literal notranslate"><span class="pre">tket</span></code> format.</p>
+<p>To apply multi-qubit <a class="reference internal" href="../glossary.html#term-quantum-gate"><span class="xref std std-term">gates</span></a> to non-consecutive <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a>, use <a class="reference internal" href="../glossary.html#term-swap"><span class="xref std std-term">swaps</span></a> to permute the wires, apply the <a class="reference internal" href="../glossary.html#term-quantum-gate"><span class="xref std std-term">gate</span></a>, then unpermute the wires. These <a class="reference internal" href="../glossary.html#term-swap"><span class="xref std std-term">swaps</span></a> are only logical swaps and do not result in more gates when converted to <a class="reference internal" href="../glossary.html#term-tket"><span class="xref std std-term">tket</span></a> format.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -992,7 +992,7 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_22_0.png" src="../_images/tutorials_discocat_22_0.png" />
+<img alt="../_images/tutorials_discocat_28_0.png" src="../_images/tutorials_discocat_28_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -1004,8 +1004,7 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 tk.Circuit(3).CX(2, 0)
 </pre></div></div>
 </div>
-<p>So far, our circuits have been “pure” circuits, consisting of unitaries. Pure circuits can be evaluated locally to return a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">Tensor</a>. Circuits containing <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Discard.html">Discard</a>s and <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Measure.html">Measure</a>s are considered “mixed”, and return
-<a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.cqmap.html">CQMap</a>s instead of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html">Tensor</a>s when evaluated, as they are not unitaries but rather classical-quantum maps. (For more details, see Chapter 5 of these <a class="reference external" href="http://www.cs.ox.ac.uk/people/jamie.vicary/IntroductionToCategoricalQuantumMechanics.pdf">notes</a>.)</p>
+<p>So far, our <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> have been “pure” circuits, consisting of unitaries. Pure circuits can be evaluated locally to return a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>. Circuits containing <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Discard.html#discopy.quantum.circuit.Discard" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code></a>s and <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Measure.html#discopy.quantum.circuit.Measure" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a>s are considered “mixed”, and return <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.cqmap.html#module-discopy.quantum.cqmap" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">CQMap</span></code></a>s instead of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>s when evaluated, as they are not unitaries but rather classical-quantum maps (for more details, see Chapter 5 in <a class="reference internal" href="../bibliography.html#hv2013" id="id5"><span>[HV2013]</span></a>).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
@@ -1037,7 +1036,7 @@ Tensor(dom=Dim(1), cod=Dim(2), array=[1., 0.])
 CQMap(dom=CQ(), cod=C(Dim(2)), array=[1., 0.])
 </pre></div></div>
 </div>
-<p>Pure circuits can be coerced to evaluate into a CQMap by setting <code class="docutils literal notranslate"><span class="pre">mixed=True</span></code>.</p>
+<p>Pure <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> can be coerced to evaluate into a <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.cqmap.html#module-discopy.quantum.cqmap" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">CQMap</span></code></a> by setting <code class="docutils literal notranslate"><span class="pre">mixed=True</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -1056,7 +1055,7 @@ CQMap(dom=CQ(), cod=C(Dim(2)), array=[1., 0.])
 CQMap(dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)), array=[1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j])
 </pre></div></div>
 </div>
-<p>Note that the tensor order of CQMaps is doubled, compared to that of simple Tensors:</p>
+<p>Note that the tensor order of <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.cqmap.html#module-discopy.quantum.cqmap" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">CQMap</span></code></a>s is doubled, compared to that of simple <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>s:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -1076,7 +1075,7 @@ CQMap(dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)), array=[1.+0.j, 0.+0.j, 0.+0.j, ..., 0.
 (2, 2, 2, 2, 2, 2, 2, 2)
 </pre></div></div>
 </div>
-<p>To implement a functor from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">rigid.Diagram</a> to <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.Circuit.html">quantum.Circuit</a>, use a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Functor.html">quantum.circuit.Functor</a>.</p>
+<p>To implement a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a> to <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.Circuit</span></code></a>, use a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Functor.html#discopy.quantum.circuit.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.circuit.Functor</span></code></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -1115,14 +1114,14 @@ CQMap(dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)), array=[1.+0.j, 0.+0.j, 0.+0.j, ..., 0.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_30_0.png" src="../_images/tutorials_discocat_30_0.png" />
+<img alt="../_images/tutorials_discocat_36_0.png" src="../_images/tutorials_discocat_36_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_30_1.png" src="../_images/tutorials_discocat_30_1.png" />
+<img alt="../_images/tutorials_discocat_36_1.png" src="../_images/tutorials_discocat_36_1.png" />
 </div>
 </div>
 </div>

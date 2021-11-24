@@ -5,10 +5,10 @@ Contributing to lambeq
 
 Contributions to ``lambeq`` are welcome, especially with regard to adding:
 
-- Support for new parsers (extensions of the :py:class:`.CCGParser` class)
-- Compositional schemes/readers (extensions of the :py:class:`.Reader` class)
-- Rewrite rules (extensions of the :py:class:`.RewriteRule` class)
-- Tensor and circuit ansätze (extensions of the :py:class:`.TensorAnsatz` and :py:class:`.CircuitAnsatz` classes)
+- Support for new :term:`parsers <parser>` (extensions of the :py:class:`.CCGParser` class)
+- :term:`Compositional schemes <compositional model>` and :term:`readers <reader>` (extensions of the :py:class:`.Reader` class)
+- :term:`Rewrite rules <rewrite rule>` (extensions of the :py:class:`.RewriteRule` class)
+- Tensor and circuit :term:`ansätze <ansatz>` (extensions of the :py:class:`.TensorAnsatz` and :py:class:`.CircuitAnsatz` classes)
 
 All accepted contributions will be included in the next official release and contributors will be properly attributed in the corresponding release notes.
 
@@ -25,6 +25,21 @@ If you have an already implemented and tested proposal, you can `open a pull req
 
 - Try to accompany any proposed new functionality with a set of appropriate tests. The test coverage of ``lambeq`` is close to 100% and we would like to keep it that way. Please have a look at the `existing tests <https://github.com/CQCL/lambeq/tree/main/tests>`_ to get an idea about the conventions we use, or contact the dev team for guidance.
 
+Trivial contributions
+---------------------
+
+Any contribution, no matter how small or "trivial", is welcome as long as it improves in a pragmatic and clear way the package. However, it is up to the maintainers of the project to decide if the sole purpose of a contribution is to add the author's name in the contributors list, without providing any actual value to the development. We regret that these cases will not be accepted. Examples include the following:
+
+- Changing the name of a variable without apparent reason.
+- Rephrasing a comment without apparent reason.
+- Adding an unnecessary comment.
+
+As mentioned above, any contribution that genuinely improves the state of the code, no matter how small or "trivial", is welcome. For example:
+
+- Fixing a small typo in a comment.
+- Adding a type annotation that is missing.
+- A minor formatting fix to improve compliance with `PEP-8 Python Style Guide <https://www.python.org/dev/peps/pep-0008/>`_.
+
 .. _open-issue:
 
 Opening an issue
@@ -37,7 +52,7 @@ Code of conduct
 
 Please be polite and respectful in any form of communication you have with other contributors/developers. Project maintainers are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior. Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to these guidelines, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
 
-**See also:**
+.. rubric:: See also:
 
 - `"Extending lambeq" tutorial <tutorials/extend-lambeq.ipynb>`_
 - `"DisCoPy usage" tutorial <advanced.rst>`_

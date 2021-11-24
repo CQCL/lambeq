@@ -4,21 +4,32 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "# Step 1. Sentence input\n",
+    "# Step 1. Sentence input"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
+    "The first part of the process in ``lambeq`` given a sentence, is to convert it into a :term:`string diagram`, according to a given :term:`compositional scheme <compositional model>`. ``lambeq`` can accommodate any :term:`compositional model` that can encode sentences as :term:`string diagrams <string diagram>`, its native data structure. The toolkit currently includes three :term:`compositional models <compositional model>`, each using syntactic information to a different degree: a :term:`bag-of-words` model with no syntactic information present, a :term:`word-sequence model` which respects the order of words, and a fully syntax-based model."
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
+    "Syntax-based model\n",
+    "------------------\n",
     "\n",
-    "The first part of the process in `lambeq` given a sentence, is to convert it into a string diagram, according to a given compositional scheme. `lambeq` can accommodate any compositional model that can encode sentences as  string diagrams, its native data structure. The toolkit currently includes three compositional models, each using syntactic information to a different degree: a bag-of-words model with no syntactic information present, a word-sequence model which respects the order of words, and a fully syntax-based model.\n",
+    "In order to obtain a :term:`DisCoCat`\\ -like output, we first use the :py:class:`.DepCCGParser` class from :py:mod:`.ccg2discocat` package, which, in turn,  calls the :term:`parser`, obtains a :term:`CCG <Combinatory Categorial Grammar (CCG)>` derivation for the sentence, and converts it into a :term:`string diagram`. The code below uses the default :term:`depccg` parser in order to produce a :term:`string diagram` for the sentence \"John walks in the park\".\n",
     "\n",
-    "## Syntax-based model\n",
-    "\n",
-    "In order to obtain a DisCoCat-like output, we first use the [DepCCGParser](../lambeq.ccg2discocat.rst#lambeq.ccg2discocat.DepCCGParser) class from [ccg2discocat](../lambeq.ccg2discocat.rst) package, which, in turn,  calls the parser, obtains a CCG derivation for the sentence, and converts it into a string diagram. The code below uses the default depccg parser in order to produce a string diagram for the sentence \"John walks in the park\".\n",
-    "\n",
-    "<div class=\"alert alert-info\">\n",
-    " \n",
-    "**Note**\n",
+    ".. note::\n",
     "            \n",
-    "`lambeq`'s string diagrams are objects of the class [discopy.rigid.Diagram](https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html).\n",
-    "\n",
-    "</div>"
+    "   ``lambeq``'s string diagrams are objects of the class :py:class:`discopy.rigid.Diagram`."
    ]
   },
   {
@@ -53,25 +64,26 @@
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
    "source": [
-    "<div class=\"alert alert-info\">\n",
-    " \n",
-    "**Note**\n",
+    ".. note::\n",
     "\n",
-    "Drawing a pregroup diagram in `lambeq` like the one above can be done using the [discopy.grammar.draw()](https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html?highlight=grammar.draw()) method.\n",
-    "    \n",
-    "</div>"
+    "   Drawing a pregroup diagram in ``lambeq`` like the one above can be done using the :py:meth:`discopy.grammar.draw` method."
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
    "source": [
-    "## Bag-of-words model\n",
+    "Bag-of-words model\n",
+    "------------------\n",
     "\n",
-    "DisCoCat is not the only compositional model that `lambeq` supports. In fact, any compositional scheme that manifests sentences as string diagrams/tensor networks can be added to the toolkit via the module [reader](../lambeq.rst#module-lambeq.reader). For example, the `spiders_reader` object of the [LinearReader](../lambeq.rst#lambeq.reader.LinearReader) class represents a sentence as a \"bag-of-words\", composing the words using a *spider* (a commutative operation)."
+    ":term:`DisCoCat` is not the only :term:`compositional model` that ``lambeq`` supports. In fact, any compositional scheme that manifests sentences as :term:`string diagrams <string diagram>`\\ /:term:`tensor networks <tensor network>` can be added to the toolkit via the module :py:mod:`.reader`. For example, the ``spiders_reader`` object of the :py:class:`.LinearReader` class represents a sentence as a \":term:`bag-of-words`\", composing the words using a :term:`spider` (a commutative operation)."
    ]
   },
   {
@@ -101,20 +113,19 @@
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
    "source": [
-    "<div class=\"alert alert-info\">\n",
-    "    \n",
-    "**Note**\n",
+    ".. note::\n",
     "\n",
-    "Note that this time the drawing is performed with diagram's own method [discopy.monoidal.Diagram.draw()](https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html?highlight=Diagram.draw()#discopy.monoidal.Diagram.draw), which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using [discopy.grammar.draw()](https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html?highlight=grammar.draw()) in the previous section, which can only be used in pregroup diagrams.\n",
-    "    \n",
-    "</div>\n",
+    "   Note that this time the drawing is performed with diagram's own method :py:meth:`monoidal.Diagram.draw() <discopy.monoidal.Diagram.draw>`, which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using :py:func:`grammar.draw() <discopy.grammar.pregroup.draw>` in the previous section, which can only be used in pregroup diagrams.\n",
     "\n",
-    "## Word-sequence model\n",
+    "Word-sequence model\n",
+    "-------------------\n",
     "\n",
-    "The `cups_reader` object of the [LinearReader](../lambeq.rst#lambeq.reader.LinearReader) class composes words in sequence, from left to right, generating a \"tensor train\"."
+    "The ``cups_reader`` object of the :py:class:`.LinearReader` class composes words in sequence, from left to right, generating a \":term:`tensor train`\"."
    ]
   },
   {
@@ -148,14 +159,21 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "Note the use of a `START` symbol in the beginning of the sentence, represented as an order-1 tensor (a vector). This ensures that the final result of the computation (that is, the representation of the sentence) will be again a tensor of order 1.\n",
+    "Note the use of a `START` symbol in the beginning of the sentence, represented as an order-1 tensor (a vector). This ensures that the final result of the computation (that is, the representation of the sentence) will be again a tensor of order 1."
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
+    ".. rubric:: See also:\n",
     "\n",
-    "**See also:**\n",
-    "\n",
-    "- [Example notebook ccg2discocat.ipynb](../examples/ccg2discocat.ipynb)\n",
-    "- [Example notebook reader.ipynb](../examples/reader.ipynb)\n",
-    "- [DisCoCat in DisCoPy](./discocat.ipynb)\n",
-    "- [Extending lambeq](./extend-lambeq.ipynb)"
+    "- `Example notebook ccg2discocat.ipynb <../examples/ccg2discocat.ipynb>`_\n",
+    "- `Example notebook reader.ipynb <../examples/reader.ipynb>`_\n",
+    "- `DisCoCat in DisCoPy <./discocat.ipynb>`_\n",
+    "- `Extending lambeq <./extend-lambeq.ipynb>`_"
    ]
   }
  ],

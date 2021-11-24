@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Step 3. Parameterisation &mdash; lambeq 0.1.3.dev11+g5027523 documentation</title>
+  <title>Step 3. Parameterisation &mdash; lambeq 0.1.3.dev12+g1c6fdf7 documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev11+g5027523
+                0.1.3.dev12+g1c6fdf7
               </div>
             
           
@@ -126,6 +126,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Links</span></p>
 <ul>
@@ -473,11 +479,10 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Step-3.-Parameterisation">
 <h1>Step 3. Parameterisation<a class="headerlink" href="#Step-3.-Parameterisation" title="Permalink to this headline">¶</a></h1>
-<p>Up to this point of the pipeline, a sentence is still represented as a string diagram, independent of any low-level decisions such as tensor dimensions or specific quantum gate choices. This abstract form can be turned into a concrete quantum circuit or tensor network by applying ansätze. An <em>ansatz</em> can be seen as a map that determines choices such as the number of qubits that every wire of the string diagram is associated with and the concrete parameterised quantum states that correspond to
-each word. In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, ansätze can be added by extending one of the classes <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz"><span class="std std-ref">TensorAnsatz</span></a> or <a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz"><span class="std std-ref">CircuitAnsatz</span></a> depending on the type of the experiment.</p>
+<p>Up to this point of the pipeline, a sentence is still represented as a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>, independent of any low-level decisions such as tensor dimensions or specific <a class="reference internal" href="../glossary.html#term-quantum-gate"><span class="xref std std-term">quantum gate</span></a> choices. This abstract form can be turned into a concrete <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a> or <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> by applying ansätze. An <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansatz</span></a> can be seen as a map that determines choices such as the number of <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> that every wire of the <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> is associated with and the concrete parameterised quantum states that correspond to each word. In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansätze</span></a> can be added by extending one of the classes <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz" title="lambeq.tensor.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> or <a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz" title="lambeq.circuit.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> depending on the type of the experiment.</p>
 <div class="section" id="Quantum-case">
 <h2>Quantum case<a class="headerlink" href="#Quantum-case" title="Permalink to this headline">¶</a></h2>
-<p>For the quantum case, the library comes equipped with the class <a class="reference internal" href="../lambeq.html#lambeq.circuit.IQPAnsatz"><span class="std std-ref">IQPAnsatz</span></a>, which turns the string diagram into a standard IQP circuit.</p>
+<p>For the quantum case, the library comes equipped with the class <a class="reference internal" href="../lambeq.html#lambeq.circuit.IQPAnsatz" title="lambeq.circuit.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a>, which turns the <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> into a standard <a class="reference internal" href="../glossary.html#term-IQP-circuit"><span class="xref std std-term">IQP circuit</span></a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -493,7 +498,7 @@ each word. In <code class="docutils literal notranslate"><span class="pre">lambe
 </pre></div>
 </div>
 </div>
-<p>In order to create an <a class="reference internal" href="../lambeq.html#lambeq.circuit.IQPAnsatz"><span class="std std-ref">IQPAnsatz</span></a> instance, we need to define the number of qubits for all atomic types that occur in the diagram – in this case, for the noun type and the sentence type. The following code produces a circuit by assigning 1 qubit to the noun type and 1 qubit to the sentence type. Further, the number of IQP layers (<code class="docutils literal notranslate"><span class="pre">n_layers</span></code>) is set to 2.</p>
+<p>In order to create an <a class="reference internal" href="../lambeq.html#lambeq.circuit.IQPAnsatz" title="lambeq.circuit.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a> instance, we need to define the number of <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> for all atomic types that occur in the diagram – in this case, for the noun type and the sentence type. The following code produces a <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuit</span></a> by assigning 1 qubit to the noun type and 1 qubit to the sentence type. Further, the number of IQP layers (<code class="docutils literal notranslate"><span class="pre">n_layers</span></code>) is set to 2.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -517,10 +522,10 @@ each word. In <code class="docutils literal notranslate"><span class="pre">lambe
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_parameterise_3_0.png" src="../_images/tutorials_parameterise_3_0.png" />
+<img alt="../_images/tutorials_parameterise_4_0.png" src="../_images/tutorials_parameterise_4_0.png" />
 </div>
 </div>
-<p>This produces a quantum circuit in <code class="docutils literal notranslate"><span class="pre">discopy</span></code> form. Conversion to <code class="docutils literal notranslate"><span class="pre">pytket</span></code> format is very simple:</p>
+<p>This produces a quantum circuit in <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> form. Conversion to <a class="reference internal" href="../glossary.html#term-pytket"><span class="xref std std-term">pytket</span></a> format is very simple:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -7761,7 +7766,7 @@ td, th{
 </body>
 </html></div>
 </div>
-<p>Exporting to <code class="docutils literal notranslate"><span class="pre">pytket</span></code> format provides additional functionality and allows interoperability. For example, obtaining a <code class="docutils literal notranslate"><span class="pre">qiskit</span></code> circuit is trivial:</p>
+<p>Exporting to <a class="reference internal" href="../glossary.html#term-pytket"><span class="xref std std-term">pytket</span></a> format provides additional functionality and allows interoperability. For example, obtaining a <a class="reference internal" href="../glossary.html#term-qiskit"><span class="xref std std-term">qiskit</span></a> circuit is trivial:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -7774,13 +7779,13 @@ td, th{
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle"><strong>Note</strong></p>
+<p class="admonition-title">Note</p>
 <p>To use <code class="docutils literal notranslate"><span class="pre">tk_to_qiskit</span></code>, first install the <code class="docutils literal notranslate"><span class="pre">pytket-qiskit</span></code> extension by running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pytket-qiskit</span></code>. For more information see <a class="reference external" href="https://cqcl.github.io/tket/pytket/api/#extensions">the pytket documentation</a>.</p>
 </div>
 </div>
 <div class="section" id="Classical-case">
 <h2>Classical case<a class="headerlink" href="#Classical-case" title="Permalink to this headline">¶</a></h2>
-<p>In the case of a classical experiment, instantiating one of the tensor ansätze requires the user to assign dimensions to each one of the atomic types occurring in the diagram. In the following code, we parameterise a <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz"><span class="std std-ref">TensorAnsatz</span></a> instance with <span class="math notranslate nohighlight">\(d_n=4\)</span> for the base dimension of the noun space, and <span class="math notranslate nohighlight">\(d_s=2\)</span> as the dimension of the sentence space:</p>
+<p>In the case of a classical experiment, instantiating one of the tensor <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansätze</span></a> requires the user to assign dimensions to each one of the atomic types occurring in the diagram. In the following code, we parameterise a <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz" title="lambeq.tensor.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> instance with <span class="math notranslate nohighlight">\(d_n=4\)</span> for the base dimension of the noun space, and <span class="math notranslate nohighlight">\(d_s=2\)</span> as the dimension of the sentence space:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -7800,14 +7805,14 @@ td, th{
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_parameterise_10_0.png" src="../_images/tutorials_parameterise_10_0.png" />
+<img alt="../_images/tutorials_parameterise_11_0.png" src="../_images/tutorials_parameterise_11_0.png" />
 </div>
 </div>
-<p>Note that the wires of the diagram are now annotated with the dimensions corresponding to each type, indicating that the result is a concrete tensor network.</p>
+<p>Note that the wires of the diagram are now annotated with the dimensions corresponding to each type, indicating that the result is a concrete <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a>.</p>
 <div class="section" id="Matrix-product-states">
 <h3>Matrix product states<a class="headerlink" href="#Matrix-product-states" title="Permalink to this headline">¶</a></h3>
-<p>In classical experiments of this kind, the tensors associated with certain words, such as conjunctions, can become extremely large. In some cases, the order of these tensors can be 12 or even higher (<span class="math notranslate nohighlight">\(d^{12}\)</span> elements, where <span class="math notranslate nohighlight">\(d\)</span> is the base dimension), which makes efficient execution of the experiment impossible. In order to address this problem, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> includes ansätze for converting tensors into various forms of <em>matrix product states</em> (MPSs).</p>
-<p>The following code applies the <a class="reference internal" href="../lambeq.html#lambeq.tensor.SpiderAnsatz"><span class="std std-ref">SpiderAnsatz</span></a> class, which splits tensors with order greater than 2 to sequences of order-2 tensors (i.e. matrices), connected with spiders.</p>
+<p>In classical experiments of this kind, the tensors associated with certain words, such as conjunctions, can become extremely large. In some cases, the order of these tensors can be 12 or even higher (<span class="math notranslate nohighlight">\(d^{12}\)</span> elements, where <span class="math notranslate nohighlight">\(d\)</span> is the base dimension), which makes efficient execution of the experiment impossible. In order to address this problem, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> includes <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansätze</span></a> for converting tensors into various forms of <a class="reference internal" href="../glossary.html#term-matrix-product-state-MPS"><span class="xref std std-term">matrix product states</span></a> (MPSs).</p>
+<p>The following code applies the <a class="reference internal" href="../lambeq.html#lambeq.tensor.SpiderAnsatz" title="lambeq.tensor.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a>, which splits tensors with order greater than 2 to sequences of order-2 tensors (i.e. matrices), connected with <a class="reference internal" href="../glossary.html#term-spider"><span class="xref std std-term">spiders</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -7826,11 +7831,11 @@ td, th{
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_parameterise_12_0.png" src="../_images/tutorials_parameterise_12_0.png" />
+<img alt="../_images/tutorials_parameterise_16_0.png" src="../_images/tutorials_parameterise_16_0.png" />
 </div>
 </div>
-<p>Note that the preposition “in” is now represented by a matrix product state of 4 linked matrices, which is a very substantial reduction in the space required to store the tensors.</p>
-<p>Another option is the <a class="reference internal" href="../lambeq.html#lambeq.tensor.MPSAnsatz"><span class="std std-ref">MPSAnsatz</span></a> class, which converts large tensors to sequences of order-3 tensors connected with cups. In this setting, the user needs to also define the <em>bond dimension</em>, that is, the dimensionality of the wire that connects the tensors together.</p>
+<p>Note that the preposition “in” is now represented by a <a class="reference internal" href="../glossary.html#term-matrix-product-state-MPS"><span class="xref std std-term">matrix product state</span></a> of 4 linked matrices, which is a very substantial reduction in the space required to store the tensors.</p>
+<p>Another option is the <a class="reference internal" href="../lambeq.html#lambeq.tensor.MPSAnsatz" title="lambeq.tensor.MPSAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">MPSAnsatz</span></code></a> class, which converts large tensors to sequences of order-3 tensors connected with <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a>. In this setting, the user needs to also define the <em>bond dimension</em>, that is, the dimensionality of the wire that connects the tensors together.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -7849,10 +7854,10 @@ td, th{
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_parameterise_14_0.png" src="../_images/tutorials_parameterise_14_0.png" />
+<img alt="../_images/tutorials_parameterise_18_0.png" src="../_images/tutorials_parameterise_18_0.png" />
 </div>
 </div>
-<p><strong>See also:</strong></p>
+<p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../examples/tensor.html"><span class="doc">Example notebook tensor.ipynb</span></a></p></li>
 <li><p><a class="reference internal" href="../examples/circuit.html"><span class="doc">Example notebook circuit.ipynb</span></a></p></li>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Advanced: Extending lambeq &mdash; lambeq 0.1.3.dev11+g5027523 documentation</title>
+  <title>Advanced: Extending lambeq &mdash; lambeq 0.1.3.dev12+g1c6fdf7 documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev11+g5027523
+                0.1.3.dev12+g1c6fdf7
               </div>
             
           
@@ -136,6 +136,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Links</span></p>
 <ul>
@@ -483,11 +489,11 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Advanced:-Extending-lambeq">
 <h1>Advanced: Extending lambeq<a class="headerlink" href="#Advanced:-Extending-lambeq" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial you will find examples of how to extend <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to add more readers, rewrite rules and ansätze, so you can start making your own <a class="reference external" href="https://github.com/CQCL/lambeq/pulls">contributions</a> to the toolkit.</p>
+<p>In this tutorial you will find examples of how to extend <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to add more <a class="reference internal" href="../glossary.html#term-reader"><span class="xref std std-term">readers</span></a>, <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> and <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansätze</span></a>, so you can start making your own <a class="reference external" href="https://github.com/CQCL/lambeq/pulls">contributions</a> to the toolkit.</p>
 <div class="section" id="Creating-readers">
 <h2>Creating readers<a class="headerlink" href="#Creating-readers" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="../lambeq.html#lambeq.reader.Reader"><span class="std std-ref">Reader</span></a> class is an abstract base class for converting sentences to diagrams. Each reader can be seen as a different compositional model, and <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can accommodate any compositional model that represents sentences in a string diagram/tensor network form.</p>
-<p>A concrete subclass of <a class="reference internal" href="../lambeq.html#lambeq.reader.Reader"><span class="std std-ref">Reader</span></a> should implement the <code class="docutils literal notranslate"><span class="pre">sentence2diagram</span></code> method, which converts a single sentence into a rigid diagram.</p>
+<p>The <a class="reference internal" href="../lambeq.html#lambeq.reader.Reader" title="lambeq.reader.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> class is an abstract base class for converting sentences to diagrams. Each <a class="reference internal" href="../glossary.html#term-reader"><span class="xref std std-term">reader</span></a> can be seen as a different <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a>, and <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can accommodate any compositional model that represents sentences in a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>/<a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> form.</p>
+<p>A concrete subclass of <a class="reference internal" href="../lambeq.html#lambeq.reader.Reader" title="lambeq.reader.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> should implement the <a class="reference internal" href="../lambeq.html#lambeq.reader.Reader.sentence2diagram" title="lambeq.reader.Reader.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Reader.sentence2diagram()</span></code></a> method, which converts a single sentence into a rigid diagram.</p>
 <div class="section" id="Reader-example:-“Comb”-reader">
 <h3><a class="reference internal" href="../lambeq.html#lambeq.reader.Reader"><span class="std std-ref">Reader</span></a> example: “Comb” reader<a class="headerlink" href="#Reader-example:-“Comb”-reader" title="Permalink to this headline">¶</a></h3>
 <p>In this example we will create a reader that, given a sentence, it generates the following tensor network:</p>
@@ -519,10 +525,10 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_extend-lambeq_2_0.png" src="../_images/tutorials_extend-lambeq_2_0.png" />
+<img alt="../_images/tutorials_extend-lambeq_5_0.png" src="../_images/tutorials_extend-lambeq_5_0.png" />
 </div>
 </div>
-<p>Note that, in the above code, the method <code class="docutils literal notranslate"><span class="pre">tensor()</span></code> refers to the monoidal product and not to a physical tensor object. What the specific line does, using the monoidal identity <code class="docutils literal notranslate"><span class="pre">Id()</span></code> as a starting point, is to tensor one-by-one the boxes of the words in the sentence accumulatively, from left to right, into a single diagram, as in a standard fold operation.</p>
+<p>Note that, in the above code, the method <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.tensor" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tensor()</span></code></a> refers to the monoidal product and not to a physical tensor object. What the specific line does, using the monoidal identity <code class="xref py py-obj docutils literal notranslate"><span class="pre">Id()</span></code> as a starting point, is to tensor one-by-one the boxes of the words in the sentence accumulatively, from left to right, into a single diagram, as in a standard fold operation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -536,13 +542,13 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_extend-lambeq_4_0.png" src="../_images/tutorials_extend-lambeq_4_0.png" />
+<img alt="../_images/tutorials_extend-lambeq_7_0.png" src="../_images/tutorials_extend-lambeq_7_0.png" />
 </div>
 </div>
-<p>This diagram is then combined with the <code class="docutils literal notranslate"><span class="pre">layer</span></code> box to create the final output of the reader.</p>
+<p>This diagram is then combined with the <code class="docutils literal notranslate"><span class="pre">layer</span></code> box to create the final output of the <a class="reference internal" href="../glossary.html#term-reader"><span class="xref std std-term">reader</span></a>.</p>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle"><strong>Note</strong></p>
-<p>In an actual implementation, the <code class="docutils literal notranslate"><span class="pre">layer</span></code> Box should be shared among all sentences so it can be trained properly.</p>
+<p class="admonition-title">Note</p>
+<p>In an actual implementation, the <code class="docutils literal notranslate"><span class="pre">layer</span></code> box should be shared among all sentences so it can be trained properly.</p>
 </div>
 </div>
 </div>
@@ -565,8 +571,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="SimpleRewriteRule-example:-Negation-functor">
 <h3><a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule"><span class="std std-ref">SimpleRewriteRule</span></a> example: Negation functor<a class="headerlink" href="#SimpleRewriteRule-example:-Negation-functor" title="Permalink to this headline">¶</a></h3>
-<p>The <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule"><span class="std std-ref">SimpleRewriteRule</span></a> class contains functionality that facilitates the creation of simple rewrite rules, without the need to define a new <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule"><span class="std std-ref">RewriteRule</span></a> class from scratch. A <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule"><span class="std std-ref">SimpleRewriteRule</span></a> finds words with codomain <code class="docutils literal notranslate"><span class="pre">cod</span></code> and name in list <code class="docutils literal notranslate"><span class="pre">words</span></code>, then replaces their boxes with the diagram in <code class="docutils literal notranslate"><span class="pre">template</span></code>.</p>
-<p>Here is an example of a negation functor using <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule"><span class="std std-ref">SimpleRewriteRule</span></a>. The functor adds a “NOT” box to the wire of certain auxiliary verbs:</p>
+<p>The <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule" title="lambeq.rewrite.SimpleRewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleRewriteRule</span></code></a> class contains functionality that facilitates the creation of simple <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a>, without the need to define a new <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a> class from scratch. A <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule" title="lambeq.rewrite.SimpleRewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleRewriteRule</span></code></a> finds words with codomain <code class="docutils literal notranslate"><span class="pre">cod</span></code> and name in list <code class="docutils literal notranslate"><span class="pre">words</span></code>, then replaces their boxes with the diagram in <code class="docutils literal notranslate"><span class="pre">template</span></code>.</p>
+<p>Here is an example of a negation <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> using <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule" title="lambeq.rewrite.SimpleRewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleRewriteRule</span></code></a>. The functor adds a “NOT” box to the wire of certain auxiliary verbs:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -590,10 +596,10 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle"><strong>Note</strong></p>
+<p class="admonition-title">Note</p>
 <p>The placeholder <code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule.placeholder(t)</span></code> in the template above will be replaced by a box with the same name as the original box and type <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
 </div>
-<p>A list of <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule"><span class="std std-ref">RewriteRule</span></a>s can be passed to <a class="reference internal" href="../lambeq.html#lambeq.rewrite.Rewriter"><span class="std std-ref">Rewriter</span></a> to create a rewriting functor. If no list is provided, then the default rewriting rules are used (see <a class="reference internal" href="rewrite.html"><span class="doc">Diagram Rewriting</span></a>).</p>
+<p>A list of <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a>s can be passed to <a class="reference internal" href="../lambeq.html#lambeq.rewrite.Rewriter" title="lambeq.rewrite.Rewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rewriter</span></code></a> to create a rewriting <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a>. If no list is provided, then the default rewriting rules are used (see <a class="reference internal" href="rewrite.html"><span class="doc">Diagram Rewriting</span></a>).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -611,15 +617,15 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_extend-lambeq_10_0.png" src="../_images/tutorials_extend-lambeq_10_0.png" />
+<img alt="../_images/tutorials_extend-lambeq_15_0.png" src="../_images/tutorials_extend-lambeq_15_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="RewriteRule-example:-“Past”-functor">
 <h3><a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule"><span class="std std-ref">RewriteRule</span></a> example: “Past” functor<a class="headerlink" href="#RewriteRule-example:-“Past”-functor" title="Permalink to this headline">¶</a></h3>
-<p>Sometimes, a rewrite rule may become too complicated to be implemented using the <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule"><span class="std std-ref">SimpleRewriteRule</span></a> class, so the more general <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule"><span class="std std-ref">RewriteRule</span></a> class should be used instead. A concrete subclass of a <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule"><span class="std std-ref">RewriteRule</span></a> should implement the methods <code class="docutils literal notranslate"><span class="pre">matches()</span></code> and <code class="docutils literal notranslate"><span class="pre">rewrite()</span></code>.</p>
-<p>A rewriter uses the <code class="docutils literal notranslate"><span class="pre">matches()</span></code> methods of its <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule"><span class="std std-ref">RewriteRule</span></a>s to detect if a rule can be applied. If there is a match, then the matching box is replaced with the result of <code class="docutils literal notranslate"><span class="pre">rewrite(box)</span></code>.</p>
-<p>In the following example, a functor that changes the tense of certain auxiliary verbs is implemented by directly subclassing <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule"><span class="std std-ref">RewriteRule</span></a>:</p>
+<p>Sometimes, a <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rule</span></a> may become too complicated to be implemented using the <a class="reference internal" href="../lambeq.html#lambeq.rewrite.SimpleRewriteRule" title="lambeq.rewrite.SimpleRewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimpleRewriteRule</span></code></a> class, so the more general <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a> class should be used instead. A concrete subclass of a <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a> should implement the methods <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule.matches" title="lambeq.rewrite.RewriteRule.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matches()</span></code></a> and <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule.rewrite" title="lambeq.rewrite.RewriteRule.rewrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rewrite()</span></code></a>.</p>
+<p>A rewriter uses the <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule.matches" title="lambeq.rewrite.RewriteRule.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matches()</span></code></a> methods of its <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a>s to detect if a rule can be applied. If there is a match, then the matching box is replaced with the result of <code class="docutils literal notranslate"><span class="pre">rewrite(box)</span></code>.</p>
+<p>In the following example, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> that changes the tense of certain auxiliary verbs is implemented by directly subclassing <a class="reference internal" href="../lambeq.html#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -656,7 +662,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_extend-lambeq_14_0.png" src="../_images/tutorials_extend-lambeq_14_0.png" />
+<img alt="../_images/tutorials_extend-lambeq_19_0.png" src="../_images/tutorials_extend-lambeq_19_0.png" />
 </div>
 </div>
 </div>
@@ -672,18 +678,17 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Ansätze for the quantum pipeline are implemented by extending the <a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz"><span class="std std-ref">CircuitAnsatz</span></a> class, while ansätze for the classical pipeline need to extend the <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz"><span class="std std-ref">TensorAnsatz</span></a> class. Both classes extend <a class="reference internal" href="../lambeq.html#lambeq.ansatz.BaseAnsatz"><span class="std std-ref">BaseAnsatz</span></a>, sharing a common interface. Once an ansatz is instantiated, it can be used as a functor to convert diagrams to either a circuit or a tensor diagram.</p>
-<p>An ansatz should be initialised with an <code class="docutils literal notranslate"><span class="pre">ob_map</span></code> argument, a dictionary which maps a rigid type to the number of qubits in the quantum case, or to a dimension size (e.g. <code class="docutils literal notranslate"><span class="pre">Dim(2,</span> <span class="pre">2)</span></code>) for the classical case. Some ansätze may require additional arguments (see the <a class="reference internal" href="../lambeq.html"><span class="doc">API documentation</span></a> for more details).</p>
-<p>In DisCoPy, a functor is defined by specifying the mappings for objects <code class="docutils literal notranslate"><span class="pre">ob</span></code> and arrows <code class="docutils literal notranslate"><span class="pre">ar</span></code>. The <a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz"><span class="std std-ref">CircuitAnsatz</span></a> and <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz"><span class="std std-ref">TensorAnsatz</span></a> classes already implement the <code class="docutils literal notranslate"><span class="pre">_ob</span></code> method, which extends <code class="docutils literal notranslate"><span class="pre">ob_map</span></code> to map not just base (atomic) types, but also compound types, into qubits and dimensions respectively. Therefore, to complete a new ansatz class, you only need to implement the <code class="docutils literal notranslate"><span class="pre">_ar</span></code> method,
-i.e. the mapping from rigid boxes to diagrams. This typically involves the following steps:</p>
+<p><a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">Ansätze</span></a> for the quantum pipeline are implemented by extending the <a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz" title="lambeq.circuit.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> class, while ansätze for the classical pipeline need to extend the <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz" title="lambeq.tensor.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> class. Both classes extend <a class="reference internal" href="../lambeq.html#lambeq.ansatz.BaseAnsatz" title="lambeq.ansatz.BaseAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAnsatz</span></code></a>, sharing a common interface. Once an <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansatz</span></a> is instantiated, it can be used as a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to convert diagrams to either a <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuit</span></a> or a tensor diagram.</p>
+<p>An <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansatz</span></a> should be initialised with an <code class="docutils literal notranslate"><span class="pre">ob_map</span></code> argument, a dictionary which maps a rigid type to the number of <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> in the quantum case, or to a dimension size (e.g. <code class="docutils literal notranslate"><span class="pre">Dim(2,</span> <span class="pre">2)</span></code>) for the classical case. Some <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansätze</span></a> may require additional arguments (see the <a class="reference internal" href="../lambeq.html"><span class="doc">API documentation</span></a> for more details).</p>
+<p>In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is defined by specifying the mappings for objects <code class="docutils literal notranslate"><span class="pre">ob</span></code> and arrows <code class="docutils literal notranslate"><span class="pre">ar</span></code>. The <a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz" title="lambeq.circuit.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> and <a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz" title="lambeq.tensor.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> classes already implement the <code class="docutils literal notranslate"><span class="pre">_ob</span></code> method, which extends <code class="docutils literal notranslate"><span class="pre">ob_map</span></code> to map not just base (atomic) types, but also compound types, into <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> and dimensions respectively. Therefore, to complete a new <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansatz</span></a> class, you only need to implement the <code class="docutils literal notranslate"><span class="pre">_ar</span></code> method, i.e. the mapping from rigid boxes to diagrams. This typically involves the following steps:</p>
 <ol class="arabic simple">
 <li><p>Obtain the label of the box using the <code class="docutils literal notranslate"><span class="pre">_summarise_box</span></code> method. This provides a unique token which can be used to parameterise the box.</p></li>
-<li><p>Apply the functor to the domain and the codomain of the box using the <code class="docutils literal notranslate"><span class="pre">_ob</span></code> method.</p></li>
-<li><p>Construct and return an ansatz with new domain and codomain - see how to construct diagrams using DisCoPy <a class="reference external" href="https://discopy.readthedocs.io/en/main/notebooks.html">here</a>.</p></li>
+<li><p>Apply the <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to the domain and the codomain of the box using the <code class="docutils literal notranslate"><span class="pre">_ob</span></code> method.</p></li>
+<li><p>Construct and return an <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansatz</span></a> with new domain and codomain – see how to construct diagrams using <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> <a class="reference external" href="https://discopy.readthedocs.io/en/main/notebooks.html">here</a>.</p></li>
 </ol>
 <div class="section" id="CircuitAnsatz-example:-“Real-valued”-ansatz">
 <h3><a class="reference internal" href="../lambeq.html#lambeq.circuit.CircuitAnsatz"><span class="std std-ref">CircuitAnsatz</span></a> example: “Real-valued” ansatz<a class="headerlink" href="#CircuitAnsatz-example:-“Real-valued”-ansatz" title="Permalink to this headline">¶</a></h3>
-<p>This ansatz always returns a tensor with real-valued entries, since the ansatz is constructed using only the CNOT and Y rotation gates, which both implement real-valued unitaries.</p>
+<p>This <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansatz</span></a> always returns a tensor with real-valued entries, since the ansatz is constructed using only the CNOT and Y rotation gates, which both implement real-valued unitaries.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -751,13 +756,13 @@ i.e. the mapping from rigid boxes to diagrams. This typically involves the foll
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_extend-lambeq_21_0.png" src="../_images/tutorials_extend-lambeq_21_0.png" />
+<img alt="../_images/tutorials_extend-lambeq_26_0.png" src="../_images/tutorials_extend-lambeq_26_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="TensorAnsatz-example:-“Positive”-ansatz">
 <h3><a class="reference internal" href="../lambeq.html#lambeq.tensor.TensorAnsatz"><span class="std std-ref">TensorAnsatz</span></a> example: “Positive” ansatz<a class="headerlink" href="#TensorAnsatz-example:-“Positive”-ansatz" title="Permalink to this headline">¶</a></h3>
-<p>This ansatz returns a positive tensor, since the individual tensors are element-wise squared before contracted.</p>
+<p>This <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansatz</span></a> returns a positive tensor, since the individual tensors are element-wise squared before contracted.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -800,7 +805,7 @@ i.e. the mapping from rigid boxes to diagrams. This typically involves the foll
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_extend-lambeq_25_0.png" src="../_images/tutorials_extend-lambeq_25_0.png" />
+<img alt="../_images/tutorials_extend-lambeq_30_0.png" src="../_images/tutorials_extend-lambeq_30_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -832,13 +837,13 @@ Tensor(dom=Dim(1), cod=Dim(2), array=[8., 8.])
 </div>
 <div class="section" id="Contributions">
 <h2>Contributions<a class="headerlink" href="#Contributions" title="Permalink to this headline">¶</a></h2>
-<p>We encourage you to implement your own readers, rewrite rules and ansätze and <a class="reference external" href="https://github.com/CQCL/lambeq/pulls">contribute to lambeq</a> - detailed guidelines are available <a class="reference internal" href="../CONTRIBUTING.html"><span class="doc">here</span></a>. Below you can find some sources of inspiration:</p>
+<p>We encourage you to implement your own <a class="reference internal" href="../glossary.html#term-reader"><span class="xref std std-term">readers</span></a>, <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> and <a class="reference internal" href="../glossary.html#term-ansatz"><span class="xref std std-term">ansätze</span></a> and <a class="reference external" href="https://github.com/CQCL/lambeq/pulls">contribute to lambeq</a> – detailed guidelines are available <a class="reference internal" href="../CONTRIBUTING.html"><span class="doc">here</span></a>. Below you can find some sources of inspiration:</p>
 <ul class="simple">
-<li><p>rewrites for relative pronouns: <a class="reference external" href="https://arxiv.org/abs/1404.5278">[link 1]</a> <a class="reference external" href="https://arxiv.org/abs/1406.4690">[link 2]</a></p></li>
-<li><p>rewrites to deal with coordination: <a class="reference external" href="https://arxiv.org/abs/1606.01515">[link]</a></p></li>
-<li><p>rewrites to reduce the dimension size of verbs: <a class="reference external" href="https://arxiv.org/abs/1401.5980">[link]</a></p></li>
-<li><p>rewrites to language circuits (DisCoCirc): <a class="reference external" href="https://arxiv.org/abs/2106.07485">[link]</a></p></li>
-<li><p>ansätze benchmarked by their expressibility: <a class="reference external" href="https://arxiv.org/abs/1905.10876">[link]</a></p></li>
+<li><p>rewrites for relative pronouns: <a class="reference internal" href="../bibliography.html#scc2014a" id="id3"><span>[SCC2014a]</span></a> <a class="reference internal" href="../bibliography.html#scc2014b" id="id4"><span>[SCC2014b]</span></a></p></li>
+<li><p>rewrites to deal with coordination: <a class="reference internal" href="../bibliography.html#kar2016" id="id5"><span>[Kar2016]</span></a></p></li>
+<li><p>rewrites to reduce the dimension size of verbs: <a class="reference internal" href="../bibliography.html#kea2014" id="id6"><span>[Kea2014]</span></a></p></li>
+<li><p>rewrites to language circuits (DisCoCirc): <a class="reference internal" href="../bibliography.html#cw2021" id="id7"><span>[CW2021]</span></a></p></li>
+<li><p>ansätze benchmarked by their expressibility: <a class="reference internal" href="../bibliography.html#sja2019" id="id8"><span>[SJA2019]</span></a></p></li>
 <li><p>high-level examples of ansätze: <a class="reference external" href="https://pennylane.ai/qml/glossary/circuit_ansatz.html">[link]</a></p></li>
 </ul>
 </div>

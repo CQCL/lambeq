@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Step 1. Sentence input &mdash; lambeq 0.1.3.dev11+g5027523 documentation</title>
+  <title>Step 1. Sentence input &mdash; lambeq 0.1.3.dev12+g1c6fdf7 documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev11+g5027523
+                0.1.3.dev12+g1c6fdf7
               </div>
             
           
@@ -124,6 +124,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Links</span></p>
 <ul>
@@ -471,14 +477,13 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Step-1.-Sentence-input">
 <h1>Step 1. Sentence input<a class="headerlink" href="#Step-1.-Sentence-input" title="Permalink to this headline">¶</a></h1>
-<p>The first part of the process in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> given a sentence, is to convert it into a string diagram, according to a given compositional scheme. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can accommodate any compositional model that can encode sentences as string diagrams, its native data structure. The toolkit currently includes three compositional models, each using syntactic information to a different degree: a bag-of-words model with no syntactic information present, a word-sequence model which respects the order of words,
-and a fully syntax-based model.</p>
+<p>The first part of the process in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> given a sentence, is to convert it into a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>, according to a given <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional scheme</span></a>. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can accommodate any <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> that can encode sentences as <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>, its native data structure. The toolkit currently includes three <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional models</span></a>, each using syntactic information to a different degree: a <a class="reference internal" href="../glossary.html#term-bag-of-words"><span class="xref std std-term">bag-of-words</span></a> model with no syntactic information present, a <a class="reference internal" href="../glossary.html#term-word-sequence-model"><span class="xref std std-term">word-sequence model</span></a> which respects the order of words, and a fully syntax-based model.</p>
 <div class="section" id="Syntax-based-model">
 <h2>Syntax-based model<a class="headerlink" href="#Syntax-based-model" title="Permalink to this headline">¶</a></h2>
-<p>In order to obtain a DisCoCat-like output, we first use the <a class="reference internal" href="../lambeq.ccg2discocat.html#lambeq.ccg2discocat.DepCCGParser"><span class="std std-ref">DepCCGParser</span></a> class from <a class="reference internal" href="../lambeq.ccg2discocat.html"><span class="doc">ccg2discocat</span></a> package, which, in turn, calls the parser, obtains a CCG derivation for the sentence, and converts it into a string diagram. The code below uses the default depccg parser in order to produce a string diagram for the sentence “John walks in the park”.</p>
+<p>In order to obtain a <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a>-like output, we first use the <a class="reference internal" href="../lambeq.ccg2discocat.html#lambeq.ccg2discocat.depccg_parser.DepCCGParser" title="lambeq.ccg2discocat.depccg_parser.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">DepCCGParser</span></code></a> class from <a class="reference internal" href="../lambeq.ccg2discocat.html#module-lambeq.ccg2discocat" title="lambeq.ccg2discocat"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code></a> package, which, in turn,  calls the <a class="reference internal" href="../glossary.html#term-parser"><span class="xref std std-term">parser</span></a>, obtains a <a class="reference internal" href="../glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> derivation for the sentence, and converts it into a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>. The code below uses the default <a class="reference internal" href="../glossary.html#term-depccg"><span class="xref std std-term">depccg</span></a> parser in order to produce a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> for the sentence “John walks in the park”.</p>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle"><strong>Note</strong></p>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s string diagrams are objects of the class <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html">discopy.rigid.Diagram</a>.</p>
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s string diagrams are objects of the class <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>.</p>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -502,17 +507,17 @@ and a fully syntax-based model.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_1_0.png" src="../_images/tutorials_sentence-input_1_0.png" />
+<img alt="../_images/tutorials_sentence-input_3_0.png" src="../_images/tutorials_sentence-input_3_0.png" />
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle"><strong>Note</strong></p>
-<p>Drawing a pregroup diagram in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> like the one above can be done using the <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html?highlight=grammar.draw()">discopy.grammar.draw()</a> method.</p>
+<p class="admonition-title">Note</p>
+<p>Drawing a pregroup diagram in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> like the one above can be done using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">discopy.grammar.draw()</span></code> method.</p>
 </div>
 </div>
 <div class="section" id="Bag-of-words-model">
 <h2>Bag-of-words model<a class="headerlink" href="#Bag-of-words-model" title="Permalink to this headline">¶</a></h2>
-<p>DisCoCat is not the only compositional model that <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> supports. In fact, any compositional scheme that manifests sentences as string diagrams/tensor networks can be added to the toolkit via the module <a class="reference internal" href="../lambeq.html#module-lambeq.reader"><span class="std std-ref">reader</span></a>. For example, the <code class="docutils literal notranslate"><span class="pre">spiders_reader</span></code> object of the <a class="reference internal" href="../lambeq.html#lambeq.reader.LinearReader"><span class="std std-ref">LinearReader</span></a> class represents a sentence as a “bag-of-words”, composing the words using a <em>spider</em> (a commutative operation).</p>
+<p><a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> is not the only <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> that <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> supports. In fact, any compositional scheme that manifests sentences as <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>/<a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a> can be added to the toolkit via the module <a class="reference internal" href="../lambeq.html#module-lambeq.reader" title="lambeq.reader"><code class="xref py py-mod docutils literal notranslate"><span class="pre">reader</span></code></a>. For example, the <code class="docutils literal notranslate"><span class="pre">spiders_reader</span></code> object of the <a class="reference internal" href="../lambeq.html#lambeq.reader.LinearReader" title="lambeq.reader.LinearReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearReader</span></code></a> class represents a sentence as a “<a class="reference internal" href="../glossary.html#term-bag-of-words"><span class="xref std std-term">bag-of-words</span></a>”, composing the words using a <a class="reference internal" href="../glossary.html#term-spider"><span class="xref std std-term">spider</span></a> (a commutative operation).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -532,18 +537,17 @@ and a fully syntax-based model.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_4_0.png" src="../_images/tutorials_sentence-input_4_0.png" />
+<img alt="../_images/tutorials_sentence-input_6_0.png" src="../_images/tutorials_sentence-input_6_0.png" />
 </div>
 </div>
 <div class="admonition note">
-<p class="admonition-title fa fa-exclamation-circle"><strong>Note</strong></p>
-<p>Note that this time the drawing is performed with diagram’s own method <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html?highlight=Diagram.draw()#discopy.monoidal.Diagram.draw">discopy.monoidal.Diagram.draw()</a>, which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using
-<a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html?highlight=grammar.draw()">discopy.grammar.draw()</a> in the previous section, which can only be used in pregroup diagrams.</p>
+<p class="admonition-title">Note</p>
+<p>Note that this time the drawing is performed with diagram’s own method <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">monoidal.Diagram.draw()</span></code></a>, which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using <code class="xref py py-func docutils literal notranslate"><span class="pre">grammar.draw()</span></code> in the previous section, which can only be used in pregroup diagrams.</p>
 </div>
 </div>
 <div class="section" id="Word-sequence-model">
 <h2>Word-sequence model<a class="headerlink" href="#Word-sequence-model" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">cups_reader</span></code> object of the <a class="reference internal" href="../lambeq.html#lambeq.reader.LinearReader"><span class="std std-ref">LinearReader</span></a> class composes words in sequence, from left to right, generating a “tensor train”.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">cups_reader</span></code> object of the <a class="reference internal" href="../lambeq.html#lambeq.reader.LinearReader" title="lambeq.reader.LinearReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearReader</span></code></a> class composes words in sequence, from left to right, generating a “<a class="reference internal" href="../glossary.html#term-tensor-train"><span class="xref std std-term">tensor train</span></a>”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -562,11 +566,11 @@ and a fully syntax-based model.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_6_0.png" src="../_images/tutorials_sentence-input_6_0.png" />
+<img alt="../_images/tutorials_sentence-input_8_0.png" src="../_images/tutorials_sentence-input_8_0.png" />
 </div>
 </div>
 <p>Note the use of a <code class="docutils literal notranslate"><span class="pre">START</span></code> symbol in the beginning of the sentence, represented as an order-1 tensor (a vector). This ensures that the final result of the computation (that is, the representation of the sentence) will be again a tensor of order 1.</p>
-<p><strong>See also:</strong></p>
+<p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../examples/ccg2discocat.html"><span class="doc">Example notebook ccg2discocat.ipynb</span></a></p></li>
 <li><p><a class="reference internal" href="../examples/reader.html"><span class="doc">Example notebook reader.ipynb</span></a></p></li>

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Step 2. Diagram rewriting &mdash; lambeq 0.1.3.dev11+g5027523 documentation</title>
+  <title>Step 2. Diagram rewriting &mdash; lambeq 0.1.3.dev12+g1c6fdf7 documentation</title>
   
 
   
@@ -72,7 +72,7 @@
             
             
               <div class="version">
-                0.1.3.dev11+g5027523
+                0.1.3.dev12+g1c6fdf7
               </div>
             
           
@@ -119,6 +119,12 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Links</span></p>
 <ul>
@@ -466,7 +472,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="Step-2.-Diagram-rewriting">
 <h1>Step 2. Diagram rewriting<a class="headerlink" href="#Step-2.-Diagram-rewriting" title="Permalink to this headline">¶</a></h1>
-<p>Syntactic derivations in pregroup form can become extremely complicated, which may lead to excessive use of hardware resources and prohibitively long training times. The purpose of the <a class="reference internal" href="../lambeq.html#module-lambeq.rewrite"><span class="std std-ref">rewrite</span></a> module is to provide a means to the user to address some of these problems, via rewriting rules that simplify the string diagram. As an example, consider again the sentence “John walks in the park”.</p>
+<p>Syntactic derivations in pregroup form can become extremely complicated, which may lead to excessive use of hardware resources and prohibitively long training times. The purpose of the <a class="reference internal" href="../lambeq.html#module-lambeq.rewrite" title="lambeq.rewrite"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rewrite</span></code></a> module is to provide a means to the user to address some of these problems, via <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewriting rules</span></a> that simplify the <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>. As an example, consider again the sentence “John walks in the park”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -486,11 +492,10 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_rewrite_1_0.png" src="../_images/tutorials_rewrite_1_0.png" />
+<img alt="../_images/tutorials_rewrite_2_0.png" src="../_images/tutorials_rewrite_2_0.png" />
 </div>
 </div>
-<p>Note that the representation of the preposition is a tensor of order 5 in the “classical” case, or a state of 5 quantum systems in the quantum case. Applying the <code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code> rewriting rule to the diagram takes advantage of the underlying compact-closed monoidal structure, by using a “cap” to bridge the discontinued subject noun wire within the preposition tensor. Furthermore, the <code class="docutils literal notranslate"><span class="pre">determiner</span></code> rewriting rule will apply a cap on type <span class="math notranslate nohighlight">\(n \cdot n^l\)</span>, eliminating completely the
-determiner “the”.</p>
+<p>Note that the representation of the preposition is a tensor of order 5 in the “classical” case, or a state of 5 quantum systems in the quantum case. Applying the <code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code> <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewriting rule</span></a> to the diagram takes advantage of the underlying <a class="reference internal" href="../glossary.html#term-compact-closed-category"><span class="xref std std-term">compact-closed</span></a> monoidal structure, by using a “<a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">cap</span></a>” to bridge the discontinued subject noun wire within the preposition tensor. Furthermore, the <code class="docutils literal notranslate"><span class="pre">determiner</span></code> <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewriting rule</span></a> will apply a <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">cap</span></a> on type <span class="math notranslate nohighlight">\(n \cdot n^l\)</span>, eliminating completely the determiner “the”.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -511,7 +516,7 @@ determiner “the”.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_rewrite_3_0.png" src="../_images/tutorials_rewrite_3_0.png" />
+<img alt="../_images/tutorials_rewrite_4_0.png" src="../_images/tutorials_rewrite_4_0.png" />
 </div>
 </div>
 <p>We will now ask <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to normalise the diagram, by “stretching” the wires and re-arranging the boxes if required:</p>
@@ -529,11 +534,11 @@ determiner “the”.</p>
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_rewrite_5_0.png" src="../_images/tutorials_rewrite_5_0.png" />
+<img alt="../_images/tutorials_rewrite_6_0.png" src="../_images/tutorials_rewrite_6_0.png" />
 </div>
 </div>
 <p>In the simplified diagram, the order of the preposition tensor is reduced by 2, which at least for a classical experiment, is a substantial improvement. Note also that the determiner is now eliminated, equating the meaning of the noun phrase “the park” with that of the noun “park”.</p>
-<p>These examples clearly demonstrate the flexibility of string diagrams compared to simple tensor networks, which was one of the main reasons for choosing them as <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s representation format. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> comes with a number of standard rewrite rules covering auxiliary verbs, connectors, adverbs, determiners and prepositional phrases.</p>
+<p>These examples clearly demonstrate the flexibility of <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a> compared to simple <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a>, which was one of the main reasons for choosing them as <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s representation format. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> comes with a number of standard <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> covering auxiliary verbs, connectors, adverbs, determiners and prepositional phrases.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 50%" />
@@ -562,7 +567,7 @@ determiner “the”.</p>
 </tr>
 </tbody>
 </table>
-<p><strong>See also:</strong></p>
+<p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../examples/rewrite.html"><span class="doc">Example notebook rewrite.ipynb</span></a></p></li>
 <li><p><a class="reference internal" href="discocat.html"><span class="doc">DisCoCat in DisCoPy</span></a></p></li>
