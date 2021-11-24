@@ -12,12 +12,12 @@ The base ``lambeq`` can be installed with the command::
 
    pip install lambeq
 
-This does not include optional dependencies such as depccg and PyTorch, which have to be installed separately. In particular, depccg is required for :py:class:`lambeq.ccg2discocat.DepCCGParser`.
+This does not include optional dependencies such as :term:`depccg` and PyTorch, which have to be installed separately. In particular, :term:`depccg` is required for :py:class:`lambeq.ccg2discocat.DepCCGParser`.
 
 .. warning::
-   depccg is available only on MacOS and Linux. If you are using Windows, please install the base ``lambeq``. This means that the :py:class:`.DepCCGParser` class will not be available on Windows, but you can still use all other compositional models from the :py:mod:`.reader` module. Support for parsing on Windows will be added in a future version.
+   :term:`depccg` is available only on MacOS and Linux. If you are using Windows, please install the base ``lambeq``. This means that the :py:class:`.DepCCGParser` class will not be available on Windows, but you can still use all other compositional models from the :py:mod:`.reader` module. Support for parsing on Windows will be added in a future version.
 
-To install ``lambeq`` with depccg, run instead::
+To install ``lambeq`` with :term:`depccg`, run instead::
 
    pip install cython numpy
    pip install 'lambeq[depccg]'
@@ -57,7 +57,7 @@ This requires ``git`` to be installed.
 
    pip install --upgrade pip wheel
 
-4. (Optional) If installing the optional depccg dependency, the following packages must be installed **before** depccg:
+4. (Optional) If installing the optional :term:`depccg` dependency, the following packages must be installed **before** :term:`depccg`:
 
 ::
 
@@ -77,7 +77,7 @@ To include all optional dependencies, run instead:
 
    pip install --use-feature=in-tree-build .[all]
 
-6. If using a pretrained depccg parser, download a `pretrained model <https://github.com/masashi-y/depccg#using-a-pretrained-english-parser>`_:
+6. If using a pretrained :term:`depccg` parser, download a `pretrained model <https://github.com/masashi-y/depccg#using-a-pretrained-english-parser>`_:
 
 ::
 

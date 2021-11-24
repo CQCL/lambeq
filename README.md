@@ -17,6 +17,11 @@ lambeq is a toolkit for quantum natural language processing (QNLP).
 - Contributions: Please read [our guide](https://cqcl.github.io/lambeq/CONTRIBUTING.html).
 - If you want to subscribe to lambeq's mailing list, send an email to <lambeq-users@cambridgequantum.com> with the word "subscribe" as subject.
 
+---
+**Note:** Please do not try to read the documentation directly from the preview provided in the [repository](https://github.com/CQCL/lambeq/tree/main/docs), since some of the pages will not be rendered properly.
+
+---
+
 ## Getting started
 
 ### Prerequisites
