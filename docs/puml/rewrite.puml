@@ -1,0 +1,61 @@
+@startuml
+
+set namespaceseparator none
+skinparam dpi 96
+skinparam ArrowColor Black
+skinparam shadowing true
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+skinparam object {
+  backgroundColor lavender
+  borderColor black
+}
+
+abstract class RewriteRule {}
+class SimpleRewriteRule {
+    template
+}
+class CoordinationRewriteRule {}
+class CurryRewriteRule {}
+class Rewriter {
+    apply_rewrites
+}
+
+class discopy.monoidal.Diagram #back:lightblue;line:black
+class discopy.rigid.Diagram #back:lightblue;line:black
+class discopy.rigid.Functor #back:lightblue;line:black
+class discopy.monoidal.Functor #back:lightblue;line:black
+
+object connector_rule
+object determiner_rule
+object postadverb_rule
+object preadverb_rule
+object auxiliary_rule
+object prep_phrase_rule
+object object_rp_rule
+object subject_rp_rule
+
+RewriteRule <|-- SimpleRewriteRule
+RewriteRule <|-- CoordinationRewriteRule
+RewriteRule <|-- CurryRewriteRule
+
+Rewriter *-d- RewriteRule
+SimpleRewriteRule::template *-- discopy.rigid.Diagram
+Rewriter::apply_rewrites *-r- discopy.rigid.Functor
+RewriteRule -- discopy.rigid.Diagram : > rewrites
+
+SimpleRewriteRule <.u. connector_rule : <<instanceOf>>
+SimpleRewriteRule <.u. determiner_rule : <<instanceOf>>
+SimpleRewriteRule <.u. postadverb_rule : <<instanceOf>>
+SimpleRewriteRule <.l. preadverb_rule : <<instanceOf>>
+SimpleRewriteRule <.. auxiliary_rule : <<instanceOf>>
+SimpleRewriteRule <.. prep_phrase_rule : <<instanceOf>>
+SimpleRewriteRule <.. object_rp_rule : <<instanceOf>>
+SimpleRewriteRule <.. subject_rp_rule : <<instanceOf>>
+
+discopy.monoidal.Diagram <|-u- discopy.rigid.Diagram
+discopy.monoidal.Functor <|-- discopy.rigid.Functor
+
+@enduml

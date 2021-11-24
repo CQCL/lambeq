@@ -2,99 +2,130 @@ name: Build, lint and test package
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - 'main'
+      - 'beta'
+      - 'release'
   pull_request:
-    branches: [ main ]
 
 env:
   SRC_DIR: lambeq
+  TEST_DIR: tests
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8, 3.9 ]
+        python-version: [ 3.8, 3.9, "3.10" ]
+    outputs:
+      error-check: ${{ steps.error-check.conclusion }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install linter
-      run:
-        python -m pip install flake8
+      run: python -m pip install flake8 flake8-broken-line flake8-bugbear flake8-copyright flake8-import-order flake8-quotes
     - name: Check for errors
+      id: error-check
       run:
         # stop the build if there are Python syntax errors or undefined names
-        flake8 ${{ env.SRC_DIR }} --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 ${{ env.SRC_DIR }} --count --isolated --select=E9,F63,F7,F82 --show-source --statistics
     - name: Lint with flake8
       run:
+        # max-doc-length should be 72 but the copyright notice is too wide for that, so we only error on >74 characters
+        flake8 ${{ env.SRC_DIR }} --max-doc-length=74
+    - name: Check doc line lengths and complexity
+      run:
         # exit-zero treats all errors as warnings
-        flake8 ${{ env.SRC_DIR }} --count --exit-zero --max-complexity=10 --statistics
+        flake8 ${{ env.SRC_DIR }} --count --exit-zero --isolated --max-complexity=10 --max-doc-length=72 --select=C901,W505 --statistics
   build_and_test:
     needs: lint
+    if: ${{ always() && needs.lint.outputs.error-check == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8, 3.9 ]
+        python-version: [ 3.8, 3.9, "3.10" ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Locate pip cache
-      id: loc-pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-    - name: Restore pip dependencies from cache
+    - name: Install DisCoPy 0.5 from GitHub
+      if: github.ref_name != 'release' && github.ref_name != 'beta'
+      run: pip install git+https://github.com/discopy/discopy@0.5
+    - name: Install base package
+      run: pip install .
+    - name: Check package import works
+      run: python -c 'import lambeq'
+    - name: Install extra dependencies and tester
+      run: pip install .[extras] .[test]
+    - name: Locate bobcat pre-trained model cache
+      id: loc-bobcat-cache
+      run: echo "::set-output name=dir::$(python -c 'from lambeq.text2diagram.bobcat_parser import get_model_dir; print(get_model_dir("bert"))')"
+    - name: Restore bobcat pre-trained model from cache
+      id: bobcat-cache
       uses: actions/cache@v2
       with:
-        path: ${{ steps.loc-pip-cache.outputs.dir }}
-        key: build_and_test-${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.cfg') }}
-        restore-keys: |
-          build_and_test-${{ runner.os }}-pip-${{ matrix.python-version }}-
-          build_and_test-${{ runner.os }}-pip-
-    - name: Install package and tester
-      run: |
-        bash install.sh --global
-    - name: Locate depccg pre-trained model cache
+        path: ${{ steps.loc-bobcat-cache.outputs.dir }}
+        key: bobcat-bert-v1
+    - name: Test with pytest
+      run: >
+        coverage run --source=${{ env.SRC_DIR }}
+        --module pytest ${{ env.SRC_DIR }} ${{ env.TEST_DIR }}
+        --doctest-modules
+        --durations=50
+        --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py
+        --ignore=docs/extract_code_cells.py
+    - name: Determine if depccg tests should be run
+      # only test depccg if it is explicitly changed, since it is very slow
+      id: depccg-enabled
+      continue-on-error: true  # this is expected to fail but the job should still succeed
+      run: >
+        git fetch --depth=1 origin ${{ github.base_ref || github.event.before }}:before
+        && git diff --name-only before | grep depccg
+    - name: Install depccg and locate depccg pre-trained model cache
       id: loc-depccg-cache
-      run: echo "::set-output name=dir::$(python -c 'from depccg.download import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
+      if: steps.depccg-enabled.outcome == 'success'
+      run: |
+        pip install cython  # must be installed before depccg
+        pip install depccg==2.0.3.2
+        echo "::set-output name=dir::$(python -c 'from depccg.instance_models import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
+        pip install lambeq  # override dependency conflicts
     - name: Restore depccg pre-trained model from cache
       id: depccg-cache
+      if: steps.depccg-enabled.outcome == 'success'
       uses: actions/cache@v2
       with:
         path: ${{ steps.loc-depccg-cache.outputs.dir }}
         key: depccg
-    - name: Download pre-trained model if needed
-      if: steps.depccg-cache.outputs.cache-hit != 'true'
-      run: python -m depccg en download
-    - name: Test with pytest
-      run:
-        # run test of depccg parser separately because it keeps breaking
-        coverage run --source=${{ env.SRC_DIR }} -m pytest --doctest-modules --ignore-glob=*/test_depccg_parser.py
+    - name: Download depccg pre-trained model if needed
+      if: steps.depccg-cache.outputs.cache-hit == 'false'
+      run: python -c 'import tarfile, urllib;from depccg.instance_models import MODEL_DIRECTORY;tarfile.open(urllib.request.urlretrieve("https://qnlp.cambridgequantum.com/models/tri_headfirst.tar.gz")[0]).extractall(MODEL_DIRECTORY)'
     - name: Test DepCCGParser
+      if: steps.depccg-enabled.outcome == 'success'
       continue-on-error: true
-      run:
-        coverage run --append --source=${{ env.SRC_DIR }} -m pytest -k test_depccg_parser.py
+      run: coverage run --append --source=${{ env.SRC_DIR }} -m pytest -k test_depccg_parser.py
     - name: Coverage report
-      run:
-        coverage report -m
+      run: coverage report -m
   type_check:
     needs: lint
+    if: ${{ always() && needs.lint.outputs.error-check == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.7, 3.8, 3.9 ]
+        python-version: [ 3.8, 3.9, "3.10" ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies with type hints
-      run: python -m pip install numpy pytket
+      run: python -m pip install numpy pytket spacy torch types-PyYAML
     - name: Install type checker
       run: python -m pip install mypy
     - name: Type check with mypy

@@ -1,0 +1,152 @@
+@startuml
+
+set namespaceseparator none
+skinparam dpi 96
+skinparam ArrowColor Black
+skinparam shadowing true
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+skinparam object {
+  backgroundColor lavender
+  borderColor black
+}
+'skinparam linetype ortho
+'skinparam groupInheritance 4
+
+package depccg #DDDDDD {}
+package transformers #DDDDDD {}
+
+abstract class Reader {
+  sentence2diagram()
+  sentences2diagrams()
+}
+
+abstract class CCGParser {
+  sentence2tree()
+  sentences2trees()
+}
+
+class TreeReader {
+  ccg_parser : CCGParser
+  mode: TreeReaderMode
+  word_type
+}
+
+enum TreeReaderMode {
+    NO_TYPE
+    RULE_ONLY
+    RULE_TYPE
+}
+
+class LinearReader {
+    combining_diagram
+    start_box
+    word_type
+}
+class SpidersReader {}
+class DepCCGParser
+class WebParser
+class BobcatParser {
+    parser
+    tagger
+}
+class CCGBankParser
+enum CCGRule {
+    UNKNOWN
+    LEXICAL
+    UNARY
+    FORWARD_APPLICATION
+    BACKWARD_APPLICATION
+    FORWARD_COMPOSITION
+    BACKWARD_COMPOSITION
+    FORWARD_CROSSED_COMPOSITION
+    BACKWARD_CROSSED_COMPOSITION
+    GENERALIZED_FORWARD_COMPOSITION
+    GENERALIZED_BACKWARD_COMPOSITION
+    GENERALIZED_FORWARD_CROSSED_COMPOSITION
+    GENERALIZED_BACKWARD_CROSSED_COMPOSITION
+    REMOVE_PUNCTUATION_LEFT
+    REMOVE_PUNCTUATION_RIGHT
+    FORWARD_TYPE_RAISING
+    BACKWARD_TYPE_RAISING
+    CONJUNCTION
+    symbol()
+}
+class CCGTree
+
+class bobcat.Tagger #back:wheat;line:tomato
+class bobcat.ChartParser #back:wheat;line:tomato
+
+class ccg_rule.GBC
+class ccg_rule.GFX
+class ccg_rule.GFC
+class ccg_rule.GBX
+class ccg_rule.RPL
+class ccg_rule.RPR
+
+class discopy.rigid.Ty #back:lightblue;line:black {}
+class discopy.rigid.Ob #back:lightblue;line:black {}
+class discopy.monoidal.Ty #back:lightblue;line:black {}
+class discopy.monoidal.Diagram #back:lightblue;line:black {}
+class discopy.rigid.Diagram #back:lightblue;line:black {}
+class discopy.biclosed.Diagram #back:lightblue;line:black {}
+class discopy.biclosed.Box #back:lightblue;line:black {}
+
+object cups_reader
+object spiders_reader
+object stairs_reader
+
+Reader <|-- CCGParser
+Reader <|-- TreeReader
+Reader <|-- LinearReader
+Reader <|-- SpidersReader
+
+LinearReader <.u. cups_reader : <<instanceOf>>
+LinearReader <.u. stairs_reader : <<instanceOf>>
+
+CCGParser <|- DepCCGParser
+CCGParser <|-- BobcatParser
+CCGParser <|-- WebParser
+CCGParser <|--- CCGBankParser
+
+SpidersReader <.. spiders_reader : <<instanceOf>>
+
+DepCCGParser - depccg: > uses
+
+discopy.monoidal.Ty <|-- discopy.rigid.Ty
+discopy.rigid.Ob <|-- discopy.rigid.Ty
+discopy.rigid.Diagram --|> discopy.monoidal.Diagram
+
+discopy.monoidal.Diagram <|-r- discopy.biclosed.Diagram
+discopy.biclosed.Diagram <|-- discopy.biclosed.Box
+
+TreeReader::ccg_parser o-- CCGParser
+TreeReader::mode *-l- TreeReaderMode
+LinearReader::word_type *-- discopy.rigid.Ty
+TreeReader::word_type *-- discopy.rigid.Ty
+LinearReader::combining_diagram *-- discopy.rigid.Diagram
+LinearReader::start_box *-- discopy.rigid.Diagram
+
+BobcatParser::parser *-- bobcat.ChartParser
+BobcatParser::tagger *-- bobcat.Tagger
+
+bobcat.ChartParser -- transformers : uses >
+bobcat.Tagger -- transformers: uses >
+WebParser -- depccg: uses >
+
+CCGTree *-- CCGRule
+CCGTree -u- CCGParser : < generates
+discopy.rigid.Diagram -- CCGTree : < isConvertedTo
+
+Reader -- discopy.rigid.Diagram : generates >
+
+discopy.biclosed.Box <|-- ccg_rule.GBC
+discopy.biclosed.Box <|-- ccg_rule.GFX
+discopy.biclosed.Box <|-- ccg_rule.GFC
+discopy.biclosed.Box <|-- ccg_rule.GBX
+discopy.biclosed.Box <|-- ccg_rule.RPL
+discopy.biclosed.Box <|-- ccg_rule.RPR
+
+@enduml

@@ -1,38 +1,40 @@
 name: Build and deploy documentation
 
 on:
-  workflow_run:
-    workflows: [ "Build, lint and test package" ]
-    branches: [ main ]
-    types: [ completed ]
+  push:
+    branches:
+      - 'main'
+      - 'beta'
+      - 'release'
+  pull_request:
 
 env:
   WORKFLOWS_DIR: .github/workflows
 
 jobs:
   docs:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and deploy documentation
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
-        fetch-depth: 0
+        fetch-depth: 0  # fetches tags, required for version info
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.7
+        python-version: 3.8
     - name: Build lambeq
       run: pip install .
     - name: Install documentation dependencies
       run: |
-        sudo apt-get install pandoc
+        sudo apt-get install graphviz pandoc
         pip install -r docs/requirements.txt
     - name: Build documentation
       run: ${{ env.WORKFLOWS_DIR }}/build-docs
     - name: Move install script
       run: mv install.sh docs/_build/html
     - name: Deploy documentation
+      if: ${{ github.event_name == 'push' && (github.ref_name == 'main' || github.ref_name == 'release') }}
       uses: s0/git-publish-subdir-action@develop
       env:
         REPO: self

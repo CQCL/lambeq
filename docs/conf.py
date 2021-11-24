@@ -17,11 +17,15 @@
 
 # -- Project information -----------------------------------------------------
 
-from lambeq import __version__
-release = version = __version__
+from lambeq import __version__ as version, __version_info__ as v
+trim_version = f'{v[0]}.{v[1]}.{v[2]}'
+if version.startswith(f'{trim_version}.'):
+    version = f'{v[0]}.{v[1]}.{int(v[2]) - 1} [git latest]'
+release = version
+
 
 project = 'lambeq'
-copyright = '2021, Cambridge Quantum Computing Ltd.'
+copyright = '2021-2022 Cambridge Quantum Computing Ltd.'
 author = 'Cambridge Quantum QNLP Dev Team'
 
 # -- General configuration ---------------------------------------------------
@@ -35,11 +39,15 @@ extensions = [
     'numpydoc',
     'sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
+    'sphinx.ext.graphviz',
+    'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
+    'sphinxarg.ext',
 ]
 
 intersphinx_mapping = {
-    'discopy': ("https://discopy.readthedocs.io/en/main/", None)
+    'discopy': ("https://discopy.readthedocs.io/en/0.5/", None),
+    'pennylane': ("https://pennylane.readthedocs.io/en/stable/", None),
 }
 
 autodoc_default_options = {
@@ -67,6 +75,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_theme_options = {
+  'navigation_depth': -1
+}
 html_context = {
   'display_github': True,
   'github_user': 'CQCL',
@@ -82,6 +93,10 @@ html_static_path = ['_static']
 html_logo = '_static/images/lambeq_logo.png'
 html_favicon = '_static/images/favicon.ico'
 
+# CSS for allowing text wrapping within table cells
+html_css_files = [
+    'css/table-wrap.css',
+]
 
 def autodoc_skip_member(app, what, name, obj, skip, options):
     if name == 'Symbol':

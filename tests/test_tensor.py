@@ -6,7 +6,7 @@ import numpy as np
 from sympy.core.compatibility import default_sort_key
 import tensornetwork as tn
 
-from lambeq.tensor import MPSAnsatz, TensorAnsatz, SpiderAnsatz
+from lambeq import MPSAnsatz, SpiderAnsatz, TensorAnsatz
 
 
 @pytest.fixture
@@ -18,7 +18,7 @@ def diagram():
 
 def test_tensor_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(2) for t in 'abcd'}
-    ansatz = TensorAnsatz(ob_map, bond_dim=1)
+    ansatz = TensorAnsatz(ob_map)
     tensor = ansatz(diagram)
     syms = sorted(tensor.free_symbols, key=default_sort_key)
     values = [np.ones(k.size) for k in syms]
