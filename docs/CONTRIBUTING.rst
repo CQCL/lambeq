@@ -8,7 +8,7 @@ Contributions to ``lambeq`` are welcome, especially with regard to adding:
 - Support for new :term:`parsers <parser>` (extensions of the :py:class:`.CCGParser` class)
 - :term:`Compositional schemes <compositional model>` and :term:`readers <reader>` (extensions of the :py:class:`.Reader` class)
 - :term:`Rewrite rules <rewrite rule>` (extensions of the :py:class:`.RewriteRule` class)
-- Tensor and circuit :term:`ansätze <ansatz>` (extensions of the :py:class:`.TensorAnsatz` and :py:class:`.CircuitAnsatz` classes)
+- Tensor and circuit :term:`ansätze <ansatz (plural: ansätze)>` (extensions of the :py:class:`.TensorAnsatz` and :py:class:`.CircuitAnsatz` classes)
 
 All accepted contributions will be included in the next official release and contributors will be properly attributed in the corresponding release notes.
 

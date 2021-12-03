@@ -87,6 +87,9 @@ class CCGParser(ABC):
         ----------
         sentences : iterable of str
             The sentences to be parsed.
+        planar : bool, default: False
+            Force diagrams to be planar when they contain
+            crossed composition.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
@@ -126,6 +129,9 @@ class CCGParser(ABC):
         ----------
         sentence : str
             The sentence to be parsed.
+        planar : bool, default: False
+            Force diagrams to be planar when they contain
+            crossed composition.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
