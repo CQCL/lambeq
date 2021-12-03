@@ -25,6 +25,8 @@ Bibliography
 
 .. [Lea2021] R. Lorenz, A. Pearson, K. Meichanetzidis, D. Kartsaklis, B. Coecke. `QNLP in Practice: Running Compositional Models of Meaning on a Quantum Computer <https://arxiv.org/pdf/2102.12846.pdf>`_ `arXiv:2102.12846`, 2021
 
+.. [Mea2020] K. Meichantzidis, A. Toumi, G. de Felice, B. Coecke. `Grammar-Aware Question-Answering on Quantum Computers <https://arxiv.org/pdf/2012.03756.pdf>`_, `arXiv:2012.03756`, 2020
+
 .. [SCC2014a] M. Sadrzadeh, S. Clark, B. Coecke. `The Frobenius Anatomy of Word Meanings I: Subject and Object Relative Pronouns <https://arxiv.org/pdf/1404.5278.pdf>`_, `Journal of Logic and Computation`, 2014
 
 .. [SCC2014b] M. Sadrzadeh, S. Clark, B. Coecke. `The Frobenius Anatomy of Word Meanings II: Possessive Relative Pronouns <https://arxiv.org/pdf/1406.4690.pdf>`_, `Journal of Logic and Computation`, 2014

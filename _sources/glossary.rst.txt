@@ -8,11 +8,11 @@ Glossary
     adjoint
         In ``lambeq``, each :term:`pregroup <pregroup grammar>` type :math:`p` has a left (:math:`p^l`) and a right (:math:`p^r`) adjoint, which are used to represent arguments in composite types. For example, a transitive verb has type :math:`n^r \cdot s \cdot n^l`, meaning it expects a noun argument on both sides in order to return a sentence.
 
-    ansatz
-        (plurar: ansätze) A map that determines choices such as the number of :term:`qubits <qubit>` that every wire of a :term:`string diagram` is associated with and the concrete parameterised quantum states that correspond to each word. For the classical case, an ansatz determines the number of dimensions associated to each type, and the way that large tensors are represented as :term:`matrix product states <matrix product state (MPS)>`.
+    ansatz (plural: ansätze)
+	A map that determines choices such as the number of :term:`qubits <qubit>` that every wire of a :term:`string diagram` is associated with and the concrete parameterised quantum states that correspond to each word. For the classical case, an ansatz determines the number of dimensions associated to each type, and the way that large tensors are represented as :term:`matrix product states <matrix product state (MPS)>`.
 
     bag-of-words
-        A :term:`compositional model` of meaning which represents a sentence as a set of words; that is, it does not take into account the order of words or any other syntactic relationship between them.
+        A :term:`compositional model` of meaning which represents a sentence as a multiset of words; that is, it does not take into account the order of words or any other syntactic relationship between them.
 
     cap
         A special morphism in a :term:`rigid category`, which, together with a :term:`cup` morphism, obey certain conditions called :term:`snake equations`. In diagrammatic form, a cap is depicted as a wire with downward concavity (:math:`\cap`). In the context of :term:`DisCoCat`, a cap is mostly used to "bridge" disconnected wires in order to alter the normal "flow" of information from one word to another, for example in cases such as *type-raising*.
@@ -57,7 +57,7 @@ Glossary
         Instantaneous Quantum Polynomial. A circuit which interleaves layers of Hadamard :term:`quantum gates <quantum gate>` with diagonal unitaries.
 
     matrix product state (MPS)
-        A factorization of a large tensor into a chain-like product of smaller tensors. ``lambeq`` is equipped with :term:`ansätze <ansatz>` that implement various forms of matrix product states, allowing the execution of large :term:`tensor networks <tensor network>` on classical hardware.
+        A factorization of a large tensor into a chain-like product of smaller tensors. ``lambeq`` is equipped with :term:`ansätze <ansatz (plural: ansätze)>` that implement various forms of matrix product states, allowing the execution of large :term:`tensor networks <tensor network>` on classical hardware.
 
     monoidal category
         A :term:`category` equipped with the monoidal product :math:`\otimes` and monoidal unit :math:`I`, providing an abstraction suitable for quantum computation.  :term:`Categorical quantum mechanics (CQM) <categorical quantum mechanics (CQM)>` and :term:`DisCoCat` are both based on the mathematical framework of monoidal categories.

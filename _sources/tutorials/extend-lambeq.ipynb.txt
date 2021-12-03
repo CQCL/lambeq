@@ -13,7 +13,7 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "In this tutorial you will find examples of how to extend ``lambeq`` to add more :term:`readers <reader>`, :term:`rewrite rules <rewrite rule>` and :term:`ansätze <ansatz>`, so you can start making your own `contributions <https://github.com/CQCL/lambeq/pulls>`_ to the toolkit."
+    "In this tutorial you will find examples of how to extend ``lambeq`` to add more :term:`readers <reader>`, :term:`rewrite rules <rewrite rule>` and :term:`ansätze <ansatz (plural: ansätze)>`, so you can start making your own `contributions <https://github.com/CQCL/lambeq/pulls>`_ to the toolkit."
    ]
   },
   {
@@ -323,15 +323,15 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    ":term:`Ansätze <ansatz>` for the quantum pipeline are implemented by extending the :py:class:`.CircuitAnsatz` class, while ansätze for the classical pipeline need to extend the :py:class:`.TensorAnsatz` class. Both classes extend :py:class:`.BaseAnsatz`, sharing a common interface. Once an :term:`ansatz` is instantiated, it can be used as a :term:`functor` to convert diagrams to either a :term:`circuit <quantum circuit>` or a tensor diagram.\n",
+    ":term:`Ansätze <ansatz>` for the quantum pipeline are implemented by extending the :py:class:`.CircuitAnsatz` class, while ansätze for the classical pipeline need to extend the :py:class:`.TensorAnsatz` class. Both classes extend :py:class:`.BaseAnsatz`, sharing a common interface. Once an :term:`ansatz <ansatz (plural: ansätze)>` is instantiated, it can be used as a :term:`functor` to convert diagrams to either a :term:`circuit <quantum circuit>` or a tensor diagram.\n",
     "\n",
-    "An :term:`ansatz` should be initialised with an ``ob_map`` argument, a dictionary which maps a rigid type to the number of :term:`qubits <qubit>` in the quantum case, or to a dimension size (e.g. ``Dim(2, 2)``) for the classical case. Some :term:`ansätze <ansatz>` may require additional arguments (see the `API documentation <../lambeq.rst>`_ for more details).\n",
+    "An :term:`ansatz <ansatz (plural: ansätze)>` should be initialised with an ``ob_map`` argument, a dictionary which maps a rigid type to the number of :term:`qubits <qubit>` in the quantum case, or to a dimension size (e.g. ``Dim(2, 2)``) for the classical case. Some :term:`ansätze <ansatz (plural: ansätze)>` may require additional arguments (see the `API documentation <../lambeq.rst>`_ for more details).\n",
     "\n",
-    "In :term:`DisCoPy`, a :term:`functor` is defined by specifying the mappings for objects ``ob`` and arrows ``ar``. The :py:class:`.CircuitAnsatz` and :py:class:`.TensorAnsatz` classes already implement the ``_ob`` method, which extends ``ob_map`` to map not just base (atomic) types, but also compound types, into :term:`qubits <qubit>` and dimensions respectively. Therefore, to complete a new :term:`ansatz` class, you only need to implement the ``_ar`` method, i.e. the mapping from rigid boxes to diagrams. This typically involves the following steps:\n",
+    "In :term:`DisCoPy`, a :term:`functor` is defined by specifying the mappings for objects ``ob`` and arrows ``ar``. The :py:class:`.CircuitAnsatz` and :py:class:`.TensorAnsatz` classes already implement the ``_ob`` method, which extends ``ob_map`` to map not just base (atomic) types, but also compound types, into :term:`qubits <qubit>` and dimensions respectively. Therefore, to complete a new :term:`ansatz <ansatz (plural: ansätze)>` class, you only need to implement the ``_ar`` method, i.e. the mapping from rigid boxes to diagrams. This typically involves the following steps:\n",
     "\n",
     "1. Obtain the label of the box using the ``_summarise_box`` method. This provides a unique token which can be used to parameterise the box.\n",
     "2. Apply the :term:`functor` to the domain and the codomain of the box using the ``_ob`` method.\n",
-    "3. Construct and return an :term:`ansatz` with new domain and codomain -- see how to construct diagrams using :term:`DisCoPy` `here <https://discopy.readthedocs.io/en/main/notebooks.html>`_."
+    "3. Construct and return an :term:`ansatz <ansatz (plural: ansätze)>` with new domain and codomain -- see how to construct diagrams using :term:`DisCoPy` `here <https://discopy.readthedocs.io/en/main/notebooks.html>`_."
    ]
   },
   {
@@ -349,7 +349,7 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "This :term:`ansatz` always returns a tensor with real-valued entries, since the ansatz is constructed using only the CNOT and Y rotation gates, which both implement real-valued unitaries."
+    "This :term:`ansatz <ansatz (plural: ansätze)>` always returns a tensor with real-valued entries, since the ansatz is constructed using only the CNOT and Y rotation gates, which both implement real-valued unitaries."
    ]
   },
   {
@@ -441,7 +441,7 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "This :term:`ansatz` returns a positive tensor, since the individual tensors are element-wise squared before contracted."
+    "This :term:`ansatz <ansatz (plural: ansätze)>` returns a positive tensor, since the individual tensors are element-wise squared before contracted."
    ]
   },
   {
@@ -535,7 +535,7 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "We encourage you to implement your own :term:`readers <reader>`, :term:`rewrite rules <rewrite rule>` and :term:`ansätze <ansatz>` and `contribute to lambeq <https://github.com/CQCL/lambeq/pulls>`_ -- detailed guidelines are available `here <../CONTRIBUTING.rst>`_. Below you can find some sources of inspiration:\n",
+    "We encourage you to implement your own :term:`readers <reader>`, :term:`rewrite rules <rewrite rule>` and :term:`ansätze <ansatz (plural: ansätze)>` and `contribute to lambeq <https://github.com/CQCL/lambeq/pulls>`_ -- detailed guidelines are available `here <../CONTRIBUTING.rst>`_. Below you can find some sources of inspiration:\n",
     "\n",
     "* rewrites for relative pronouns: [SCC2014a]_ [SCC2014b]_\n",
     "* rewrites to deal with coordination: [Kar2016]_\n",
