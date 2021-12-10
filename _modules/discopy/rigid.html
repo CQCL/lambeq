@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>discopy.rigid &mdash; lambeq 0.1.3.dev13+ge0c035d documentation</title>
+  <title>discopy.rigid &mdash; lambeq 0.1.3.dev14+g711e256 documentation</title>
   
 
   
@@ -70,7 +70,7 @@
             
             
               <div class="version">
-                0.1.3.dev13+ge0c035d
+                0.1.3.dev14+g711e256
               </div>
             
           
@@ -425,6 +425,11 @@
 <span class="sd">        ...                 &gt;&gt; Id(a) @ Cap(b, b.l) @ Id(a.l))</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">caps</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">spiders</span><span class="p">(</span><span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">,</span> <span class="n">typ</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Constructs spiders with compound types.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">spiders</span><span class="p">(</span><span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">,</span> <span class="n">typ</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">fa</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
@@ -844,6 +849,27 @@
 <span class="k">def</span> <span class="nf">caps</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">cap_factory</span><span class="o">=</span><span class="n">Cap</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Constructs a diagram of nested caps. &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">ar_factory</span><span class="p">,</span> <span class="n">cap_factory</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">spiders</span><span class="p">(</span>
+        <span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">,</span> <span class="n">typ</span><span class="p">,</span>
+        <span class="n">ar_factory</span><span class="o">=</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">spider_factory</span><span class="o">=</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Constructs a diagram of interleaving spiders. &quot;&quot;&quot;</span>
+    <span class="nb">id</span><span class="p">,</span> <span class="n">swap</span><span class="p">,</span> <span class="n">spider</span> <span class="o">=</span> <span class="n">ar_factory</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">.</span><span class="n">swap</span><span class="p">,</span> <span class="n">spider_factory</span>
+    <span class="n">ts</span> <span class="o">=</span> <span class="p">[</span><span class="n">typ</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">typ</span><span class="p">))]</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="nb">id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">spider</span><span class="p">(</span><span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">ts</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ts</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_legs_in</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">&lt;&lt;=</span> <span class="nb">id</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="n">i</span> <span class="o">*</span> <span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">])</span> <span class="o">@</span> <span class="n">swap</span><span class="p">(</span>
+                <span class="n">t</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">:</span><span class="n">i</span> <span class="o">*</span> <span class="n">n_legs_in</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span>
+            <span class="p">)</span> <span class="o">@</span> <span class="nb">id</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">n_legs_in</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_legs_out</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">&gt;&gt;=</span> <span class="nb">id</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="n">i</span> <span class="o">*</span> <span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">])</span> <span class="o">@</span> <span class="n">swap</span><span class="p">(</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">:</span><span class="n">i</span> <span class="o">*</span> <span class="n">n_legs_out</span> <span class="o">+</span> <span class="n">j</span><span class="p">],</span> <span class="n">t</span>
+            <span class="p">)</span> <span class="o">@</span> <span class="nb">id</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">n_legs_out</span> <span class="o">+</span> <span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:])</span>
+    <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 
            </div>
