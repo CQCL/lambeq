@@ -71,6 +71,7 @@ If you use ``lambeq`` for your research, please cite the accompanying paper [Kea
    glossary
    bibliography
    genindex
+   release_notes
 
 .. toctree::
    :caption: Links
