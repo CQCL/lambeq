@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.pregroups &mdash; lambeq 0.2.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="lambeq.reader" href="lambeq.reader.html" />
+    <link rel="prev" title="lambeq.ccg2discocat" href="lambeq.ccg2discocat.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> lambeq
+            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="package-api.html">Subpackages</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lambeq.ansatz.html">lambeq.ansatz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.ccg2discocat.html">lambeq.ccg2discocat</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">lambeq.pregroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.reader.html">lambeq.reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.rewrite.html">lambeq.rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.tokeniser.html">lambeq.tokeniser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.training.html">lambeq.training</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="package-api.html">Subpackages</a> &raquo;</li>
+      <li>lambeq.pregroups</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/lambeq.pregroups.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-lambeq.pregroups">
+<span id="lambeq-pregroups"></span><h1>lambeq.pregroups<a class="headerlink" href="#module-lambeq.pregroups" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.pregroups.TextDiagramPrinter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">TextDiagramPrinter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discopy_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/pregroups/text_printer.html#TextDiagramPrinter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.TextDiagramPrinter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A text printer for pregroup diagrams.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.pregroups.TextDiagramPrinter.ASCII_CHAR_SET">
+<span class="sig-name descname"><span class="pre">ASCII_CHAR_SET</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'BAR':</span> <span class="pre">'|',</span> <span class="pre">'BOTTOM_L_CORNER':</span> <span class="pre">'\\',</span> <span class="pre">'BOTTOM_R_CORNER':</span> <span class="pre">'/',</span> <span class="pre">'DOT':</span> <span class="pre">'</span> <span class="pre">',</span> <span class="pre">'LINE':</span> <span class="pre">'_',</span> <span class="pre">'TOP_L_CORNER':</span> <span class="pre">'\xa0',</span> <span class="pre">'TOP_R_CORNER':</span> <span class="pre">'\xa0'}</span></em><a class="headerlink" href="#lambeq.pregroups.TextDiagramPrinter.ASCII_CHAR_SET" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.pregroups.TextDiagramPrinter.UNICODE_CHAR_SET">
+<span class="sig-name descname"><span class="pre">UNICODE_CHAR_SET</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'BAR':</span> <span class="pre">'│',</span> <span class="pre">'BOTTOM_L_CORNER':</span> <span class="pre">'╰',</span> <span class="pre">'BOTTOM_R_CORNER':</span> <span class="pre">'╯',</span> <span class="pre">'DOT':</span> <span class="pre">'·',</span> <span class="pre">'LINE':</span> <span class="pre">'─',</span> <span class="pre">'TOP_L_CORNER':</span> <span class="pre">'╭',</span> <span class="pre">'TOP_R_CORNER':</span> <span class="pre">'╮'}</span></em><a class="headerlink" href="#lambeq.pregroups.TextDiagramPrinter.UNICODE_CHAR_SET" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.pregroups.TextDiagramPrinter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discopy_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/text_printer.html#TextDiagramPrinter.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.TextDiagramPrinter.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise a text diagram printer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>word_spacing</strong><span class="classifier">int, default: 2</span></dt><dd><p>The number of spaces between the words of the diagrams.</p>
+</dd>
+<dt><strong>discopy_types</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to represent types in DisCoPy form (using &#64; as the
+monoidal product).</p>
+</dd>
+<dt><strong>compress_layers</strong><span class="classifier">bool, default: True</span></dt><dd><p>Whether to draw boxes in the same layer when they can occur
+simultaneously, otherwise, draw one box per layer.</p>
+</dd>
+<dt><strong>use_ascii: bool, default: False</strong></dt><dd><p>Whether to draw using ASCII characters only, for
+compatibility reasons.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.pregroups.TextDiagramPrinter.diagram2str">
+<span class="sig-name descname"><span class="pre">diagram2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/text_printer.html#TextDiagramPrinter.diagram2str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.TextDiagramPrinter.diagram2str" title="Permalink to this definition"></a></dt>
+<dd><p>Produces a string that contains a graphical representation of
+the input diagram using text characters. The diagram is expected
+to be in pregroup form, i.e. all words must precede the morphisms.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>diagram: :py:class:`discopy.rigid.Diagram`</strong></dt><dd><p>The diagram to be printed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>str</dt><dd><p>String that contains the graphical representation of the
+diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If input is not a pregroup diagram.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.pregroups.TextDiagramPrinter.draw_layer">
+<span class="sig-name descname"><span class="pre">draw_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">layer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">_Morphism</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wires</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/text_printer.html#TextDiagramPrinter.draw_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.TextDiagramPrinter.draw_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lambeq.pregroups.create_pregroup_diagram">
+<span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">create_pregroup_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Word</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">morphisms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">type</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Diagram</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/utils.html#create_pregroup_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.create_pregroup_diagram" title="Permalink to this definition"></a></dt>
+<dd><p>Create a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a> from a list of cups and swaps.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span>
+<span class="gp">... </span>    <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;goes&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">morphisms</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Cup</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">diagram</span> <span class="o">=</span> <span class="n">create_pregroup_diagram</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">),</span> <span class="n">morphisms</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>words</strong><span class="classifier">list of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.Word</span></code></a></span></dt><dd><p>A list of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> s corresponding to
+the words of the sentence.</p>
+</dd>
+<dt><strong>cod</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Ty.html#discopy.rigid.Ty" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Ty</span></code></a></span></dt><dd><p>The output type of the diagram.</p>
+</dd>
+<dt><strong>morphisms: list of tuple[type, int, int]</strong></dt><dd><p>A list of tuples of the form (morphism, start_wire_idx, end_wire_idx).
+Morphisms can be <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Cup.html#discopy.rigid.Cup" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cup</span></code></a> s or
+<a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Swap.html#discopy.rigid.Swap" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Swap</span></code></a> s, while the two numbers define the
+indices of the wires on which the morphism is applied.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a></dt><dd><p>The generated pregroup diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.cat.AxiomError.html#discopy.cat.AxiomError" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.cat.AxiomError</span></code></a></dt><dd><p>If the provided morphism list does not type-check properly.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lambeq.pregroups.diagram2str">
+<span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">diagram2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discopy_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/text_printer.html#diagram2str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.diagram2str" title="Permalink to this definition"></a></dt>
+<dd><p>Produces a string that graphically represents the input diagram
+with text characters, without the need of first creating a printer.
+For specific arguments, see the constructor of the
+<a class="reference internal" href="#lambeq.pregroups.TextDiagramPrinter" title="lambeq.pregroups.TextDiagramPrinter"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextDiagramPrinter</span></code></a> class.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lambeq.pregroups.is_pregroup_diagram">
+<span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">is_pregroup_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/utils.html#is_pregroup_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.is_pregroup_diagram" title="Permalink to this definition"></a></dt>
+<dd><p>Check if a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a> is a pregroup diagram.</p>
+<p>Adapted from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html#discopy.grammar.pregroup.draw" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.draw</span></code></a>.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>diagram</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a></span></dt><dd><p>The diagram to be checked.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>bool</dt><dd><p>Whether the diagram is a pregroup diagram.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lambeq.pregroups.remove_cups">
+<span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">remove_cups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/pregroups/utils.html#remove_cups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.remove_cups" title="Permalink to this definition"></a></dt>
+<dd><p>Remove cups from a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>.</p>
+<p>Diagrams with less cups become circuits with less post-selection, which
+results in faster QML experiments.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>diagram</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a></span></dt><dd><p>The diagram from which cups will be removed.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a></dt><dd><p>Diagram with some cups removed.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lambeq.ccg2discocat.html" class="btn btn-neutral float-left" title="lambeq.ccg2discocat" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lambeq.reader.html" class="btn btn-neutral float-right" title="lambeq.reader" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -9,25 +9,28 @@ Glossary
         In ``lambeq``, each :term:`pregroup <pregroup grammar>` type :math:`p` has a left (:math:`p^l`) and a right (:math:`p^r`) adjoint, which are used to represent arguments in composite types. For example, a transitive verb has type :math:`n^r \cdot s \cdot n^l`, meaning it expects a noun argument on both sides in order to return a sentence.
 
     ansatz (plural: ansätze)
-	A map that determines choices such as the number of :term:`qubits <qubit>` that every wire of a :term:`string diagram` is associated with and the concrete parameterised quantum states that correspond to each word. For the classical case, an ansatz determines the number of dimensions associated to each type, and the way that large tensors are represented as :term:`matrix product states <matrix product state (MPS)>`.
+        A map that determines choices such as the number of :term:`qubits <qubit>` that every wire of a :term:`string diagram` is associated with and the concrete parameterised quantum states that correspond to each word. For the classical case, an ansatz determines the number of dimensions associated with each type, and the way that large tensors are represented as :term:`matrix product states <matrix product state (MPS)>`.
 
     bag-of-words
         A :term:`compositional model` of meaning which represents a sentence as a multiset of words; that is, it does not take into account the order of words or any other syntactic relationship between them.
+
+    Bobcat
+        A state-of-the-art statistical :term:`CCG <Combinatory Categorial Grammar (CCG)>` parser based on [SC2021]_. Bobcat is ``lambeq``'s default parser.
 
     cap
         A special morphism in a :term:`rigid category`, which, together with a :term:`cup` morphism, obey certain conditions called :term:`snake equations`. In diagrammatic form, a cap is depicted as a wire with downward concavity (:math:`\cap`). In the context of :term:`DisCoCat`, a cap is mostly used to "bridge" disconnected wires in order to alter the normal "flow" of information from one word to another, for example in cases such as *type-raising*.
 
     category
-         In *category theory*, a category is a mathematical structure that consists of a collection of *objects* and a collection of *morphisms* between objects, forming a labelled directed graph. A category has two basic properties: the ability to compose the arrows associatively, and the existence of an identity arrow for each object. ``lambeq`` structures are expressed in terms of a :term:`monoidal category`.
+         In *category theory*, a category is a mathematical structure that consists of a collection of *objects* and a collection of *morphisms* between objects, forming a labelled directed graph. A category has two basic properties: the ability to compose the arrows associatively and the existence of an identity arrow for each object. ``lambeq`` structures are expressed in terms of a :term:`monoidal category`.
 
     categorical quantum mechanics (CQM)
-        The study of quantum foundations and quantum information using paradigms from mathematics and computer science, specifically :term:`monoidal categories <monoidal category>`. The primitive objects of study are physical processes, and the different ways that these can be composed. The field was originated by Samson Abramsky and Bob Coecke in 2004 [AC2004]_.
+        The study of quantum foundations and quantum information using paradigms from mathematics and computer science, specifically :term:`monoidal categories <monoidal category>`. The primitive objects of study are physical processes and the different ways that these can be composed. The field was originated by Samson Abramsky and Bob Coecke in 2004 [AC2004]_.
 
     CCGBank
         The :term:`CCG <Combinatory Categorial Grammar (CCG)>` version of *Penn Treebank*, a corpus of over 49,000 human-annotated syntactic trees created by Julia Hockenmaier and Mark Steedman [HS2007]_.
 
     Combinatory Categorial Grammar (CCG)
-        A grammar formalism inspired by combinatory logic, and developed by Mark Steedman [Ste2000]_. It defines a number of combinators (application, composition, and type-raising being the most common) which operate on syntactically-typed lexical items, by means of natural deduction style proofs. CCG is categorised as a *mildly context-sensitive* grammar, standing in between context-free and context-sensitive in Chomsky hierarchy and providing a nice trade-off between expressive power and computational complexity.
+        A grammar formalism inspired by combinatory logic and developed by Mark Steedman [Ste2000]_. It defines a number of combinators (application, composition, and type-raising being the most common) that operate on syntactically-typed lexical items, by means of natural deduction style proofs. CCG is categorised as a *mildly context-sensitive* grammar, standing in between context-free and context-sensitive in Chomsky hierarchy and providing a nice trade-off between expressive power and computational complexity.
 
     compact closed category
         A symmetric :term:`rigid category`. The symmetry of the category causes the left and right duals of an object to coincide: :math:`A^l=A^r=A^*`. A :term:`pregroup grammar` is often referred to as a non-symmetric compact closed category.
@@ -36,7 +39,7 @@ Glossary
         A model that produces semantic representations of sentences by composing together the semantic representations of the words within them. An example of a compositional model is :term:`DisCoCat`.
 
     cup
-        A special morphism in a :term:`rigid category`, which, together with a :term:`cap` morphism, obey certain conditions called :term:`snake equations`. In diagrammatic form, a cup is depicted as a wire with upward concavity (:math:`\cup`). In the context of :term:`DisCoCat`, a cup usually represents a tensor contraction between two word representations.
+        A special morphism in a :term:`rigid category`, which, together with a :term:`cap` morphism, obey certain conditions called :term:`snake equations`. In diagrammatic form, a cup is depicted as a wire with upward concavity (:math:`\cup`). In the context of :term:`DisCoCat`, a cup usually represents a tensor contraction between two-word representations.
 
     depccg
         A statistical :term:`CCG <Combinatory Categorial Grammar (CCG)>` :term:`parser` for English and Japanese [YNM2017]_.
@@ -59,11 +62,17 @@ Glossary
     matrix product state (MPS)
         A factorization of a large tensor into a chain-like product of smaller tensors. ``lambeq`` is equipped with :term:`ansätze <ansatz (plural: ansätze)>` that implement various forms of matrix product states, allowing the execution of large :term:`tensor networks <tensor network>` on classical hardware.
 
+    model
+        A ``lambeq`` model is a class holding the trainable weights and other model-specific information, used in supervised learning. A model is always associated with a specific backend, such as PyTorch, NumPy, or :term:`tket`, and is paired with a matching :term:`trainer`.
+
     monoidal category
         A :term:`category` equipped with the monoidal product :math:`\otimes` and monoidal unit :math:`I`, providing an abstraction suitable for quantum computation.  :term:`Categorical quantum mechanics (CQM) <categorical quantum mechanics (CQM)>` and :term:`DisCoCat` are both based on the mathematical framework of monoidal categories.
 
     natural language processing (NLP)
         The use of computational methods for solving language-related problems.
+
+    parser
+        A statistical tool that converts a sentence into a hierarchical representation that reflects the syntactic relationships between the words (a :term:`syntax tree`) based on a specific grammar formalism.
 
     pregroup grammar
         A grammar formalism developed by Joachim Lambek in 1999 [Lam1999]_ based on the notion of a *pregroup*. Pregroup grammars are closely related to categorial grammars (such as :term:`CCG <Combinatory Categorial Grammar (CCG)>`). In category-theoretic terms, a pregroup grammar forms a :term:`rigid category`, sometimes also referred to as a non-symmetric :term:`compact closed category`.
@@ -84,13 +93,13 @@ Glossary
         The design and implementation of :term:`NLP <natural language processing (NLP)>` models that exploit certain quantum phenomena such as superposition, entanglement, and interference to perform language-related tasks on quantum hardware.
 
     qubit
-        The quantum analog of a bit and the most basic unit of information carrier in a quantum computer. It is associated with a property of a physical system such as the spin of an electron ("up" or "down" along some axis), and has a state that lives in a 2-dimensional complex vector space.
+        The quantum analogue of a bit and the most basic unit of information carrier in a quantum computer. It is associated with a property of a physical system such as the spin of an electron ("up" or "down" along some axis), and has a state that lives in a 2-dimensional complex vector space.
 
     reader
         In ``lambeq``, an object that translates a sentence into a :term:`string diagram` based on a certain :term:`compositional scheme <compositional model>`. Versions of a :term:`bag-of-words` model and a :term:`word-sequence model` are implemented in ``lambeq`` using readers.
 
     rewrite rule
-        A :term:`functorial <functor>` transformation that changes the wiring of a specific box (representing a word) in a :term:`string diagram` with the goal to simplify the diagram or to make it more amenable to implementation on the hardware of choice.
+        A :term:`functorial <functor>` transformation that changes the wiring of a specific box (representing a word) in a :term:`string diagram` to simplify the diagram or to make it more amenable to implementation on the hardware of choice.
 
     rigid category
         A :term:`monoidal category` where every object :math:`A` has a left dual :math:`A^l` and a right dual :math:`A^r`, both equipped with :term:`cup` and :term:`cap` morphisms obeying the so-called :term:`snake equations`. A :term:`pregroup grammar` is an example of a rigid category.
@@ -125,8 +134,11 @@ Glossary
     tket
         Stylised :math:`\textrm{t}|\textrm{ket}\rangle`. A quantum software development platform produced by Cambridge Quantum. The heart of ``tket`` is a language-agnostic optimising compiler designed to generate code for a variety of NISQ devices, which has several features designed to minimise the influence of device error.
 
-    parser
-        A statistical tool that converts a sentence into a hierarchical representation that reflects the syntactic relationships between the words (a :term:`syntax tree`) based on a specific grammar formalism. A parser usually works in two steps: first, a POS-tagger assigns part-of-speech tags to the words in a sentence; next, the parser uses its statistical model to try and combine the words into meaningful compositions following the rules of the grammar formalism.
+    trainer
+        In ``lambeq``, a trainer is a class related to a given backend (for example PyTorch, NumPy, :term:`tket` and so on) that is used for supervised learning. A trainer is always paired with a matching :term:`model`, a structure that contains the trainable weights and other parameters of the model.
+
+    tree reader
+        In ``lambeq``, a tree :term:`reader` converts a sentence into a :term:`monoidal <monoidal category>` diagram by following directly its :term:`CCG <Combinatory Categorial Grammar (CCG)>` :term:`syntax tree`, as provided by a :term:`parser`. In other words, no explicit :term:`pregroup <pregroup grammar>` diagram is generated. Composition takes place by boxes that combine word states based on the grammatical rules found in the tree.
 
     word-sequence model
-        A :term:`compositional model` that respects the order of words in a sentence, but it does not take into account any other syntactic information. In ``lambeq``, the model is implemented as a :term:`tensor train`.
+        A :term:`compositional model` that respects the order of words in a sentence, but does not take into account any other syntactic information.

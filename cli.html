@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Command-line interface &mdash; lambeq 0.2.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Glossary" href="glossary.html" />
+    <link rel="prev" title="lambeq.training" href="lambeq.training.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> lambeq
+            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Command-line interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#basic-usage">Basic usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-a-reader">Using a reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#rewrite-rules-and-ansatze">Rewrite rules and ansätze</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#other-options">Other options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detailed-options">Detailed options</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Output">Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Parser">Parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Rewriter">Rewriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Ansätze">Ansätze</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Configuration">Configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Command-line interface</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/cli.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="command-line-interface">
+<span id="sec-cli"></span><h1>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline"></a></h1>
+<p>While <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is primarily aimed for programmatic use, since Release <a class="reference internal" href="release_notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> it is also equipped with a command-line interface that provides immediate and easy access to most of the toolkit’s functionality. A summary of the available options is given below.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span> <span class="o">[</span>-f <span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
+       <span class="o">[</span>-g <span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
+       <span class="o">[</span>-u <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]</span> <span class="o">[</span>-o OUTPUT_FILE <span class="p">|</span> -d OUTPUT_DIR<span class="o">]</span>
+       <span class="o">[</span>-p <span class="o">{</span>depccg<span class="o">}]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-s<span class="o">]</span> <span class="o">[</span>-r <span class="o">{</span>spiders,stairs,cups,tree<span class="o">}]</span>
+       <span class="o">[</span>-w <span class="o">[</span>REWRITE_RULE ...<span class="o">]]</span> <span class="o">[</span>-a <span class="o">{</span>iqp,tensor,spider,mps<span class="o">}]</span>
+       <span class="o">[</span>-n <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]</span> <span class="o">[</span>-y STORE_ARGS<span class="o">]</span> <span class="o">[</span>-l LOAD_ARGS<span class="o">]</span>
+       <span class="o">[</span>input_sentence<span class="o">]</span>
+</pre></div>
+</div>
+<p>To get detailed help about the available options, type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq --help
+</pre></div>
+</div>
+<p>The following sections provide an introduction to the command-line interface usage via specific examples, while all available options are described in depth in Section <a class="reference internal" href="#sec-detailed-options"><span class="std std-ref">Detailed Options</span></a>.</p>
+<section id="basic-usage">
+<span id="sec-basic-usage"></span><h2>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline"></a></h2>
+<p>The most straightforward use of the command-line interface of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is to use it as a <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>. To get the pregroup diagram for a sentence, use the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq <span class="s2">&quot;John gave Mary a flower&quot;</span>
+
+<span class="go">John       gave      Mary    a    flower</span>
+<span class="go">────  ─────────────  ────  ─────  ──────</span>
+<span class="go"> n    n.r·s·n.l·n.l   n    n·n.l    n</span>
+<span class="go"> ╰─────╯  │  │   ╰────╯    │  ╰─────╯</span>
+<span class="go">          │  ╰─────────────╯</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> will use the default <a class="reference internal" href="lambeq.ccg2discocat.html#lambeq.ccg2discocat.DepCCGParser" title="lambeq.ccg2discocat.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">DepCCGParser</span></code></a> to parse the sentence and output the string diagram in the console with text drawing characters.</p>
+<p>To read an entire file of sentences, tokenise them, parse them with the default parser, and store the pregroup diagrams in a new file, use the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -o diagrams.txt
+</pre></div>
+</div>
+<p>In the above example, file <code class="docutils literal notranslate"><span class="pre">sentences.txt</span></code> is expected to contain one sentence per line. The output will be written to file <code class="docutils literal notranslate"><span class="pre">diagrams.txt</span></code>.
+In case your input file does not contain one sentence per line, you can add the <code class="docutils literal notranslate"><span class="pre">--split_sentences</span></code> or <code class="docutils literal notranslate"><span class="pre">-s</span></code> flag.</p>
+<p>If the text output is not good enough for your purposes, you can ask <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to prepare images for the diagrams in a variety of formats and store them in a specific folder for you:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -d image_folder -f image -g png
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> will prepare a <code class="docutils literal notranslate"><span class="pre">png</span></code> file for each one of the sentences, and store it in folder <code class="docutils literal notranslate"><span class="pre">image_folder</span></code> using the line number of the sentence in the input file to name the image file, e.g. <code class="docutils literal notranslate"><span class="pre">diagram_1.png</span></code>, <code class="docutils literal notranslate"><span class="pre">diagram_2.png</span></code> and so on.</p>
+<p>It is also possible to parse a single sentence and store it as an image – for example, in PDF format in order to use it in a paper. In this case, you can name the file yourself and apply specific format options, such as the exact size of the figure or the font size used in the diagram. Note that it is not necessary to specify the image format if it is already contained in the file name (e.g. pdf).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f image -u <span class="nv">fig_width</span><span class="o">=</span><span class="m">16</span> <span class="nv">fig_height</span><span class="o">=</span><span class="m">3</span> <span class="nv">fontsize</span><span class="o">=</span><span class="m">12</span>
+<span class="go">&gt;        -o diagram.pdf</span>
+<span class="go">&gt;        &quot;Mary does not like John&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="using-a-reader">
+<span id="sec-advanced-options"></span><h2>Using a reader<a class="headerlink" href="#using-a-reader" title="Permalink to this headline"></a></h2>
+<p>Instead of the parser, users may prefer to apply one of the available <a class="reference internal" href="glossary.html#term-reader"><span class="xref std std-term">readers</span></a>, each corresponding to a different <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional scheme</span></a>. For example, to encode a sentence as a <a class="reference internal" href="glossary.html#term-tensor-train"><span class="xref std std-term">tensor train</span></a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -r cups <span class="s2">&quot;John gave Mary a flower&quot;</span>
+
+<span class="go">START   John   gave   Mary    a    flower</span>
+<span class="go">─────  ─────  ─────  ─────  ─────  ──────</span>
+<span class="go">  s    s.r·s  s.r·s  s.r·s  s.r·s  s.r·s</span>
+<span class="go">  ╰─────╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  │</span>
+</pre></div>
+</div>
+<p>Readers can be used for batch processing of entire files with the <code class="docutils literal notranslate"><span class="pre">-i</span></code> option, exactly as in the parser case.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -r cups -i sentences.txt -o diagrams.txt
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some readers, such as the <code class="xref py py-obj docutils literal notranslate"><span class="pre">spiders_reader</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">stairs_reader</span></code> instances of the <a class="reference internal" href="lambeq.reader.html#lambeq.reader.LinearReader" title="lambeq.reader.LinearReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearReader</span></code></a> class, or an instance of a <a class="reference internal" href="lambeq.reader.html#lambeq.reader.TreeReader" title="lambeq.reader.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a>, may convert the pregroup diagram into a monoidal form that is too complicated to be rendered properly in a text console. In these cases, diagrams cannot be displayed as text.</p>
+</div>
+</section>
+<section id="rewrite-rules-and-ansatze">
+<h2>Rewrite rules and ansätze<a class="headerlink" href="#rewrite-rules-and-ansatze" title="Permalink to this headline"></a></h2>
+<p>The command-line interface supports all stages of the <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> <a class="reference internal" href="pipeline.html#sec-pipeline"><span class="std std-ref">pipeline</span></a>, such as application of <a class="reference internal" href="glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> and use of <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> for converting the sentences into <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a> or <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a>. For example, to read a file of sentences, parse them, apply the <code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code> and <code class="docutils literal notranslate"><span class="pre">determiner</span></code> <a class="reference internal" href="glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a>, and use an <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a> with 1 <a class="reference internal" href="glossary.html#term-qubit"><span class="xref std std-term">qubit</span></a> assigned to sentence type, 1 <a class="reference internal" href="glossary.html#term-qubit"><span class="xref std std-term">qubit</span></a> to noun type, and 2 IQP layers, use the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -f image -g png
+<span class="go">&gt;        -w prepositional_phrase determiner</span>
+<span class="go">&gt;        -a iqp -n dim_n=1 dim_s=1 n_layers=2</span>
+<span class="go">&gt;        -d image_folder</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since <a class="reference internal" href="glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> and <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> can produce output that is too complicated to be properly rendered in purely text form, text output in the console is not available for these cases.</p>
+</div>
+<p>For the classical case, applying a <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.SpiderAnsatz" title="lambeq.ansatz.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a> with 2 dimensions assigned to sentence type and 4 dimensions to noun type, and the same rewrite rules as above, can be done with the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -f image -g png
+<span class="go">&gt;         -w prepositional_phrase determiner</span>
+<span class="go">&gt;         -a spider -n dim_n=4 dim_s=2</span>
+<span class="go">&gt;         -d image_folder</span>
+</pre></div>
+</div>
+</section>
+<section id="other-options">
+<h2>Other options<a class="headerlink" href="#other-options" title="Permalink to this headline"></a></h2>
+<p>To store the <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> objects in <code class="docutils literal notranslate"><span class="pre">json</span></code> or <code class="docutils literal notranslate"><span class="pre">pickle</span></code> format, type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f pickle -i sentences.txt -o diagrams.pickle
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f json -i sentences.txt -o diagrams.json
+</pre></div>
+</div>
+<p>Text output is also available with ascii-only characters:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f text-ascii <span class="s2">&quot;John gave Mary a flower.&quot;</span>
+
+<span class="go"> John       gave      Mary    a    flower.</span>
+<span class="go"> ____  _____________  ____  _____  _______</span>
+<span class="go">  n    n.r s n.l n.l   n    n n.l     n</span>
+<span class="go">  \_____/  |  |   \____/    |  \______/</span>
+<span class="go">           |  \_____________/</span>
+</pre></div>
+</div>
+<p>To avoid repeated long commands, arguments can be stored into a YAML file <code class="docutils literal notranslate"><span class="pre">conf.yaml</span></code> by adding an argument <code class="docutils literal notranslate"><span class="pre">-y</span> <span class="pre">conf.yaml</span></code>.
+To load the configuration from this file next time, <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">conf.yaml</span></code> can be added. Any arguments that were not provided in the command line will be taken from that file. If an argument is specified both in the command line and in the configuration file, the command-line argument takes priority.</p>
+</section>
+<section id="detailed-options">
+<span id="sec-detailed-options"></span><h2>Detailed options<a class="headerlink" href="#detailed-options" title="Permalink to this headline"></a></h2>
+<p><p>Command-line interface for lambeq.</p>
+</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span>
+              <span class="o">[</span>-f <span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
+              <span class="o">[</span>-g <span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
+              <span class="o">[</span>-u <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]]</span> <span class="o">[</span>-o OUTPUT_FILE <span class="p">|</span> -d OUTPUT_DIR<span class="o">]</span>
+              <span class="o">[</span>-p <span class="o">{</span>bobcat,depccg<span class="o">}]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-s<span class="o">]</span> <span class="o">[</span>-r <span class="o">{</span>spiders,stairs,cups,tree<span class="o">}]</span>
+              <span class="o">[</span>-w <span class="o">[</span>REWRITE_RULE <span class="o">[</span>REWRITE_RULE ...<span class="o">]]]</span>
+              <span class="o">[</span>-a <span class="o">{</span>iqp,tensor,spider,mps<span class="o">}]</span> <span class="o">[</span>-n <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]]</span>
+              <span class="o">[</span>-y STORE_ARGS<span class="o">]</span> <span class="o">[</span>-l LOAD_ARGS<span class="o">]</span>
+              <span class="o">[</span>input_sentence<span class="o">]</span>
+</pre></div>
+</div>
+<section id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline"></a></h3>
+<dl class="option-list">
+<dt><kbd>input_sentence</kbd></dt>
+<dd><p>Sentence to parse.</p>
+<p>Default: “”</p>
+</dd>
+</dl>
+</section>
+<section id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline"></a></h3>
+<dl class="option-list">
+<dt><kbd>-i, --input_file</kbd></dt>
+<dd><p>File to parse.</p>
+</dd>
+</dl>
+</section>
+<section id="Output">
+<h3>Output<a class="headerlink" href="#Output" title="Permalink to this headline"></a></h3>
+<p>Options related to output format.</p>
+<dl class="option-list">
+<dt><kbd>-f, --output_format</kbd></dt>
+<dd><p>Possible choices: json, pickle, text-unicode, text-ascii, image</p>
+<p>Format of the output. Use <cite>json</cite> and <cite>pickle</cite> to store the DisCoPy objects in the respective formats, or <cite>text-unicode</cite>, <cite>text-ascii</cite> and <cite>image</cite> to store directly the derivations in diagrammatic form. Default value: text-unicode</p>
+</dd>
+<dt><kbd>-g, --image_format</kbd></dt>
+<dd><p>Possible choices: png, pdf, jpeg, jpg, eps, pgf, ps, raw, rgba, svg, svgz, tif, tiff</p>
+<p>When <cite>image</cite> is selected as <cite>output_format</cite>, this option specifies the required image type. It does not have any effect when any other option is selected as <cite>output_format</cite>. Default value: png</p>
+</dd>
+<dt><kbd>-u, --output_options</kbd></dt>
+<dd><p>Possible choices: fig_width=&lt;int&gt; (default: None), fig_height=&lt;int&gt; (default: None), fontsize=&lt;int&gt; (default: None)</p>
+<p>A list of <cite>keyword=value</cite> items that define options for the output format. Available options are fig_width=&lt;int&gt; (default: None), fig_height=&lt;int&gt; (default: None), fontsize=&lt;int&gt; (default: None).</p>
+<p>Default: {}</p>
+</dd>
+<dt><kbd>-o, --output_file</kbd></dt>
+<dd><p>File to write the output. When <cite>output_format</cite> is <cite>json</cite>, <cite>text-ascii</cite> or <cite>text-unicode</cite> and this argument is not provided, lambeq will output to <cite>stdout</cite>. This argument is ignored when <cite>output_format</cite> is <cite>image</cite>, in which case <cite>output_dir</cite> needs to be provided.</p>
+</dd>
+<dt><kbd>-d, --output_dir</kbd></dt>
+<dd><p>When <cite>image</cite> is selected as <cite>output_format</cite>, this option specifies the directory where the image files would be stored. It does not have effect when any other option is selected as <cite>output_format</cite>.</p>
+</dd>
+</dl>
+</section>
+<section id="Parser">
+<h3>Parser<a class="headerlink" href="#Parser" title="Permalink to this headline"></a></h3>
+<p>Options related to parser.</p>
+<dl class="option-list">
+<dt><kbd>-p, --parser</kbd></dt>
+<dd><p>Possible choices: bobcat, depccg</p>
+<p>Choice of a parser. Mutually exclussive with using a reader. If <cite>None</cite>, BobcatParser is used.</p>
+</dd>
+<dt><kbd>-t, --tokenise</kbd></dt>
+<dd><p>Tokenises the input before sending to parser. If not used, the parser assumes that text is already tokenised.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-s, --split_sentences</kbd></dt>
+<dd><p>Use SpaCy sentence splitting to split the text into sentences. Not required if only one sentence is provided or if sentences are already given one per line.</p>
+<p>Default: False</p>
+</dd>
+<dt><kbd>-r, --reader</kbd></dt>
+<dd><p>Possible choices: spiders, stairs, cups, tree</p>
+<p>Choice of a reader. Mutually exclusive with using a parser.</p>
+</dd>
+</dl>
+</section>
+<section id="Rewriter">
+<h3>Rewriter<a class="headerlink" href="#Rewriter" title="Permalink to this headline"></a></h3>
+<p>Rewrite options.</p>
+<dl class="option-list">
+<dt><kbd>-w, --rewrite_rules</kbd></dt>
+<dd><p>Possible choices: auxiliary, connector, determiner, postadverb, preadverb, prepositional_phrase, coordination, object_rel_pronoun, subject_rel_pronoun</p>
+<p>A list of rewrite rules. Available options: [‘auxiliary’, ‘connector’, ‘determiner’, ‘postadverb’, ‘preadverb’, ‘prepositional_phrase’, ‘coordination’, ‘object_rel_pronoun’, ‘subject_rel_pronoun’]</p>
+</dd>
+</dl>
+</section>
+<section id="Ansätze">
+<h3>Ansätze<a class="headerlink" href="#Ansätze" title="Permalink to this headline"></a></h3>
+<p>Options related to ansatz choices.</p>
+<dl class="option-list">
+<dt><kbd>-a, --ansatz</kbd></dt>
+<dd><p>Possible choices: iqp, tensor, spider, mps</p>
+<p>Ansatz to be used. This determines if the result will be a quantum circuit or a tensor network.</p>
+</dd>
+<dt><kbd>-n, --ansatz_options</kbd></dt>
+<dd><p>Possible choices: dim_n=&lt;int&gt; (default: 2), dim_s=&lt;int&gt; (default: 2), n_layers=&lt;int&gt; (default: 2), n_single_qubit_params=&lt;int&gt; (default: 3), bond_dim=&lt;int&gt; (default: 3), max_order=&lt;int&gt; (default: 3)</p>
+<p>A list of <cite>keyword=value</cite> items that define options for the selected ansatz. Available options are dim_n=&lt;int&gt; (default: 2), dim_s=&lt;int&gt; (default: 2), n_layers=&lt;int&gt; (default: 2), n_single_qubit_params=&lt;int&gt; (default: 3), bond_dim=&lt;int&gt; (default: 3), max_order=&lt;int&gt; (default: 3).</p>
+<p>Default: {}</p>
+</dd>
+</dl>
+</section>
+<section id="Configuration">
+<h3>Configuration<a class="headerlink" href="#Configuration" title="Permalink to this headline"></a></h3>
+<p>Options for storing and loading the command-line arguments to/from files.</p>
+<dl class="option-list">
+<dt><kbd>-y, --store_args</kbd></dt>
+<dd><p>File to store the parameters in YAML format for future use.</p>
+</dd>
+<dt><kbd>-l, --load_args</kbd></dt>
+<dd><p>Load and use a set of stored parameters from the specified file.</p>
+</dd>
+</dl>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lambeq.training.html" class="btn btn-neutral float-left" title="lambeq.training" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

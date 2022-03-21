@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.rewrite &mdash; lambeq 0.2.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="lambeq.tokeniser" href="lambeq.tokeniser.html" />
+    <link rel="prev" title="lambeq.reader" href="lambeq.reader.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> lambeq
+            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="package-api.html">Subpackages</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lambeq.ansatz.html">lambeq.ansatz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.ccg2discocat.html">lambeq.ccg2discocat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.pregroups.html">lambeq.pregroups</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.reader.html">lambeq.reader</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">lambeq.rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.tokeniser.html">lambeq.tokeniser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lambeq.training.html">lambeq.training</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="package-api.html">Subpackages</a> &raquo;</li>
+      <li>lambeq.rewrite</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/lambeq.rewrite.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="module-lambeq.rewrite">
+<span id="lambeq-rewrite"></span><h1>lambeq.rewrite<a class="headerlink" href="#module-lambeq.rewrite" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.CoordinationRewriteRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">CoordinationRewriteRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CoordinationRewriteRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CoordinationRewriteRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.RewriteRule" title="lambeq.rewrite.base.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.rewrite.base.RewriteRule</span></code></a></p>
+<p>A rewrite rule for coordination.</p>
+<p>This rule matches the word ‘and’ with codomain
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">a.r</span> <span class="pre">&#64;</span> <span class="pre">a</span> <span class="pre">&#64;</span> <span class="pre">a.l</span></code> for pregroup type <code class="xref py py-obj docutils literal notranslate"><span class="pre">a</span></code>, and replaces
+the word, based on <a class="reference internal" href="bibliography.html#kar2016" id="id1"><span>[Kar2016]</span></a>, with a layer of interleaving spiders.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CoordinationRewriteRule.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lambeq.rewrite.CoordinationRewriteRule.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Apply the rewrite rule to a box.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>box</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Box</span></code></a></span></dt><dd><p>The candidate box to be tested against this rewrite rule.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>, optional</dt><dd><p>The rewritten diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if rule
+does not apply.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default implementation uses the <a class="reference internal" href="#lambeq.rewrite.CoordinationRewriteRule.matches" title="lambeq.rewrite.CoordinationRewriteRule.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matches()</span></code></a> and
+<a class="reference internal" href="#lambeq.rewrite.CoordinationRewriteRule.rewrite" title="lambeq.rewrite.CoordinationRewriteRule.rewrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rewrite()</span></code></a>  methods, but derived classes may choose to
+not use them, since the default <a class="reference internal" href="#lambeq.rewrite.Rewriter" title="lambeq.rewrite.Rewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rewriter</span></code></a>
+implementation does not call those methods directly, only this
+one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CoordinationRewriteRule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CoordinationRewriteRule.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CoordinationRewriteRule.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate a CoordinationRewriteRule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>words</strong><span class="classifier">container of str, optional</span></dt><dd><p>If provided, this is a list of words that will be rewritten by
+this rule. If a box does not have one of these words, it will
+not be rewritten, even if the codomain matches. If omitted,
+the rewrite applies only to the word “and”.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CoordinationRewriteRule.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CoordinationRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CoordinationRewriteRule.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given box matches the requirements for rewriting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CoordinationRewriteRule.rewrite">
+<span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CoordinationRewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CoordinationRewriteRule.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given box.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.RewriteRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">RewriteRule</span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#RewriteRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.RewriteRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<p>Base class for rewrite rules.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.RewriteRule.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#RewriteRule.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.RewriteRule.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Apply the rewrite rule to a box.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>box</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Box</span></code></a></span></dt><dd><p>The candidate box to be tested against this rewrite rule.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>, optional</dt><dd><p>The rewritten diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if rule
+does not apply.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default implementation uses the <a class="reference internal" href="#lambeq.rewrite.RewriteRule.matches" title="lambeq.rewrite.RewriteRule.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matches()</span></code></a> and
+<a class="reference internal" href="#lambeq.rewrite.RewriteRule.rewrite" title="lambeq.rewrite.RewriteRule.rewrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rewrite()</span></code></a>  methods, but derived classes may choose to
+not use them, since the default <a class="reference internal" href="#lambeq.rewrite.Rewriter" title="lambeq.rewrite.Rewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rewriter</span></code></a>
+implementation does not call those methods directly, only this
+one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.RewriteRule.matches">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#RewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.RewriteRule.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given box matches the requirements for rewriting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.RewriteRule.rewrite">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#RewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.RewriteRule.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given box.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.Rewriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">Rewriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><span class="pre">RewriteRule</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#Rewriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.Rewriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that rewrites diagrams.</p>
+<p>Comes with a set of default rules.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.Rewriter.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#Rewriter.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.Rewriter.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Apply the rewrite rules to the given diagram.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.Rewriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><span class="pre">RewriteRule</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#Rewriter.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.Rewriter.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise a rewriter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>rules</strong><span class="classifier">iterable of str or RewriteRule, optional</span></dt><dd><p>A list of rewrite rules to use. <a class="reference internal" href="#lambeq.rewrite.RewriteRule" title="lambeq.rewrite.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a>
+instances are used directly, <cite>str</cite> objects are used as names
+of the default rules. See
+<a class="reference internal" href="#lambeq.rewrite.Rewriter.available_rules" title="lambeq.rewrite.Rewriter.available_rules"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Rewriter.available_rules()</span></code></a> for the list of rule
+names. If omitted, all the default rules are used.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.Rewriter.add_rules">
+<span class="sig-name descname"><span class="pre">add_rules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">rules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="root-api.html#lambeq.RewriteRule" title="lambeq.rewrite.base.RewriteRule"><span class="pre">lambeq.rewrite.base.RewriteRule</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#Rewriter.add_rules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.Rewriter.add_rules" title="Permalink to this definition"></a></dt>
+<dd><p>Add rules to this rewriter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.Rewriter.available_rules">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">available_rules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#Rewriter.available_rules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.Rewriter.available_rules" title="Permalink to this definition"></a></dt>
+<dd><p>The list of default rule names.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">SimpleRewriteRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Diagram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#SimpleRewriteRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.RewriteRule" title="lambeq.rewrite.base.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.rewrite.base.RewriteRule</span></code></a></p>
+<p>A simple rewrite rule.</p>
+<p>This rule matches each box against a required codomain and, if
+provided, a set of words. If they match, the word box is rewritten
+into a set template.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Apply the rewrite rule to a box.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>box</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Box</span></code></a></span></dt><dd><p>The candidate box to be tested against this rewrite rule.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>, optional</dt><dd><p>The rewritten diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if rule
+does not apply.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default implementation uses the <a class="reference internal" href="#lambeq.rewrite.SimpleRewriteRule.matches" title="lambeq.rewrite.SimpleRewriteRule.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matches()</span></code></a> and
+<a class="reference internal" href="#lambeq.rewrite.SimpleRewriteRule.rewrite" title="lambeq.rewrite.SimpleRewriteRule.rewrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rewrite()</span></code></a>  methods, but derived classes may choose to
+not use them, since the default <a class="reference internal" href="#lambeq.rewrite.Rewriter" title="lambeq.rewrite.Rewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rewriter</span></code></a>
+implementation does not call those methods directly, only this
+one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Diagram</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#SimpleRewriteRule.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate a simple rewrite rule.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>cod</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Ty.html#discopy.rigid.Ty" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Ty</span></code></a></span></dt><dd><p>The type that the codomain of each box is matched against.</p>
+</dd>
+<dt><strong>template</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a></span></dt><dd><p>The diagram that a matching box is replaced with. A special
+placeholder box is replaced by the word in the matched box,
+and can be created using
+<a class="reference internal" href="#lambeq.rewrite.SimpleRewriteRule.placeholder" title="lambeq.rewrite.SimpleRewriteRule.placeholder"><code class="xref py py-meth docutils literal notranslate"><span class="pre">SimpleRewriteRule.placeholder()</span></code></a>.</p>
+</dd>
+<dt><strong>words</strong><span class="classifier">container of str, optional</span></dt><dd><p>If provided, this is a list of words that are rewritten by
+this rule. If a box does not have one of these words, it is
+not rewritten, even if the codomain matches.  If omitted,
+all words are permitted.</p>
+</dd>
+<dt><strong>case_sensitive</strong><span class="classifier">bool, default: False</span></dt><dd><p>This indicates whether the list of words specified above are
+compared case-sensitively. The default is <code class="xref py py-obj docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#SimpleRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given box matches the requirements for rewriting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule.placeholder">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">placeholder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Ty.html#discopy.rigid.Ty" title="(in discopy)"><span class="pre">discopy.rigid.Ty</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><span class="pre">discopy.grammar.pregroup.Word</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#SimpleRewriteRule.placeholder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule.placeholder" title="Permalink to this definition"></a></dt>
+<dd><p>Helper function to generate the placeholder for a template.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>cod</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Ty.html#discopy.rigid.Ty" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Ty</span></code></a></span></dt><dd><p>The codomain of the placeholder, and hence the word in the
+resulting rewritten diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Box</span></code></a></dt><dd><p>A placeholder box with the given codomain.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule.rewrite">
+<span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#SimpleRewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given box.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lambeq.reader.html" class="btn btn-neutral float-left" title="lambeq.reader" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="lambeq.tokeniser.html" class="btn btn-neutral float-right" title="lambeq.tokeniser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

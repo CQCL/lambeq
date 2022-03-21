@@ -1,83 +1,42 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
-  
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>Quantum pipeline using JAX backend &mdash; lambeq 0.1.3.dev15+g357fb89 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
+  <title>Quantum pipeline using JAX backend &mdash; lambeq 0.2.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
-  
-
-  
-  
-
-  
-
-  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true, "ignoreClass": "document", "processClass": "math|output_area"}})</script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Quantum pipeline using t|ket&gt; backend" href="quantum_pipeline_tket.html" />
-    <link rel="prev" title="Classical pipeline" href="classical_pipeline.html" /> 
+    <link rel="next" title="lambeq package" href="../root-api.html" />
+    <link rel="prev" title="Quantum pipeline using the Quantum Trainer" href="quantum_pipeline.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> lambeq
-          
-
-          
-            
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
-          
           </a>
-
-          
-            
-            
               <div class="version">
-                0.1.3.dev15+g357fb89
+                0.2.0
               </div>
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -85,19 +44,8 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
-              <p class="caption"><span class="caption-text">Getting started</span></p>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
@@ -106,120 +54,84 @@
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Tutorials</span></p>
-<ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
-</ul>
-<p class="caption"><span class="caption-text">Toolkit</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="ccg2discocat.html">From sentence to diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reader.html">Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree_reader.html">Tree reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rewrite.html">Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit.html">Circuit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor.html">Tensor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="classical_pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Quantum pipeline using JAX backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Read-in-the-data-and-create-diagrams">Read in the data and create diagrams</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Create-diagrams">Create diagrams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Remove-the-cups">Remove the cups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Create-circuits">Create circuits</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Parameterise">Parameterise</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Define-evaluation-metric">Define evaluation metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initialize-trainer">Initialize trainer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Train">Train</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Show-results">Show results</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline_tket.html">Quantum pipeline using t|ket&gt; backend</a></li>
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">Reference</span></p>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
 </ul>
-<p class="caption"><span class="caption-text">Links</span></p>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">lambeq</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
           <li><a href="../notebooks.html">Examples</a> &raquo;</li>
-        
       <li>Quantum pipeline using JAX backend</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
-            
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/examples/quantum_pipeline_jax.ipynb" class="fa fa-github"> Edit on GitHub</a>
-            
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   
 <style>
 /* CSS for nbsphinx extension */
@@ -430,7 +342,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
-.prompt a.copybtn {
+.prompt .copybtn {
     display: none;
 }
 
@@ -490,24 +402,61 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Quantum-pipeline-using-JAX-backend">
-<h1>Quantum pipeline using JAX backend<a class="headerlink" href="#Quantum-pipeline-using-JAX-backend" title="Permalink to this headline">¶</a></h1>
+<section id="Quantum-pipeline-using-JAX-backend">
+<h1>Quantum pipeline using JAX backend<a class="headerlink" href="#Quantum-pipeline-using-JAX-backend" title="Permalink to this headline"></a></h1>
 <p>This performs an exact classical simulation.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;TOKENIZERS_PARALLELISM&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;false&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">3e-2</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">LEARNING_RATE</span> <span class="o">=</span> <span class="mf">3e-2</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">120</span>
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</div>
+<section id="Read-in-the-data-and-create-diagrams">
+<h2>Read in the data and create diagrams<a class="headerlink" href="#Read-in-the-data-and-create-diagrams" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="n">labels</span><span class="p">,</span> <span class="n">sentences</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;1&#39;</span> <span class="k">else</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">])</span>
             <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">sentences</span>
+    <span class="k">return</span> <span class="n">labels</span><span class="p">,</span> <span class="n">sentences</span>
 
 
 <span class="n">train_labels</span><span class="p">,</span> <span class="n">train_data</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">&#39;datasets/mc_train_data.txt&#39;</span><span class="p">)</span>
@@ -516,58 +465,47 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="section" id="Create-diagrams">
-<h2>Create diagrams<a class="headerlink" href="#Create-diagrams" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">lambeq.ccg2discocat</span> <span class="kn">import</span> <span class="n">DepCCGParser</span>
-
-<span class="n">reader</span> <span class="o">=</span> <span class="n">DepCCGParser</span><span class="p">(</span><span class="n">possible_root_cats</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;S[dcl]&#39;</span><span class="p">])</span>
-
-<span class="n">raw_train_diagrams</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
-<span class="n">raw_dev_diagrams</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">dev_data</span><span class="p">)</span>
-<span class="n">raw_test_diagrams</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
+</section>
+<section id="Create-diagrams">
+<h2>Create diagrams<a class="headerlink" href="#Create-diagrams" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Id</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
 
+<span class="n">parser</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
-    <span class="c1"># Remove cups to reduce post-selection in the circuit, for faster execution</span>
-
-    <span class="n">diags</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">offsets</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>  <span class="c1"># word box</span>
-            <span class="n">diags</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">offset</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># cup (the only other type of box in these diagrams)</span>
-            <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="n">off</span> <span class="o">=</span> <span class="n">offset</span>
-            <span class="k">while</span> <span class="n">off</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">diags</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="n">off</span> <span class="o">&gt;</span> <span class="mi">0</span>
-                <span class="n">off</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">diags</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-            <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">diags</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">new_diag</span> <span class="o">=</span> <span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-                <span class="n">new_diag</span> <span class="o">=</span> <span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">@</span> <span class="n">right</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">dagger</span><span class="p">())</span>
-
-            <span class="n">diags</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">new_diag</span><span class="p">]</span>
-
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">diags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">diags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
+<span class="n">raw_train_diagrams</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+<span class="n">raw_dev_diagrams</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">dev_data</span><span class="p">)</span>
+<span class="n">raw_test_diagrams</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Tagging sentences.
+Parsing tagged sentences.
+Turning parse trees to diagrams.
+Tagging sentences.
+Parsing tagged sentences.
+Turning parse trees to diagrams.
+Tagging sentences.
+Parsing tagged sentences.
+Turning parse trees to diagrams.
+</pre></div></div>
+</div>
+</section>
+<section id="Remove-the-cups">
+<h2>Remove the cups<a class="headerlink" href="#Remove-the-cups" title="Permalink to this headline"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">remove_cups</span>
 
 <span class="n">train_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">raw_train_diagrams</span><span class="p">]</span>
 <span class="n">dev_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">raw_dev_diagrams</span><span class="p">]</span>
@@ -581,19 +519,17 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_quantum_pipeline_jax_4_0.png" src="../_images/examples_quantum_pipeline_jax_4_0.png" />
+<img alt="../_images/examples_quantum_pipeline_jax_9_0.png" src="../_images/examples_quantum_pipeline_jax_9_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Create-circuits">
-<h2>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Create-circuits">
+<h2>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this headline"></a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">lambeq.circuit</span> <span class="kn">import</span> <span class="n">IQPAnsatz</span>
-<span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span><span class="p">,</span> <span class="n">IQPAnsatz</span>
 
 <span class="n">ansatz</span> <span class="o">=</span> <span class="n">IQPAnsatz</span><span class="p">({</span><span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
                    <span class="n">n_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_single_qubit_params</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
@@ -610,109 +546,114 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_quantum_pipeline_jax_6_0.png" src="../_images/examples_quantum_pipeline_jax_6_0.png" />
+<img alt="../_images/examples_quantum_pipeline_jax_11_0.png" src="../_images/examples_quantum_pipeline_jax_11_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Parameterise">
-<h2>Parameterise<a class="headerlink" href="#Parameterise" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="Parameterise">
+<h2>Parameterise<a class="headerlink" href="#Parameterise" title="Permalink to this headline"></a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">default_sort_key</span>
-
-<span class="n">all_circuits</span> <span class="o">=</span> <span class="n">train_circuits</span> <span class="o">+</span> <span class="n">dev_circuits</span> <span class="o">+</span> <span class="n">test_circuits</span>
-
-<span class="c1"># sort the symbols since they are returned as a set</span>
-<span class="n">parameters</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
-    <span class="p">{</span><span class="n">s</span> <span class="k">for</span> <span class="n">circ</span> <span class="ow">in</span> <span class="n">all_circuits</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">circ</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">},</span>
-    <span class="n">key</span><span class="o">=</span><span class="n">default_sort_key</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Circuit</span>
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Tensor</span>
-<span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">jit</span>
-
-<span class="n">Tensor</span><span class="o">.</span><span class="n">np</span> <span class="o">=</span> <span class="n">np</span>
-
-
-<span class="k">def</span> <span class="nf">normalise</span><span class="p">(</span><span class="n">predictions</span><span class="p">):</span>
-    <span class="c1"># apply smoothing to predictions</span>
-    <span class="n">predictions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-9</span>
-    <span class="k">return</span> <span class="n">predictions</span> <span class="o">/</span> <span class="n">predictions</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-
-
-<span class="k">def</span> <span class="nf">make_pred_fn</span><span class="p">(</span><span class="n">circuits</span><span class="p">):</span>
-    <span class="n">circuit_fns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="n">parameters</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">circuits</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
-        <span class="n">outputs</span> <span class="o">=</span> <span class="n">Circuit</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">circuit_fns</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">normalise</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">array</span><span class="p">)</span> <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">predict</span>
-
-
-<span class="n">train_pred_fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">make_pred_fn</span><span class="p">(</span><span class="n">train_circuits</span><span class="p">))</span>
-<span class="n">dev_pred_fn</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">make_pred_fn</span><span class="p">(</span><span class="n">dev_circuits</span><span class="p">))</span>
-<span class="n">test_pred_fn</span> <span class="o">=</span> <span class="n">make_pred_fn</span><span class="p">(</span><span class="n">test_circuits</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Train">
-<h2>Train<a class="headerlink" href="#Train" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">noisyopt</span> <span class="kn">import</span> <span class="n">minimizeSPSA</span>
-<span class="kn">import</span> <span class="nn">numpy</span>
-
-
-<span class="k">def</span> <span class="nf">make_cost_fn</span><span class="p">(</span><span class="n">pred_fn</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">cost_fn</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="n">predictions</span> <span class="o">=</span> <span class="n">pred_fn</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-        <span class="n">cost</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">labels</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">predictions</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>  <span class="c1"># binary cross-entropy loss</span>
-        <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>
-
-        <span class="n">acc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span> <span class="o">==</span> <span class="n">labels</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># half due to double-counting</span>
-        <span class="n">accuracies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">cost</span>
-
-    <span class="n">costs</span><span class="p">,</span> <span class="n">accuracies</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-    <span class="k">return</span> <span class="n">cost_fn</span><span class="p">,</span> <span class="n">costs</span><span class="p">,</span> <span class="n">accuracies</span>
-
-
-<span class="n">train_cost_fn</span><span class="p">,</span> <span class="n">train_costs</span><span class="p">,</span> <span class="n">train_accs</span> <span class="o">=</span> <span class="n">make_cost_fn</span><span class="p">(</span><span class="n">train_pred_fn</span><span class="p">,</span> <span class="n">train_labels</span><span class="p">)</span>
-<span class="n">dev_cost_fn</span><span class="p">,</span> <span class="n">dev_costs</span><span class="p">,</span> <span class="n">dev_accs</span> <span class="o">=</span> <span class="n">make_cost_fn</span><span class="p">(</span><span class="n">dev_pred_fn</span><span class="p">,</span> <span class="n">dev_labels</span><span class="p">)</span>
-
-<span class="n">SEED</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">rng</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
-<span class="n">x0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rng</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)))</span>
-<span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">minimizeSPSA</span><span class="p">(</span><span class="n">train_cost_fn</span><span class="p">,</span> <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">niter</span><span class="o">=</span><span class="mi">80</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="n">dev_cost_fn</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="Show-results">
-<h2>Show results<a class="headerlink" href="#Show-results" title="Permalink to this headline">¶</a></h2>
-<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">NumpyModel</span>
+
+<span class="n">all_circuits</span> <span class="o">=</span> <span class="n">train_circuits</span> <span class="o">+</span> <span class="n">dev_circuits</span> <span class="o">+</span> <span class="n">test_circuits</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">NumpyModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">,</span> <span class="n">use_jit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Define-evaluation-metric">
+<h2>Define evaluation metric<a class="headerlink" href="#Define-evaluation-metric" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_hat</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># binary cross-entropy loss</span>
+<span class="n">acc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_hat</span><span class="p">)</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># half due to double-counting</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Initialize-trainer">
+<h2>Initialize trainer<a class="headerlink" href="#Initialize-trainer" title="Permalink to this headline"></a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">QuantumTrainer</span><span class="p">,</span> <span class="n">SPSAOptimizer</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">QuantumTrainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="p">,</span>
+    <span class="n">loss_function</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">SPSAOptimizer</span><span class="p">,</span>
+    <span class="n">optim_hyperparams</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span><span class="mf">0.01</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">},</span>
+    <span class="n">evaluate_functions</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;acc&#39;</span><span class="p">:</span> <span class="n">acc</span><span class="p">},</span>
+    <span class="n">evaluate_on_train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span>
+            <span class="n">train_circuits</span><span class="p">,</span>
+            <span class="n">train_labels</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dev_circuits</span><span class="p">,</span> <span class="n">dev_labels</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Train">
+<h2>Train<a class="headerlink" href="#Train" title="Permalink to this headline"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">logging_step</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
+Epoch 1:    train/loss: 1.0450   valid/loss: 0.8951   train/acc: 0.4714   valid/acc: 0.4333
+Epoch 12:   train/loss: 0.6291   valid/loss: 0.6025   train/acc: 0.7286   valid/acc: 0.6667
+Epoch 24:   train/loss: 0.5268   valid/loss: 0.6482   train/acc: 0.8143   valid/acc: 0.7000
+Epoch 36:   train/loss: 0.4166   valid/loss: 0.7001   train/acc: 0.8714   valid/acc: 0.6667
+Epoch 48:   train/loss: 0.3249   valid/loss: 0.5029   train/acc: 0.9143   valid/acc: 0.7333
+Epoch 60:   train/loss: 0.3282   valid/loss: 0.4796   train/acc: 0.9143   valid/acc: 0.8000
+Epoch 72:   train/loss: 0.3115   valid/loss: 0.4015   train/acc: 0.9000   valid/acc: 0.8000
+Epoch 84:   train/loss: 0.2727   valid/loss: 0.3717   train/acc: 0.9143   valid/acc: 0.8000
+Epoch 96:   train/loss: 0.2473   valid/loss: 0.3655   train/acc: 0.9286   valid/acc: 0.7667
+Epoch 108:  train/loss: 0.2517   valid/loss: 0.3711   train/acc: 0.9286   valid/acc: 0.7667
+Epoch 120:  train/loss: 0.2383   valid/loss: 0.3432   train/acc: 0.9286   valid/acc: 0.8000
+
+Training completed!
+</pre></div></div>
+</div>
+</section>
+<section id="Show-results">
+<h2>Show results<a class="headerlink" href="#Show-results" title="Permalink to this headline"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="p">((</span><span class="n">ax_tl</span><span class="p">,</span> <span class="n">ax_tr</span><span class="p">),</span> <span class="p">(</span><span class="n">ax_bl</span><span class="p">,</span> <span class="n">ax_br</span><span class="p">))</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="s1">&#39;row&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
 <span class="n">ax_tl</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Training set&#39;</span><span class="p">)</span>
@@ -723,15 +664,13 @@ div.rendered_html tbody tr:hover {
 <span class="n">ax_tl</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
 
 <span class="n">colours</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
-<span class="n">ax_tl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_costs</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>  <span class="c1"># training evaluates twice per iteration</span>
-<span class="n">ax_bl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">train_accs</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>   <span class="c1"># so take every other entry</span>
-<span class="n">ax_tr</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dev_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
-<span class="n">ax_br</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dev_accs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_tl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_bl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_tr</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">val_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_br</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
 
-<span class="c1"># print test accuracy</span>
-<span class="n">test_cost_fn</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">test_accs</span> <span class="o">=</span> <span class="n">make_cost_fn</span><span class="p">(</span><span class="n">test_pred_fn</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">)</span>
-<span class="n">test_cost_fn</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">test_accs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">test_acc</span> <span class="o">=</span> <span class="n">acc</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">test_circuits</span><span class="p">),</span> <span class="n">test_labels</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Test accuracy:&#39;</span><span class="p">,</span> <span class="n">test_acc</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -740,65 +679,48 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 1.0
+Test accuracy: 0.9333333333333333
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_quantum_pipeline_jax_13_1.png" src="../_images/examples_quantum_pipeline_jax_13_1.png" />
+<img alt="../_images/examples_quantum_pipeline_jax_22_1.png" src="../_images/examples_quantum_pipeline_jax_22_1.png" />
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="quantum_pipeline_tket.html" class="btn btn-neutral float-right" title="Quantum pipeline using t|ket&gt; backend" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="classical_pipeline.html" class="btn btn-neutral float-left" title="Classical pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="quantum_pipeline.html" class="btn btn-neutral float-left" title="Quantum pipeline using the Quantum Trainer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../root-api.html" class="btn btn-neutral float-right" title="lambeq package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Cambridge Quantum Computing Ltd..
-
-    </p>
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

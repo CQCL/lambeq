@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.ansatz.circuit &mdash; lambeq 0.2.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> lambeq
+            <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>lambeq.ansatz.circuit</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.ansatz.circuit</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Circuit Ansatz</span>
+<span class="sd">==============</span>
+<span class="sd">A circuit ansatz is used to convert a DisCoCat diagram into a quantum circuit.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CircuitAnsatz&#39;</span><span class="p">,</span> <span class="s1">&#39;IQPAnsatz&#39;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Circuit</span><span class="p">,</span> <span class="n">Discard</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span>
+                                     <span class="n">IQPansatz</span> <span class="k">as</span> <span class="n">IQP</span><span class="p">,</span> <span class="n">qubit</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">Bra</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Rx</span><span class="p">,</span> <span class="n">Rz</span>
+<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Ty</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.ansatz</span> <span class="kn">import</span> <span class="n">BaseAnsatz</span><span class="p">,</span> <span class="n">Symbol</span>
+
+<span class="n">_ArMapT</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Box</span><span class="p">],</span> <span class="n">Circuit</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="CircuitAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz">[docs]</a><span class="k">class</span> <span class="nc">CircuitAnsatz</span><span class="p">(</span><span class="n">BaseAnsatz</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Base class for circuit ansatz.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="CircuitAnsatz.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Ty</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate a circuit ansatz.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ob_map : dict</span>
+<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the number of</span>
+<span class="sd">            qubits it uses in a circuit.</span>
+<span class="sd">        **kwargs : dict</span>
+<span class="sd">            Extra parameters for ansatz configuration.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ob_map</span> <span class="o">=</span> <span class="n">ob_map</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">({},</span> <span class="p">{})</span></div>
+
+<div class="viewcode-block" id="CircuitAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy circuit.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_ob</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pg_type</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the number of qubits used for a given type.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ob_map</span><span class="p">[</span><span class="n">Ty</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">pg_type</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_special_cases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ar_map</span><span class="p">:</span> <span class="n">_ArMapT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_ArMapT</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Convert a DisCoPy box into a tket Circuit element&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">ar_map</span></div>
+
+
+<div class="viewcode-block" id="IQPAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.IQPAnsatz">[docs]</a><span class="k">class</span> <span class="nc">IQPAnsatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Instantaneous Quantum Polynomial ansatz.</span>
+
+<span class="sd">    An IQP ansatz interleaves layers of Hadamard gates with diagonal</span>
+<span class="sd">    unitaries. This class uses :py:obj:`n_layers-1` adjacent CRz gates</span>
+<span class="sd">    to implement each diagonal unitary.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="IQPAnsatz.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.IQPAnsatz.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">ob_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Ty</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
+                 <span class="n">n_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">n_single_qubit_params</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+                 <span class="n">discard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">special_cases</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">_ArMapT</span><span class="p">],</span> <span class="n">_ArMapT</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate an IQP ansatz.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ob_map : dict</span>
+<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the number of</span>
+<span class="sd">            qubits it uses in a circuit.</span>
+<span class="sd">        n_layers : int</span>
+<span class="sd">            The number of IQP layers used by the ansatz.</span>
+<span class="sd">        n_single_qubit_params : int, default: 3</span>
+<span class="sd">            The number of single qubit rotations used by the ansatz.</span>
+<span class="sd">        discard : bool, default: False</span>
+<span class="sd">            Discard open wires instead of post-selecting.</span>
+<span class="sd">        special_cases : callable, optional</span>
+<span class="sd">            A function that transforms an arrow map into one specifying</span>
+<span class="sd">            special cases that should not be converted by the Ansatz</span>
+<span class="sd">            class.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob_map</span><span class="o">=</span><span class="n">ob_map</span><span class="p">,</span> <span class="n">n_layers</span><span class="o">=</span><span class="n">n_layers</span><span class="p">,</span>
+                         <span class="n">n_single_qubit_params</span><span class="o">=</span><span class="n">n_single_qubit_params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">special_cases</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">special_cases</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_special_cases</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span> <span class="o">=</span> <span class="n">n_layers</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_single_qubit_params</span> <span class="o">=</span> <span class="n">n_single_qubit_params</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">discard</span> <span class="o">=</span> <span class="n">discard</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ob_map</span><span class="p">,</span>
+                               <span class="n">ar</span><span class="o">=</span><span class="n">special_cases</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+
+        <span class="n">n_qubits</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
+        <span class="n">n_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span>
+        <span class="n">n_1qubit_params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_single_qubit_params</span>
+
+        <span class="k">if</span> <span class="n">n_qubits</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">n_qubits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">syms</span> <span class="o">=</span> <span class="p">[</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_1qubit_params</span><span class="p">)]</span>
+            <span class="n">rots</span> <span class="o">=</span> <span class="p">[</span><span class="n">Rx</span><span class="p">,</span> <span class="n">Rz</span><span class="p">]</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">qubit</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sym</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">syms</span><span class="p">):</span>
+                <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">rots</span><span class="p">[</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">](</span><span class="n">sym</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">n_params</span> <span class="o">=</span> <span class="n">n_layers</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_qubits</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">syms</span> <span class="o">=</span> <span class="p">[</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_params</span><span class="p">)]</span>
+            <span class="n">params</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dtype</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">syms</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">n_layers</span><span class="p">,</span> <span class="n">n_qubits</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">IQP</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cod</span> <span class="o">&gt;</span> <span class="n">dom</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">&lt;&lt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">@</span> <span class="n">Ket</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cod</span> <span class="o">-</span> <span class="n">dom</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">discard</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="n">Discard</span><span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="n">cod</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="n">Bra</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="n">cod</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">circuit</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
