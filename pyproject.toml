@@ -15,8 +15,23 @@ show_error_codes = true
 warn_unused_configs = true
 
 [[tool.mypy.overrides]]
-module = ["depccg.*", "discopy.*", "sympy.*", "tensornetwork"]
+module = [
+    "depccg.*",
+    "discopy.*",
+    "jax.*",
+    "sympy.*",
+    "tensornetwork.*",
+    "tqdm.*"
+]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["spacy.*", "torch.*"]
+implicit_reexport = true
+
+[[tool.mypy.overrides]]
+module = ["lambeq.ccg2discocat.bobcat_parser", "lambeq.ccg2discocat.bobcat.*"]
+strict_optional = false
 
 [tool.setuptools_scm]
 write_to = "lambeq/version.py"

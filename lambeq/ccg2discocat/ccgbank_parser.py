@@ -1,4 +1,4 @@
-# Copyright 2021 Cambridge Quantum Computing Ltd.
+# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 
 """
 CCGBank parser
---------------
+==============
 
 The CCGBank is a translation of the Penn Treebank into a corpus of
 Combinatory Categorial Grammar derivations, created by Julia Hockenmaier
@@ -30,17 +30,22 @@ from __future__ import annotations
 __all__ = ['CCGBankParseError', 'CCGBankParser']
 
 import os
-from pathlib import Path
 import re
-from typing import Dict, Iterable, List, Optional, Tuple, Union
+import sys
+from collections.abc import Iterator
+from pathlib import Path
+from typing import Optional, Union
 
 from discopy.biclosed import Ty
 from discopy.rigid import Diagram
+from tqdm.auto import tqdm
 
 from lambeq.ccg2discocat.ccg_parser import CCGParser
 from lambeq.ccg2discocat.ccg_rule import CCGRule
 from lambeq.ccg2discocat.ccg_tree import CCGTree
 from lambeq.ccg2discocat.ccg_types import CONJ_TAG, CCGAtomicType, str2biclosed
+from lambeq.core.globals import VerbosityLevel
+from lambeq.core.utils import SentenceBatchType
 
 
 class CCGBankParseError(Exception):
@@ -88,7 +93,11 @@ class CCGBankParser(CCGParser):
                                             #    a matching ")"
         ''', re.VERBOSE)
 
-    def __init__(self, root: Union[str, os.PathLike[str]]):
+    escaped_words = {'-LCB-': '{', '-RCB-': '}', '-LRB-': '(', '-RRB-': ')'}
+
+    def __init__(self,
+                 root: Union[str, os.PathLike[str]],
+                 verbose: str = VerbosityLevel.SUPPRESS.value):
         """Initialise a CCGBank parser.
 
         Parameters
@@ -96,14 +105,22 @@ class CCGBankParser(CCGParser):
         root : str or os.PathLike
             Path to the root of the corpus. The sections must be located
             in `<root>/data/AUTO`.
+        verbose : str, default: 'suppress',
+            See :py:class:`VerbosityLevel` for options.
 
         """
+        if not VerbosityLevel.has_value(verbose):
+            raise ValueError(f'`{verbose}` is not a valid verbose value for '
+                             'CCGBankParser.')
         self.root = Path(root)
+        self.verbose = verbose
 
     def section2trees(
             self,
             section_id: int,
-            suppress_exceptions: bool = False) -> Dict[str, Optional[CCGTree]]:
+            suppress_exceptions: bool = False,
+            verbose: Optional[str] = None
+            ) -> dict[str, Optional[CCGTree]]:
         """Parse a CCGBank section into trees.
 
         Parameters
@@ -113,6 +130,9 @@ class CCGBankParser(CCGParser):
         suppress_exceptions : bool, default: False
             Stop exceptions from being raised, instead returning
             :py:obj:`None` for a tree.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. If set, takes priority
+            over the :py:attr:`verbose` attribute of the parser.
 
         Returns
         -------
@@ -127,12 +147,61 @@ class CCGBankParser(CCGParser):
             If parsing fails and exceptions are not suppressed.
 
         """
+        return {key: tree for key, tree in self.section2trees_gen(
+            section_id,
+            suppress_exceptions=suppress_exceptions,
+            verbose=verbose)}
+
+    def section2trees_gen(
+            self,
+            section_id: int,
+            suppress_exceptions: bool = False,
+            verbose: Optional[str] = None) -> Iterator[
+                                        tuple[str, Optional[CCGTree]]]:
+        """Parse a CCGBank section into trees, given as a generator.
+        The generator only reads data when it is accessed, providing the user
+        with control over the reading process.
+
+        Parameters
+        ----------
+        section_id : int
+            The section to parse.
+        suppress_exceptions : bool, default: False
+            Stop exceptions from being raised, instead returning
+            :py:obj:`None` for a tree.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. If set, takes priority
+            over the :py:attr:`verbose` attribute of the parser.
+
+        Yields
+        ------
+        ID, tree : tuple of str and CCGTree
+            ID in CCGBank and the corresponding tree. If a
+            tree fails to parse and exceptions are suppressed, that
+            entry is :py:obj:`None`.
+
+        Raises
+        ------
+        CCGBankParseError
+            If parsing fails and exceptions are not suppressed.
+
+        """
+        if verbose is None:
+            verbose = self.verbose
+        if not VerbosityLevel.has_value(verbose):
+            raise ValueError(f'`{verbose}` is not a valid verbose value for '
+                             'CCGBankParser.')
         path = self.root / 'data' / 'AUTO' / f'{section_id:02}'
-        trees = {}
-        for file in path.iterdir():
+        for file in sorted(path.iterdir()):
             with open(file) as f:
+                if verbose == VerbosityLevel.TEXT.value:
+                    print(f'Parsing "{file}"', file=sys.stderr)
                 line_no = 0
-                for line in f:
+                for line in tqdm(
+                        f,
+                        desc=f'Parsing "{file}"',
+                        leave=False,
+                        disable=verbose != VerbosityLevel.PROGRESS.value):
                     line_no += 1
                     match = self.id_regex.fullmatch(line)
                     if match:
@@ -145,17 +214,18 @@ class CCGBankParser(CCGParser):
                                 raise CCGBankParseError(
                                         f'Failed to parse tree in "{file}" '
                                         f'line {line_no}: {e.message}')
-                        trees[match['id']] = tree
+                        yield match['id'], tree
                     elif not suppress_exceptions:
                         raise CCGBankParseError('Failed to parse ID in '
                                                 f'"{file}" line {line_no}')
-        return trees
 
     def section2diagrams(
             self,
             section_id: int,
             planar: bool = False,
-            suppress_exceptions: bool = False) -> Dict[str, Optional[Diagram]]:
+            suppress_exceptions: bool = False,
+            verbose: Optional[str] = None
+            ) -> dict[str, Optional[Diagram]]:
         """Parse a CCGBank section into diagrams.
 
         Parameters
@@ -168,6 +238,9 @@ class CCGBankParser(CCGParser):
         suppress_exceptions : bool, default: False
             Stop exceptions from being raised, instead returning
             :py:obj:`None` for a diagram.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. If set, takes priority
+            over the :py:attr:`verbose` attribute of the parser.
 
         Returns
         -------
@@ -182,25 +255,78 @@ class CCGBankParser(CCGParser):
             If parsing fails and exceptions are not suppressed.
 
         """
-        trees = self.section2trees(section_id, suppress_exceptions)
-        diagrams = {}
-        for k, tree in trees.items():
+        return {key: diagram for key, diagram in self.section2diagrams_gen(
+            section_id,
+            planar=planar,
+            suppress_exceptions=suppress_exceptions,
+            verbose=verbose)}
+
+    def section2diagrams_gen(
+            self,
+            section_id: int,
+            planar: bool = False,
+            suppress_exceptions: bool = False,
+            verbose: Optional[str] = None) -> Iterator[
+                                        tuple[str, Optional[Diagram]]]:
+        """Parse a CCGBank section into diagrams, given as a generator.
+        The generator only reads data when it is accessed, providing the user
+        with control over the reading process.
+
+        Parameters
+        ----------
+        section_id : int
+            The section to parse.
+        planar : bool, default: False
+            Force diagrams to be planar when they contain
+            crossed composition.
+        suppress_exceptions : bool, default: False
+            Stop exceptions from being raised, instead returning
+            :py:obj:`None` for a diagram.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. If set, takes priority
+            over the :py:attr:`verbose` attribute of the parser.
+
+        Yields
+        ------
+        ID, diagram : tuple of str and Diagram
+            ID in CCGBank and the corresponding diagram. If a
+            diagram fails to draw and exceptions are suppressed, that
+            entry is replaced by :py:obj:`None`.
+
+        Raises
+        ------
+        CCGBankParseError
+            If parsing fails and exceptions are not suppressed.
+
+        """
+        if verbose is None:
+            verbose = self.verbose
+        if not VerbosityLevel.has_value(verbose):
+            raise ValueError(f'`{verbose}` is not a valid verbose value for '
+                             'CCGBankParser.')
+        trees = self.section2trees_gen(section_id,
+                                       suppress_exceptions,
+                                       verbose=verbose)
+        for k, tree in trees:
             if tree is not None:
                 try:
-                    diagrams[k] = tree.to_diagram(planar)
+                    diagram = tree.to_diagram(planar)
                 except Exception as e:
                     if suppress_exceptions:
-                        diagrams[k] = None
+                        diagram = None
                     else:
                         raise e
             else:
-                diagrams[k] = None
-        return diagrams
+                diagram = None
+            yield k, diagram
 
     def sentences2trees(
             self,
-            sentences: Iterable[str],
-            suppress_exceptions: bool = False) -> List[Optional[CCGTree]]:
+            sentences: SentenceBatchType,
+            suppress_exceptions: bool = False,
+            tokenised: bool = False,
+            verbose: Optional[str] = None
+            ) -> list[Optional[CCGTree]]:
         """Parse a CCGBank sentence derivation into a CCGTree.
 
         The sentence must be in the format outlined in the CCGBank
@@ -213,6 +339,12 @@ class CCGBankParser(CCGParser):
         suppress_exceptions : bool, default: False
             Stop exceptions from being raised, instead returning
             :py:obj:`None` for a tree.
+        tokenised : bool, default: False
+            Whether the sentence has been passed as a list of tokens.
+            For CCGBankParser, it should be kept `False`.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. If set, takes priority
+            over the :py:attr:`verbose` attribute of the parser.
 
         Returns
         -------
@@ -224,10 +356,21 @@ class CCGBankParser(CCGParser):
         ------
         CCGBankParseError
             If parsing fails and exceptions are not suppressed.
+        ValueError
+            If `tokenised` flag is True (not valid for CCGBankParser).
 
         """
+        if verbose is None:
+            verbose = self.verbose
+        if not VerbosityLevel.has_value(verbose):
+            raise ValueError(f'`{verbose}` is not a valid verbose value for '
+                             'CCGBankParser.')
         trees = []
         for sentence in sentences:
+            if tokenised:
+                raise ValueError('`tokenised` set to `True`, but this is not '
+                                 'a valid value for CCGBankParser.')
+            assert isinstance(sentence, str)
             tree = None
             try:
                 tree, pos = CCGBankParser._build_ccgtree(sentence, 0)
@@ -241,18 +384,25 @@ class CCGBankParser(CCGParser):
         return trees
 
     @staticmethod
-    def _build_ccgtree(sentence: str, start: int) -> Tuple[CCGTree, int]:
+    def _build_ccgtree(sentence: str, start: int) -> tuple[CCGTree, int]:
         tree_match = CCGBankParser.tree_regex.match(sentence, pos=start)
         if not tree_match:
             raise CCGBankParseError('malformed tree starting from character '
                                     f'{start+1} - "{sentence[start:]}"')
 
-        biclosed_type = str2biclosed(tree_match['ccg_str'],
+        ccg_str = tree_match['ccg_str']
+        if ccg_str == r'((S[b]\NP)/NP)/':  # fix mistake in CCGBank
+            ccg_str = r'(S[b]\NP)/NP'
+        biclosed_type = str2biclosed(ccg_str,
                                      str2type=CCGBankParser._parse_atomic_type)
         pos = tree_match.end()
         if tree_match['is_leaf']:
-            ccg_tree = CCGTree(text=tree_match['word'],
-                               biclosed_type=biclosed_type)
+            word = tree_match['word']
+            try:
+                word = CCGBankParser.escaped_words[word]
+            except KeyError:
+                pass
+            ccg_tree = CCGTree(text=word, biclosed_type=biclosed_type)
         else:
             children = []
             while not sentence[pos] == ')':

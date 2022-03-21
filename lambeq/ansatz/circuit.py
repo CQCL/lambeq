@@ -1,4 +1,4 @@
-# Copyright 2021 Cambridge Quantum Computing Ltd.
+# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,21 +18,20 @@ Circuit Ansatz
 A circuit ansatz is used to convert a DisCoCat diagram into a quantum circuit.
 
 """
+from __future__ import annotations
 
 __all__ = ['CircuitAnsatz', 'IQPAnsatz']
 
-from typing import Any, Callable, Mapping, Optional
+from collections.abc import Mapping
+from typing import Any, Callable, Optional
 
-from discopy import Tensor
-from discopy.quantum import Discard as QDiscard
-from discopy.quantum import Circuit, qubit
-from discopy.quantum.circuit import Functor, Id, IQPansatz as IQP
+from discopy.quantum.circuit import (Circuit, Discard, Functor, Id,
+                                     IQPansatz as IQP, qubit)
 from discopy.quantum.gates import Bra, Ket, Rx, Rz
 from discopy.rigid import Box, Diagram, Ty
 import numpy as np
 
 from lambeq.ansatz import BaseAnsatz, Symbol
-from lambeq.core.types import Discard
 
 _ArMapT = Callable[[Box], Circuit]
 
@@ -65,11 +64,7 @@ class CircuitAnsatz(BaseAnsatz):
 
     def _special_cases(self, ar_map: _ArMapT) -> _ArMapT:
         """Convert a DisCoPy box into a tket Circuit element"""
-        def new_ar_map(box: Box) -> Circuit:
-            if isinstance(box, Discard):
-                return QDiscard(qubit ** self._ob(box.dom))
-            return ar_map(box)
-        return new_ar_map
+        return ar_map
 
 
 class IQPAnsatz(CircuitAnsatz):
@@ -85,6 +80,7 @@ class IQPAnsatz(CircuitAnsatz):
                  ob_map: Mapping[Ty, int],
                  n_layers: int,
                  n_single_qubit_params: int = 3,
+                 discard: bool = False,
                  special_cases: Optional[Callable[[_ArMapT], _ArMapT]] = None):
         """Instantiate an IQP ansatz.
 
@@ -95,9 +91,11 @@ class IQPAnsatz(CircuitAnsatz):
             qubits it uses in a circuit.
         n_layers : int
             The number of IQP layers used by the ansatz.
-        n_single_qubit_params : int
+        n_single_qubit_params : int, default: 3
             The number of single qubit rotations used by the ansatz.
-        special_cases: callable
+        discard : bool, default: False
+            Discard open wires instead of post-selecting.
+        special_cases : callable, optional
             A function that transforms an arrow map into one specifying
             special cases that should not be converted by the Ansatz
             class.
@@ -111,6 +109,7 @@ class IQPAnsatz(CircuitAnsatz):
 
         self.n_layers = n_layers
         self.n_single_qubit_params = n_single_qubit_params
+        self.discard = discard
         self.functor = Functor(ob=self.ob_map,
                                ar=special_cases(self._ar))
 
@@ -133,11 +132,14 @@ class IQPAnsatz(CircuitAnsatz):
         else:
             n_params = n_layers * (n_qubits-1)
             syms = [Symbol(f'{label}_{i}') for i in range(n_params)]
-            params = np.array(syms).reshape((n_layers, n_qubits-1))
+            params: np.ndarray[Any, np.dtype[Any]] = np.array(syms).reshape(
+                    (n_layers, n_qubits-1))
             circuit = IQP(n_qubits, params)
 
-        if cod <= dom:
-            circuit >>= Id(cod) @ Bra(*[0]*(dom - cod))
-        else:
+        if cod > dom:
             circuit <<= Id(dom) @ Ket(*[0]*(cod - dom))
+        elif self.discard:
+            circuit >>= Id(cod) @ Discard(dom - cod)
+        else:
+            circuit >>= Id(cod) @ Bra(*[0]*(dom - cod))
         return circuit

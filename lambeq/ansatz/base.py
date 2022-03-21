@@ -1,4 +1,4 @@
-# Copyright 2021 Cambridge Quantum Computing Ltd.
+# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@ Ansatz
 An ansatz is used to convert a DisCoCat diagram into a quantum circuit.
 
 """
+from __future__ import annotations
 
 __all__ = ['BaseAnsatz', 'Symbol']
 
-
 from abc import ABC, abstractmethod
-from typing import Any, Mapping
+from collections.abc import Mapping
+from typing import Any
 
 from discopy import monoidal, rigid
 import sympy
@@ -39,7 +40,7 @@ class Symbol(sympy.Symbol):
 
     """
 
-    def __init__(self, name: str, size: int = 1) -> None:
+    def __new__(cls, name: str, size: int = 1, **assumptions: bool) -> Symbol:
         """Initialise a symbol.
 
         Parameters
@@ -48,11 +49,24 @@ class Symbol(sympy.Symbol):
             The size of the tensor that this symbol represents.
 
         """
-        self._size = size
+        cls._sanitize(assumptions, cls)
 
-    @property
-    def size(self) -> int:
-        return self._size
+        obj = sympy.Symbol.__xnew__(cls, name, **assumptions)
+        obj.size = size
+        return obj
+
+    def __getnewargs_ex__(self):  # type: ignore[no-untyped-def]
+        return ((self.name, self.size), self.assumptions0)
+
+    @sympy.cacheit
+    def sort_key(self, order=None):  # type: ignore[no-untyped-def]
+        return (self.class_key(),
+                (2, (self.name, self.size)),
+                sympy.S.One.sort_key(),
+                sympy.S.One)
+
+    def _hashable_content(self):  # type: ignore[no-untyped-def]
+        return super()._hashable_content() + (self.size,)
 
 
 class BaseAnsatz(ABC):

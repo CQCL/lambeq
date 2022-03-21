@@ -5,6 +5,8 @@ Bibliography
 
 .. [AC2004] S. Abramsky, B. Coecke. `A Categorical Semantics for Quantum Protocols <https://arxiv.org/pdf/quant-ph/0402130.pdf>`_, LiCS 2004
 
+.. [SC2021] S. Clark. `Something Old, Something New: Grammar-based CCG Parsing with Transformer Models <https://arxiv.org/pdf/2109.10044.pdf>`_, `arXiv:2109.10044`, 2021
+
 .. [CSC2010] B. Coecke, M. Sadrzadeh, S. Clark. `Mathematical Foundations for a Compositional Distributional Model of Meaning <https://arxiv.org/pdf/1003.4394.pdf>`_, `Lambek Festschirft`, special issue of `Linguistic Analysis`, 2010
 
 .. [CW2021] B. Coecke, V. Wang. `Grammar Equations <https://arxiv.org/pdf/2106.07485.pdf>`_, `SemSpace 2021`
@@ -25,13 +27,17 @@ Bibliography
 
 .. [Lea2021] R. Lorenz, A. Pearson, K. Meichanetzidis, D. Kartsaklis, B. Coecke. `QNLP in Practice: Running Compositional Models of Meaning on a Quantum Computer <https://arxiv.org/pdf/2102.12846.pdf>`_ `arXiv:2102.12846`, 2021
 
-.. [Mea2020] K. Meichantzidis, A. Toumi, G. de Felice, B. Coecke. `Grammar-Aware Question-Answering on Quantum Computers <https://arxiv.org/pdf/2012.03756.pdf>`_, `arXiv:2012.03756`, 2020
+.. [Mea2020] K. Meichanetzidis, A. Toumi, G. de Felice, B. Coecke. `Grammar-Aware Question-Answering on Quantum Computers <https://arxiv.org/pdf/2012.03756.pdf>`_, `arXiv:2012.03756`, 2020
+
+.. [Rea2016] L. Rimell, J. Maillard, T. Polajnar, S. Clark. `RELPRON: A Relative Clause Evaluation Data Set for Compositional Distributional Semantics <https://direct.mit.edu/coli/article/42/4/661/1555/RELPRON-A-Relative-Clause-Evaluation-Data-Set-for>`_, `Computational Linguistics`, 2016
 
 .. [SCC2014a] M. Sadrzadeh, S. Clark, B. Coecke. `The Frobenius Anatomy of Word Meanings I: Subject and Object Relative Pronouns <https://arxiv.org/pdf/1404.5278.pdf>`_, `Journal of Logic and Computation`, 2014
 
 .. [SCC2014b] M. Sadrzadeh, S. Clark, B. Coecke. `The Frobenius Anatomy of Word Meanings II: Possessive Relative Pronouns <https://arxiv.org/pdf/1406.4690.pdf>`_, `Journal of Logic and Computation`, 2014
 
 .. [SJA2019] S. Sim, P. Johnson, A. Aspuru-Guzik. `Expressibility and Entangling Capability of Parameterized Quantum Circuits for Hybrid Quantum-Classical Algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_, `arXiv:1905.10876`, 2019
+
+.. [Spa1998] J. C. Spall, `Implementation of the simultaneous perturbation algorithm for stochastic optimization <https://ieeexplore.ieee.org/document/705889>`_, `IEEE Transactions on Aerospace and Electronic Systems`, 1998
 
 .. [Ste2000] M. Steedman. The Syntactic Process, MIT Press, 2000
 

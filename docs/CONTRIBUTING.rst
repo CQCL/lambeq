@@ -9,6 +9,7 @@ Contributions to ``lambeq`` are welcome, especially with regard to adding:
 - :term:`Compositional schemes <compositional model>` and :term:`readers <reader>` (extensions of the :py:class:`.Reader` class)
 - :term:`Rewrite rules <rewrite rule>` (extensions of the :py:class:`.RewriteRule` class)
 - Tensor and circuit :term:`ansätze <ansatz (plural: ansätze)>` (extensions of the :py:class:`.TensorAnsatz` and :py:class:`.CircuitAnsatz` classes)
+- New :term:`trainers <trainer>`, :term:`models <model>`, and optimizers for the :py:mod:`.training` package.
 
 All accepted contributions will be included in the next official release and contributors will be properly attributed in the corresponding release notes.
 
@@ -28,7 +29,7 @@ If you have an already implemented and tested proposal, you can `open a pull req
 Trivial contributions
 ---------------------
 
-Any contribution, no matter how small or "trivial", is welcome as long as it improves in a pragmatic and clear way the package. However, it is up to the maintainers of the project to decide if the sole purpose of a contribution is to add the author's name in the contributors list, without providing any actual value to the development. We regret that these cases will not be accepted. Examples include the following:
+Any contribution, no matter how small or "trivial", is welcome as long as it improves the package in a pragmatic and clear way. However, it is up to the maintainers of the project to decide if the sole purpose of a contribution is to add the author's name to the list of contributors, without providing any actual value to the development. We regret that these cases will not be accepted. Examples include the following:
 
 - Changing the name of a variable without apparent reason.
 - Rephrasing a comment without apparent reason.
@@ -50,7 +51,7 @@ If you have a question, proposal, or request related to ``lambeq``, please `open
 Code of conduct
 ---------------
 
-Please be polite and respectful in any form of communication you have with other contributors/developers. Project maintainers are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior. Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to these guidelines, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
+Please be polite and respectful in any form of communication you have with other contributors/developers. Project maintainers are expected to take appropriate and fair corrective action in response to any instances of unacceptable behaviour. Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to these guidelines, or to ban temporarily or permanently any contributor for other behaviours that they deem inappropriate, threatening, offensive, or harmful.
 
 .. rubric:: See also:
 

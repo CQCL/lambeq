@@ -1,4 +1,4 @@
-# Copyright 2021 Cambridge Quantum Computing Ltd.
+# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,9 @@ from __future__ import annotations
 
 __all__ = ['CCGTree']
 
+from collections.abc import Sequence
 import json
-from typing import Any, Dict, Optional, Sequence, Tuple, Union, overload
+from typing import Any, Dict, Optional, Union, overload
 
 from discopy import rigid, Word
 from discopy.biclosed import (Box, Diagram, Functor, Id, Over, Ty, Under,
@@ -118,14 +119,14 @@ class CCGTree:
 
         Parameters
         ----------
-        text : str or None, default: None
+        text : str, optional
             The word or phrase associated to the whole tree. If
             :py:obj:`None`, it is inferred from its children.
         rule : CCGRule, default: CCGRule.UNKNOWN
             The final :py:class:`.CCGRule` used in the derivation.
         biclosed_type : discopy.biclosed.Ty
             The type associated to the derived phrase.
-        children : list of CCGTree or None, default: None
+        children : list of CCGTree, optional
             A list of JSON subtrees. The types of these subtrees can be
             combined with the :py:obj:`rule` to produce the output
             :py:obj:`type`. A leaf node has an empty list of children.
@@ -262,7 +263,7 @@ class CCGTree:
     def _to_biclosed_diagram(
             self,
             planar: bool = False,
-            resolved_output: Optional[Ty] = None) -> Tuple[Diagram, Diagram]:
+            resolved_output: Optional[Ty] = None) -> tuple[Diagram, Diagram]:
         biclosed_type = resolved_output or self.biclosed_type
 
         if self.rule == CCGRule.LEXICAL:
@@ -322,7 +323,7 @@ class CCGTree:
             #              word box -> Word
 
             def split(cat: Ty,
-                      base: Ty) -> Tuple[rigid.Ty, rigid.Ty, rigid.Ty]:
+                      base: Ty) -> tuple[rigid.Ty, rigid.Ty, rigid.Ty]:
                 left = right = rigid.Ty()
                 while cat != base:
                     if isinstance(cat, Over):

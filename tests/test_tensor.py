@@ -6,7 +6,7 @@ import numpy as np
 from sympy.core.compatibility import default_sort_key
 import tensornetwork as tn
 
-from lambeq.tensor import MPSAnsatz, TensorAnsatz, SpiderAnsatz
+from lambeq import MPSAnsatz, SpiderAnsatz, TensorAnsatz
 
 
 @pytest.fixture

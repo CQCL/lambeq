@@ -1,4 +1,4 @@
-# Copyright 2021 Cambridge Quantum Computing Ltd.
+# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,12 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+from __future__ import annotations
 
 __all__ = ['CCGAtomicType', 'CCGParseError', 'replace_cat_result',
            'str2biclosed']
 
+from collections.abc import Callable
 from enum import Enum
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Optional
 
 from discopy import rigid
 from discopy.biclosed import Ty
@@ -43,7 +45,7 @@ class _CCGAtomicTypeMeta(Ty, Enum):
 
     @staticmethod
     def _generate_next_value_(
-            name: str, start: int, count: int, last_values: List[Any]) -> str:
+            name: str, start: int, count: int, last_values: list[Any]) -> str:
         return AtomicType[name]._value_
 
     @classmethod
@@ -123,7 +125,7 @@ def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
 
 def _compound_str2biclosed(cat: str,
                            str2type: Callable[[str], Ty],
-                           start: int) -> Tuple[Ty, int]:
+                           start: int) -> tuple[Ty, int]:
     biclosed_type, end = _clean_str2biclosed(cat, str2type, start)
     try:
         op = cat[end]
@@ -139,7 +141,7 @@ def _compound_str2biclosed(cat: str,
 
 def _clean_str2biclosed(cat: str,
                         str2type: Callable[[str], Ty],
-                        start: int) -> Tuple[Ty, int]:
+                        start: int) -> tuple[Ty, int]:
     if not cat[start:]:
         raise CCGParseError(cat, 'unexpected end of input')
     if cat[start] != '(':
@@ -167,7 +169,7 @@ def _clean_str2biclosed(cat: str,
 def replace_cat_result(cat: Ty,
                        original: Ty,
                        replacement: Ty,
-                       direction: str = '|') -> Tuple[Ty, Optional[Ty]]:
+                       direction: str = '|') -> tuple[Ty, Optional[Ty]]:
     """Replace the innermost category result with a new category.
 
     This attempts to replace the specified result category with a

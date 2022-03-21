@@ -1,12 +1,10 @@
 from discopy import Box, Cup, Ty, Word
-from discopy import Discard as QDiscard
+from discopy import Discard
 from discopy.quantum import Bra, CRz, CX, H, Ket, qubit, Rx, Rz, sqrt
 from discopy.quantum.circuit import Id
 
+from lambeq import AtomicType, IQPAnsatz
 from lambeq.ansatz import Symbol as sym
-from lambeq.circuit import IQPAnsatz
-from lambeq.core.types import AtomicType
-from lambeq.reader import DISCARD
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -44,11 +42,6 @@ def test_iqp_ansatz_empty():
     assert ansatz(diagram) == Bra() >> Bra()
 
 
-def test_special_cases():
-    ansatz1 = IQPAnsatz({S: 2}, n_layers=1)
-    assert ansatz1(DISCARD) == QDiscard(qubit ** 2)
-    ansatz2 = IQPAnsatz(
-        {S: 1}, n_layers=1, n_single_qubit_params=1,
-        special_cases=lambda x: x)
-    assert ansatz2(DISCARD) ==\
-        Rx(sym("Discard(s)_s__0")) >> Bra(0)
+def test_discard():
+    ansatz = IQPAnsatz({S: 2}, n_layers=0, discard=True)
+    assert ansatz(Box('DISCARD', S, Ty())) == Discard(qubit ** 2)

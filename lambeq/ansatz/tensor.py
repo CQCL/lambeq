@@ -1,4 +1,4 @@
-# Copyright 2021 Cambridge Quantum Computing Ltd.
+# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@ Tensor Ansatz
 A tensor ansatz is used to convert a DisCoCat diagram into a tensor network.
 
 """
+from __future__ import annotations
 
 __all__ = ['TensorAnsatz', 'MPSAnsatz', 'SpiderAnsatz']
 
-
+from collections.abc import Mapping
 from functools import reduce
-from typing import Any, Mapping
+from typing import Any
 
 from discopy import rigid, Ty, tensor, Word
 from discopy.rigid import Cup, Spider

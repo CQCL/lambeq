@@ -1,4 +1,4 @@
-# Copyright 2021 Cambridge Quantum Computing Ltd.
+# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,43 +28,57 @@ Some simple example readers are included for use:
         This combines each pair of adjacent word boxes with a cup. This
         requires each word box to have the output :py:obj:`S >> S` to
         expose two output wires, and a sentinel start box is used to
-        connect to the first word box.
+        connect to the first word box. Also available under the name
+        :py:data:`word_sequence_reader`.
     :py:data:`spiders_reader` : :py:class:`LinearReader`
         This combines the first two word boxes using a spider with three
         legs. The remaining output is combined with the next word box
         using another spider, and so on, until a single output remains.
         Here, each word box has an output type of :py:obj:`S @ S`.
+        Also available under the name :py:data:`bag_of_words_reader`.
+    :py:data:`stairs_reader` : :py:class:`LinearReader`
+        This combines the first two word boxes with a combining box that
+        has a single output. Then, each word box is combined with the
+        output from the previous combining box to produce a stair-like
+        pattern.
 
 See `examples/readers.ipynb` for illustrative usage.
 
 """
 
 from __future__ import annotations
+
 from abc import ABC, abstractmethod
 
-__all__ = ['Reader', 'LinearReader', 'cups_reader', 'spiders_reader']
-
-from typing import Any, List, Sequence
+__all__ = ['Reader', 'LinearReader', 'bag_of_words_reader', 'cups_reader',
+           'spiders_reader', 'stairs_reader', 'word_sequence_reader']
 
 from discopy import Word
-from discopy.rigid import Cup, Diagram, Id, Spider, Ty
+from discopy.rigid import Box, Cup, Diagram, Id, Spider, Ty
 
-from lambeq.core.types import AtomicType, Discard
+from lambeq.core.types import AtomicType
+from lambeq.core.utils import SentenceBatchType, SentenceType,\
+        tokenised_sentence_type_check
 
 S = AtomicType.SENTENCE
-DISCARD = Discard(S)
 
 
 class Reader(ABC):
     """Base class for readers."""
 
     @abstractmethod
-    def sentence2diagram(self, sentence: str) -> Diagram:
+    def sentence2diagram(self,
+                         sentence: SentenceType,
+                         tokenised: bool = False) -> Diagram:
         """Parse a sentence into a DisCoPy diagram."""
 
-    def sentences2diagrams(self, sentences: Sequence[str]) -> List[Diagram]:
+    def sentences2diagrams(
+                    self,
+                    sentences: SentenceBatchType,
+                    tokenised: bool = False) -> list[Diagram]:
         """Parse multiple sentences into a list of DisCoPy diagrams."""
-        return [self.sentence2diagram(sentence) for sentence in sentences]
+        return [self.sentence2diagram(sentence, tokenised=tokenised)
+                for sentence in sentences]
 
 
 class LinearReader(Reader):
@@ -95,14 +109,44 @@ class LinearReader(Reader):
         self.word_type = word_type
         self.start_box = start_box
 
-    def sentence2diagram(self, sentence: str) -> Diagram:
+    def sentence2diagram(self,
+                         sentence: SentenceType,
+                         tokenised: bool = False) -> Diagram:
         """Parse a sentence into a DisCoPy diagram.
 
-        This splits the sentence into words by whitespace, creates a
-        box for each word, and combines them linearly.
+        If tokenise is :py:obj:`True`, sentence is tokenised, otherwise it
+        is split into tokens by whitespace. This method creates a
+        box for each token, and combines them linearly.
+
+        Parameters
+        ----------
+        sentence : str or list of str
+            The input sentence, passed either as a string or as a list of
+            tokens.
+        tokenised : bool, default: False
+            Set to :py:obj:`True`, if the sentence is passed as a list of
+            tokens instead of a single string.
+            If set to :py:obj:`False`, words are split by
+            whitespace.
+
+        Raises
+        ------
+        ValueError
+            If sentence does not match `tokenised` flag, or if an invalid mode
+            or parser is passed to the initialiser.
 
         """
-        words = (Word(word, self.word_type) for word in sentence.split())
+        if tokenised:
+            if not tokenised_sentence_type_check(sentence):
+                raise ValueError('`tokenised` set to `True`, but variable '
+                                 '`sentence` does not have type `list[str]`.')
+        else:
+            if not isinstance(sentence, str):
+                raise ValueError('`tokenised` set to `False`, but variable '
+                                 '`sentence` does not have type `str`.')
+            assert isinstance(sentence, str)
+            sentence = sentence.split()
+        words = (Word(word, self.word_type) for word in sentence)
         diagram = Diagram.tensor(self.start_box, *words)
         while len(diagram.cod) > 1:
             diagram >>= (self.combining_diagram @
@@ -112,3 +156,6 @@ class LinearReader(Reader):
 
 cups_reader = LinearReader(Cup(S, S.r), S >> S, Word('START', S))
 spiders_reader = LinearReader(Spider(2, 1, S))
+stairs_reader = LinearReader(Box('STAIR', S @ S, S))
+bag_of_words_reader = spiders_reader
+word_sequence_reader = cups_reader

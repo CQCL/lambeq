@@ -4,7 +4,7 @@ import json
 
 from discopy.biclosed import Ty
 
-from lambeq.ccg2discocat.ccg_tree import CCGTree
+from lambeq import CCGTree
 
 
 @pytest.fixture

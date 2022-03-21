@@ -1,20 +1,19 @@
 import pytest
 
 from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Id
+from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups
 
-from lambeq.core.types import AtomicType
-from lambeq.rewrite import Rewriter, SimpleRewriteRule
+from lambeq import AtomicType, Rewriter, CoordinationRewriteRule, SimpleRewriteRule
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
 
 
 def test_initialisation():
-    assert (Rewriter().rules == Rewriter(Rewriter.available_rules()).rules ==
-            Rewriter([Rewriter._default_rules[rule]
-                      for rule in Rewriter.available_rules()]).rules)
+    assert (Rewriter().rules == Rewriter([Rewriter._available_rules[rule]
+            for rule in Rewriter._default_rules]).rules)
 
+    assert all([rule in Rewriter.available_rules() for rule in Rewriter._default_rules])
     with pytest.raises(ValueError):
         Rewriter(['nonexistent rule'])
 
@@ -112,3 +111,51 @@ def test_prepositional_phrase():
     assert Rewriter([])(diagram) == diagram
     assert Rewriter(['prepositional_phrase'])(diagram) == expected_diagram
     assert Rewriter()(diagram) == expected_diagram
+
+
+def test_rel_pronoun():
+    cows = Word('cows', N)
+    that_subj = Word('that', N.r @ N @ S.l @ N)
+    that_obj = Word('that', N.r @ N @ N.l.l @ S.l)
+    eat = Word('eat', N >> S << N)
+    grass = Word('grass', N)
+
+    rewriter = Rewriter(['subject_rel_pronoun', 'object_rel_pronoun'])
+
+    diagram_subj = Id().tensor(cows, that_subj, eat, grass)
+    diagram_subj >>= Cup(N, N.r) @ Id(N) @ cups(S.l @ N, N.r @ S) @ Cup(N.l, N)
+
+    expected_diagram_subj = Diagram(
+            dom=Ty(), cod=N,
+            boxes=[cows, Spider(1, 2, N), Spider(0, 1, S.l), eat, Cup(N, N.r),
+                   Cup(S.l, S), grass, Cup(N.l, N)],
+            offsets=[0, 0, 1, 3, 2, 1, 2, 1])
+
+    assert rewriter(diagram_subj).normal_form() == expected_diagram_subj
+
+    diagram_obj = Id().tensor(grass, that_obj, cows, eat)
+    diagram_obj >>= Cup(N, N.r) @ Id(N) @ Id(N.l.l @ S.l) @ Cup(N, N.r) @ Id(S @ N.l)
+    diagram_obj >>= Id(N) @ cups(N.l.l @ S.l, S @ N.l)
+
+    expected_diagram_obj = Diagram(
+            dom=Ty(), cod=N,
+            boxes=[grass, Spider(1, 2, N), Cap(N.l, N.l.l), Swap(N.l, N.l.l),
+                   Spider(0, 1, S.l), cows, eat, Cup(N, N.r), Cup(S.l, S),
+                   Cup(N.l.l, N.l), Cup(N.l, N)],
+            offsets=[0, 0, 1, 1, 2, 3, 4, 3, 2, 1, 1])
+
+    assert rewriter(diagram_obj).normal_form() == expected_diagram_obj
+
+
+def test_coordination():
+    eggs = Word('eggs', N)
+    ham = Word('ham', N)
+
+    words = eggs @ Word('and', N >> N << N) @ ham
+    cups = Cup(N, N.r) @ Id(N) @ Cup(N.l, N)
+
+    rewriter = Rewriter([CoordinationRewriteRule()])
+    diagram = words >> cups
+    expected_diagram = eggs @ ham >> Spider(2, 1, N)
+
+    assert rewriter(diagram).normal_form() == expected_diagram

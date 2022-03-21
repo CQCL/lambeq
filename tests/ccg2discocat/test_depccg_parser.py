@@ -5,22 +5,22 @@ from unittest.mock import Mock
 from discopy import Word
 from discopy.rigid import Cup, Diagram, Id, Swap, Ty
 
-from lambeq.ccg2discocat.depccg_parser import DepCCGParser, DepCCGParseError
-from lambeq.core.types import AtomicType
+from lambeq import AtomicType, DepCCGParser
+from lambeq.ccg2discocat.depccg_parser import DepCCGParseError
+from lambeq.core.globals import VerbosityLevel
 
 
 @pytest.fixture(scope='module')
 def depccg_parser():
     return DepCCGParser()
 
+@pytest.fixture
+def sentence():
+    return 'What Alice is and is not .'
 
-def test_model_initialisation(depccg_parser):
-    with pytest.raises(TypeError):
-        DepCCGParser(model=None)
-
-    parser = depccg_parser.parser
-    assert DepCCGParser(model=parser).parser == parser
-
+@pytest.fixture
+def tokenised_sentence():
+    return ['What', 'Alice', 'is', 'and', 'is', 'not', '.']
 
 def test_to_biclosed(depccg_parser):
     mock_type = Mock(is_functor=False, is_NorNP=False, base='PP')
@@ -31,9 +31,7 @@ def test_to_biclosed(depccg_parser):
         depccg_parser._to_biclosed(mock_type)
 
 
-def test_sentence2diagram(depccg_parser):
-    sentence = 'What Alice is and is not .'
-
+def test_sentence2diagram(depccg_parser, sentence, tokenised_sentence):
     n, s = AtomicType.NOUN, AtomicType.SENTENCE
     dom = Ty.tensor(n, n.l.l, s.l, n, n.r, s, n.l, n, s.r, n.r.r, n.r, s, n.l,
                     n.l.l, s.l, n, n.r, s, n.l, s.r, n.r.r, n.r, s)
@@ -65,6 +63,14 @@ def test_sentence2diagram(depccg_parser):
                         fa2)
 
     assert depccg_parser.sentence2diagram(sentence) == expected_diagram
+    assert depccg_parser.sentence2diagram(tokenised_sentence, tokenised=True) == expected_diagram
+
+
+def test_sentence2diagram_bad_tokenised_flag(depccg_parser, sentence, tokenised_sentence):
+    with pytest.raises(ValueError):
+        depccg_parser.sentence2diagram(sentence, tokenised=True)
+    with pytest.raises(ValueError):
+        depccg_parser.sentence2diagram(tokenised_sentence)
 
 
 def test_bad_sentences(depccg_parser):
@@ -78,3 +84,74 @@ def test_bad_sentences(depccg_parser):
     assert depccg_parser.sentences2diagrams(
             ['', unparsable_sentence],
             suppress_exceptions=True) == [None, None]
+
+
+def test_sentence2tree(depccg_parser, sentence):
+    assert depccg_parser.sentence2tree(sentence) is not None
+
+
+def test_sentence2tree_tokenised(depccg_parser, tokenised_sentence):
+    assert depccg_parser.sentence2tree(tokenised_sentence, tokenised=True) is not None
+
+
+def test_sentences2diagrams(depccg_parser, sentence):
+    assert depccg_parser.sentences2diagrams([sentence]) is not None
+
+
+def test_sentence2diagram_tokenised(depccg_parser, tokenised_sentence):
+    assert depccg_parser.sentence2diagram(tokenised_sentence, tokenised=True) is not None
+
+
+def test_sentences2diagrams_tokenised(depccg_parser, tokenised_sentence):
+    tokenised_sentence = ['What', 'Alice', 'is', 'and', 'is', 'not', '.']
+    assert depccg_parser.sentences2diagrams([tokenised_sentence], tokenised=True) is not None
+
+
+def test_tokenised_type_check_untokenised_sentence(depccg_parser, sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentence2diagram(sentence, tokenised=True)
+
+
+def test_tokenised_type_check_tokenised_sentence(depccg_parser, tokenised_sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentence2diagram(tokenised_sentence, tokenised=False)
+
+
+def test_tokenised_type_check_untokenised_batch(depccg_parser, sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentences2diagrams([sentence], tokenised=True)
+
+
+def test_tokenised_type_check_tokenised_batch(depccg_parser, tokenised_sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentences2diagrams([tokenised_sentence], tokenised=False)
+
+
+def test_tokenised_type_check_untokenised_sentence_s2t(depccg_parser, sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentence2tree(sentence, tokenised=True)
+
+
+def test_tokenised_type_check_tokenised_sentence_s2t(depccg_parser, tokenised_sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentence2tree(tokenised_sentence, tokenised=False)
+
+
+def test_tokenised_type_check_untokenised_batch_s2t(depccg_parser, sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentences2trees([sentence], tokenised=True)
+
+
+def test_tokenised_type_check_tokenised_batch_s2t(depccg_parser, tokenised_sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentences2trees([tokenised_sentence], tokenised=False)
+
+
+def test_verbosity_exceptions_init():
+    with pytest.raises(ValueError):
+        parser = DepCCGParser(verbose=VerbosityLevel.SUPPRESS.value)
+
+
+def test_verbosity_exceptions_sentences2trees(depccg_parser, sentence):
+    with pytest.raises(ValueError):
+        _=depccg_parser.sentences2trees([sentence], verbose=VerbosityLevel.TEXT.value)
