@@ -42,7 +42,7 @@ The most straightforward use of the command-line interface of ``lambeq`` is to u
      ╰─────╯  │  │   ╰────╯    │  ╰─────╯
               │  ╰─────────────╯
 
-``lambeq`` will use the default :py:class:`.DepCCGParser` to parse the sentence and output the string diagram in the console with text drawing characters.
+``lambeq`` will use the default :py:class:`~lambeq.BobcatParser` to parse the sentence and output the string diagram in the console with text drawing characters.
 
 To read an entire file of sentences, tokenise them, parse them with the default parser, and store the pregroup diagrams in a new file, use the following command:
 
