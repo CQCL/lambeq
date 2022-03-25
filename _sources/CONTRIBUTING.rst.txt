@@ -48,6 +48,11 @@ Opening an issue
 
 If you have a question, proposal, or request related to ``lambeq``, please `open an issue <https://github.com/CQCL/lambeq/issues>`_ or send an email to lambeq-support@cambridgequantum.com. Keep an eye on the issues you have opened, and be sure to answer any questions from the developers to help them understand better the case. Issues that remain inactive for more than a week without an apparent reason will be marked as stale and eventually will be closed.
 
+Where to start
+--------------
+
+For developers who wish to contribute to ``lambeq``, a good starting point would be the :ref:`UML diagrams <uml-diagrams>` provided for each sub-package, which give a high-level overview of their general structure as well as information regading the important external dependencies. General information for each ``lambeq`` sub-package can be also found in :ref:`this page <sec-package-api>`.
+
 Code of conduct
 ---------------
 
@@ -55,5 +60,7 @@ Please be polite and respectful in any form of communication you have with other
 
 .. rubric:: See also:
 
+- :ref:`General information about sub-packages <sec-package-api>`
+- :ref:`UML diagrams for sub-packages <uml-diagrams>`
 - `"Extending lambeq" tutorial <tutorials/extend-lambeq.ipynb>`_
 - `"DisCoPy usage" tutorial <advanced.rst>`_

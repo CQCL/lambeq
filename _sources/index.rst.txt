@@ -71,6 +71,7 @@ If you use ``lambeq`` for your research, please cite the accompanying paper [Kea
 
    root-api
    package-api
+   uml-diagrams
    cli
 
 .. toctree::

@@ -1,3 +1,5 @@
+.. _sec-package-api:
+
 Subpackages
 ===========
 
@@ -8,6 +10,8 @@ lambeq.ansatz
 Concrete implementations of classical and quantum :term:`ansätze <ansatz (plural: ansätze)>`.
 
 .. rubric:: API: :doc:`lambeq.ansatz`
+
+.. rubric:: UML diagrams: :ref:`uml_ansatz`
 
 .. rubric:: Classes:
 
@@ -28,6 +32,8 @@ lambeq.ccg2discocat
 Package containing the interfaces for the CCG parsers (including a :py:class:`~lambeq.ccg2discocat.CCGBankParser`), as well as the code for :term:`Bobcat` parser.
 
 .. rubric:: API: :doc:`lambeq.ccg2discocat`
+
+.. rubric:: UML diagrams: :ref:`uml_ccg2discocat`
 
 .. rubric:: Classes:
 
@@ -51,6 +57,8 @@ A collection of useful utilities for easier manipulation of :term:`pregroup <pre
 
 .. rubric:: API: :doc:`lambeq.pregroups`
 
+.. rubric:: UML diagrams: :ref:`uml_pregroups`
+
 .. rubric:: Methods
 
 - :py:meth:`~lambeq.pregroups.create_pregroup_diagram`
@@ -72,6 +80,8 @@ lambeq.reader
 Abstractions and concrete classes for :term:`readers <reader>`, implementing a variety of :term:`compositional models <compositional model>` for sentences.
 
 .. rubric:: API: :doc:`lambeq.reader`
+
+.. rubric:: UML diagrams: :ref:`uml_reader`
 
 .. rubric:: Objects
 
@@ -97,6 +107,8 @@ Contains implementations of :term:`rewrite rules <rewrite rule>` for the transfo
 
 .. rubric:: API: :doc:`lambeq.rewrite`
 
+.. rubric:: UML diagrams: :ref:`uml_rewrite`
+
 .. rubric:: Classes
 
 .. inheritance-diagram::
@@ -116,6 +128,8 @@ Tokenisation classes and features for all :term:`parsers <parser>` and :term:`re
 
 .. rubric:: API: :doc:`lambeq.tokeniser`
 
+.. rubric:: UML diagrams: :ref:`uml_tokeniser`
+
 .. rubric:: Classes
 
 .. inheritance-diagram::
@@ -131,6 +145,8 @@ lambeq.training
 Provides a selection of :term:`trainers <trainer>`, :term:`models <model>`, and optimizers that greatly simplify supervised training for most of ``lambeq``'s use cases, classical and quantum.
 
 .. rubric:: API: :doc:`lambeq.training`
+
+.. rubric:: UML diagrams: :ref:`uml_training`
 
 .. rubric:: Classes
 
