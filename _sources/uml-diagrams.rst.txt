@@ -6,7 +6,7 @@ Class diagrams
 For users who would like to contribute more actively to the development of ``lambeq``, this section provides high-level `UML class diagrams <https://en.wikipedia.org/wiki/Class_diagram>`_ for the most important sub-packages and components of the toolkit. For completeness, the diagrams contain first-degree associations with external libraries.
 
 .. note::
-    The UML diagams have been automatically generated from the Python source with the ``pyreverse`` tool, which is part of the `pylint <https://pylint.pycqa.org/en/latest/>`_ suit, post-processed, and rendered using `PlantUML <https://plantuml.com>`_.
+    The UML diagams have been automatically generated from the Python source with the ``pyreverse`` tool, which is part of the `pylint <https://pylint.pycqa.org/en/latest/>`_ suite, post-processed, and rendered using `PlantUML <https://plantuml.com>`_.
 
 .. note::
     Click on a diagram to zoom.
