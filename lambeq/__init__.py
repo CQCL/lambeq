@@ -75,6 +75,8 @@ __all__ = [
         'Tokeniser',
         'SpacyTokeniser',
 
+        'Checkpoint',
+
         'Dataset',
 
         'Optimizer',
@@ -117,7 +119,7 @@ from lambeq.reader import (Reader, LinearReader, TreeReader, TreeReaderMode,
 from lambeq.rewrite import (RewriteRule, CoordinationRewriteRule,
                             SimpleRewriteRule, Rewriter)
 from lambeq.tokeniser import Tokeniser, SpacyTokeniser
-from lambeq.training import (Dataset, Optimizer, SPSAOptimizer,
+from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
                              Model, NumpyModel, PytorchModel, QuantumModel,
                              TketModel, Trainer, PytorchTrainer,
                              QuantumTrainer)

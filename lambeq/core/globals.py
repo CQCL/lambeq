@@ -48,5 +48,5 @@ class VerbosityLevel(Enum):
     TEXT = 'text'
 
     @classmethod
-    def has_value(self, value: str):
-        return value in [c.value for c in self]
+    def has_value(cls, value: str):
+        return value in [c.value for c in cls]

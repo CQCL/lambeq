@@ -3,7 +3,9 @@ name: Build and deploy documentation
 on:
   push:
     branches:
-      - '**'
+      - 'main'
+      - 'beta'
+      - 'release'
   pull_request:
 
 env:
@@ -25,7 +27,7 @@ jobs:
       run: pip install .
     - name: Install documentation dependencies
       run: |
-        sudo apt-get install pandoc
+        sudo apt-get install graphviz pandoc
         pip install -r docs/requirements.txt
     - name: Build documentation
       run: ${{ env.WORKFLOWS_DIR }}/build-docs

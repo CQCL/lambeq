@@ -88,8 +88,8 @@ def test_checkpoint_loading():
 
     checkpoint = {'model_weights': model.weights,
                   'model_symbols': model.symbols}
-    with patch('lambeq.training.quantum_model.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
-            patch('lambeq.training.quantum_model.os.path.exists', lambda x: True) as p:
+    with patch('lambeq.training.checkpoint.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
+            patch('lambeq.training.checkpoint.os.path.exists', lambda x: True) as p:
         model_new = NumpyModel.from_checkpoint('model.lt')
         m.assert_called_with('model.lt', 'rb')
         assert np.all(model.weights == model_new.weights)
@@ -100,16 +100,16 @@ def test_checkpoint_loading():
 
 def test_checkpoint_loading_errors():
     checkpoint = {'model_weights': np.array([1,2,3])}
-    with patch('lambeq.training.quantum_model.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
-            patch('lambeq.training.quantum_model.os.path.exists', lambda x: True) as p:
+    with patch('lambeq.training.checkpoint.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
+            patch('lambeq.training.checkpoint.os.path.exists', lambda x: True) as p:
         with pytest.raises(KeyError):
             _ = NumpyModel.from_checkpoint('model.lt')
         m.assert_called_with('model.lt', 'rb')
 
 
 def test_checkpoint_loading_file_not_found_errors():
-    with patch('lambeq.training.quantum_model.open', mock_open(read_data='Not a valid checkpoint.')) as m, \
-            patch('lambeq.training.quantum_model.os.path.exists', lambda x: False) as p:
+    with patch('lambeq.training.checkpoint.open', mock_open(read_data='Not a valid checkpoint.')) as m, \
+            patch('lambeq.training.checkpoint.os.path.exists', lambda x: False) as p:
         with pytest.raises(FileNotFoundError):
             _ = NumpyModel.from_checkpoint('model.lt')
             m.assert_not_called()

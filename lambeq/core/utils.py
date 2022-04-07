@@ -14,7 +14,9 @@
 
 from __future__ import annotations
 
-from typing import List, Union
+from typing import Iterable, Iterator, List, Mapping, Union
+
+from discopy import Diagram
 
 SentenceType = Union[str, List[str]]
 SentenceBatchType = Union[List[str], List[List[str]]]
@@ -33,3 +35,27 @@ def untokenised_batch_type_check(sentence: SentenceBatchType) -> bool:
 def tokenised_batch_type_check(batch: SentenceBatchType) -> bool:
     return isinstance(batch, list) and all(
             tokenised_sentence_type_check(s) for s in batch)
+
+
+def flatten(diagrams: Iterable) -> Iterator[Diagram]:
+    """Flatten a (possibly nested) iterator of diagrams into a single iterator.
+
+    Parameters
+    ----------
+        diagrams : Iterable
+            (Possibly nested) iterator containing diagrams.
+
+    Yields
+    ------
+        Diagram
+            Flattened iterator of diagrams, where each element is a single
+            diagram.
+    """
+
+    for d in diagrams:
+        if isinstance(d, Diagram):
+            yield d
+        elif isinstance(d, Mapping):
+            yield from flatten(d.values())
+        elif isinstance(d, Iterable):
+            yield from flatten(d)

@@ -30,6 +30,7 @@ from discopy import Tensor
 from discopy.tensor import Diagram
 
 from lambeq.ansatz.base import Symbol
+from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
 
@@ -78,19 +79,14 @@ class PytorchModel(Model, torch.nn.Module):
 
         """
         model = cls(**kwargs)
-        if os.path.exists(checkpoint_path):
-            with open(checkpoint_path, 'rb') as ckp:
-                checkpoint = pickle.load(ckp)
-            try:
-                model.symbols = checkpoint['model_symbols']
-                model.weights = checkpoint['model_weights']
-                model.load_state_dict(checkpoint['model_state_dict'])
-                return model
-            except KeyError as e:
-                raise e
-        else:
-            raise FileNotFoundError('Checkpoint not found! Check path '
-                                    f'{checkpoint_path}')
+        checkpoint = Checkpoint.from_file(checkpoint_path)
+        try:
+            model.symbols = checkpoint['model_symbols']
+            model.weights = checkpoint['model_weights']
+            model.load_state_dict(checkpoint['model_state_dict'])
+            return model
+        except KeyError as e:
+            raise e
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
         """Perform the tensor contraction of each diagram using tensornetwork.

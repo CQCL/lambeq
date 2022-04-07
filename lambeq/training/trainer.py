@@ -24,7 +24,6 @@ Subclass :py:class:`Lambeq` to define a custom trainer.
 from __future__ import annotations
 
 import os
-import pickle
 import random
 import socket
 import sys
@@ -40,6 +39,7 @@ if TYPE_CHECKING:
     from torch.utils.tensorboard import SummaryWriter
 
 from lambeq.core.globals import VerbosityLevel
+from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.model import Model
 
@@ -186,7 +186,7 @@ class Trainer(ABC):
                 report.append(f'valid/{name}: {str_value}')
         return '   '.join(report)
 
-    def load_training_checkpoint(self, log_dir: _StrPathT) -> dict[str, Any]:
+    def load_training_checkpoint(self, log_dir: _StrPathT) -> Mapping[str, Any]:
         """Load model from a checkpoint.
 
         Parameters
@@ -207,26 +207,21 @@ class Trainer(ABC):
         if self.verbose == VerbosityLevel.TEXT.value:
             print("Restore last checkpoint...", file=sys.stderr)
         checkpoint_path = os.path.join(log_dir, 'model.lt')
-        if os.path.exists(checkpoint_path):
-            with open(checkpoint_path, 'rb') as ckp:
-                checkpoint = pickle.load(ckp)
-            self.model.weights = checkpoint['model_weights']
-            self.model.symbols = checkpoint['model_symbols']
-            self.train_costs = checkpoint['train_costs']
-            self.train_epoch_costs = checkpoint['train_epoch_costs']
-            self.train_results = checkpoint['train_results']
-            self.val_costs = checkpoint['val_costs']
-            self.val_results = checkpoint['val_results']
-            self.start_epoch = checkpoint['epoch']
-            self.start_step = checkpoint['step']
-            if self.seed is not None:
-                random.setstate(checkpoint['random_state'])
-            if self.verbose == VerbosityLevel.TEXT.value:
-                print("Checkpoint restored successfully!", file=sys.stderr)
-            return checkpoint
-        else:
-            raise FileNotFoundError('Checkpoint not found! Check path '
-                                    f'{checkpoint_path}')
+        checkpoint = Checkpoint.from_file(checkpoint_path)
+        self.model.weights = checkpoint['model_weights']
+        self.model.symbols = checkpoint['model_symbols']
+        self.train_costs = checkpoint['train_costs']
+        self.train_epoch_costs = checkpoint['train_epoch_costs']
+        self.train_results = checkpoint['train_results']
+        self.val_costs = checkpoint['val_costs']
+        self.val_results = checkpoint['val_results']
+        self.start_epoch = checkpoint['epoch']
+        self.start_step = checkpoint['step']
+        if self.seed is not None:
+            random.setstate(checkpoint['random_state'])
+        if self.verbose == VerbosityLevel.TEXT.value:
+            print("Checkpoint restored successfully!", file=sys.stderr)
+        return checkpoint
 
     def save_checkpoint(self,
                         save_dict: Mapping[str, Any],
@@ -241,10 +236,12 @@ class Trainer(ABC):
             The path where to store the `model.lt` checkpoint file.
 
         """
+        checkpoint = Checkpoint()
+        checkpoint.add_many(save_dict)
         add_info = self._add_extra_chkpoint_info()
-        appendix = add_info if add_info is not None else {}
-        with open(os.path.join(log_dir, 'model.lt'), 'wb') as ckp:
-            pickle.dump({**save_dict, **appendix}, ckp)
+        if add_info is not None:
+            checkpoint.add_many(add_info)
+        checkpoint.to_file(os.path.join(log_dir, 'model.lt'))
 
     @abstractmethod
     def _add_extra_chkpoint_info(self) -> Mapping[str, Any]:

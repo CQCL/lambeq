@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['Dataset', 'Model',  'NumpyModel', 'Optimizer',
+__all__ = ['Checkpoint', 'Dataset', 'Model',  'NumpyModel', 'Optimizer',
            'PytorchModel', 'PytorchTrainer', 'QuantumTrainer',
            'QuantumModel', 'SPSAOptimizer', 'TketModel', 'Trainer']
+
+from lambeq.training.checkpoint import Checkpoint
 
 from lambeq.training.dataset import Dataset
 

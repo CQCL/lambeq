@@ -21,13 +21,14 @@ optimizer.
 """
 from __future__ import annotations
 
-from typing import Any, Callable, Optional
-from numpy.typing import ArrayLike
+from typing import Any, Callable, Iterable, Optional
 
 import numpy as np
-from lambeq.training.quantum_model import QuantumModel
-from lambeq.training.optimizer import Optimizer
+from numpy.typing import ArrayLike
 
+from lambeq.core.utils import flatten
+from lambeq.training.optimizer import Optimizer
+from lambeq.training.quantum_model import QuantumModel
 
 class SPSAOptimizer(Optimizer):
     """An Optimizer using simultaneous perturbation stochastic approximations.
@@ -92,14 +93,15 @@ class SPSAOptimizer(Optimizer):
             self.project = lambda x: np.clip(x, bds[:, 0], bds[:, 1])
 
     def backward(self,
-                 batch: tuple[list, np.ndarray]) -> tuple[np.ndarray, float]:
+                 batch: tuple[Iterable, np.ndarray]) -> tuple[np.ndarray, float]:
         """Calculate the gradients of the loss function with respect to the
         model parameters.
 
         Parameters
         ----------
-        batch : tuple of list and numpy.ndarray
-            Current batch.
+        batch : tuple of Iterable and numpy.ndarray
+            Current batch. Contains an Iterable of diagrams in index 0,
+            and the targets in index 1.
 
         Returns
         -------
@@ -108,7 +110,8 @@ class SPSAOptimizer(Optimizer):
 
         """
         diagrams, targets = batch
-        relevant_params = set.union(*[diag.free_symbols for diag in diagrams])
+        diags_gen = flatten(diagrams)
+        relevant_params = set.union(*[diag.free_symbols for diag in diags_gen])
         # the symbolic parameters
         parameters = self.model.symbols
         x = self.model.weights
