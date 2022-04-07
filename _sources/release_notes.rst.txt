@@ -3,6 +3,14 @@
 Release notes
 =============
 
+.. _rel-0.2.1:
+
+`0.2.1 <https://github.com/CQCL/lambeq/releases/tag/0.2.1>`_
+------------------------------------------------------------
+- A new :py:class:`.Checkpoint` class that implements pickling and file operations from the :py:class:`.Trainer` and :py:class:`.Model`.
+- Improvements to the :py:mod:`.training` module, allowing multiple diagrams to be accepted as input to the :py:class:`.SPSAOptimizer`.
+- Updated documentation, including sub-package structures and class diagrams.
+
 .. _rel-0.2.0:
 
 `0.2.0 <https://github.com/CQCL/lambeq/releases/tag/0.2.0>`_

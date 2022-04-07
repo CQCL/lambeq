@@ -151,6 +151,7 @@ Provides a selection of :term:`trainers <trainer>`, :term:`models <model>`, and 
 .. rubric:: Classes
 
 .. inheritance-diagram::
+    lambeq.training.Checkpoint
     lambeq.training.Dataset
     lambeq.training.NumpyModel
     lambeq.training.PytorchModel
