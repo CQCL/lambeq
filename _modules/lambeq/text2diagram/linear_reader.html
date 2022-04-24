@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.text2diagram.linear_reader &mdash; lambeq 0.2.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> lambeq
+            <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>lambeq.text2diagram.linear_reader</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.text2diagram.linear_reader</h1><div class="highlight"><pre>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LinearReader&#39;</span><span class="p">,</span> <span class="s1">&#39;bag_of_words_reader&#39;</span><span class="p">,</span> <span class="s1">&#39;cups_reader&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;spiders_reader&#39;</span><span class="p">,</span> <span class="s1">&#39;stairs_reader&#39;</span><span class="p">,</span> <span class="s1">&#39;word_sequence_reader&#39;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Word</span>
+<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Spider</span><span class="p">,</span> <span class="n">Ty</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
+<span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="n">SentenceType</span><span class="p">,</span> <span class="n">tokenised_sentence_type_check</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.base</span> <span class="kn">import</span> <span class="n">Reader</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
+
+
+<div class="viewcode-block" id="LinearReader"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.LinearReader">[docs]</a><span class="k">class</span> <span class="nc">LinearReader</span><span class="p">(</span><span class="n">Reader</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A reader that combines words linearly using a stair diagram.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="LinearReader.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.LinearReader.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">combining_diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">,</span>
+                 <span class="n">word_type</span><span class="p">:</span> <span class="n">Ty</span> <span class="o">=</span> <span class="n">S</span><span class="p">,</span>
+                 <span class="n">start_box</span><span class="p">:</span> <span class="n">Diagram</span> <span class="o">=</span> <span class="n">Id</span><span class="p">())</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Initialise a linear reader.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        combining_diagram : Diagram</span>
+<span class="sd">            The diagram that is used to combine two word boxes. It is</span>
+<span class="sd">            continuously applied on the left-most wires until a single</span>
+<span class="sd">            output wire remains.</span>
+<span class="sd">        word_type : Ty, default: core.types.AtomicType.SENTENCE</span>
+<span class="sd">            The type of each word box. By default, it uses the sentence</span>
+<span class="sd">            type from :py:class:`.core.types.AtomicType`.</span>
+<span class="sd">        start_box : Diagram, default: Id()</span>
+<span class="sd">            The start box used as a sentinel value for combining. By</span>
+<span class="sd">            default, the empty diagram is used.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">combining_diagram</span> <span class="o">=</span> <span class="n">combining_diagram</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">word_type</span> <span class="o">=</span> <span class="n">word_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_box</span> <span class="o">=</span> <span class="n">start_box</span></div>
+
+<div class="viewcode-block" id="LinearReader.sentence2diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.LinearReader.sentence2diagram">[docs]</a>    <span class="k">def</span> <span class="nf">sentence2diagram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                         <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
+                         <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse a sentence into a DisCoPy diagram.</span>
+
+<span class="sd">        If tokenise is :py:obj:`True`, sentence is tokenised, otherwise it</span>
+<span class="sd">        is split into tokens by whitespace. This method creates a</span>
+<span class="sd">        box for each token, and combines them linearly.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sentence : str or list of str</span>
+<span class="sd">            The input sentence, passed either as a string or as a list of</span>
+<span class="sd">            tokens.</span>
+<span class="sd">        tokenised : bool, default: False</span>
+<span class="sd">            Set to :py:obj:`True`, if the sentence is passed as a list of</span>
+<span class="sd">            tokens instead of a single string.</span>
+<span class="sd">            If set to :py:obj:`False`, words are split by</span>
+<span class="sd">            whitespace.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If sentence does not match `tokenised` flag, or if an invalid mode</span>
+<span class="sd">            or parser is passed to the initialiser.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tokenised</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">tokenised_sentence_type_check</span><span class="p">(</span><span class="n">sentence</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`tokenised` set to `True`, but variable &#39;</span>
+                                 <span class="s1">&#39;`sentence` does not have type `list[str]`.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`tokenised` set to `False`, but variable &#39;</span>
+                                 <span class="s1">&#39;`sentence` does not have type `str`.&#39;</span><span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+            <span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_type</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">)</span>
+        <span class="n">diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_box</span><span class="p">,</span> <span class="o">*</span><span class="n">words</span><span class="p">)</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combining_diagram</span> <span class="o">@</span>
+                         <span class="n">Id</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combining_diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">):]))</span>
+        <span class="k">return</span> <span class="n">diagram</span></div></div>
+
+
+<span class="n">cups_reader</span> <span class="o">=</span> <span class="n">LinearReader</span><span class="p">(</span><span class="n">Cup</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">r</span><span class="p">),</span> <span class="n">S</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">,</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;START&#39;</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+<span class="n">spiders_reader</span> <span class="o">=</span> <span class="n">LinearReader</span><span class="p">(</span><span class="n">Spider</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+<span class="n">stairs_reader</span> <span class="o">=</span> <span class="n">LinearReader</span><span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="s1">&#39;STAIR&#39;</span><span class="p">,</span> <span class="n">S</span> <span class="o">@</span> <span class="n">S</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
+<span class="n">bag_of_words_reader</span> <span class="o">=</span> <span class="n">spiders_reader</span>
+<span class="n">word_sequence_reader</span> <span class="o">=</span> <span class="n">cups_reader</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> lambeq
+            <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>lambeq.text2diagram.bobcat_parser</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.text2diagram.bobcat_parser</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BobcatParser&#39;</span><span class="p">,</span> <span class="s1">&#39;BobcatParseError&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">tarfile</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlopen</span><span class="p">,</span> <span class="n">urlretrieve</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Ty</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">TqdmWarning</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.bobcat</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BertForChartClassification</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span>
+                           <span class="n">ChartParser</span><span class="p">,</span> <span class="n">Grammar</span><span class="p">,</span> <span class="n">ParseTree</span><span class="p">,</span>
+                           <span class="n">Sentence</span><span class="p">,</span> <span class="n">Supertag</span><span class="p">,</span> <span class="n">Tagger</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SentenceBatchType</span><span class="p">,</span>
+                               <span class="n">tokenised_batch_type_check</span><span class="p">,</span>
+                               <span class="n">untokenised_batch_type_check</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CCGAtomicType</span>
+
+<span class="n">StrPathT</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;os.PathLike[str]&#39;</span><span class="p">]</span>
+
+<span class="n">MODELS_URL</span> <span class="o">=</span> <span class="s1">&#39;https://qnlp.cambridgequantum.com/models&#39;</span>
+<span class="n">MODELS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bert&#39;</span><span class="p">}</span>
+<span class="n">VERSION_FNAME</span> <span class="o">=</span> <span class="s1">&#39;version.txt&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">get_model_url</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid model name: </span><span class="si">{</span><span class="n">model</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">MODELS_URL</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s1">/latest&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">get_model_dir</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                  <span class="n">cache_dir</span><span class="p">:</span> <span class="n">StrPathT</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="k">if</span> <span class="n">cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;XDG_CACHE_HOME&#39;</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;.cache&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span>
+    <span class="n">models_dir</span> <span class="o">=</span> <span class="n">cache_dir</span> <span class="o">/</span> <span class="s1">&#39;lambeq&#39;</span> <span class="o">/</span> <span class="s1">&#39;bobcat&#39;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">models_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cache directory location (`</span><span class="si">{</span><span class="n">models_dir</span><span class="si">}</span><span class="s1">`) &#39;</span>
+                              <span class="s1">&#39;already exists and is not a directory.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">models_dir</span> <span class="o">/</span> <span class="n">model</span>
+
+
+<span class="k">def</span> <span class="nf">model_is_stale</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">VERSION_FNAME</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">remote_version</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">model_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">VERSION_FNAME</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">local_version</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">local_version</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">remote_version</span> <span class="o">!=</span> <span class="n">local_version</span>
+
+
+<span class="k">def</span> <span class="nf">download_model</span><span class="p">(</span>
+        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">model_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPathT</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span>
+        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/model.tar.gz&#39;</span>
+
+    <span class="k">if</span> <span class="n">model_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model_dir</span> <span class="o">=</span> <span class="n">get_model_dir</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">ProgressBar</span><span class="p">:</span>
+        <span class="n">bar</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">chunk_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
+                        <span class="n">bar_format</span><span class="o">=</span><span class="s1">&#39;Downloading model: </span><span class="si">{percentage:3.1f}</span><span class="s1">%|&#39;</span>
+                                   <span class="s1">&#39;</span><span class="si">{bar}</span><span class="s1">|</span><span class="si">{n:.3f}</span><span class="s1">/</span><span class="si">{total:.3f}</span><span class="s1">GB &#39;</span>
+                                   <span class="s1">&#39;[</span><span class="si">{elapsed}</span><span class="s1">&lt;</span><span class="si">{remaining}</span><span class="s1">]&#39;</span><span class="p">,</span>
+                        <span class="n">total</span><span class="o">=</span><span class="n">size</span><span class="o">/</span><span class="mf">1e9</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">TqdmWarning</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">chunk_size</span><span class="o">/</span><span class="mf">1e9</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Downloading model...&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">ProgressBar</span><span class="p">()</span>
+        <span class="n">model_file</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">reporthook</span><span class="o">=</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">)</span>
+        <span class="n">progress_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model_file</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">urlretrieve</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+    <span class="c1"># Extract model</span>
+    <span class="k">if</span> <span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extracting model...&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">model_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">tar</span><span class="p">:</span>
+        <span class="n">tar</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">model_dir</span><span class="p">)</span>
+
+    <span class="c1"># Download version</span>
+    <span class="n">ver_url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">VERSION_FNAME</span>
+    <span class="n">ver_file</span><span class="p">,</span> <span class="n">headers</span> <span class="o">=</span> <span class="n">urlretrieve</span><span class="p">(</span><span class="n">ver_url</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">ver_file</span><span class="p">,</span> <span class="n">model_dir</span> <span class="o">/</span> <span class="n">VERSION_FNAME</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+
+
+<div class="viewcode-block" id="BobcatParseError"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParseError">[docs]</a><span class="k">class</span> <span class="nc">BobcatParseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<div class="viewcode-block" id="BobcatParseError.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParseError.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span></div>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Bobcat failed to parse </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="si">!r}</span><span class="s1">.&#39;</span></div>
+
+
+<div class="viewcode-block" id="BobcatParser"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser">[docs]</a><span class="k">class</span> <span class="nc">BobcatParser</span><span class="p">(</span><span class="n">CCGParser</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;CCG parser using Bobcat as the backend.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="BobcatParser.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">model_name_or_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;bert&#39;</span><span class="p">,</span>
+                 <span class="n">root_cats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">device</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPathT</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">force_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Instantiate a BobcatParser.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        model_name_or_path : str, default: &#39;bert&#39;</span>
+<span class="sd">            Can be either:</span>
+<span class="sd">                - The path to a directory containing a Bobcat model.</span>
+<span class="sd">                - The name of a pre-trained model.</span>
+<span class="sd">                  By default, it uses the &quot;bert&quot; model.</span>
+<span class="sd">                  See also: `BobcatParser.available_models()`</span>
+<span class="sd">        root_cats : iterable of str, optional</span>
+<span class="sd">            A list of the categories allowed at the root of the parse</span>
+<span class="sd">            tree.</span>
+<span class="sd">        device : int, default: -1</span>
+<span class="sd">            The GPU device ID on which to run the model, if positive.</span>
+<span class="sd">            If negative (the default), run on the CPU.</span>
+<span class="sd">        cache_dir : str or os.PathLike, optional</span>
+<span class="sd">            The directory to which a downloaded pre-trained model should</span>
+<span class="sd">            be cached instead of the standard cache</span>
+<span class="sd">            (`$XDG_CACHE_HOME` or `~/.cache`).</span>
+<span class="sd">        force_download : bool, default: False</span>
+<span class="sd">            Force the model to be downloaded, even if it is already</span>
+<span class="sd">            available locally.</span>
+<span class="sd">        verbose : str, default: &#39;progress&#39;,</span>
+<span class="sd">            See :py:class:`VerbosityLevel` for options.</span>
+<span class="sd">        **kwargs : dict, optional</span>
+<span class="sd">            Additional keyword arguments to be passed to the underlying</span>
+<span class="sd">            parsers (see Other Parameters). By default, they are set to</span>
+<span class="sd">            the values in the `pipeline_config.json` file in the model</span>
+<span class="sd">            directory.</span>
+
+<span class="sd">        Other Parameters</span>
+<span class="sd">        ----------------</span>
+<span class="sd">        Tagger parameters:</span>
+<span class="sd">        batch_size : int, optional</span>
+<span class="sd">            The number of sentences per batch.</span>
+<span class="sd">        tag_top_k : int, optional</span>
+<span class="sd">            The maximum number of tags to keep. If 0, keep all tags.</span>
+<span class="sd">        tag_prob_threshold : float, optional</span>
+<span class="sd">            The probability multiplier used for the threshold to keep</span>
+<span class="sd">            tags.</span>
+<span class="sd">        tag_prob_threshold_strategy : {&#39;relative&#39;, &#39;absolute&#39;}</span>
+<span class="sd">            If &quot;relative&quot;, the probablity threshold is relative to the</span>
+<span class="sd">            highest scoring tag. Otherwise, the probability is an</span>
+<span class="sd">            absolute threshold.</span>
+<span class="sd">        span_top_k : int, optional</span>
+<span class="sd">            The maximum number of entries to keep per span. If 0, keep</span>
+<span class="sd">            all entries.</span>
+<span class="sd">        span_prob_threshold : float, optional</span>
+<span class="sd">            The probability multiplier used for the threshold to keep</span>
+<span class="sd">            entries for a span.</span>
+<span class="sd">        span_prob_threshold_strategy : {&#39;relative&#39;, &#39;absolute&#39;}</span>
+<span class="sd">            If &quot;relative&quot;, the probablity threshold is relative to the</span>
+<span class="sd">            highest scoring entry. Otherwise, the probability is an</span>
+<span class="sd">            absolute threshold.</span>
+
+<span class="sd">        Chart parser parameters:</span>
+<span class="sd">        eisner_normal_form : bool, default: True</span>
+<span class="sd">            Whether to use eisner normal form.</span>
+<span class="sd">        max_parse_trees : int, optional</span>
+<span class="sd">            A safety limit to the number of parse trees that can be</span>
+<span class="sd">            generated per parse before automatically failing.</span>
+<span class="sd">        beam_size : int, optional</span>
+<span class="sd">            The beam size to use in the chart cells.</span>
+<span class="sd">        input_tag_score_weight : float, optional</span>
+<span class="sd">            A scaling multiplier to the log-probabilities of the input</span>
+<span class="sd">            tags. This means that a weight of 0 causes all of the input</span>
+<span class="sd">            tags to have the same score.</span>
+<span class="sd">        missing_cat_score : float, optional</span>
+<span class="sd">            The default score for a category that is generated but not</span>
+<span class="sd">            part of the grammar.</span>
+<span class="sd">        missing_span_score : float, optional</span>
+<span class="sd">            The default score for a category that is part of the grammar</span>
+<span class="sd">            but has no score, due to being below the threshold kept by</span>
+<span class="sd">            the tagger.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">has_value</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">verbose</span><span class="si">}</span><span class="s1">` is not a valid verbose value for &#39;</span>
+                             <span class="s1">&#39;BobcatParser.&#39;</span><span class="p">)</span>
+        <span class="n">model_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">model_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+            <span class="n">model_dir</span> <span class="o">=</span> <span class="n">get_model_dir</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="n">force_download</span>
+                    <span class="ow">or</span> <span class="ow">not</span> <span class="n">model_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+                    <span class="ow">or</span> <span class="n">model_is_stale</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_dir</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="n">model_name_or_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid model name or path: &#39;</span>
+                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name_or_path</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="n">download_model</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">model_dir</span> <span class="o">/</span> <span class="s1">&#39;pipeline_config.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">subconfig</span> <span class="ow">in</span> <span class="n">config</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">subconfig</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">subconfig</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;BobcatParser got unexpected keyword argument(s): &#39;</span>
+                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="n">device_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span> <span class="k">if</span> <span class="n">device</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;cuda:</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="p">(</span><span class="n">BertForChartClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_dir</span><span class="p">)</span>
+                                           <span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+                                           <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device_</span><span class="p">))</span>
+        <span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_dir</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tagger</span> <span class="o">=</span> <span class="n">Tagger</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">tokenizer</span><span class="p">,</span> <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;tagger&#39;</span><span class="p">])</span>
+
+        <span class="n">grammar</span> <span class="o">=</span> <span class="n">Grammar</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_dir</span> <span class="o">/</span> <span class="s1">&#39;grammar.json&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">ChartParser</span><span class="p">(</span><span class="n">grammar</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">tagger</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cats</span><span class="p">,</span>
+                                  <span class="n">root_cats</span><span class="p">,</span>
+                                  <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;parser&#39;</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="BobcatParser.sentences2trees"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.sentences2trees">[docs]</a>    <span class="k">def</span> <span class="nf">sentences2trees</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">sentences</span><span class="p">:</span> <span class="n">SentenceBatchType</span><span class="p">,</span>
+            <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of :py:class:`.CCGTree` s.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sentences : list of str, or list of list of str</span>
+<span class="sd">            The sentences to be parsed, passed either as strings or as lists</span>
+<span class="sd">            of tokens.</span>
+<span class="sd">        suppress_exceptions : bool, default: False</span>
+<span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if a</span>
+<span class="sd">            sentence fails to parse, instead of raising an exception,</span>
+<span class="sd">            its return entry is :py:obj:`None`.</span>
+<span class="sd">        tokenised : bool, default: False</span>
+<span class="sd">            Whether each sentence has been passed as a list of tokens.</span>
+<span class="sd">        verbose : str, optional</span>
+<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes priority</span>
+<span class="sd">            over the :py:attr:`verbose` attribute of the parser.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of CCGTree or None</span>
+<span class="sd">            The parsed trees. (May contain :py:obj:`None` if exceptions</span>
+<span class="sd">            are suppressed)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">verbose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">has_value</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">verbose</span><span class="si">}</span><span class="s1">` is not a valid verbose value for &#39;</span>
+                             <span class="s1">&#39;BobcatParser.&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tokenised</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">tokenised_batch_type_check</span><span class="p">(</span><span class="n">sentences</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`tokenised` set to `True`, but variable &#39;</span>
+                                 <span class="s1">&#39;`sentences` does not have type &#39;</span>
+                                 <span class="s1">&#39;`List[List[str]]`.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">untokenised_batch_type_check</span><span class="p">(</span><span class="n">sentences</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;`tokenised` set to `False`, but variable &#39;</span>
+                                 <span class="s1">&#39;`sentences` does not have type &#39;</span>
+                                 <span class="s1">&#39;`List[str]`.&#39;</span><span class="p">)</span>
+            <span class="n">sent_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">]</span>
+            <span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span><span class="n">sentence</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sent_list</span><span class="p">]</span>
+        <span class="n">empty_indices</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sentences</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sentence</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
+                    <span class="n">empty_indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;sentence is empty.&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="n">empty_indices</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">sentences</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">sentences</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Tagging sentences.&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="n">tag_results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tagger</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="n">tags</span> <span class="o">=</span> <span class="n">tag_results</span><span class="o">.</span><span class="n">tags</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Parsing tagged sentences.&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span>
+                    <span class="n">tag_results</span><span class="o">.</span><span class="n">sentences</span><span class="p">,</span>
+                    <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Parsing tagged sentences&#39;</span><span class="p">,</span>
+                    <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">disable</span><span class="o">=</span><span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+                <span class="n">words</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">words</span>
+                <span class="n">sent_tags</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Supertag</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="n">prob</span><span class="p">)</span>
+                              <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">supertags</span><span class="p">]</span>
+                             <span class="k">for</span> <span class="n">supertags</span> <span class="ow">in</span> <span class="n">sent</span><span class="o">.</span><span class="n">tags</span><span class="p">]</span>
+                <span class="n">spans</span> <span class="o">=</span> <span class="p">{(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="n">score</span> <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">}</span>
+                         <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">scores</span> <span class="ow">in</span> <span class="n">sent</span><span class="o">.</span><span class="n">spans</span><span class="p">}</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">Sentence</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">sent_tags</span><span class="p">,</span> <span class="n">spans</span><span class="p">))</span>
+                    <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
+                        <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="n">BobcatParseError</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">empty_indices</span><span class="p">:</span>
+            <span class="n">trees</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">trees</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_to_biclosed</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="n">Category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Transform a Bobcat category into a biclosed type.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">is_punct</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">PUNCTUATION</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">atom</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">atom</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">atom</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">NOUN</span>
+                <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
+                <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;PP&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">PREPOSITION</span>
+                <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;conj&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">CONJUNCTION</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid atomic type: </span><span class="si">{</span><span class="n">cat</span><span class="o">.</span><span class="n">atom</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="o">.</span><span class="n">_to_biclosed</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">argument</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="o">.</span><span class="n">_to_biclosed</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">argument</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span> <span class="o">&lt;&lt;</span> <span class="n">argument</span> <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">fwd</span> <span class="k">else</span> <span class="n">argument</span> <span class="o">&gt;&gt;</span> <span class="n">result</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_build_ccgtree</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">ParseTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGTree</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Transform a Bobcat parse tree into a `CCGTree`.&quot;&quot;&quot;</span>
+
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">BobcatParser</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">tree</span><span class="o">.</span><span class="n">right</span><span class="p">))]</span>
+        <span class="k">return</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">tree</span><span class="o">.</span><span class="n">word</span><span class="p">,</span>
+                       <span class="n">rule</span><span class="o">=</span><span class="n">CCGRule</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                       <span class="n">biclosed_type</span><span class="o">=</span><span class="n">BobcatParser</span><span class="o">.</span><span class="n">_to_biclosed</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">cat</span><span class="p">),</span>
+                       <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BobcatParser.available_models"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.available_models">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">available_models</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;List the available models.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">[</span><span class="o">*</span><span class="n">MODELS</span><span class="p">]</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.rewrite &mdash; lambeq 0.2.1 documentation</title>
+  <title>lambeq.rewrite &mdash; lambeq 0.2.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.1
+                0.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -194,6 +194,64 @@ the rewrite applies only to the word “and”.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.rewrite.CoordinationRewriteRule.rewrite">
 <span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CoordinationRewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CoordinationRewriteRule.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given box.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.CurryRewriteRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">CurryRewriteRule</span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CurryRewriteRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CurryRewriteRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.RewriteRule" title="lambeq.rewrite.base.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.rewrite.base.RewriteRule</span></code></a></p>
+<p>A rewrite rule using map-state duality.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CurryRewriteRule.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lambeq.rewrite.CurryRewriteRule.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Apply the rewrite rule to a box.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>box</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Box</span></code></a></span></dt><dd><p>The candidate box to be tested against this rewrite rule.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>, optional</dt><dd><p>The rewritten diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if rule
+does not apply.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default implementation uses the <a class="reference internal" href="#lambeq.rewrite.CurryRewriteRule.matches" title="lambeq.rewrite.CurryRewriteRule.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matches()</span></code></a> and
+<a class="reference internal" href="#lambeq.rewrite.CurryRewriteRule.rewrite" title="lambeq.rewrite.CurryRewriteRule.rewrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rewrite()</span></code></a>  methods, but derived classes may choose to
+not use them, since the default <a class="reference internal" href="#lambeq.rewrite.Rewriter" title="lambeq.rewrite.Rewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rewriter</span></code></a>
+implementation does not call those methods directly, only this
+one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CurryRewriteRule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CurryRewriteRule.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CurryRewriteRule.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate a CurryRewriteRule.</p>
+<p>This rule uses the map-state duality by iteratively
+uncurrying on both sides of each box. When used in conjunction
+with <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram.normal_form" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a>, this
+removes cups from the diagram in exchange for depth. Diagrams
+with less cups become circuits with less post-selection,
+which results in faster QML experiments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CurryRewriteRule.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CurryRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CurryRewriteRule.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given box matches the requirements for rewriting.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.CurryRewriteRule.rewrite">
+<span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CurryRewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CurryRewriteRule.rewrite" title="Permalink to this definition"></a></dt>
 <dd><p>Rewrite the given box.</p>
 </dd></dl>
 

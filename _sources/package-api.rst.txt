@@ -25,26 +25,29 @@ Concrete implementations of classical and quantum :term:`ansätze <ansatz (plura
 
 |
 
-.. _api_ccg2discocat:
+.. _api_bobcat:
 
-lambeq.ccg2discocat
--------------------
-Package containing the interfaces for the CCG parsers (including a :py:class:`~lambeq.ccg2discocat.CCGBankParser`), as well as the code for :term:`Bobcat` parser.
+lambeq.bobcat
+-------------
 
-.. rubric:: API: :doc:`lambeq.ccg2discocat`
+The code for :term:`Bobcat` parser, a state-of-the-art :term:`CCG <Combinatory Categorial Grammar (CCG)>` parser used for getting syntactic derivations of sentences.
 
-.. rubric:: UML diagrams: :ref:`uml_ccg2discocat`
+.. rubric:: API: :doc:`lambeq.bobcat`
+
+.. rubric:: UML diagrams: :ref:`uml_bobcat`
 
 .. rubric:: Classes:
 
 .. inheritance-diagram::
-    lambeq.ccg2discocat.BobcatParser
-    lambeq.ccg2discocat.CCGAtomicType
-    lambeq.ccg2discocat.CCGBankParser
-    lambeq.ccg2discocat.CCGRule
-    lambeq.ccg2discocat.CCGTree
-    lambeq.ccg2discocat.DepCCGParser
-    lambeq.ccg2discocat.WebParser
+    lambeq.bobcat.grammar.Grammar
+    lambeq.bobcat.lexicon.Category
+    lambeq.bobcat.parser.ChartParser
+    lambeq.bobcat.parser.Sentence
+    lambeq.bobcat.parser.Supertag
+    lambeq.bobcat.rules.Rule
+    lambeq.bobcat.tagger.Tagger
+    lambeq.bobcat.tagger.BertForChartClassification
+    lambeq.bobcat.tree.ParseTree
    :parts: 1
 
 |
@@ -73,32 +76,6 @@ A collection of useful utilities for easier manipulation of :term:`pregroup <pre
 
 |
 
-.. _api_reader:
-
-lambeq.reader
--------------
-Abstractions and concrete classes for :term:`readers <reader>`, implementing a variety of :term:`compositional models <compositional model>` for sentences.
-
-.. rubric:: API: :doc:`lambeq.reader`
-
-.. rubric:: UML diagrams: :ref:`uml_reader`
-
-.. rubric:: Objects
-
-- :py:data:`~lambeq.reader.cups_reader`
-- :py:data:`~lambeq.reader.spiders_reader`
-- :py:data:`~lambeq.reader.stairs_reader`
-
-.. rubric:: Classes
-
-.. inheritance-diagram::
-    lambeq.reader.TreeReader
-    lambeq.reader.LinearReader
-    lambeq.reader.TreeReaderMode
-   :parts: 1
-
-|
-
 .. _api_rewrite:
 
 lambeq.rewrite
@@ -113,9 +90,46 @@ Contains implementations of :term:`rewrite rules <rewrite rule>` for the transfo
 
 .. inheritance-diagram::
     lambeq.rewrite.CoordinationRewriteRule
+    lambeq.rewrite.CurryRewriteRule
     lambeq.rewrite.RewriteRule
     lambeq.rewrite.Rewriter
     lambeq.rewrite.SimpleRewriteRule
+   :parts: 1
+
+|
+
+.. _api_text2diagram:
+
+lambeq.text2diagram
+-------------------
+Package containing the interfaces for the :term:`CCG <Combinatory Categorial Grammar (CCG)>` parsers (including a :py:class:`~lambeq.text2diagram.CCGBankParser`), as well as abstractions and concrete classes for :term:`readers <reader>`, implementing a variety of :term:`compositional models <compositional model>` for sentences.
+
+.. rubric:: API: :doc:`lambeq.text2diagram`
+
+.. rubric:: UML diagrams: :ref:`uml_text2diagram`
+
+.. rubric:: Objects
+
+- :py:data:`~lambeq.text2diagram.bag_of_words_reader`
+- :py:data:`~lambeq.text2diagram.cups_reader`
+- :py:data:`~lambeq.text2diagram.spiders_reader`
+- :py:data:`~lambeq.text2diagram.stairs_reader`
+- :py:data:`~lambeq.text2diagram.word_sequence_reader`
+
+.. rubric:: Classes:
+
+.. inheritance-diagram::
+    lambeq.text2diagram.BobcatParser
+    lambeq.text2diagram.CCGAtomicType
+    lambeq.text2diagram.CCGBankParser
+    lambeq.text2diagram.CCGRule
+    lambeq.text2diagram.CCGTree
+    lambeq.text2diagram.DepCCGParser
+    lambeq.text2diagram.LinearReader
+    lambeq.text2diagram.Reader
+    lambeq.text2diagram.TreeReader
+    lambeq.text2diagram.TreeReaderMode
+    lambeq.text2diagram.WebParser
    :parts: 1
 
 |

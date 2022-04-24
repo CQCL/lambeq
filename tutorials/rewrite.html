@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 2. Diagram rewriting &mdash; lambeq 0.2.1 documentation</title>
+  <title>Step 2. Diagram rewriting &mdash; lambeq 0.2.2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.1
+                0.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -447,6 +447,40 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>In the simplified diagram, the order of the preposition tensor is reduced by 2, which at least for a classical experiment, is a substantial improvement. Note also that the determiner is now eliminated, equating the meaning of the noun phrase “the park” with that of the noun “park”.</p>
+<p>Another very useful rewrite rule is the <a class="reference internal" href="../lambeq.rewrite.html#lambeq.rewrite.CurryRewriteRule" title="lambeq.rewrite.CurryRewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CurryRewriteRule</span></code></a>, which allows us to convert adjoint output wires into input wires using map-state duality. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">curry_functor</span> <span class="o">=</span> <span class="n">Rewriter</span><span class="p">([</span><span class="s1">&#39;curry&#39;</span><span class="p">])</span>
+<span class="n">curried_diagram</span> <span class="o">=</span> <span class="n">curry_functor</span><span class="p">(</span><span class="n">normalised_diagram</span><span class="p">)</span>
+<span class="n">curried_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_rewrite_9_0.png" src="../_images/tutorials_rewrite_9_0.png" />
+</div>
+</div>
+<p>After normalisation the resulting diagram no longer contains any cups, which eliminates post-selection and allows for faster execution.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">curried_diagram</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_rewrite_11_0.png" src="../_images/tutorials_rewrite_11_0.png" />
+</div>
+</div>
 <p>These examples clearly demonstrate the flexibility of <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a> compared to simple <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a>, which was one of the main reasons for choosing them as <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s representation format. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> comes with a number of standard <a class="reference internal" href="../glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> covering auxiliary verbs, connectors, coordinators, adverbs, determiners, relative pronouns, and prepositional phrases.</p>
 <table class="docutils align-default">
 <colgroup>
@@ -468,20 +502,23 @@ div.rendered_html tbody tr:hover {
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">coordination</span></code></p></td>
 <td><p>Simplifies “and” by replacing it with a layer of interleaving spiders.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">determiner</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">curry</span></code></p></td>
+<td><p>Uses map-state duality to reduce the number of cups in the diagram.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">determiner</span></code></p></td>
 <td><p>Removes determiners (such as “the”) by replacing them with caps.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">object_rel_pronoun</span></code></p>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">object_rel_pronoun</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">subject_rel_pronoun</span></code></p>
 </td>
 <td><p>Simplifies relative pronouns (such as “that”) using cups, spiders and a loop.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">postadverb</span></code></p>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">postadverb</span></code></p>
 <p><code class="docutils literal notranslate"><span class="pre">preadverb</span></code></p>
 </td>
 <td><p>Simplifies adverbs by passing through the noun wire transparently using a cap.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code></p></td>
 <td><p>Simplifies prepositions by passing through the noun wire using a cap.</p></td>
 </tr>
 </tbody>

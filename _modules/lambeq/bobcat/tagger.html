@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.bobcat.tagger &mdash; lambeq 0.2.2 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> lambeq
+            <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.2.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      <li>lambeq.bobcat.tagger</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.bobcat.tagger</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">asdict</span><span class="p">,</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">trange</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BertConfig</span><span class="p">,</span> <span class="n">BertModel</span><span class="p">,</span> <span class="n">BertPreTrainedModel</span><span class="p">,</span>
+                          <span class="n">PreTrainedModel</span><span class="p">,</span> <span class="n">PreTrainedTokenizerFast</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">transformers.modeling_outputs</span> <span class="kn">import</span> <span class="n">ModelOutput</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
+
+<span class="n">_SpanT</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span>
+<span class="n">TagListT</span> <span class="o">=</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span>  <span class="c1"># list of (index, log probability) tuples</span>
+
+<span class="n">SPAN_MEMO</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_SpanT</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+<span class="k">def</span> <span class="nf">chart_size</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">length</span> <span class="o">*</span> <span class="p">(</span><span class="n">length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">get_chart_spans</span><span class="p">(</span><span class="n">length</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">_SpanT</span><span class="p">]:</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="n">chart_size</span><span class="p">(</span><span class="n">length</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">SPAN_MEMO</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SPAN_MEMO</span><span class="p">[:</span><span class="n">size</span><span class="p">]</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">last_end</span> <span class="o">=</span> <span class="n">SPAN_MEMO</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+        <span class="n">last_end</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">for</span> <span class="n">end</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">last_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+        <span class="n">SPAN_MEMO</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">SPAN_MEMO</span><span class="p">[:]</span>
+
+
+<span class="k">def</span> <span class="nf">idx2span</span><span class="p">(</span><span class="n">i</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_SpanT</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">SPAN_MEMO</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">i</span><span class="p">:</span>
+        <span class="n">get_chart_spans</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">i</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">SPAN_MEMO</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">span2idx</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">chart_size</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">ChartClassifierOutput</span><span class="p">(</span><span class="n">ModelOutput</span><span class="p">):</span>
+    <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">tag_logits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">span_logits</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">hidden_states</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">attentions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<span class="k">class</span> <span class="nc">ChartClassifierConfig</span><span class="p">(</span><span class="n">BertConfig</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">empty_span_weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">tags</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+                 <span class="n">cats</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+                 <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">tags</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cats</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">cats</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">empty_span_weight</span> <span class="o">=</span> <span class="n">empty_span_weight</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_cats</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cats</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">num_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="BertForChartClassification"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification">[docs]</a><span class="k">class</span> <span class="nc">BertForChartClassification</span><span class="p">(</span><span class="n">BertPreTrainedModel</span><span class="p">):</span>
+    <span class="n">config_class</span> <span class="o">=</span> <span class="n">ChartClassifierConfig</span>  <span class="c1"># type: ignore</span>
+
+<div class="viewcode-block" id="BertForChartClassification.__init__"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">ChartClassifierConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bert</span> <span class="o">=</span> <span class="n">BertModel</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">add_pooling_layer</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">classifier_dropout</span> <span class="o">=</span> <span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">classifier_dropout</span>
+                              <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">classifier_dropout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                              <span class="k">else</span> <span class="n">config</span><span class="o">.</span><span class="n">hidden_dropout_prob</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dropout</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Dropout</span><span class="p">(</span><span class="n">classifier_dropout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag_classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">num_tags</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">span_classifier</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">,</span> <span class="n">config</span><span class="o">.</span><span class="n">num_cats</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_weights</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="BertForChartClassification.forward"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">input_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">token_type_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">position_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">head_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">inputs_embeds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">FloatTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">tag_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">span_labels</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">LongTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">word_mask</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">BoolTensor</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">ChartClassifierOutput</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+        <span class="n">return_dict</span> <span class="o">=</span> <span class="p">(</span><span class="n">return_dict</span> <span class="k">if</span> <span class="n">return_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                       <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">use_return_dict</span><span class="p">)</span>
+
+        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bert</span><span class="p">(</span>
+            <span class="n">input_ids</span><span class="p">,</span>
+            <span class="n">attention_mask</span><span class="o">=</span><span class="n">attention_mask</span><span class="p">,</span>
+            <span class="n">token_type_ids</span><span class="o">=</span><span class="n">token_type_ids</span><span class="p">,</span>
+            <span class="n">position_ids</span><span class="o">=</span><span class="n">position_ids</span><span class="p">,</span>
+            <span class="n">head_mask</span><span class="o">=</span><span class="n">head_mask</span><span class="p">,</span>
+            <span class="n">inputs_embeds</span><span class="o">=</span><span class="n">inputs_embeds</span><span class="p">,</span>
+            <span class="n">output_attentions</span><span class="o">=</span><span class="n">output_attentions</span><span class="p">,</span>
+            <span class="n">output_hidden_states</span><span class="o">=</span><span class="n">output_hidden_states</span><span class="p">,</span>
+            <span class="n">return_dict</span><span class="o">=</span><span class="n">return_dict</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">sequence_output</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">word_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># remove ignored tensors and pack remaining ones</span>
+            <span class="n">word_indices</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">rnn</span><span class="o">.</span><span class="n">pad_sequence</span><span class="p">(</span>
+                <span class="p">[</span><span class="n">sent_word_mask</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">sent_word_mask</span> <span class="ow">in</span> <span class="n">word_mask</span><span class="p">],</span>
+                <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+            <span class="n">word_indices</span> <span class="o">=</span> <span class="n">word_indices</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">expand</span><span class="p">(</span>
+                <span class="o">*</span><span class="n">word_indices</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">hidden_size</span><span class="p">)</span>
+
+            <span class="n">tag_input</span> <span class="o">=</span> <span class="n">sequence_output</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="n">word_indices</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tag_input</span> <span class="o">=</span> <span class="n">sequence_output</span>
+
+        <span class="n">chart_spans</span> <span class="o">=</span> <span class="n">get_chart_spans</span><span class="p">(</span><span class="n">tag_input</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span>
+        <span class="n">span_input</span> <span class="o">=</span> <span class="n">tag_input</span><span class="p">[:,</span> <span class="n">chart_spans</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">start_dim</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">tag_logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_classifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">tag_input</span><span class="p">))</span>
+        <span class="n">span_logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">span_classifier</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dropout</span><span class="p">(</span><span class="n">span_input</span><span class="p">))</span>
+
+        <span class="n">loss</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">tag_labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">span_labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+            <span class="c1"># this is only used for training</span>
+            <span class="n">loss_fct_tag</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">empty_span_weight</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">weight</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_cats</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                <span class="n">weight</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">empty_span_weight</span>
+                <span class="n">loss_fct_span</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">(</span><span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">loss_fct_span</span> <span class="o">=</span> <span class="n">loss_fct_tag</span>
+            <span class="n">pad_value</span> <span class="o">=</span> <span class="n">loss_fct_tag</span><span class="o">.</span><span class="n">ignore_index</span>
+
+            <span class="n">tag_padding</span> <span class="o">=</span> <span class="n">tag_labels</span><span class="p">[:,</span> <span class="n">tag_logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:]</span>
+            <span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">tag_padding</span> <span class="o">==</span> <span class="n">pad_value</span><span class="p">)</span>
+            <span class="n">tag_logits</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">tag_logits</span><span class="p">,</span>
+                                           <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tag_padding</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                                           <span class="n">value</span><span class="o">=</span><span class="n">pad_value</span><span class="p">)</span>
+            <span class="n">tag_loss</span> <span class="o">=</span> <span class="n">loss_fct_tag</span><span class="p">(</span><span class="n">tag_logits</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_tags</span><span class="p">),</span>
+                                    <span class="n">tag_labels</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+            <span class="n">span_padding</span> <span class="o">=</span> <span class="n">span_labels</span><span class="p">[:,</span> <span class="n">span_logits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:]</span>
+            <span class="k">assert</span> <span class="n">torch</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">span_padding</span> <span class="o">==</span> <span class="n">pad_value</span><span class="p">)</span>
+            <span class="n">span_logits</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">span_logits</span><span class="p">,</span>
+                                            <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">span_padding</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span>
+                                            <span class="n">value</span><span class="o">=</span><span class="n">pad_value</span><span class="p">)</span>
+            <span class="n">span_loss</span> <span class="o">=</span> <span class="n">loss_fct_span</span><span class="p">(</span>
+                    <span class="n">span_logits</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">num_cats</span><span class="p">),</span>
+                    <span class="n">span_labels</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+            <span class="n">n_tags</span> <span class="o">=</span> <span class="n">tag_labels</span><span class="p">[</span><span class="n">tag_labels</span> <span class="o">!=</span> <span class="n">pad_value</span><span class="p">]</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">()</span>
+            <span class="n">n_spans</span> <span class="o">=</span> <span class="n">span_labels</span><span class="p">[</span><span class="n">span_labels</span> <span class="o">!=</span> <span class="n">pad_value</span><span class="p">]</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">()</span>
+
+            <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">tag_loss</span><span class="o">*</span><span class="n">n_tags</span> <span class="o">+</span> <span class="n">span_loss</span><span class="o">*</span><span class="n">n_spans</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_tags</span> <span class="o">+</span> <span class="n">n_spans</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">return_dict</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="p">(</span><span class="n">tag_logits</span><span class="p">,</span> <span class="n">span_logits</span><span class="p">,</span> <span class="o">*</span><span class="n">outputs</span><span class="p">[</span><span class="mi">2</span><span class="p">:])</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="o">*</span><span class="n">output</span><span class="p">)</span> <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">output</span>
+
+        <span class="k">return</span> <span class="n">ChartClassifierOutput</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+                                     <span class="n">tag_logits</span><span class="o">=</span><span class="n">tag_logits</span><span class="p">,</span>
+                                     <span class="n">span_logits</span><span class="o">=</span><span class="n">span_logits</span><span class="p">,</span>
+                                     <span class="n">hidden_states</span><span class="o">=</span><span class="n">outputs</span><span class="o">.</span><span class="n">hidden_states</span><span class="p">,</span>
+                                     <span class="n">attentions</span><span class="o">=</span><span class="n">outputs</span><span class="o">.</span><span class="n">attentions</span><span class="p">)</span></div></div>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TaggerOutputSentence</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A sentence in the tagger output.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    words : list of str</span>
+<span class="sd">        The tokens in the sentence.</span>
+<span class="sd">    tags : list of list of tuple of int and float</span>
+<span class="sd">        A list of tag indices with their log probability for each word.</span>
+<span class="sd">    spans : list of tuple</span>
+<span class="sd">        A list of tuples of:</span>
+<span class="sd">            - an integer denoting the start of the span</span>
+<span class="sd">            - an integer denoting the end of the span</span>
+<span class="sd">            - a list of cat indices with their log probability</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">words</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TagListT</span><span class="p">]</span>
+    <span class="n">spans</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="n">TagListT</span><span class="p">]]</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">TaggerOutput</span><span class="p">:</span>
+    <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">cats</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">sentences</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TaggerOutputSentence</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">return</span> <span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">tags_str</span><span class="p">(</span><span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+                 <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">return</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">logp</span><span class="si">:</span><span class="s1">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">logp</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">astext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="sd">&quot;&quot;&quot;Convert into a form that can be passed to Java C&amp;C.&quot;&quot;&quot;</span>
+
+        <span class="n">tags</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
+        <span class="n">cats</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cats</span><span class="p">)</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;tags: </span><span class="si">{</span><span class="n">tags</span><span class="si">}</span><span class="se">\n</span><span class="s1">cats: </span><span class="si">{</span><span class="n">cats</span><span class="si">}</span><span class="se">\n</span><span class="s1">sentences:&#39;</span>
+        <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentences</span><span class="p">:</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sentence</span><span class="o">.</span><span class="n">words</span><span class="p">)</span>
+            <span class="n">tags</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tags_str</span><span class="p">(</span><span class="n">tag_list</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">tag_list</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
+            <span class="n">spans</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s1">:&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">tags_str</span><span class="p">(</span><span class="n">tags</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+                             <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">tags</span> <span class="ow">in</span> <span class="n">sentence</span><span class="o">.</span><span class="n">spans</span><span class="p">)</span>
+
+            <span class="n">output</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> words: </span><span class="si">{</span><span class="n">words</span><span class="si">}</span><span class="se">\n</span><span class="s1"> tags: </span><span class="si">{</span><span class="n">tags</span><span class="si">}</span><span class="se">\n</span><span class="s1"> spans: </span><span class="si">{</span><span class="n">spans</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="n">output</span>
+
+
+<div class="viewcode-block" id="Tagger"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Tagger">[docs]</a><span class="k">class</span> <span class="nc">Tagger</span><span class="p">:</span>
+    <span class="c1"># TODO can this be made into a huggingface Pipeline in a good way?</span>
+
+<div class="viewcode-block" id="Tagger.__init__"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Tagger.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">model</span><span class="p">:</span> <span class="n">PreTrainedModel</span><span class="p">,</span>
+                 <span class="n">tokenizer</span><span class="p">:</span> <span class="n">PreTrainedTokenizerFast</span><span class="p">,</span>
+                 <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">tag_top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">tag_prob_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">tag_prob_threshold_strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;relative&#39;</span><span class="p">,</span>
+                 <span class="n">span_top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">span_prob_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                 <span class="n">span_prob_threshold_strategy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;relative&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">strategies</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;absolute&#39;</span><span class="p">,</span> <span class="s1">&#39;relative&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">batch_size</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">batch_size</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid `batch_size`: </span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">tag_top_k</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">tag_top_k</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">tag_top_k</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid `tag_top_k`: </span><span class="si">{</span><span class="n">tag_top_k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">tag_prob_threshold</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid `tag_prob_threshold`: &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">tag_prob_threshold</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">tag_prob_threshold_strategy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">strategies</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid `tag_prob_threshold_strategy`: &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">tag_prob_threshold_strategy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">span_top_k</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">span_top_k</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">span_top_k</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid `span_top_k`: </span><span class="si">{</span><span class="n">span_top_k</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">span_prob_threshold</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid `span_prob_threshold`: &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">span_prob_threshold</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">span_prob_threshold_strategy</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">strategies</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid `span_prob_threshold_strategy`: &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">span_prob_threshold_strategy</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">tokenizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag_top_k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">tag_top_k</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag_prob_threshold</span> <span class="o">=</span> <span class="n">tag_prob_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag_prob_threshold_strategy</span> <span class="o">=</span> <span class="n">tag_prob_threshold_strategy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">span_top_k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">span_top_k</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">span_prob_threshold</span> <span class="o">=</span> <span class="n">span_prob_threshold</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">span_prob_threshold_strategy</span> <span class="o">=</span> <span class="n">span_prob_threshold_strategy</span></div>
+
+<div class="viewcode-block" id="Tagger.prepare_inputs"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Tagger.prepare_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+                       <span class="n">word_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Prepare a batch of sentences for parsing.&quot;&quot;&quot;</span>
+        <span class="n">encodings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span>
+                                   <span class="n">is_split_into_words</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                   <span class="n">return_offsets_mapping</span><span class="o">=</span><span class="n">word_mask</span><span class="p">,</span>
+                                   <span class="n">padding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                   <span class="n">truncation</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">word_mask</span><span class="p">:</span>
+            <span class="n">offset_mapping</span> <span class="o">=</span> <span class="n">encodings</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;offset_mapping&#39;</span><span class="p">)</span>
+            <span class="n">encodings</span><span class="p">[</span><span class="s1">&#39;word_mask&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="p">[</span><span class="ow">not</span> <span class="n">start</span> <span class="ow">and</span> <span class="n">end</span> <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span> <span class="ow">in</span> <span class="n">offsets</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">offsets</span> <span class="ow">in</span> <span class="n">offset_mapping</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">encodings</span></div>
+
+<div class="viewcode-block" id="Tagger.parse"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Tagger.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+              <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">TaggerOutputSentence</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Parse a batch of sentences.&quot;&quot;&quot;</span>
+        <span class="n">encodings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepare_inputs</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">word_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
+                                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">encodings</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+
+        <span class="n">tag_output</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">TagListT</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">span_output</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">TagListT</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">tag_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">]</span>
+        <span class="n">span_lengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">chart_size</span><span class="p">(</span><span class="n">length</span><span class="p">)</span> <span class="k">for</span> <span class="n">length</span> <span class="ow">in</span> <span class="n">tag_lengths</span><span class="p">]</span>
+
+        <span class="n">tag_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">tag_output</span><span class="p">,</span>
+                    <span class="n">tag_lengths</span><span class="p">,</span>
+                    <span class="n">outputs</span><span class="o">.</span><span class="n">tag_logits</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tag_top_k</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tag_prob_threshold</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tag_prob_threshold_strategy</span><span class="p">)</span>
+        <span class="n">span_args</span> <span class="o">=</span> <span class="p">(</span><span class="n">span_output</span><span class="p">,</span>
+                     <span class="n">span_lengths</span><span class="p">,</span>
+                     <span class="n">outputs</span><span class="o">.</span><span class="n">span_logits</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">span_top_k</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">span_prob_threshold</span><span class="p">,</span>
+                     <span class="bp">self</span><span class="o">.</span><span class="n">span_prob_threshold_strategy</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">output_batch</span><span class="p">,</span> <span class="n">lengths</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">top_k</span><span class="p">,</span> <span class="n">prob_threshold</span><span class="p">,</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">tag_args</span><span class="p">,</span> <span class="n">span_args</span><span class="p">):</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="n">logits</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span> <span class="k">if</span> <span class="n">top_k</span> <span class="k">else</span> <span class="n">logits</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">logprobs</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">length</span><span class="p">,</span> <span class="n">sentence_scores</span><span class="p">,</span> <span class="n">sentence_indices</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+                    <span class="n">lengths</span><span class="p">,</span> <span class="n">logprobs</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">logprobs</span><span class="o">.</span><span class="n">indices</span><span class="p">):</span>
+                <span class="n">output_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">TagListT</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">output_batch</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output_list</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">scores</span><span class="p">,</span> <span class="n">indices</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sentence_scores</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+                                           <span class="n">sentence_indices</span><span class="p">[:</span><span class="n">length</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()):</span>
+                    <span class="n">output</span><span class="p">:</span> <span class="n">TagListT</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="n">output_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">prob_threshold</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">threshold</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">top_score</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">strategy</span> <span class="o">==</span> <span class="s1">&#39;relative&#39;</span> <span class="k">else</span> <span class="mi">0</span>
+                        <span class="n">threshold</span> <span class="o">=</span> <span class="n">top_score</span> <span class="o">+</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">prob_threshold</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">score</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">scores</span><span class="p">,</span> <span class="n">indices</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="n">threshold</span><span class="p">:</span>
+                            <span class="k">break</span>
+                        <span class="k">elif</span> <span class="n">index</span> <span class="o">!=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">output_batch</span> <span class="o">==</span> <span class="n">tag_output</span><span class="p">:</span>
+                            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">index</span><span class="p">,</span> <span class="n">score</span><span class="p">))</span>
+
+        <span class="n">spans_list</span> <span class="o">=</span> <span class="p">[[(</span><span class="o">*</span><span class="n">idx2span</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">output</span><span class="p">)</span>
+                       <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">output</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sent_span_output</span><span class="p">)</span>
+                       <span class="k">if</span> <span class="n">output</span><span class="p">]</span>
+                      <span class="k">for</span> <span class="n">sent_span_output</span> <span class="ow">in</span> <span class="n">span_output</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">TaggerOutputSentence</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">words</span><span class="p">),</span> <span class="n">tags</span><span class="p">,</span> <span class="n">spans</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">words</span><span class="p">,</span> <span class="n">tags</span><span class="p">,</span> <span class="n">spans</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">tag_output</span><span class="p">,</span> <span class="n">spans_list</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="Tagger.__call__"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Tagger.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+                 <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span>
+                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaggerOutput</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Parse a list of sentences.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
+
+        <span class="n">output</span> <span class="o">=</span> <span class="n">TaggerOutput</span><span class="p">(</span><span class="n">tags</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">tags</span><span class="p">,</span>
+                              <span class="n">cats</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">cats</span><span class="p">,</span>
+                              <span class="n">sentences</span><span class="o">=</span><span class="p">[])</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">),</span> <span class="n">batch_size</span><span class="p">,</span>
+                        <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Tagging sentences&#39;</span><span class="p">,</span>
+                        <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="n">disable</span><span class="o">=</span><span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">sentences</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">batch_size</span><span class="p">]))</span>
+
+        <span class="k">return</span> <span class="n">output</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

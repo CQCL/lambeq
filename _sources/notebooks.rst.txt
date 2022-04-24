@@ -5,7 +5,7 @@ Examples
 
 .. toctree::
 
-    ../examples/ccg2discocat.ipynb
+    ../examples/parser.ipynb
     ../examples/reader.ipynb
     ../examples/tree_reader.ipynb
     ../examples/rewrite.ipynb

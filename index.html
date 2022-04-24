@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq &mdash; lambeq 0.2.1 documentation</title>
+  <title>lambeq &mdash; lambeq 0.2.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -33,7 +33,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.1
+                0.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -136,7 +136,7 @@
 <h1>lambeq<a class="headerlink" href="#lambeq" title="Permalink to this headline"></a></h1>
 <a class="reference internal image-reference" href="_images/CQ-logo.png"><img alt="_images/CQ-logo.png" class="align-right" src="_images/CQ-logo.png" style="width: 120px;" /></a>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is an open-source, modular, extensible high-level Python library for experimental <a class="reference internal" href="glossary.html#term-quantum-NLP-QNLP"><span class="xref std std-term">Quantum Natural Language Processing</span></a> (QNLP), created by <a class="reference external" href="https://cambridgequantum.com">Cambridge Quantum</a>’s QNLP team. At a high level, the library allows the conversion of any sentence to a <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a>, based on a given <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> and certain parameterisation and choices of <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a>, and facilitates <a class="reference internal" href="training.html#sec-training"><span class="std std-ref">training</span></a> for both quantum and classical NLP experiments. The notes for the latest release can be found <a class="reference internal" href="release_notes.html#sec-release-notes"><span class="std std-ref">here</span></a>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is available for Python 3.8 and 3.9, on Linux, macOS and Windows. To install, type:</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is available for Python 3.8 and higher, on Linux, macOS and Windows. To install, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install lambeq
 </pre></div>
 </div>
@@ -214,7 +214,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/ccg2discocat.html">From sentence to diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/reader.html">Reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/tree_reader.html">Tree reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/rewrite.html">Rewrite</a></li>
@@ -233,24 +233,20 @@
 <li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-ansatz">lambeq.ansatz</a></li>
-<li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-ccg2discocat">lambeq.ccg2discocat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-bobcat">lambeq.bobcat</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-pregroups">lambeq.pregroups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-reader">lambeq.reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-rewrite">lambeq.rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-text2diagram">lambeq.text2diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-tokeniser">lambeq.tokeniser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-training">lambeq.training</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="uml-diagrams.html">Class diagrams</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-ansatz">lambeq.ansatz</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-ccg2discocat">lambeq.ccg2discocat</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="uml-diagrams.html#general-structure">General structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="uml-diagrams.html#bobcat-parser">Bobcat parser</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-bobcat">lambeq.bobcat</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-pregroups">lambeq.pregroups</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-reader">lambeq.reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-rewrite">lambeq.rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-text2diagram">lambeq.text2diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-tokeniser">lambeq.tokeniser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-training">lambeq.training</a></li>
 </ul>

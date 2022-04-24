@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rewrite &mdash; lambeq 0.2.1 documentation</title>
+  <title>Rewrite &mdash; lambeq 0.2.2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.1
+                0.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -65,7 +65,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="ccg2discocat.html">From sentence to diagram</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reader.html">Reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tree_reader.html">Tree reader</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Rewrite</a><ul>
@@ -76,6 +76,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#Prepositional-phrase-rule">Prepositional phrase rule</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Relative-Pronoun-rules">Relative Pronoun rules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Coordination">Coordination</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Remove-cups">Remove cups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Curry-functor">Curry functor</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="circuit.html">Circuit</a></li>
@@ -923,6 +925,102 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/examples_rewrite_19_4.png" src="../_images/examples_rewrite_19_4.png" />
+</div>
+</div>
+</section>
+<section id="Remove-cups">
+<h2>Remove cups<a class="headerlink" href="#Remove-cups" title="Permalink to this headline"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">remove_cups</span>
+<span class="n">diagram</span> <span class="o">=</span> <span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;love&#39;</span><span class="p">,</span> <span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span> <span class="o">&lt;&lt;</span> <span class="n">N</span><span class="p">)</span>
+           <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;cheese&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+
+<span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;↓ remove cups by bending wires&#39;</span><span class="p">)</span>
+<span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_rewrite_21_0.png" src="../_images/examples_rewrite_21_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+↓ remove cups by bending wires
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_rewrite_21_2.png" src="../_images/examples_rewrite_21_2.png" />
+</div>
+</div>
+</section>
+<section id="Curry-functor">
+<h2>Curry functor<a class="headerlink" href="#Curry-functor" title="Permalink to this headline"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rewriter</span> <span class="o">=</span> <span class="n">Rewriter</span><span class="p">([</span><span class="s1">&#39;curry&#39;</span><span class="p">])</span>
+
+<span class="n">diagram</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;I&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;see&#39;</span><span class="p">,</span> <span class="n">N</span> <span class="o">&gt;&gt;</span> <span class="n">S</span> <span class="o">&lt;&lt;</span> <span class="n">N</span><span class="p">)</span> <span class="o">@</span>
+    <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;dead&#39;</span><span class="p">,</span> <span class="n">N</span> <span class="o">@</span> <span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;people&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;↓ rewrite by using the map-state duality&#39;</span><span class="p">)</span>
+<span class="n">rewriter</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;↓ normal form&#39;</span><span class="p">)</span>
+<span class="n">rewriter</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_rewrite_23_0.png" src="../_images/examples_rewrite_23_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+↓ rewrite by using the map-state duality
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_rewrite_23_2.png" src="../_images/examples_rewrite_23_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+↓ normal form
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_rewrite_23_4.png" src="../_images/examples_rewrite_23_4.png" />
 </div>
 </div>
 </section>

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command-line interface &mdash; lambeq 0.2.1 documentation</title>
+  <title>Command-line interface &mdash; lambeq 0.2.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -34,7 +34,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.1
+                0.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -214,7 +214,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Some readers, such as the <code class="xref py py-obj docutils literal notranslate"><span class="pre">spiders_reader</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">stairs_reader</span></code> instances of the <a class="reference internal" href="lambeq.reader.html#lambeq.reader.LinearReader" title="lambeq.reader.LinearReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearReader</span></code></a> class, or an instance of a <a class="reference internal" href="lambeq.reader.html#lambeq.reader.TreeReader" title="lambeq.reader.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a>, may convert the pregroup diagram into a monoidal form that is too complicated to be rendered properly in a text console. In these cases, diagrams cannot be displayed as text.</p>
+<p>Some readers, such as the <code class="xref py py-obj docutils literal notranslate"><span class="pre">spiders_reader</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">stairs_reader</span></code> instances of the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.LinearReader" title="lambeq.text2diagram.LinearReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearReader</span></code></a> class, or an instance of a <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a>, may convert the pregroup diagram into a monoidal form that is too complicated to be rendered properly in a text console. In these cases, diagrams cannot be displayed as text.</p>
 </div>
 </section>
 <section id="rewrite-rules-and-ansatze">
@@ -270,6 +270,7 @@ To load the configuration from this file next time, <code class="docutils litera
               <span class="o">[</span>-g <span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
               <span class="o">[</span>-u <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]]</span> <span class="o">[</span>-o OUTPUT_FILE <span class="p">|</span> -d OUTPUT_DIR<span class="o">]</span>
               <span class="o">[</span>-p <span class="o">{</span>bobcat,depccg<span class="o">}]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-s<span class="o">]</span> <span class="o">[</span>-r <span class="o">{</span>spiders,stairs,cups,tree<span class="o">}]</span>
+              <span class="o">[</span>-c <span class="o">[</span>ROOT_CATS <span class="o">[</span>ROOT_CATS ...<span class="o">]]]</span>
               <span class="o">[</span>-w <span class="o">[</span>REWRITE_RULE <span class="o">[</span>REWRITE_RULE ...<span class="o">]]]</span>
               <span class="o">[</span>-a <span class="o">{</span>iqp,tensor,spider,mps<span class="o">}]</span> <span class="o">[</span>-n <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]]</span>
               <span class="o">[</span>-y STORE_ARGS<span class="o">]</span> <span class="o">[</span>-l LOAD_ARGS<span class="o">]</span>
@@ -338,6 +339,9 @@ To load the configuration from this file next time, <code class="docutils litera
 <dd><p>Possible choices: spiders, stairs, cups, tree</p>
 <p>Choice of a reader. Mutually exclusive with using a parser.</p>
 </dd>
+<dt><kbd>-c, --root_categories</kbd></dt>
+<dd><p>A list of acceptable categories at the root of the diagram.</p>
+</dd>
 </dl>
 </section>
 <section id="Rewriter">
@@ -345,8 +349,8 @@ To load the configuration from this file next time, <code class="docutils litera
 <p>Rewrite options.</p>
 <dl class="option-list">
 <dt><kbd>-w, --rewrite_rules</kbd></dt>
-<dd><p>Possible choices: auxiliary, connector, determiner, postadverb, preadverb, prepositional_phrase, coordination, object_rel_pronoun, subject_rel_pronoun</p>
-<p>A list of rewrite rules. Available options: [‘auxiliary’, ‘connector’, ‘determiner’, ‘postadverb’, ‘preadverb’, ‘prepositional_phrase’, ‘coordination’, ‘object_rel_pronoun’, ‘subject_rel_pronoun’]</p>
+<dd><p>Possible choices: auxiliary, connector, determiner, postadverb, preadverb, prepositional_phrase, coordination, curry, object_rel_pronoun, subject_rel_pronoun</p>
+<p>A list of rewrite rules. Available options: [‘auxiliary’, ‘connector’, ‘determiner’, ‘postadverb’, ‘preadverb’, ‘prepositional_phrase’, ‘coordination’, ‘curry’, ‘object_rel_pronoun’, ‘subject_rel_pronoun’]</p>
 </dd>
 </dl>
 </section>

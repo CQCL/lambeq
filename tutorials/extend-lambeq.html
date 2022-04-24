@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced: Extending lambeq &mdash; lambeq 0.2.1 documentation</title>
+  <title>Advanced: Extending lambeq &mdash; lambeq 0.2.2 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.1
+                0.2.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -404,8 +404,8 @@ div.rendered_html tbody tr:hover {
 <p><a class="reference download internal" download="" href="../_downloads/f235ceb160ce71c38d408d9deacea3b4/extend-lambeq.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
 <section id="Creating-readers">
 <h2>Creating readers<a class="headerlink" href="#Creating-readers" title="Permalink to this headline"></a></h2>
-<p>The <a class="reference internal" href="../lambeq.reader.html#lambeq.reader.Reader" title="lambeq.reader.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> class is an abstract base class for converting sentences to diagrams. Each <a class="reference internal" href="../glossary.html#term-reader"><span class="xref std std-term">reader</span></a> can be seen as a different <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a>, and <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can accommodate any compositional model that represents sentences in a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>/<a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> form.</p>
-<p>A concrete subclass of <a class="reference internal" href="../lambeq.reader.html#lambeq.reader.Reader" title="lambeq.reader.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> should implement the <a class="reference internal" href="../lambeq.reader.html#lambeq.reader.Reader.sentence2diagram" title="lambeq.reader.Reader.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Reader.sentence2diagram()</span></code></a> method, which converts a single sentence into a rigid diagram.</p>
+<p>The <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.Reader" title="lambeq.text2diagram.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> class is an abstract base class for converting sentences to diagrams. Each <a class="reference internal" href="../glossary.html#term-reader"><span class="xref std std-term">reader</span></a> can be seen as a different <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a>, and <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can accommodate any compositional model that represents sentences in a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>/<a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> form.</p>
+<p>A concrete subclass of <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.Reader" title="lambeq.text2diagram.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> should implement the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.Reader.sentence2diagram" title="lambeq.text2diagram.Reader.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Reader.sentence2diagram()</span></code></a> method, which converts a single sentence into a rigid diagram.</p>
 <section id="Reader-example:-“Comb”-reader">
 <h3>Reader example: “Comb” reader<a class="headerlink" href="#Reader-example:-“Comb”-reader" title="Permalink to this headline"></a></h3>
 <p>In this example we will create a reader that, given a sentence, it generates the following tensor network:</p>

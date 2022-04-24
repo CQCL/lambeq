@@ -3,6 +3,23 @@
 Release notes
 =============
 
+.. _rel-0.2.2:
+
+`0.2.2 <https://github.com/CQCL/lambeq/releases/tag/0.2.2>`_
+------------------------------------------------------------
+
+- Add support for Python 3.10.
+
+- Unify class hierarchies for parsers and readers: :py:class:`~lambeq.CCGParser` is now a subclass of :py:class:`~lambeq.Reader` and placed in the common package :py:mod:`.text2diagram`. The old packages :py:mod:`.reader` and :py:mod:`.ccg2discocat` are no longer available. Compatibility problems with previous versions should be minimal, since from Release :ref:`rel-0.2.0` and onwards all ``lambeq`` classes can be imported from the global namespace.
+
+- Add :py:class:`.CurryRewriteRule`, which uses map-state duality in order to remove adjoint types from the boxes of a diagram. When used in conjunction with :py:meth:`~discopy.rigid.Diagram.normal_form`, this removes cups from the diagram, eliminating post-selection.
+
+- The :term:`Bobcat` parser now updates automatically when new versions are made available online.
+
+- Update grammar file of :term:`Bobcat` parser to avoid problems with conflicting unary rules.
+
+- Allow customising available root categories for the parser when using the command-line interface. 
+
 .. _rel-0.2.1:
 
 `0.2.1 <https://github.com/CQCL/lambeq/releases/tag/0.2.1>`_
