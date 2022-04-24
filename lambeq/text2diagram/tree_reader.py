@@ -22,11 +22,11 @@ __all__ = ['TreeReader', 'TreeReaderMode']
 from discopy import Word
 from discopy.rigid import Box, Diagram, Ty
 
-from lambeq.ccg2discocat.ccg_parser import CCGParser
-from lambeq.ccg2discocat.bobcat_parser import BobcatParser
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType
-from lambeq.reader.base import Reader
+from lambeq.text2diagram.ccg_parser import CCGParser
+from lambeq.text2diagram.bobcat_parser import BobcatParser
+from lambeq.text2diagram.base import Reader
 
 S = AtomicType.SENTENCE
 

@@ -4,8 +4,6 @@ import pytest
 from copy import deepcopy
 from unittest.mock import mock_open, patch
 
-from lambeq.training import PytorchModel
-
 from discopy import Box, Cap, Cup, Dim, Swap, Word
 from discopy.tensor import Id as tensor_Id
 from discopy.quantum.circuit import Id
@@ -15,8 +13,7 @@ import numpy as np
 from torch import Size
 from torch.nn import Parameter
 
-from lambeq import AtomicType, SpiderAnsatz, Symbol
-from lambeq.training import PytorchModel
+from lambeq import AtomicType, PytorchModel, SpiderAnsatz, Symbol
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE

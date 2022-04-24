@@ -41,6 +41,12 @@ of provided rules can be retrieved using
         The coordination rule simplifies "and" based on [Kar2016]_
         by replacing it with a layer of interleaving spiders.
 
+    curry
+        The curry rewrite rule uses map-state duality to remove adjoint types
+        from the boxes. When used in conjunction with
+        :py:meth:`~discopy.rigid.Diagram.normal_form`, this removes cups
+        from the diagram.
+
     determiner
         The determiner rule removes determiners (such as "the") by
         replacing them with caps.
@@ -277,6 +283,42 @@ class CoordinationRewriteRule(RewriteRule):
                 Id(left) @ spiders(2, 1, mid) @ Id(right))
 
 
+class CurryRewriteRule(RewriteRule):
+    """A rewrite rule using map-state duality."""
+    def __init__(self) -> None:
+        """Instantiate a CurryRewriteRule.
+
+        This rule uses the map-state duality by iteratively
+        uncurrying on both sides of each box. When used in conjunction
+        with :py:meth:`~discopy.rigid.Diagram.normal_form`, this
+        removes cups from the diagram in exchange for depth. Diagrams
+        with less cups become circuits with less post-selection,
+        which results in faster QML experiments.
+
+        """
+
+    def matches(self, box: Box) -> bool:
+        return box.cod and (box.cod[0].z or box.cod[-1].z)
+
+    def rewrite(self, box: Box) -> Diagram:
+        cod = box.cod
+        i = 0
+        while i < len(cod) and cod[i].z > 0:
+            i += 1
+        j = len(cod) - 1
+        while j >= 0 and cod[j].z < 0:
+            j -= 1
+        left, right = cod[:i], cod[j+1:]
+        dom = left.l @ box.dom @ right.r
+        new_box = Box(box.name, dom, cod[i:j+1])
+        if left:
+            new_box = Diagram.curry(new_box, n_wires=len(left), left=True)
+        if right:
+            new_box = Diagram.curry(new_box, n_wires=len(right), left=False)
+
+        return new_box
+
+
 class Rewriter:
     """Class that rewrites diagrams.
 
@@ -295,6 +337,7 @@ class Rewriter:
     _available_rules = {
         **_default_rules,
         'coordination': CoordinationRewriteRule(),
+        'curry': CurryRewriteRule(),
         'object_rel_pronoun': object_rel_pronoun_rule,
         'subject_rel_pronoun': subject_rel_pronoun_rule
     }

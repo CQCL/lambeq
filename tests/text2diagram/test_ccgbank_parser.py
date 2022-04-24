@@ -2,9 +2,7 @@ from io import StringIO
 import pytest
 from unittest.mock import Mock, patch
 
-from lambeq.ccg2discocat.ccg_types import CCGAtomicType
-from lambeq.ccg2discocat.ccgbank_parser import CCGBankParseError, CCGBankParser
-from lambeq.core.globals import VerbosityLevel
+from lambeq import CCGAtomicType, CCGBankParseError, CCGBankParser, VerbosityLevel
 
 
 class BadParser(CCGBankParser):

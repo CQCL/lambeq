@@ -5,9 +5,7 @@ from unittest.mock import Mock
 from discopy import Word
 from discopy.rigid import Cup, Diagram, Id, Swap, Ty
 
-from lambeq import AtomicType, DepCCGParser
-from lambeq.ccg2discocat.depccg_parser import DepCCGParseError
-from lambeq.core.globals import VerbosityLevel
+from lambeq import AtomicType, DepCCGParser, DepCCGParseError, VerbosityLevel
 
 
 @pytest.fixture(scope='module')

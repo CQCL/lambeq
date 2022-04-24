@@ -19,10 +19,11 @@ __all__ = ['BobcatParser', 'BobcatParseError']
 import json
 import os
 from pathlib import Path
+import shutil
 import sys
 import tarfile
 from typing import Any, Iterable, Optional, Union
-from urllib.request import urlretrieve
+from urllib.request import urlopen, urlretrieve
 import warnings
 
 from discopy.biclosed import Ty
@@ -32,21 +33,29 @@ from transformers import AutoTokenizer
 from tqdm import TqdmWarning
 from tqdm.auto import tqdm
 
-from lambeq.ccg2discocat.bobcat import (BertForChartClassification, Category,
-                                        ChartParser, Grammar, ParseTree,
-                                        Sentence, Supertag, Tagger)
-from lambeq.ccg2discocat.ccg_parser import CCGParser
-from lambeq.ccg2discocat.ccg_rule import CCGRule
-from lambeq.ccg2discocat.ccg_tree import CCGTree
-from lambeq.ccg2discocat.ccg_types import CCGAtomicType
+from lambeq.bobcat import (BertForChartClassification, Category,
+                           ChartParser, Grammar, ParseTree,
+                           Sentence, Supertag, Tagger)
 from lambeq.core.utils import (SentenceBatchType,
                                tokenised_batch_type_check,
                                untokenised_batch_type_check)
 from lambeq.core.globals import VerbosityLevel
+from lambeq.text2diagram.ccg_parser import CCGParser
+from lambeq.text2diagram.ccg_rule import CCGRule
+from lambeq.text2diagram.ccg_tree import CCGTree
+from lambeq.text2diagram.ccg_types import CCGAtomicType
 
 StrPathT = Union[str, 'os.PathLike[str]']
 
-MODELS = {'bert': 'https://qnlp.cambridgequantum.com/models/bert.tar.gz'}
+MODELS_URL = 'https://qnlp.cambridgequantum.com/models'
+MODELS = {'bert'}
+VERSION_FNAME = 'version.txt'
+
+
+def get_model_url(model: str) -> str:
+    if model not in MODELS:
+        raise ValueError(f'Invalid model name: {model!r}')
+    return f'{MODELS_URL}/{model}/latest'
 
 
 def get_model_dir(model: str,
@@ -67,15 +76,33 @@ def get_model_dir(model: str,
     return models_dir / model
 
 
+def model_is_stale(model: str, model_dir: str) -> bool:
+    try:
+        url = get_model_url(model) + '/' + VERSION_FNAME
+    except ValueError:
+        return False
+
+    try:
+        with urlopen(url) as f:
+            remote_version = f.read().strip().decode("utf-8")
+    except Exception:
+        return False
+
+    try:
+        with open(model_dir + '/' + VERSION_FNAME) as f:
+            local_version = f.read().strip()
+    except Exception:
+        local_version = None
+
+    return remote_version != local_version
+
+
 def download_model(
         model_name: str,
         model_dir: Optional[StrPathT] = None,
         verbose: str = VerbosityLevel.PROGRESS.value
         ) -> None:  # pragma: no cover
-    try:
-        url = MODELS[model_name]
-    except KeyError:
-        raise ValueError(f'Invalid model name : {model_name!r}')
+    url = get_model_url(model_name) + '/model.tar.gz'
 
     if model_dir is None:
         model_dir = get_model_dir(model_name)
@@ -100,15 +127,21 @@ def download_model(
         print('Downloading model...', file=sys.stderr)
     if verbose == VerbosityLevel.PROGRESS.value:
         progress_bar = ProgressBar()
-        download, headers = urlretrieve(url, reporthook=progress_bar.update)
+        model_file, headers = urlretrieve(url, reporthook=progress_bar.update)
         progress_bar.close()
     else:
-        download, headers = urlretrieve(url)
+        model_file, headers = urlretrieve(url)
 
+    # Extract model
     if verbose != VerbosityLevel.SUPPRESS.value:
         print('Extracting model...')
-    with tarfile.open(download) as tar:
+    with tarfile.open(model_file) as tar:
         tar.extractall(model_dir)
+
+    # Download version
+    ver_url = get_model_url(model_name) + '/' + VERSION_FNAME
+    ver_file, headers = urlretrieve(ver_url)
+    shutil.copy(ver_file, model_dir / VERSION_FNAME)  # type: ignore
 
 
 class BobcatParseError(Exception):
@@ -208,13 +241,17 @@ class BobcatParser(CCGParser):
 
         """
         self.verbose = verbose
+
         if not VerbosityLevel.has_value(verbose):
             raise ValueError(f'`{verbose}` is not a valid verbose value for '
                              'BobcatParser.')
         model_dir = Path(model_name_or_path)
         if not model_dir.is_dir():
             model_dir = get_model_dir(model_name_or_path, cache_dir)
-            if force_download or not model_dir.is_dir():  # pragma: no cover
+
+            if (force_download
+                    or not model_dir.is_dir()
+                    or model_is_stale(model_name_or_path, str(model_dir))):
                 if model_name_or_path not in MODELS:
                     raise ValueError('Invalid model name or path: '
                                      f'{model_name_or_path!r}')
@@ -249,8 +286,8 @@ class BobcatParser(CCGParser):
     def sentences2trees(
             self,
             sentences: SentenceBatchType,
-            suppress_exceptions: bool = False,
             tokenised: bool = False,
+            suppress_exceptions: bool = False,
             verbose: Optional[str] = None
             ) -> list[Optional[CCGTree]]:
         """Parse multiple sentences into a list of :py:class:`.CCGTree` s.

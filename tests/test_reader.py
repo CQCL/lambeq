@@ -4,8 +4,8 @@ from discopy import Word
 from discopy.rigid import Box, Diagram, Id
 
 from lambeq import (AtomicType, BobcatParser, TreeReader, TreeReaderMode,
-                    WebParser, cups_reader, spiders_reader, stairs_reader)
-from lambeq.core.globals import VerbosityLevel
+                    VerbosityLevel, WebParser, cups_reader, spiders_reader,
+                    stairs_reader)
 
 
 @pytest.fixture

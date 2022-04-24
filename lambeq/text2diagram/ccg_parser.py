@@ -16,19 +16,20 @@ from __future__ import annotations
 __all__ = ['CCGParser']
 
 import sys
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Any, Optional
 
 from discopy import Diagram
 from tqdm.autonotebook import tqdm
 
-from lambeq.ccg2discocat.ccg_tree import CCGTree
 from lambeq.core.globals import VerbosityLevel
-from lambeq.core.utils import SentenceBatchType, SentenceType,\
-        tokenised_sentence_type_check
+from lambeq.core.utils import (SentenceBatchType, SentenceType,
+                               tokenised_sentence_type_check)
+from lambeq.text2diagram.base import Reader
+from lambeq.text2diagram.ccg_tree import CCGTree
 
 
-class CCGParser(ABC):
+class CCGParser(Reader):
     """Base class for CCG parsers."""
 
     verbose = VerbosityLevel.SUPPRESS.value
@@ -43,10 +44,9 @@ class CCGParser(ABC):
     def sentences2trees(
             self,
             sentences: SentenceBatchType,
-            suppress_exceptions: bool = False,
             tokenised: bool = False,
-            verbose: Optional[str] = None
-            ) -> list[Optional[CCGTree]]:
+            suppress_exceptions: bool = False,
+            verbose: Optional[str] = None) -> list[Optional[CCGTree]]:
         """Parse multiple sentences into a list of :py:class:`.CCGTree` s.
 
         Parameters
@@ -76,8 +76,8 @@ class CCGParser(ABC):
 
     def sentence2tree(self,
                       sentence: SentenceType,
-                      suppress_exceptions: bool = False,
-                      tokenised: bool = False) -> Optional[CCGTree]:
+                      tokenised: bool = False,
+                      suppress_exceptions: bool = False) -> Optional[CCGTree]:
         """Parse a sentence into a :py:class:`.CCGTree`.
 
         Parameters
@@ -122,11 +122,10 @@ class CCGParser(ABC):
     def sentences2diagrams(
             self,
             sentences: SentenceBatchType,
+            tokenised: bool = False,
             planar: bool = False,
             suppress_exceptions: bool = False,
-            tokenised: bool = False,
-            verbose: Optional[str] = None
-            ) -> list[Optional[Diagram]]:
+            verbose: Optional[str] = None) -> list[Optional[Diagram]]:
         """Parse multiple sentences into a list of discopy diagrams.
 
         Parameters
@@ -184,9 +183,9 @@ class CCGParser(ABC):
     def sentence2diagram(
             self,
             sentence: SentenceType,
+            tokenised: bool = False,
             planar: bool = False,
-            suppress_exceptions: bool = False,
-            tokenised: bool = False) -> Optional[Diagram]:
+            suppress_exceptions: bool = False) -> Optional[Diagram]:
         """Parse a sentence into a DisCoPy diagram.
 
         Parameters

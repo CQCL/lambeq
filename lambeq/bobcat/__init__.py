@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['LinearReader', 'Reader', 'TreeReader', 'TreeReaderMode',
-           'bag_of_words_reader', 'cups_reader', 'spiders_reader',
-           'stairs_reader', 'word_sequence_reader']
+__all__ = ['BertForChartClassification', 'Category', 'ChartParser', 'Grammar',
+           'ParseTree', 'Sentence', 'Supertag', 'Tagger']
 
-from lambeq.reader.base import (Reader, LinearReader, bag_of_words_reader,
-                                cups_reader, spiders_reader, stairs_reader,
-                                word_sequence_reader)
-from lambeq.reader.tree_reader import TreeReader, TreeReaderMode
+from lambeq.bobcat.grammar import Grammar
+from lambeq.bobcat.lexicon import Category
+from lambeq.bobcat.parser import ChartParser, Sentence, Supertag
+from lambeq.bobcat.tagger import BertForChartClassification, Tagger
+from lambeq.bobcat.tree import ParseTree

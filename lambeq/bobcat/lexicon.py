@@ -21,7 +21,7 @@ from dataclasses import dataclass
 import re
 from typing import Any, ClassVar, Optional, Tuple
 
-from lambeq.ccg2discocat.bobcat.fast_int_enum import FastIntEnum
+from lambeq.bobcat.fast_int_enum import FastIntEnum
 
 
 class Atom(FastIntEnum):

@@ -32,16 +32,18 @@ from typing import Any, Optional, Union
 import yaml
 
 import lambeq
-from lambeq.ccg2discocat import DepCCGParser
-from lambeq.ccg2discocat.ccg_parser import CCGParser
-from lambeq.ccg2discocat.bobcat_parser import BobcatParser
 from lambeq.ansatz import BaseAnsatz
 from lambeq.ansatz.circuit import IQPAnsatz, CircuitAnsatz
 from lambeq.ansatz.tensor import TensorAnsatz, SpiderAnsatz, MPSAnsatz
 from lambeq.pregroups import text_printer
 from lambeq.pregroups.utils import is_pregroup_diagram
-from lambeq.reader import (Reader, TreeReader, spiders_reader,
-                           stairs_reader, cups_reader)
+from lambeq.text2diagram.ccg_parser import CCGParser
+from lambeq.text2diagram.bobcat_parser import BobcatParser
+from lambeq.text2diagram.depccg_parser import DepCCGParser
+from lambeq.text2diagram.base import Reader
+from lambeq.text2diagram.linear_reader import (cups_reader, spiders_reader,
+                                               stairs_reader)
+from lambeq.text2diagram.tree_reader import TreeReader
 from lambeq.tokeniser import SpacyTokeniser
 
 import discopy
@@ -242,6 +244,12 @@ def prepare_parser() -> argparse.ArgumentParser:
             default=None,
             choices=AVAILABLE_READERS.keys(),
             help='Choice of a reader. Mutually exclusive with using a parser.')
+    parser_group.add_argument(
+            '-c',
+            '--root_categories',
+            nargs='*',
+            metavar='ROOT_CATS',
+            help='A list of acceptable categories at the root of the diagram.')
 
     rewrite_group = parser.add_argument_group(
                            title='Rewriter',
@@ -388,9 +396,11 @@ class ParserModule(CLIModule):
             return reader.sentences2diagrams(sentences,
                                              tokenised=cl_args.tokenise)
         elif cl_args.parser is not None:
-            parser = AVAILABLE_PARSERS[cl_args.parser]()
+            parser = AVAILABLE_PARSERS[cl_args.parser](
+                    root_cats=cl_args.root_categories)
         else:
-            parser = AVAILABLE_PARSERS['bobcat']()
+            parser = AVAILABLE_PARSERS['bobcat'](
+                    root_cats=cl_args.root_categories)
         return parser.sentences2diagrams(sentences, tokenised=cl_args.tokenise)
 
 

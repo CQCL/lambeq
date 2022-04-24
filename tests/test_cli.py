@@ -4,12 +4,10 @@ import pytest
 import unittest.mock
 from unittest.mock import patch
 
-from lambeq.ccg2discocat.web_parser import WebParser
-from lambeq.ccg2discocat.bobcat_parser import BobcatParser
+from lambeq import BobcatParser, VerbosityLevel, WebParser
 from lambeq import cli
 from lambeq.cli import ArgumentList
 from lambeq.cli import main
-from lambeq.core.globals import VerbosityLevel
 
 
 @pytest.fixture
@@ -79,7 +77,8 @@ def multi_sentence_input() -> str:
 
 
 shared_bobcat_parser = BobcatParser(verbose=VerbosityLevel.SUPPRESS.value)
-parser_patch = {'depccg': WebParser, 'bobcat': lambda: shared_bobcat_parser}  # DepCCG can crash during online tests
+parser_patch = {'depccg': lambda **kwargs: shared_bobcat_parser, 'bobcat': lambda **kwargs: shared_bobcat_parser}  # DepCCG can crash during online tests
+parser_patch_uninitialised = {'depccg': BobcatParser, 'bobcat': BobcatParser}  # Only for tests where a new instance of the parser is needed
 
 
 def test_file_io(sentence_input, unicode_sentence_output):
@@ -102,6 +101,14 @@ def test_sentence_arg(sentence_input, unicode_sentence_output):
          patch('sys.stdout', new=StringIO()) as fake_out:
         main()
         assert fake_out.getvalue().rstrip() == unicode_sentence_output
+
+
+def test_root_cat(sentence_input, unicode_sentence_output):
+    with patch('sys.argv', ['lambeq', '-c', 'PP', 'NP', '-t', sentence_input]),\
+         patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch_uninitialised),\
+         patch('sys.stdout', new=StringIO()) as fake_out:
+        main()
+        assert fake_out.getvalue().rstrip() != unicode_sentence_output
 
 
 def test_type_raising(type_raising_input, unicode_type_raising_output):

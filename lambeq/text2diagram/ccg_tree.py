@@ -24,8 +24,8 @@ from discopy import rigid, Word
 from discopy.biclosed import (Box, Diagram, Functor, Id, Over, Ty, Under,
                               biclosed2rigid_ob)
 
-from lambeq.ccg2discocat.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
-from lambeq.ccg2discocat.ccg_types import (CCGAtomicType, replace_cat_result,
+from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
+from lambeq.text2diagram.ccg_types import (CCGAtomicType, replace_cat_result,
                                            str2biclosed)
 
 # Types

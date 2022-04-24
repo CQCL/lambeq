@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter']
+__all__ = ['RewriteRule', 'CoordinationRewriteRule', 'CurryRewriteRule',
+           'SimpleRewriteRule', 'Rewriter']
 
 from lambeq.rewrite.base import (RewriteRule, CoordinationRewriteRule,
-                                 SimpleRewriteRule, Rewriter)
+                                 CurryRewriteRule, SimpleRewriteRule, Rewriter)

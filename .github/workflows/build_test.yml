@@ -10,13 +10,14 @@ on:
 
 env:
   SRC_DIR: lambeq
+  TEST_DIR: tests
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9 ]
+        python-version: [ 3.8, 3.9, "3.10" ]
     steps:
     - uses: actions/checkout@v2
     - name: Setup Python ${{ matrix.python-version }}
@@ -39,13 +40,22 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9 ]
+        python-version: [ 3.8, 3.9, "3.10" ]
     steps:
     - uses: actions/checkout@v2
     - name: Setup Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Determine if depccg tests should be run
+      # only test depccg if it is explicitly changed, since it is very slow
+      # (also ignore it on 3.10 because it doesn't install properly)
+      id: depccg-enabled
+      continue-on-error: true  # this is expected to fail but the job should still succeed
+      run:
+        ${{ matrix.python-version != '3.10' }}
+        && git fetch --depth=1 origin ${{ github.base_ref || github.event.before }}:before
+        && git diff --name-only before | grep depccg
     - name: Locate pip cache
       id: loc-pip-cache
       run: echo "::set-output name=dir::$(pip cache dir)"
@@ -61,25 +71,28 @@ jobs:
       run: pip install .
     - name: Check package import works
       run: python -c 'import lambeq'
-    - name: Install Cython
-      run: pip install cython
     - name: Install extra dependencies and tester
-      run: pip install .[extras] .[test] depccg==2.0.3.2
-    - name: Locate depccg pre-trained model cache
+      run: pip install .[extras] .[test]
+    - name: Install depccg and locate depccg pre-trained model cache
       id: loc-depccg-cache
-      run: echo "::set-output name=dir::$(python -c 'from depccg.instance_models import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
+      if: steps.depccg-enabled.outcome == 'success'
+      run: |
+        pip install cython  # must be installed before depccg
+        pip install depccg==2.0.3.2
+        echo "::set-output name=dir::$(python -c 'from depccg.instance_models import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
     - name: Restore depccg pre-trained model from cache
       id: depccg-cache
+      if: steps.depccg-enabled.outcome == 'success'
       uses: actions/cache@v2
       with:
         path: ${{ steps.loc-depccg-cache.outputs.dir }}
         key: depccg
     - name: Download depccg pre-trained model if needed
-      if: steps.depccg-cache.outputs.cache-hit != 'true'
+      if: steps.depccg-cache.outputs.cache-hit == 'false'
       run: python -c 'import tarfile, urllib;from depccg.instance_models import MODEL_DIRECTORY;tarfile.open(urllib.request.urlretrieve("https://qnlp.cambridgequantum.com/models/tri_headfirst.tar.gz")[0]).extractall(MODEL_DIRECTORY)'
     - name: Locate bobcat pre-trained model cache
       id: loc-bobcat-cache
-      run: echo "::set-output name=dir::$(python -c 'from lambeq.ccg2discocat.bobcat_parser import get_model_dir; print(get_model_dir("bert"))')"
+      run: echo "::set-output name=dir::$(python -c 'from lambeq.text2diagram.bobcat_parser import get_model_dir; print(get_model_dir("bert"))')"
     - name: Restore bobcat pre-trained model from cache
       id: bobcat-cache
       uses: actions/cache@v2
@@ -88,9 +101,9 @@ jobs:
         key: bobcat-bert-v1
     - name: Test with pytest
       run:
-        # run test of depccg parser separately because it keeps breaking
-        coverage run --source=${{ env.SRC_DIR }} -m pytest --doctest-modules --ignore=${{ env.SRC_DIR }}/ccg2discocat/bobcat --ignore=tests/ccg2discocat/test_depccg_parser.py --ignore=docs/extract_code_cells.py
+        coverage run --source=${{ env.SRC_DIR }} -m pytest ${{ env.SRC_DIR }} ${{ env.TEST_DIR }} --doctest-modules --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py --ignore=docs/extract_code_cells.py
     - name: Test DepCCGParser
+      if: steps.depccg-enabled.outcome == 'success'
       continue-on-error: true
       run:
         coverage run --append --source=${{ env.SRC_DIR }} -m pytest -k test_depccg_parser.py
@@ -102,7 +115,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9 ]
+        python-version: [ 3.8, 3.9, "3.10" ]
     steps:
     - uses: actions/checkout@v2
     - name: Setup Python ${{ matrix.python-version }}

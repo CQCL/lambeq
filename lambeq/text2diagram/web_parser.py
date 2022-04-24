@@ -24,11 +24,11 @@ from urllib.request import urlopen
 
 from tqdm.auto import tqdm
 
-from lambeq.ccg2discocat.ccg_parser import CCGParser
-from lambeq.ccg2discocat.ccg_tree import CCGTree
 from lambeq.core.utils import SentenceBatchType, tokenised_batch_type_check,\
         untokenised_batch_type_check
 from lambeq.core.globals import VerbosityLevel
+from lambeq.text2diagram.ccg_parser import CCGParser
+from lambeq.text2diagram.ccg_tree import CCGTree
 
 SERVICE_URL = 'https://cqc.pythonanywhere.com/tree/json'
 
@@ -70,10 +70,9 @@ class WebParser(CCGParser):
     def sentences2trees(
             self,
             sentences: SentenceBatchType,
-            suppress_exceptions: bool = False,
             tokenised: bool = False,
-            verbose: Optional[str] = None
-            ) -> list[Optional[CCGTree]]:
+            suppress_exceptions: bool = False,
+            verbose: Optional[str] = None) -> list[Optional[CCGTree]]:
         """Parse multiple sentences into a list of :py:class:`.CCGTree` s.
 
         Parameters

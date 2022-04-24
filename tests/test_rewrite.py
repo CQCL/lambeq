@@ -3,7 +3,8 @@ import pytest
 from discopy import Word
 from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups
 
-from lambeq import AtomicType, Rewriter, CoordinationRewriteRule, SimpleRewriteRule
+from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
+                    CurryRewriteRule, SimpleRewriteRule)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -159,3 +160,15 @@ def test_coordination():
     expected_diagram = eggs @ ham >> Spider(2, 1, N)
 
     assert rewriter(diagram).normal_form() == expected_diagram
+
+
+def test_curry_functor():
+    n, s = map(Ty, 'ns')
+    diagram = (
+        Word('I', n) @ Word('see', n.r @ s @ n.l) @
+        Word('the', n @ n.l) @ Word('truth', n)).cup(5, 6).cup(3, 4).cup(0, 1)
+    expected = (Word('I', n) @ Word('truth', n) >> Id(n) @ Box('the', n, n)
+                >> Box('see', n @ n, s))
+
+    rewriter = Rewriter([CurryRewriteRule()])
+    assert rewriter(diagram).normal_form() == expected

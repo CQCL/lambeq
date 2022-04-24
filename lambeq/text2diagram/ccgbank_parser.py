@@ -40,12 +40,12 @@ from discopy.biclosed import Ty
 from discopy.rigid import Diagram
 from tqdm.auto import tqdm
 
-from lambeq.ccg2discocat.ccg_parser import CCGParser
-from lambeq.ccg2discocat.ccg_rule import CCGRule
-from lambeq.ccg2discocat.ccg_tree import CCGTree
-from lambeq.ccg2discocat.ccg_types import CONJ_TAG, CCGAtomicType, str2biclosed
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import SentenceBatchType
+from lambeq.text2diagram.ccg_parser import CCGParser
+from lambeq.text2diagram.ccg_rule import CCGRule
+from lambeq.text2diagram.ccg_tree import CCGTree
+from lambeq.text2diagram.ccg_types import CONJ_TAG, CCGAtomicType, str2biclosed
 
 
 class CCGBankParseError(Exception):
@@ -323,10 +323,9 @@ class CCGBankParser(CCGParser):
     def sentences2trees(
             self,
             sentences: SentenceBatchType,
-            suppress_exceptions: bool = False,
             tokenised: bool = False,
-            verbose: Optional[str] = None
-            ) -> list[Optional[CCGTree]]:
+            suppress_exceptions: bool = False,
+            verbose: Optional[str] = None) -> list[Optional[CCGTree]]:
         """Parse a CCGBank sentence derivation into a CCGTree.
 
         The sentence must be in the format outlined in the CCGBank

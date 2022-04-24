@@ -19,10 +19,10 @@ from dataclasses import dataclass, field
 import math
 from typing import Optional, Tuple, Union, overload
 
-from lambeq.ccg2discocat.bobcat.grammar import Grammar
-from lambeq.ccg2discocat.bobcat.lexicon import Atom, Category, CATEGORIES
-from lambeq.ccg2discocat.bobcat.rules import Rules
-from lambeq.ccg2discocat.bobcat.tree import Lexical, ParseTree
+from lambeq.bobcat.grammar import Grammar
+from lambeq.bobcat.lexicon import Atom, Category, CATEGORIES
+from lambeq.bobcat.rules import Rules
+from lambeq.bobcat.tree import Lexical, ParseTree
 
 SpanT = Tuple[int, int]
 

@@ -3,8 +3,7 @@ import pytest
 from io import StringIO
 from unittest.mock import patch
 
-from lambeq import BobcatParseError, BobcatParser, CCGAtomicType
-from lambeq.core.globals import VerbosityLevel
+from lambeq import BobcatParseError, BobcatParser, CCGAtomicType, VerbosityLevel
 
 
 @pytest.fixture(scope='module')

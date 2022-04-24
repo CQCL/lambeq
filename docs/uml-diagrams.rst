@@ -19,19 +19,10 @@ lambeq.ansatz
 .. image:: _static/images/classes_ansatz.png
    :width: 100%
 
-.. _uml_ccg2discocat:
+.. _uml_bobcat:
 
-lambeq.ccg2discocat
--------------------
-
-General structure
-~~~~~~~~~~~~~~~~~
-
-.. image:: _static/images/classes_ccg2discocat.png
-   :width: 100%
-
-Bobcat parser
-~~~~~~~~~~~~~
+lambeq.bobcat
+-------------
 
 .. image:: _static/images/classes_bobcat.png
    :width: 100%
@@ -44,20 +35,20 @@ lambeq.pregroups
 .. image:: _static/images/classes_pregroups.png
    :width: 70%
 
-.. _uml_reader:
-
-lambeq.reader
--------------
-
-.. image:: _static/images/classes_reader.png
-   :width: 100%
-
 .. _uml_rewrite:
 
 lambeq.rewrite
 --------------
 
 .. image:: _static/images/classes_rewrite.png
+   :width: 100%
+
+.. _uml_text2diagram:
+
+lambeq.text2diagram
+-------------------
+
+.. image:: _static/images/classes_text2diagram.png
    :width: 100%
 
 .. _uml_tokeniser:

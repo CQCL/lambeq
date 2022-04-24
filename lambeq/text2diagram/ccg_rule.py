@@ -22,7 +22,7 @@ from typing import Any
 from discopy.biclosed import Box, Diagram, Id, Ty
 from discopy.monoidal import BinaryBoxConstructor
 
-from lambeq.ccg2discocat.ccg_types import CCGAtomicType, replace_cat_result
+from lambeq.text2diagram.ccg_types import CCGAtomicType, replace_cat_result
 
 
 class CCGRuleUseError(Exception):

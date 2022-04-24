@@ -2,7 +2,7 @@ import pytest
 
 from discopy.biclosed import Ty
 
-from lambeq.ccg2discocat.ccg_types import CCGParseError, replace_cat_result, str2biclosed
+from lambeq.text2diagram.ccg_types import CCGParseError, replace_cat_result, str2biclosed
 
 
 def test_str2biclosed():

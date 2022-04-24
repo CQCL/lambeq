@@ -4,10 +4,9 @@ from discopy import biclosed, Word
 from discopy.biclosed import Box
 from discopy.rigid import Cap, Cup, Diagram, Id, Swap, caps
 
-from lambeq import AtomicType, CCGTree
-from lambeq.ccg2discocat.ccg_rule import CCGRuleUseError, CCGRule, GBC, GBX, GFC, GFX, RPL, RPR
-from lambeq.ccg2discocat.ccg_tree import PlanarBX, PlanarFX, PlanarGBX, PlanarGFX
-from lambeq.ccg2discocat.ccg_types import CCGAtomicType
+from lambeq import AtomicType, CCGAtomicType, CCGTree, CCGRule, CCGRuleUseError
+from lambeq.text2diagram.ccg_rule import GBC, GBX, GFC, GFX, RPL, RPR
+from lambeq.text2diagram.ccg_tree import PlanarBX, PlanarFX, PlanarGBX, PlanarGFX
 
 
 N = AtomicType.NOUN
