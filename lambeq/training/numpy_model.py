@@ -102,7 +102,7 @@ class NumpyModel(QuantumModel):
         def diagram_output(*x):
             with Tensor.backend('jax'):
                 result = diagram.lambdify(*self.symbols)(*x).eval().array
-                return self._normalise(result)
+                return self._normalise_vector(result)
 
         self.lambdas[diagram] = jit(diagram_output)
         return self.lambdas[diagram]
@@ -162,7 +162,7 @@ class NumpyModel(QuantumModel):
 
         with Tensor.backend('numpy'):
             return numpy.array([
-                self._normalise(tn.contractors.auto(*d.to_tn()).tensor)
+                self._normalise_vector(tn.contractors.auto(*d.to_tn()).tensor)
                 for d in diagrams])
 
     def forward(self, x: list[Diagram]) -> numpy.ndarray:

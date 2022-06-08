@@ -17,6 +17,7 @@ from __future__ import annotations
 __all__ = ['CCGTree']
 
 from collections.abc import Sequence
+from copy import deepcopy
 import json
 from typing import Any, Dict, Optional, Union, overload
 
@@ -26,7 +27,7 @@ from discopy.biclosed import (Box, Diagram, Functor, Id, Over, Ty, Under,
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (CCGAtomicType, replace_cat_result,
-                                           str2biclosed)
+                                           str2biclosed, biclosed2str)
 
 # Types
 _JSONDictT = Dict[str, Any]
@@ -88,17 +89,6 @@ class PlanarGFX(Box):
 
         self.diagram = diagram
         super().__init__(f'PlanarGFX({dom}, {diagram})', dom, cod)
-
-
-def biclosed2str(biclosed_type: Ty, pretty: bool = False) -> str:
-    if isinstance(biclosed_type, Over):
-        template = '({0}↢{1})' if pretty else '({0}/{1})'
-    elif isinstance(biclosed_type, Under):
-        template = '({0}↣{1})' if pretty else r'({1}\{0})'
-    else:
-        return str(biclosed_type)
-    return template.format(biclosed2str(biclosed_type.left, pretty),
-                           biclosed2str(biclosed_type.right, pretty))
 
 
 class CCGTree:
@@ -197,6 +187,28 @@ class CCGTree:
                    children=[cls.from_json(child)
                              for child in data_dict.get('children', [])])
 
+    def without_trivial_unary_rules(self) -> CCGTree:
+        """Create a new CCGTree from the current tree, with all
+        trivial unary rules (i.e. rules that map X to X) removed.
+
+        This might happen because there is no exact correspondence
+        between CCG types and pregroup types, e.g. both CCG types
+        `NP` and `N` are mapped to the same pregroup type `n`.
+
+        Returns
+        -------
+        :py:class:`lambeq.text2diagram.CCGTree`
+            A new tree free of trivial unary rules.
+        
+        """
+        new_tree = deepcopy(self)
+        while (new_tree.rule == CCGRule.UNARY
+              and new_tree.biclosed_type == new_tree.children[0].biclosed_type):
+            new_tree = new_tree.children[0]
+        new_tree.children = [child.without_trivial_unary_rules() for child
+                             in new_tree.children]
+        return new_tree
+
     def to_json(self) -> _JSONDictT:
         """Convert tree into JSON form."""
         data: _JSONDictT = {'type': biclosed2str(self.biclosed_type)}
@@ -219,32 +231,134 @@ class CCGTree:
     def __repr__(self) -> str:
         return f'{type(self).__name__}("{self.text}")'
 
-    def deriv(self,
-              use_slashes: bool = False,
-              _prefix: str = '') -> str:  # pragma: no cover
-        """Produce a string representation of the tree.
-
-        Parameters
-        ----------
-        use_slashes : bool, default: False
-            Use slashes for CCG types instead of arrows.
-
-        """
+    def _vert_deriv(self, 
+                    chr_set: dict[str, str], 
+                    use_slashes: bool, 
+                    _prefix: str = '') -> str:  # pragma: no cover
+        """Create a vertical string representation of the CCG tree."""
         output_type = biclosed2str(self.biclosed_type, not use_slashes)
         if self.rule == CCGRule.LEXICAL:
-            deriv = f' {output_type} ∋ "{self.text}"'
+            deriv = f' {output_type} {chr_set["SUCH_THAT"]} "{self.text}"'
         else:
-            deriv = (f'{self.rule}: {output_type} ← ' +
-                     ' + '.join(biclosed2str(child.biclosed_type, True)
+            deriv = (f'{self.rule}: {output_type} {chr_set["LEFT_ARROW"]} ' +
+                     ' + '.join(biclosed2str(child.biclosed_type, 
+                                             not use_slashes)
                                 for child in self.children))
         deriv = f'{_prefix}{deriv}'
 
         if self.children:
             if _prefix:
-                _prefix = _prefix[:-1] + ('│ ' if _prefix[-1] == '├' else '  ')
+                _prefix = _prefix[:-1] + \
+                          (f'{chr_set["BAR"]} ' 
+                           if _prefix[-1] == chr_set["JOINT"] 
+                           else '  ')
             for child in self.children[:-1]:
-                deriv += '\n' + child.deriv(use_slashes, _prefix + '├')
-            deriv += '\n' + self.children[-1].deriv(use_slashes, _prefix + '└')
+                deriv += '\n' + child._vert_deriv(chr_set, use_slashes, 
+                                                  _prefix + chr_set["JOINT"])
+            deriv += '\n' + self.children[-1]._vert_deriv(chr_set, use_slashes, 
+                                                          _prefix + 
+                                                          chr_set["CORNER"])
+        return deriv
+
+    def _horiz_deriv(self, 
+                     chr_set: dict[str, str], 
+                     word_spacing: int, 
+                     use_slashes: bool) -> str:  # pragma: no cover
+        """Create a standard CCG diagram for the tree with the 
+        words arranged horizontally."""
+        output_type = biclosed2str(self.biclosed_type, not use_slashes)
+        if output_type.startswith('('):
+            output_type = output_type[1:-1]
+        if self.rule == CCGRule.LEXICAL:
+            width = max(len(output_type), len(self.text))
+            return f'{self.text:{" "}^{width}}\n' \
+                   f'{chr_set["HEAVY_LINE"] * width}\n' \
+                   f'{output_type:{" "}^{width}}'
+
+        lines: list[str] = []
+        for child in self.children:
+            child_deriv = child._horiz_deriv(chr_set, word_spacing, 
+                                             use_slashes).split('\n')
+            for lidx in range(max(len(lines), len(child_deriv))):
+                if lidx < len(lines) and lidx < len(child_deriv):
+                    lines[lidx] += (' ' * word_spacing) + child_deriv[lidx]
+                elif lidx < len(lines):
+                    lines[lidx] += ' ' * (len(lines[lidx - 1]) -
+                                          len(lines[lidx]))
+                else:
+                    target_len = len(lines[lidx - 1]) if lidx > 0 else 0
+                    lines.append(f'{child_deriv[lidx]:{" "}>{target_len}}')
+        target_len = len(lines[lidx - 1]) if lidx > 0 else 0
+        if len(output_type) > target_len:
+            target_len = len(output_type)
+            for i in range(len(lines)):
+                lines[i] = f'{lines[i]:{" "}^{target_len}}'
+
+        rule_symbol = self.rule.symbol
+        lines.append(f'{rule_symbol:{chr_set["LINE"]}>{target_len}}')
+        lines.append(f'{output_type:{" "}^{target_len}}')
+
+        return '\n'.join(lines)
+
+    def deriv(self,
+              word_spacing: int = 2,
+              use_slashes: bool = True,
+              use_ascii: bool = False,
+              vertical: bool = False) -> str:  # pragma: no cover
+        """Produce a string representation of the tree.
+
+        Parameters
+        ----------
+        word_spacing : int, default: 2
+            The minimum number of spaces between the words of
+            the diagram. Only used for horizontal diagrams.
+        use_slashes: bool, default: True
+            Whether to use slashes in the CCG types instead of arrows.
+            Automatically set to True when `use_ascii` is True.
+        use_ascii: bool, default: False
+            Whether to draw using ASCII characters only.
+        vertical: bool, default: False
+            Whether to create a vertical tree representation, 
+            instead of the standard horizontal one.
+
+        Returns
+        -------
+        str
+            A string that contains the graphical representation 
+            of the CCG tree.
+
+        """
+
+        UNICODE_CHAR_SET = {
+            "HEAVY_LINE": '═',
+            "LINE": '─',
+            "BAR": '│',
+            "SUCH_THAT": '∋',
+            "JOINT": '├',
+            "LEFT_ARROW": '←',
+            "CORNER": '└'
+        }
+
+        ASCII_CHAR_SET = {
+            "HEAVY_LINE": '=',
+            "LINE": '-',
+            "BAR": '│',
+            "SUCH_THAT": '<-',
+            "JOINT": '├',
+            "LEFT_ARROW": '<-',
+            "CORNER": '└'
+        }
+
+        if use_ascii:
+            use_slashes = True
+        
+        chr_set = UNICODE_CHAR_SET if not use_ascii \
+            else ASCII_CHAR_SET
+        
+        if not vertical:
+            deriv = self._horiz_deriv(chr_set, word_spacing, use_slashes)
+        else:
+            deriv = self._vert_deriv(chr_set, use_slashes, '')
         return deriv
 
     def to_biclosed_diagram(self, planar: bool = False) -> Diagram:

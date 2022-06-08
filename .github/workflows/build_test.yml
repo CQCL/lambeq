@@ -67,6 +67,9 @@ jobs:
         restore-keys: |
           build_and_test-${{ runner.os }}-pip-${{ matrix.python-version }}-
           build_and_test-${{ runner.os }}-pip-
+    - name: Install DisCoPy from GitHub
+      if: github.ref_name != 'release' && github.ref_name != 'beta'
+      run: pip install git+https://github.com/oxford-quantum-group/discopy
     - name: Install base package
       run: pip install .
     - name: Check package import works
@@ -123,7 +126,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies with type hints
-      run: python -m pip install numpy pytket spacy torch transformers types-PyYAML
+      run: python -m pip install numpy pytket spacy torch types-PyYAML
     - name: Install type checker
       run: python -m pip install mypy
     - name: Type check with mypy

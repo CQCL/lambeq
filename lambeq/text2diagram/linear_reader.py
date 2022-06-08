@@ -1,8 +1,8 @@
-__all__ = ['LinearReader', 'bag_of_words_reader', 'cups_reader',
-           'spiders_reader', 'stairs_reader', 'word_sequence_reader']
+__all__ = ['LinearReader', 'cups_reader',
+           'stairs_reader', 'word_sequence_reader']
 
 from discopy import Word
-from discopy.rigid import Box, Cup, Diagram, Id, Spider, Ty
+from discopy.rigid import Box, Cup, Diagram, Id, Ty
 
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType, tokenised_sentence_type_check
@@ -85,7 +85,5 @@ class LinearReader(Reader):
 
 
 cups_reader = LinearReader(Cup(S, S.r), S >> S, Word('START', S))
-spiders_reader = LinearReader(Spider(2, 1, S))
 stairs_reader = LinearReader(Box('STAIR', S @ S, S))
-bag_of_words_reader = spiders_reader
 word_sequence_reader = cups_reader

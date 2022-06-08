@@ -96,24 +96,40 @@ class RPR(BinaryBoxConstructor, Box):
 class CCGRule(str, Enum):
     """An enumeration of the available CCG rules."""
 
-    UNKNOWN = 'UNK'
-    LEXICAL = 'L'
-    UNARY = 'U'
-    FORWARD_APPLICATION = 'FA'
-    BACKWARD_APPLICATION = 'BA'
-    FORWARD_COMPOSITION = 'FC'
-    BACKWARD_COMPOSITION = 'BC'
-    FORWARD_CROSSED_COMPOSITION = 'FX'
-    BACKWARD_CROSSED_COMPOSITION = 'BX'
-    GENERALIZED_FORWARD_COMPOSITION = 'GFC'
-    GENERALIZED_BACKWARD_COMPOSITION = 'GBC'
-    GENERALIZED_FORWARD_CROSSED_COMPOSITION = 'GFX'
-    GENERALIZED_BACKWARD_CROSSED_COMPOSITION = 'GBX'
-    REMOVE_PUNCTUATION_LEFT = 'LP'
-    REMOVE_PUNCTUATION_RIGHT = 'RP'
-    FORWARD_TYPE_RAISING = 'FTR'
-    BACKWARD_TYPE_RAISING = 'BTR'
-    CONJUNCTION = 'CONJ'
+    _symbol: str
+
+    UNKNOWN = 'UNK', ''
+    LEXICAL = 'L', ''
+    UNARY = 'U', '<U>'
+    FORWARD_APPLICATION = 'FA', '>'
+    BACKWARD_APPLICATION = 'BA', '<'
+    FORWARD_COMPOSITION = 'FC', '>B'
+    BACKWARD_COMPOSITION = 'BC', '<B'
+    FORWARD_CROSSED_COMPOSITION = 'FX', '>Bx'
+    BACKWARD_CROSSED_COMPOSITION = 'BX', '<Bx'
+    GENERALIZED_FORWARD_COMPOSITION = 'GFC', '>Bⁿ'
+    GENERALIZED_BACKWARD_COMPOSITION = 'GBC', '<Bⁿ'
+    GENERALIZED_FORWARD_CROSSED_COMPOSITION = 'GFX', '>Bxⁿ'
+    GENERALIZED_BACKWARD_CROSSED_COMPOSITION = 'GBX', '<Bxⁿ'
+    REMOVE_PUNCTUATION_LEFT = 'LP', '<p'
+    REMOVE_PUNCTUATION_RIGHT = 'RP', '>p'
+    FORWARD_TYPE_RAISING = 'FTR', '>T'
+    BACKWARD_TYPE_RAISING = 'BTR', '<T'
+    CONJUNCTION = 'CONJ', '<&>'
+
+    def __new__(cls, name: str, symbol: str = '') -> CCGRule:
+        obj = str.__new__(cls, name)
+        obj._value_ = name
+        obj._symbol = symbol
+        return obj
+
+    @property
+    def symbol(self) -> str:
+        """The standard CCG symbol for the rule."""
+        if self == self.UNKNOWN:
+            raise CCGRuleUseError(self, 'unknown CCG rule')
+        else:
+            return self._symbol
 
     @classmethod
     def _missing_(cls, _: Any) -> CCGRule:

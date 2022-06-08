@@ -3,6 +3,27 @@
 Release notes
 =============
 
+.. _rel-0.2.3:
+
+`0.2.3 <https://github.com/CQCL/lambeq/releases/tag/0.2.3>`_
+------------------------------------------------------------
+
+- Fix a bug that raised a ``dtype`` error when using the :py:class:`~lambeq.TketModel` on Windows.
+
+- Fix a bug that caused the normalisation of scalar outputs of circuits without open wires using a :py:class:`~lambeq.QuantumModel`.
+
+- Change the behaviour of :py:data:`~lambeq.spiders_reader` such that the :term:`spiders <Frobenius algebra>` decompose logarithmically. This change also affects other rewrite rules that use :term:`spiders <Frobenius algebra>`, such as coordination and relative pronouns.
+
+- Rename ``AtomicType.PREPOSITION`` to :py:data:`AtomicType.PREPOSITIONAL_PHRASE <lambeq.AtomicType.PREPOSITIONAL_PHRASE>`.
+
+- :py:class:`~lambeq.CCGRule`: Add :py:meth:`~lambeq.CCGRule.symbol` method that returns the ASCII symbol of a given :term:`CCG <Combinatory Categorial Grammar (CCG)>` rule.
+
+- :py:class:`~lambeq.CCGTree`: Extend :py:meth:`~lambeq.CCGTree.deriv` method with :term:`CCG <Combinatory Categorial Grammar (CCG)>` output. It is now capable of returning standard CCG diagrams.
+
+- :ref:`Command-line interface <sec-cli>`: Add :term:`CCG <Combinatory Categorial Grammar (CCG)>` mode. When enabled, the output will be a string representation of the CCG diagram corresponding to the :py:class:`~lambeq.CCGTree` object produced by the parser, instead of a :term:`DisCoPy` diagram or circuit.
+
+- Documentation: Add a :ref:`troubleshooting <sec-troubleshooting>` page.
+
 .. _rel-0.2.2:
 
 `0.2.2 <https://github.com/CQCL/lambeq/releases/tag/0.2.2>`_

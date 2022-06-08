@@ -9,6 +9,6 @@ from lambeq import QuantumModel
 def test_normalise():
     model = QuantumModel()
     inputs = np.linspace(-10,10,21)
-    normalised = model._normalise(inputs)
+    normalised = model._normalise_vector(inputs)
     assert abs(normalised.sum()-1.0)<1e-8
     assert np.all(normalised>=0)

@@ -1,11 +1,13 @@
 import pytest
 
 from discopy import Word
-from discopy.rigid import Box, Diagram, Id
+from discopy.rigid import Box, Diagram, Id, Spider
+from discopy.quantum.circuit import Circuit, Ty as QTy, qubit
+from discopy.quantum.gates import Ket, Bra, CX
 
-from lambeq import (AtomicType, BobcatParser, TreeReader, TreeReaderMode,
-                    VerbosityLevel, WebParser, cups_reader, spiders_reader,
-                    stairs_reader)
+from lambeq import (AtomicType, BobcatParser, IQPAnsatz, TreeReader,
+                    TreeReaderMode, VerbosityLevel, WebParser, cups_reader,
+                    spiders_reader, stairs_reader)
 
 
 @pytest.fixture
@@ -27,28 +29,35 @@ def parser():
 
 def test_spiders_reader(sentence, words):
     S = AtomicType.SENTENCE
-    combining_diagram = spiders_reader.combining_diagram
-    assert combining_diagram.dom == S @ S and combining_diagram.cod == S
 
     expected_diagram = (Diagram.tensor(*(Word(word, S) for word in words)) >>
-                        combining_diagram @ Id(S @ S) >>
-                        combining_diagram @ Id(S) >>
-                        combining_diagram)
+                        Spider(len(words), 1, S))
     assert (spiders_reader.sentences2diagrams([sentence])[0] ==
             spiders_reader.sentence2diagram(sentence) == expected_diagram)
 
 
 def test_spiders_reader_tokenised(sentence, words):
     S = AtomicType.SENTENCE
-    combining_diagram = spiders_reader.combining_diagram
-    assert combining_diagram.dom == S @ S and combining_diagram.cod == S
 
     expected_diagram = (Diagram.tensor(*(Word(word, S) for word in words)) >>
-                        combining_diagram @ Id(S @ S) >>
-                        combining_diagram @ Id(S) >>
-                        combining_diagram)
+                        Spider(len(words), 1, S))
     assert (spiders_reader.sentences2diagrams([sentence.split()], tokenised=True)[0] ==
-            spiders_reader.sentence2diagram(sentence) == expected_diagram)
+            spiders_reader.sentence2diagram(sentence.split(), tokenised=True) ==
+            expected_diagram)
+
+
+def test_spiders_reader_circuit(sentence, words):
+    S = AtomicType.SENTENCE
+
+    ansatz = IQPAnsatz({S: 1}, n_layers=1, n_single_qubit_params=0)
+    circuit = ansatz(spiders_reader.sentence2diagram(sentence))
+
+    expected_circuit = Circuit(dom=QTy(), cod=qubit,
+                               boxes=[Ket(0), Ket(0), Ket(0), Ket(0), CX,
+                                      Bra(0), CX, Bra(0), CX, Bra(0)],
+                               offsets=[0, 1, 2, 3, 0, 1, 1, 2, 0, 1])
+
+    assert circuit == expected_circuit
 
 
 def test_sentence2diagram_bad_tokenised_flag(sentence):

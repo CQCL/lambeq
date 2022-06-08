@@ -390,7 +390,7 @@ class BobcatParser(CCGParser):
                 elif atom == 'S':
                     return CCGAtomicType.SENTENCE
                 elif atom == 'PP':
-                    return CCGAtomicType.PREPOSITION
+                    return CCGAtomicType.PREPOSITIONAL_PHRASE
                 elif atom == 'conj':
                     return CCGAtomicType.CONJUNCTION
             raise ValueError(f'Invalid atomic type: {cat.atom!r}')

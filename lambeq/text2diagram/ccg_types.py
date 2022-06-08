@@ -14,14 +14,14 @@
 from __future__ import annotations
 
 __all__ = ['CCGAtomicType', 'CCGParseError', 'replace_cat_result',
-           'str2biclosed']
+           'str2biclosed', 'biclosed2str']
 
 from collections.abc import Callable
 from enum import Enum
 from typing import Any, Optional
 
 from discopy import rigid
-from discopy.biclosed import Ty
+from discopy.biclosed import Ty, Over, Under
 
 from lambeq.core.types import AtomicType
 
@@ -121,6 +121,32 @@ def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
     if extra:
         raise CCGParseError(cat, f'extra text after index {end-1} - "{extra}"')
     return biclosed_type
+
+
+def biclosed2str(biclosed_type: Ty, pretty: bool = False) -> str:
+    """Prepare a string representation of a biclosed type.
+
+    Parameters
+    ----------
+    biclosed_type: :py:class:`discopy.biclosed.Ty`
+        The biclosed type to be represented by a string.
+    pretty: bool, default: False
+        Whether to use arrows instead of slashes in the type.
+
+    Returns
+    -------
+    str
+        The string representation of the type.
+    
+    """
+    if isinstance(biclosed_type, Over):
+        template = '({0}↢{1})' if pretty else '({0}/{1})'
+    elif isinstance(biclosed_type, Under):
+        template = '({0}↣{1})' if pretty else r'({1}\{0})'
+    else:
+        return str(biclosed_type)
+    return template.format(biclosed2str(biclosed_type.left, pretty),
+                           biclosed2str(biclosed_type.right, pretty))
 
 
 def _compound_str2biclosed(cat: str,

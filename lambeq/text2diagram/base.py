@@ -31,11 +31,9 @@ Some simple example readers are included for use:
         connect to the first word box. Also available under the name
         :py:data:`word_sequence_reader`.
     :py:data:`spiders_reader` : :py:class:`LinearReader`
-        This combines the first two word boxes using a spider with three
-        legs. The remaining output is combined with the next word box
-        using another spider, and so on, until a single output remains.
-        Here, each word box has an output type of :py:obj:`S @ S`.
-        Also available under the name :py:data:`bag_of_words_reader`.
+        This compines the word boxes using a spider with one output of
+        type :py:obj:`S`. Also available under the name
+        :py:data:`bag_of_words_reader`.
     :py:data:`stairs_reader` : :py:class:`LinearReader`
         This combines the first two word boxes with a combining box that
         has a single output. Then, each word box is combined with the

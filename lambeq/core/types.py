@@ -35,6 +35,6 @@ class AtomicType(Ty, Enum):
     NOUN = 'n'
     NOUN_PHRASE = 'n'
     SENTENCE = 's'
-    PREPOSITION = 'p'
+    PREPOSITIONAL_PHRASE = 'p'
     CONJUNCTION = 'conj'
     PUNCTUATION = 'punc'

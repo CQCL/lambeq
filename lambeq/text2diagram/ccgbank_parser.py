@@ -431,7 +431,7 @@ class CCGBankParser(CCGParser):
         elif cat == 'S':
             return CCGAtomicType.SENTENCE
         elif cat == 'PP':
-            return CCGAtomicType.PREPOSITION
+            return CCGAtomicType.PREPOSITIONAL_PHRASE
         elif cat == 'conj':
             return CCGAtomicType.CONJUNCTION
         return CCGAtomicType.PUNCTUATION

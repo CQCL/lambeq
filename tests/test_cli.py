@@ -413,6 +413,24 @@ def test_args_validation_invalid_output_format_reader(arg_parser):
         cli.validate_args(cli_args)
 
 
+def test_args_validation_ccg_invalid_format_image(arg_parser):
+    cli_args = arg_parser.parse_args(['--mode', 'ccg',
+                                      '--output_format', 'image',
+                                      '--output_file', 'dummy_file',
+                                      'Input sentence.'])
+    with pytest.raises(ValueError):
+        cli.validate_args(cli_args)
+
+
+def test_args_validation_ccg_invalid_output_reader(arg_parser):
+    cli_args = arg_parser.parse_args(['--mode', 'ccg',
+                                      '--output_file', 'dummy_file',
+                                      '--reader', 'spiders',
+                                      'Input sentence.'])
+    with pytest.raises(ValueError):
+        cli.validate_args(cli_args)
+
+
 def test_correct_arglist_parsing(arg_parser):
     cli_args = arg_parser.parse_args(['--output_format', 'image',
                                       '--output_options', 'fig_width=15',

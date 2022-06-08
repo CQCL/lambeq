@@ -366,7 +366,7 @@ class DepCCGParser(CCGParser):
             if cat.base == 'S':
                 return CCGAtomicType.SENTENCE
             if cat.base == 'PP':
-                return CCGAtomicType.PREPOSITION
+                return CCGAtomicType.PREPOSITIONAL_PHRASE
             if cat.base == 'conj':
                 return CCGAtomicType.CONJUNCTION
             if cat.base in ('LRB', 'RRB') or cat.base in ',.:;':

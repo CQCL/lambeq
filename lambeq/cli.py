@@ -38,11 +38,13 @@ from lambeq.ansatz.tensor import TensorAnsatz, SpiderAnsatz, MPSAnsatz
 from lambeq.pregroups import text_printer
 from lambeq.pregroups.utils import is_pregroup_diagram
 from lambeq.text2diagram.ccg_parser import CCGParser
+from lambeq.text2diagram.ccg_tree import CCGTree
 from lambeq.text2diagram.bobcat_parser import BobcatParser
 from lambeq.text2diagram.depccg_parser import DepCCGParser
 from lambeq.text2diagram.base import Reader
-from lambeq.text2diagram.linear_reader import (cups_reader, spiders_reader,
+from lambeq.text2diagram.linear_reader import (cups_reader,
                                                stairs_reader)
+from lambeq.text2diagram.spiders_reader import spiders_reader
 from lambeq.text2diagram.tree_reader import TreeReader
 from lambeq.tokeniser import SpacyTokeniser
 
@@ -67,7 +69,8 @@ AVAILABLE_IMAGE_TYPES: list[str] = ['png', 'pdf', 'jpeg', 'jpg', 'eps',
                                     'svgz', 'tif', 'tiff']
 
 DEFAULT_ARG_VALUES: dict[str, str] = {'output_format': 'text-unicode',
-                                      'image_format': 'png'}
+                                      'image_format': 'png', 
+                                      'mode': 'string-diagram'}
 
 
 class ArgumentList:
@@ -151,6 +154,14 @@ def prepare_parser() -> argparse.ArgumentParser:
                         nargs='?',
                         default='',
                         help='Sentence to parse.')
+    parser.add_argument(
+            '-m',
+            '--mode',
+            type=str,
+            choices=['string-diagram', 'ccg'],
+            default=DEFAULT_ARG_VALUES['mode'],
+            help='Mode used for the output. Default value: '
+                 f'{DEFAULT_ARG_VALUES["mode"]}')
     parser.add_argument('-i', '--input_file', type=str, help='File to parse.')
 
     output_group = parser.add_argument_group(
@@ -162,7 +173,7 @@ def prepare_parser() -> argparse.ArgumentParser:
             type=str,
             choices=['json', 'pickle', 'text-unicode', 'text-ascii', 'image'],
             help='Format of the output. Use `json` and `pickle` to store the '
-                 'DisCoPy objects in the respective formats, or '
+                 'lambeq / DisCoPy objects in the respective formats, or '
                  '`text-unicode`, `text-ascii` and `image` to store directly '
                  'the derivations in diagrammatic form. Default value: '
                  f'{DEFAULT_ARG_VALUES["output_format"]}')
@@ -198,10 +209,10 @@ def prepare_parser() -> argparse.ArgumentParser:
             '--output_file',
             type=str,
             help='File to write the output. When `output_format` is `json`, '
-                 '`text-ascii` or `text-unicode` and this argument is not '
-                 'provided, lambeq will output to `stdout`. This argument is '
-                 'ignored when `output_format` is `image`, in which case '
-                 '`output_dir` needs to be provided.')
+                 '`text-ascii`, or `text-unicode` and this argument is '
+                 'not provided, lambeq will output to `stdout`. '
+                 'This argument is ignored when `output_format` is `image`, '
+                 'in which case `output_dir` needs to be provided.')
     store_group.add_argument(
             '-d',
             '--output_dir',
@@ -248,7 +259,7 @@ def prepare_parser() -> argparse.ArgumentParser:
             '-c',
             '--root_categories',
             nargs='*',
-            metavar='ROOT_CATS',
+            metavar='ROOT_CAT',
             help='A list of acceptable categories at the root of the diagram.')
 
     rewrite_group = parser.add_argument_group(
@@ -331,23 +342,34 @@ def validate_args(cl_args: argparse.Namespace) -> None:
         raise ValueError(f'{cl_args.output_format} output type incompatible '
                          'with --output_dir option. Did you mean '
                          '--output_file?')
+    if cl_args.mode == 'ccg':
+        if any(v is not None for v in [cl_args.ansatz, cl_args.reader, 
+                                       cl_args.rewrite_rules]):
+            raise ValueError('Readers, rewrite rules, or ansatze cannot be '
+                             'applied to CCG diagrams. In order to use them, '
+                             'be sure `mode` is set to `string-diagram`.')
+        if cl_args.output_format == 'image':
+            raise ValueError('Generating binary images from CCG diagrams is '
+                             'currently not supported. Try text forms, `json` '
+                             'or `pickle`.')
     if cl_args.output_format in ['text-ascii', 'text-unicode', 'json']:
-        if cl_args.ansatz is not None:
-            raise ValueError('Only pregroup diagrams can be stored in '
-                             f'{cl_args.output_format} format. Use pickle or '
-                             'image format or remove the --ansatz argument.')
-        if cl_args.rewrite_rules is not None:
-            raise ValueError('Only pregroup diagrams can be stored in '
-                             f'{cl_args.output_format} format. Use pickle or '
-                             'image format or remove the --rewrite_rules '
-                             'argument.')
-        if cl_args.reader in ['spiders', 'stairs', 'tree']:
-            raise ValueError('Only pregroup diagrams can be stored in '
-                             f'{cl_args.output_format} format. '
-                             f'{cl_args.reader} reader does not return '
-                             'pregroup diagrams. '
-                             'Use pickle or image format or use a different '
-                             'reader/parser.')
+        if cl_args.mode == 'string-diagram':
+            if cl_args.ansatz is not None:
+                raise ValueError('Only pregroup diagrams can be stored in '
+                                f'{cl_args.output_format} format. Use pickle or '
+                                'image format or remove the --ansatz argument.')
+            if cl_args.rewrite_rules is not None:
+                raise ValueError('Only pregroup diagrams can be stored in '
+                                f'{cl_args.output_format} format. Use pickle or '
+                                'image format or remove the --rewrite_rules '
+                                'argument.')
+            if cl_args.reader in ['spiders', 'stairs', 'tree']:
+                raise ValueError('Only pregroup diagrams can be stored in '
+                                f'{cl_args.output_format} format. '
+                                f'{cl_args.reader} reader does not return '
+                                'pregroup diagrams. '
+                                'Use pickle or image format or use a different '
+                                'reader/parser.')
 
 
 class CLIModule(ABC):
@@ -379,7 +401,8 @@ class ParserModule(CLIModule):
 
     def __call__(self,
                  cl_args: argparse.Namespace,
-                 module_input: str) -> list[discopy.Diagram]:
+                 module_input: str) -> Union[list[discopy.Diagram], 
+                                             list[CCGTree]]:
         if cl_args.split_sentences or cl_args.tokenise:
             tokeniser = SpacyTokeniser()
         sentences: Union[list[str], list[list[str]]]
@@ -401,7 +424,15 @@ class ParserModule(CLIModule):
         else:
             parser = AVAILABLE_PARSERS['bobcat'](
                     root_cats=cl_args.root_categories)
-        return parser.sentences2diagrams(sentences, tokenised=cl_args.tokenise)
+
+        if cl_args.mode == 'ccg':
+            trees = parser.sentences2trees(sentences, 
+                                           tokenised=cl_args.tokenise)
+            return [t.without_trivial_unary_rules() 
+                    if t else None for t in trees]
+        else:
+            return parser.sentences2diagrams(sentences, 
+                                             tokenised=cl_args.tokenise)
 
 
 class RewriterModule(CLIModule):
@@ -448,13 +479,34 @@ class AnsatzModule(CLIModule):
         return [ansatz(diagram) for diagram in module_input]
 
 
-class CircuitSaveModule(CLIModule):
-    """Saves the circuit or a tensor diagram to a pickle file or an image
-    and passes the unchanged diagram to the next module."""
+class CCGTreeSaveModule(CLIModule):
+    """Outputs CCG trees to text, json, and pickle formats."""
     def __call__(self,
                  cl_args: argparse.Namespace,
-                 module_input: list[
-                             Union[discopy.Diagram, discopy.Circuit]]) -> None:
+                 module_input: list[CCGTree]) -> None:
+        if cl_args.output_format == 'json':
+            with open(cl_args.output_file, 'w') as f:
+                json.dump([t.to_json() for t in module_input], f)
+        elif cl_args.output_format in ['text-ascii', 'text-unicode']:
+            ascii_art = [t.deriv(use_ascii=(
+                                    cl_args.output_format == 'text-ascii')) 
+                            for t in module_input]
+            if cl_args.output_file is not None:
+                with open(cl_args.output_file, 'w') as f:
+                    f.write('\n'.join(ascii_art))
+            else:
+                print('\n'.join(ascii_art))
+        elif cl_args.output_format == 'pickle':
+            if cl_args.output_file is not None:
+                with open(cl_args.output_file, 'wb') as h:
+                    pickle.dump(module_input, h)    
+
+
+class DiagramSaveModule(CLIModule):
+    """Outputs strings diagrams to text, json, pickle, and image formats.""" 
+    def __call__(self,
+                 cl_args: argparse.Namespace,
+                 module_input: list[discopy.Diagram]) -> None:
         if cl_args.output_format in ['text-ascii', 'text-unicode']:
             for i in range(len(module_input)):
                 if not is_pregroup_diagram(module_input[i]):
@@ -525,11 +577,12 @@ class CircuitSaveModule(CLIModule):
 def main() -> None:
     parser = prepare_parser()
     cl_args = parser.parse_args()
-    allModules = [FileReaderModule(),
-                  ParserModule(),
-                  RewriterModule(),
-                  AnsatzModule(),
-                  CircuitSaveModule()]
+    all_modules = [FileReaderModule(),
+                   ParserModule(),
+                   RewriterModule(),
+                   AnsatzModule()]
+    all_modules += [DiagramSaveModule()] if cl_args.mode == "string-diagram" \
+                                         else [CCGTreeSaveModule()]
     if cl_args.load_args is not None:
         saved_args = yaml.load(open(cl_args.load_args, 'r'),
                                Loader=yaml.FullLoader)
@@ -553,7 +606,7 @@ def main() -> None:
             cl_args.store_args = None
             yaml.dump(vars(cl_args), f, default_flow_style=False)
     data = None
-    for module in allModules:
+    for module in all_modules:
         data = module(cl_args, data)
 
 

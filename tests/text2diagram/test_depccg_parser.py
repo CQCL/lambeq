@@ -22,7 +22,7 @@ def tokenised_sentence():
 
 def test_to_biclosed(depccg_parser):
     mock_type = Mock(is_functor=False, is_NorNP=False, base='PP')
-    assert depccg_parser._to_biclosed(mock_type) == AtomicType.PREPOSITION
+    assert depccg_parser._to_biclosed(mock_type) == AtomicType.PREPOSITIONAL_PHRASE
 
     mock_type.base = 'UNK'
     with pytest.raises(Exception):

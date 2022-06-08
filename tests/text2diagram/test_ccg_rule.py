@@ -10,12 +10,12 @@ from lambeq.text2diagram.ccg_tree import PlanarBX, PlanarFX, PlanarGBX, PlanarGF
 
 
 N = AtomicType.NOUN
-P = AtomicType.PREPOSITION
+P = AtomicType.PREPOSITIONAL_PHRASE
 S = AtomicType.SENTENCE
 
 i = biclosed.Ty()
 n = CCGAtomicType.NOUN
-p = CCGAtomicType.PREPOSITION
+p = CCGAtomicType.PREPOSITIONAL_PHRASE
 punc = CCGAtomicType.PUNCTUATION
 s = CCGAtomicType.SENTENCE
 
@@ -307,6 +307,12 @@ class TestUnknown(CCGRuleTester):
 
     def test_initialisation(self):
         assert CCGRule('missing') == CCGRule.UNKNOWN
+
+
+def test_symbol():
+    assert CCGRule.UNARY.symbol == '<U>'
+    with pytest.raises(CCGRuleUseError):
+        CCGRule.UNKNOWN.symbol
 
 
 def test_check_match():
