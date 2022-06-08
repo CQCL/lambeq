@@ -46,6 +46,7 @@ If you use ``lambeq`` for your research, please cite the accompanying paper [Kea
    :maxdepth: 1
 
    installation
+   troubleshooting
    pipeline
    parsing
    string_diagrams

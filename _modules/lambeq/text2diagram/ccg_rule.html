@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_rule &mdash; lambeq 0.2.2 documentation</title>
+  <title>lambeq.text2diagram.ccg_rule &mdash; lambeq 0.2.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -44,6 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
@@ -205,24 +206,40 @@
 <div class="viewcode-block" id="CCGRule"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGRule">[docs]</a><span class="k">class</span> <span class="nc">CCGRule</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;An enumeration of the available CCG rules.&quot;&quot;&quot;</span>
 
-    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s1">&#39;UNK&#39;</span>
-    <span class="n">LEXICAL</span> <span class="o">=</span> <span class="s1">&#39;L&#39;</span>
-    <span class="n">UNARY</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span>
-    <span class="n">FORWARD_APPLICATION</span> <span class="o">=</span> <span class="s1">&#39;FA&#39;</span>
-    <span class="n">BACKWARD_APPLICATION</span> <span class="o">=</span> <span class="s1">&#39;BA&#39;</span>
-    <span class="n">FORWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;FC&#39;</span>
-    <span class="n">BACKWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;BC&#39;</span>
-    <span class="n">FORWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;FX&#39;</span>
-    <span class="n">BACKWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;BX&#39;</span>
-    <span class="n">GENERALIZED_FORWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GFC&#39;</span>
-    <span class="n">GENERALIZED_BACKWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GBC&#39;</span>
-    <span class="n">GENERALIZED_FORWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GFX&#39;</span>
-    <span class="n">GENERALIZED_BACKWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GBX&#39;</span>
-    <span class="n">REMOVE_PUNCTUATION_LEFT</span> <span class="o">=</span> <span class="s1">&#39;LP&#39;</span>
-    <span class="n">REMOVE_PUNCTUATION_RIGHT</span> <span class="o">=</span> <span class="s1">&#39;RP&#39;</span>
-    <span class="n">FORWARD_TYPE_RAISING</span> <span class="o">=</span> <span class="s1">&#39;FTR&#39;</span>
-    <span class="n">BACKWARD_TYPE_RAISING</span> <span class="o">=</span> <span class="s1">&#39;BTR&#39;</span>
-    <span class="n">CONJUNCTION</span> <span class="o">=</span> <span class="s1">&#39;CONJ&#39;</span>
+    <span class="n">_symbol</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="n">UNKNOWN</span> <span class="o">=</span> <span class="s1">&#39;UNK&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">LEXICAL</span> <span class="o">=</span> <span class="s1">&#39;L&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">UNARY</span> <span class="o">=</span> <span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;U&gt;&#39;</span>
+    <span class="n">FORWARD_APPLICATION</span> <span class="o">=</span> <span class="s1">&#39;FA&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span>
+    <span class="n">BACKWARD_APPLICATION</span> <span class="o">=</span> <span class="s1">&#39;BA&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span>
+    <span class="n">FORWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;FC&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;B&#39;</span>
+    <span class="n">BACKWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;BC&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;B&#39;</span>
+    <span class="n">FORWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;FX&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;Bx&#39;</span>
+    <span class="n">BACKWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;BX&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;Bx&#39;</span>
+    <span class="n">GENERALIZED_FORWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GFC&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;Bⁿ&#39;</span>
+    <span class="n">GENERALIZED_BACKWARD_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GBC&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;Bⁿ&#39;</span>
+    <span class="n">GENERALIZED_FORWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GFX&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;Bxⁿ&#39;</span>
+    <span class="n">GENERALIZED_BACKWARD_CROSSED_COMPOSITION</span> <span class="o">=</span> <span class="s1">&#39;GBX&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;Bxⁿ&#39;</span>
+    <span class="n">REMOVE_PUNCTUATION_LEFT</span> <span class="o">=</span> <span class="s1">&#39;LP&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;p&#39;</span>
+    <span class="n">REMOVE_PUNCTUATION_RIGHT</span> <span class="o">=</span> <span class="s1">&#39;RP&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;p&#39;</span>
+    <span class="n">FORWARD_TYPE_RAISING</span> <span class="o">=</span> <span class="s1">&#39;FTR&#39;</span><span class="p">,</span> <span class="s1">&#39;&gt;T&#39;</span>
+    <span class="n">BACKWARD_TYPE_RAISING</span> <span class="o">=</span> <span class="s1">&#39;BTR&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;T&#39;</span>
+    <span class="n">CONJUNCTION</span> <span class="o">=</span> <span class="s1">&#39;CONJ&#39;</span><span class="p">,</span> <span class="s1">&#39;&lt;&amp;&gt;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGRule</span><span class="p">:</span>
+        <span class="n">obj</span> <span class="o">=</span> <span class="nb">str</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">_value_</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="n">obj</span><span class="o">.</span><span class="n">_symbol</span> <span class="o">=</span> <span class="n">symbol</span>
+        <span class="k">return</span> <span class="n">obj</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;The standard CCG symbol for the rule.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">CCGRuleUseError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;unknown CCG rule&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_symbol</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">_missing_</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">_</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGRule</span><span class="p">:</span>

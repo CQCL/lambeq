@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training: Quantum case &mdash; lambeq 0.2.2 documentation</title>
+  <title>Training: Quantum case &mdash; lambeq 0.2.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -49,6 +49,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
@@ -412,6 +413,22 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;TOKENIZERS_PARALLELISM&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;true&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We disable warnings to filter out issues with the <cite>tqdm</cite> package used in jupyter notebooks. Furthermore, we have to specify whether we want to use parallel computation for the tokenizer used by the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.BobcatParser" title="lambeq.text2diagram.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a>. None of the above impairs the performance of the code.</p>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">30</span>
@@ -425,7 +442,7 @@ div.rendered_html tbody tr:hover {
 <h2>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h2>
 <p>Let’s read the data and print some example sentences.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
@@ -444,7 +461,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
@@ -452,7 +469,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -466,7 +483,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Targets are represented as 2-dimensional arrays:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_labels</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
@@ -474,7 +491,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -491,7 +508,7 @@ div.rendered_html tbody tr:hover {
 <p>We know that the specific dataset only consists of noun phrases, hence, we reduce potential parsing errors by restricting the parser to only return parse trees with the root categories <code class="docutils literal notranslate"><span class="pre">N</span></code> (noun) and <code class="docutils literal notranslate"><span class="pre">NP</span></code> (noun phrase).</p>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
@@ -521,7 +538,7 @@ Turning parse trees to diagrams.
 <h2>Filter and simplify diagrams<a class="headerlink" href="#Filter-and-simplify-diagrams" title="Permalink to this headline"></a></h2>
 <p>We simplify the diagrams by calling <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.normal_form" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a> and filter out any diagrams that could not be parsed.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_diagrams</span> <span class="o">=</span> <span class="p">[</span>
@@ -547,7 +564,7 @@ Turning parse trees to diagrams.
 </div>
 <p>Let’s see the form of the diagram for a relative clause on the subject of a sentence:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_diagrams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
@@ -558,12 +575,12 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_13_0.png" src="../_images/tutorials_trainer_quantum_13_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_15_0.png" src="../_images/tutorials_trainer_quantum_15_0.png" />
 </div>
 </div>
 <p>In object-based relative clauses the noun that follows the relative pronoun is the object of the sentence:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_diagrams</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
@@ -574,7 +591,7 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_15_0.png" src="../_images/tutorials_trainer_quantum_15_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_17_0.png" src="../_images/tutorials_trainer_quantum_17_0.png" />
 </div>
 </div>
 </section>
@@ -582,7 +599,7 @@ Turning parse trees to diagrams.
 <h2>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this headline"></a></h2>
 <p>In order to run the experiments on a quantum computer, we need to apply to string diagrams a quantum <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a>. For this experiment, we will use an <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a>, where noun wires (<code class="docutils literal notranslate"><span class="pre">n</span></code>) are represented by a one-qubit system, and sentence wires (<code class="docutils literal notranslate"><span class="pre">s</span></code>) are discarded (since we deal with noun phrases).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span><span class="p">,</span> <span class="n">IQPAnsatz</span><span class="p">,</span> <span class="n">remove_cups</span>
@@ -601,12 +618,12 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_17_0.png" src="../_images/tutorials_trainer_quantum_17_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_19_0.png" src="../_images/tutorials_trainer_quantum_19_0.png" />
 </div>
 </div>
 <p>Note that we remove the <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> before parameterising the diagrams. By doing so, we reduce the number of post-selections, which makes the model computationally more efficient. The effect of cups removal on a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> is demonstrated below:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">equation</span>
@@ -622,7 +639,7 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_19_0.png" src="../_images/tutorials_trainer_quantum_19_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_21_0.png" src="../_images/tutorials_trainer_quantum_21_0.png" />
 </div>
 </div>
 </section>
@@ -631,7 +648,7 @@ Turning parse trees to diagrams.
 <p>We will use a <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a>, which we initialise by passing all diagrams to the class method
 <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel.from_diagrams" title="lambeq.training.TketModel.from_diagrams"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TketModel.from_diagrams()</span></code></a>. The <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> needs a backend configuration dictionary passed as a keyword argument to the initialisation method. This dictionary must contain entries for <code class="docutils literal notranslate"><span class="pre">backend</span></code>, <code class="docutils literal notranslate"><span class="pre">compilation</span></code> and <code class="docutils literal notranslate"><span class="pre">shots</span></code>. The backend is provided by <a class="reference external" href="https://github.com/CQCL/pytket-extensions">pytket-extensions</a>. In this example, we use <a class="reference internal" href="../glossary.html#term-qiskit"><span class="xref std std-term">qiskit</span></a>‘s AerBackend with 8192 shots.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytket.extensions.qiskit</span> <span class="kn">import</span> <span class="n">AerBackend</span>
@@ -659,7 +676,7 @@ Turning parse trees to diagrams.
 <h2>Define loss and the evaluation metric<a class="headerlink" href="#Define-loss-and-the-evaluation-metric" title="Permalink to this headline"></a></h2>
 <p>We use standard binary cross-entropy as the loss. Optionally, we can provide a dictionary of callable evaluation metrics with the signature <code class="docutils literal notranslate"><span class="pre">metric(y_hat,</span> <span class="pre">y)</span></code>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_hat</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># binary cross-entropy loss</span>
@@ -679,7 +696,7 @@ Turning parse trees to diagrams.
 <li><p><code class="docutils literal notranslate"><span class="pre">A</span></code>: A stability constant, best choice is approx. 0.01 * number of training steps.</p></li>
 </ul>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">QuantumTrainer</span><span class="p">,</span> <span class="n">SPSAOptimizer</span>
@@ -703,7 +720,7 @@ Turning parse trees to diagrams.
 <h2>Creating the datasets<a class="headerlink" href="#Creating-the-datasets" title="Permalink to this headline"></a></h2>
 <p>To facilitate data shuffling and batching, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a native <a class="reference internal" href="../lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> class. Shuffling is enabled by default, and if not specified, the batch size is set to the length of the dataset.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">Dataset</span>
@@ -722,7 +739,7 @@ Turning parse trees to diagrams.
 <h2>Train the model<a class="headerlink" href="#Train-the-model" title="Permalink to this headline"></a></h2>
 <p>We can now pass the datasets to the <a class="reference internal" href="../root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the trainer to start the training.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">evaluation_step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">logging_step</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
@@ -754,7 +771,7 @@ Training completed!
 <h2>Show results<a class="headerlink" href="#Show-results" title="Permalink to this headline"></a></h2>
 <p>It’s time to visualise the results and evaluate the model on the test data.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -791,7 +808,7 @@ Validation accuracy: 0.7419354838709677
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_32_1.png" src="../_images/tutorials_trainer_quantum_32_1.png" />
+<img alt="../_images/tutorials_trainer_quantum_34_1.png" src="../_images/tutorials_trainer_quantum_34_1.png" />
 </div>
 </div>
 <p class="rubric">See also:</p>

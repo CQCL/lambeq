@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.linear_reader &mdash; lambeq 0.2.2 documentation</title>
+  <title>lambeq.text2diagram.linear_reader &mdash; lambeq 0.2.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -44,6 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
@@ -107,11 +108,11 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.linear_reader</h1><div class="highlight"><pre>
-<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LinearReader&#39;</span><span class="p">,</span> <span class="s1">&#39;bag_of_words_reader&#39;</span><span class="p">,</span> <span class="s1">&#39;cups_reader&#39;</span><span class="p">,</span>
-           <span class="s1">&#39;spiders_reader&#39;</span><span class="p">,</span> <span class="s1">&#39;stairs_reader&#39;</span><span class="p">,</span> <span class="s1">&#39;word_sequence_reader&#39;</span><span class="p">]</span>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;LinearReader&#39;</span><span class="p">,</span> <span class="s1">&#39;cups_reader&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;stairs_reader&#39;</span><span class="p">,</span> <span class="s1">&#39;word_sequence_reader&#39;</span><span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Spider</span><span class="p">,</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="n">SentenceType</span><span class="p">,</span> <span class="n">tokenised_sentence_type_check</span>
@@ -194,9 +195,7 @@
 
 
 <span class="n">cups_reader</span> <span class="o">=</span> <span class="n">LinearReader</span><span class="p">(</span><span class="n">Cup</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span><span class="n">r</span><span class="p">),</span> <span class="n">S</span> <span class="o">&gt;&gt;</span> <span class="n">S</span><span class="p">,</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;START&#39;</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
-<span class="n">spiders_reader</span> <span class="o">=</span> <span class="n">LinearReader</span><span class="p">(</span><span class="n">Spider</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
 <span class="n">stairs_reader</span> <span class="o">=</span> <span class="n">LinearReader</span><span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="s1">&#39;STAIR&#39;</span><span class="p">,</span> <span class="n">S</span> <span class="o">@</span> <span class="n">S</span><span class="p">,</span> <span class="n">S</span><span class="p">))</span>
-<span class="n">bag_of_words_reader</span> <span class="o">=</span> <span class="n">spiders_reader</span>
 <span class="n">word_sequence_reader</span> <span class="o">=</span> <span class="n">cups_reader</span>
 </pre></div>
 

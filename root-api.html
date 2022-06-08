@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq package &mdash; lambeq 0.2.2 documentation</title>
+  <title>lambeq package &mdash; lambeq 0.2.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -34,7 +34,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -47,6 +47,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
@@ -156,8 +157,8 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="lambeq.AtomicType.PREPOSITION">
-<span class="sig-name descname"><span class="pre">PREPOSITION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Ty('p')</span></em><a class="headerlink" href="#lambeq.AtomicType.PREPOSITION" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="lambeq.AtomicType.PREPOSITIONAL_PHRASE">
+<span class="sig-name descname"><span class="pre">PREPOSITIONAL_PHRASE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Ty('p')</span></em><a class="headerlink" href="#lambeq.AtomicType.PREPOSITIONAL_PHRASE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -367,8 +368,8 @@ are suppressed)</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="lambeq.CCGAtomicType.PREPOSITION">
-<span class="sig-name descname"><span class="pre">PREPOSITION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Ty('p')</span></em><a class="headerlink" href="#lambeq.CCGAtomicType.PREPOSITION" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="lambeq.CCGAtomicType.PREPOSITIONAL_PHRASE">
+<span class="sig-name descname"><span class="pre">PREPOSITIONAL_PHRASE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">Ty('p')</span></em><a class="headerlink" href="#lambeq.CCGAtomicType.PREPOSITIONAL_PHRASE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -896,6 +897,12 @@ parameters, the codomain may be rewritten.</p>
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="lambeq.CCGRule.symbol">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">symbol</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#lambeq.CCGRule.symbol" title="Permalink to this definition"></a></dt>
+<dd><p>The standard CCG symbol for the rule.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py exception">
@@ -942,12 +949,28 @@ combined with the <code class="xref py py-obj docutils literal notranslate"><spa
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.CCGTree.deriv">
-<span class="sig-name descname"><span class="pre">deriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_slashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">_prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.deriv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.deriv" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">deriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_slashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.deriv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.deriv" title="Permalink to this definition"></a></dt>
 <dd><p>Produce a string representation of the tree.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>use_slashes</strong><span class="classifier">bool, default: False</span></dt><dd><p>Use slashes for CCG types instead of arrows.</p>
+<dt><strong>word_spacing</strong><span class="classifier">int, default: 2</span></dt><dd><p>The minimum number of spaces between the words of
+the diagram. Only used for horizontal diagrams.</p>
+</dd>
+<dt><strong>use_slashes: bool, default: True</strong></dt><dd><p>Whether to use slashes in the CCG types instead of arrows.
+Automatically set to True when <cite>use_ascii</cite> is True.</p>
+</dd>
+<dt><strong>use_ascii: bool, default: False</strong></dt><dd><p>Whether to draw using ASCII characters only.</p>
+</dd>
+<dt><strong>vertical: bool, default: False</strong></dt><dd><p>Whether to create a vertical tree representation, 
+instead of the standard horizontal one.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>str</dt><dd><p>A string that contains the graphical representation 
+of the CCG tree.</p>
 </dd>
 </dl>
 </dd>
@@ -1020,6 +1043,24 @@ using cross composition.</p>
 <dt class="sig sig-object py" id="lambeq.CCGTree.to_json">
 <span class="sig-name descname"><span class="pre">to_json</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.to_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.to_json" title="Permalink to this definition"></a></dt>
 <dd><p>Convert tree into JSON form.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.CCGTree.without_trivial_unary_rules">
+<span class="sig-name descname"><span class="pre">without_trivial_unary_rules</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lambeq.CCGTree" title="lambeq.text2diagram.ccg_tree.CCGTree"><span class="pre">lambeq.text2diagram.ccg_tree.CCGTree</span></a></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.without_trivial_unary_rules"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.without_trivial_unary_rules" title="Permalink to this definition"></a></dt>
+<dd><p>Create a new CCGTree from the current tree, with all
+trivial unary rules (i.e. rules that map X to X) removed.</p>
+<p>This might happen because there is no exact correspondence
+between CCG types and pregroup types, e.g. both CCG types
+<cite>NP</cite> and <cite>N</cite> are mapped to the same pregroup type <cite>n</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.text2diagram.CCGTree</span></code></a></dt><dd><p>A new tree free of trivial unary rules.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>

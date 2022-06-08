@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.base &mdash; lambeq 0.2.2 documentation</title>
+  <title>lambeq.text2diagram.base &mdash; lambeq 0.2.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -44,6 +44,7 @@
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
@@ -140,11 +141,9 @@
 <span class="sd">        connect to the first word box. Also available under the name</span>
 <span class="sd">        :py:data:`word_sequence_reader`.</span>
 <span class="sd">    :py:data:`spiders_reader` : :py:class:`LinearReader`</span>
-<span class="sd">        This combines the first two word boxes using a spider with three</span>
-<span class="sd">        legs. The remaining output is combined with the next word box</span>
-<span class="sd">        using another spider, and so on, until a single output remains.</span>
-<span class="sd">        Here, each word box has an output type of :py:obj:`S @ S`.</span>
-<span class="sd">        Also available under the name :py:data:`bag_of_words_reader`.</span>
+<span class="sd">        This compines the word boxes using a spider with one output of</span>
+<span class="sd">        type :py:obj:`S`. Also available under the name</span>
+<span class="sd">        :py:data:`bag_of_words_reader`.</span>
 <span class="sd">    :py:data:`stairs_reader` : :py:class:`LinearReader`</span>
 <span class="sd">        This combines the first two word boxes with a combining box that</span>
 <span class="sd">        has a single output. Then, each word box is combined with the</span>
