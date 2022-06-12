@@ -42,15 +42,14 @@ from lambeq.text2diagram.ccg_types import CCGAtomicType
 
 if TYPE_CHECKING:
     import depccg
-    from depccg.annotator import annotate_XX, english_annotator
+    from depccg.annotator import annotate_XX, english_annotator, japanese_annotator
     from depccg.cat import Category
 
-
 def _import_depccg() -> None:
-    global depccg, Category, annotate_XX, english_annotator
+    global depccg, Category, annotate_XX, english_annotator, japanese_annotator
     import depccg
     import depccg.allennlp.utils
-    from depccg.annotator import annotate_XX, english_annotator
+    from depccg.annotator import annotate_XX, english_annotator, japanese_annotator
     from depccg.cat import Category
     import depccg.lang
     import depccg.parsing
@@ -88,8 +87,7 @@ class DepCCGParser(CCGParser):
                  use_model_unary_rules: bool = False,
                  annotator: Optional[str] = None,
                  device: int = -1,
-                 root_cats: Iterable[str] = ('S[dcl]', 'S[wq]', 'S[q]',
-                                             'S[qem]', 'NP'),
+                 root_cats: Optional[Iterable[str]] = None,
                  verbose: str = VerbosityLevel.PROGRESS.value,
                  **kwargs: Any) -> None:
         """Instantiate a parser based on `depccg`.
@@ -127,9 +125,38 @@ class DepCCGParser(CCGParser):
                              '"progress" level of verbosity. '
                              f'`{self.verbose}` was given.')
         _import_depccg()
+        if lang == 'en':
+            self.tokenize = False
+            if root_cats is None:
+                root_cats = [
+                    'S[dcl]', 'S[wq]', 'S[q]', 'S[qem]', 'NP']
+            self.annotator_fun = english_annotator.get(annotator, annotate_XX)
+        elif lang == 'ja':
+            if annotator is None:
+                annotator = 'janome'
+            self.tokenize = True
+            if root_cats is None:
+                root_cats = ['NP[case=nc,mod=nm,fin=f]',
+                    'NP[case=nc,mod=nm,fin=t]',
+                    'S[mod=nm,form=attr,fin=t]',
+                    'S[mod=nm,form=base,fin=f]',
+                    'S[mod=nm,form=base,fin=t]',
+                    'S[mod=nm,form=cont,fin=f]',
+                    'S[mod=nm,form=cont,fin=t]',
+                    'S[mod=nm,form=da,fin=f]',
+                    'S[mod=nm,form=da,fin=t]',
+                    'S[mod=nm,form=hyp,fin=t]',
+                    'S[mod=nm,form=imp,fin=f]',
+                    'S[mod=nm,form=imp,fin=t]',
+                    'S[mod=nm,form=r,fin=t]',
+                    'S[mod=nm,form=s,fin=t]',
+                    'S[mod=nm,form=stem,fin=f]',
+                    'S[mod=nm,form=stem,fin=t]']
+            self.annotator_fun = japanese_annotator[annotator]
+        else:
+            raise ValueError('DepCCGParser does not support ' f'`{lang}`.')
 
         depccg.lang.set_global_language_to(lang)
-        self.annotator_fun = english_annotator.get(annotator, annotate_XX)
         self.supertagger, config = depccg.instance_models.load_model(model,
                                                                      device)
         (self.apply_binary_rules,
@@ -347,7 +374,7 @@ class DepCCGParser(CCGParser):
     def _depccg_parse(
             self,
             sentences: list[list[str]]) -> list[list[depccg.tree.ScoredTree]]:
-        doc = self.annotator_fun(sentences)
+        doc = self.annotator_fun(sentences, tokenize=self.tokenize)
         score_result, categories = self.supertagger.predict_doc(
                 [[token.word for token in sentence] for sentence in doc])
 
