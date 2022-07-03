@@ -157,12 +157,12 @@ class DepCCGParser(CCGParser):
                              '"progress" level of verbosity. '
                              f'`{self.verbose}` was given.')
         _import_depccg()
-        if lang == 'en':
+        if lang.lower() == 'en':
             if root_cats is None:
                 root_cats = ['S[dcl]', 'S[wq]', 'S[q]', 'S[qem]', 'NP']
             self.annotator_fun = english_annotator.get(annotator, annotate_XX)
             self.tokenize = tokenize if tokenize is not None else False
-        elif lang == 'ja':
+        elif lang.lower() == 'ja':
             if root_cats is None:
                 root_cats = ['NP[case=nc,mod=nm,fin=f]',
                              'NP[case=nc,mod=nm,fin=t]',
