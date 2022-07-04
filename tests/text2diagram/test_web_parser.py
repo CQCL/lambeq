@@ -1,4 +1,5 @@
 from io import StringIO
+from shutil import ExecError
 import pytest
 from unittest.mock import patch
 
@@ -56,7 +57,7 @@ def test_bad_url():
 
     assert bad_parser.sentence2diagram(
         "Need a proper url", suppress_exceptions=True) is None
-    with pytest.raises(WebParseError):
+    with pytest.raises(Exception):
         bad_parser.sentence2diagram("Need a proper url")
 
 

@@ -1,4 +1,5 @@
 import pytest
+from requests.exceptions import MissingSchema
 
 from discopy import Word
 from discopy.rigid import Box, Diagram, Id, Spider
@@ -8,6 +9,7 @@ from discopy.quantum.gates import Ket, Bra, CX
 from lambeq import (AtomicType, BobcatParser, IQPAnsatz, TreeReader,
                     TreeReaderMode, VerbosityLevel, WebParser, cups_reader,
                     spiders_reader, stairs_reader)
+from lambeq.text2diagram.web_parser import WebParseError
 
 
 @pytest.fixture
@@ -108,7 +110,7 @@ def test_suppress_exceptions(sentence):
     assert bad_reader.sentence2diagram(sentence) is None
 
     bad_reader = TreeReader(bad_parser, suppress_exceptions=False)
-    with pytest.raises(ValueError):
+    with pytest.raises(MissingSchema):
         bad_reader.sentence2diagram(sentence)
 
 

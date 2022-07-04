@@ -19,11 +19,11 @@ __all__ = ['BobcatParser', 'BobcatParseError']
 import json
 import os
 from pathlib import Path
-import shutil
+import requests
 import sys
 import tarfile
+import tempfile
 from typing import Any, Iterable, Optional, Union
-from urllib.request import urlopen, urlretrieve
 import warnings
 
 from discopy.biclosed import Ty
@@ -83,8 +83,7 @@ def model_is_stale(model: str, model_dir: str) -> bool:
         return False
 
     try:
-        with urlopen(url) as f:
-            remote_version = f.read().strip().decode("utf-8")
+        remote_version = requests.get(url).text.strip()
     except Exception:
         return False
 
@@ -107,41 +106,42 @@ def download_model(
     if model_dir is None:
         model_dir = get_model_dir(model_name)
 
-    class ProgressBar:
-        bar = None
-
-        def update(self, chunk: int, chunk_size: int, size: int) -> None:
-            if self.bar is None:
-                self.bar = tqdm(
-                        bar_format='Downloading model: {percentage:3.1f}%|'
-                                   '{bar}|{n:.3f}/{total:.3f}GB '
-                                   '[{elapsed}<{remaining}]',
-                        total=size/1e9)
-            warnings.filterwarnings('ignore', category=TqdmWarning)
-            self.bar.update(chunk_size/1e9)
-
-        def close(self):
-            self.bar.close()
-
     if verbose == VerbosityLevel.TEXT.value:
         print('Downloading model...', file=sys.stderr)
     if verbose == VerbosityLevel.PROGRESS.value:
-        progress_bar = ProgressBar()
-        model_file, headers = urlretrieve(url, reporthook=progress_bar.update)
-        progress_bar.close()
+        response = requests.get(url, stream=True)
+        size = int(response.headers.get('content-length', 0))
+        block_size = 1024
+
+        warnings.filterwarnings('ignore', category=TqdmWarning)
+        progress_bar = tqdm(
+            bar_format='Downloading model: {percentage:3.1f}%|'
+                       '{bar}|{n:.3f}/{total:.3f}GB '
+                       '[{elapsed}<{remaining}]',
+            total=size/1e9)
+
+        model_file = tempfile.NamedTemporaryFile()
+        for data in response.iter_content(block_size):
+            progress_bar.update(len(data)/1e9)
+            model_file.write(data)
+
     else:
-        model_file, headers = urlretrieve(url)
+        content = requests.get(url).content
+        model_file = tempfile.NamedTemporaryFile()
+        model_file.write(content)
 
     # Extract model
+    model_file.seek(0)
     if verbose != VerbosityLevel.SUPPRESS.value:
         print('Extracting model...')
-    with tarfile.open(model_file) as tar:
-        tar.extractall(model_dir)
+    tar = tarfile.open(fileobj=model_file)
+    tar.extractall(model_dir)
+    model_file.close()
 
     # Download version
     ver_url = get_model_url(model_name) + '/' + VERSION_FNAME
-    ver_file, headers = urlretrieve(ver_url)
-    shutil.copy(ver_file, model_dir / VERSION_FNAME)  # type: ignore
+    with open(os.path.join(model_dir, VERSION_FNAME), 'wb') as w:
+        w.write(requests.get(ver_url).content)
 
 
 class BobcatParseError(Exception):

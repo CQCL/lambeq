@@ -45,7 +45,7 @@ from lambeq.core.utils import SentenceBatchType
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
-from lambeq.text2diagram.ccg_types import CONJ_TAG, CCGAtomicType, str2biclosed
+from lambeq.text2diagram.ccg_types import CCGAtomicType, str2biclosed
 
 
 class CCGBankParseError(Exception):
@@ -408,12 +408,9 @@ class CCGBankParser(CCGParser):
                 child, pos = CCGBankParser._build_ccgtree(sentence, pos)
                 children.append(child)
 
-            if tree_match['ccg_str'].endswith(CONJ_TAG):
-                rule = CCGRule.CONJUNCTION
-            else:
-                rule = CCGRule.infer_rule(
-                    Ty().tensor(*(child.biclosed_type for child in children)),
-                    biclosed_type)
+            rule = CCGRule.infer_rule(Ty().tensor(*(child.biclosed_type
+                                                    for child in children)),
+                                      biclosed_type)
             ccg_tree = CCGTree(rule=rule,
                                biclosed_type=biclosed_type,
                                children=children)

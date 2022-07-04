@@ -35,6 +35,7 @@ from discopy import Tensor
 from discopy.tensor import Diagram
 from sympy import default_sort_key, lambdify
 
+from lambeq.training.model import SizedIterable
 from lambeq.training.quantum_model import QuantumModel
 
 
@@ -100,12 +101,39 @@ class NumpyModel(QuantumModel):
             return self.lambdas[diagram]
 
         def diagram_output(*x):
-            with Tensor.backend('jax'):
-                result = diagram.lambdify(*self.symbols)(*x).eval().array
+            with Tensor.backend('jax'), tn.DefaultBackend('jax'):
+                sub_circuit = self._fast_subs([diagram], x)[0]
+                result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
                 return self._normalise_vector(result)
 
         self.lambdas[diagram] = jit(diagram_output)
         return self.lambdas[diagram]
+
+    def _fast_subs(self,
+                   diagrams: list[Diagram],
+                   weights: SizedIterable) -> list[Diagram]:
+        """Substitute weights into a list of parameterised circuit."""
+        parameters = {k: v for k, v in zip(self.symbols, weights)}
+        diagrams = pickle.loads(pickle.dumps(diagrams))  # does fast deepcopy
+        for diagram in diagrams:
+            for b in diagram._boxes:
+                if b.free_symbols:
+                    while hasattr(b, 'controlled'):
+                        b._free_symbols = set()
+                        b = b.controlled
+                    syms, values = [], []
+                    for sym in b._free_symbols:
+                        syms.append(sym)
+                        try:
+                            values.append(parameters[sym])
+                        except KeyError:
+                            raise KeyError(f'Unknown symbol {sym!r}.')
+                    b._data = lambdify(syms, b._data)(*values)
+                    b.drawing_name = b.name
+                    b._free_symbols = set()
+                    if hasattr(b, '_phase'):
+                        b._phase = b._data
+        return diagrams
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> numpy.ndarray:
         """Return the exact prediction for each diagram.
@@ -139,27 +167,7 @@ class NumpyModel(QuantumModel):
             return numpy.array([diag_f(*self.weights)
                                 for diag_f in lambdified_diagrams])
 
-        parameters = {k: v for k, v in zip(self.symbols, self.weights)}
-        diagrams = pickle.loads(pickle.dumps(diagrams))  # does fast deepcopy
-        for diagram in diagrams:
-            for b in diagram._boxes:
-                if b.free_symbols:
-                    while hasattr(b, 'controlled'):
-                        b._free_symbols = set()
-                        b = b.controlled
-                    syms, values = [], []
-                    for sym in b._free_symbols:
-                        syms.append(sym)
-                        try:
-                            values.append(parameters[sym])
-                        except KeyError:
-                            raise KeyError(f'Unknown symbol {sym!r}.')
-                    b._data = lambdify(syms, b._data)(*values)
-                    b.drawing_name = b.name
-                    b._free_symbols = set()
-                    if hasattr(b, '_phase'):
-                        b._phase = b._data
-
+        diagrams = self._fast_subs(diagrams, self.weights)
         with Tensor.backend('numpy'):
             return numpy.array([
                 self._normalise_vector(tn.contractors.auto(*d.to_tn()).tensor)

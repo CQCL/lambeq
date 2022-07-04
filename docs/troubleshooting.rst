@@ -11,10 +11,9 @@ encourage you to
 SSL error [Windows]
 -------------------
 
-When using ``lambeq`` on a Windows machine, the instantiation of the
-BobcatParser might trigger an SSL certificate error. We are currently
-investigating the issue. In the meantime, you can download the model through
-this
+When using ``lambeq <= 0.2.3`` on a Windows machine, the instantiation of the
+BobcatParser might trigger an SSL certificate error. If you require
+``lambeq <= 0.2.3``, you can download the model through this
 `link <https://qnlp.cambridgequantum.com/models/bert/latest/model.tar.gz>`_,
 extract the archive, and provide the path to the BobcatParser:
 
@@ -22,3 +21,14 @@ extract the archive, and provide the path to the BobcatParser:
 
    from lambeq import BobcatParser
    parser = BobcatParser('path/to/model_dir')
+
+Note that using the :py:class:`~lambeq.WebParser` will most likely result in
+the same error.
+
+However, this was resolved in release
+`0.2.4 <https://github.com/CQCL/lambeq/releases/tag/0.2.4>`_. Please consider
+upgrading lambeq:
+
+.. code-block:: bash
+
+    pip install --upgrade lambeq

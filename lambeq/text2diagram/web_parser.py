@@ -15,12 +15,9 @@ from __future__ import annotations
 
 __all__ = ['WebParser', 'WebParseError']
 
-import json
+import requests
 import sys
 from typing import Optional
-from urllib.error import HTTPError
-from urllib.parse import urlencode
-from urllib.request import urlopen
 
 from tqdm.auto import tqdm
 
@@ -34,13 +31,14 @@ SERVICE_URL = 'https://cqc.pythonanywhere.com/tree/json'
 
 
 class WebParseError(OSError):
-    def __init__(self, sentence: str, error_code: int) -> None:
+    def __init__(self, sentence: str) -> None:
         self.sentence = sentence
-        self.error_code = error_code
 
     def __str__(self) -> str:
-        return (f'Online parsing of sentence {repr(self.sentence)} failed, '
-                f'Web status code: {self.error_code}.')
+        return (f'Web parser could not parse {repr(self.sentence)}.'
+                'Check that you are using the correct URL. '
+                'If the URL is correct, this means the parser could not parse '
+                'your sentence.')
 
 
 class WebParser(CCGParser):
@@ -136,25 +134,20 @@ class WebParser(CCGParser):
         trees: list[Optional[CCGTree]] = []
         if verbose == VerbosityLevel.TEXT.value:
             print('Parsing sentences.', file=sys.stderr)
-        for sent in tqdm(
+        for sentence in tqdm(
                 sentences,
                 desc='Parsing sentences',
                 leave=False,
                 disable=verbose != VerbosityLevel.PROGRESS.value):
-            params = urlencode({'sentence': sent})
-            url = f'{self.service_url}?{params}'
+            params = {'sentence': sentence}
 
             try:
-                with urlopen(url) as f:
-                    data = json.load(f)
-            except HTTPError as e:
+                data = requests.get(self.service_url, params=params).json()
+            except requests.RequestException as e:
                 if suppress_exceptions:
                     tree = None
-                else:
-                    raise WebParseError(str(sentence), e.code)
-            except Exception as e:
-                if suppress_exceptions:
-                    tree = None
+                elif type(e) == requests.JSONDecodeError:
+                    raise WebParseError(str(sentence))
                 else:
                     raise e
             else:
