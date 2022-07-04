@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.2.3 documentation</title>
+  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.2.4 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.3
+                0.2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -155,7 +155,7 @@
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
-<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CONJ_TAG</span><span class="p">,</span> <span class="n">CCGAtomicType</span><span class="p">,</span> <span class="n">str2biclosed</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CCGAtomicType</span><span class="p">,</span> <span class="n">str2biclosed</span>
 
 
 <div class="viewcode-block" id="CCGBankParseError"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGBankParseError">[docs]</a><span class="k">class</span> <span class="nc">CCGBankParseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -518,12 +518,9 @@
                 <span class="n">child</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
                 <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 
-            <span class="k">if</span> <span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;ccg_str&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">CONJ_TAG</span><span class="p">):</span>
-                <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">CONJUNCTION</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">infer_rule</span><span class="p">(</span>
-                    <span class="n">Ty</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">)),</span>
-                    <span class="n">biclosed_type</span><span class="p">)</span>
+            <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">infer_rule</span><span class="p">(</span><span class="n">Ty</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span>
+                                                    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">)),</span>
+                                      <span class="n">biclosed_type</span><span class="p">)</span>
             <span class="n">ccg_tree</span> <span class="o">=</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
                                <span class="n">biclosed_type</span><span class="o">=</span><span class="n">biclosed_type</span><span class="p">,</span>
                                <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">)</span>

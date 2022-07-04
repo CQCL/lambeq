@@ -3,6 +3,17 @@
 Release notes
 =============
 
+.. _rel-0.2.4:
+
+`0.2.4 <https://github.com/CQCL/lambeq/releases/tag/0.2.4>`_
+------------------------------------------------------------
+
+- Fix a bug that caused the :py:class:`~lambeq.BobcatParser` and the :py:class:`~lambeq.WebParser` to trigger an SSL certificate error using Windows.
+
+- Fix false positives in assigning conjunction rule using the :py:class:`~lambeq.CCGBankParser`. The rule ``, + X[conj] -> X[conj]`` is a case of removing left punctuation, but was being assigned conjunction erroneously.
+
+- Add support for using ``jax`` as backend of ``tensornetwork`` when setting ``use_jit=True`` in the :py:class:`~lambeq.NumpyModel`. The interface is not affected by this change, but performance of the model is significantly improved.
+
 .. _rel-0.2.3:
 
 `0.2.3 <https://github.com/CQCL/lambeq/releases/tag/0.2.3>`_

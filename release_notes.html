@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Release notes &mdash; lambeq 0.2.3 documentation</title>
+  <title>Release notes &mdash; lambeq 0.2.4 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -33,7 +33,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.3
+                0.2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -77,6 +77,7 @@
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-4">0.2.4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rel-0-2-3">0.2.3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rel-0-2-2">0.2.2</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rel-0-2-1">0.2.1</a></li>
@@ -144,8 +145,16 @@
 </style>
 <section id="release-notes">
 <span id="sec-release-notes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline"></a></h1>
+<section id="rel-0-2-4">
+<span id="id2"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.4">0.2.4</a><a class="headerlink" href="#rel-0-2-4" title="Permalink to this headline"></a></h2>
+<ul class="simple">
+<li><p>Fix a bug that caused the <a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a> and the <a class="reference internal" href="root-api.html#lambeq.WebParser" title="lambeq.WebParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebParser</span></code></a> to trigger an SSL certificate error using Windows.</p></li>
+<li><p>Fix false positives in assigning conjunction rule using the <a class="reference internal" href="root-api.html#lambeq.CCGBankParser" title="lambeq.CCGBankParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a>. The rule <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">+</span> <span class="pre">X[conj]</span> <span class="pre">-&gt;</span> <span class="pre">X[conj]</span></code> is a case of removing left punctuation, but was being assigned conjunction erroneously.</p></li>
+<li><p>Add support for using <code class="docutils literal notranslate"><span class="pre">jax</span></code> as backend of <code class="docutils literal notranslate"><span class="pre">tensornetwork</span></code> when setting <code class="docutils literal notranslate"><span class="pre">use_jit=True</span></code> in the <a class="reference internal" href="root-api.html#lambeq.NumpyModel" title="lambeq.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a>. The interface is not affected by this change, but performance of the model is significantly improved.</p></li>
+</ul>
+</section>
 <section id="rel-0-2-3">
-<span id="id2"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.3">0.2.3</a><a class="headerlink" href="#rel-0-2-3" title="Permalink to this headline"></a></h2>
+<span id="id4"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.3">0.2.3</a><a class="headerlink" href="#rel-0-2-3" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>Fix a bug that raised a <code class="docutils literal notranslate"><span class="pre">dtype</span></code> error when using the <a class="reference internal" href="root-api.html#lambeq.TketModel" title="lambeq.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> on Windows.</p></li>
 <li><p>Fix a bug that caused the normalisation of scalar outputs of circuits without open wires using a <a class="reference internal" href="root-api.html#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a>.</p></li>
@@ -158,7 +167,7 @@
 </ul>
 </section>
 <section id="rel-0-2-2">
-<span id="id4"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.2">0.2.2</a><a class="headerlink" href="#rel-0-2-2" title="Permalink to this headline"></a></h2>
+<span id="id6"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.2">0.2.2</a><a class="headerlink" href="#rel-0-2-2" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>Add support for Python 3.10.</p></li>
 <li><p>Unify class hierarchies for parsers and readers: <a class="reference internal" href="root-api.html#lambeq.CCGParser" title="lambeq.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGParser</span></code></a> is now a subclass of <a class="reference internal" href="root-api.html#lambeq.Reader" title="lambeq.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> and placed in the common package <a class="reference internal" href="lambeq.text2diagram.html#module-lambeq.text2diagram" title="lambeq.text2diagram"><code class="xref py py-mod docutils literal notranslate"><span class="pre">text2diagram</span></code></a>. The old packages <code class="xref py py-mod docutils literal notranslate"><span class="pre">reader</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code> are no longer available. Compatibility problems with previous versions should be minimal, since from Release <a class="reference internal" href="#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> and onwards all <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> classes can be imported from the global namespace.</p></li>
@@ -169,7 +178,7 @@
 </ul>
 </section>
 <section id="rel-0-2-1">
-<span id="id6"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.1">0.2.1</a><a class="headerlink" href="#rel-0-2-1" title="Permalink to this headline"></a></h2>
+<span id="id8"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.1">0.2.1</a><a class="headerlink" href="#rel-0-2-1" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>A new <a class="reference internal" href="lambeq.training.html#lambeq.training.Checkpoint" title="lambeq.training.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpoint</span></code></a> class that implements pickling and file operations from the <a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a> and <a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>.</p></li>
 <li><p>Improvements to the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> module, allowing multiple diagrams to be accepted as input to the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a>.</p></li>
@@ -177,16 +186,16 @@
 </ul>
 </section>
 <section id="rel-0-2-0">
-<span id="id8"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.0">0.2.0</a><a class="headerlink" href="#rel-0-2-0" title="Permalink to this headline"></a></h2>
+<span id="id10"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.0">0.2.0</a><a class="headerlink" href="#rel-0-2-0" title="Permalink to this headline"></a></h2>
 <ul class="simple">
-<li><p>A new state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id9"><span>[SC2021]</span></a>, fully integrated with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, which replaces depccg as the default parser of the toolkit. The new <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser has better performance, simplifies installation, and provides compatibility with Windows (which was not supported due to a depccg conflict). depccg is still supported as an alternative external dependency.</p></li>
+<li><p>A new state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id11"><span>[SC2021]</span></a>, fully integrated with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, which replaces depccg as the default parser of the toolkit. The new <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser has better performance, simplifies installation, and provides compatibility with Windows (which was not supported due to a depccg conflict). depccg is still supported as an alternative external dependency.</p></li>
 <li><p>A <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package, providing a selection of trainers, models, and optimizers that greatly simplify supervised training for most of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s use cases, classical and quantum. The new package adds several new features to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, such as the ability to save to and restore models from checkpoints.</p></li>
 <li><p>Furthermore, the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package uses <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>’s tensor network capability to contract tensor diagrams efficiently. In particular, <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy 0.4.1</span></a>’s new unitary and density matrix simulators result in substantially faster training speeds compared to the previous version.</p></li>
 <li><p>A command-line interface, which provides most of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s functionality from the command line. For example, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can now be used as a standard command-line pregroup parser.</p></li>
 <li><p>A web parser class that can send parsing queries to an online API, so that local installation of a parser is not strictly necessary anymore. The web parser is particularly helpful for testing purposes, interactive usage or when a local parser is unavailable, but should not be used for serious experiments.</p></li>
 <li><p>A new <a class="reference internal" href="lambeq.pregroups.html#module-lambeq.pregroups" title="lambeq.pregroups"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pregroups</span></code></a> package that provides methods for easy creation of pregroup diagrams, removal of cups, and printing of diagrams in text form (i.e. in a terminal).</p></li>
 <li><p>A new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a> class that exploits the biclosed structure of CCG grammatical derivations.</p></li>
-<li><p>Three new rewrite rules for relative pronouns <a class="reference internal" href="bibliography.html#scc2014a" id="id10"><span>[SCC2014a]</span></a> <a class="reference internal" href="bibliography.html#scc2014b" id="id11"><span>[SCC2014b]</span></a> and coordination <a class="reference internal" href="bibliography.html#kar2016" id="id12"><span>[Kar2016]</span></a>.</p></li>
+<li><p>Three new rewrite rules for relative pronouns <a class="reference internal" href="bibliography.html#scc2014a" id="id12"><span>[SCC2014a]</span></a> <a class="reference internal" href="bibliography.html#scc2014b" id="id13"><span>[SCC2014b]</span></a> and coordination <a class="reference internal" href="bibliography.html#kar2016" id="id14"><span>[Kar2016]</span></a>.</p></li>
 <li><p>Tokenisation features have been added in all parsers and readers.</p></li>
 <li><p>Additional generator methods and minor improvements for the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGBankParser" title="lambeq.text2diagram.CCGBankParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a> class.</p></li>
 <li><p>Improved and more detailed package structure.</p></li>
@@ -196,7 +205,7 @@
 </ul>
 </section>
 <section id="rel-0-1-2">
-<span id="id14"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.2">0.1.2</a><a class="headerlink" href="#rel-0-1-2" title="Permalink to this headline"></a></h2>
+<span id="id16"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.2">0.1.2</a><a class="headerlink" href="#rel-0-1-2" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>Add URLs to the setup file.</p></li>
 <li><p>Fix logo link in README.</p></li>
@@ -205,7 +214,7 @@
 </ul>
 </section>
 <section id="rel-0-1-1">
-<span id="id16"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.1">0.1.1</a><a class="headerlink" href="#rel-0-1-1" title="Permalink to this headline"></a></h2>
+<span id="id18"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.1">0.1.1</a><a class="headerlink" href="#rel-0-1-1" title="Permalink to this headline"></a></h2>
 <ul class="simple">
 <li><p>Update install script to use PyPI package.</p></li>
 <li><p>Add badges and documentation link to the README file.</p></li>
@@ -217,7 +226,7 @@
 </ul>
 </section>
 <section id="rel-0-1-0">
-<span id="id18"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.0">0.1.0</a><a class="headerlink" href="#rel-0-1-0" title="Permalink to this headline"></a></h2>
+<span id="id20"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.0">0.1.0</a><a class="headerlink" href="#rel-0-1-0" title="Permalink to this headline"></a></h2>
 <p>The initial release of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, containing a lot of core material. Main features:</p>
 <ul class="simple">
 <li><p>Converting sentences to string diagrams.</p></li>

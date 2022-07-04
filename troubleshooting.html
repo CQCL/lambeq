@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Troubleshooting &mdash; lambeq 0.2.3 documentation</title>
+  <title>Troubleshooting &mdash; lambeq 0.2.4 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -34,7 +34,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.3
+                0.2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -145,14 +145,21 @@ encourage you to
 <a class="reference external" href="https://github.com/CQCL/lambeq/issues/new">submit an issue</a>.</p>
 <section id="ssl-error-windows">
 <h2>SSL error [Windows]<a class="headerlink" href="#ssl-error-windows" title="Permalink to this headline"></a></h2>
-<p>When using <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> on a Windows machine, the instantiation of the
-BobcatParser might trigger an SSL certificate error. We are currently
-investigating the issue. In the meantime, you can download the model through
-this
+<p>When using <code class="docutils literal notranslate"><span class="pre">lambeq</span> <span class="pre">&lt;=</span> <span class="pre">0.2.3</span></code> on a Windows machine, the instantiation of the
+BobcatParser might trigger an SSL certificate error. If you require
+<code class="docutils literal notranslate"><span class="pre">lambeq</span> <span class="pre">&lt;=</span> <span class="pre">0.2.3</span></code>, you can download the model through this
 <a class="reference external" href="https://qnlp.cambridgequantum.com/models/bert/latest/model.tar.gz">link</a>,
 extract the archive, and provide the path to the BobcatParser:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
 <span class="n">parser</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="p">(</span><span class="s1">&#39;path/to/model_dir&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that using the <a class="reference internal" href="root-api.html#lambeq.WebParser" title="lambeq.WebParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebParser</span></code></a> will most likely result in
+the same error.</p>
+<p>However, this was resolved in release
+<a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.4">0.2.4</a>. Please consider
+upgrading lambeq:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install --upgrade lambeq
 </pre></div>
 </div>
 </section>

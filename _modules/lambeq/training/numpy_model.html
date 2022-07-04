@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.numpy_model &mdash; lambeq 0.2.3 documentation</title>
+  <title>lambeq.training.numpy_model &mdash; lambeq 0.2.4 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.3
+                0.2.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -145,6 +145,7 @@
 <span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Diagram</span>
 <span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">default_sort_key</span><span class="p">,</span> <span class="n">lambdify</span>
 
+<span class="kn">from</span> <span class="nn">lambeq.training.model</span> <span class="kn">import</span> <span class="n">SizedIterable</span>
 <span class="kn">from</span> <span class="nn">lambeq.training.quantum_model</span> <span class="kn">import</span> <span class="n">QuantumModel</span>
 
 
@@ -210,12 +211,39 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">diagram</span><span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">diagram_output</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">):</span>
-            <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">):</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)(</span><span class="o">*</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">array</span>
+            <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">),</span> <span class="n">tn</span><span class="o">.</span><span class="n">DefaultBackend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">):</span>
+                <span class="n">sub_circuit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fast_subs</span><span class="p">([</span><span class="n">diagram</span><span class="p">],</span> <span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">sub_circuit</span><span class="o">.</span><span class="n">to_tn</span><span class="p">())</span><span class="o">.</span><span class="n">tensor</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise_vector</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">diagram</span><span class="p">]</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">diagram_output</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">diagram</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_fast_subs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                   <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">],</span>
+                   <span class="n">weights</span><span class="p">:</span> <span class="n">SizedIterable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Substitute weights into a list of parameterised circuit.&quot;&quot;&quot;</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="n">weights</span><span class="p">)}</span>
+        <span class="n">diagrams</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">diagrams</span><span class="p">))</span>  <span class="c1"># does fast deepcopy</span>
+        <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">_boxes</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">:</span>
+                    <span class="k">while</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;controlled&#39;</span><span class="p">):</span>
+                        <span class="n">b</span><span class="o">.</span><span class="n">_free_symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+                        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">controlled</span>
+                    <span class="n">syms</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">_free_symbols</span><span class="p">:</span>
+                        <span class="n">syms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">sym</span><span class="p">])</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown symbol </span><span class="si">{</span><span class="n">sym</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                    <span class="n">b</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">lambdify</span><span class="p">(</span><span class="n">syms</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_data</span><span class="p">)(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
+                    <span class="n">b</span><span class="o">.</span><span class="n">drawing_name</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">name</span>
+                    <span class="n">b</span><span class="o">.</span><span class="n">_free_symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;_phase&#39;</span><span class="p">):</span>
+                        <span class="n">b</span><span class="o">.</span><span class="n">_phase</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">_data</span>
+        <span class="k">return</span> <span class="n">diagrams</span>
 
 <div class="viewcode-block" id="NumpyModel.get_diagram_output"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.get_diagram_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Return the exact prediction for each diagram.</span>
@@ -249,27 +277,7 @@
             <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">diag_f</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
                                 <span class="k">for</span> <span class="n">diag_f</span> <span class="ow">in</span> <span class="n">lambdified_diagrams</span><span class="p">])</span>
 
-        <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)}</span>
-        <span class="n">diagrams</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">diagrams</span><span class="p">))</span>  <span class="c1"># does fast deepcopy</span>
-        <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">_boxes</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">:</span>
-                    <span class="k">while</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;controlled&#39;</span><span class="p">):</span>
-                        <span class="n">b</span><span class="o">.</span><span class="n">_free_symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-                        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">controlled</span>
-                    <span class="n">syms</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-                    <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">_free_symbols</span><span class="p">:</span>
-                        <span class="n">syms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
-                        <span class="k">try</span><span class="p">:</span>
-                            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">sym</span><span class="p">])</span>
-                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown symbol </span><span class="si">{</span><span class="n">sym</span><span class="si">!r}</span><span class="s1">.&#39;</span><span class="p">)</span>
-                    <span class="n">b</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">lambdify</span><span class="p">(</span><span class="n">syms</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">_data</span><span class="p">)(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
-                    <span class="n">b</span><span class="o">.</span><span class="n">drawing_name</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">name</span>
-                    <span class="n">b</span><span class="o">.</span><span class="n">_free_symbols</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-                    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;_phase&#39;</span><span class="p">):</span>
-                        <span class="n">b</span><span class="o">.</span><span class="n">_phase</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">_data</span>
-
+        <span class="n">diagrams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fast_subs</span><span class="p">(</span><span class="n">diagrams</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;numpy&#39;</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_normalise_vector</span><span class="p">(</span><span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="o">.</span><span class="n">to_tn</span><span class="p">())</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span>
