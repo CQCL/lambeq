@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['BaseAnsatz', 'CircuitAnsatz', 'IQPAnsatz',
-           'MPSAnsatz', 'SpiderAnsatz', 'Symbol', 'TensorAnsatz']
+__all__ = ['BaseAnsatz', 'CircuitAnsatz', 'IQPAnsatz', 'Sim14Ansatz',
+           'Sim15Ansatz', 'MPSAnsatz', 'SpiderAnsatz',
+           'Symbol', 'TensorAnsatz']
 
 from lambeq.ansatz.base import BaseAnsatz, Symbol
-from lambeq.ansatz.circuit import CircuitAnsatz, IQPAnsatz
+from lambeq.ansatz.circuit import (CircuitAnsatz, IQPAnsatz,
+                                   Sim14Ansatz, Sim15Ansatz)
 from lambeq.ansatz.tensor import MPSAnsatz, SpiderAnsatz, TensorAnsatz
