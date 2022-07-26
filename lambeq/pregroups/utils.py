@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,13 +14,13 @@
 
 from __future__ import annotations
 
-from discopy import Box, Cup, Diagram, Swap, Id, Ty, Word
+from discopy import Box, Cup, Diagram, Id, Swap, Ty, Word
 
 CUP_TOKEN = '**CUP**'
 
 
 def is_pregroup_diagram(diagram: Diagram) -> bool:
-    """Check if a :py:class:`discopy.rigid.Diagram` is a pregroup diagram.
+    """Check if a diagram is a pregroup diagram.
 
     Adapted from :py:class:`discopy.grammar.pregroup.draw`.
 
@@ -53,26 +53,27 @@ def create_pregroup_diagram(
     cod: Ty,
     morphisms: list[tuple[type, int, int]]
 ) -> Diagram:
-    r"""Create a :py:class:`discopy.rigid.Diagram` from a list of cups and swaps.
+    r"""Create a :py:class:`discopy.rigid.Diagram` from cups and swaps.
 
         >>> n, s = Ty('n'), Ty('s')
-        >>> words = [
-        ...     Word('she', n), Word('goes', n.r @ s @ n.l), Word('home', n)]
+        >>> words = [Word('she', n), Word('goes', n.r @ s @ n.l),
+        ...          Word('home', n)]
         >>> morphisms = [(Cup, 0, 1), (Cup, 3, 4)]
         >>> diagram = create_pregroup_diagram(words, Ty('s'), morphisms)
 
     Parameters
     ----------
     words : list of :py:class:`discopy.grammar.pregroup.Word`
-        A list of :py:class:`~discopy.grammar.pregroup.Word` s corresponding to
-        the words of the sentence.
+        A list of :py:class:`~discopy.grammar.pregroup.Word` s
+        corresponding to the words of the sentence.
     cod : :py:class:`discopy.rigid.Ty`
         The output type of the diagram.
     morphisms: list of tuple[type, int, int]
-        A list of tuples of the form (morphism, start_wire_idx, end_wire_idx).
+        A list of tuples of the form:
+            (morphism, start_wire_idx, end_wire_idx).
         Morphisms can be :py:class:`~discopy.rigid.Cup` s or
-        :py:class:`~discopy.rigid.Swap` s, while the two numbers define the
-        indices of the wires on which the morphism is applied.
+        :py:class:`~discopy.rigid.Swap` s, while the two numbers define
+        the indices of the wires on which the morphism is applied.
 
     Returns
     -------
@@ -96,14 +97,13 @@ def create_pregroup_diagram(
 
     for idx, (typ, start, end) in enumerate(morphisms):
         if typ not in (Cup, Swap):
-            raise ValueError(f"Unknown morphism type: {typ}")
+            raise ValueError(f'Unknown morphism type: {typ}')
         box = typ(types[start:start+1], types[end:end+1])
 
         boxes.append(box)
         actual_idx = start
         for pr_idx in range(idx):
-            if morphisms[pr_idx][0] == Cup and \
-                    morphisms[pr_idx][1] < start:
+            if morphisms[pr_idx][0] == Cup and morphisms[pr_idx][1] < start:
                 actual_idx -= 2
         offsets.append(actual_idx)
 
@@ -179,8 +179,8 @@ def _remove_cups(diagram: Diagram) -> Diagram:
 def remove_cups(diagram: Diagram) -> Diagram:
     """Remove cups from a :py:class:`discopy.rigid.Diagram`.
 
-    Diagrams with less cups become circuits with less post-selection, which
-    results in faster QML experiments.
+    Diagrams with less cups become circuits with less post-selection,
+    which results in faster QML experiments.
 
     Parameters
     ----------

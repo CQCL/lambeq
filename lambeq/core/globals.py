@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ class VerbosityLevel(Enum):
           - :py:obj:`'suppress'`
           - No output.
 
-    All outputs are printed to stderr. Visual Studio Code does not always
-    display progress bars correctly, use :py:obj:`'progress'` level reporting
-    in Visual Studio Code at your own risk.
+    All outputs are printed to stderr. Visual Studio Code does not
+    always display progress bars correctly, use :py:obj:`'progress'`
+    level reporting in Visual Studio Code at your own risk.
 
     """
 

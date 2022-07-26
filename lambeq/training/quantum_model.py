@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,16 +20,18 @@ Module containing the base class for a quantum lambeq model.
 """
 from __future__ import annotations
 
-import os
 from abc import abstractmethod
-from typing import Union
+import os
+from typing import Any, Union
 
-import numpy as np
 from discopy import Tensor
 from discopy.tensor import Diagram
+import numpy as np
 
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
+
+_StrPathT = Union[str, 'os.PathLike[str]']
 
 
 class QuantumModel(Model):
@@ -38,9 +40,11 @@ class QuantumModel(Model):
     Attributes
     ----------
     symbols : list of symbols
-        A sorted list of all :py:class:`Symbols <.Symbol>` occurring in the data.
+        A sorted list of all :py:class:`Symbols <.Symbol>` occurring in
+        the data.
     weights : SizedIterable
-        A data structure containing the numeric values of the model parameters
+        A data structure containing the numeric values of the model
+        parameters
     SMOOTHING : float
         A smoothing constant
 
@@ -49,14 +53,14 @@ class QuantumModel(Model):
     SMOOTHING = 1e-9
 
     def __init__(self) -> None:
-        """Initialise an instance of a :py:class:`QuantumModel` base class."""
+        """Initialise a :py:class:`QuantumModel`."""
         super().__init__()
 
     def _normalise_vector(self, predictions: np.ndarray) -> np.ndarray:
         """Apply smoothing to predictions.
-        
-        Does not normalise scalar values. However, returns the absolute value
-        of scalars.
+
+        Does not normalise scalar values; instead, returns the absolute
+        value of scalars.
 
         """
         backend = Tensor.get_backend()
@@ -83,9 +87,9 @@ class QuantumModel(Model):
 
     @classmethod
     def from_checkpoint(cls,
-                        checkpoint_path: Union[str, os.PathLike],
-                        **kwargs) -> QuantumModel:
-        """Load the model weights and symbols from a training checkpoint.
+                        checkpoint_path: _StrPathT,
+                        **kwargs: Any) -> QuantumModel:
+        """Load the weights and symbols from a training checkpoint.
 
         Parameters
         ----------
@@ -126,8 +130,8 @@ class QuantumModel(Model):
         Parameters
         ----------
         diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>` to be
-            evaluated.
+            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+            to be evaluated.
 
         """
 

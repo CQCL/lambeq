@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,20 +22,22 @@ from __future__ import annotations
 
 import os
 import pickle
-from typing import Union
+from typing import Any, Union
 
-import tensornetwork as tn
-import torch
 from discopy import Tensor
 from discopy.tensor import Diagram
+import tensornetwork as tn
+import torch
 
 from lambeq.ansatz.base import Symbol
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
+_StrPathT = Union[str, 'os.PathLike[str]']
+
 
 class PytorchModel(Model, torch.nn.Module):
-    """A lambeq model for the classical pipeline using the PyTorch backend."""
+    """A lambeq model for the classical pipeline using PyTorch."""
 
     def __init__(self, **kwargs) -> None:
         """Initialise a PytorchModel."""
@@ -63,9 +65,9 @@ class PytorchModel(Model, torch.nn.Module):
 
     @classmethod
     def from_checkpoint(cls,
-                        checkpoint_path: Union[str, os.PathLike],
-                        **kwargs) -> PytorchModel:
-        """Load the model's weights and symbols from a training checkpoint.
+                        checkpoint_path: _StrPathT,
+                        **kwargs: Any) -> PytorchModel:
+        """Load the weights and symbols from a training checkpoint.
 
         Parameters
         ----------
@@ -88,13 +90,36 @@ class PytorchModel(Model, torch.nn.Module):
         except KeyError as e:
             raise e
 
+    def make_checkpoint(self, checkpoint_path: _StrPathT) -> None:
+        """Save the model weights and symbols to a training checkpoint.
+
+        Parameters
+        ----------
+        checkpoint_path : str or `os.PathLike`
+            Path that points to the checkpoint file. If
+            the file does not exist, it will be created.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the directory in which the checkpoint file is to be
+            saved does not exist.
+
+        """
+        checkpoint = Checkpoint()
+        checkpoint.add_many({'model_symbols': self.symbols,
+                             'model_weights': self.weights,
+                             'model_state_dict': self.state_dict()})
+        checkpoint.to_file(checkpoint_path)
+
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
-        """Perform the tensor contraction of each diagram using tensornetwork.
+        """Contract diagrams using tensornetwork.
 
         Parameters
         ----------
         diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Diagrams <discopy.tensor.Diagram>` to be evaluated.
+            The :py:class:`Diagrams <discopy.tensor.Diagram>` to be
+            evaluated.
 
         Raises
         ------
@@ -123,16 +148,16 @@ class PytorchModel(Model, torch.nn.Module):
                 [tn.contractors.auto(*d.to_tn()).tensor for d in diagrams])
 
     def forward(self, x: list[Diagram]) -> torch.Tensor:
-        """Perform default forward pass of a lambeq model by contracting
-        tensors.
+        """Perform default forward pass by contracting tensors.
 
-        In case of a different datapoint (e.g. list of tuple) or additional
-        computational steps, please override this method.
+        In case of a different datapoint (e.g. list of tuple) or
+        additional computational steps, please override this method.
 
         Parameters
         ----------
         x : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Diagrams <discopy.tensor.Diagram>` to be evaluated.
+            The :py:class:`Diagrams <discopy.tensor.Diagram>` to be
+            evaluated.
 
         Returns
         -------

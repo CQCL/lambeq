@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,23 +11,33 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+Web parser
+==========
+A parser that retrieves parses from a web server, thus forgoes the need
+to have a parser installed locally.
+
+"""
+
 from __future__ import annotations
 
 __all__ = ['WebParser', 'WebParseError']
 
-import requests
 import sys
 from typing import Optional
 
+import requests
 from tqdm.auto import tqdm
 
-from lambeq.core.utils import SentenceBatchType, tokenised_batch_type_check,\
-        untokenised_batch_type_check
 from lambeq.core.globals import VerbosityLevel
+from lambeq.core.utils import (SentenceBatchType, tokenised_batch_type_check,
+                               untokenised_batch_type_check)
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_tree import CCGTree
 
-SERVICE_URL = 'https://cqc.pythonanywhere.com/tree/json'
+SERVICE_URLS = {
+    'depccg': 'https://cqc.pythonanywhere.com/tree/json'
+}
 
 
 class WebParseError(OSError):
@@ -35,31 +45,30 @@ class WebParseError(OSError):
         self.sentence = sentence
 
     def __str__(self) -> str:
-        return (f'Web parser could not parse {repr(self.sentence)}.'
-                'Check that you are using the correct URL. '
-                'If the URL is correct, this means the parser could not parse '
-                'your sentence.')
+        return (f'Web parser could not parse {repr(self.sentence)}')
 
 
 class WebParser(CCGParser):
-    """Wrapper that allows passing parser queries to an online interface."""
+    """Wrapper that allows passing parser queries to an online service."""
 
     def __init__(
             self,
-            service_url: str = SERVICE_URL,
+            parser: str = 'depccg',
             verbose: str = VerbosityLevel.SUPPRESS.value) -> None:
         """Initialise a web parser.
 
         Parameters
         ----------
-        service_url : str, default: 'https://cqc.pythonanywhere.com/tree/json'
-            The URL to the parser. By default, use CQC's CCG tree
-            parser.
+        parser : str, optional
+            The web parser to use. By default, this is depccg parser.
         verbose : str, default: 'suppress',
             See :py:class:`VerbosityLevel` for options.
 
         """
-        self.service_url = service_url
+        if parser.lower() not in SERVICE_URLS:
+            raise ValueError(f'Unknown web parser: {parser}')
+
+        self.service_url = SERVICE_URLS[parser]
         if not VerbosityLevel.has_value(verbose):
             raise ValueError(f'`{verbose}` is not a valid verbose value for '
                              'WebParser.')
@@ -83,7 +92,8 @@ class WebParser(CCGParser):
             its return entry is :py:obj:`None`.
         verbose : str, optional
             See :py:class:`VerbosityLevel` for options. If set, it takes
-            priority over the :py:attr:`verbose` attribute of the parser.
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Returns
         -------
@@ -96,8 +106,8 @@ class WebParser(CCGParser):
         URLError
             If the service URL is not well formed.
         ValueError
-            If a sentence is blank or type of the sentence does not match
-            `tokenised` flag.
+            If a sentence is blank or type of the sentence does not
+            match `tokenised` flag.
         WebParseError
             If the parser fails to obtain a parse tree from the server.
 

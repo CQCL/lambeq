@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,35 +11,42 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+Bobcat parser
+=============
+A chart-based parser based on the C&C parser, with scores predicted by a
+transformer.
+
+"""
 
 from __future__ import annotations
 
 __all__ = ['BobcatParser', 'BobcatParseError']
 
+from collections.abc import Iterable
 import json
 import os
 from pathlib import Path
-import requests
 import sys
 import tarfile
 import tempfile
-from typing import Any, Iterable, Optional, Union
+from typing import Any, Optional, Union
 import warnings
 
 from discopy.biclosed import Ty
-
+import requests
 import torch
-from transformers import AutoTokenizer
 from tqdm import TqdmWarning
 from tqdm.auto import tqdm
+from transformers import AutoTokenizer
 
 from lambeq.bobcat import (BertForChartClassification, Category,
                            ChartParser, Grammar, ParseTree,
                            Sentence, Supertag, Tagger)
+from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (SentenceBatchType,
                                tokenised_batch_type_check,
                                untokenised_batch_type_check)
-from lambeq.core.globals import VerbosityLevel
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
@@ -295,8 +302,8 @@ class BobcatParser(CCGParser):
         Parameters
         ----------
         sentences : list of str, or list of list of str
-            The sentences to be parsed, passed either as strings or as lists
-            of tokens.
+            The sentences to be parsed, passed either as strings or as
+            lists of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
@@ -304,8 +311,9 @@ class BobcatParser(CCGParser):
         tokenised : bool, default: False
             Whether each sentence has been passed as a list of tokens.
         verbose : str, optional
-            See :py:class:`VerbosityLevel` for options. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Returns
         -------

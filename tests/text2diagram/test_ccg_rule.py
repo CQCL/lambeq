@@ -1,12 +1,13 @@
 import pytest
 
 from discopy import biclosed, Word
+from discopy.cat import AxiomError
 from discopy.biclosed import Box
-from discopy.rigid import Cap, Cup, Diagram, Id, Swap, caps
+from discopy.rigid import Cap, Cup, Diagram, Id, Swap, caps, cups
 
 from lambeq import AtomicType, CCGAtomicType, CCGTree, CCGRule, CCGRuleUseError
 from lambeq.text2diagram.ccg_rule import GBC, GBX, GFC, GFX, RPL, RPR
-from lambeq.text2diagram.ccg_tree import PlanarBX, PlanarFX, PlanarGBX, PlanarGFX
+from lambeq.text2diagram.ccg_tree import PlanarBX, PlanarFX, PlanarGBX, PlanarGFX, UnarySwap
 
 
 N = AtomicType.NOUN
@@ -284,6 +285,91 @@ class TestUnary(CCGRuleTester):
     biclosed_diagram = Box('be', i, s)
 
     diagram = Word('be', S)
+
+
+class TestUnarySwap(CCGRuleTester):
+    tree = CCGTree(
+        rule='FA',
+        biclosed_type=s,
+        children=[
+            CCGTree(
+                rule='U',
+                biclosed_type=s << s,
+                children=[CCGTree('put simply', biclosed_type=n >> s)]),
+            CCGTree(
+                rule='BA',
+                biclosed_type=s,
+                children=[
+                    CCGTree(rule='BA',
+                        biclosed_type=n,
+                        children=[
+                            CCGTree('all', biclosed_type=n),
+                            CCGTree(
+                                rule='U',
+                                biclosed_type=n >> n,
+                                children=[
+                                    CCGTree(
+                                        rule='FC',
+                                        biclosed_type=s << n,
+                                        children=[
+                                            CCGTree(
+                                                rule='FTR',
+                                                biclosed_type=s << (n >> s),
+                                                children=[CCGTree('you', biclosed_type=n)]
+                                            ),
+                                            CCGTree('need', biclosed_type=(n >> s) << n)
+                                        ]
+                                    )
+                                ]
+                            )
+                        ]
+                    ),
+                    CCGTree('is love', biclosed_type=n >> s)
+                ]
+            )
+        ]
+    )
+
+    biclosed_diagram = (
+        (Box('put simply', i, (i << (i << s)) >> s)
+         @ Box('all', i, n)
+         @ Box('you', i, n)
+         @ Box('need', i, (n >> n) << ((n >> i) >> i))
+         @ Box('is love', i, n >> s))
+        >> UnarySwap(s << s) @ biclosed.Id(n) @ biclosed.Curry(biclosed.BA(n >> n)) @ biclosed.Id(((n >> n) << ((n >> i) >> i)) @ (n >> s))
+        >> biclosed.Id((s << s) @ n) @ biclosed.FC(n << (n >> n), (n >> n) << ((n >> i) >> i)) @ biclosed.Id(n >> s)
+        >> biclosed.Id((s << s) @ n) @ UnarySwap(n >> n) @ biclosed.Id(n >> s)
+        >> biclosed.Id(s << s) @ biclosed.BA(n >> n) @ biclosed.Id(n >> s)
+        >> biclosed.Id(s << s) @ biclosed.BA(n >> s)
+        >> biclosed.FA(s << s)
+    )
+
+    diagram = (
+        (Word('put simply', S.l @ S)
+         @ Word('all', N)
+         @ Word('you', N)
+         @ Word('need', (N >> N) @ N.r)
+         @ Word('is love', N >> S))
+        >> Swap(S.l, S) @ Id(N @ N) @ caps(N >> N, (N >> N).l) @ Id((N >> N) @ N.r @ (N >> S))
+        >> Id((S << S) @ N) @ Cup(N, N.r) @ Id(N) @ cups((N >> N).l, N >> N) @ Id(N.r @ (N >> S))
+        >> Id((S << S) @ N) @ Swap(N, N.r) @ Id(N >> S)
+        >> Id(S << S) @ Cup(N, N.r) @ Cup(N, N.r) @ Id(S)
+        >> Id(S) @ Cup(S.l, S)
+    )
+
+    def test_planar_biclosed_diagram(self):
+        with pytest.raises(AxiomError):
+            self.tree.to_biclosed_diagram(planar=True)
+
+    def test_planar_diagram(self):
+        with pytest.raises(AxiomError):
+            self.tree.to_diagram(planar=True)
+
+    test_infer_rule = None
+
+    def test_error(self):
+        with pytest.raises(ValueError):
+            UnarySwap(s)
 
 
 class TestUnknown(CCGRuleTester):

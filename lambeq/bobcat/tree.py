@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -78,7 +78,11 @@ class Dependency:
                 f'{self.unary_rule_id}')
 
 
+@dataclass
 class Variable:
+    fillers: list[IndexedWord]
+    filled: bool
+
     def __init__(self, word: Optional[IndexedWord] = None) -> None:
         if word is not None:
             self.fillers = [word]
@@ -233,9 +237,14 @@ class ParseTree:
 
     @property
     def word(self) -> Optional[str]:
-        return (self.var_map[self.cat.var].filler.word
-                if self.rule == Rule.L
-                else None)
+        return self.variable.filler.word if self.rule == Rule.L else None
+
+    @property
+    def variable(self) -> Variable:
+        try:
+            return self.var_map[self.cat.var]
+        except KeyError:
+            raise AttributeError('variable is not in map')
 
     @property
     def coordinated_or_type_raised(self) -> bool:
@@ -268,13 +277,13 @@ def Coordination(cat: Category,
     var_map = {k: v.as_filled(False) for k, v in right.var_map.items()}
     unfilled_deps = right.unfilled_deps.copy()
     try:
-        var = right.var_map[right.cat.var]
-    except KeyError:
+        var = right.variable
+    except AttributeError:
         pass
     else:
         if var.filled:
             unfilled_deps.append(Dependency(Relation.CONJ,
-                                            left.var_map[left.cat.var].filler,
+                                            left.variable.filler,
                                             cat.argument.var,
                                             0))
     return ParseTree(Rule.CONJ, cat, left, right, unfilled_deps, [], var_map)
@@ -287,7 +296,10 @@ def TypeChanging(rule: Rule,
                  unary_rule_id: int,
                  replace: bool) -> ParseTree:
     head = left if rule != Rule.LP else right
-    outer_var = head.var_map.get(head.cat.var, None)
+    try:
+        outer_var = head.variable
+    except AttributeError:
+        outer_var = None
     unfilled_deps = []
     if replace:
         new_var = (cat.argument.argument.var
@@ -339,8 +351,8 @@ def TypeRaising(cat: Category, left: ParseTree) -> ParseTree:
         unfilled_deps = []
 
     try:
-        var_map = {1: left.var_map[left.cat.var]}
-    except KeyError:
+        var_map = {1: left.variable}
+    except AttributeError:
         var_map = {}
 
     rule = Rule.FTR if cat.fwd else Rule.BTR

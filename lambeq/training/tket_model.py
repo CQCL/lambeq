@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,25 +13,30 @@
 # limitations under the License.
 
 """
-TketModel
-=========
-Module implementing a lambeq model based on a quantum backend, via `tket`.
+Tket Model
+==========
+Module based on a quantum backend, using `tket`.
 
 """
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
-import numpy as np
 from discopy.quantum import Circuit, Id, Measure
 from discopy.tensor import Diagram
+import numpy as np
 
 from lambeq.training.quantum_model import QuantumModel
 
 
 class TketModel(QuantumModel):
-    """A lambeq model for either shot-based simulations of a quantum
-    pipeline or experiments run on quantum hardware using `tket`."""
+    """Model based on `tket`.
+
+    This can run either shot-based simulations of a quantum
+    pipeline or experiments run on quantum hardware using `tket`.
+
+    """
 
     def __init__(self, **kwargs) -> None:
         """Initialise TketModel based on the `t|ket>` backend.
@@ -39,14 +44,13 @@ class TketModel(QuantumModel):
         Other Parameters
         ----------------
         backend_config : dict
-            Dictionary containing the backend configuration. Must include the
-            fields `'backend'`, `'compilation'` and `'shots'`.
+            Dictionary containing the backend configuration. Must
+            include the fields `backend`, `compilation` and `shots`.
 
         Raises
         ------
         KeyError
-            If `backend_config` is not provided or `backend_config` has missing
-            fields.
+            If `backend_config` is not provided or has missing fields.
 
         """
         if 'backend_config' not in kwargs:
@@ -76,7 +80,8 @@ class TketModel(QuantumModel):
         Parameters
         ----------
         diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>` to be evaluated.
+            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+            to be evaluated.
 
         Raises
         ------
@@ -113,14 +118,14 @@ class TketModel(QuantumModel):
     def forward(self, x: list[Diagram]) -> np.ndarray:
         """Perform default forward pass of a lambeq quantum model.
 
-        In case of a different datapoint (e.g. list of tuple) or additional
-        computational steps, please override this method.
+        In case of a different datapoint (e.g. list of tuple) or
+        additional computational steps, please override this method.
 
         Parameters
         ----------
         x : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>` to be
-            evaluated.
+            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+            to be evaluated.
 
         Returns
         -------

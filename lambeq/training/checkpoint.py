@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,15 @@
 
 """
 Checkpoint
-=====
+==========
 Module containing the lambeq checkpoint class.
 
 """
 from __future__ import annotations
 
+from collections.abc import Mapping
 import os
 import pickle
-from collections.abc import Mapping
 from typing import Any, Iterator, Union
 
 
@@ -37,7 +37,7 @@ class Checkpoint(Mapping):
     """
 
     def __init__(self) -> None:
-        """Initialise an instance of :py:class:`Checkpoint` base class."""
+        """Initialise a :py:class:`Checkpoint`."""
         self.entries: dict[str, Any] = {}
 
     def __len__(self) -> int:
@@ -115,8 +115,7 @@ class Checkpoint(Mapping):
         return checkpoint
 
     def to_file(self, path: Union[str, os.PathLike]) -> None:
-        """Save the checkpoint contents to a file and deletes the in-memory
-        copy.
+        """Save entries to a file and deletes the in-memory copy.
 
         Parameters
         ----------
@@ -124,6 +123,10 @@ class Checkpoint(Mapping):
             Path to the checkpoint file.
 
         """
-        with open(path, 'wb') as ckp:
-            pickle.dump(self.entries, ckp)
+        try:
+            with open(path, 'wb+') as ckp:
+                pickle.dump(self.entries, ckp)
+        except FileNotFoundError:
+            raise FileNotFoundError('The directory does not exist. Check path '
+                                    f'{path}')
         self.entries = {}

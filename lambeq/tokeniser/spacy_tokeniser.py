@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,8 @@
 
 """
 Spacy Tokeniser
-==============
-A :py:class:`SpacyTokeniser` is a module providing tokenisation functionality
-for parsers and readers.
+===============
+A tokeniser that wraps SpaCy.
 
 """
 
@@ -27,11 +26,11 @@ __all__ = ['SpacyTokeniser']
 from collections.abc import Iterable
 import logging
 
-from lambeq.tokeniser import Tokeniser
-
 import spacy
 import spacy.cli
 from spacy.lang.en import English
+
+from lambeq.tokeniser import Tokeniser
 
 
 class SpacyTokeniser(Tokeniser):
@@ -76,7 +75,7 @@ class SpacyTokeniser(Tokeniser):
         Returns
         -------
         list of list of str
-            A list of tokenised sentences. Each sentence is given as a list
+            A list of tokenised sentences, where each sentence is a list
             of tokens.
 
         """

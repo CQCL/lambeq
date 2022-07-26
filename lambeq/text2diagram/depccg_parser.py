@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,22 +11,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+DepCCG parser
+=============
+Parser that wraps DepCCG.
+
+"""
 
 from __future__ import annotations
 
 __all__ = ['DepCCGParser', 'DepCCGParseError']
 
+from collections.abc import Iterable
 import functools
 import logging
-from typing import Any, Iterable, Optional, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 
 from discopy import Diagram
 from discopy.biclosed import Ty
 
-from lambeq.core.utils import SentenceBatchType, SentenceType,\
-        tokenised_batch_type_check, untokenised_batch_type_check,\
-        tokenised_sentence_type_check
 from lambeq.core.globals import VerbosityLevel
+from lambeq.core.utils import (
+        SentenceBatchType, SentenceType,
+        tokenised_batch_type_check, tokenised_sentence_type_check,
+        untokenised_batch_type_check)
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
@@ -80,8 +88,8 @@ class DepCCGParser(CCGParser):
                  use_model_unary_rules: bool = False,
                  annotator: Optional[str] = None,
                  device: int = -1,
-                 root_cats: Iterable[str] = [
-                     'S[dcl]', 'S[wq]', 'S[q]', 'S[qem]', 'NP'],
+                 root_cats: Iterable[str] = ('S[dcl]', 'S[wq]', 'S[q]',
+                                             'S[qem]', 'NP'),
                  verbose: str = VerbosityLevel.PROGRESS.value,
                  **kwargs: Any) -> None:
         """Instantiate a parser based on `depccg`.
@@ -103,9 +111,9 @@ class DepCCGParser(CCGParser):
             supports 'candc' and 'spacy'.
         device : int, optional
             The ID of the GPU to use. By default, uses the CPU.
-        root_cats : iterable of str, default: ['S[dcl]', 'S[wq]', 'S[q]',
-            'S[qem]', 'NP'], a list of categories allowed
-            at the root of the parse.
+        root_cats : iterable of str, default: ['S[dcl]', 'S[wq]',
+                                               'S[q]', 'S[qem]', 'NP']
+            A list of categories allowed at the root of the parse.
         verbose : str, default: 'progress',
             Controls the command-line output of the parser. Only
             'progress' option is available for this parser.
@@ -116,7 +124,7 @@ class DepCCGParser(CCGParser):
         self.verbose = verbose
         if self.verbose != VerbosityLevel.PROGRESS.value:
             raise ValueError('DepCCGParser only supports '
-                             '\'progress\' level of verbosity. '
+                             '"progress" level of verbosity. '
                              f'`{self.verbose}` was given.')
         _import_depccg()
 
@@ -158,8 +166,8 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         sentences : list of str, or list of list of str
-            The sentences to be parsed, passed either as strings or as lists
-            of tokens.
+            The sentences to be parsed, passed either as strings or as
+            lists of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
@@ -167,9 +175,10 @@ class DepCCGParser(CCGParser):
         tokenised : bool, default: False
             Whether each sentence has been passed as a list of tokens.
         verbose : str, optional
-            Controls the form of progress tracking. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser. This class
-            only supports 'progress' verbosity level - a progress bar.
+            Controls the form of progress tracking. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser. This class only supports 'progress' verbosity level
+            - a progress bar.
 
         Returns
         -------
@@ -187,7 +196,7 @@ class DepCCGParser(CCGParser):
             verbose = self.verbose
         if verbose != VerbosityLevel.PROGRESS.value:
             raise ValueError('DepCCGParser only supports '
-                             '\'progress\' level of verbosity. '
+                             '"progress" level of verbosity. '
                              f'`{self.verbose}` was given.')
         if tokenised:
             if not tokenised_batch_type_check(sentences):
@@ -240,8 +249,8 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         sentence : str, list[str]
-            The sentence to be parsed, passed either as a string, or as a list
-            of tokens.
+            The sentence to be parsed, passed either as a string, or as
+            a list of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
@@ -292,8 +301,8 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         sentence : str, list[str]
-            The sentence to be parsed, passed either as a string, or as a list
-            of tokens.
+            The sentence to be parsed, passed either as a string, or as
+            a list of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
@@ -373,11 +382,11 @@ class DepCCGParser(CCGParser):
                 return CCGAtomicType.PUNCTUATION
         else:
             if cat.slash == '/':
-                return (DepCCGParser._to_biclosed(cat.left) <<
-                        DepCCGParser._to_biclosed(cat.right))
+                return (DepCCGParser._to_biclosed(cat.left)
+                        << DepCCGParser._to_biclosed(cat.right))
             if cat.slash == '\\':
-                return (DepCCGParser._to_biclosed(cat.right) >>
-                        DepCCGParser._to_biclosed(cat.left))
+                return (DepCCGParser._to_biclosed(cat.right)
+                        >> DepCCGParser._to_biclosed(cat.left))
         raise Exception(f'Invalid CCG type: {cat.base}')
 
     @staticmethod

@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,17 +23,19 @@ Subclass :py:class:`Lambeq` to define a custom trainer.
 """
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
+from collections.abc import Callable, Mapping
+from datetime import datetime
+from math import ceil
 import os
 import random
 import socket
 import sys
-from abc import ABC, abstractmethod
-from datetime import datetime
-from math import ceil
-from typing import TYPE_CHECKING, Any, Callable, Mapping, Optional, Union
+from typing import Any, Optional, Union
+from typing import TYPE_CHECKING
 
-from tqdm.auto import tqdm, trange
 from discopy import Tensor
+from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:
     from torch.utils.tensorboard import SummaryWriter
@@ -87,8 +89,8 @@ class Trainer(ABC):
         use_tensorboard : bool, default: False
             Use Tensorboard for visualisation of the training logs.
         log_dir : str or PathLike, optional
-            Location of model checkpoints (and tensorboard log). Default is
-            `runs/**CURRENT_DATETIME_HOSTNAME**`.
+            Location of model checkpoints (and tensorboard log).
+            Default is `runs/**CURRENT_DATETIME_HOSTNAME**`.
         from_checkpoint : bool, default: False
             Starts training from the checkpoint, saved in the log_dir.
         verbose : str, default: 'text',
@@ -153,7 +155,7 @@ class Trainer(ABC):
     def _generate_stat_report(self,
                               train_loss: Optional[float] = None,
                               val_loss: Optional[float] = None) -> str:
-        """Generate a text to be displayed together with the progress bar.
+        """Generate the text to display with the progress bar.
 
         Parameters
         ----------
@@ -186,7 +188,8 @@ class Trainer(ABC):
                 report.append(f'valid/{name}: {str_value}')
         return '   '.join(report)
 
-    def load_training_checkpoint(self, log_dir: _StrPathT) -> Mapping[str, Any]:
+    def load_training_checkpoint(self,
+                                 log_dir: _StrPathT) -> Mapping[str, Any]:
         """Load model from a checkpoint.
 
         Parameters
@@ -205,7 +208,7 @@ class Trainer(ABC):
             If the file does not exist.
         """
         if self.verbose == VerbosityLevel.TEXT.value:
-            print("Restore last checkpoint...", file=sys.stderr)
+            print('Restore last checkpoint...', file=sys.stderr)
         checkpoint_path = os.path.join(log_dir, 'model.lt')
         checkpoint = Checkpoint.from_file(checkpoint_path)
         self.model.weights = checkpoint['model_weights']
@@ -220,7 +223,7 @@ class Trainer(ABC):
         if self.seed is not None:
             random.setstate(checkpoint['random_state'])
         if self.verbose == VerbosityLevel.TEXT.value:
-            print("Checkpoint restored successfully!", file=sys.stderr)
+            print('Checkpoint restored successfully!', file=sys.stderr)
         return checkpoint
 
     def save_checkpoint(self,
@@ -245,9 +248,10 @@ class Trainer(ABC):
 
     @abstractmethod
     def _add_extra_chkpoint_info(self) -> Mapping[str, Any]:
-        """Add any additional information to the training checkpoint. These
-        might include model-specific information like the random state of the
-        backend or the state of the optimizer.
+        """Add any additional information to the training checkpoint.
+
+        These might include model-specific information like the random
+        state of the backend or the state of the optimizer.
 
         Returns
         -------
@@ -259,8 +263,10 @@ class Trainer(ABC):
     @abstractmethod
     def _load_extra_chkpoint_info(self,
                                   checkpoint: Mapping[str, Any]) -> None:
-        """Load the additional checkpoint information that was previously
-        added by calling the method `_add_extra_chkpoint_info()`.
+        """Load additional checkpoint information.
+
+        This includes data previously added by
+        `_add_extra_chkpoint_info()`.
 
         Parameters
         ----------
@@ -321,8 +327,8 @@ class Trainer(ABC):
             Sets the intervals at which the metrics are evaluated on the
             validation dataset.
         logging_step : int, default: 1
-            Sets the intervals at which the training statistics are printed if
-            `verbose = 'text'` (otherwise ignored).
+            Sets the intervals at which the training statistics are
+            printed if `verbose = 'text'` (otherwise ignored).
 
         """
         if self.from_checkpoint:
@@ -354,17 +360,17 @@ class Trainer(ABC):
             train_loss = 0.0
             with Tensor.backend(self.backend):
                 for batch in tqdm(train_dataset,
-                                  desc="Batch",
+                                  desc='Batch',
                                   total=batches_per_epoch,
-                                  disable=self.verbose !=
-                                  VerbosityLevel.PROGRESS.value,
+                                  disable=(self.verbose
+                                           != VerbosityLevel.PROGRESS.value),
                                   leave=False,
                                   position=2):
                     step += 1
                     x, y_label = batch
                     y_hat, loss = self.training_step(batch)
-                    if (self.evaluate_on_train and
-                            self.evaluate_functions is not None):
+                    if (self.evaluate_on_train
+                            and self.evaluate_functions is not None):
                         for metr, func in self.evaluate_functions.items():
                             res = func(y_hat, y_label)
                             metric = self._train_results_epoch[metr]
@@ -381,8 +387,8 @@ class Trainer(ABC):
             writer_helper('train/epoch_loss', train_loss, epoch + 1)
 
             # evaluate on train
-            if (self.evaluate_on_train and
-                    self.evaluate_functions is not None):
+            if (self.evaluate_on_train
+                    and self.evaluate_functions is not None):
                 for name in self._train_results_epoch:
                     self.train_results[name].append(
                         sum(self._train_results_epoch[name])/len(train_dataset)
@@ -405,11 +411,12 @@ class Trainer(ABC):
                     batches_per_validation = ceil(len(val_dataset)
                                                   / val_dataset.batch_size)
                     with Tensor.backend(self.backend):
+                        disable_tqdm = (self.verbose
+                                        != VerbosityLevel.PROGRESS.value)
                         for v_batch in tqdm(val_dataset,
-                                            desc="Validation batch",
+                                            desc='Validation batch',
                                             total=batches_per_validation,
-                                            disable=self.verbose !=
-                                            VerbosityLevel.PROGRESS.value,
+                                            disable=disable_tqdm,
                                             leave=False,
                                             position=2):
                             x_val, y_label_val = v_batch
@@ -469,4 +476,4 @@ class Trainer(ABC):
                           file=sys.stderr)
         status_bar.close()
         if self.verbose == VerbosityLevel.TEXT.value:
-            print("\nTraining completed!", file=sys.stderr)
+            print('\nTraining completed!', file=sys.stderr)

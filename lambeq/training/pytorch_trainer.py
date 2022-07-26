@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,9 +19,10 @@ A trainer that wraps the training loop of a :py:class:`ClassicalModel`.
 
 """
 from __future__ import annotations
-from typing import Any, Callable, Mapping, Optional, Union
 
+from collections.abc import Callable, Mapping
 import os
+from typing import Any, Optional, Union
 
 import torch
 
@@ -56,7 +57,7 @@ class PytorchTrainer(Trainer):
         Parameters
         ----------
         model : :py:class:`.PytorchModel`
-            A lambeq Model using the PyTorch backend for tensor computation.
+            A lambeq Model using PyTorch for tensor computation.
         loss_function : callable
             A PyTorch loss function from `torch.nn`.
         optimizer : torch.optim.Optimizer, default: torch.optim.AdamW
@@ -66,21 +67,21 @@ class PytorchTrainer(Trainer):
         epochs : int
             Number of training epochs.
         device : int, default: -1
-            CUDA device ID used for tensor operation speed-up. A negative value
-            uses the CPU.
+            CUDA device ID used for tensor operation speed-up.
+            A negative value uses the CPU.
         evaluate_functions : mapping of str to callable, optional
             Mapping of evaluation metric functions from their names.
-            Structure [{\"metric\": func}].
-            Each function takes the prediction \"y_hat\" and the label \"y\" as
-            input.
-            The validation step calls \"func(y_hat, y)\".
+            Structure [{"metric": func}].
+            Each function takes the prediction "y_hat" and the label
+            "y" as input.
+            The validation step calls "func(y_hat, y)".
         evaluate_on_train : bool, default: True
             Evaluate the metrics on the train dataset.
         use_tensorboard : bool, default: False
             Use Tensorboard for visualisation of the training logs.
         log_dir : str or PathLike, optional
-            Location of model checkpoints (and tensorboard log). Default is
-            `runs/**CURRENT_DATETIME_HOSTNAME**`.
+            Location of model checkpoints (and tensorboard log).
+            Default is `runs/**CURRENT_DATETIME_HOSTNAME**`.
         from_checkpoint : bool, default: False
             Starts training from the checkpoint, saved in the log_dir.
         verbose : str, default: 'text',
@@ -113,9 +114,10 @@ class PytorchTrainer(Trainer):
         self.model.to(self.device)
 
     def _add_extra_chkpoint_info(self) -> Mapping[str, Any]:
-        """Add any additional information to the training checkpoint. These
-        might include model-specific information like the random state of the
-        backend or the state of the optimizer.
+        """Add any additional information to the training checkpoint.
+
+        These might include model-specific information like the random
+        state of the backend or the state of the optimizer.
 
         Returns
         -------
@@ -129,8 +131,10 @@ class PytorchTrainer(Trainer):
 
     def _load_extra_chkpoint_info(self,
                                   checkpoint: Mapping[str, Any]) -> None:
-        """Load the additional checkpoint information that was previously
-        added by calling the method `_add_extra_chkpoint_info()`.
+        """Load additional checkpoint information.
+
+        This includes data previously added by
+        `_add_extra_chkpoint_info()`.
 
         Parameters
         ----------

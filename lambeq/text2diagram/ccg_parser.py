@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,12 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from __future__ import annotations
 
 __all__ = ['CCGParser']
 
-import sys
 from abc import abstractmethod
+import sys
 from typing import Any, Optional
 
 from discopy import Diagram
@@ -52,8 +53,8 @@ class CCGParser(Reader):
         Parameters
         ----------
         sentences : list of str, or list of list of str
-            The sentences to be parsed, passed either as strings or as lists
-            of tokens.
+            The sentences to be parsed, passed either as strings or as
+            lists of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
@@ -63,8 +64,9 @@ class CCGParser(Reader):
         verbose : str, optional
             See :py:class:`VerbosityLevel` for options. Not all parsers
             implement all three levels of progress reporting, see the
-            respective documentation for each parser. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
+            respective documentation for each parser. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Returns
         -------
@@ -83,8 +85,8 @@ class CCGParser(Reader):
         Parameters
         ----------
         sentence : str, list[str]
-            The sentence to be parsed, passed either as a string, or as a list
-            of tokens.
+            The sentence to be parsed, passed either as a string, or as
+            a list of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
@@ -144,8 +146,9 @@ class CCGParser(Reader):
         verbose : str, optional
             See :py:class:`VerbosityLevel` for options. Not all parsers
             implement all three levels of progress reporting, see the
-            respective documentation for each parser. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
+            respective documentation for each parser. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Returns
         -------

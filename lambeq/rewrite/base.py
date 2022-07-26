@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,8 +42,8 @@ of provided rules can be retrieved using
         by replacing it with a layer of interleaving spiders.
 
     curry
-        The curry rewrite rule uses map-state duality to remove adjoint types
-        from the boxes. When used in conjunction with
+        The curry rewrite rule uses map-state duality to remove adjoint
+        types from the boxes. When used in conjunction with
         :py:meth:`~discopy.rigid.Diagram.normal_form`, this removes cups
         from the diagram.
 
@@ -52,8 +52,8 @@ of provided rules can be retrieved using
         replacing them with caps.
 
     object_rel_pronoun
-        The object relative pronoun rule simplifies object relative pronouns
-        based on [SCC2014a]_ using cups, spiders and a loop.
+        The object relative pronoun rule simplifies object relative
+        pronouns based on [SCC2014a]_ using cups, spiders and a loop.
 
     postadverb, preadverb
         The adverb rules simplify adverbs by passing through the noun
@@ -65,8 +65,8 @@ of provided rules can be retrieved using
         transparently using a cup.
 
     subject_rel_pronoun
-        The subject relative pronoun rule simplifies subject relative pronouns
-        based on [SCC2014a]_ using cups and spiders.
+        The subject relative pronoun rule simplifies subject relative
+        pronouns based on [SCC2014a]_ using cups and spiders.
 
 See `examples/rewrite.ipynb` for illustrative usage.
 
@@ -95,7 +95,7 @@ class RewriteRule(ABC):
 
     @abstractmethod
     def matches(self, box: Box) -> bool:
-        """Check if the given box matches the requirements for rewriting."""
+        """Check if the given box should be rewritten."""
 
     @abstractmethod
     def rewrite(self, box: Box) -> Diagram:
@@ -171,8 +171,8 @@ class SimpleRewriteRule(RewriteRule):
 
     def matches(self, box: Box) -> bool:
         word = box.name if self.case_sensitive else box.name.lower()
-        return box.cod == self.cod and (self.words is None or
-                                        word in self.words)
+        return box.cod == self.cod and (self.words is None
+                                        or word in self.words)
 
     def rewrite(self, box: Box) -> Diagram:
         def replace_placeholder(ar: Box) -> Box:
@@ -210,12 +210,12 @@ determiner_rule = SimpleRewriteRule(cod=N << N,
                                     template=Cap(N, N.l))
 postadverb_rule = SimpleRewriteRule(
         cod=(N >> S) >> (N >> S),
-        template=(SimpleRewriteRule.placeholder(S >> S) >>
-                  Id(S.r) @ Cap(N.r.r, N.r) @ Id(S)))
+        template=(SimpleRewriteRule.placeholder(S >> S)
+                  >> Id(S.r) @ Cap(N.r.r, N.r) @ Id(S)))
 preadverb_rule = SimpleRewriteRule(
         cod=(N >> S) << (N >> S),
-        template=(Cap(N.r, N) >>
-                  Id(N.r) @ SimpleRewriteRule.placeholder(S << S) @ Id(N)))
+        template=(Cap(N.r, N)
+                  >> Id(N.r) @ SimpleRewriteRule.placeholder(S << S) @ Id(N)))
 auxiliary_rule = SimpleRewriteRule(
         cod=preadverb_rule.cod,
         template=Diagram.caps(preadverb_rule.cod[:2], preadverb_rule.cod[2:]),
@@ -226,24 +226,24 @@ auxiliary_rule = SimpleRewriteRule(
                'will'])
 prepositional_phrase_rule = SimpleRewriteRule(
     cod=(N >> S) >> (N >> S << N),
-    template=(SimpleRewriteRule.placeholder(S >> S << N) >>
-              Id(S.r) @ Cap(N.r.r, N.r) @ Id(S @ N.l)))
+    template=(SimpleRewriteRule.placeholder(S >> S << N)
+              >> Id(S.r) @ Cap(N.r.r, N.r) @ Id(S @ N.l)))
 
-_noun_loop = ((Cap(N.l, N.l.l) >> Swap(N.l, N.l.l)) @ Id(N) >>
-              Id(N.l.l) @ Cup(N.l, N))
+_noun_loop = ((Cap(N.l, N.l.l) >> Swap(N.l, N.l.l)) @ Id(N)
+              >> Id(N.l.l) @ Cup(N.l, N))
 object_rel_pronoun_rule = SimpleRewriteRule(
     words=['that', 'which', 'who', 'whom', 'whose'],
     cod=N.r @ N @ N.l.l @ S.l,
-    template=(Cap(N.r, N) >>
-              Id(N.r) @ Spider(1, 2, N) @ Spider(0, 1, S.l) >>
-              Id(N.r @ N) @ _noun_loop @ Id(S.l)))
+    template=(Cap(N.r, N)
+              >> Id(N.r) @ Spider(1, 2, N) @ Spider(0, 1, S.l)
+              >> Id(N.r @ N) @ _noun_loop @ Id(S.l)))
 
 subject_rel_pronoun_rule = SimpleRewriteRule(
     words=['that', 'which', 'who', 'whom', 'whose'],
     cod=N.r @ N @ S.l @ N,
-    template=(Cap(N.r, N) >>
-              Id(N.r) @ Spider(1, 2, N) >>
-              Id(N.r @ N) @ Spider(0, 1, S.l) @ Id(N)))
+    template=(Cap(N.r, N)
+              >> Id(N.r) @ Spider(1, 2, N)
+              >> Id(N.r @ N) @ Spider(0, 1, S.l) @ Id(N)))
 
 
 class CoordinationRewriteRule(RewriteRule):
@@ -260,10 +260,10 @@ class CoordinationRewriteRule(RewriteRule):
         Parameters
         ----------
         words : container of str, optional
-            If provided, this is a list of words that will be rewritten by
-            this rule. If a box does not have one of these words, it will
-            not be rewritten, even if the codomain matches. If omitted,
-            the rewrite applies only to the word "and".
+            A list of words to be rewritten by this rule. If a box does
+            not have one of these words, it will not be rewritten, even
+            if the codomain matches.
+            If omitted, the rewrite applies only to the word "and".
 
         """
         self.words = ['and'] if words is None else words
@@ -279,8 +279,8 @@ class CoordinationRewriteRule(RewriteRule):
         n = len(box.cod) // 3
         left, mid, right = box.cod[:n], box.cod[n:2*n], box.cod[2*n:]
         assert right.r == mid == left.l
-        return (caps(left, mid) @ caps(mid, right) >>
-                Id(left) @ spiders(2, 1, mid) @ Id(right))
+        return (caps(left, mid) @ caps(mid, right)
+                >> Id(left) @ spiders(2, 1, mid) @ Id(right))
 
 
 class CurryRewriteRule(RewriteRule):

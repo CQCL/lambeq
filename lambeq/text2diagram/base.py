@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """
 Reader
 ======
@@ -43,17 +42,16 @@ Some simple example readers are included for use:
 See `examples/readers.ipynb` for illustrative usage.
 
 """
-
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
-
 __all__ = ['Reader']
+
+from abc import ABC, abstractmethod
+from typing import Optional
 
 from discopy.rigid import Diagram
 
 from lambeq.core.utils import SentenceBatchType, SentenceType
-from typing import Optional
 
 
 class Reader(ABC):

@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,9 +22,10 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Optional
-from numpy.typing import ArrayLike
 
 import numpy as np
+from numpy.typing import ArrayLike
+
 from lambeq.training.model import Model
 
 
@@ -45,7 +46,7 @@ class Optimizer(ABC):
         loss_fn : Callable
             A loss function of form `loss(prediction, labels)`.
         bounds : ArrayLike, optional
-            The range of each of the model\'s parameters.
+            The range of each of the model's parameters.
 
         """
         self.hyperparams = hyperparams
@@ -57,8 +58,9 @@ class Optimizer(ABC):
     @abstractmethod
     def backward(self,
                  batch: tuple[list, np.ndarray]) -> tuple[np.ndarray, float]:
-        """Calculate the gradients of the loss function with respect to the
-        model parameters.
+        """Calculate the gradients of the loss function.
+
+        The gradient is calculated with respect to the model parameters.
 
         Parameters
         ----------
