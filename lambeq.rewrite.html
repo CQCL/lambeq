@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.rewrite &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.rewrite &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -176,10 +176,10 @@ one.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>words</strong><span class="classifier">container of str, optional</span></dt><dd><p>If provided, this is a list of words that will be rewritten by
-this rule. If a box does not have one of these words, it will
-not be rewritten, even if the codomain matches. If omitted,
-the rewrite applies only to the word “and”.</p>
+<dt><strong>words</strong><span class="classifier">container of str, optional</span></dt><dd><p>A list of words to be rewritten by this rule. If a box does
+not have one of these words, it will not be rewritten, even
+if the codomain matches.
+If omitted, the rewrite applies only to the word “and”.</p>
 </dd>
 </dl>
 </dd>
@@ -189,7 +189,7 @@ the rewrite applies only to the word “and”.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.rewrite.CoordinationRewriteRule.matches">
 <span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CoordinationRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CoordinationRewriteRule.matches" title="Permalink to this definition"></a></dt>
-<dd><p>Check if the given box matches the requirements for rewriting.</p>
+<dd><p>Check if the given box should be rewritten.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -247,7 +247,7 @@ which results in faster QML experiments.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.rewrite.CurryRewriteRule.matches">
 <span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#CurryRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.CurryRewriteRule.matches" title="Permalink to this definition"></a></dt>
-<dd><p>Check if the given box matches the requirements for rewriting.</p>
+<dd><p>Check if the given box should be rewritten.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -293,7 +293,7 @@ one.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.rewrite.RewriteRule.matches">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#RewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.RewriteRule.matches" title="Permalink to this definition"></a></dt>
-<dd><p>Check if the given box matches the requirements for rewriting.</p>
+<dd><p>Check if the given box should be rewritten.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -413,7 +413,7 @@ compared case-sensitively. The default is <code class="xref py py-obj docutils l
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule.matches">
 <span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Box.html#discopy.rigid.Box" title="(in discopy)"><span class="pre">discopy.rigid.Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#SimpleRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule.matches" title="Permalink to this definition"></a></dt>
-<dd><p>Check if the given box matches the requirements for rewriting.</p>
+<dd><p>Check if the given box should be rewritten.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -455,7 +455,7 @@ resulting rewritten diagram.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

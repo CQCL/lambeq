@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.pytorch_trainer &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.training.pytorch_trainer &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.training.pytorch_trainer</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -129,9 +129,10 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
@@ -166,7 +167,7 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        model : :py:class:`.PytorchModel`</span>
-<span class="sd">            A lambeq Model using the PyTorch backend for tensor computation.</span>
+<span class="sd">            A lambeq Model using PyTorch for tensor computation.</span>
 <span class="sd">        loss_function : callable</span>
 <span class="sd">            A PyTorch loss function from `torch.nn`.</span>
 <span class="sd">        optimizer : torch.optim.Optimizer, default: torch.optim.AdamW</span>
@@ -176,21 +177,21 @@
 <span class="sd">        epochs : int</span>
 <span class="sd">            Number of training epochs.</span>
 <span class="sd">        device : int, default: -1</span>
-<span class="sd">            CUDA device ID used for tensor operation speed-up. A negative value</span>
-<span class="sd">            uses the CPU.</span>
+<span class="sd">            CUDA device ID used for tensor operation speed-up.</span>
+<span class="sd">            A negative value uses the CPU.</span>
 <span class="sd">        evaluate_functions : mapping of str to callable, optional</span>
 <span class="sd">            Mapping of evaluation metric functions from their names.</span>
-<span class="sd">            Structure [{\&quot;metric\&quot;: func}].</span>
-<span class="sd">            Each function takes the prediction \&quot;y_hat\&quot; and the label \&quot;y\&quot; as</span>
-<span class="sd">            input.</span>
-<span class="sd">            The validation step calls \&quot;func(y_hat, y)\&quot;.</span>
+<span class="sd">            Structure [{&quot;metric&quot;: func}].</span>
+<span class="sd">            Each function takes the prediction &quot;y_hat&quot; and the label</span>
+<span class="sd">            &quot;y&quot; as input.</span>
+<span class="sd">            The validation step calls &quot;func(y_hat, y)&quot;.</span>
 <span class="sd">        evaluate_on_train : bool, default: True</span>
 <span class="sd">            Evaluate the metrics on the train dataset.</span>
 <span class="sd">        use_tensorboard : bool, default: False</span>
 <span class="sd">            Use Tensorboard for visualisation of the training logs.</span>
 <span class="sd">        log_dir : str or PathLike, optional</span>
-<span class="sd">            Location of model checkpoints (and tensorboard log). Default is</span>
-<span class="sd">            `runs/**CURRENT_DATETIME_HOSTNAME**`.</span>
+<span class="sd">            Location of model checkpoints (and tensorboard log).</span>
+<span class="sd">            Default is `runs/**CURRENT_DATETIME_HOSTNAME**`.</span>
 <span class="sd">        from_checkpoint : bool, default: False</span>
 <span class="sd">            Starts training from the checkpoint, saved in the log_dir.</span>
 <span class="sd">        verbose : str, default: &#39;text&#39;,</span>
@@ -223,9 +224,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_add_extra_chkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint. These</span>
-<span class="sd">        might include model-specific information like the random state of the</span>
-<span class="sd">        backend or the state of the optimizer.</span>
+        <span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint.</span>
+
+<span class="sd">        These might include model-specific information like the random</span>
+<span class="sd">        state of the backend or the state of the optimizer.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -239,8 +241,10 @@
 
     <span class="k">def</span> <span class="nf">_load_extra_chkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                   <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load the additional checkpoint information that was previously</span>
-<span class="sd">        added by calling the method `_add_extra_chkpoint_info()`.</span>
+        <span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
+
+<span class="sd">        This includes data previously added by</span>
+<span class="sd">        `_add_extra_chkpoint_info()`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -310,7 +314,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

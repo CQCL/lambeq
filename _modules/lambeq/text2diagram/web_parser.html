@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.web_parser &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.text2diagram.web_parser &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.web_parser</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -121,23 +121,33 @@
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Web parser</span>
+<span class="sd">==========</span>
+<span class="sd">A parser that retrieves parses from a web server, thus forgoes the need</span>
+<span class="sd">to have a parser installed locally.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;WebParser&#39;</span><span class="p">,</span> <span class="s1">&#39;WebParseError&#39;</span><span class="p">]</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
+<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="n">SentenceBatchType</span><span class="p">,</span> <span class="n">tokenised_batch_type_check</span><span class="p">,</span>\
-        <span class="n">untokenised_batch_type_check</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
+<span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SentenceBatchType</span><span class="p">,</span> <span class="n">tokenised_batch_type_check</span><span class="p">,</span>
+                               <span class="n">untokenised_batch_type_check</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
 
-<span class="n">SERVICE_URL</span> <span class="o">=</span> <span class="s1">&#39;https://cqc.pythonanywhere.com/tree/json&#39;</span>
+<span class="n">SERVICE_URLS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;depccg&#39;</span><span class="p">:</span> <span class="s1">&#39;https://cqc.pythonanywhere.com/tree/json&#39;</span>
+<span class="p">}</span>
 
 
 <div class="viewcode-block" id="WebParseError"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.WebParseError">[docs]</a><span class="k">class</span> <span class="nc">WebParseError</span><span class="p">(</span><span class="ne">OSError</span><span class="p">):</span>
@@ -145,31 +155,30 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sentence</span> <span class="o">=</span> <span class="n">sentence</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Web parser could not parse </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="p">)</span><span class="si">}</span><span class="s1">.&#39;</span>
-                <span class="s1">&#39;Check that you are using the correct URL. &#39;</span>
-                <span class="s1">&#39;If the URL is correct, this means the parser could not parse &#39;</span>
-                <span class="s1">&#39;your sentence.&#39;</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Web parser could not parse </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sentence</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="WebParser"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.WebParser">[docs]</a><span class="k">class</span> <span class="nc">WebParser</span><span class="p">(</span><span class="n">CCGParser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Wrapper that allows passing parser queries to an online interface.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Wrapper that allows passing parser queries to an online service.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="WebParser.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.WebParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">service_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">SERVICE_URL</span><span class="p">,</span>
+            <span class="n">parser</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;depccg&#39;</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initialise a web parser.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        service_url : str, default: &#39;https://cqc.pythonanywhere.com/tree/json&#39;</span>
-<span class="sd">            The URL to the parser. By default, use CQC&#39;s CCG tree</span>
-<span class="sd">            parser.</span>
+<span class="sd">        parser : str, optional</span>
+<span class="sd">            The web parser to use. By default, this is depccg parser.</span>
 <span class="sd">        verbose : str, default: &#39;suppress&#39;,</span>
 <span class="sd">            See :py:class:`VerbosityLevel` for options.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">service_url</span> <span class="o">=</span> <span class="n">service_url</span>
+        <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SERVICE_URLS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown web parser: </span><span class="si">{</span><span class="n">parser</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">service_url</span> <span class="o">=</span> <span class="n">SERVICE_URLS</span><span class="p">[</span><span class="n">parser</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">has_value</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">verbose</span><span class="si">}</span><span class="s1">` is not a valid verbose value for &#39;</span>
                              <span class="s1">&#39;WebParser.&#39;</span><span class="p">)</span>
@@ -193,7 +202,8 @@
 <span class="sd">            its return entry is :py:obj:`None`.</span>
 <span class="sd">        verbose : str, optional</span>
 <span class="sd">            See :py:class:`VerbosityLevel` for options. If set, it takes</span>
-<span class="sd">            priority over the :py:attr:`verbose` attribute of the parser.</span>
+<span class="sd">            priority over the :py:attr:`verbose` attribute of the</span>
+<span class="sd">            parser.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -206,8 +216,8 @@
 <span class="sd">        URLError</span>
 <span class="sd">            If the service URL is not well formed.</span>
 <span class="sd">        ValueError</span>
-<span class="sd">            If a sentence is blank or type of the sentence does not match</span>
-<span class="sd">            `tokenised` flag.</span>
+<span class="sd">            If a sentence is blank or type of the sentence does not</span>
+<span class="sd">            match `tokenised` flag.</span>
 <span class="sd">        WebParseError</span>
 <span class="sd">            If the parser fails to obtain a parse tree from the server.</span>
 
@@ -277,7 +287,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

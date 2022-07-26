@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.training.spsa_optimizer</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -125,13 +125,14 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">SPASOptimizer</span>
 <span class="sd">=============</span>
-<span class="sd">Module implementing the Simultaneous Perturbation Stochastic Approximation</span>
-<span class="sd">optimizer.</span>
+<span class="sd">Module implementing the Simultaneous Perturbation Stochastic</span>
+<span class="sd">Approximation optimizer.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
@@ -140,9 +141,13 @@
 <span class="kn">from</span> <span class="nn">lambeq.training.optimizer</span> <span class="kn">import</span> <span class="n">Optimizer</span>
 <span class="kn">from</span> <span class="nn">lambeq.training.quantum_model</span> <span class="kn">import</span> <span class="n">QuantumModel</span>
 
+
 <div class="viewcode-block" id="SPSAOptimizer"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer">[docs]</a><span class="k">class</span> <span class="nc">SPSAOptimizer</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An Optimizer using simultaneous perturbation stochastic approximations.</span>
+    <span class="sd">&quot;&quot;&quot;An Optimizer using SPSA.</span>
+
+<span class="sd">    SPSA = Simultaneous Perturbation Stochastic Spproximations.</span>
 <span class="sd">    See https://ieeexplore.ieee.org/document/705889 for details.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SPSAOptimizer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">QuantumModel</span><span class="p">,</span>
@@ -156,8 +161,10 @@
 <span class="sd">            hyperparams = {</span>
 <span class="sd">                &#39;a&#39;: A learning rate parameter, float</span>
 <span class="sd">                &#39;c&#39;: The parameter shift scaling factor, float</span>
-<span class="sd">                &#39;A&#39;: A stability constant (approx. 0.01 * Num Training steps), float</span>
+<span class="sd">                &#39;A&#39;: A stability constant, float</span>
 <span class="sd">            }</span>
+
+<span class="sd">        A good value for &#39;A&#39; is approximately: 0.01 * Num Training steps</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -173,10 +180,9 @@
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        ValueError</span>
-<span class="sd">            Raises an error if the hyperparameters are not set correctly.</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            Raises an error if the length of `bounds` does not match the</span>
-<span class="sd">            number of the model parameters.</span>
+<span class="sd">            If the hyperparameters are not set correctly, or if the</span>
+<span class="sd">            length of `bounds` does not match the number of the model</span>
+<span class="sd">            parameters.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
@@ -202,10 +208,13 @@
                                  <span class="s1">&#39;number of the model parameters&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bds</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="SPSAOptimizer.backward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function with respect to the</span>
-<span class="sd">        model parameters.</span>
+<div class="viewcode-block" id="SPSAOptimizer.backward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function.</span>
+
+<span class="sd">        The gradients are calculated with respect to the model</span>
+<span class="sd">        parameters.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -304,7 +313,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

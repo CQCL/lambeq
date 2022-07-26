@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.trainer &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.training.trainer &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.training.trainer</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -133,17 +133,19 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
+<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">ceil</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span><span class="p">,</span> <span class="n">trange</span>
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span><span class="p">,</span> <span class="n">trange</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">torch.utils.tensorboard</span> <span class="kn">import</span> <span class="n">SummaryWriter</span>
@@ -197,8 +199,8 @@
 <span class="sd">        use_tensorboard : bool, default: False</span>
 <span class="sd">            Use Tensorboard for visualisation of the training logs.</span>
 <span class="sd">        log_dir : str or PathLike, optional</span>
-<span class="sd">            Location of model checkpoints (and tensorboard log). Default is</span>
-<span class="sd">            `runs/**CURRENT_DATETIME_HOSTNAME**`.</span>
+<span class="sd">            Location of model checkpoints (and tensorboard log).</span>
+<span class="sd">            Default is `runs/**CURRENT_DATETIME_HOSTNAME**`.</span>
 <span class="sd">        from_checkpoint : bool, default: False</span>
 <span class="sd">            Starts training from the checkpoint, saved in the log_dir.</span>
 <span class="sd">        verbose : str, default: &#39;text&#39;,</span>
@@ -263,7 +265,7 @@
     <span class="k">def</span> <span class="nf">_generate_stat_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                               <span class="n">train_loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                               <span class="n">val_loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Generate a text to be displayed together with the progress bar.</span>
+        <span class="sd">&quot;&quot;&quot;Generate the text to display with the progress bar.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -296,7 +298,8 @@
                 <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;valid/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">str_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;   &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Trainer.load_training_checkpoint"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.load_training_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">load_training_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_dir</span><span class="p">:</span> <span class="n">_StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<div class="viewcode-block" id="Trainer.load_training_checkpoint"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.load_training_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">load_training_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                 <span class="n">log_dir</span><span class="p">:</span> <span class="n">_StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Load model from a checkpoint.</span>
 
 <span class="sd">        Parameters</span>
@@ -315,7 +318,7 @@
 <span class="sd">            If the file does not exist.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Restore last checkpoint...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Restore last checkpoint...&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">checkpoint_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s1">&#39;model.lt&#39;</span><span class="p">)</span>
         <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">Checkpoint</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span><span class="n">checkpoint_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;model_weights&#39;</span><span class="p">]</span>
@@ -330,7 +333,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">random</span><span class="o">.</span><span class="n">setstate</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;random_state&#39;</span><span class="p">])</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checkpoint restored successfully!&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Checkpoint restored successfully!&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">checkpoint</span></div>
 
 <div class="viewcode-block" id="Trainer.save_checkpoint"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.save_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -355,9 +358,10 @@
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_add_extra_chkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint. These</span>
-<span class="sd">        might include model-specific information like the random state of the</span>
-<span class="sd">        backend or the state of the optimizer.</span>
+        <span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint.</span>
+
+<span class="sd">        These might include model-specific information like the random</span>
+<span class="sd">        state of the backend or the state of the optimizer.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -369,8 +373,10 @@
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_load_extra_chkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                   <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load the additional checkpoint information that was previously</span>
-<span class="sd">        added by calling the method `_add_extra_chkpoint_info()`.</span>
+        <span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
+
+<span class="sd">        This includes data previously added by</span>
+<span class="sd">        `_add_extra_chkpoint_info()`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -431,8 +437,8 @@
 <span class="sd">            Sets the intervals at which the metrics are evaluated on the</span>
 <span class="sd">            validation dataset.</span>
 <span class="sd">        logging_step : int, default: 1</span>
-<span class="sd">            Sets the intervals at which the training statistics are printed if</span>
-<span class="sd">            `verbose = &#39;text&#39;` (otherwise ignored).</span>
+<span class="sd">            Sets the intervals at which the training statistics are</span>
+<span class="sd">            printed if `verbose = &#39;text&#39;` (otherwise ignored).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">:</span>
@@ -464,17 +470,17 @@
             <span class="n">train_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
             <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span>
-                                  <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Batch&quot;</span><span class="p">,</span>
+                                  <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Batch&#39;</span><span class="p">,</span>
                                   <span class="n">total</span><span class="o">=</span><span class="n">batches_per_epoch</span><span class="p">,</span>
-                                  <span class="n">disable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span>
-                                  <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                  <span class="n">disable</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+                                           <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
                                   <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                   <span class="n">position</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
                     <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
                     <span class="n">x</span><span class="p">,</span> <span class="n">y_label</span> <span class="o">=</span> <span class="n">batch</span>
                     <span class="n">y_hat</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_step</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span> <span class="ow">and</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span>
+                            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
                         <span class="k">for</span> <span class="n">metr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
                             <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y_label</span><span class="p">)</span>
                             <span class="n">metric</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">[</span><span class="n">metr</span><span class="p">]</span>
@@ -491,8 +497,8 @@
             <span class="n">writer_helper</span><span class="p">(</span><span class="s1">&#39;train/epoch_loss&#39;</span><span class="p">,</span> <span class="n">train_loss</span><span class="p">,</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
 
             <span class="c1"># evaluate on train</span>
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span> <span class="ow">and</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                         <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">[</span><span class="n">name</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span>
@@ -515,11 +521,12 @@
                     <span class="n">batches_per_validation</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span>
                                                   <span class="o">/</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
                     <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
+                        <span class="n">disable_tqdm</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+                                        <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">v_batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span>
-                                            <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Validation batch&quot;</span><span class="p">,</span>
+                                            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Validation batch&#39;</span><span class="p">,</span>
                                             <span class="n">total</span><span class="o">=</span><span class="n">batches_per_validation</span><span class="p">,</span>
-                                            <span class="n">disable</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span>
-                                            <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+                                            <span class="n">disable</span><span class="o">=</span><span class="n">disable_tqdm</span><span class="p">,</span>
                                             <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                             <span class="n">position</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
                             <span class="n">x_val</span><span class="p">,</span> <span class="n">y_label_val</span> <span class="o">=</span> <span class="n">v_batch</span>
@@ -579,7 +586,7 @@
                           <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="n">status_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Training completed!&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Training completed!&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -589,7 +596,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

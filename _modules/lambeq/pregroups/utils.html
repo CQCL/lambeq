@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.pregroups.utils &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.pregroups.utils &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.pregroups.utils</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -124,13 +124,13 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Swap</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Swap</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
 
 <span class="n">CUP_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;**CUP**&#39;</span>
 
 
 <div class="viewcode-block" id="is_pregroup_diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.is_pregroup_diagram">[docs]</a><span class="k">def</span> <span class="nf">is_pregroup_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check if a :py:class:`discopy.rigid.Diagram` is a pregroup diagram.</span>
+    <span class="sd">&quot;&quot;&quot;Check if a diagram is a pregroup diagram.</span>
 
 <span class="sd">    Adapted from :py:class:`discopy.grammar.pregroup.draw`.</span>
 
@@ -163,26 +163,27 @@
     <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
     <span class="n">morphisms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a :py:class:`discopy.rigid.Diagram` from a list of cups and swaps.</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a :py:class:`discopy.rigid.Diagram` from cups and swaps.</span>
 
 <span class="sd">        &gt;&gt;&gt; n, s = Ty(&#39;n&#39;), Ty(&#39;s&#39;)</span>
-<span class="sd">        &gt;&gt;&gt; words = [</span>
-<span class="sd">        ...     Word(&#39;she&#39;, n), Word(&#39;goes&#39;, n.r @ s @ n.l), Word(&#39;home&#39;, n)]</span>
+<span class="sd">        &gt;&gt;&gt; words = [Word(&#39;she&#39;, n), Word(&#39;goes&#39;, n.r @ s @ n.l),</span>
+<span class="sd">        ...          Word(&#39;home&#39;, n)]</span>
 <span class="sd">        &gt;&gt;&gt; morphisms = [(Cup, 0, 1), (Cup, 3, 4)]</span>
 <span class="sd">        &gt;&gt;&gt; diagram = create_pregroup_diagram(words, Ty(&#39;s&#39;), morphisms)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    words : list of :py:class:`discopy.grammar.pregroup.Word`</span>
-<span class="sd">        A list of :py:class:`~discopy.grammar.pregroup.Word` s corresponding to</span>
-<span class="sd">        the words of the sentence.</span>
+<span class="sd">        A list of :py:class:`~discopy.grammar.pregroup.Word` s</span>
+<span class="sd">        corresponding to the words of the sentence.</span>
 <span class="sd">    cod : :py:class:`discopy.rigid.Ty`</span>
 <span class="sd">        The output type of the diagram.</span>
 <span class="sd">    morphisms: list of tuple[type, int, int]</span>
-<span class="sd">        A list of tuples of the form (morphism, start_wire_idx, end_wire_idx).</span>
+<span class="sd">        A list of tuples of the form:</span>
+<span class="sd">            (morphism, start_wire_idx, end_wire_idx).</span>
 <span class="sd">        Morphisms can be :py:class:`~discopy.rigid.Cup` s or</span>
-<span class="sd">        :py:class:`~discopy.rigid.Swap` s, while the two numbers define the</span>
-<span class="sd">        indices of the wires on which the morphism is applied.</span>
+<span class="sd">        :py:class:`~discopy.rigid.Swap` s, while the two numbers define</span>
+<span class="sd">        the indices of the wires on which the morphism is applied.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -206,14 +207,13 @@
 
     <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="p">(</span><span class="n">typ</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">morphisms</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">typ</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="n">Swap</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown morphism type: </span><span class="si">{</span><span class="n">typ</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown morphism type: </span><span class="si">{</span><span class="n">typ</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">box</span> <span class="o">=</span> <span class="n">typ</span><span class="p">(</span><span class="n">types</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">types</span><span class="p">[</span><span class="n">end</span><span class="p">:</span><span class="n">end</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
 
         <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
         <span class="n">actual_idx</span> <span class="o">=</span> <span class="n">start</span>
         <span class="k">for</span> <span class="n">pr_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">pr_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">Cup</span> <span class="ow">and</span> \
-                    <span class="n">morphisms</span><span class="p">[</span><span class="n">pr_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">start</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">pr_idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">Cup</span> <span class="ow">and</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">pr_idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">start</span><span class="p">:</span>
                 <span class="n">actual_idx</span> <span class="o">-=</span> <span class="mi">2</span>
         <span class="n">offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_idx</span><span class="p">)</span>
 
@@ -289,8 +289,8 @@
 <div class="viewcode-block" id="remove_cups"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.remove_cups">[docs]</a><span class="k">def</span> <span class="nf">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Remove cups from a :py:class:`discopy.rigid.Diagram`.</span>
 
-<span class="sd">    Diagrams with less cups become circuits with less post-selection, which</span>
-<span class="sd">    results in faster QML experiments.</span>
+<span class="sd">    Diagrams with less cups become circuits with less post-selection,</span>
+<span class="sd">    which results in faster QML experiments.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -316,7 +316,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

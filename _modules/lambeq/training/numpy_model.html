@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.numpy_model &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.training.numpy_model &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.training.numpy_model</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -128,10 +128,10 @@
 <span class="sd">Module implementing a lambeq model for an exact classical simulation of</span>
 <span class="sd">a quantum pipeline.</span>
 
-<span class="sd">In contrast to the shot-based :py:class:`TketModel`, the state vectors are</span>
-<span class="sd">calculated classically and stored such that the complex vectors defining the</span>
-<span class="sd">quantum states are accessible. The results of the calculations are exact i.e.</span>
-<span class="sd">noiseless and not shot-based.</span>
+<span class="sd">In contrast to the shot-based :py:class:`TketModel`, the state vectors</span>
+<span class="sd">are calculated classically and stored such that the complex vectors</span>
+<span class="sd">defining the quantum states are accessible. The results of the</span>
+<span class="sd">calculations are exact i.e. noiseless and not shot-based.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
@@ -139,11 +139,11 @@
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span>
-<span class="kn">import</span> <span class="nn">tensornetwork</span> <span class="k">as</span> <span class="nn">tn</span>
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Diagram</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">default_sort_key</span><span class="p">,</span> <span class="n">lambdify</span>
+<span class="kn">import</span> <span class="nn">tensornetwork</span> <span class="k">as</span> <span class="nn">tn</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.training.model</span> <span class="kn">import</span> <span class="n">SizedIterable</span>
 <span class="kn">from</span> <span class="nn">lambeq.training.quantum_model</span> <span class="kn">import</span> <span class="n">QuantumModel</span>
@@ -177,8 +177,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        diagrams : list of :py:class:`~discopy.tensor.Diagram`</span>
-<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;` to be</span>
-<span class="sd">            evaluated.</span>
+<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;`</span>
+<span class="sd">            to be evaluated.</span>
 <span class="sd">        use_jit : bool, default: False</span>
 <span class="sd">            Whether to use JAX&#39;s Just-In-Time compilation.</span>
 
@@ -251,8 +251,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        diagrams : list of :py:class:`~discopy.tensor.Diagram`</span>
-<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;` to be</span>
-<span class="sd">            evaluated.</span>
+<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;`</span>
+<span class="sd">            to be evaluated.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -286,13 +286,14 @@
 <div class="viewcode-block" id="NumpyModel.forward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Perform default forward pass of a lambeq model.</span>
 
-<span class="sd">        In case of a different datapoint (e.g. list of tuple) or additional</span>
-<span class="sd">        computational steps, please override this method.</span>
+<span class="sd">        In case of a different datapoint (e.g. list of tuple) or</span>
+<span class="sd">        additional computational steps, please override this method.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x : list of :py:class:`~discopy.tensor.Diagram`</span>
-<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;` to be evaluated.</span>
+<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;`</span>
+<span class="sd">            to be evaluated.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -310,7 +311,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

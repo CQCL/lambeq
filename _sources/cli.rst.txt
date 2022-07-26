@@ -11,7 +11,7 @@ A summary of the available options is given below.
 
 ::
 
-    lambeq [-h] [-m {string-diagram,ccg}] [-i INPUT_FILE]
+    lambeq [-h] [-v] [-m {string-diagram,ccg}] [-i INPUT_FILE]
            [-f {json,pickle,text-unicode,text-ascii,image}]
            [-g {png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff}]
            [-u [KEY=VAR ...]] [-o OUTPUT_FILE | -d OUTPUT_DIR]

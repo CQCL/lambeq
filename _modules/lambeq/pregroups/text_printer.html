@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.pregroups.text_printer &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.pregroups.text_printer &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.pregroups.text_printer</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -121,11 +121,9 @@
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Text printer</span>
-<span class="sd">------------</span>
-
+<span class="sd">============</span>
 <span class="sd">Module that allows printing of DisCoPy pregroup diagrams in text form,</span>
 <span class="sd">e.g. for the purpose of outputting them graphically in a terminal.</span>
 
@@ -178,23 +176,23 @@
     <span class="sd">&quot;&quot;&quot;A text printer for pregroup diagrams.&quot;&quot;&quot;</span>
 
     <span class="n">UNICODE_CHAR_SET</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;BAR&quot;</span><span class="p">:</span> <span class="s1">&#39;│&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;TOP_R_CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;╮&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;TOP_L_CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;╭&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;BOTTOM_L_CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;╰&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;BOTTOM_R_CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;╯&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;LINE&quot;</span><span class="p">:</span> <span class="s1">&#39;─&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;DOT&quot;</span><span class="p">:</span> <span class="s1">&#39;·&#39;</span>
+        <span class="s1">&#39;BAR&#39;</span><span class="p">:</span> <span class="s1">&#39;│&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;TOP_R_CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;╮&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;TOP_L_CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;╭&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;╰&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;BOTTOM_R_CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;╯&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LINE&#39;</span><span class="p">:</span> <span class="s1">&#39;─&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DOT&#39;</span><span class="p">:</span> <span class="s1">&#39;·&#39;</span>
     <span class="p">}</span>
 
     <span class="n">ASCII_CHAR_SET</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;BAR&quot;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;TOP_R_CORNER&quot;</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">160</span><span class="p">),</span>
-        <span class="s2">&quot;TOP_L_CORNER&quot;</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">160</span><span class="p">),</span>
-        <span class="s2">&quot;BOTTOM_L_CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;BOTTOM_R_CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;LINE&quot;</span><span class="p">:</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span>
-        <span class="s2">&quot;DOT&quot;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span>
+        <span class="s1">&#39;BAR&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;TOP_R_CORNER&#39;</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">160</span><span class="p">),</span>
+        <span class="s1">&#39;TOP_L_CORNER&#39;</span><span class="p">:</span> <span class="nb">chr</span><span class="p">(</span><span class="mi">160</span><span class="p">),</span>
+        <span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;BOTTOM_R_CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;LINE&#39;</span><span class="p">:</span> <span class="s1">&#39;_&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;DOT&#39;</span><span class="p">:</span> <span class="s1">&#39; &#39;</span>
     <span class="p">}</span>
 
 <div class="viewcode-block" id="TextDiagramPrinter.__init__"><a class="viewcode-back" href="../../../lambeq.pregroups.html#lambeq.pregroups.TextDiagramPrinter.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -222,13 +220,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">word_spacing</span> <span class="o">=</span> <span class="n">word_spacing</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">discopy_types</span> <span class="o">=</span> <span class="n">discopy_types</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">compress_layers</span> <span class="o">=</span> <span class="n">compress_layers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UNICODE_CHAR_SET</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_ascii</span> \
-            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">ASCII_CHAR_SET</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">UNICODE_CHAR_SET</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_ascii</span>
+                        <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">ASCII_CHAR_SET</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TextDiagramPrinter.diagram2str"><a class="viewcode-back" href="../../../lambeq.pregroups.html#lambeq.pregroups.TextDiagramPrinter.diagram2str">[docs]</a>    <span class="k">def</span> <span class="nf">diagram2str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Produces a string that contains a graphical representation of</span>
 <span class="sd">        the input diagram using text characters. The diagram is expected</span>
-<span class="sd">        to be in pregroup form, i.e. all words must precede the morphisms.</span>
+<span class="sd">        to be in pregroup form, i.e. all words must precede morphisms.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -337,8 +335,9 @@
 <div class="viewcode-block" id="TextDiagramPrinter.draw_layer"><a class="viewcode-back" href="../../../lambeq.pregroups.html#lambeq.pregroups.TextDiagramPrinter.draw_layer">[docs]</a>    <span class="k">def</span> <span class="nf">draw_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                    <span class="n">layer</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_Morphism</span><span class="p">],</span>
                    <span class="n">wires</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="c1"># wires is a mapping from the index of the wire in the input diagram</span>
-        <span class="c1"># to the location of the wire in the printed output, a column index</span>
+        <span class="c1"># `wires` is a mapping from the index of the wire in the input</span>
+        <span class="c1"># diagram to the location of the wire in the printed output, a</span>
+        <span class="c1"># column index</span>
 
         <span class="n">height</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">morphism</span> <span class="ow">in</span> <span class="n">layer</span><span class="p">:</span>
@@ -359,20 +358,20 @@
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
                     <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">off</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BAR&#39;</span><span class="p">]</span>
             <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="n">_MorphismType</span><span class="o">.</span><span class="n">CUP</span><span class="p">:</span>
-                <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span>
-                    <span class="n">off</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;LINE&#39;</span><span class="p">])</span> <span class="o">+</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_R_CORNER&#39;</span><span class="p">])</span>
+                <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">]</span>
+                <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">off</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;LINE&#39;</span><span class="p">])</span>
+                            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_R_CORNER&#39;</span><span class="p">])</span>
             <span class="k">elif</span> <span class="n">t</span> <span class="o">==</span> <span class="n">_MorphismType</span><span class="o">.</span><span class="n">SWAP</span><span class="p">:</span>
                 <span class="n">diff</span> <span class="o">=</span> <span class="n">off</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-                <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span> <span class="o">+</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;TOP_L_CORNER&#39;</span><span class="p">]</span> <span class="o">+</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">center</span><span class="p">(</span>
-                                <span class="n">diff</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;LINE&#39;</span><span class="p">])</span> <span class="o">+</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;TOP_R_CORNER&#39;</span><span class="p">])</span>
-                <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">]</span> <span class="o">+</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;TOP_R_CORNER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">center</span><span class="p">(</span>
-                                 <span class="n">diff</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;LINE&#39;</span><span class="p">])</span> <span class="o">+</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_R_CORNER&#39;</span><span class="p">])</span>
+                <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+                            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;TOP_L_CORNER&#39;</span><span class="p">]</span>
+                            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">center</span><span class="p">(</span>
+                                <span class="n">diff</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;LINE&#39;</span><span class="p">])</span>
+                            <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;TOP_R_CORNER&#39;</span><span class="p">])</span>
+                <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_L_CORNER&#39;</span><span class="p">]</span>
+                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;TOP_R_CORNER&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">center</span><span class="p">(</span>
+                                 <span class="n">diff</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;LINE&#39;</span><span class="p">])</span>
+                             <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;BOTTOM_R_CORNER&#39;</span><span class="p">])</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">assert</span> <span class="n">t</span> <span class="o">==</span> <span class="n">_MorphismType</span><span class="o">.</span><span class="n">START</span>
                 <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="n">off</span><span class="p">)</span>
@@ -387,7 +386,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

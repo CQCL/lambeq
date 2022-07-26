@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command-line interface &mdash; lambeq 0.2.4 documentation</title>
+  <title>Command-line interface &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -34,7 +34,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -154,7 +154,7 @@
 <span id="sec-cli"></span><h1>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline"></a></h1>
 <p>While <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is primarily aimed for programmatic use, since Release <a class="reference internal" href="release_notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> it is also equipped with a command-line interface that provides immediate and easy access to most of the toolkit’s functionality. For example, this addition allows <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to be used as a dual <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>, capable of providing syntactic derivations in both <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> and <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> form.</p>
 <p>A summary of the available options is given below.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-m <span class="o">{</span>string-diagram,ccg<span class="o">}]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-m <span class="o">{</span>string-diagram,ccg<span class="o">}]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span>
        <span class="o">[</span>-f <span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
        <span class="o">[</span>-g <span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
        <span class="o">[</span>-u <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]</span> <span class="o">[</span>-o OUTPUT_FILE <span class="p">|</span> -d OUTPUT_DIR<span class="o">]</span>
@@ -300,7 +300,7 @@ To load the configuration from this file next time, <code class="docutils litera
 <span id="sec-detailed-options"></span><h2>Detailed options<a class="headerlink" href="#detailed-options" title="Permalink to this headline"></a></h2>
 <p><p>Command-line interface for lambeq.</p>
 </p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-m <span class="o">{</span>string-diagram,ccg<span class="o">}]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-m <span class="o">{</span>string-diagram,ccg<span class="o">}]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span>
               <span class="o">[</span>-f <span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
               <span class="o">[</span>-g <span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
               <span class="o">[</span>-u <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]]</span> <span class="o">[</span>-o OUTPUT_FILE <span class="p">|</span> -d OUTPUT_DIR<span class="o">]</span>
@@ -324,6 +324,9 @@ To load the configuration from this file next time, <code class="docutils litera
 <section id="Named Arguments">
 <h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline"></a></h3>
 <dl class="option-list">
+<dt><kbd>-v, --version</kbd></dt>
+<dd><p>show program’s version number and exit</p>
+</dd>
 <dt><kbd>-m, --mode</kbd></dt>
 <dd><p>Possible choices: string-diagram, ccg</p>
 <p>Mode used for the output. Default value: string-diagram</p>
@@ -435,7 +438,7 @@ To load the configuration from this file next time, <code class="docutils litera
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

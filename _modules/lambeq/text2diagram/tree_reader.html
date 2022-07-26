@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.tree_reader &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.text2diagram.tree_reader &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.tree_reader</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -134,9 +134,9 @@
 
 <span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="n">SentenceType</span>
-<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
-<span class="kn">from</span> <span class="nn">lambeq.text2diagram.bobcat_parser</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.base</span> <span class="kn">import</span> <span class="n">Reader</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.bobcat_parser</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
 
 <span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
 
@@ -152,15 +152,16 @@
 <span class="sd">            The &#39;no type&#39; mode names every rule box :py:obj:`UNIBOX`.</span>
 
 <span class="sd">        RULE_ONLY</span>
-<span class="sd">            The &#39;rule name&#39; mode names every rule box based on the name of the</span>
-<span class="sd">            original CCG rule. For example, for the forward application rule</span>
-<span class="sd">            :py:obj:`FA(N &lt;&lt; N)`, the rule box will be named :py:obj:`FA`.</span>
+<span class="sd">            The &#39;rule name&#39; mode names every rule box based on the name</span>
+<span class="sd">            of the original CCG rule. For example, for the forward</span>
+<span class="sd">            application rule :py:obj:`FA(N &lt;&lt; N)`, the rule box will be</span>
+<span class="sd">            named :py:obj:`FA`.</span>
 
 <span class="sd">        RULE_TYPE</span>
-<span class="sd">            The &#39;rule type&#39; mode names every rule box based on the name and</span>
-<span class="sd">            type of the original CCG rule. For example, for the forward</span>
-<span class="sd">            application rule :py:obj:`FA(N &lt;&lt; N)`, the rule box will be named</span>
-<span class="sd">            :py:obj:`FA(N &lt;&lt; N)`.</span>
+<span class="sd">            The &#39;rule type&#39; mode names every rule box based on the name</span>
+<span class="sd">            and type of the original CCG rule. For example, for the</span>
+<span class="sd">            forward application rule :py:obj:`FA(N &lt;&lt; N)`, the rule box</span>
+<span class="sd">            will be named :py:obj:`FA(N &lt;&lt; N)`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">NO_TYPE</span> <span class="o">=</span> <span class="mi">0</span>
@@ -182,9 +183,9 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ccg_parser : CCGParser or callable, default: BobcatParser</span>
-<span class="sd">            A :py:class:`CCGParser` object or a function that returns it.</span>
-<span class="sd">            The parse tree produced by the parser is used to generate the</span>
-<span class="sd">            tree diagram.</span>
+<span class="sd">            A :py:class:`CCGParser` object or a function that returns</span>
+<span class="sd">            it. The parse tree produced by the parser is used to</span>
+<span class="sd">            generate the tree diagram.</span>
 <span class="sd">        mode : TreeReaderMode, default: TreeReaderMode.NO_TYPE</span>
 <span class="sd">            Determines what boxes are used to combine the tree.</span>
 <span class="sd">            See :py:class:`TreeReaderMode` for options.</span>
@@ -222,8 +223,8 @@
                          <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Parse a sentence into a :py:class:`~discopy.rigid.Diagram` .</span>
 
-<span class="sd">        This produces a tree-shaped diagram based on the output of the CCG</span>
-<span class="sd">        parser.</span>
+<span class="sd">        This produces a tree-shaped diagram based on the output of the</span>
+<span class="sd">        CCG parser.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -281,7 +282,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

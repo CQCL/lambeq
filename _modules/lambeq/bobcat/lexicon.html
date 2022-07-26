@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.lexicon &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.bobcat.lexicon &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.bobcat.lexicon</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -310,29 +310,29 @@
             <span class="k">return</span> <span class="kc">False</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">atom</span> <span class="ow">and</span>
-                    <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">feature</span> <span class="ow">or</span>
-                     <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">==</span> <span class="n">Atom</span><span class="o">.</span><span class="n">S</span> <span class="ow">and</span>
-                      <span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">is_free</span> <span class="ow">and</span>
-                      <span class="n">other</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">is_free</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">atom</span>
+                    <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">feature</span>
+                         <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">==</span> <span class="n">Atom</span><span class="o">.</span><span class="n">S</span>
+                             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">is_free</span>
+                             <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">is_free</span><span class="p">)))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">dir</span> <span class="ow">and</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">_equals</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">result</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">_equals</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">argument</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">dir</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">_equals</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">_equals</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">argument</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span> <span class="ow">or</span>
-                <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Category</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_equals</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span>
+                <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Category</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_equals</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Helper function to test Category pattern matching.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">atom</span> <span class="ow">and</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Feature</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">feature</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">atom</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Feature</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">feature</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">dir</span> <span class="ow">and</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">result</span><span class="p">)</span> <span class="ow">and</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">argument</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">dir</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">result</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">argument</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Category.matches"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Category.matches">[docs]</a>    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Check if the template set out in this matches the argument.</span>
@@ -340,8 +340,8 @@
 <span class="sd">        Like == but the NONE feature matches with everything.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span> <span class="ow">or</span>
-                <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Category</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matches</span><span class="p">(</span><span class="n">other</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span>
+                <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Category</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matches</span><span class="p">(</span><span class="n">other</span><span class="p">))</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bwd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -359,11 +359,11 @@
         <span class="k">return</span> <span class="n">parse</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">type_raising_dep_var</span><span class="p">)</span></div></div>
 
 
-<span class="n">VAR_SLOT_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;(\{(?P&lt;var&gt;[_A-Z]+)\*?})?</span>
-<span class="s1">                           (&lt;(?P&lt;slot&gt;\d+)&gt;)?&#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
-<span class="n">CAT_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;(?P&lt;atom&gt;[A-Z]+|conj|[,.;:])</span>
-<span class="s1">                           (\[(?P&lt;feature&gt;[Xa-z]+)])?&#39;&#39;&#39;</span> <span class="o">+</span>
-                       <span class="n">VAR_SLOT_REGEX</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+<span class="n">VAR_SLOT_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(\{(?P&lt;var&gt;[_A-Z]+)\*?})?&#39;</span>
+                            <span class="sa">r</span><span class="s1">&#39;(&lt;(?P&lt;slot&gt;\d+)&gt;)?&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+<span class="n">CAT_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;atom&gt;[A-Z]+|conj|[,.;:])&#39;</span>
+                       <span class="sa">r</span><span class="s1">&#39;(\[(?P&lt;feature&gt;[Xa-z]+)])?&#39;</span>
+                       <span class="o">+</span> <span class="n">VAR_SLOT_REGEX</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
 <span class="n">CATEGORIES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Category</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="n">VARIABLES</span> <span class="o">=</span> <span class="s1">&#39;+_YZWVUTRQAB&#39;</span>
@@ -425,7 +425,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

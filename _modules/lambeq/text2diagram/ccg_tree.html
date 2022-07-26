@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_tree &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.text2diagram.ccg_tree &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.ccg_tree</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -129,18 +129,45 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Sequence</span>
 <span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">overload</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">overload</span>
 
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">rigid</span><span class="p">,</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Over</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Under</span><span class="p">,</span>
-                              <span class="n">biclosed2rigid_ob</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">biclosed2rigid_ob</span>
+<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Over</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Under</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span><span class="p">,</span> <span class="n">GBC</span><span class="p">,</span> <span class="n">GBX</span><span class="p">,</span> <span class="n">GFC</span><span class="p">,</span> <span class="n">GFX</span>
-<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="p">(</span><span class="n">CCGAtomicType</span><span class="p">,</span> <span class="n">replace_cat_result</span><span class="p">,</span>
-                                           <span class="n">str2biclosed</span><span class="p">,</span> <span class="n">biclosed2str</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="p">(</span><span class="n">biclosed2str</span><span class="p">,</span> <span class="n">replace_cat_result</span><span class="p">,</span>
+                                           <span class="n">str2biclosed</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CCGAtomicType</span>
 
 <span class="c1"># Types</span>
 <span class="n">_JSONDictT</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">UnarySwap</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Unary Swap box, for unary rules that change the type direction.</span>
+
+<span class="sd">    For example, the unary rule `S/NP -&gt; NP\\NP` is handled by</span>
+<span class="sd">    `UnarySwap(n &gt;&gt; n)`, which becomes `Swap(n @ n.r)` in a rigid</span>
+<span class="sd">    diagram.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cod</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
+            <span class="c1"># This defines a swap from Y.l @ X to X @ Y.l</span>
+            <span class="c1"># since:</span>
+            <span class="c1">#           Ty() &lt;&lt; Y        -&gt; Y.l</span>
+            <span class="c1">#  Ty() &lt;&lt; (Ty() &lt;&lt; Y)       -&gt; Y.l.l</span>
+            <span class="c1"># (Ty() &lt;&lt; (Ty() &lt;&lt; Y)) &gt;&gt; X -&gt; Y.l.l.r @ X = Y.l @ X</span>
+            <span class="n">dom</span> <span class="o">=</span> <span class="p">(</span><span class="n">Ty</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">Ty</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">cod</span><span class="o">.</span><span class="n">left</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">cod</span><span class="o">.</span><span class="n">right</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cod</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
+            <span class="c1"># Similarly, this defines a swap from Y @ X.r to X.r @ Y</span>
+            <span class="n">dom</span> <span class="o">=</span> <span class="n">cod</span><span class="o">.</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="p">((</span><span class="n">cod</span><span class="o">.</span><span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="n">Ty</span><span class="p">())</span> <span class="o">&gt;&gt;</span> <span class="n">Ty</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid type for unary swap: </span><span class="si">{</span><span class="n">cod</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Swap(</span><span class="si">{</span><span class="n">dom</span><span class="si">}</span><span class="s1"> -&gt; </span><span class="si">{</span><span class="n">cod</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">PlanarBX</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
@@ -242,8 +269,8 @@
                               <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNARY</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
                               <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_TYPE_RAISING</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
                               <span class="n">CCGRule</span><span class="o">.</span><span class="n">BACKWARD_TYPE_RAISING</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">!=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNKNOWN</span> <span class="ow">and</span>
-                <span class="n">child_requirements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_children</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">!=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNKNOWN</span>
+                <span class="ow">and</span> <span class="n">child_requirements</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">!=</span> <span class="n">n_children</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid number of children (</span><span class="si">{</span><span class="n">n_children</span><span class="si">}</span><span class="s1">) for &#39;</span>
                              <span class="sa">f</span><span class="s1">&#39;rule &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
 
@@ -309,11 +336,12 @@
 <span class="sd">        -------</span>
 <span class="sd">        :py:class:`lambeq.text2diagram.CCGTree`</span>
 <span class="sd">            A new tree free of trivial unary rules.</span>
-<span class="sd">        </span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_tree</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">while</span> <span class="p">(</span><span class="n">new_tree</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNARY</span>
-              <span class="ow">and</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="o">==</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">):</span>
+               <span class="ow">and</span> <span class="p">(</span><span class="n">new_tree</span><span class="o">.</span><span class="n">biclosed_type</span>
+                    <span class="o">==</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">)):</span>
             <span class="n">new_tree</span> <span class="o">=</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">without_trivial_unary_rules</span><span class="p">()</span> <span class="k">for</span> <span class="n">child</span>
                              <span class="ow">in</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
@@ -331,70 +359,69 @@
         <span class="k">return</span> <span class="n">data</span></div>
 
     <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">CCGTree</span><span class="p">)</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">text</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">rule</span> <span class="ow">and</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="ow">and</span>
-                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="ow">and</span>
-                <span class="nb">all</span><span class="p">(</span><span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span> <span class="k">for</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">children</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">CCGTree</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">text</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">rule</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">biclosed_type</span>
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="n">c1</span> <span class="o">==</span> <span class="n">c2</span>
+                        <span class="k">for</span> <span class="n">c1</span><span class="p">,</span> <span class="n">c2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">children</span><span class="p">)))</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&quot;)&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">!r}</span><span class="s1">)&#39;</span>
 
-    <span class="k">def</span> <span class="nf">_vert_deriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                    <span class="n">chr_set</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> 
-                    <span class="n">use_slashes</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="nf">_vert_deriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">chr_set</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                    <span class="n">use_slashes</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
                     <span class="n">_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
         <span class="sd">&quot;&quot;&quot;Create a vertical string representation of the CCG tree.&quot;&quot;&quot;</span>
         <span class="n">output_type</span> <span class="o">=</span> <span class="n">biclosed2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">,</span> <span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span><span class="p">:</span>
             <span class="n">deriv</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;SUCH_THAT&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s1">&quot;&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">deriv</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;LEFT_ARROW&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> &#39;</span> <span class="o">+</span>
-                     <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">biclosed2str</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">,</span> 
-                                             <span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
-                                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">))</span>
+            <span class="n">deriv</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;LEFT_ARROW&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> &#39;</span>
+                     <span class="o">+</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">biclosed2str</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">,</span>
+                                               <span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">))</span>
         <span class="n">deriv</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_prefix</span><span class="si">}{</span><span class="n">deriv</span><span class="si">}</span><span class="s1">&#39;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_prefix</span><span class="p">:</span>
-                <span class="n">_prefix</span> <span class="o">=</span> <span class="n">_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> \
-                          <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;BAR&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> &#39;</span> 
-                           <span class="k">if</span> <span class="n">_prefix</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;JOINT&quot;</span><span class="p">]</span> 
-                           <span class="k">else</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
+                <span class="n">_prefix</span> <span class="o">=</span> <span class="n">_prefix</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;BAR&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> &#39;</span>
+                                          <span class="k">if</span> <span class="n">_prefix</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;JOINT&#39;</span><span class="p">]</span>
+                                          <span class="k">else</span> <span class="s1">&#39;  &#39;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-                <span class="n">deriv</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">child</span><span class="o">.</span><span class="n">_vert_deriv</span><span class="p">(</span><span class="n">chr_set</span><span class="p">,</span> <span class="n">use_slashes</span><span class="p">,</span> 
-                                                  <span class="n">_prefix</span> <span class="o">+</span> <span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;JOINT&quot;</span><span class="p">])</span>
-            <span class="n">deriv</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_vert_deriv</span><span class="p">(</span><span class="n">chr_set</span><span class="p">,</span> <span class="n">use_slashes</span><span class="p">,</span> 
-                                                          <span class="n">_prefix</span> <span class="o">+</span> 
-                                                          <span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;CORNER&quot;</span><span class="p">])</span>
+                <span class="n">deriv</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">child</span><span class="o">.</span><span class="n">_vert_deriv</span><span class="p">(</span><span class="n">chr_set</span><span class="p">,</span> <span class="n">use_slashes</span><span class="p">,</span>
+                                                  <span class="n">_prefix</span> <span class="o">+</span> <span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;JOINT&#39;</span><span class="p">])</span>
+            <span class="n">deriv</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">_vert_deriv</span><span class="p">(</span>
+                    <span class="n">chr_set</span><span class="p">,</span> <span class="n">use_slashes</span><span class="p">,</span> <span class="n">_prefix</span> <span class="o">+</span> <span class="n">chr_set</span><span class="p">[</span><span class="s1">&#39;CORNER&#39;</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">deriv</span>
 
-    <span class="k">def</span> <span class="nf">_horiz_deriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                     <span class="n">chr_set</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span> 
-                     <span class="n">word_spacing</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> 
+    <span class="k">def</span> <span class="nf">_horiz_deriv</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                     <span class="n">chr_set</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">],</span>
+                     <span class="n">word_spacing</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                      <span class="n">use_slashes</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sd">&quot;&quot;&quot;Create a standard CCG diagram for the tree with the </span>
+        <span class="sd">&quot;&quot;&quot;Create a standard CCG diagram for the tree with the</span>
 <span class="sd">        words arranged horizontally.&quot;&quot;&quot;</span>
         <span class="n">output_type</span> <span class="o">=</span> <span class="n">biclosed2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">,</span> <span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">output_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">):</span>
             <span class="n">output_type</span> <span class="o">=</span> <span class="n">output_type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span><span class="p">:</span>
             <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">output_type</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">:{</span><span class="s2">&quot; &quot;</span><span class="si">}</span><span class="s1">^</span><span class="si">{</span><span class="n">width</span><span class="si">}}</span><span class="se">\n</span><span class="s1">&#39;</span> \
-                   <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;HEAVY_LINE&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">width</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span> \
-                   <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">output_type</span><span class="si">:{</span><span class="s2">&quot; &quot;</span><span class="si">}</span><span class="s1">^</span><span class="si">{</span><span class="n">width</span><span class="si">}}</span><span class="s1">&#39;</span>
+            <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="si">:{</span><span class="s2">&quot; &quot;</span><span class="si">}</span><span class="s1">^</span><span class="si">{</span><span class="n">width</span><span class="si">}}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;HEAVY_LINE&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">width</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">output_type</span><span class="si">:{</span><span class="s2">&quot; &quot;</span><span class="si">}</span><span class="s1">^</span><span class="si">{</span><span class="n">width</span><span class="si">}}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="n">lines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">:</span>
-            <span class="n">child_deriv</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">_horiz_deriv</span><span class="p">(</span><span class="n">chr_set</span><span class="p">,</span> <span class="n">word_spacing</span><span class="p">,</span> 
+            <span class="n">child_deriv</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">_horiz_deriv</span><span class="p">(</span><span class="n">chr_set</span><span class="p">,</span> <span class="n">word_spacing</span><span class="p">,</span>
                                              <span class="n">use_slashes</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">lidx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">child_deriv</span><span class="p">))):</span>
                 <span class="k">if</span> <span class="n">lidx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="ow">and</span> <span class="n">lidx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">child_deriv</span><span class="p">):</span>
                     <span class="n">lines</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="n">word_spacing</span><span class="p">)</span> <span class="o">+</span> <span class="n">child_deriv</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span>
                 <span class="k">elif</span> <span class="n">lidx</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
-                    <span class="n">lines</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">lidx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="o">-</span>
-                                          <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">lidx</span><span class="p">]))</span>
+                    <span class="n">lines</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">lidx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+                                          <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">lidx</span><span class="p">]))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">target_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">lidx</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span> <span class="k">if</span> <span class="n">lidx</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
                     <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">child_deriv</span><span class="p">[</span><span class="n">lidx</span><span class="p">]</span><span class="si">:{</span><span class="s2">&quot; &quot;</span><span class="si">}</span><span class="s1">&gt;</span><span class="si">{</span><span class="n">target_len</span><span class="si">}}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -428,43 +455,42 @@
 <span class="sd">        use_ascii: bool, default: False</span>
 <span class="sd">            Whether to draw using ASCII characters only.</span>
 <span class="sd">        vertical: bool, default: False</span>
-<span class="sd">            Whether to create a vertical tree representation, </span>
+<span class="sd">            Whether to create a vertical tree representation,</span>
 <span class="sd">            instead of the standard horizontal one.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
-<span class="sd">            A string that contains the graphical representation </span>
+<span class="sd">            A string that contains the graphical representation</span>
 <span class="sd">            of the CCG tree.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">UNICODE_CHAR_SET</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;HEAVY_LINE&quot;</span><span class="p">:</span> <span class="s1">&#39;═&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;LINE&quot;</span><span class="p">:</span> <span class="s1">&#39;─&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;BAR&quot;</span><span class="p">:</span> <span class="s1">&#39;│&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;SUCH_THAT&quot;</span><span class="p">:</span> <span class="s1">&#39;∋&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;JOINT&quot;</span><span class="p">:</span> <span class="s1">&#39;├&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;LEFT_ARROW&quot;</span><span class="p">:</span> <span class="s1">&#39;←&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;└&#39;</span>
+            <span class="s1">&#39;HEAVY_LINE&#39;</span><span class="p">:</span> <span class="s1">&#39;═&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;LINE&#39;</span><span class="p">:</span> <span class="s1">&#39;─&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;BAR&#39;</span><span class="p">:</span> <span class="s1">&#39;│&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;SUCH_THAT&#39;</span><span class="p">:</span> <span class="s1">&#39;∋&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;JOINT&#39;</span><span class="p">:</span> <span class="s1">&#39;├&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;LEFT_ARROW&#39;</span><span class="p">:</span> <span class="s1">&#39;←&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;└&#39;</span>
         <span class="p">}</span>
 
         <span class="n">ASCII_CHAR_SET</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;HEAVY_LINE&quot;</span><span class="p">:</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;LINE&quot;</span><span class="p">:</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;BAR&quot;</span><span class="p">:</span> <span class="s1">&#39;│&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;SUCH_THAT&quot;</span><span class="p">:</span> <span class="s1">&#39;&lt;-&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;JOINT&quot;</span><span class="p">:</span> <span class="s1">&#39;├&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;LEFT_ARROW&quot;</span><span class="p">:</span> <span class="s1">&#39;&lt;-&#39;</span><span class="p">,</span>
-            <span class="s2">&quot;CORNER&quot;</span><span class="p">:</span> <span class="s1">&#39;└&#39;</span>
+            <span class="s1">&#39;HEAVY_LINE&#39;</span><span class="p">:</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;LINE&#39;</span><span class="p">:</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;BAR&#39;</span><span class="p">:</span> <span class="s1">&#39;│&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;SUCH_THAT&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;-&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;JOINT&#39;</span><span class="p">:</span> <span class="s1">&#39;├&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;LEFT_ARROW&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;-&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;CORNER&#39;</span><span class="p">:</span> <span class="s1">&#39;└&#39;</span>
         <span class="p">}</span>
 
         <span class="k">if</span> <span class="n">use_ascii</span><span class="p">:</span>
             <span class="n">use_slashes</span> <span class="o">=</span> <span class="kc">True</span>
-        
-        <span class="n">chr_set</span> <span class="o">=</span> <span class="n">UNICODE_CHAR_SET</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_ascii</span> \
-            <span class="k">else</span> <span class="n">ASCII_CHAR_SET</span>
-        
+
+        <span class="n">chr_set</span> <span class="o">=</span> <span class="n">UNICODE_CHAR_SET</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">use_ascii</span> <span class="k">else</span> <span class="n">ASCII_CHAR_SET</span>
+
         <span class="k">if</span> <span class="ow">not</span> <span class="n">vertical</span><span class="p">:</span>
             <span class="n">deriv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_horiz_deriv</span><span class="p">(</span><span class="n">chr_set</span><span class="p">,</span> <span class="n">word_spacing</span><span class="p">,</span> <span class="n">use_slashes</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -494,9 +520,21 @@
             <span class="n">word</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(),</span> <span class="n">biclosed_type</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">word</span><span class="p">,</span> <span class="n">Id</span><span class="p">(</span><span class="n">biclosed_type</span><span class="p">)</span>
 
-        <span class="n">child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
-
-        <span class="n">this_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">Ty</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">child_types</span><span class="p">),</span> <span class="n">biclosed_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNARY</span>
+                <span class="ow">and</span> <span class="ow">not</span> <span class="n">planar</span>
+                <span class="ow">and</span> <span class="p">{</span><span class="nb">type</span><span class="p">(</span><span class="n">biclosed_type</span><span class="p">),</span>
+                     <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">)}</span> <span class="o">==</span> <span class="p">{</span><span class="n">Over</span><span class="p">,</span> <span class="n">Under</span><span class="p">}):</span>
+            <span class="n">this_layer</span> <span class="o">=</span> <span class="n">UnarySwap</span><span class="p">(</span><span class="n">biclosed_type</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_COMPOSITION</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_TYPE_RAISING</span><span class="p">):</span>
+            <span class="n">left</span> <span class="o">=</span> <span class="n">biclosed_type</span><span class="o">.</span><span class="n">left</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">biclosed_type</span><span class="o">.</span><span class="n">right</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">left</span>
+            <span class="n">this_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">((</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">mid</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">mid</span> <span class="o">&lt;&lt;</span> <span class="n">right</span><span class="p">),</span>
+                                   <span class="n">biclosed_type</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
+            <span class="n">this_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">Ty</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">child_types</span><span class="p">),</span> <span class="n">biclosed_type</span><span class="p">)</span>
 
         <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">_to_biclosed_diagram</span><span class="p">(</span><span class="n">planar</span><span class="p">,</span>
                                                <span class="n">this_layer</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
@@ -504,22 +542,22 @@
 
         <span class="k">if</span> <span class="n">planar</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">BACKWARD_CROSSED_COMPOSITION</span><span class="p">:</span>
             <span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">left_diag</span><span class="p">),</span> <span class="p">(</span><span class="n">right_words</span><span class="p">,</span> <span class="n">right_diag</span><span class="p">)</span> <span class="o">=</span> <span class="n">children</span>
-            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_diag</span> <span class="o">&gt;&gt;</span>
-                    <span class="n">PlanarBX</span><span class="p">(</span><span class="n">left_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">right_words</span> <span class="o">&gt;&gt;</span> <span class="n">right_diag</span><span class="p">))</span>
+            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_diag</span>
+                    <span class="o">&gt;&gt;</span> <span class="n">PlanarBX</span><span class="p">(</span><span class="n">left_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">right_words</span> <span class="o">&gt;&gt;</span> <span class="n">right_diag</span><span class="p">))</span>
         <span class="k">elif</span> <span class="n">planar</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_CROSSED_COMPOSITION</span><span class="p">:</span>
             <span class="p">(</span><span class="n">left_words</span><span class="p">,</span> <span class="n">left_diag</span><span class="p">),</span> <span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">right_diag</span><span class="p">)</span> <span class="o">=</span> <span class="n">children</span>
-            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">right_diag</span> <span class="o">&gt;&gt;</span>
-                    <span class="n">PlanarFX</span><span class="p">(</span><span class="n">right_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">left_words</span> <span class="o">&gt;&gt;</span> <span class="n">left_diag</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="n">planar</span> <span class="ow">and</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">GENERALIZED_BACKWARD_CROSSED_COMPOSITION</span><span class="p">):</span>
+            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">right_diag</span>
+                    <span class="o">&gt;&gt;</span> <span class="n">PlanarFX</span><span class="p">(</span><span class="n">right_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">left_words</span> <span class="o">&gt;&gt;</span> <span class="n">left_diag</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">planar</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span>
+                         <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">GENERALIZED_BACKWARD_CROSSED_COMPOSITION</span><span class="p">):</span>
             <span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">left_diag</span><span class="p">),</span> <span class="p">(</span><span class="n">right_words</span><span class="p">,</span> <span class="n">right_diag</span><span class="p">)</span> <span class="o">=</span> <span class="n">children</span>
-            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_diag</span> <span class="o">&gt;&gt;</span>
-                    <span class="n">PlanarGBX</span><span class="p">(</span><span class="n">left_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">right_words</span> <span class="o">&gt;&gt;</span> <span class="n">right_diag</span><span class="p">))</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="n">planar</span> <span class="ow">and</span>
-              <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">GENERALIZED_FORWARD_CROSSED_COMPOSITION</span><span class="p">):</span>
+            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">left_diag</span>
+                    <span class="o">&gt;&gt;</span> <span class="n">PlanarGBX</span><span class="p">(</span><span class="n">left_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">right_words</span> <span class="o">&gt;&gt;</span> <span class="n">right_diag</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">planar</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span>
+                         <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">GENERALIZED_FORWARD_CROSSED_COMPOSITION</span><span class="p">):</span>
             <span class="p">(</span><span class="n">left_words</span><span class="p">,</span> <span class="n">left_diag</span><span class="p">),</span> <span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">right_diag</span><span class="p">)</span> <span class="o">=</span> <span class="n">children</span>
-            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">right_diag</span> <span class="o">&gt;&gt;</span>
-                    <span class="n">PlanarGFX</span><span class="p">(</span><span class="n">right_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">left_words</span> <span class="o">&gt;&gt;</span> <span class="n">left_diag</span><span class="p">))</span>
+            <span class="n">diag</span> <span class="o">=</span> <span class="p">(</span><span class="n">right_diag</span>
+                    <span class="o">&gt;&gt;</span> <span class="n">PlanarGFX</span><span class="p">(</span><span class="n">right_diag</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">left_words</span> <span class="o">&gt;&gt;</span> <span class="n">left_diag</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">words</span><span class="p">,</span> <span class="n">diag</span> <span class="o">=</span> <span class="p">[</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">children</span><span class="p">)]</span>
             <span class="n">diag</span> <span class="o">&gt;&gt;=</span> <span class="n">this_layer</span>
@@ -558,21 +596,25 @@
                         <span class="n">cat</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">right</span>
                 <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">cat</span><span class="p">),</span> <span class="n">right</span>
 
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">UnarySwap</span><span class="p">):</span>
+                <span class="n">cod</span> <span class="o">=</span> <span class="n">ob_func</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Swap</span><span class="p">(</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">cod</span><span class="p">[:</span><span class="mi">1</span><span class="p">])</span>
+
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">PlanarBX</span><span class="p">):</span>
                 <span class="n">join</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
                 <span class="n">right</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)[</span><span class="nb">len</span><span class="p">(</span><span class="n">join</span><span class="p">):]</span>
                 <span class="n">inner</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">diagram</span><span class="p">)</span>
                 <span class="n">cups</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">join</span><span class="p">,</span> <span class="n">join</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span> <span class="o">@</span> <span class="n">inner</span> <span class="o">&gt;&gt;</span>
-                        <span class="n">cups</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">inner</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">join</span><span class="p">):]))</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span> <span class="o">@</span> <span class="n">inner</span>
+                        <span class="o">&gt;&gt;</span> <span class="n">cups</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">inner</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">join</span><span class="p">):]))</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">PlanarFX</span><span class="p">):</span>
                 <span class="n">join</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
                 <span class="n">left</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">join</span><span class="p">)]</span>
                 <span class="n">inner</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">diagram</span><span class="p">)</span>
                 <span class="n">cups</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">join</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">join</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">inner</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
-                                   <span class="n">Id</span><span class="p">(</span><span class="n">inner</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">join</span><span class="p">)])</span> <span class="o">@</span> <span class="n">cups</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">inner</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span>
+                                   <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="n">inner</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">join</span><span class="p">)])</span> <span class="o">@</span> <span class="n">cups</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">PlanarGBX</span><span class="p">):</span>
                 <span class="n">left</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
@@ -605,14 +647,16 @@
                 <span class="n">mid</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
                 <span class="n">left</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
                 <span class="n">swaps</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">join</span> <span class="o">&gt;&gt;</span> <span class="n">mid</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span> <span class="o">@</span> <span class="n">swaps</span> <span class="o">&gt;&gt;</span>
-                                   <span class="n">rigid</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">join</span><span class="p">,</span> <span class="n">join</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">mid</span> <span class="o">@</span> <span class="n">right</span><span class="p">))</span>
+                <span class="n">cups</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">join</span><span class="p">,</span> <span class="n">join</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span> <span class="o">@</span> <span class="n">swaps</span>
+                                   <span class="o">&gt;&gt;</span> <span class="n">cups</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">mid</span> <span class="o">@</span> <span class="n">right</span><span class="p">))</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">GFX</span><span class="p">):</span>
                 <span class="n">mid</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
                 <span class="n">left</span><span class="p">,</span> <span class="n">join</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">split</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
-                <span class="k">return</span> <span class="p">(</span><span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">mid</span> <span class="o">&lt;&lt;</span> <span class="n">join</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span> <span class="o">&gt;&gt;</span>
-                        <span class="n">Id</span><span class="p">(</span><span class="n">left</span> <span class="o">@</span> <span class="n">mid</span><span class="p">)</span> <span class="o">@</span> <span class="n">rigid</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">join</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">join</span><span class="p">))</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+                <span class="n">cups</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">join</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">join</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">(</span><span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">mid</span> <span class="o">&lt;&lt;</span> <span class="n">join</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">join</span><span class="p">)</span>
+                        <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span> <span class="o">@</span> <span class="n">mid</span><span class="p">)</span> <span class="o">@</span> <span class="n">cups</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
 
             <span class="n">cod</span> <span class="o">=</span> <span class="n">to_rigid_diagram</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">cod</span> <span class="k">else</span> <span class="n">Word</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
@@ -631,7 +675,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

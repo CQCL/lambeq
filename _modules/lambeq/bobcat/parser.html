@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.parser &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.bobcat.parser &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.bobcat.parser</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -127,10 +127,12 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">overload</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">overload</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.bobcat.grammar</span> <span class="kn">import</span> <span class="n">Grammar</span>
-<span class="kn">from</span> <span class="nn">lambeq.bobcat.lexicon</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">CATEGORIES</span>
+<span class="kn">from</span> <span class="nn">lambeq.bobcat.lexicon</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Category</span>
+<span class="kn">from</span> <span class="nn">lambeq.bobcat.lexicon</span> <span class="kn">import</span> <span class="n">CATEGORIES</span>
 <span class="kn">from</span> <span class="nn">lambeq.bobcat.rules</span> <span class="kn">import</span> <span class="n">Rules</span>
 <span class="kn">from</span> <span class="nn">lambeq.bobcat.tree</span> <span class="kn">import</span> <span class="n">Lexical</span><span class="p">,</span> <span class="n">ParseTree</span>
 
@@ -175,20 +177,123 @@
 
 
 <span class="nd">@dataclass</span>
-<span class="k">class</span> <span class="nc">Chart</span><span class="p">:</span>
+<span class="k">class</span> <span class="nc">Cell</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;A cell in the chart.</span>
+
+<span class="sd">    The cell maintains a list of trees in sorted order, up to the beam</span>
+<span class="sd">    size (though may be larger if there are ties at the bottom), with</span>
+<span class="sd">    the further restriction that only one tree is allowed per category.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">beam_size</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">chart</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">SpanT</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span>
-                                                <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">min_scores</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">SpanT</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">trees_map</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Category</span><span class="p">,</span> <span class="n">ParseTree</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+    <span class="n">min_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">NEGATIVE_INFINITY</span>
+
+    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Find the index where a tree with the given score can go.&quot;&quot;&quot;</span>
+        <span class="n">trees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trees</span>
+        <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">cmp</span> <span class="o">=</span> <span class="n">trees</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">score</span>
+            <span class="k">if</span> <span class="n">score</span> <span class="o">==</span> <span class="n">cmp</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">mid</span>
+            <span class="k">elif</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">cmp</span><span class="p">:</span>
+                <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">lo</span>
+
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_add</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Add the trees to the cell.</span>
+
+<span class="sd">        For each tree that is to be added, it is checked against the</span>
+<span class="sd">        existing trees to determine whether it should be added, and if</span>
+<span class="sd">        so, is added using a binary search; then, the beam is applied.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">to_add</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">to_add</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">tree</span><span class="p">:</span> <span class="o">-</span><span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
+
+        <span class="n">trees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trees</span>
+        <span class="n">trees_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trees_map</span>
+
+        <span class="n">added</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beam_size</span>
+        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">to_add</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">score</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">b</span> <span class="ow">and</span> <span class="n">score</span> <span class="o">&lt;</span> <span class="n">trees</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">score</span><span class="p">:</span>
+                <span class="k">break</span>
+
+            <span class="c1"># Check whether there exists a tree with the same category.</span>
+            <span class="c1"># If there does, and it has a lower score, then remove the</span>
+            <span class="c1"># old tree before inserting the new tree.</span>
+            <span class="c1"># If the score is higher, then do nothing.</span>
+            <span class="n">insert</span><span class="p">:</span> <span class="nb">bool</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">old_tree</span> <span class="o">=</span> <span class="n">trees_map</span><span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">cat</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">insert</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">old_score</span> <span class="o">=</span> <span class="n">old_tree</span><span class="o">.</span><span class="n">score</span>
+                <span class="n">insert</span> <span class="o">=</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">old_score</span>
+                <span class="k">if</span> <span class="n">insert</span><span class="p">:</span>
+                    <span class="n">old_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">old_score</span><span class="p">)</span>
+                    <span class="n">deleted</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">old_index</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)):</span>
+                        <span class="k">if</span> <span class="n">trees</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="n">old_tree</span><span class="p">:</span>
+                            <span class="k">del</span> <span class="n">trees</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                            <span class="n">deleted</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="k">break</span>
+                        <span class="k">elif</span> <span class="n">trees</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">score</span> <span class="o">!=</span> <span class="n">old_score</span><span class="p">:</span>
+                            <span class="k">break</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">deleted</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">old_index</span><span class="p">)):</span>
+                            <span class="k">if</span> <span class="n">trees</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="ow">is</span> <span class="n">old_tree</span><span class="p">:</span>
+                                <span class="k">del</span> <span class="n">trees</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                                <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">insert</span><span class="p">:</span>
+                <span class="n">trees</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">score</span><span class="p">),</span> <span class="n">tree</span><span class="p">)</span>
+                <span class="n">trees_map</span><span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">cat</span><span class="p">]</span> <span class="o">=</span> <span class="n">tree</span>
+                <span class="n">added</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_score</span> <span class="o">=</span> <span class="n">trees</span><span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">score</span>
+                    <span class="k">if</span> <span class="n">trees</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">score</span> <span class="o">&lt;</span> <span class="n">cutoff</span><span class="p">:</span>
+                        <span class="n">added</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span> <span class="o">-</span> <span class="n">b</span>
+                        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">trees</span><span class="p">[</span><span class="n">b</span><span class="p">:]:</span>
+                            <span class="k">del</span> <span class="n">trees_map</span><span class="p">[</span><span class="n">tree</span><span class="o">.</span><span class="n">cat</span><span class="p">]</span>
+                        <span class="k">del</span> <span class="n">trees</span><span class="p">[</span><span class="n">b</span><span class="p">:]</span>
+                <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">added</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Chart</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;The parse chart, containing a mapping from span to cell.</span>
+
+<span class="sd">    A span (i, j) represents the phrase from the ith word to the jth</span>
+<span class="sd">    word (inclusive), indexed from 0.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">beam_size</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">chart</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">SpanT</span><span class="p">,</span> <span class="n">Cell</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+
     <span class="n">parse_tree_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="n">SpanT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">trees</span>
 
     <span class="k">def</span> <span class="nf">min_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get the minimum score needed to add a tree to the given cell.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Get the lowest score needed to add a tree to the given cell.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_scores</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">min_score</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">NEGATIVE_INFINITY</span>
 
@@ -197,35 +302,12 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">to_add</span><span class="p">:</span>
             <span class="k">return</span>
 
-        <span class="n">to_add</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">to_add</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">tree</span><span class="p">:</span> <span class="o">-</span><span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">)</span>
-
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">trees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">trees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">Cell</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beam_size</span><span class="p">)</span>
 
-        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">beam_size</span>
-        <span class="k">for</span> <span class="n">tree</span> <span class="ow">in</span> <span class="n">to_add</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">b</span> <span class="ow">and</span> <span class="n">tree</span><span class="o">.</span><span class="n">score</span> <span class="o">&lt;</span> <span class="n">trees</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">score</span><span class="p">:</span>
-                <span class="k">break</span>
-
-            <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span>
-            <span class="k">while</span> <span class="n">lo</span> <span class="o">&lt;</span> <span class="n">hi</span><span class="p">:</span>
-                <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">lo</span> <span class="o">+</span> <span class="n">hi</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
-                <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">score</span> <span class="o">&gt;</span> <span class="n">trees</span><span class="p">[</span><span class="n">mid</span><span class="p">]</span><span class="o">.</span><span class="n">score</span><span class="p">:</span>
-                    <span class="n">hi</span> <span class="o">=</span> <span class="n">mid</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">lo</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span>
-            <span class="n">trees</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">lo</span><span class="p">,</span> <span class="n">tree</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parse_tree_count</span> <span class="o">+=</span> <span class="mi">1</span>
-
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">cutoff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_scores</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">trees</span><span class="p">[</span><span class="n">b</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">score</span>
-                <span class="k">if</span> <span class="n">trees</span><span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">.</span><span class="n">score</span> <span class="o">&lt;</span> <span class="n">cutoff</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">parse_tree_count</span> <span class="o">-=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span> <span class="o">-</span> <span class="n">b</span>
-                    <span class="k">del</span> <span class="n">trees</span><span class="p">[</span><span class="n">b</span><span class="p">:]</span>
-            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="k">pass</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parse_tree_count</span> <span class="o">+=</span> <span class="n">cell</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">to_add</span><span class="p">)</span>
 
 
 <span class="nd">@dataclass</span>
@@ -333,9 +415,9 @@
             <span class="k">if</span> <span class="n">max_tree</span><span class="p">:</span>
                 <span class="k">break</span>
 
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">skim_deps</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">result_start</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_deps</span><span class="p">(</span><span class="n">max_tree</span><span class="p">)</span> <span class="o">+</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">skim_deps</span><span class="p">(</span><span class="n">result_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">skim_deps</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">result_start</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_deps</span><span class="p">(</span><span class="n">max_tree</span><span class="p">)</span>
+                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">skim_deps</span><span class="p">(</span><span class="n">result_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">end</span><span class="p">))</span>
 
 
 <div class="viewcode-block" id="ChartParser"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.ChartParser">[docs]</a><span class="k">class</span> <span class="nc">ChartParser</span><span class="p">:</span>
@@ -389,12 +471,21 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">result_cats</span><span class="p">[</span><span class="n">label</span><span class="p">,</span> <span class="n">res_cats</span><span class="p">]</span> <span class="o">=</span> <span class="n">cat_id</span>
             <span class="n">cat_id</span> <span class="o">+=</span> <span class="mi">1</span>
 
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">root_cats</span> <span class="o">=</span> <span class="p">(</span><span class="kc">None</span> <span class="k">if</span> <span class="n">root_cats</span> <span class="ow">is</span> <span class="kc">None</span>
-                              <span class="k">else</span> <span class="p">[</span><span class="n">CATEGORIES</span><span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">root_cats</span><span class="p">])</span>
-        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Grammar does not contain the root cat: </span><span class="si">{</span><span class="n">s</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_root_cats</span><span class="p">(</span><span class="n">root_cats</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ChartParser.set_root_cats"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.ChartParser.set_root_cats">[docs]</a>    <span class="k">def</span> <span class="nf">set_root_cats</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">root_cats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Category</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">root_cats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">root_cats</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">root_cats</span> <span class="o">=</span> <span class="p">[(</span><span class="n">cat</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span> <span class="n">Category</span><span class="p">)</span>
+                                   <span class="k">else</span> <span class="n">CATEGORIES</span><span class="p">[</span><span class="n">cat</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+                                  <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">root_cats</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Grammar does not contain root category: &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ChartParser.filter_root"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.ChartParser.filter_root">[docs]</a>    <span class="k">def</span> <span class="nf">filter_root</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trees</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_cats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -547,7 +638,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

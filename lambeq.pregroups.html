@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.pregroups &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.pregroups &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -177,7 +177,7 @@ compatibility reasons.</p>
 <span class="sig-name descname"><span class="pre">diagram2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/text_printer.html#TextDiagramPrinter.diagram2str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.TextDiagramPrinter.diagram2str" title="Permalink to this definition"></a></dt>
 <dd><p>Produces a string that contains a graphical representation of
 the input diagram using text characters. The diagram is expected
-to be in pregroup form, i.e. all words must precede the morphisms.</p>
+to be in pregroup form, i.e. all words must precede morphisms.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -211,10 +211,10 @@ diagram.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="lambeq.pregroups.create_pregroup_diagram">
 <span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">create_pregroup_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">words</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Word</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cod</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">morphisms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">type</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Diagram</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/utils.html#create_pregroup_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.create_pregroup_diagram" title="Permalink to this definition"></a></dt>
-<dd><p>Create a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a> from a list of cups and swaps.</p>
+<dd><p>Create a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a> from cups and swaps.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span>
-<span class="gp">... </span>    <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;goes&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">Word</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;goes&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">),</span>
+<span class="gp">... </span>         <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">morphisms</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Cup</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">diagram</span> <span class="o">=</span> <span class="n">create_pregroup_diagram</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">),</span> <span class="n">morphisms</span><span class="p">)</span>
 </pre></div>
@@ -222,15 +222,18 @@ diagram.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
-<dt><strong>words</strong><span class="classifier">list of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.Word</span></code></a></span></dt><dd><p>A list of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> s corresponding to
-the words of the sentence.</p>
+<dt><strong>words</strong><span class="classifier">list of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.Word</span></code></a></span></dt><dd><p>A list of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> s
+corresponding to the words of the sentence.</p>
 </dd>
 <dt><strong>cod</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Ty.html#discopy.rigid.Ty" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Ty</span></code></a></span></dt><dd><p>The output type of the diagram.</p>
 </dd>
-<dt><strong>morphisms: list of tuple[type, int, int]</strong></dt><dd><p>A list of tuples of the form (morphism, start_wire_idx, end_wire_idx).
-Morphisms can be <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Cup.html#discopy.rigid.Cup" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cup</span></code></a> s or
-<a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Swap.html#discopy.rigid.Swap" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Swap</span></code></a> s, while the two numbers define the
-indices of the wires on which the morphism is applied.</p>
+<dt><strong>morphisms: list of tuple[type, int, int]</strong></dt><dd><dl class="simple">
+<dt>A list of tuples of the form:</dt><dd><p>(morphism, start_wire_idx, end_wire_idx).</p>
+</dd>
+</dl>
+<p>Morphisms can be <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Cup.html#discopy.rigid.Cup" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Cup</span></code></a> s or
+<a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Swap.html#discopy.rigid.Swap" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Swap</span></code></a> s, while the two numbers define
+the indices of the wires on which the morphism is applied.</p>
 </dd>
 </dl>
 </dd>
@@ -261,7 +264,7 @@ For specific arguments, see the constructor of the
 <dl class="py function">
 <dt class="sig sig-object py" id="lambeq.pregroups.is_pregroup_diagram">
 <span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">is_pregroup_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/pregroups/utils.html#is_pregroup_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.is_pregroup_diagram" title="Permalink to this definition"></a></dt>
-<dd><p>Check if a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a> is a pregroup diagram.</p>
+<dd><p>Check if a diagram is a pregroup diagram.</p>
 <p>Adapted from <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html#discopy.grammar.pregroup.draw" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.draw</span></code></a>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
@@ -283,8 +286,8 @@ For specific arguments, see the constructor of the
 <dt class="sig sig-object py" id="lambeq.pregroups.remove_cups">
 <span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">remove_cups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/pregroups/utils.html#remove_cups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.remove_cups" title="Permalink to this definition"></a></dt>
 <dd><p>Remove cups from a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>.</p>
-<p>Diagrams with less cups become circuits with less post-selection, which
-results in faster QML experiments.</p>
+<p>Diagrams with less cups become circuits with less post-selection,
+which results in faster QML experiments.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
@@ -311,7 +314,7 @@ results in faster QML experiments.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

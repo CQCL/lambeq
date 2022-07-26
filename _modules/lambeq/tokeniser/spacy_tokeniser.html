@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.tokeniser.spacy_tokeniser &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.tokeniser.spacy_tokeniser &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.tokeniser.spacy_tokeniser</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -124,9 +124,8 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Spacy Tokeniser</span>
-<span class="sd">==============</span>
-<span class="sd">A :py:class:`SpacyTokeniser` is a module providing tokenisation functionality</span>
-<span class="sd">for parsers and readers.</span>
+<span class="sd">===============</span>
+<span class="sd">A tokeniser that wraps SpaCy.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -137,11 +136,11 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">lambeq.tokeniser</span> <span class="kn">import</span> <span class="n">Tokeniser</span>
-
 <span class="kn">import</span> <span class="nn">spacy</span>
 <span class="kn">import</span> <span class="nn">spacy.cli</span>
 <span class="kn">from</span> <span class="nn">spacy.lang.en</span> <span class="kn">import</span> <span class="n">English</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.tokeniser</span> <span class="kn">import</span> <span class="n">Tokeniser</span>
 
 
 <div class="viewcode-block" id="SpacyTokeniser"><a class="viewcode-back" href="../../../root-api.html#lambeq.tokeniser.SpacyTokeniser">[docs]</a><span class="k">class</span> <span class="nc">SpacyTokeniser</span><span class="p">(</span><span class="n">Tokeniser</span><span class="p">):</span>
@@ -186,7 +185,7 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        list of list of str</span>
-<span class="sd">            A list of tokenised sentences. Each sentence is given as a list</span>
+<span class="sd">            A list of tokenised sentences, where each sentence is a list</span>
 <span class="sd">            of tokens.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -202,7 +201,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.tket_model &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.training.tket_model &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.training.tket_model</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -123,25 +123,30 @@
 <span class="c1"># limitations under the License.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">TketModel</span>
-<span class="sd">=========</span>
-<span class="sd">Module implementing a lambeq model based on a quantum backend, via `tket`.</span>
+<span class="sd">Tket Model</span>
+<span class="sd">==========</span>
+<span class="sd">Module based on a quantum backend, using `tket`.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Circuit</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Measure</span>
 <span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Diagram</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.training.quantum_model</span> <span class="kn">import</span> <span class="n">QuantumModel</span>
 
 
 <div class="viewcode-block" id="TketModel"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.TketModel">[docs]</a><span class="k">class</span> <span class="nc">TketModel</span><span class="p">(</span><span class="n">QuantumModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A lambeq model for either shot-based simulations of a quantum</span>
-<span class="sd">    pipeline or experiments run on quantum hardware using `tket`.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Model based on `tket`.</span>
+
+<span class="sd">    This can run either shot-based simulations of a quantum</span>
+<span class="sd">    pipeline or experiments run on quantum hardware using `tket`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TketModel.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.TketModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initialise TketModel based on the `t|ket&gt;` backend.</span>
@@ -149,14 +154,13 @@
 <span class="sd">        Other Parameters</span>
 <span class="sd">        ----------------</span>
 <span class="sd">        backend_config : dict</span>
-<span class="sd">            Dictionary containing the backend configuration. Must include the</span>
-<span class="sd">            fields `&#39;backend&#39;`, `&#39;compilation&#39;` and `&#39;shots&#39;`.</span>
+<span class="sd">            Dictionary containing the backend configuration. Must</span>
+<span class="sd">            include the fields `backend`, `compilation` and `shots`.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
 <span class="sd">        KeyError</span>
-<span class="sd">            If `backend_config` is not provided or `backend_config` has missing</span>
-<span class="sd">            fields.</span>
+<span class="sd">            If `backend_config` is not provided or has missing fields.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="s1">&#39;backend_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
@@ -186,7 +190,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        diagrams : list of :py:class:`~discopy.tensor.Diagram`</span>
-<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;` to be evaluated.</span>
+<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;`</span>
+<span class="sd">            to be evaluated.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -223,14 +228,14 @@
 <div class="viewcode-block" id="TketModel.forward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.TketModel.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Perform default forward pass of a lambeq quantum model.</span>
 
-<span class="sd">        In case of a different datapoint (e.g. list of tuple) or additional</span>
-<span class="sd">        computational steps, please override this method.</span>
+<span class="sd">        In case of a different datapoint (e.g. list of tuple) or</span>
+<span class="sd">        additional computational steps, please override this method.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        x : list of :py:class:`~discopy.tensor.Diagram`</span>
-<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;` to be</span>
-<span class="sd">            evaluated.</span>
+<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;`</span>
+<span class="sd">            to be evaluated.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -248,7 +253,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

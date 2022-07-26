@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.bobcat_parser</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -121,35 +121,42 @@
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Bobcat parser</span>
+<span class="sd">=============</span>
+<span class="sd">A chart-based parser based on the C&amp;C parser, with scores predicted by a</span>
+<span class="sd">transformer.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BobcatParser&#39;</span><span class="p">,</span> <span class="s1">&#39;BobcatParseError&#39;</span><span class="p">]</span>
 
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">tarfile</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Ty</span>
-
+<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">TqdmWarning</span>
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.bobcat</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BertForChartClassification</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span>
                            <span class="n">ChartParser</span><span class="p">,</span> <span class="n">Grammar</span><span class="p">,</span> <span class="n">ParseTree</span><span class="p">,</span>
                            <span class="n">Sentence</span><span class="p">,</span> <span class="n">Supertag</span><span class="p">,</span> <span class="n">Tagger</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SentenceBatchType</span><span class="p">,</span>
                                <span class="n">tokenised_batch_type_check</span><span class="p">,</span>
                                <span class="n">untokenised_batch_type_check</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
@@ -405,8 +412,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        sentences : list of str, or list of list of str</span>
-<span class="sd">            The sentences to be parsed, passed either as strings or as lists</span>
-<span class="sd">            of tokens.</span>
+<span class="sd">            The sentences to be parsed, passed either as strings or as</span>
+<span class="sd">            lists of tokens.</span>
 <span class="sd">        suppress_exceptions : bool, default: False</span>
 <span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if a</span>
 <span class="sd">            sentence fails to parse, instead of raising an exception,</span>
@@ -414,8 +421,9 @@
 <span class="sd">        tokenised : bool, default: False</span>
 <span class="sd">            Whether each sentence has been passed as a list of tokens.</span>
 <span class="sd">        verbose : str, optional</span>
-<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes priority</span>
-<span class="sd">            over the :py:attr:`verbose` attribute of the parser.</span>
+<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes</span>
+<span class="sd">            priority over the :py:attr:`verbose` attribute of the</span>
+<span class="sd">            parser.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -533,7 +541,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.2.4 documentation</title>
+  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.2.5 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.4
+                0.2.5
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -108,7 +108,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.ccgbank_parser</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021, 2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -121,7 +121,6 @@
 <span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
 <span class="c1"># See the License for the specific language governing permissions and</span>
 <span class="c1"># limitations under the License.</span>
-
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">CCGBank parser</span>
 <span class="sd">==============</span>
@@ -139,11 +138,11 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CCGBankParseError&#39;</span><span class="p">,</span> <span class="s1">&#39;CCGBankParser&#39;</span><span class="p">]</span>
 
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterator</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterator</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Ty</span>
@@ -181,27 +180,27 @@
     <span class="n">ccg_type_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
             <span class="sa">r</span><span class="s1">&#39;((?P&lt;bare_cat&gt;N|NP|S|PP)(\[[a-z]+])?|conj|LRB|RRB|[,.:;])&#39;</span><span class="p">)</span>
 
-    <span class="n">id_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;ID=(?P&lt;id&gt;\S+)  # line begins with &quot;ID=&lt;id&gt;&quot;</span>
-<span class="s1">                              .*              # rest of the line is ignored</span>
-<span class="s1">                           &#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+    <span class="n">id_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;ID=(?P&lt;id&gt;\S+)  # line begins with &quot;ID=&lt;id&gt;&quot;</span>
+<span class="s2">                              .*              # rest of the line is ignored</span>
+<span class="s2">                           &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span> <span class="o">|</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
 
-    <span class="n">tree_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">        \(&lt;                                 # begin with literal &quot;(&lt;&quot;</span>
-<span class="s1">           ((?P&lt;is_leaf&gt;        L)|T) \s+   # &quot;L&quot; or &quot;T&quot; depending on node type</span>
-<span class="s1">           (?P&lt;ccg_str&gt;          \S+) \s+   # the CCG category</span>
-<span class="s1">           (?(is_leaf)                      # if node is a leaf, then the</span>
-<span class="s1">               (?P&lt;mod_pos&gt;      \S+) \s+   #    following 4 fields are present</span>
-<span class="s1">               (?P&lt;orig_pos&gt;     \S+) \s+</span>
-<span class="s1">               (?P&lt;word&gt;         \S+) \s+</span>
-<span class="s1">               (?P&lt;pred_arg_cat&gt; \S+)</span>
-<span class="s1">           |                                # otherwise, the following 2 fields</span>
-<span class="s1">               (?P&lt;head&gt;         0|1) \s+   #    are present</span>
-<span class="s1">               (?P&lt;children&gt;     \d+)</span>
-<span class="s1">           )</span>
-<span class="s1">          &gt;                                 # close with &quot;&gt;&quot;</span>
-<span class="s1">        (?(is_leaf)\)|) \s*                 # if node is a leaf, then there is</span>
-<span class="s1">                                            #    a matching &quot;)&quot;</span>
-<span class="s1">        &#39;&#39;&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
+    <span class="n">tree_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        \(&lt;                                 # begin with literal &quot;(&lt;&quot;</span>
+<span class="s2">           ((?P&lt;is_leaf&gt;        L)|T) \s+   # &quot;L&quot; or &quot;T&quot; depending on node type</span>
+<span class="s2">           (?P&lt;ccg_str&gt;          \S+) \s+   # the CCG category</span>
+<span class="s2">           (?(is_leaf)                      # if node is a leaf, then the</span>
+<span class="s2">               (?P&lt;mod_pos&gt;      \S+) \s+   #    following 4 fields are present</span>
+<span class="s2">               (?P&lt;orig_pos&gt;     \S+) \s+</span>
+<span class="s2">               (?P&lt;word&gt;         \S+) \s+</span>
+<span class="s2">               (?P&lt;pred_arg_cat&gt; \S+)</span>
+<span class="s2">           |                                # otherwise, the following 2 fields</span>
+<span class="s2">               (?P&lt;head&gt;         0|1) \s+   #    are present</span>
+<span class="s2">               (?P&lt;children&gt;     \d+)</span>
+<span class="s2">           )</span>
+<span class="s2">          &gt;                                 # close with &quot;&gt;&quot;</span>
+<span class="s2">        (?(is_leaf)\)|) \s*                 # if node is a leaf, then there is</span>
+<span class="s2">                                            #    a matching &quot;)&quot;</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
 
     <span class="n">escaped_words</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;-LCB-&#39;</span><span class="p">:</span> <span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;-RCB-&#39;</span><span class="p">:</span> <span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;-LRB-&#39;</span><span class="p">:</span> <span class="s1">&#39;(&#39;</span><span class="p">,</span> <span class="s1">&#39;-RRB-&#39;</span><span class="p">:</span> <span class="s1">&#39;)&#39;</span><span class="p">}</span>
 
@@ -241,8 +240,9 @@
 <span class="sd">            Stop exceptions from being raised, instead returning</span>
 <span class="sd">            :py:obj:`None` for a tree.</span>
 <span class="sd">        verbose : str, optional</span>
-<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes priority</span>
-<span class="sd">            over the :py:attr:`verbose` attribute of the parser.</span>
+<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes</span>
+<span class="sd">            priority over the :py:attr:`verbose` attribute of the</span>
+<span class="sd">            parser.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -269,8 +269,9 @@
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span>
                                         <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]]:</span>
         <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into trees, given as a generator.</span>
-<span class="sd">        The generator only reads data when it is accessed, providing the user</span>
-<span class="sd">        with control over the reading process.</span>
+
+<span class="sd">        The generator only reads data when it is accessed, providing the</span>
+<span class="sd">        user with control over the reading process.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -280,8 +281,9 @@
 <span class="sd">            Stop exceptions from being raised, instead returning</span>
 <span class="sd">            :py:obj:`None` for a tree.</span>
 <span class="sd">        verbose : str, optional</span>
-<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes priority</span>
-<span class="sd">            over the :py:attr:`verbose` attribute of the parser.</span>
+<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes</span>
+<span class="sd">            priority over the :py:attr:`verbose` attribute of the</span>
+<span class="sd">            parser.</span>
 
 <span class="sd">        Yields</span>
 <span class="sd">        ------</span>
@@ -349,9 +351,9 @@
 <span class="sd">            Stop exceptions from being raised, instead returning</span>
 <span class="sd">            :py:obj:`None` for a diagram.</span>
 <span class="sd">        verbose : str, optional</span>
-<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes priority</span>
-<span class="sd">            over the :py:attr:`verbose` attribute of the parser.</span>
-
+<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes</span>
+<span class="sd">            priority over the :py:attr:`verbose` attribute of the</span>
+<span class="sd">            parser.</span>
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        diagrams : dict</span>
@@ -379,8 +381,9 @@
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span>
                                         <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]]]:</span>
         <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into diagrams, given as a generator.</span>
-<span class="sd">        The generator only reads data when it is accessed, providing the user</span>
-<span class="sd">        with control over the reading process.</span>
+
+<span class="sd">        The generator only reads data when it is accessed, providing the</span>
+<span class="sd">        user with control over the reading process.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -393,8 +396,9 @@
 <span class="sd">            Stop exceptions from being raised, instead returning</span>
 <span class="sd">            :py:obj:`None` for a diagram.</span>
 <span class="sd">        verbose : str, optional</span>
-<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes priority</span>
-<span class="sd">            over the :py:attr:`verbose` attribute of the parser.</span>
+<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes</span>
+<span class="sd">            priority over the :py:attr:`verbose` attribute of the</span>
+<span class="sd">            parser.</span>
 
 <span class="sd">        Yields</span>
 <span class="sd">        ------</span>
@@ -452,8 +456,9 @@
 <span class="sd">            Whether the sentence has been passed as a list of tokens.</span>
 <span class="sd">            For CCGBankParser, it should be kept `False`.</span>
 <span class="sd">        verbose : str, optional</span>
-<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes priority</span>
-<span class="sd">            over the :py:attr:`verbose` attribute of the parser.</span>
+<span class="sd">            See :py:class:`VerbosityLevel` for options. If set, takes</span>
+<span class="sd">            priority over the :py:attr:`verbose` attribute of the</span>
+<span class="sd">            parser.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -551,7 +556,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, 2022, Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
