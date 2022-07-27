@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 from __future__ import annotations
 
-import math
 from dataclasses import asdict, dataclass
+import math
 from typing import Any, List, Optional, Sequence, Tuple, Union
 
 import torch
@@ -75,8 +75,8 @@ class ChartClassifierOutput(ModelOutput):
 class ChartClassifierConfig(BertConfig):
     def __init__(self,
                  empty_span_weight: Optional[float] = None,
-                 tags: Sequence[str] = [],
-                 cats: Sequence[str] = [],
+                 tags: Sequence[str] = (),
+                 cats: Sequence[str] = (),
                  **kwargs: Any) -> None:
         super().__init__(**kwargs)
         self.tags = list(tags)

@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,18 +38,18 @@ def tokenised_batch_type_check(batch: SentenceBatchType) -> bool:
 
 
 def flatten(diagrams: Iterable) -> Iterator[Diagram]:
-    """Flatten a (possibly nested) iterator of diagrams into a single iterator.
+    """Flatten a nested iterator of diagrams into a single iterator.
 
     Parameters
     ----------
-        diagrams : Iterable
-            (Possibly nested) iterator containing diagrams.
+    diagrams : Iterable
+        Nested iterator containing diagrams.
 
     Yields
     ------
-        Diagram
-            Flattened iterator of diagrams, where each element is a single
-            diagram.
+    iterator of Diagram
+        Iterator where each element is a single diagram.
+
     """
 
     for d in diagrams:

@@ -4,7 +4,7 @@ import pytest
 import unittest.mock
 from unittest.mock import patch
 
-from lambeq import BobcatParser, VerbosityLevel, WebParser
+from lambeq import BobcatParser, CCGParser, CCGTree, TreeReader, VerbosityLevel, WebParser
 from lambeq import cli
 from lambeq.cli import ArgumentList
 from lambeq.cli import main
@@ -76,12 +76,110 @@ def multi_sentence_input() -> str:
     return 'This is a sentence.\nThis is another one.'
 
 
-shared_bobcat_parser = BobcatParser(verbose=VerbosityLevel.SUPPRESS.value)
-parser_patch = {'depccg': lambda **kwargs: shared_bobcat_parser, 'bobcat': lambda **kwargs: shared_bobcat_parser}  # DepCCG can crash during online tests
-parser_patch_uninitialised = {'depccg': BobcatParser, 'bobcat': BobcatParser}  # Only for tests where a new instance of the parser is needed
+@pytest.fixture
+def parser_patch():
+    trees = {
+        'John likes Mary': CCGTree.from_json({
+            'type': 's', 'rule': 'BA',
+            'children': [{
+                'type': 'n', 'rule': 'U', 'children': [{
+                    'type': 'n', 'rule': 'L', 'text': 'John'
+                }]
+            }, {
+                'type': r'(s\n)', 'rule': 'FA', 'children': [{
+                    'type': r'((s\n)/n)', 'rule': 'L', 'text': 'likes'
+                }, {
+                    'type': 'n', 'rule': 'U', 'children': [{
+                        'type': 'n', 'rule': 'L', 'text': 'Mary'
+                    }]
+                }]
+            }]
+        }),
+        'What Alice and Bob do not know': CCGTree.from_json({
+            'type': 'n', 'rule': 'FA', 'children': [{
+                'type': '(n/(s/n))', 'rule': 'L', 'text': 'What'
+            }, {
+                'type': '(s/n)', 'rule': 'FC', 'children': [{
+                    'type': r'(s/(s\n))', 'rule': 'FTR', 'children': [{
+                        'type': 'n', 'rule': 'U', 'children': [{
+                            'type': 'n', 'rule': 'BA', 'children': [{
+                                'type': 'n', 'rule': 'L', 'text': 'Alice'
+                            }, {
+                                'type': r'(n\n)', 'rule': 'CONJ', 'children': [{
+                                    'type': 'conj', 'rule': 'L', 'text': 'and'
+                                }, {
+                                    'type': 'n', 'rule': 'L', 'text': 'Bob'
+                                }]
+                            }]
+                        }]
+                    }]
+                }, {
+                    'type': r'((s\n)/n)', 'rule': 'FC', 'children': [{
+                        'type': r'((s\n)/(s\n))', 'rule': 'BX', 'children': [{
+                            'type': r'((s\n)/(s\n))', 'rule': 'L', 'text': 'do'
+                        }, {
+                            'type': r'((s\n)\(s\n))', 'rule': 'L', 'text': 'not'
+                        }]
+                    }, {
+                        'type': r'((s\n)/n)', 'rule': 'L', 'text': 'know'
+                    }]
+                }]
+            }]
+        }),
+        'This is a sentence .': CCGTree.from_json({
+            'type': 's', 'rule': 'RP', 'children': [{
+                'type': 's', 'rule': 'BA', 'children': [{
+                    'type': 'n', 'rule': 'L', 'text': 'This'
+                }, {
+                    'type': r'(s\n)', 'rule': 'FA', 'children': [{
+                        'type': r'((s\n)/n)', 'rule': 'L', 'text': 'is'
+                    }, {
+                        'type': 'n', 'rule': 'FA', 'children': [{
+                            'type': '(n/n)', 'rule': 'L', 'text': 'a'
+                        }, {
+                            'type': 'n', 'rule': 'L', 'text': 'sentence'
+                        }]
+                    }]
+                }]
+            }, {
+                'type': 'punc', 'rule': 'L', 'text': '.'
+            }]
+        }),
+        'This is another one .': CCGTree.from_json({
+            'type': 's', 'rule': 'RP', 'children': [{
+                'type': 's', 'rule': 'BA', 'children': [{
+                    'type': 'n', 'rule': 'L', 'text': 'This'
+                }, {
+                    'type': r'(s\n)', 'rule': 'FA', 'children': [{
+                        'type': r'((s\n)/n)', 'rule': 'L', 'text': 'is'
+                    }, {
+                        'type': 'n', 'rule': 'FA', 'children': [{
+                            'type': '(n/n)', 'rule': 'L', 'text': 'another'
+                        }, {
+                            'type': 'n', 'rule': 'L', 'text': 'one'
+                        }]
+                    }]
+                }]
+            }, {
+                'type': 'punc', 'rule': 'L', 'text': '.'
+            }]
+        })
+    }
+    trees['This is a sentence.'] = trees['This is a sentence .']
+    trees['This is another one.'] = trees['This is another one .']
+
+    class FakeParser(CCGParser):
+        def __init__(self, **kwargs):
+            return
+
+        def sentences2trees(self, sentences, tokenised=False, **kwargs):
+            return [trees[' '.join(sentence) if tokenised else sentence]
+                    for sentence in sentences]
+
+    return {'depccg': FakeParser, 'bobcat': FakeParser}
 
 
-def test_file_io(sentence_input, unicode_sentence_output):
+def test_file_io(parser_patch, sentence_input, unicode_sentence_output):
     with patch('sys.argv',
                ['lambeq', '-i', 'sentence.txt', '-o', 'output.txt']),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
@@ -95,7 +193,7 @@ def test_file_io(sentence_input, unicode_sentence_output):
         handle.write.assert_called_once_with(unicode_sentence_output)
 
 
-def test_sentence_arg(sentence_input, unicode_sentence_output):
+def test_sentence_arg(parser_patch, sentence_input, unicode_sentence_output):
     with patch('sys.argv', ['lambeq', sentence_input]),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('sys.stdout', new=StringIO()) as fake_out:
@@ -105,13 +203,12 @@ def test_sentence_arg(sentence_input, unicode_sentence_output):
 
 def test_root_cat(sentence_input, unicode_sentence_output):
     with patch('sys.argv', ['lambeq', '-c', 'PP', 'NP', '-t', sentence_input]),\
-         patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch_uninitialised),\
          patch('sys.stdout', new=StringIO()) as fake_out:
         main()
         assert fake_out.getvalue().rstrip() != unicode_sentence_output
 
 
-def test_type_raising(type_raising_input, unicode_type_raising_output):
+def test_type_raising(parser_patch, type_raising_input, unicode_type_raising_output):
     with patch('sys.argv', ['lambeq', type_raising_input]),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('sys.stdout', new=StringIO()) as fake_out:
@@ -119,7 +216,7 @@ def test_type_raising(type_raising_input, unicode_type_raising_output):
         assert fake_out.getvalue().rstrip() == unicode_type_raising_output
 
 
-def test_sentence_parser_arg(sentence_input, unicode_sentence_output):
+def test_sentence_parser_arg(parser_patch, sentence_input, unicode_sentence_output):
     with patch('sys.argv', ['lambeq', '-p', 'depccg', sentence_input]),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('sys.stdout', new=StringIO()) as fake_out:
@@ -127,7 +224,7 @@ def test_sentence_parser_arg(sentence_input, unicode_sentence_output):
         assert fake_out.getvalue().rstrip() == unicode_sentence_output
 
 
-def test_sentence_ascii(sentence_input, ascii_sentence_output):
+def test_sentence_ascii(parser_patch, sentence_input, ascii_sentence_output):
     with patch('sys.argv', ['lambeq', '-f', 'text-ascii', sentence_input]),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('sys.stdout', new=StringIO()) as fake_out:
@@ -135,7 +232,7 @@ def test_sentence_ascii(sentence_input, ascii_sentence_output):
         assert fake_out.getvalue().rstrip() == ascii_sentence_output
 
 
-def test_pickle(sentence_input, unicode_sentence_output):
+def test_pickle(parser_patch, sentence_input, unicode_sentence_output):
     with patch('sys.argv', ['lambeq', '-i', 'sentence.txt',
                             '-f', 'pickle', '-o', 'output.pickle']),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
@@ -149,7 +246,7 @@ def test_pickle(sentence_input, unicode_sentence_output):
         handle.write.assert_called_once()
 
 
-def test_json(sentence_input, unicode_sentence_output):
+def test_json(parser_patch, sentence_input, unicode_sentence_output):
     with patch('sys.argv', ['lambeq', '-i', 'sentence.txt',
                             '-f', 'json', '-o', 'output.json']),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
@@ -163,7 +260,7 @@ def test_json(sentence_input, unicode_sentence_output):
         handle.write.assert_called()
 
 
-def test_folder_creation(multi_sentence_input):
+def test_folder_creation(parser_patch, multi_sentence_input):
     with patch('sys.argv', ['lambeq', '-i', 'sentences.txt', '-t', '-d',
                             'image_folder', '-f', 'image', '-g', 'png']),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
@@ -180,7 +277,7 @@ def test_folder_creation(multi_sentence_input):
         d.assert_called()
 
 
-def test_image_args(sentence_input):
+def test_image_args(parser_patch, sentence_input):
     with patch('sys.argv', ['lambeq', '-f', 'image', '-u', 'fig_width=16',
                             'fig_height=3', 'fontsize=12', '-o',
                             'diagram.pdf', sentence_input]),\
@@ -191,7 +288,7 @@ def test_image_args(sentence_input):
         d.assert_called()
 
 
-def test_split_stdin_and_multisentece_image_error(multi_sentence_input):
+def test_split_stdin_and_multisentece_image_error(parser_patch, multi_sentence_input):
     with patch('sys.argv', ['lambeq', '-s', '-f', 'image', '-u',
                             'fig_width=16', 'fig_height=3', 'fontsize=12',
                             '-o', 'diagram.png']),\
@@ -207,7 +304,7 @@ def test_split_stdin_and_multisentece_image_error(multi_sentence_input):
         d.assert_not_called()
 
 
-def test_reader(sentence_input, unicode_sentence_cups):
+def test_reader(parser_patch, sentence_input, unicode_sentence_cups):
     with patch('sys.argv', ['lambeq', '-r', 'cups', sentence_input]),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('sys.stdout', new=StringIO()) as fake_out:
@@ -215,10 +312,12 @@ def test_reader(sentence_input, unicode_sentence_cups):
         assert fake_out.getvalue().rstrip() == unicode_sentence_cups
 
 
-def test_tree_reader(sentence_input):
+def test_tree_reader(parser_patch, sentence_input):
+    from functools import partial
     with patch('sys.argv', ['lambeq', '-r', 'tree', '-f', 'image', '-u',
                             'fig_width=16', 'fig_height=3', 'fontsize=12',
                             '-o', 'diagram.pdf', sentence_input]),\
+         patch('lambeq.cli.AVAILABLE_READERS', {'tree': partial(TreeReader, ccg_parser=parser_patch['bobcat'])}),\
          patch('lambeq.cli.discopy.monoidal.Diagram.draw',
                new=unittest.mock.MagicMock()) as d:
         main()
@@ -235,7 +334,7 @@ def test_stairs_reader(sentence_input):
         d.assert_called()
 
 
-def test_IQP_ansatz_and_rewrites(multi_sentence_input):
+def test_IQP_ansatz_and_rewrites(parser_patch, multi_sentence_input):
     with patch('sys.argv', ['lambeq', '-i', 'sentences.txt', '-t',
                             '-d', 'image_folder', '-f', 'image', '-g', 'png',
                             '-w', 'prepositional_phrase', 'determiner',
@@ -255,7 +354,7 @@ def test_IQP_ansatz_and_rewrites(multi_sentence_input):
         d.assert_called()
 
 
-def test_spiders_ansatz(multi_sentence_input):
+def test_spiders_ansatz(parser_patch, multi_sentence_input):
     with patch('sys.argv', ['lambeq', '-i', 'sentences.txt', '-t', '-d',
                             'image_folder', '-f', 'image', '-g', 'png',
                             '-a', 'spider', '-n', 'dim_n=3', 'dim_s=3',
@@ -274,7 +373,7 @@ def test_spiders_ansatz(multi_sentence_input):
         d.assert_called()
 
 
-def test_mps_ansatz(multi_sentence_input):
+def test_mps_ansatz(parser_patch, multi_sentence_input):
     with patch('sys.argv', ['lambeq', '-i', 'sentences.txt', '-t',
                             '-d', 'image_folder', '-f', 'image', '-g', 'png',
                             '-a', 'mps', '-n', 'dim_n=3', 'dim_s=3',
@@ -293,7 +392,7 @@ def test_mps_ansatz(multi_sentence_input):
         d.assert_called()
 
 
-def test_tensor_ansatz(multi_sentence_input):
+def test_tensor_ansatz(parser_patch, multi_sentence_input):
     with patch('sys.argv', ['lambeq', '-i', 'sentences.txt', '-t', '-d',
                             'image_folder', '-f', 'image', '-g', 'png',
                             '-a', 'tensor', '-n', 'dim_n=3', 'dim_s=3']),\
@@ -311,7 +410,7 @@ def test_tensor_ansatz(multi_sentence_input):
         d.assert_called()
 
 
-def test_arg_storing(sentence_input, unicode_sentence_output):
+def test_arg_storing(parser_patch, sentence_input, unicode_sentence_output):
     with patch('sys.argv', ['lambeq', '-i', 'sentence.txt',
                             '-y', 'conf.yaml']),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
@@ -327,7 +426,7 @@ def test_arg_storing(sentence_input, unicode_sentence_output):
         assert fake_out.getvalue().rstrip() == unicode_sentence_output
 
 
-def test_arg_loading(sentence_input, ascii_sentence_cups):
+def test_arg_loading(parser_patch, sentence_input, ascii_sentence_cups):
     yaml_input = (f'input_sentence: {sentence_input}\n'
                   'output_format: text-ascii\nreader: spiders\n')
     with patch('sys.argv', ['lambeq', '-r', 'cups', '-l', 'conf.yaml']),\

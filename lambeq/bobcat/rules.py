@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,8 +53,13 @@ class CatKind(FastIntEnum):
             return cls.ATOM
 
     @property
-    def is_normal(self) -> bool:
-        """Whether the category kind does not require special treatment."""
+    def is_standard(self) -> bool:
+        """Whether the category kind is standard.
+
+        Non-standard categories, i.e. punctuation and conjunctions,
+        require special treatment when combining.
+
+        """
         return self in (CatKind.ATOM, CatKind.BACKWARD, CatKind.FORWARD)
 
 
@@ -157,9 +162,9 @@ class Rules:
             if res is None:
                 res = self.coordination(left, right)
             results.append(res)
-        elif left_kind == CatKind.PUNCT and right_kind.is_normal:
+        elif left_kind == CatKind.PUNCT and right_kind.is_standard:
             results += self.left_punct(left, right)
-        elif left_kind.is_normal and right_kind == CatKind.PUNCT:
+        elif left_kind.is_standard and right_kind == CatKind.PUNCT:
             results += self.right_punct(left, right)
         return [r for r in results if r]
 

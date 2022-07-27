@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -200,29 +200,29 @@ class Category:
             return False
 
         if self.atomic:
-            return (self.atom == other.atom and
-                    (self.feature == other.feature or
-                     (self.atom == Atom.S and
-                      self.feature.is_free and
-                      other.feature.is_free)))
+            return (self.atom == other.atom
+                    and (self.feature == other.feature
+                         or (self.atom == Atom.S
+                             and self.feature.is_free
+                             and other.feature.is_free)))
         else:
-            return (self.dir == other.dir and
-                    self.result._equals(other.result) and
-                    self.argument._equals(other.argument))
+            return (self.dir == other.dir
+                    and self.result._equals(other.result)
+                    and self.argument._equals(other.argument))
 
     def __eq__(self, other: Any) -> bool:
-        return (self is other or
-                isinstance(other, Category) and self._equals(other))
+        return (self is other
+                or isinstance(other, Category) and self._equals(other))
 
     def _matches(self, other: Category) -> bool:
         """Helper function to test Category pattern matching."""
         if self.atomic:
-            return (self.atom == other.atom and
-                    self.feature in (Feature.NONE, other.feature))
+            return (self.atom == other.atom
+                    and self.feature in (Feature.NONE, other.feature))
         else:
-            return (self.dir == other.dir and
-                    self.result._matches(other.result) and
-                    self.argument._matches(other.argument))
+            return (self.dir == other.dir
+                    and self.result._matches(other.result)
+                    and self.argument._matches(other.argument))
 
     def matches(self, other: Any) -> bool:
         """Check if the template set out in this matches the argument.
@@ -230,8 +230,8 @@ class Category:
         Like == but the NONE feature matches with everything.
 
         """
-        return (self is other or
-                isinstance(other, Category) and self._matches(other))
+        return (self is other
+                or isinstance(other, Category) and self._matches(other))
 
     @property
     def bwd(self) -> bool:
@@ -249,11 +249,11 @@ class Category:
         return parse(string, type_raising_dep_var)
 
 
-VAR_SLOT_REGEX = re.compile(r'''(\{(?P<var>[_A-Z]+)\*?})?
-                           (<(?P<slot>\d+)>)?''', re.VERBOSE)
-CAT_REGEX = re.compile(r'''(?P<atom>[A-Z]+|conj|[,.;:])
-                           (\[(?P<feature>[Xa-z]+)])?''' +
-                       VAR_SLOT_REGEX.pattern, re.VERBOSE)
+VAR_SLOT_REGEX = re.compile(r'(\{(?P<var>[_A-Z]+)\*?})?'
+                            r'(<(?P<slot>\d+)>)?', re.VERBOSE)
+CAT_REGEX = re.compile(r'(?P<atom>[A-Z]+|conj|[,.;:])'
+                       r'(\[(?P<feature>[Xa-z]+)])?'
+                       + VAR_SLOT_REGEX.pattern, re.VERBOSE)
 CATEGORIES: dict[Tuple[str, int], Category] = {}
 
 VARIABLES = '+_YZWVUTRQAB'

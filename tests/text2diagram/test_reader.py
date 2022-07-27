@@ -9,7 +9,6 @@ from discopy.quantum.gates import Ket, Bra, CX
 from lambeq import (AtomicType, BobcatParser, IQPAnsatz, TreeReader,
                     TreeReaderMode, VerbosityLevel, WebParser, cups_reader,
                     spiders_reader, stairs_reader)
-from lambeq.text2diagram.web_parser import WebParseError
 
 
 @pytest.fixture
@@ -103,8 +102,8 @@ def test_tree_reader(sentence, words, parser):
 
 
 def test_suppress_exceptions(sentence):
-    service_url = 'bad..url..'
-    bad_parser = WebParser(service_url=service_url)
+    bad_parser = WebParser()
+    bad_parser.service_url = '..bad..url'
 
     bad_reader = TreeReader(bad_parser, suppress_exceptions=True)
     assert bad_reader.sentence2diagram(sentence) is None

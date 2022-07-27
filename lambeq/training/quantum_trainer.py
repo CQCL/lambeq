@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,16 +19,17 @@ A trainer that wraps the training loop of a :py:class:`QuantumModel`
 
 """
 from __future__ import annotations
-from typing import Any, Callable, Mapping, Optional, Type, Union
 
+from collections.abc import Callable, Mapping
 import os
+from typing import Any, Optional, Union
 
 import numpy as np
 
 from lambeq.core.globals import VerbosityLevel
+from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
 from lambeq.training.trainer import Trainer
-from lambeq.training.optimizer import Optimizer
 
 
 class QuantumTrainer(Trainer):
@@ -41,7 +42,7 @@ class QuantumTrainer(Trainer):
             model: QuantumModel,
             loss_function: Callable,
             epochs: int,
-            optimizer: Type[Optimizer],
+            optimizer: type[Optimizer],
             optim_hyperparams: dict[str, float],
             evaluate_functions: Optional[Mapping[str, Callable]] = None,
             evaluate_on_train: bool = True,
@@ -50,7 +51,7 @@ class QuantumTrainer(Trainer):
             from_checkpoint: bool = False,
             verbose: str = VerbosityLevel.TEXT.value,
             seed: Optional[int] = None) -> None:
-        """Initialise a :py:class:`.Trainer` instance using a quantum backend.
+        """Initialise a :py:class:`.Trainer` using a quantum backend.
 
         Parameters
         ----------
@@ -64,17 +65,17 @@ class QuantumTrainer(Trainer):
             An optimizer of type :py:class:`lambeq.training.Optimizer`.
         evaluate_functions : mapping of str to callable, optional
             Mapping of evaluation metric functions from their names.
-            Structure [{\"metric\": func}].
-            Each function takes the prediction \"y_hat\" and the label \"y\" as
-            input.
-            The validation step calls \"func(y_hat, y)\".
+            Structure [{"metric": func}].
+            Each function takes the prediction "y_hat" and the label "y"
+            as input.
+            The validation step calls "func(y_hat, y)".
         evaluate_on_train : bool, default: True
             Evaluate the metrics on the train dataset.
         use_tensorboard : bool, default: False
             Use Tensorboard for visualisation of the training logs.
         log_dir : str or PathLike, optional
-            Location of model checkpoints (and tensorboard log). Default is
-            `runs/**CURRENT_DATETIME_HOSTNAME**`.
+            Location of model checkpoints (and tensorboard log).
+            Default is `runs/**CURRENT_DATETIME_HOSTNAME**`.
         from_checkpoint : bool, default: False
             Starts training from the checkpoint, saved in the log_dir.
         verbose : str, default: 'text',
@@ -102,9 +103,10 @@ class QuantumTrainer(Trainer):
                                    self.loss_function)
 
     def _add_extra_chkpoint_info(self) -> Mapping[str, Any]:
-        """Add any additional information to the training checkpoint. These
-        might include model-specific information like the random state of the
-        backend or the state of the optimizer.
+        """Add any additional information to the training checkpoint.
+
+        These might include model-specific information like the random
+        state of the backend or the state of the optimizer.
 
         Returns
         -------
@@ -117,8 +119,10 @@ class QuantumTrainer(Trainer):
 
     def _load_extra_chkpoint_info(self,
                                   checkpoint: Mapping[str, Any]) -> None:
-        """Load the additional checkpoint information that was previously
-        added by calling the method `_add_extra_chkpoint_info()`.
+        """Load additional checkpoint information.
+
+        This includes data previously added by
+        `_add_extra_chkpoint_info()`.
 
         Parameters
         ----------

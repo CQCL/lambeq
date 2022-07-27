@@ -33,10 +33,18 @@ def test_empty_sentences(bobcat_parser):
 
 
 def test_failed_sentence(bobcat_parser):
-    long_sentence = 'a ' * 513
-    with pytest.raises(BobcatParseError):
-        bobcat_parser.sentence2tree(long_sentence)
-    assert bobcat_parser.sentence2tree(long_sentence, suppress_exceptions=True) is None
+    def fail(*args, **kwargs):
+        raise Exception
+
+    old_parser = bobcat_parser.parser
+    bobcat_parser.parser = fail
+
+    try:
+        with pytest.raises(BobcatParseError):
+            bobcat_parser.sentence2tree('a')
+        assert bobcat_parser.sentence2tree('a', suppress_exceptions=True) is None
+    finally:
+        bobcat_parser.parser = old_parser
 
 
 def test_sentence2tree_tokenised(bobcat_parser, tokenised_sentence):
@@ -127,12 +135,14 @@ def test_root_filtering(bobcat_parser):
     S = CCGAtomicType.SENTENCE
     N = CCGAtomicType.NOUN
 
-    restricted_parser = BobcatParser(root_cats=['NP'])
-
     sentence1 = 'do'
-    assert bobcat_parser.sentence2tree(sentence1).biclosed_type == N >> S
-    assert restricted_parser.sentence2tree(sentence1).biclosed_type == N
-
     sentence2 = 'I do'
+    assert bobcat_parser.sentence2tree(sentence1).biclosed_type == N >> S
     assert bobcat_parser.sentence2tree(sentence2).biclosed_type == S
-    assert restricted_parser.sentence2tree(sentence2).biclosed_type == N
+
+    bobcat_parser.parser.set_root_cats(['NP'])
+    try:
+        assert bobcat_parser.sentence2tree(sentence1).biclosed_type == N
+        assert bobcat_parser.sentence2tree(sentence2).biclosed_type == N
+    finally:
+        bobcat_parser.parser.set_root_cats(None)

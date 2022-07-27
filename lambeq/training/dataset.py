@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ from discopy import Tensor
 class Dataset:
     """Dataset class for the training of a lambeq model.
 
-    Data is returned in the format of :py:class:`discopy.tensor.Tensor`'s
-    backend, which by default is set to NumPy.
-    For example, to access the dataset as PyTorch tensors:
+    Data is returned in the format of
+    :py:class:`discopy.tensor.Tensor`'s backend, which by default is set
+    to NumPy. For example, to access the dataset as PyTorch tensors:
 
         >>> dataset = Dataset(['data1'], [[0, 1, 2, 3]])
         >>> with Tensor.backend('pytorch'):
@@ -67,7 +67,7 @@ class Dataset:
 
         """
         if len(data) != len(targets):
-            raise ValueError("Lengths of `data` and `targets` differ.")
+            raise ValueError('Lengths of `data` and `targets` differ.')
         self.data = data
         self.targets = targets
         self.batch_size = batch_size

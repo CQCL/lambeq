@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,11 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """
 Text printer
-------------
-
+============
 Module that allows printing of DisCoPy pregroup diagrams in text form,
 e.g. for the purpose of outputting them graphically in a terminal.
 
@@ -68,23 +66,23 @@ class TextDiagramPrinter:
     """A text printer for pregroup diagrams."""
 
     UNICODE_CHAR_SET: dict[str, str] = {
-        "BAR": '│',
-        "TOP_R_CORNER": '╮',
-        "TOP_L_CORNER": '╭',
-        "BOTTOM_L_CORNER": '╰',
-        "BOTTOM_R_CORNER": '╯',
-        "LINE": '─',
-        "DOT": '·'
+        'BAR': '│',
+        'TOP_R_CORNER': '╮',
+        'TOP_L_CORNER': '╭',
+        'BOTTOM_L_CORNER': '╰',
+        'BOTTOM_R_CORNER': '╯',
+        'LINE': '─',
+        'DOT': '·'
     }
 
     ASCII_CHAR_SET: dict[str, str] = {
-        "BAR": '|',
-        "TOP_R_CORNER": chr(160),
-        "TOP_L_CORNER": chr(160),
-        "BOTTOM_L_CORNER": '\\',
-        "BOTTOM_R_CORNER": '/',
-        "LINE": '_',
-        "DOT": ' '
+        'BAR': '|',
+        'TOP_R_CORNER': chr(160),
+        'TOP_L_CORNER': chr(160),
+        'BOTTOM_L_CORNER': '\\',
+        'BOTTOM_R_CORNER': '/',
+        'LINE': '_',
+        'DOT': ' '
     }
 
     def __init__(self,
@@ -112,13 +110,13 @@ class TextDiagramPrinter:
         self.word_spacing = word_spacing
         self.discopy_types = discopy_types
         self.compress_layers = compress_layers
-        self.chr_set = self.UNICODE_CHAR_SET if not use_ascii \
-            else self.ASCII_CHAR_SET
+        self.chr_set = (self.UNICODE_CHAR_SET if not use_ascii
+                        else self.ASCII_CHAR_SET)
 
     def diagram2str(self, diagram: Diagram) -> str:
         """Produces a string that contains a graphical representation of
         the input diagram using text characters. The diagram is expected
-        to be in pregroup form, i.e. all words must precede the morphisms.
+        to be in pregroup form, i.e. all words must precede morphisms.
 
         Parameters
         ----------
@@ -227,8 +225,9 @@ class TextDiagramPrinter:
     def draw_layer(self,
                    layer: list[_Morphism],
                    wires: dict[int, int]) -> list[str]:
-        # wires is a mapping from the index of the wire in the input diagram
-        # to the location of the wire in the printed output, a column index
+        # `wires` is a mapping from the index of the wire in the input
+        # diagram to the location of the wire in the printed output, a
+        # column index
 
         height = 1
         for morphism in layer:
@@ -249,20 +248,20 @@ class TextDiagramPrinter:
                 for i, line in enumerate(lines):
                     lines[i] = line.ljust(off) + self.chr_set['BAR']
             elif t == _MorphismType.CUP:
-                lines[0] = ((lines[0] + self.chr_set['BOTTOM_L_CORNER']).ljust(
-                    off, self.chr_set['LINE']) +
-                    self.chr_set['BOTTOM_R_CORNER'])
+                lines[0] += self.chr_set['BOTTOM_L_CORNER']
+                lines[0] = (lines[0].ljust(off, self.chr_set['LINE'])
+                            + self.chr_set['BOTTOM_R_CORNER'])
             elif t == _MorphismType.SWAP:
                 diff = off - len(lines[0])
-                lines[1] = (lines[1].ljust(len(lines[0])) +
-                            self.chr_set['TOP_L_CORNER'] +
-                            self.chr_set['BOTTOM_L_CORNER'].center(
-                                diff - 1, self.chr_set['LINE']) +
-                            self.chr_set['TOP_R_CORNER'])
-                lines[0] += (self.chr_set['BOTTOM_L_CORNER'] +
-                             self.chr_set['TOP_R_CORNER'].center(
-                                 diff - 1, self.chr_set['LINE']) +
-                             self.chr_set['BOTTOM_R_CORNER'])
+                lines[1] = (lines[1].ljust(len(lines[0]))
+                            + self.chr_set['TOP_L_CORNER']
+                            + self.chr_set['BOTTOM_L_CORNER'].center(
+                                diff - 1, self.chr_set['LINE'])
+                            + self.chr_set['TOP_R_CORNER'])
+                lines[0] += (self.chr_set['BOTTOM_L_CORNER']
+                             + self.chr_set['TOP_R_CORNER'].center(
+                                 diff - 1, self.chr_set['LINE'])
+                             + self.chr_set['BOTTOM_R_CORNER'])
             else:
                 assert t == _MorphismType.START
                 lines[0] = lines[0].ljust(off)

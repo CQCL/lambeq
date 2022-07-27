@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,10 +18,10 @@ NumpyModel
 Module implementing a lambeq model for an exact classical simulation of
 a quantum pipeline.
 
-In contrast to the shot-based :py:class:`TketModel`, the state vectors are
-calculated classically and stored such that the complex vectors defining the
-quantum states are accessible. The results of the calculations are exact i.e.
-noiseless and not shot-based.
+In contrast to the shot-based :py:class:`TketModel`, the state vectors
+are calculated classically and stored such that the complex vectors
+defining the quantum states are accessible. The results of the
+calculations are exact i.e. noiseless and not shot-based.
 
 """
 from __future__ import annotations
@@ -29,11 +29,11 @@ from __future__ import annotations
 import pickle
 from typing import Any, Callable
 
-import numpy
-import tensornetwork as tn
 from discopy import Tensor
 from discopy.tensor import Diagram
+import numpy
 from sympy import default_sort_key, lambdify
+import tensornetwork as tn
 
 from lambeq.training.model import SizedIterable
 from lambeq.training.quantum_model import QuantumModel
@@ -67,8 +67,8 @@ class NumpyModel(QuantumModel):
         Parameters
         ----------
         diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>` to be
-            evaluated.
+            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+            to be evaluated.
         use_jit : bool, default: False
             Whether to use JAX's Just-In-Time compilation.
 
@@ -141,8 +141,8 @@ class NumpyModel(QuantumModel):
         Parameters
         ----------
         diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>` to be
-            evaluated.
+            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+            to be evaluated.
 
         Raises
         ------
@@ -176,13 +176,14 @@ class NumpyModel(QuantumModel):
     def forward(self, x: list[Diagram]) -> numpy.ndarray:
         """Perform default forward pass of a lambeq model.
 
-        In case of a different datapoint (e.g. list of tuple) or additional
-        computational steps, please override this method.
+        In case of a different datapoint (e.g. list of tuple) or
+        additional computational steps, please override this method.
 
         Parameters
         ----------
         x : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>` to be evaluated.
+            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+            to be evaluated.
 
         Returns
         -------

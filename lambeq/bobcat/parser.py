@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,10 +17,12 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 import math
-from typing import Optional, Tuple, Union, overload
+from typing import Optional, Tuple, Union
+from typing import overload
 
 from lambeq.bobcat.grammar import Grammar
-from lambeq.bobcat.lexicon import Atom, Category, CATEGORIES
+from lambeq.bobcat.lexicon import Atom, Category
+from lambeq.bobcat.lexicon import CATEGORIES
 from lambeq.bobcat.rules import Rules
 from lambeq.bobcat.tree import Lexical, ParseTree
 
@@ -65,20 +67,123 @@ class Sentence:
 
 
 @dataclass
-class Chart:
+class Cell:
+    """A cell in the chart.
+
+    The cell maintains a list of trees in sorted order, up to the beam
+    size (though may be larger if there are ties at the bottom), with
+    the further restriction that only one tree is allowed per category.
+
+    """
+
     beam_size: int
-    chart: dict[SpanT, list[ParseTree]] = field(default_factory=dict,
-                                                init=False)
-    min_scores: dict[SpanT, float] = field(default_factory=dict, init=False)
+    trees: list[ParseTree] = field(default_factory=list)
+    trees_map: dict[Category, ParseTree] = field(default_factory=dict)
+    min_score: float = NEGATIVE_INFINITY
+
+    def find(self, score: float) -> int:
+        """Find the index where a tree with the given score can go."""
+        trees = self.trees
+        lo = 0
+        hi = len(trees)
+        while lo < hi:
+            mid = (lo + hi) // 2
+            cmp = trees[mid].score
+            if score == cmp:
+                return mid
+            elif score > cmp:
+                hi = mid
+            else:
+                lo = mid + 1
+        return lo
+
+    def add(self, to_add: Iterable[ParseTree]) -> int:
+        """Add the trees to the cell.
+
+        For each tree that is to be added, it is checked against the
+        existing trees to determine whether it should be added, and if
+        so, is added using a binary search; then, the beam is applied.
+
+        """
+
+        to_add = sorted(to_add, key=lambda tree: -tree.score)
+
+        trees = self.trees
+        trees_map = self.trees_map
+
+        added = 0
+        b = self.beam_size
+        for tree in to_add:
+            score = tree.score
+            if len(trees) >= b and score < trees[-1].score:
+                break
+
+            # Check whether there exists a tree with the same category.
+            # If there does, and it has a lower score, then remove the
+            # old tree before inserting the new tree.
+            # If the score is higher, then do nothing.
+            insert: bool
+            try:
+                old_tree = trees_map[tree.cat]
+            except KeyError:
+                insert = True
+            else:
+                old_score = old_tree.score
+                insert = score > old_score
+                if insert:
+                    old_index = self.find(old_score)
+                    deleted = False
+                    for i in range(old_index, len(trees)):
+                        if trees[i] is old_tree:
+                            del trees[i]
+                            deleted = True
+                            break
+                        elif trees[i].score != old_score:
+                            break
+                    if not deleted:
+                        for i in reversed(range(old_index)):
+                            if trees[i] is old_tree:
+                                del trees[i]
+                                break
+
+            if insert:
+                trees.insert(self.find(score), tree)
+                trees_map[tree.cat] = tree
+                added += 1
+
+                try:
+                    cutoff = self.min_score = trees[b - 1].score
+                    if trees[b].score < cutoff:
+                        added -= len(trees) - b
+                        for tree in trees[b:]:
+                            del trees_map[tree.cat]
+                        del trees[b:]
+                except IndexError:
+                    pass
+        return added
+
+
+@dataclass
+class Chart:
+    """The parse chart, containing a mapping from span to cell.
+
+    A span (i, j) represents the phrase from the ith word to the jth
+    word (inclusive), indexed from 0.
+
+    """
+
+    beam_size: int
+    chart: dict[SpanT, Cell] = field(default_factory=dict)
+
     parse_tree_count: int = 0
 
     def __getitem__(self, index: SpanT) -> list[ParseTree]:
-        return self.chart[index]
+        return self.chart[index].trees
 
     def min_score(self, start: int, end: int) -> float:
-        """Get the minimum score needed to add a tree to the given cell."""
+        """Get the lowest score needed to add a tree to the given cell."""
         try:
-            return self.min_scores[start, end]
+            return self.chart[start, end].min_score
         except KeyError:
             return NEGATIVE_INFINITY
 
@@ -87,35 +192,12 @@ class Chart:
         if not to_add:
             return
 
-        to_add = sorted(to_add, key=lambda tree: -tree.score)
-
         try:
-            trees = self.chart[start, end]
+            cell = self.chart[start, end]
         except KeyError:
-            trees = self.chart[start, end] = []
+            cell = self.chart[start, end] = Cell(self.beam_size)
 
-        b = self.beam_size
-        for tree in to_add:
-            if len(trees) >= b and tree.score < trees[-1].score:
-                break
-
-            lo, hi = 0, len(trees)
-            while lo < hi:
-                mid = (lo + hi) // 2
-                if tree.score > trees[mid].score:
-                    hi = mid
-                else:
-                    lo = mid + 1
-            trees.insert(lo, tree)
-            self.parse_tree_count += 1
-
-            try:
-                cutoff = self.min_scores[start, end] = trees[b - 1].score
-                if trees[b].score < cutoff:
-                    self.parse_tree_count -= len(trees) - b
-                    del trees[b:]
-            except IndexError:
-                pass
+        self.parse_tree_count += cell.add(to_add)
 
 
 @dataclass
@@ -223,9 +305,9 @@ class ParseResult:
             if max_tree:
                 break
 
-        return (self.skim_deps(start, result_start - 1) +
-                self._deps(max_tree) +
-                self.skim_deps(result_end + 1, end))
+        return (self.skim_deps(start, result_start - 1)
+                + self._deps(max_tree)
+                + self.skim_deps(result_end + 1, end))
 
 
 class ChartParser:
@@ -279,12 +361,21 @@ class ChartParser:
             self.result_cats[label, res_cats] = cat_id
             cat_id += 1
 
-        try:
-            self.root_cats = (None if root_cats is None
-                              else [CATEGORIES[s, 0] for s in root_cats])
-        except KeyError as e:
-            s = e.args[0]
-            raise ValueError(f'Grammar does not contain the root cat: {s!r}')
+        self.set_root_cats(root_cats)
+
+    def set_root_cats(
+            self,
+            root_cats: Optional[Iterable[Union[Category, str]]]) -> None:
+        if root_cats is None:
+            self.root_cats = None
+        else:
+            try:
+                self.root_cats = [(cat if isinstance(cat, Category)
+                                   else CATEGORIES[cat, 0])
+                                  for cat in root_cats]
+            except KeyError as e:
+                raise ValueError('Grammar does not contain root category: '
+                                 f'{repr(e.args[0])}')
 
     def filter_root(self, trees: list[ParseTree]) -> list[ParseTree]:
         if self.root_cats is None:

@@ -3,6 +3,25 @@
 Release notes
 =============
 
+.. _rel-0.2.5:
+
+`0.2.5 <https://github.com/CQCL/lambeq/releases/tag/0.2.5>`_
+------------------------------------------------------------
+
+- Added a "swapping" unary rule box to handle unary rules that change the direction of composition, improving the coverage of the :py:class:`~lambeq.BobcatParser`.
+
+- Added a ``--version`` flag to the CLI.
+
+- Added a :py:meth:`~lambeq.Model.make_checkpoint` method to all training models.
+
+- Changed the :py:class:`~lambeq.WebParser` so that the online service to use is specified by name rather than by URL.
+
+- Changed the :py:class:`~lambeq.BobcatParser` to only allow one tree per category in a cell, doubling parsing speed without affecting the structure of the parse trees (in most cases).
+
+- Fixed the parameter names in :py:class:`~lambeq.CCGRule`, where ``dom`` and ``cod`` had inadvertently been swapped.
+
+- Made the linting of the codebase stricter, enforced by the GitHub action. The flake8 configuration can be viewed in the ``setup.cfg`` file.
+
 .. _rel-0.2.4:
 
 `0.2.4 <https://github.com/CQCL/lambeq/releases/tag/0.2.4>`_

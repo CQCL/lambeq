@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,11 +21,15 @@ Module containing the base class for a lambeq model.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from os import PathLike
+import os
 from typing import Any, Protocol, Union
 
 from discopy.tensor import Diagram
 from sympy import default_sort_key
+
+from lambeq.training.checkpoint import Checkpoint
+
+_StrPathT = Union[str, 'os.PathLike[str]']
 
 
 class SizedIterable(Protocol):
@@ -43,7 +47,8 @@ class Model(ABC):
     Attributes
     ----------
     symbols : list of symbols
-        A sorted list of all :py:class:`Symbols <.Symbol>` occuring in the data.
+        A sorted list of all :py:class:`Symbols <.Symbol>` occuring in
+        the data.
     weights : SizedIterable
         A data structure containing the numeric values of
         the model's parameters.
@@ -65,9 +70,9 @@ class Model(ABC):
     @classmethod
     @abstractmethod
     def from_checkpoint(cls,
-                        checkpoint_path: Union[str, PathLike],
-                        **kwargs) -> Model:
-        """Load the model weights and symbols from a training checkpoint.
+                        checkpoint_path: _StrPathT,
+                        **kwargs: Any) -> Model:
+        """Load the weights and symbols from a training checkpoint.
 
         Parameters
         ----------
@@ -82,6 +87,27 @@ class Model(ABC):
             `'compilation'` and `'shots'`.
 
         """
+
+    def make_checkpoint(self, checkpoint_path: _StrPathT) -> None:
+        """Save the model weights and symbols to a training checkpoint.
+
+        Parameters
+        ----------
+        checkpoint_path : str or `os.PathLike`
+            Path that points to the checkpoint file. If
+            the file does not exist, it will be created.
+
+        Raises
+        ------
+        FileNotFoundError
+            If the directory in which the checkpoint file is to be
+            saved does not exist.
+
+        """
+        checkpoint = Checkpoint()
+        checkpoint.add_many({'model_symbols': self.symbols,
+                             'model_weights': self.weights})
+        checkpoint.to_file(checkpoint_path)
 
     @abstractmethod
     def get_diagram_output(self, diagrams: list[Diagram]) -> Any:
