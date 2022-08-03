@@ -42,14 +42,18 @@ from lambeq.text2diagram.ccg_types import CCGAtomicType
 
 if TYPE_CHECKING:
     import depccg
-    from depccg.annotator import annotate_XX, english_annotator, japanese_annotator
+    from depccg.annotator import (annotate_XX, english_annotator,
+                                  japanese_annotator)
     from depccg.cat import Category
 
+
 def _import_depccg() -> None:
-    global depccg, Category, annotate_XX, english_annotator, japanese_annotator
+    global depccg, Category
+    global annotate_XX, english_annotator, japanese_annotator
     import depccg
     import depccg.allennlp.utils
-    from depccg.annotator import annotate_XX, english_annotator, japanese_annotator
+    from depccg.annotator import (annotate_XX, english_annotator,
+                                  japanese_annotator)
     from depccg.cat import Category
     import depccg.lang
     import depccg.parsing
@@ -85,7 +89,8 @@ class DepCCGParser(CCGParser):
                  lang: str = 'en',
                  model: Optional[str] = None,
                  use_model_unary_rules: bool = False,
-                 annotator: Optional[str] = None,
+                 annotator: str = 'janome',
+                 tokenize: Optional[bool] = None,
                  device: int = -1,
                  root_cats: Optional[Iterable[str]] = None,
                  verbose: str = VerbosityLevel.PROGRESS.value,
@@ -95,23 +100,50 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         lang : { 'en', 'ja' }
-            The language to use. Use of 'ja' is experimental and has not
-            been tested.
+            The language to use: 'en' for English, 'ja' for Japanese.
         model : str, optional
             The name of the model variant to use, if any.
-            (At time of writing) `depccg` supports 'elmo', 'rebank' and
+            At time of writing, `depccg` supports 'elmo', 'rebank' and
             'elmo_rebank' for English only.
         use_model_unary_rules : bool, default: False
             Use the unary rules supplied by the model instead of the
             ones by `lambeq`.
-        annotator : str, optional
-            The annotator to use, if any. (At time of writing) `depccg`
-            supports 'candc' and 'spacy'.
+        annotator : str, default: 'janome'
+            The annotator to use, if any.
+            At time of writing `depccg` supports 'candc' and 'spacy' for
+            English, and 'janome' and 'jigg' for Japanese.
+            By default, no annotator is used for English, and 'janome'
+            is used for Japanese.
+        tokenize : bool, optional
+            Whether to tokenise the input when annotating. This option
+            should only be specified when using the 'spacy' annotator.
         device : int, optional
             The ID of the GPU to use. By default, uses the CPU.
-        root_cats : iterable of str, default: ['S[dcl]', 'S[wq]',
-                                               'S[q]', 'S[qem]', 'NP']
-            A list of categories allowed at the root of the parse.
+        root_cats : iterable of str, optional
+            A list of categories allowed at the root of the parse. By
+            default, the English categories are:
+                - S[dcl]
+                - S[wq]
+                - S[q]
+                - S[qem]
+                - NP
+            and the Japanese categories are:
+                - NP[case=nc,mod=nm,fin=f]
+                - NP[case=nc,mod=nm,fin=t]
+                - S[mod=nm,form=attr,fin=t]
+                - S[mod=nm,form=base,fin=f]
+                - S[mod=nm,form=base,fin=t]
+                - S[mod=nm,form=cont,fin=f]
+                - S[mod=nm,form=cont,fin=t]
+                - S[mod=nm,form=da,fin=f]
+                - S[mod=nm,form=da,fin=t]
+                - S[mod=nm,form=hyp,fin=t]
+                - S[mod=nm,form=imp,fin=f]
+                - S[mod=nm,form=imp,fin=t]
+                - S[mod=nm,form=r,fin=t]
+                - S[mod=nm,form=s,fin=t]
+                - S[mod=nm,form=stem,fin=f]
+                - S[mod=nm,form=stem,fin=t]
         verbose : str, default: 'progress',
             Controls the command-line output of the parser. Only
             'progress' option is available for this parser.
@@ -125,36 +157,34 @@ class DepCCGParser(CCGParser):
                              '"progress" level of verbosity. '
                              f'`{self.verbose}` was given.')
         _import_depccg()
-        if lang.lower() == 'en':
-            self.tokenize = False
+        if lang == 'en':
             if root_cats is None:
-                root_cats = [
-                    'S[dcl]', 'S[wq]', 'S[q]', 'S[qem]', 'NP']
+                root_cats = ['S[dcl]', 'S[wq]', 'S[q]', 'S[qem]', 'NP']
             self.annotator_fun = english_annotator.get(annotator, annotate_XX)
-        elif lang.lower() == 'ja':
-            if annotator is None:
-                annotator = 'janome'
-            self.tokenize = True
+            self.tokenize = tokenize if tokenize is not None else False
+        elif lang == 'ja':
             if root_cats is None:
                 root_cats = ['NP[case=nc,mod=nm,fin=f]',
-                    'NP[case=nc,mod=nm,fin=t]',
-                    'S[mod=nm,form=attr,fin=t]',
-                    'S[mod=nm,form=base,fin=f]',
-                    'S[mod=nm,form=base,fin=t]',
-                    'S[mod=nm,form=cont,fin=f]',
-                    'S[mod=nm,form=cont,fin=t]',
-                    'S[mod=nm,form=da,fin=f]',
-                    'S[mod=nm,form=da,fin=t]',
-                    'S[mod=nm,form=hyp,fin=t]',
-                    'S[mod=nm,form=imp,fin=f]',
-                    'S[mod=nm,form=imp,fin=t]',
-                    'S[mod=nm,form=r,fin=t]',
-                    'S[mod=nm,form=s,fin=t]',
-                    'S[mod=nm,form=stem,fin=f]',
-                    'S[mod=nm,form=stem,fin=t]']
-            self.annotator_fun = japanese_annotator[annotator]
+                             'NP[case=nc,mod=nm,fin=t]',
+                             'S[mod=nm,form=attr,fin=t]',
+                             'S[mod=nm,form=base,fin=f]',
+                             'S[mod=nm,form=base,fin=t]',
+                             'S[mod=nm,form=cont,fin=f]',
+                             'S[mod=nm,form=cont,fin=t]',
+                             'S[mod=nm,form=da,fin=f]',
+                             'S[mod=nm,form=da,fin=t]',
+                             'S[mod=nm,form=hyp,fin=t]',
+                             'S[mod=nm,form=imp,fin=f]',
+                             'S[mod=nm,form=imp,fin=t]',
+                             'S[mod=nm,form=r,fin=t]',
+                             'S[mod=nm,form=s,fin=t]',
+                             'S[mod=nm,form=stem,fin=f]',
+                             'S[mod=nm,form=stem,fin=t]']
+            self.annotator_fun = japanese_annotator.get(annotator, annotate_XX)
+            self.tokenize = tokenize if tokenize is not None else True
         else:
-            raise ValueError('DepCCGParser does not support ' f'`{lang}`.')
+            raise ValueError('DepCCGParser does not support language: '
+                             f'`{lang}`.')
 
         depccg.lang.set_global_language_to(lang)
         self.supertagger, config = depccg.instance_models.load_model(model,
