@@ -40,6 +40,8 @@ class SPSAOptimizer(Optimizer):
 
     """
 
+    model : QuantumModel
+
     def __init__(self, model: QuantumModel,
                  hyperparams: dict[str, float],
                  loss_fn: Callable[[Any, Any], Any],
@@ -100,7 +102,7 @@ class SPSAOptimizer(Optimizer):
 
     def backward(
             self,
-            batch: tuple[Iterable, np.ndarray]) -> tuple[np.ndarray, float]:
+            batch: tuple[Iterable, np.ndarray]) -> float:
         """Calculate the gradients of the loss function.
 
         The gradients are calculated with respect to the model
@@ -138,15 +140,14 @@ class SPSAOptimizer(Optimizer):
         y1 = self.model(diagrams)
         loss1 = self.loss_fn(y1, targets)
         if self.bounds is None:
-            grad = (loss0 - loss1) / (2*self.ck*delta)
+            grad = (loss0 - loss1) / (2 * self.ck * delta)
         else:
-            grad = (loss0 - loss1) / (xplus-xminus)
+            grad = (loss0 - loss1) / (xplus - xminus)
         self.gradient += np.ma.filled(grad, fill_value=0)
         # restore parameter value
         self.model.weights = x
-        loss = (loss0+loss1)/2
-        pred = (y0 + y1)/2
-        return pred, loss
+        loss = (loss0 + loss1) / 2
+        return loss
 
     def step(self) -> None:
         """Perform optimisation step."""

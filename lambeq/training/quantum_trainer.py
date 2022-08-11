@@ -27,6 +27,7 @@ from typing import Any, Optional, Union
 import numpy as np
 
 from lambeq.core.globals import VerbosityLevel
+from lambeq.training.dataset import Dataset
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
 from lambeq.training.trainer import Trainer
@@ -150,7 +151,9 @@ class QuantumTrainer(Trainer):
             The model predictions and the calculated loss.
 
         """
-        y_hat, loss = self.optimizer.backward(batch)
+        self.model._clear_predictions()
+        loss = self.optimizer.backward(batch)
+        y_hat = self.model._train_predictions[-1]
         self.train_costs.append(loss)
         self.optimizer.step()
         self.optimizer.zero_grad()
@@ -176,3 +179,15 @@ class QuantumTrainer(Trainer):
         y_hat = self.model(x)
         loss = self.loss_function(y_hat, y)
         return y_hat, loss
+
+    def fit(self,
+            train_dataset: Dataset,
+            val_dataset: Optional[Dataset] = None,
+            evaluation_step: int = 1,
+            logging_step: int = 1) -> None:
+
+        self.model._training = True
+
+        super().fit(train_dataset, val_dataset, evaluation_step, logging_step)
+
+        self.model._training = False

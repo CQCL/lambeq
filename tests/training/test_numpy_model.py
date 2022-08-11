@@ -129,3 +129,10 @@ def test_pickling():
     assert diagram == deepcopied_diagram
     assert diagram != pickled_diagram
     assert deepcopied_diagram != pickled_diagram
+
+def test_normalise():
+    model = NumpyModel()
+    inputs = np.linspace(-10, 10, 21)
+    normalised = model._normalise_vector(inputs)
+    assert abs(normalised.sum() - 1.0) < 1e-8
+    assert np.all(normalised >= 0)

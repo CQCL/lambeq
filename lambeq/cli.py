@@ -37,7 +37,7 @@ import lambeq
 from lambeq.ansatz import BaseAnsatz
 from lambeq.ansatz.circuit import CircuitAnsatz, IQPAnsatz
 from lambeq.ansatz.tensor import MPSAnsatz, SpiderAnsatz, TensorAnsatz
-from lambeq.pregroups import text_printer
+from lambeq.pregroups import remove_swaps, text_printer
 from lambeq.pregroups.utils import is_pregroup_diagram
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.bobcat_parser import BobcatParser
@@ -167,7 +167,7 @@ def prepare_parser() -> argparse.ArgumentParser:
             '-m',
             '--mode',
             type=str,
-            choices=['string-diagram', 'ccg'],
+            choices=['string-diagram', 'pregroups', 'ccg'],
             default=DEFAULT_ARG_VALUES['mode'],
             help='Mode used for the output. Default value: '
                  f'{DEFAULT_ARG_VALUES["mode"]}')
@@ -357,27 +357,29 @@ def validate_args(cl_args: argparse.Namespace) -> None:
                                        cl_args.rewrite_rules]):
             raise ValueError('Readers, rewrite rules, or ansatze cannot be '
                              'applied to CCG diagrams. In order to use them, '
-                             'be sure `mode` is set to `string-diagram`.')
+                             'be sure `mode` is set to `string-diagram` '
+                             'or `pregroups`.')
         if cl_args.output_format == 'image':
             raise ValueError('Generating binary images from CCG diagrams is '
                              'currently not supported. Try text forms, `json` '
                              'or `pickle`.')
     if cl_args.output_format in ['text-ascii', 'text-unicode', 'json']:
-        if cl_args.mode == 'string-diagram':
+        if cl_args.mode in ['string-diagram', 'pregroups']:
             if cl_args.ansatz is not None:
-                raise ValueError('Only pregroup diagrams can be stored in '
-                                 f'{cl_args.output_format} format. Use pickle '
-                                 'or image format or remove `--ansatz`.')
+                raise ValueError('Only string and pregroup diagrams can be '
+                                 f'stored in {cl_args.output_format} format. '
+                                 'Use pickle or image format or remove '
+                                 '`--ansatz`.')
             if cl_args.rewrite_rules is not None:
-                raise ValueError('Only pregroup diagrams can be stored in '
-                                 f'{cl_args.output_format} format. Use pickle '
-                                 'or image format or remove '
+                raise ValueError('Only string and pregroup diagrams can be '
+                                 f'stored in {cl_args.output_format} format. '
+                                 'Use pickle or image format or remove '
                                  '`--rewrite_rules`.')
             if cl_args.reader in ['spiders', 'stairs', 'tree']:
-                raise ValueError('Only pregroup diagrams can be stored in '
-                                 f'{cl_args.output_format} format. '
+                raise ValueError('Only string and pregroup diagrams can be '
+                                 f'stored in {cl_args.output_format} format. '
                                  f'{cl_args.reader} reader does not return '
-                                 'pregroup diagrams. Use pickle or image '
+                                 'these formats. Use pickle or image '
                                  'format or use a different reader/parser.')
 
 
@@ -442,6 +444,11 @@ class ParserModule(CLIModule):
                                            tokenised=cl_args.tokenise)
             return [t.without_trivial_unary_rules()
                     if t else None for t in trees]
+        elif cl_args.mode == 'pregroups':
+            diagrams = parser.sentences2diagrams(sentences,
+                                                 tokenised=cl_args.tokenise)
+            return [remove_swaps(discopy.grammar.normal_form(d))
+                    for d in diagrams]
         else:
             return parser.sentences2diagrams(sentences,
                                              tokenised=cl_args.tokenise)
@@ -592,7 +599,7 @@ def main() -> None:
                    RewriterModule(),
                    AnsatzModule(),
                    (DiagramSaveModule()
-                    if cl_args.mode == 'string-diagram'
+                    if cl_args.mode in ['string-diagram', 'pregroups']
                     else CCGTreeSaveModule())]
     if cl_args.load_args is not None:
         saved_args = yaml.load(open(cl_args.load_args, 'r'),

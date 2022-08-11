@@ -14,7 +14,9 @@
 
 from __future__ import annotations
 
-from discopy import Box, Cup, Diagram, Id, Swap, Ty, Word
+from dataclasses import dataclass
+
+from discopy import Box, Cup, Diagram, grammar, Id, Swap, Ty, Word
 
 CUP_TOKEN = '**CUP**'
 
@@ -197,3 +199,226 @@ def remove_cups(diagram: Diagram) -> Diagram:
         return _remove_cups(_compress_cups(_remove_cups(diagram)))
     except Exception:  # pragma: no cover
         return diagram  # pragma: no cover
+
+
+@dataclass
+class _Word:
+    """Helper class for :py:meth:`_remove_detached_cups` method."""
+    word: Word
+    offset: int
+
+
+@dataclass
+class _Morphism:
+    """Helper class for :py:meth:`_remove_detached_cups` method."""
+    morphism: Box
+    start: int
+    end: int
+    offset: int
+    deleted: bool = False
+
+
+def _remove_detached_cups(diagram: Diagram) -> Diagram:
+    """Remove any detached cups from a diagram.
+
+    Helper function for :py:meth:`remove_swaps` method.
+
+    """
+
+    if not is_pregroup_diagram(diagram):
+        raise ValueError('Not a valid pregroup diagram.')
+
+    atomic_types = [ob for b in diagram.boxes
+                    for ob in b.cod if isinstance(b, Word)]
+    scan = list(range(len(atomic_types)))
+
+    # Create lists with offset info for words and morphisms
+    words: list[_Word] = []
+    morphisms: list[_Morphism] = []
+    for box, offset in zip(diagram.boxes, diagram.offsets):
+        if isinstance(box, Word):
+            words.append(_Word(box, offset))
+        else:
+            start = scan[offset]
+            end = scan[offset + len(box.dom) - 1]
+            if isinstance(box, Cup):
+                del scan[offset : offset + len(box.dom)]
+            morphisms.append(_Morphism(box, start, end, offset))
+
+    # Scan each word for detached cups
+    new_words: list[Word] = []
+    for w_idx, wrd in enumerate(words):
+        rng = range(wrd.offset, wrd.offset + len(wrd.word.cod))
+        scan = list(rng)
+        for mor in morphisms:
+            if (isinstance(mor.morphism, Cup) and mor.start in rng
+                    and mor.end in rng):
+                del scan[mor.start - wrd.offset: mor.start - wrd.offset + 2]
+                mor.deleted = True
+
+        if len(scan) == len(rng):
+            # word type hasn't changed
+            new_words.append(wrd.word)
+        elif len(scan) > 0:
+            # word type has been reduced in length
+            typ = Ty(*[atomic_types[i] for i in scan])
+            new_words.append(Word(wrd.word.name, typ))
+        else:
+            # word type has been eliminated, merge word label
+            # with next one
+            next_wrd = words[w_idx + 1]
+            new_wrd = Word(f'{wrd.word.name} {next_wrd.word.name}',
+                           next_wrd.word.cod)
+            next_wrd.word = new_wrd
+
+    # Compute new word offsets
+    total_ofs = 0
+    wrd_offsets = []
+    for w in new_words:
+        wrd_offsets.append(total_ofs)
+        total_ofs += len(w.cod)
+
+    # Create new morphism and offset lists
+    new_morphisms: list[Box] = []
+    mor_offsets: list[int] = []
+    for m_idx, m in enumerate(morphisms):
+        if not m.deleted:
+            # morphism is not deleted, add it with its offset
+            new_morphisms.append(m.morphism)
+            mor_offsets.append(m.offset)
+        else:
+            # cup is deleted, adjust all above offsets if required
+            for j in range(m_idx):
+                if (not morphisms[j].deleted
+                        and morphisms[j].start > morphisms[m_idx].start):
+                    mor_offsets[j] -= 2
+
+    return Diagram(dom=diagram.dom, cod=diagram.cod,
+                   boxes=new_words+new_morphisms,
+                   offsets=wrd_offsets+mor_offsets)
+
+
+def remove_swaps(diagram: Diagram) -> Diagram:
+    """Produce a proper pregroup diagram by removing any swaps.
+
+    Direct conversion of a CCG derivation into a string diagram form
+    may introduce swaps, caused by cross-composition rules and unary
+    rules that may change types and the directionality of composition
+    at any point of the derivation. This method removes swaps,
+    producing a valid pregroup diagram (in J. Lambek's sense) as
+    follows:
+
+    1. Eliminate swap morphisms by swapping the actual atomic types
+       of the words.
+    2. Scan the new diagram for any detached parts, and remove them by
+       merging words together when possible.
+
+    Parameters
+    ----------
+    diagram : :py:class:`discopy.rigid.Diagram`
+        The input diagram.
+
+    Returns
+    -------
+    :py:class:`discopy.rigid.Diagram`
+        A copy of the input diagram without swaps.
+
+    Raises
+    ------
+    ValueError
+        If the input diagram is not in DisCoPy's "pregroup" form,
+        i.e. when words do not strictly precede the morphisms.
+
+    Notes
+    -----
+    The method trades off diagrammatic simplicity and conformance to a
+    formal pregroup grammar for a larger vocabulary, since each word
+    is associated with more types than before and new words (combined
+    tokens) are added to the vocabulary. Depending on the size of
+    your dataset, this might lead to data sparsity problems during
+    training.
+
+    Examples
+    --------
+    In the following example, "am" and "not" are combined at the CCG
+    level using cross composition, which introduces the interwoven
+    pattern of wires.
+
+    .. code-block:: text
+
+        I       am            not        sleeping
+        ─  ───────────  ───────────────  ────────
+        n  n.r·s·s.l·n  s.r·n.r.r·n.r·s   n.r·s
+        │   │  │  │  ╰─╮─╯    │    │  │    │  │
+        │   │  │  │  ╭─╰─╮    │    │  │    │  │
+        │   │  │  ╰╮─╯   ╰─╮──╯    │  │    │  │
+        │   │  │  ╭╰─╮   ╭─╰──╮    │  │    │  │
+        │   │  ╰──╯  ╰─╮─╯    ╰─╮──╯  │    │  │
+        │   │        ╭─╰─╮    ╭─╰──╮  │    │  │
+        │   ╰────────╯   ╰─╮──╯    ╰╮─╯    │  │
+        │                ╭─╰──╮    ╭╰─╮    │  │
+        ╰────────────────╯    ╰─╮──╯  ╰────╯  │
+                              ╭─╰──╮          │
+                              │    ╰──────────╯
+
+    Applying the :py:meth:`remove_swaps` method will return:
+
+    .. code-block:: text
+
+        I     am not    sleeping
+        ─  ───────────  ────────
+        n  n.r·s·s.l·n   n.r·s
+        ╰───╯  │  │  ╰────╯  │
+               │  ╰──────────╯
+
+    removing the swaps and combining "am" and "not" into one token.
+
+    """
+
+    if not is_pregroup_diagram(diagram):
+        try:
+            diagram = grammar.normal_form(diagram)
+        except ValueError:
+            raise ValueError('Not a valid pregroup diagram.')
+
+    atomic_types = [ob for b in diagram.boxes
+                    for ob in b.cod if isinstance(b, Word)]
+    scan = list(range(len(atomic_types)))
+
+    # Create lists with offset info for words and morphisms
+    words: list[tuple[Box, int]] = []
+    morphisms: list[tuple[Box, int]] = []
+    for box, offset in zip(diagram.boxes, diagram.offsets):
+        if isinstance(box, Word):
+            words.append((box, offset))
+        else:
+            morphisms.append((box, offset))
+
+    # Detect Swaps and swap the actual types
+    for box, ofs in morphisms:
+        if isinstance(box, Swap):
+            tidx_l = scan[ofs]
+            tidx_r = scan[ofs + 1]
+            tmp = atomic_types[tidx_l]
+            atomic_types[tidx_l] = atomic_types[tidx_r]
+            atomic_types[tidx_r] = tmp
+        elif isinstance(box, Cup):
+            del scan[ofs: ofs + 2]
+
+    # Prepare new boxes and offsets
+    new_boxes: list[Box] = []
+    new_offsets: list[int] = []
+    for wrd, ofs in words:
+        new_boxes.append(Word(wrd.name,
+                              Ty(*atomic_types[ofs:ofs+len(wrd.cod)])))
+        new_offsets.append(ofs)
+
+    for mor, ofs in morphisms:
+        if not isinstance(mor, Swap):
+            new_boxes.append(mor)
+            new_offsets.append(ofs)
+
+    new_diagr = Diagram(dom=diagram.dom, cod=diagram.cod,
+                        boxes=new_boxes, offsets=new_offsets)
+
+    return _remove_detached_cups(new_diagr)

@@ -57,7 +57,7 @@ class Optimizer(ABC):
 
     @abstractmethod
     def backward(self,
-                 batch: tuple[list, np.ndarray]) -> tuple[np.ndarray, float]:
+                 batch: tuple[list, np.ndarray]) -> float:
         """Calculate the gradients of the loss function.
 
         The gradient is calculated with respect to the model parameters.
