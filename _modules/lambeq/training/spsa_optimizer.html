@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.5 documentation</title>
+  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.6 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.5
+                0.2.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -150,6 +150,8 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">model</span> <span class="p">:</span> <span class="n">QuantumModel</span>
+
 <div class="viewcode-block" id="SPSAOptimizer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">QuantumModel</span><span class="p">,</span>
                  <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
                  <span class="n">loss_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span>
@@ -210,7 +212,7 @@
 
 <div class="viewcode-block" id="SPSAOptimizer.backward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+            <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function.</span>
 
 <span class="sd">        The gradients are calculated with respect to the model</span>
@@ -248,15 +250,14 @@
         <span class="n">y1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="n">diagrams</span><span class="p">)</span>
         <span class="n">loss1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss_fn</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">targets</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss0</span> <span class="o">-</span> <span class="n">loss1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ck</span><span class="o">*</span><span class="n">delta</span><span class="p">)</span>
+            <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss0</span> <span class="o">-</span> <span class="n">loss1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ck</span> <span class="o">*</span> <span class="n">delta</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss0</span> <span class="o">-</span> <span class="n">loss1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xplus</span><span class="o">-</span><span class="n">xminus</span><span class="p">)</span>
+            <span class="n">grad</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss0</span> <span class="o">-</span> <span class="n">loss1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xplus</span> <span class="o">-</span> <span class="n">xminus</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">filled</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="c1"># restore parameter value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">x</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss0</span><span class="o">+</span><span class="n">loss1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-        <span class="n">pred</span> <span class="o">=</span> <span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="n">y1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
-        <span class="k">return</span> <span class="n">pred</span><span class="p">,</span> <span class="n">loss</span></div>
+        <span class="n">loss</span> <span class="o">=</span> <span class="p">(</span><span class="n">loss0</span> <span class="o">+</span> <span class="n">loss1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">loss</span></div>
 
 <div class="viewcode-block" id="SPSAOptimizer.step"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Perform optimisation step.&quot;&quot;&quot;</span>

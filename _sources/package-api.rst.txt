@@ -68,6 +68,7 @@ A collection of useful utilities for easier manipulation of :term:`pregroup <pre
 - :py:meth:`~lambeq.pregroups.diagram2str`
 - :py:meth:`~lambeq.pregroups.is_pregroup_diagram`
 - :py:meth:`~lambeq.pregroups.remove_cups`
+- :py:meth:`~lambeq.pregroups.remove_swaps`
 
 .. rubric:: Classes
 

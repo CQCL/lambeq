@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.pregroups.utils &mdash; lambeq 0.2.5 documentation</title>
+  <title>lambeq.pregroups.utils &mdash; lambeq 0.2.6 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.5
+                0.2.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -124,7 +124,9 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Swap</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">grammar</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Swap</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
 
 <span class="n">CUP_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;**CUP**&#39;</span>
 
@@ -307,6 +309,229 @@
         <span class="k">return</span> <span class="n">_remove_cups</span><span class="p">(</span><span class="n">_compress_cups</span><span class="p">(</span><span class="n">_remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)))</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">return</span> <span class="n">diagram</span>  <span class="c1"># pragma: no cover</span></div>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_Word</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Helper class for :py:meth:`_remove_detached_cups` method.&quot;&quot;&quot;</span>
+    <span class="n">word</span><span class="p">:</span> <span class="n">Word</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">_Morphism</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Helper class for :py:meth:`_remove_detached_cups` method.&quot;&quot;&quot;</span>
+    <span class="n">morphism</span><span class="p">:</span> <span class="n">Box</span>
+    <span class="n">start</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">deleted</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_remove_detached_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Remove any detached cups from a diagram.</span>
+
+<span class="sd">    Helper function for :py:meth:`remove_swaps` method.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pregroup_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a valid pregroup diagram.&#39;</span><span class="p">)</span>
+
+    <span class="n">atomic_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ob</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span>
+                    <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">cod</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">Word</span><span class="p">)]</span>
+    <span class="n">scan</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atomic_types</span><span class="p">)))</span>
+
+    <span class="c1"># Create lists with offset info for words and morphisms</span>
+    <span class="n">words</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_Word</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">morphisms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">_Morphism</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">offsets</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Word</span><span class="p">):</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_Word</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="n">offset</span><span class="p">]</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">):</span>
+                <span class="k">del</span> <span class="n">scan</span><span class="p">[</span><span class="n">offset</span> <span class="p">:</span> <span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)]</span>
+            <span class="n">morphisms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_Morphism</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
+
+    <span class="c1"># Scan each word for detached cups</span>
+    <span class="n">new_words</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Word</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">w_idx</span><span class="p">,</span> <span class="n">wrd</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+        <span class="n">rng</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="n">wrd</span><span class="o">.</span><span class="n">offset</span><span class="p">,</span> <span class="n">wrd</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">wrd</span><span class="o">.</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">))</span>
+        <span class="n">scan</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">rng</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">mor</span> <span class="ow">in</span> <span class="n">morphisms</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">mor</span><span class="o">.</span><span class="n">morphism</span><span class="p">,</span> <span class="n">Cup</span><span class="p">)</span> <span class="ow">and</span> <span class="n">mor</span><span class="o">.</span><span class="n">start</span> <span class="ow">in</span> <span class="n">rng</span>
+                    <span class="ow">and</span> <span class="n">mor</span><span class="o">.</span><span class="n">end</span> <span class="ow">in</span> <span class="n">rng</span><span class="p">):</span>
+                <span class="k">del</span> <span class="n">scan</span><span class="p">[</span><span class="n">mor</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="n">wrd</span><span class="o">.</span><span class="n">offset</span><span class="p">:</span> <span class="n">mor</span><span class="o">.</span><span class="n">start</span> <span class="o">-</span> <span class="n">wrd</span><span class="o">.</span><span class="n">offset</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+                <span class="n">mor</span><span class="o">.</span><span class="n">deleted</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">rng</span><span class="p">):</span>
+            <span class="c1"># word type hasn&#39;t changed</span>
+            <span class="n">new_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wrd</span><span class="o">.</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># word type has been reduced in length</span>
+            <span class="n">typ</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">atomic_types</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">scan</span><span class="p">])</span>
+            <span class="n">new_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="n">wrd</span><span class="o">.</span><span class="n">word</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">typ</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># word type has been eliminated, merge word label</span>
+            <span class="c1"># with next one</span>
+            <span class="n">next_wrd</span> <span class="o">=</span> <span class="n">words</span><span class="p">[</span><span class="n">w_idx</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">new_wrd</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">wrd</span><span class="o">.</span><span class="n">word</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">next_wrd</span><span class="o">.</span><span class="n">word</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                           <span class="n">next_wrd</span><span class="o">.</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+            <span class="n">next_wrd</span><span class="o">.</span><span class="n">word</span> <span class="o">=</span> <span class="n">new_wrd</span>
+
+    <span class="c1"># Compute new word offsets</span>
+    <span class="n">total_ofs</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">wrd_offsets</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">new_words</span><span class="p">:</span>
+        <span class="n">wrd_offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">total_ofs</span><span class="p">)</span>
+        <span class="n">total_ofs</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+
+    <span class="c1"># Create new morphism and offset lists</span>
+    <span class="n">new_morphisms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Box</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">mor_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">m_idx</span><span class="p">,</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">morphisms</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">m</span><span class="o">.</span><span class="n">deleted</span><span class="p">:</span>
+            <span class="c1"># morphism is not deleted, add it with its offset</span>
+            <span class="n">new_morphisms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">morphism</span><span class="p">)</span>
+            <span class="n">mor_offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">offset</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># cup is deleted, adjust all above offsets if required</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m_idx</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">deleted</span>
+                        <span class="ow">and</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">start</span> <span class="o">&gt;</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">m_idx</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">):</span>
+                    <span class="n">mor_offsets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">2</span>
+
+    <span class="k">return</span> <span class="n">Diagram</span><span class="p">(</span><span class="n">dom</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
+                   <span class="n">boxes</span><span class="o">=</span><span class="n">new_words</span><span class="o">+</span><span class="n">new_morphisms</span><span class="p">,</span>
+                   <span class="n">offsets</span><span class="o">=</span><span class="n">wrd_offsets</span><span class="o">+</span><span class="n">mor_offsets</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="remove_swaps"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.remove_swaps">[docs]</a><span class="k">def</span> <span class="nf">remove_swaps</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Produce a proper pregroup diagram by removing any swaps.</span>
+
+<span class="sd">    Direct conversion of a CCG derivation into a string diagram form</span>
+<span class="sd">    may introduce swaps, caused by cross-composition rules and unary</span>
+<span class="sd">    rules that may change types and the directionality of composition</span>
+<span class="sd">    at any point of the derivation. This method removes swaps,</span>
+<span class="sd">    producing a valid pregroup diagram (in J. Lambek&#39;s sense) as</span>
+<span class="sd">    follows:</span>
+
+<span class="sd">    1. Eliminate swap morphisms by swapping the actual atomic types</span>
+<span class="sd">       of the words.</span>
+<span class="sd">    2. Scan the new diagram for any detached parts, and remove them by</span>
+<span class="sd">       merging words together when possible.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    diagram : :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">        The input diagram.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">        A copy of the input diagram without swaps.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the input diagram is not in DisCoPy&#39;s &quot;pregroup&quot; form,</span>
+<span class="sd">        i.e. when words do not strictly precede the morphisms.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The method trades off diagrammatic simplicity and conformance to a</span>
+<span class="sd">    formal pregroup grammar for a larger vocabulary, since each word</span>
+<span class="sd">    is associated with more types than before and new words (combined</span>
+<span class="sd">    tokens) are added to the vocabulary. Depending on the size of</span>
+<span class="sd">    your dataset, this might lead to data sparsity problems during</span>
+<span class="sd">    training.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    In the following example, &quot;am&quot; and &quot;not&quot; are combined at the CCG</span>
+<span class="sd">    level using cross composition, which introduces the interwoven</span>
+<span class="sd">    pattern of wires.</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        I       am            not        sleeping</span>
+<span class="sd">        ─  ───────────  ───────────────  ────────</span>
+<span class="sd">        n  n.r·s·s.l·n  s.r·n.r.r·n.r·s   n.r·s</span>
+<span class="sd">        │   │  │  │  ╰─╮─╯    │    │  │    │  │</span>
+<span class="sd">        │   │  │  │  ╭─╰─╮    │    │  │    │  │</span>
+<span class="sd">        │   │  │  ╰╮─╯   ╰─╮──╯    │  │    │  │</span>
+<span class="sd">        │   │  │  ╭╰─╮   ╭─╰──╮    │  │    │  │</span>
+<span class="sd">        │   │  ╰──╯  ╰─╮─╯    ╰─╮──╯  │    │  │</span>
+<span class="sd">        │   │        ╭─╰─╮    ╭─╰──╮  │    │  │</span>
+<span class="sd">        │   ╰────────╯   ╰─╮──╯    ╰╮─╯    │  │</span>
+<span class="sd">        │                ╭─╰──╮    ╭╰─╮    │  │</span>
+<span class="sd">        ╰────────────────╯    ╰─╮──╯  ╰────╯  │</span>
+<span class="sd">                              ╭─╰──╮          │</span>
+<span class="sd">                              │    ╰──────────╯</span>
+
+<span class="sd">    Applying the :py:meth:`remove_swaps` method will return:</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        I     am not    sleeping</span>
+<span class="sd">        ─  ───────────  ────────</span>
+<span class="sd">        n  n.r·s·s.l·n   n.r·s</span>
+<span class="sd">        ╰───╯  │  │  ╰────╯  │</span>
+<span class="sd">               │  ╰──────────╯</span>
+
+<span class="sd">    removing the swaps and combining &quot;am&quot; and &quot;not&quot; into one token.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pregroup_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">diagram</span> <span class="o">=</span> <span class="n">grammar</span><span class="o">.</span><span class="n">normal_form</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a valid pregroup diagram.&#39;</span><span class="p">)</span>
+
+    <span class="n">atomic_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ob</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span>
+                    <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">cod</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">Word</span><span class="p">)]</span>
+    <span class="n">scan</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atomic_types</span><span class="p">)))</span>
+
+    <span class="c1"># Create lists with offset info for words and morphisms</span>
+    <span class="n">words</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">morphisms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Box</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">offset</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">offsets</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Word</span><span class="p">):</span>
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">box</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">morphisms</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">box</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
+
+    <span class="c1"># Detect Swaps and swap the actual types</span>
+    <span class="k">for</span> <span class="n">box</span><span class="p">,</span> <span class="n">ofs</span> <span class="ow">in</span> <span class="n">morphisms</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Swap</span><span class="p">):</span>
+            <span class="n">tidx_l</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="n">ofs</span><span class="p">]</span>
+            <span class="n">tidx_r</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="n">ofs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">tmp</span> <span class="o">=</span> <span class="n">atomic_types</span><span class="p">[</span><span class="n">tidx_l</span><span class="p">]</span>
+            <span class="n">atomic_types</span><span class="p">[</span><span class="n">tidx_l</span><span class="p">]</span> <span class="o">=</span> <span class="n">atomic_types</span><span class="p">[</span><span class="n">tidx_r</span><span class="p">]</span>
+            <span class="n">atomic_types</span><span class="p">[</span><span class="n">tidx_r</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmp</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">):</span>
+            <span class="k">del</span> <span class="n">scan</span><span class="p">[</span><span class="n">ofs</span><span class="p">:</span> <span class="n">ofs</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1"># Prepare new boxes and offsets</span>
+    <span class="n">new_boxes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Box</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">new_offsets</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">wrd</span><span class="p">,</span> <span class="n">ofs</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="n">new_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="n">wrd</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                              <span class="n">Ty</span><span class="p">(</span><span class="o">*</span><span class="n">atomic_types</span><span class="p">[</span><span class="n">ofs</span><span class="p">:</span><span class="n">ofs</span><span class="o">+</span><span class="nb">len</span><span class="p">(</span><span class="n">wrd</span><span class="o">.</span><span class="n">cod</span><span class="p">)])))</span>
+        <span class="n">new_offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ofs</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">mor</span><span class="p">,</span> <span class="n">ofs</span> <span class="ow">in</span> <span class="n">morphisms</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mor</span><span class="p">,</span> <span class="n">Swap</span><span class="p">):</span>
+            <span class="n">new_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mor</span><span class="p">)</span>
+            <span class="n">new_offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ofs</span><span class="p">)</span>
+
+    <span class="n">new_diagr</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span><span class="n">dom</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
+                        <span class="n">boxes</span><span class="o">=</span><span class="n">new_boxes</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="n">new_offsets</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">_remove_detached_cups</span><span class="p">(</span><span class="n">new_diagr</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

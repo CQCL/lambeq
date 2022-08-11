@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat &mdash; lambeq 0.2.5 documentation</title>
+  <title>lambeq.bobcat &mdash; lambeq 0.2.6 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.5
+                0.2.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -951,8 +951,12 @@ GPU and the available CPU RAM if unset.</p>
 </dd>
 <dt>offload_folder (<cite>str</cite> or <cite>os.PathLike</cite>, <em>optional</em>):</dt><dd><p>If the <cite>device_map</cite> contains any value <cite>“disk”</cite>, the folder where we will offload weights.</p>
 </dd>
-<dt>offload_state_dict (<cite>bool</cite>, <em>optional</em>, defaults to <cite>False</cite>):</dt><dd><p>If <cite>True</cite>, will temporarily offload the CPU state dict to the hard drive to avoid getting out of CPU
-RAM if the weight of the CPU state dict + the biggest shard of the checkpoint does not fit.</p>
+<dt>offload_state_dict (<cite>bool</cite>, <em>optional</em>):</dt><dd><p>If <cite>True</cite>, will temporarily offload the CPU state dict to the hard drive to avoid getting out of CPU
+RAM if the weight of the CPU state dict + the biggest shard of the checkpoint does not fit. Defaults to
+<cite>True</cite> when there is some disk offload.</p>
+</dd>
+<dt>subfolder (<cite>str</cite>, <em>optional</em>, defaults to <cite>“”</cite>):</dt><dd><p>In case the relevant files are located inside a subfolder of the model repo on huggingface.co, you can
+specify the folder name here.</p>
 </dd>
 <dt>kwargs (remaining dictionary of keyword arguments, <em>optional</em>):</dt><dd><p>Can be used to update the configuration object (after it being loaded) and initiate the model (e.g.,
 <cite>output_attentions=True</cite>). Behaves differently depending on whether a <cite>config</cite> is provided or
@@ -1050,10 +1054,11 @@ method initializes it with <cite>bos_token_id</cite> and a batch size of 1. For 
 should of in the format of <cite>input_ids</cite>. For encoder-decoder models <em>inputs</em> can represent any of
 <cite>input_ids</cite>, <cite>input_values</cite>, <cite>input_features</cite>, or <cite>pixel_values</cite>.</p>
 </dd>
-<dt>max_length (<cite>int</cite>, <em>optional</em>, defaults to <cite>model.config.max_length</cite>):</dt><dd><p>The maximum length of the sequence to be generated.</p>
+<dt>max_length (<cite>int</cite>, <em>optional</em>, defaults to <cite>model.config.max_length</cite>):</dt><dd><p>The maximum length the generated tokens can have. Corresponds to the length of the input prompt +
+<cite>max_new_tokens</cite>. In general, prefer the use of <cite>max_new_tokens</cite>, which ignores the number of tokens in
+the prompt.</p>
 </dd>
-<dt>max_new_tokens (<cite>int</cite>, <em>optional</em>, defaults to None):</dt><dd><p>The maximum numbers of tokens to generate, ignore the current number of tokens. Use either
-<cite>max_new_tokens</cite> or <cite>max_length</cite> but not both, they serve the same purpose.</p>
+<dt>max_new_tokens (<cite>int</cite>, <em>optional</em>):</dt><dd><p>The maximum numbers of tokens to generate, ignoring the number of tokens in the prompt.</p>
 </dd>
 <dt>min_length (<cite>int</cite>, <em>optional</em>, defaults to 10):</dt><dd><p>The minimum length of the sequence to be generated.</p>
 </dd>
@@ -1102,7 +1107,7 @@ where one can allow different forms of each word.</p>
 </dd>
 <dt>num_return_sequences(<cite>int</cite>, <em>optional</em>, defaults to 1):</dt><dd><p>The number of independently computed returned sequences for each element in the batch.</p>
 </dd>
-<dt>max_time(<cite>float</cite>, <em>optional</em>, defaults to None):</dt><dd><p>The maximum amount of time you allow the computation to run for in seconds. generation will still
+<dt>max_time(<cite>float</cite>, <em>optional</em>):</dt><dd><p>The maximum amount of time you allow the computation to run for in seconds. generation will still
 finish the current pass after allocated time has been passed.</p>
 </dd>
 <dt>attention_mask (<cite>torch.LongTensor</cite> of shape <cite>(batch_size, sequence_length)</cite>, <em>optional</em>):</dt><dd><p>Mask to avoid performing attention on padding token indices. Mask values are in <cite>[0, 1]</cite>, 1 for tokens
@@ -1286,7 +1291,7 @@ buffer</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.bobcat.BertForChartClassification.get_extended_attention_mask">
-<span class="sig-name descname"><span class="pre">get_extended_attention_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">attention_mask:</span> <span class="pre">torch.Tensor,</span> <span class="pre">input_shape:</span> <span class="pre">typing.Tuple[int],</span> <span class="pre">device:</span> <span class="pre">&lt;property</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fdfc1072220&gt;</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#lambeq.bobcat.BertForChartClassification.get_extended_attention_mask" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">get_extended_attention_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">attention_mask:</span> <span class="pre">torch.Tensor,</span> <span class="pre">input_shape:</span> <span class="pre">typing.Tuple[int],</span> <span class="pre">device:</span> <span class="pre">&lt;property</span> <span class="pre">object</span> <span class="pre">at</span> <span class="pre">0x7fc7ec826090&gt;</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">dtype:</span> <span class="pre">torch.float32</span> <span class="pre">=</span> <span class="pre">None</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#lambeq.bobcat.BertForChartClassification.get_extended_attention_mask" title="Permalink to this definition"></a></dt>
 <dd><p>Makes broadcastable attention and causal masks so that future and masked tokens are ignored.</p>
 <dl class="simple">
 <dt>Arguments:</dt><dd><dl class="simple">

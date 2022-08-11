@@ -3,6 +3,17 @@
 Release notes
 =============
 
+.. _rel-0.2.6:
+
+`0.2.6 <https://github.com/CQCL/lambeq/releases/tag/0.2.6>`_
+------------------------------------------------------------
+
+- Added a strict pregroups mode to the CLI. With this mode enabled, all swaps are removed from the output string diagrams by changing the ordering of the atomic types, converting them into a valid :term:`pregroup <pregroup grammar>` form as given in [Lam1999]_.
+
+- Adjusted the behaviour of output normalisation in quantum models. Now, :py:class:`.NumpyModel` always returns probabilities instead of amplitudes.
+
+- Removed the prediction from the output of the :py:class:`.SPSAOptimizer`, which now returns just the loss.
+
 .. _rel-0.2.5:
 
 `0.2.5 <https://github.com/CQCL/lambeq/releases/tag/0.2.5>`_
@@ -69,7 +80,7 @@ Release notes
 
 - Update grammar file of :term:`Bobcat` parser to avoid problems with conflicting unary rules.
 
-- Allow customising available root categories for the parser when using the command-line interface. 
+- Allow customising available root categories for the parser when using the command-line interface.
 
 .. _rel-0.2.1:
 

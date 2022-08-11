@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.pregroups &mdash; lambeq 0.2.5 documentation</title>
+  <title>lambeq.pregroups &mdash; lambeq 0.2.6 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.5
+                0.2.6
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -302,6 +302,81 @@ which results in faster QML experiments.</p>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="lambeq.pregroups.remove_swaps">
+<span class="sig-prename descclassname"><span class="pre">lambeq.pregroups.</span></span><span class="sig-name descname"><span class="pre">remove_swaps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/pregroups/utils.html#remove_swaps"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.pregroups.remove_swaps" title="Permalink to this definition"></a></dt>
+<dd><p>Produce a proper pregroup diagram by removing any swaps.</p>
+<p>Direct conversion of a CCG derivation into a string diagram form
+may introduce swaps, caused by cross-composition rules and unary
+rules that may change types and the directionality of composition
+at any point of the derivation. This method removes swaps,
+producing a valid pregroup diagram (in J. Lambek’s sense) as
+follows:</p>
+<ol class="arabic simple">
+<li><p>Eliminate swap morphisms by swapping the actual atomic types
+of the words.</p></li>
+<li><p>Scan the new diagram for any detached parts, and remove them by
+merging words together when possible.</p></li>
+</ol>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>diagram</strong><span class="classifier"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a></span></dt><dd><p>The input diagram.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a></dt><dd><p>A copy of the input diagram without swaps.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the input diagram is not in DisCoPy’s “pregroup” form,
+i.e. when words do not strictly precede the morphisms.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The method trades off diagrammatic simplicity and conformance to a
+formal pregroup grammar for a larger vocabulary, since each word
+is associated with more types than before and new words (combined
+tokens) are added to the vocabulary. Depending on the size of
+your dataset, this might lead to data sparsity problems during
+training.</p>
+<p class="rubric">Examples</p>
+<p>In the following example, “am” and “not” are combined at the CCG
+level using cross composition, which introduces the interwoven
+pattern of wires.</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>I       am            not        sleeping
+─  ───────────  ───────────────  ────────
+n  n.r·s·s.l·n  s.r·n.r.r·n.r·s   n.r·s
+│   │  │  │  ╰─╮─╯    │    │  │    │  │
+│   │  │  │  ╭─╰─╮    │    │  │    │  │
+│   │  │  ╰╮─╯   ╰─╮──╯    │  │    │  │
+│   │  │  ╭╰─╮   ╭─╰──╮    │  │    │  │
+│   │  ╰──╯  ╰─╮─╯    ╰─╮──╯  │    │  │
+│   │        ╭─╰─╮    ╭─╰──╮  │    │  │
+│   ╰────────╯   ╰─╮──╯    ╰╮─╯    │  │
+│                ╭─╰──╮    ╭╰─╮    │  │
+╰────────────────╯    ╰─╮──╯  ╰────╯  │
+                      ╭─╰──╮          │
+                      │    ╰──────────╯
+</pre></div>
+</div>
+<p>Applying the <a class="reference internal" href="#lambeq.pregroups.remove_swaps" title="lambeq.pregroups.remove_swaps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_swaps()</span></code></a> method will return:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>I     am not    sleeping
+─  ───────────  ────────
+n  n.r·s·s.l·n   n.r·s
+╰───╯  │  │  ╰────╯  │
+       │  ╰──────────╯
+</pre></div>
+</div>
+<p>removing the swaps and combining “am” and “not” into one token.</p>
 </dd></dl>
 
 </section>
