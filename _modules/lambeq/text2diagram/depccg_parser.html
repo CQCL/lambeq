@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.depccg_parser &mdash; lambeq 0.2.6 documentation</title>
+  <title>lambeq.text2diagram.depccg_parser &mdash; lambeq 0.2.6 [git latest] documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6
+                0.2.6 [git latest]
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -152,15 +152,18 @@
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">depccg</span>
-    <span class="kn">from</span> <span class="nn">depccg.annotator</span> <span class="kn">import</span> <span class="n">annotate_XX</span><span class="p">,</span> <span class="n">english_annotator</span>
+    <span class="kn">from</span> <span class="nn">depccg.annotator</span> <span class="kn">import</span> <span class="p">(</span><span class="n">annotate_XX</span><span class="p">,</span> <span class="n">english_annotator</span><span class="p">,</span>
+                                  <span class="n">japanese_annotator</span><span class="p">)</span>
     <span class="kn">from</span> <span class="nn">depccg.cat</span> <span class="kn">import</span> <span class="n">Category</span>
 
 
 <span class="k">def</span> <span class="nf">_import_depccg</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="k">global</span> <span class="n">depccg</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">annotate_XX</span><span class="p">,</span> <span class="n">english_annotator</span>
+    <span class="k">global</span> <span class="n">depccg</span><span class="p">,</span> <span class="n">Category</span>
+    <span class="k">global</span> <span class="n">annotate_XX</span><span class="p">,</span> <span class="n">english_annotator</span><span class="p">,</span> <span class="n">japanese_annotator</span>
     <span class="kn">import</span> <span class="nn">depccg</span>
     <span class="kn">import</span> <span class="nn">depccg.allennlp.utils</span>
-    <span class="kn">from</span> <span class="nn">depccg.annotator</span> <span class="kn">import</span> <span class="n">annotate_XX</span><span class="p">,</span> <span class="n">english_annotator</span>
+    <span class="kn">from</span> <span class="nn">depccg.annotator</span> <span class="kn">import</span> <span class="p">(</span><span class="n">annotate_XX</span><span class="p">,</span> <span class="n">english_annotator</span><span class="p">,</span>
+                                  <span class="n">japanese_annotator</span><span class="p">)</span>
     <span class="kn">from</span> <span class="nn">depccg.cat</span> <span class="kn">import</span> <span class="n">Category</span>
     <span class="kn">import</span> <span class="nn">depccg.lang</span>
     <span class="kn">import</span> <span class="nn">depccg.parsing</span>
@@ -196,10 +199,10 @@
                  <span class="n">lang</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span>
                  <span class="n">model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">use_model_unary_rules</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-                 <span class="n">annotator</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">annotator</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;janome&#39;</span><span class="p">,</span>
+                 <span class="n">tokenize</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">device</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                 <span class="n">root_cats</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;S[dcl]&#39;</span><span class="p">,</span> <span class="s1">&#39;S[wq]&#39;</span><span class="p">,</span> <span class="s1">&#39;S[q]&#39;</span><span class="p">,</span>
-                                             <span class="s1">&#39;S[qem]&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">),</span>
+                 <span class="n">root_cats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Instantiate a parser based on `depccg`.</span>
@@ -207,23 +210,50 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        lang : { &#39;en&#39;, &#39;ja&#39; }</span>
-<span class="sd">            The language to use. Use of &#39;ja&#39; is experimental and has not</span>
-<span class="sd">            been tested.</span>
+<span class="sd">            The language to use: &#39;en&#39; for English, &#39;ja&#39; for Japanese.</span>
 <span class="sd">        model : str, optional</span>
 <span class="sd">            The name of the model variant to use, if any.</span>
-<span class="sd">            (At time of writing) `depccg` supports &#39;elmo&#39;, &#39;rebank&#39; and</span>
+<span class="sd">            At time of writing, `depccg` supports &#39;elmo&#39;, &#39;rebank&#39; and</span>
 <span class="sd">            &#39;elmo_rebank&#39; for English only.</span>
 <span class="sd">        use_model_unary_rules : bool, default: False</span>
 <span class="sd">            Use the unary rules supplied by the model instead of the</span>
 <span class="sd">            ones by `lambeq`.</span>
-<span class="sd">        annotator : str, optional</span>
-<span class="sd">            The annotator to use, if any. (At time of writing) `depccg`</span>
-<span class="sd">            supports &#39;candc&#39; and &#39;spacy&#39;.</span>
+<span class="sd">        annotator : str, default: &#39;janome&#39;</span>
+<span class="sd">            The annotator to use, if any.</span>
+<span class="sd">            At time of writing `depccg` supports &#39;candc&#39; and &#39;spacy&#39; for</span>
+<span class="sd">            English, and &#39;janome&#39; and &#39;jigg&#39; for Japanese.</span>
+<span class="sd">            By default, no annotator is used for English, and &#39;janome&#39;</span>
+<span class="sd">            is used for Japanese.</span>
+<span class="sd">        tokenize : bool, optional</span>
+<span class="sd">            Whether to tokenise the input when annotating. This option</span>
+<span class="sd">            should only be specified when using the &#39;spacy&#39; annotator.</span>
 <span class="sd">        device : int, optional</span>
 <span class="sd">            The ID of the GPU to use. By default, uses the CPU.</span>
-<span class="sd">        root_cats : iterable of str, default: [&#39;S[dcl]&#39;, &#39;S[wq]&#39;,</span>
-<span class="sd">                                               &#39;S[q]&#39;, &#39;S[qem]&#39;, &#39;NP&#39;]</span>
-<span class="sd">            A list of categories allowed at the root of the parse.</span>
+<span class="sd">        root_cats : iterable of str, optional</span>
+<span class="sd">            A list of categories allowed at the root of the parse. By</span>
+<span class="sd">            default, the English categories are:</span>
+<span class="sd">                - S[dcl]</span>
+<span class="sd">                - S[wq]</span>
+<span class="sd">                - S[q]</span>
+<span class="sd">                - S[qem]</span>
+<span class="sd">                - NP</span>
+<span class="sd">            and the Japanese categories are:</span>
+<span class="sd">                - NP[case=nc,mod=nm,fin=f]</span>
+<span class="sd">                - NP[case=nc,mod=nm,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=attr,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=base,fin=f]</span>
+<span class="sd">                - S[mod=nm,form=base,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=cont,fin=f]</span>
+<span class="sd">                - S[mod=nm,form=cont,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=da,fin=f]</span>
+<span class="sd">                - S[mod=nm,form=da,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=hyp,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=imp,fin=f]</span>
+<span class="sd">                - S[mod=nm,form=imp,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=r,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=s,fin=t]</span>
+<span class="sd">                - S[mod=nm,form=stem,fin=f]</span>
+<span class="sd">                - S[mod=nm,form=stem,fin=t]</span>
 <span class="sd">        verbose : str, default: &#39;progress&#39;,</span>
 <span class="sd">            Controls the command-line output of the parser. Only</span>
 <span class="sd">            &#39;progress&#39; option is available for this parser.</span>
@@ -237,9 +267,36 @@
                              <span class="s1">&#39;&quot;progress&quot; level of verbosity. &#39;</span>
                              <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="si">}</span><span class="s1">` was given.&#39;</span><span class="p">)</span>
         <span class="n">_import_depccg</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">lang</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;en&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">root_cats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">root_cats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;S[dcl]&#39;</span><span class="p">,</span> <span class="s1">&#39;S[wq]&#39;</span><span class="p">,</span> <span class="s1">&#39;S[q]&#39;</span><span class="p">,</span> <span class="s1">&#39;S[qem]&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">annotator_fun</span> <span class="o">=</span> <span class="n">english_annotator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">annotator</span><span class="p">,</span> <span class="n">annotate_XX</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tokenize</span> <span class="o">=</span> <span class="n">tokenize</span> <span class="k">if</span> <span class="n">tokenize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">lang</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;ja&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">root_cats</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">root_cats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NP[case=nc,mod=nm,fin=f]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;NP[case=nc,mod=nm,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=attr,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=base,fin=f]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=base,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=cont,fin=f]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=cont,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=da,fin=f]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=da,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=hyp,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=imp,fin=f]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=imp,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=r,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=s,fin=t]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=stem,fin=f]&#39;</span><span class="p">,</span>
+                             <span class="s1">&#39;S[mod=nm,form=stem,fin=t]&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">annotator_fun</span> <span class="o">=</span> <span class="n">japanese_annotator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">annotator</span><span class="p">,</span> <span class="n">annotate_XX</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tokenize</span> <span class="o">=</span> <span class="n">tokenize</span> <span class="k">if</span> <span class="n">tokenize</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;DepCCGParser does not support language: &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">lang</span><span class="si">}</span><span class="s1">`.&#39;</span><span class="p">)</span>
 
         <span class="n">depccg</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">set_global_language_to</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">annotator_fun</span> <span class="o">=</span> <span class="n">english_annotator</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">annotator</span><span class="p">,</span> <span class="n">annotate_XX</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">supertagger</span><span class="p">,</span> <span class="n">config</span> <span class="o">=</span> <span class="n">depccg</span><span class="o">.</span><span class="n">instance_models</span><span class="o">.</span><span class="n">load_model</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                                                      <span class="n">device</span><span class="p">)</span>
         <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">apply_binary_rules</span><span class="p">,</span>
@@ -457,7 +514,7 @@
     <span class="k">def</span> <span class="nf">_depccg_parse</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">sentences</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">depccg</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">ScoredTree</span><span class="p">]]:</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotator_fun</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">annotator_fun</span><span class="p">(</span><span class="n">sentences</span><span class="p">,</span> <span class="n">tokenize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tokenize</span><span class="p">)</span>
         <span class="n">score_result</span><span class="p">,</span> <span class="n">categories</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">supertagger</span><span class="o">.</span><span class="n">predict_doc</span><span class="p">(</span>
                 <span class="p">[[</span><span class="n">token</span><span class="o">.</span><span class="n">word</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">sentence</span><span class="p">]</span> <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">])</span>
 
