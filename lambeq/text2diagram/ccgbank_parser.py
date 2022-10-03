@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,7 +11,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 """
 CCGBank parser
 ==============
@@ -29,11 +28,11 @@ from __future__ import annotations
 
 __all__ = ['CCGBankParseError', 'CCGBankParser']
 
+from collections.abc import Iterator
 import os
+from pathlib import Path
 import re
 import sys
-from collections.abc import Iterator
-from pathlib import Path
 from typing import Optional, Union
 
 from discopy.biclosed import Ty
@@ -71,11 +70,11 @@ class CCGBankParser(CCGParser):
     ccg_type_regex = re.compile(
             r'((?P<bare_cat>N|NP|S|PP)(\[[a-z]+])?|conj|LRB|RRB|[,.:;])')
 
-    id_regex = re.compile(r'''ID=(?P<id>\S+)  # line begins with "ID=<id>"
+    id_regex = re.compile(r"""ID=(?P<id>\S+)  # line begins with "ID=<id>"
                               .*              # rest of the line is ignored
-                           ''', re.DOTALL | re.VERBOSE)
+                           """, re.DOTALL | re.VERBOSE)
 
-    tree_regex = re.compile(r'''
+    tree_regex = re.compile(r"""
         \(<                                 # begin with literal "(<"
            ((?P<is_leaf>        L)|T) \s+   # "L" or "T" depending on node type
            (?P<ccg_str>          \S+) \s+   # the CCG category
@@ -91,7 +90,7 @@ class CCGBankParser(CCGParser):
           >                                 # close with ">"
         (?(is_leaf)\)|) \s*                 # if node is a leaf, then there is
                                             #    a matching ")"
-        ''', re.VERBOSE)
+        """, re.VERBOSE)
 
     escaped_words = {'-LCB-': '{', '-RCB-': '}', '-LRB-': '(', '-RRB-': ')'}
 
@@ -131,8 +130,9 @@ class CCGBankParser(CCGParser):
             Stop exceptions from being raised, instead returning
             :py:obj:`None` for a tree.
         verbose : str, optional
-            See :py:class:`VerbosityLevel` for options. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Returns
         -------
@@ -159,8 +159,9 @@ class CCGBankParser(CCGParser):
             verbose: Optional[str] = None) -> Iterator[
                                         tuple[str, Optional[CCGTree]]]:
         """Parse a CCGBank section into trees, given as a generator.
-        The generator only reads data when it is accessed, providing the user
-        with control over the reading process.
+
+        The generator only reads data when it is accessed, providing the
+        user with control over the reading process.
 
         Parameters
         ----------
@@ -170,8 +171,9 @@ class CCGBankParser(CCGParser):
             Stop exceptions from being raised, instead returning
             :py:obj:`None` for a tree.
         verbose : str, optional
-            See :py:class:`VerbosityLevel` for options. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Yields
         ------
@@ -239,9 +241,9 @@ class CCGBankParser(CCGParser):
             Stop exceptions from being raised, instead returning
             :py:obj:`None` for a diagram.
         verbose : str, optional
-            See :py:class:`VerbosityLevel` for options. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
-
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
         Returns
         -------
         diagrams : dict
@@ -269,8 +271,9 @@ class CCGBankParser(CCGParser):
             verbose: Optional[str] = None) -> Iterator[
                                         tuple[str, Optional[Diagram]]]:
         """Parse a CCGBank section into diagrams, given as a generator.
-        The generator only reads data when it is accessed, providing the user
-        with control over the reading process.
+
+        The generator only reads data when it is accessed, providing the
+        user with control over the reading process.
 
         Parameters
         ----------
@@ -283,8 +286,9 @@ class CCGBankParser(CCGParser):
             Stop exceptions from being raised, instead returning
             :py:obj:`None` for a diagram.
         verbose : str, optional
-            See :py:class:`VerbosityLevel` for options. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Yields
         ------
@@ -342,8 +346,9 @@ class CCGBankParser(CCGParser):
             Whether the sentence has been passed as a list of tokens.
             For CCGBankParser, it should be kept `False`.
         verbose : str, optional
-            See :py:class:`VerbosityLevel` for options. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser.
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
 
         Returns
         -------

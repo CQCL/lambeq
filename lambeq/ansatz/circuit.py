@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 """
 Circuit Ansatz
 ==============
-A circuit ansatz is used to convert a DisCoCat diagram into a quantum circuit.
+A circuit ansatz converts a DisCoCat diagram into a quantum circuit.
 
 """
 from __future__ import annotations

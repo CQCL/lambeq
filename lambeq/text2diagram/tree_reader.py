@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ from discopy.rigid import Box, Diagram, Ty
 
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType
-from lambeq.text2diagram.ccg_parser import CCGParser
-from lambeq.text2diagram.bobcat_parser import BobcatParser
 from lambeq.text2diagram.base import Reader
+from lambeq.text2diagram.bobcat_parser import BobcatParser
+from lambeq.text2diagram.ccg_parser import CCGParser
 
 S = AtomicType.SENTENCE
 
@@ -42,15 +42,16 @@ class TreeReaderMode(Enum):
             The 'no type' mode names every rule box :py:obj:`UNIBOX`.
 
         RULE_ONLY
-            The 'rule name' mode names every rule box based on the name of the
-            original CCG rule. For example, for the forward application rule
-            :py:obj:`FA(N << N)`, the rule box will be named :py:obj:`FA`.
+            The 'rule name' mode names every rule box based on the name
+            of the original CCG rule. For example, for the forward
+            application rule :py:obj:`FA(N << N)`, the rule box will be
+            named :py:obj:`FA`.
 
         RULE_TYPE
-            The 'rule type' mode names every rule box based on the name and
-            type of the original CCG rule. For example, for the forward
-            application rule :py:obj:`FA(N << N)`, the rule box will be named
-            :py:obj:`FA(N << N)`.
+            The 'rule type' mode names every rule box based on the name
+            and type of the original CCG rule. For example, for the
+            forward application rule :py:obj:`FA(N << N)`, the rule box
+            will be named :py:obj:`FA(N << N)`.
 
     """
     NO_TYPE = 0
@@ -72,9 +73,9 @@ class TreeReader(Reader):
         Parameters
         ----------
         ccg_parser : CCGParser or callable, default: BobcatParser
-            A :py:class:`CCGParser` object or a function that returns it.
-            The parse tree produced by the parser is used to generate the
-            tree diagram.
+            A :py:class:`CCGParser` object or a function that returns
+            it. The parse tree produced by the parser is used to
+            generate the tree diagram.
         mode : TreeReaderMode, default: TreeReaderMode.NO_TYPE
             Determines what boxes are used to combine the tree.
             See :py:class:`TreeReaderMode` for options.
@@ -112,8 +113,8 @@ class TreeReader(Reader):
                          tokenised: bool = False) -> Optional[Diagram]:
         """Parse a sentence into a :py:class:`~discopy.rigid.Diagram` .
 
-        This produces a tree-shaped diagram based on the output of the CCG
-        parser.
+        This produces a tree-shaped diagram based on the output of the
+        CCG parser.
 
         Parameters
         ----------

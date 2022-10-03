@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -141,18 +141,18 @@ class CCGRule(str, Enum):
             raise CCGRuleUseError(
                     self, f'mismatched composing types - {left} != {right}')
 
-    def __call__(self, cod: Ty, dom: Ty) -> Diagram:
+    def __call__(self, dom: Ty, cod: Ty) -> Diagram:
         """Produce a DisCoPy diagram for this rule.
 
         If it is not possible to produce a valid diagram with the given
-        parameters, the codomain may be rewritten.
+        parameters, the domain may be rewritten.
 
         Parameters
         ----------
-        cod : discopy.biclosed.Ty
-            The expected codomain of the diagram.
         dom : discopy.biclosed.Ty
             The expected domain of the diagram.
+        cod : discopy.biclosed.Ty
+            The expected codomain of the diagram.
 
         Returns
         -------
@@ -169,100 +169,100 @@ class CCGRule(str, Enum):
         if self == self.LEXICAL:
             raise CCGRuleUseError(self, 'lexical rules are not applicable')
         elif self == self.UNARY:
-            return Id(dom)
+            return Id(cod)
         elif self == self.FORWARD_APPLICATION:
-            return Diagram.fa(dom, cod[1:])
+            return Diagram.fa(cod, dom[1:])
         elif self == self.BACKWARD_APPLICATION:
-            return Diagram.ba(cod[:1], dom)
+            return Diagram.ba(dom[:1], cod)
         elif self == self.FORWARD_COMPOSITION:
-            self.check_match(cod[0].right, cod[1].left)
-            l, m, r = dom.left, cod[0].right, dom.right
+            self.check_match(dom[0].right, dom[1].left)
+            l, m, r = cod.left, dom[0].right, cod.right
             return Diagram.fc(l, m, r)
         elif self == self.BACKWARD_COMPOSITION:
-            self.check_match(cod[0].right, cod[1].left)
-            l, m, r = dom.left, cod[0].right, dom.right
+            self.check_match(dom[0].right, dom[1].left)
+            l, m, r = cod.left, dom[0].right, cod.right
             return Diagram.bc(l, m, r)
         elif self == self.FORWARD_CROSSED_COMPOSITION:
-            self.check_match(cod[0].right, cod[1].right)
-            l, m, r = dom.right, cod[0].right, dom.left
+            self.check_match(dom[0].right, dom[1].right)
+            l, m, r = cod.right, dom[0].right, cod.left
             return Diagram.fx(l, m, r)
         elif self == self.BACKWARD_CROSSED_COMPOSITION:
-            self.check_match(cod[0].left, cod[1].left)
-            l, m, r = dom.right, cod[0].left, dom.left
+            self.check_match(dom[0].left, dom[1].left)
+            l, m, r = cod.right, dom[0].left, cod.left
             return Diagram.bx(l, m, r)
         elif self == self.GENERALIZED_FORWARD_COMPOSITION:
-            ll, lr = cod[0].left, cod[0].right
-            right, left = replace_cat_result(dom, ll, lr, '<')
+            ll, lr = dom[0].left, dom[0].right
+            right, left = replace_cat_result(cod, ll, lr, '<')
             return GFC(left << lr, right)
         elif self == self.GENERALIZED_BACKWARD_COMPOSITION:
-            rl, rr = cod[1].left, cod[1].right
-            left, right = replace_cat_result(dom, rr, rl, '>')
+            rl, rr = dom[1].left, dom[1].right
+            left, right = replace_cat_result(cod, rr, rl, '>')
             return GBC(left, rl >> right)
         elif self == self.GENERALIZED_FORWARD_CROSSED_COMPOSITION:
-            ll, lr = cod[0].left, cod[0].right
-            right, left = replace_cat_result(dom, ll, lr, '>|')
+            ll, lr = dom[0].left, dom[0].right
+            right, left = replace_cat_result(cod, ll, lr, '>|')
             return GFX(left << lr, right)
         elif self == self.GENERALIZED_BACKWARD_CROSSED_COMPOSITION:
-            rl, rr = cod[1].left, cod[1].right
-            left, right = replace_cat_result(dom, rr, rl, '<|')
+            rl, rr = dom[1].left, dom[1].right
+            left, right = replace_cat_result(cod, rr, rl, '<|')
             return GBX(left, rl >> right)
         elif self == self.REMOVE_PUNCTUATION_LEFT:
-            return RPL(cod[:1], dom)
+            return RPL(dom[:1], cod)
         elif self == self.REMOVE_PUNCTUATION_RIGHT:
-            return RPR(dom, cod[1:])
+            return RPR(cod, dom[1:])
         elif self == self.FORWARD_TYPE_RAISING:
-            return Diagram.curry(Diagram.ba(dom.right.left, dom.left))
+            return Diagram.curry(Diagram.ba(cod.right.left, cod.left))
         elif self == self.BACKWARD_TYPE_RAISING:
-            return Diagram.curry(Diagram.fa(dom.right, dom.left.right),
+            return Diagram.curry(Diagram.fa(cod.right, cod.left.right),
                                  left=True)
         elif self == self.CONJUNCTION:
-            left, right = cod[:1], cod[1:]
+            left, right = dom[:1], dom[1:]
             if CCGAtomicType.conjoinable(left):
-                return Diagram.fa(dom, right)
+                return Diagram.fa(cod, right)
             elif CCGAtomicType.conjoinable(right):
-                return Diagram.ba(left, dom)
+                return Diagram.ba(left, cod)
             else:
                 raise CCGRuleUseError(self, 'no conjunction found')
         raise CCGRuleUseError(self, 'unknown CCG rule')
 
     @classmethod
-    def infer_rule(cls, cod: Ty, dom: Ty) -> CCGRule:
-        """Infer the CCG rule that admits the given codomain and domain.
+    def infer_rule(cls, dom: Ty, cod: Ty) -> CCGRule:
+        """Infer the CCG rule that admits the given domain and codomain.
 
         Return :py:attr:`CCGRule.UNKNOWN` if no other rule matches.
 
         Parameters
         ----------
-        cod : discopy.biclosed.Ty
-            The codomain of the rule.
         dom : discopy.biclosed.Ty
             The domain of the rule.
+        cod : discopy.biclosed.Ty
+            The codomain of the rule.
 
         Returns
         -------
         CCGRule
-            A CCG rule that admits the required codomain and domain.
+            A CCG rule that admits the required domain and codomain.
 
         """
 
-        if len(cod) == 0:
+        if len(dom) == 0:
             return CCGRule.LEXICAL
-        elif len(cod) == 1:
-            if dom.left:
-                if dom == dom.left << (cod >> dom.left):
+        elif len(dom) == 1:
+            if cod.left:
+                if cod == cod.left << (dom >> cod.left):
                     return CCGRule.FORWARD_TYPE_RAISING
-                if dom == (dom.right << cod) >> dom.right:
+                if cod == (cod.right << dom) >> cod.right:
                     return CCGRule.BACKWARD_TYPE_RAISING
             return CCGRule.UNARY
-        elif len(cod) == 2:
-            left, right = cod[:1], cod[1:]
+        elif len(dom) == 2:
+            left, right = dom[:1], dom[1:]
             if left == CCGAtomicType.PUNCTUATION:
                 return CCGRule.REMOVE_PUNCTUATION_LEFT
             if right == CCGAtomicType.PUNCTUATION:
                 return CCGRule.REMOVE_PUNCTUATION_RIGHT
-            if left == dom << right:
+            if left == cod << right:
                 return CCGRule.FORWARD_APPLICATION
-            if right == left >> dom:
+            if right == left >> cod:
                 return CCGRule.BACKWARD_APPLICATION
             if CCGAtomicType.CONJUNCTION in (left, right):
                 return CCGRule.CONJUNCTION
@@ -272,24 +272,24 @@ class CCGRule(str, Enum):
             rl = right.left or Ty()
             rr = right.right or Ty()
             if left == ll << lr:
-                if right == lr << rr and dom == ll << rr:
+                if right == lr << rr and cod == ll << rr:
                     return CCGRule.FORWARD_COMPOSITION
-                if right == rl >> lr and dom == rl >> ll:
+                if right == rl >> lr and cod == rl >> ll:
                     return CCGRule.FORWARD_CROSSED_COMPOSITION
-                if (dom, lr) == replace_cat_result(right, lr, ll, '<'):
+                if (cod, lr) == replace_cat_result(right, lr, ll, '<'):
                     return CCGRule.GENERALIZED_FORWARD_COMPOSITION
             if right == rl >> rr:
-                if left == ll >> rl and dom == ll >> rr:
+                if left == ll >> rl and cod == ll >> rr:
                     return CCGRule.BACKWARD_COMPOSITION
-                if left == rl << lr and dom == rr << lr:
+                if left == rl << lr and cod == rr << lr:
                     return CCGRule.BACKWARD_CROSSED_COMPOSITION
-                if (dom, rl) == replace_cat_result(left, rl, rr, '>'):
+                if (cod, rl) == replace_cat_result(left, rl, rr, '>'):
                     return CCGRule.GENERALIZED_BACKWARD_COMPOSITION
 
                 # check generalised crossed rules after everything else
-                if (dom, rl) == replace_cat_result(left, rl, rr, '<|'):
+                if (cod, rl) == replace_cat_result(left, rl, rr, '<|'):
                     return CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION
-            if (left == ll << lr and
-                    (dom, lr) == replace_cat_result(right, lr, ll, '>|')):
+            if (left == ll << lr
+                    and (cod, lr) == replace_cat_result(right, lr, ll, '>|')):
                 return CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION
         return CCGRule.UNKNOWN

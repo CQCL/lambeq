@@ -18,6 +18,8 @@ jobs:
     strategy:
       matrix:
         python-version: [ 3.8, 3.9, "3.10" ]
+    outputs:
+      error-check: ${{ steps.error-check.conclusion }}
     steps:
     - uses: actions/checkout@v2
     - name: Setup Python ${{ matrix.python-version }}
@@ -25,18 +27,23 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install linter
-      run:
-        python -m pip install flake8
+      run: python -m pip install flake8 flake8-broken-line flake8-bugbear flake8-copyright flake8-import-order flake8-quotes
     - name: Check for errors
+      id: error-check
       run:
         # stop the build if there are Python syntax errors or undefined names
-        flake8 ${{ env.SRC_DIR }} --count --select=E9,F63,F7,F82 --show-source --statistics
+        flake8 ${{ env.SRC_DIR }} --count --isolated --select=E9,F63,F7,F82 --show-source --statistics
     - name: Lint with flake8
       run:
+        # max-doc-length should be 72 but the copyright notice is too wide for that, so we only error on >74 characters
+        flake8 ${{ env.SRC_DIR }} --max-doc-length=74
+    - name: Check doc line lengths and complexity
+      run:
         # exit-zero treats all errors as warnings
-        flake8 ${{ env.SRC_DIR }} --count --exit-zero --max-complexity=10 --statistics
+        flake8 ${{ env.SRC_DIR }} --count --exit-zero --isolated --max-complexity=10 --max-doc-length=72 --select=C901,W505 --statistics
   build_and_test:
     needs: lint
+    if: ${{ always() && needs.lint.outputs.error-check == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -52,7 +59,7 @@ jobs:
       # (also ignore it on 3.10 because it doesn't install properly)
       id: depccg-enabled
       continue-on-error: true  # this is expected to fail but the job should still succeed
-      run:
+      run: >
         ${{ matrix.python-version != '3.10' }}
         && git fetch --depth=1 origin ${{ github.base_ref || github.event.before }}:before
         && git diff --name-only before | grep depccg
@@ -103,18 +110,22 @@ jobs:
         path: ${{ steps.loc-bobcat-cache.outputs.dir }}
         key: bobcat-bert-v1
     - name: Test with pytest
-      run:
-        coverage run --source=${{ env.SRC_DIR }} -m pytest ${{ env.SRC_DIR }} ${{ env.TEST_DIR }} --doctest-modules --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py --ignore=docs/extract_code_cells.py
+      run: >
+        coverage run --source=${{ env.SRC_DIR }}
+        --module pytest ${{ env.SRC_DIR }} ${{ env.TEST_DIR }}
+        --doctest-modules
+        --durations=50
+        --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py
+        --ignore=docs/extract_code_cells.py
     - name: Test DepCCGParser
       if: steps.depccg-enabled.outcome == 'success'
       continue-on-error: true
-      run:
-        coverage run --append --source=${{ env.SRC_DIR }} -m pytest -k test_depccg_parser.py
+      run: coverage run --append --source=${{ env.SRC_DIR }} -m pytest -k test_depccg_parser.py
     - name: Coverage report
-      run:
-        coverage report -m
+      run: coverage report -m
   type_check:
     needs: lint
+    if: ${{ always() && needs.lint.outputs.error-check == 'success' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:

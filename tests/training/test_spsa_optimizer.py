@@ -30,6 +30,10 @@ class ModelDummy(Model):
         return diagram.lambdify(*self.symbols)
     def initialise_weights(self):
         self.weights = np.array([1.,2.,3.])
+    def _clear_predictions(self):
+        pass
+    def _log_prediction(self, y):
+        pass
     def get_diagram_output(self):
         pass
     def forward(self, x):

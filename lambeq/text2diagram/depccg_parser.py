@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,22 +11,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+DepCCG parser
+=============
+Parser that wraps DepCCG.
+
+"""
 
 from __future__ import annotations
 
 __all__ = ['DepCCGParser', 'DepCCGParseError']
 
+from collections.abc import Iterable
 import functools
 import logging
-from typing import Any, Iterable, Optional, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 
 from discopy import Diagram
 from discopy.biclosed import Ty
 
-from lambeq.core.utils import SentenceBatchType, SentenceType,\
-        tokenised_batch_type_check, untokenised_batch_type_check,\
-        tokenised_sentence_type_check
 from lambeq.core.globals import VerbosityLevel
+from lambeq.core.utils import (
+        SentenceBatchType, SentenceType,
+        tokenised_batch_type_check, tokenised_sentence_type_check,
+        untokenised_batch_type_check)
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
@@ -34,15 +42,18 @@ from lambeq.text2diagram.ccg_types import CCGAtomicType
 
 if TYPE_CHECKING:
     import depccg
-    from depccg.annotator import annotate_XX, english_annotator
+    from depccg.annotator import (annotate_XX, english_annotator,
+                                  japanese_annotator)
     from depccg.cat import Category
 
 
 def _import_depccg() -> None:
-    global depccg, Category, annotate_XX, english_annotator
+    global depccg, Category
+    global annotate_XX, english_annotator, japanese_annotator
     import depccg
     import depccg.allennlp.utils
-    from depccg.annotator import annotate_XX, english_annotator
+    from depccg.annotator import (annotate_XX, english_annotator,
+                                  japanese_annotator)
     from depccg.cat import Category
     import depccg.lang
     import depccg.parsing
@@ -78,10 +89,10 @@ class DepCCGParser(CCGParser):
                  lang: str = 'en',
                  model: Optional[str] = None,
                  use_model_unary_rules: bool = False,
-                 annotator: Optional[str] = None,
+                 annotator: str = 'janome',
+                 tokenize: Optional[bool] = None,
                  device: int = -1,
-                 root_cats: Iterable[str] = [
-                     'S[dcl]', 'S[wq]', 'S[q]', 'S[qem]', 'NP'],
+                 root_cats: Optional[Iterable[str]] = None,
                  verbose: str = VerbosityLevel.PROGRESS.value,
                  **kwargs: Any) -> None:
         """Instantiate a parser based on `depccg`.
@@ -89,23 +100,50 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         lang : { 'en', 'ja' }
-            The language to use. Use of 'ja' is experimental and has not
-            been tested.
+            The language to use: 'en' for English, 'ja' for Japanese.
         model : str, optional
             The name of the model variant to use, if any.
-            (At time of writing) `depccg` supports 'elmo', 'rebank' and
+            At time of writing, `depccg` supports 'elmo', 'rebank' and
             'elmo_rebank' for English only.
         use_model_unary_rules : bool, default: False
             Use the unary rules supplied by the model instead of the
             ones by `lambeq`.
-        annotator : str, optional
-            The annotator to use, if any. (At time of writing) `depccg`
-            supports 'candc' and 'spacy'.
+        annotator : str, default: 'janome'
+            The annotator to use, if any.
+            At time of writing `depccg` supports 'candc' and 'spacy' for
+            English, and 'janome' and 'jigg' for Japanese.
+            By default, no annotator is used for English, and 'janome'
+            is used for Japanese.
+        tokenize : bool, optional
+            Whether to tokenise the input when annotating. This option
+            should only be specified when using the 'spacy' annotator.
         device : int, optional
             The ID of the GPU to use. By default, uses the CPU.
-        root_cats : iterable of str, default: ['S[dcl]', 'S[wq]', 'S[q]',
-            'S[qem]', 'NP'], a list of categories allowed
-            at the root of the parse.
+        root_cats : iterable of str, optional
+            A list of categories allowed at the root of the parse. By
+            default, the English categories are:
+                - S[dcl]
+                - S[wq]
+                - S[q]
+                - S[qem]
+                - NP
+            and the Japanese categories are:
+                - NP[case=nc,mod=nm,fin=f]
+                - NP[case=nc,mod=nm,fin=t]
+                - S[mod=nm,form=attr,fin=t]
+                - S[mod=nm,form=base,fin=f]
+                - S[mod=nm,form=base,fin=t]
+                - S[mod=nm,form=cont,fin=f]
+                - S[mod=nm,form=cont,fin=t]
+                - S[mod=nm,form=da,fin=f]
+                - S[mod=nm,form=da,fin=t]
+                - S[mod=nm,form=hyp,fin=t]
+                - S[mod=nm,form=imp,fin=f]
+                - S[mod=nm,form=imp,fin=t]
+                - S[mod=nm,form=r,fin=t]
+                - S[mod=nm,form=s,fin=t]
+                - S[mod=nm,form=stem,fin=f]
+                - S[mod=nm,form=stem,fin=t]
         verbose : str, default: 'progress',
             Controls the command-line output of the parser. Only
             'progress' option is available for this parser.
@@ -116,12 +154,39 @@ class DepCCGParser(CCGParser):
         self.verbose = verbose
         if self.verbose != VerbosityLevel.PROGRESS.value:
             raise ValueError('DepCCGParser only supports '
-                             '\'progress\' level of verbosity. '
+                             '"progress" level of verbosity. '
                              f'`{self.verbose}` was given.')
         _import_depccg()
+        if lang.lower() == 'en':
+            if root_cats is None:
+                root_cats = ['S[dcl]', 'S[wq]', 'S[q]', 'S[qem]', 'NP']
+            self.annotator_fun = english_annotator.get(annotator, annotate_XX)
+            self.tokenize = tokenize if tokenize is not None else False
+        elif lang.lower() == 'ja':
+            if root_cats is None:
+                root_cats = ['NP[case=nc,mod=nm,fin=f]',
+                             'NP[case=nc,mod=nm,fin=t]',
+                             'S[mod=nm,form=attr,fin=t]',
+                             'S[mod=nm,form=base,fin=f]',
+                             'S[mod=nm,form=base,fin=t]',
+                             'S[mod=nm,form=cont,fin=f]',
+                             'S[mod=nm,form=cont,fin=t]',
+                             'S[mod=nm,form=da,fin=f]',
+                             'S[mod=nm,form=da,fin=t]',
+                             'S[mod=nm,form=hyp,fin=t]',
+                             'S[mod=nm,form=imp,fin=f]',
+                             'S[mod=nm,form=imp,fin=t]',
+                             'S[mod=nm,form=r,fin=t]',
+                             'S[mod=nm,form=s,fin=t]',
+                             'S[mod=nm,form=stem,fin=f]',
+                             'S[mod=nm,form=stem,fin=t]']
+            self.annotator_fun = japanese_annotator.get(annotator, annotate_XX)
+            self.tokenize = tokenize if tokenize is not None else True
+        else:
+            raise ValueError('DepCCGParser does not support language: '
+                             f'`{lang}`.')
 
         depccg.lang.set_global_language_to(lang)
-        self.annotator_fun = english_annotator.get(annotator, annotate_XX)
         self.supertagger, config = depccg.instance_models.load_model(model,
                                                                      device)
         (self.apply_binary_rules,
@@ -158,8 +223,8 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         sentences : list of str, or list of list of str
-            The sentences to be parsed, passed either as strings or as lists
-            of tokens.
+            The sentences to be parsed, passed either as strings or as
+            lists of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
@@ -167,9 +232,10 @@ class DepCCGParser(CCGParser):
         tokenised : bool, default: False
             Whether each sentence has been passed as a list of tokens.
         verbose : str, optional
-            Controls the form of progress tracking. If set, takes priority
-            over the :py:attr:`verbose` attribute of the parser. This class
-            only supports 'progress' verbosity level - a progress bar.
+            Controls the form of progress tracking. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser. This class only supports 'progress' verbosity level
+            - a progress bar.
 
         Returns
         -------
@@ -187,7 +253,7 @@ class DepCCGParser(CCGParser):
             verbose = self.verbose
         if verbose != VerbosityLevel.PROGRESS.value:
             raise ValueError('DepCCGParser only supports '
-                             '\'progress\' level of verbosity. '
+                             '"progress" level of verbosity. '
                              f'`{self.verbose}` was given.')
         if tokenised:
             if not tokenised_batch_type_check(sentences):
@@ -240,8 +306,8 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         sentence : str, list[str]
-            The sentence to be parsed, passed either as a string, or as a list
-            of tokens.
+            The sentence to be parsed, passed either as a string, or as
+            a list of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
@@ -292,8 +358,8 @@ class DepCCGParser(CCGParser):
         Parameters
         ----------
         sentence : str, list[str]
-            The sentence to be parsed, passed either as a string, or as a list
-            of tokens.
+            The sentence to be parsed, passed either as a string, or as
+            a list of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
@@ -338,7 +404,7 @@ class DepCCGParser(CCGParser):
     def _depccg_parse(
             self,
             sentences: list[list[str]]) -> list[list[depccg.tree.ScoredTree]]:
-        doc = self.annotator_fun(sentences)
+        doc = self.annotator_fun(sentences, tokenize=self.tokenize)
         score_result, categories = self.supertagger.predict_doc(
                 [[token.word for token in sentence] for sentence in doc])
 
@@ -373,11 +439,11 @@ class DepCCGParser(CCGParser):
                 return CCGAtomicType.PUNCTUATION
         else:
             if cat.slash == '/':
-                return (DepCCGParser._to_biclosed(cat.left) <<
-                        DepCCGParser._to_biclosed(cat.right))
+                return (DepCCGParser._to_biclosed(cat.left)
+                        << DepCCGParser._to_biclosed(cat.right))
             if cat.slash == '\\':
-                return (DepCCGParser._to_biclosed(cat.right) >>
-                        DepCCGParser._to_biclosed(cat.left))
+                return (DepCCGParser._to_biclosed(cat.right)
+                        >> DepCCGParser._to_biclosed(cat.left))
         raise Exception(f'Invalid CCG type: {cat.base}')
 
     @staticmethod

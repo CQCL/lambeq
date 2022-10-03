@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,13 +15,14 @@
 """
 SPASOptimizer
 =============
-Module implementing the Simultaneous Perturbation Stochastic Approximation
-optimizer.
+Module implementing the Simultaneous Perturbation Stochastic
+Approximation optimizer.
 
 """
 from __future__ import annotations
 
-from typing import Any, Callable, Iterable, Optional
+from collections.abc import Callable, Iterable
+from typing import Any, Optional
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -30,10 +31,16 @@ from lambeq.core.utils import flatten
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
 
+
 class SPSAOptimizer(Optimizer):
-    """An Optimizer using simultaneous perturbation stochastic approximations.
+    """An Optimizer using SPSA.
+
+    SPSA = Simultaneous Perturbation Stochastic Spproximations.
     See https://ieeexplore.ieee.org/document/705889 for details.
+
     """
+
+    model : QuantumModel
 
     def __init__(self, model: QuantumModel,
                  hyperparams: dict[str, float],
@@ -46,8 +53,10 @@ class SPSAOptimizer(Optimizer):
             hyperparams = {
                 'a': A learning rate parameter, float
                 'c': The parameter shift scaling factor, float
-                'A': A stability constant (approx. 0.01 * Num Training steps), float
+                'A': A stability constant, float
             }
+
+        A good value for 'A' is approximately: 0.01 * Num Training steps
 
         Parameters
         ----------
@@ -63,10 +72,9 @@ class SPSAOptimizer(Optimizer):
         Raises
         ------
         ValueError
-            Raises an error if the hyperparameters are not set correctly.
-        ValueError
-            Raises an error if the length of `bounds` does not match the
-            number of the model parameters.
+            If the hyperparameters are not set correctly, or if the
+            length of `bounds` does not match the number of the model
+            parameters.
 
         """
         fields = ('a', 'c', 'A')
@@ -92,10 +100,13 @@ class SPSAOptimizer(Optimizer):
                                  'number of the model parameters')
             self.project = lambda x: np.clip(x, bds[:, 0], bds[:, 1])
 
-    def backward(self,
-                 batch: tuple[Iterable, np.ndarray]) -> tuple[np.ndarray, float]:
-        """Calculate the gradients of the loss function with respect to the
-        model parameters.
+    def backward(
+            self,
+            batch: tuple[Iterable, np.ndarray]) -> float:
+        """Calculate the gradients of the loss function.
+
+        The gradients are calculated with respect to the model
+        parameters.
 
         Parameters
         ----------
@@ -129,15 +140,14 @@ class SPSAOptimizer(Optimizer):
         y1 = self.model(diagrams)
         loss1 = self.loss_fn(y1, targets)
         if self.bounds is None:
-            grad = (loss0 - loss1) / (2*self.ck*delta)
+            grad = (loss0 - loss1) / (2 * self.ck * delta)
         else:
-            grad = (loss0 - loss1) / (xplus-xminus)
+            grad = (loss0 - loss1) / (xplus - xminus)
         self.gradient += np.ma.filled(grad, fill_value=0)
         # restore parameter value
         self.model.weights = x
-        loss = (loss0+loss1)/2
-        pred = (y0 + y1)/2
-        return pred, loss
+        loss = (loss0 + loss1) / 2
+        return loss
 
     def step(self) -> None:
         """Perform optimisation step."""

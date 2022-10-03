@@ -90,3 +90,10 @@ def test_missing_field_error():
 def test_missing_backend_error():
     with pytest.raises(KeyError):
         _ = TketModel()
+
+def test_normalise():
+    model = TketModel(backend_config=backend_config)
+    inputs = np.linspace(-10, 10, 21)
+    normalised = model._normalise_vector(inputs)
+    assert abs(normalised.sum() - 1.0) < 1e-8
+    assert np.all(normalised >= 0)

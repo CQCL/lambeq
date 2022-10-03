@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +13,10 @@
 # limitations under the License.
 
 __all__ = ['TextDiagramPrinter', 'diagram2str',
-           'create_pregroup_diagram', 'is_pregroup_diagram', 'remove_cups']
+           'create_pregroup_diagram', 'is_pregroup_diagram', 'remove_cups',
+           'remove_swaps']
 
 from lambeq.pregroups.text_printer import TextDiagramPrinter, diagram2str
 from lambeq.pregroups.utils import (create_pregroup_diagram,
-                                    is_pregroup_diagram, remove_cups)
+                                    is_pregroup_diagram, remove_cups,
+                                    remove_swaps)

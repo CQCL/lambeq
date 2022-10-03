@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,18 +19,45 @@ __all__ = ['CCGTree']
 from collections.abc import Sequence
 from copy import deepcopy
 import json
-from typing import Any, Dict, Optional, Union, overload
+from typing import Any, Dict, Optional, Union
+from typing import overload
 
 from discopy import rigid, Word
-from discopy.biclosed import (Box, Diagram, Functor, Id, Over, Ty, Under,
-                              biclosed2rigid_ob)
+from discopy.biclosed import biclosed2rigid_ob
+from discopy.biclosed import Box, Diagram, Functor, Id, Over, Ty, Under
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
-from lambeq.text2diagram.ccg_types import (CCGAtomicType, replace_cat_result,
-                                           str2biclosed, biclosed2str)
+from lambeq.text2diagram.ccg_types import (biclosed2str, replace_cat_result,
+                                           str2biclosed)
+from lambeq.text2diagram.ccg_types import CCGAtomicType
 
 # Types
 _JSONDictT = Dict[str, Any]
+
+
+class UnarySwap(Box):
+    """Unary Swap box, for unary rules that change the type direction.
+
+    For example, the unary rule `S/NP -> NP\\NP` is handled by
+    `UnarySwap(n >> n)`, which becomes `Swap(n @ n.r)` in a rigid
+    diagram.
+
+    """
+
+    def __init__(self, cod: Ty) -> None:
+        if isinstance(cod, Over):
+            # This defines a swap from Y.l @ X to X @ Y.l
+            # since:
+            #           Ty() << Y        -> Y.l
+            #  Ty() << (Ty() << Y)       -> Y.l.l
+            # (Ty() << (Ty() << Y)) >> X -> Y.l.l.r @ X = Y.l @ X
+            dom = (Ty() << (Ty() << cod.left)) >> cod.right
+        elif isinstance(cod, Under):
+            # Similarly, this defines a swap from Y @ X.r to X.r @ Y
+            dom = cod.left << ((cod.right >> Ty()) >> Ty())
+        else:
+            raise ValueError(f'Invalid type for unary swap: {cod}')
+        super().__init__(f'Swap({dom} -> {cod})', dom, cod)
 
 
 class PlanarBX(Box):
@@ -132,8 +159,8 @@ class CCGTree:
                               CCGRule.UNARY: 1,
                               CCGRule.FORWARD_TYPE_RAISING: 1,
                               CCGRule.BACKWARD_TYPE_RAISING: 1}
-        if (self.rule != CCGRule.UNKNOWN and
-                child_requirements.get(self.rule, 2) != n_children):
+        if (self.rule != CCGRule.UNKNOWN
+                and child_requirements.get(self.rule, 2) != n_children):
             raise ValueError(f'Invalid number of children ({n_children}) for '
                              f'rule "{self.rule}"')
 
@@ -199,11 +226,12 @@ class CCGTree:
         -------
         :py:class:`lambeq.text2diagram.CCGTree`
             A new tree free of trivial unary rules.
-        
+
         """
         new_tree = deepcopy(self)
         while (new_tree.rule == CCGRule.UNARY
-              and new_tree.biclosed_type == new_tree.children[0].biclosed_type):
+               and (new_tree.biclosed_type
+                    == new_tree.children[0].biclosed_type)):
             new_tree = new_tree.children[0]
         new_tree.children = [child.without_trivial_unary_rules() for child
                              in new_tree.children]
@@ -221,70 +249,69 @@ class CCGTree:
         return data
 
     def __eq__(self, other: Any) -> bool:
-        return (isinstance(other, CCGTree) and
-                self.text == other.text and
-                self.rule == other.rule and
-                self.biclosed_type == other.biclosed_type and
-                len(self.children) == len(other.children) and
-                all(c1 == c2 for c1, c2 in zip(self.children, other.children)))
+        return (isinstance(other, CCGTree)
+                and self.text == other.text
+                and self.rule == other.rule
+                and self.biclosed_type == other.biclosed_type
+                and len(self.children) == len(other.children)
+                and all(c1 == c2
+                        for c1, c2 in zip(self.children, other.children)))
 
     def __repr__(self) -> str:
-        return f'{type(self).__name__}("{self.text}")'
+        return f'{type(self).__name__}({self.text!r})'
 
-    def _vert_deriv(self, 
-                    chr_set: dict[str, str], 
-                    use_slashes: bool, 
+    def _vert_deriv(self,
+                    chr_set: dict[str, str],
+                    use_slashes: bool,
                     _prefix: str = '') -> str:  # pragma: no cover
         """Create a vertical string representation of the CCG tree."""
         output_type = biclosed2str(self.biclosed_type, not use_slashes)
         if self.rule == CCGRule.LEXICAL:
             deriv = f' {output_type} {chr_set["SUCH_THAT"]} "{self.text}"'
         else:
-            deriv = (f'{self.rule}: {output_type} {chr_set["LEFT_ARROW"]} ' +
-                     ' + '.join(biclosed2str(child.biclosed_type, 
-                                             not use_slashes)
-                                for child in self.children))
+            deriv = (f'{self.rule}: {output_type} {chr_set["LEFT_ARROW"]} '
+                     + ' + '.join(biclosed2str(child.biclosed_type,
+                                               not use_slashes)
+                                  for child in self.children))
         deriv = f'{_prefix}{deriv}'
 
         if self.children:
             if _prefix:
-                _prefix = _prefix[:-1] + \
-                          (f'{chr_set["BAR"]} ' 
-                           if _prefix[-1] == chr_set["JOINT"] 
-                           else '  ')
+                _prefix = _prefix[:-1] + (f'{chr_set["BAR"]} '
+                                          if _prefix[-1] == chr_set['JOINT']
+                                          else '  ')
             for child in self.children[:-1]:
-                deriv += '\n' + child._vert_deriv(chr_set, use_slashes, 
-                                                  _prefix + chr_set["JOINT"])
-            deriv += '\n' + self.children[-1]._vert_deriv(chr_set, use_slashes, 
-                                                          _prefix + 
-                                                          chr_set["CORNER"])
+                deriv += '\n' + child._vert_deriv(chr_set, use_slashes,
+                                                  _prefix + chr_set['JOINT'])
+            deriv += '\n' + self.children[-1]._vert_deriv(
+                    chr_set, use_slashes, _prefix + chr_set['CORNER'])
         return deriv
 
-    def _horiz_deriv(self, 
-                     chr_set: dict[str, str], 
-                     word_spacing: int, 
+    def _horiz_deriv(self,
+                     chr_set: dict[str, str],
+                     word_spacing: int,
                      use_slashes: bool) -> str:  # pragma: no cover
-        """Create a standard CCG diagram for the tree with the 
+        """Create a standard CCG diagram for the tree with the
         words arranged horizontally."""
         output_type = biclosed2str(self.biclosed_type, not use_slashes)
         if output_type.startswith('('):
             output_type = output_type[1:-1]
         if self.rule == CCGRule.LEXICAL:
             width = max(len(output_type), len(self.text))
-            return f'{self.text:{" "}^{width}}\n' \
-                   f'{chr_set["HEAVY_LINE"] * width}\n' \
-                   f'{output_type:{" "}^{width}}'
+            return (f'{self.text:{" "}^{width}}\n'
+                    f'{chr_set["HEAVY_LINE"] * width}\n'
+                    f'{output_type:{" "}^{width}}')
 
         lines: list[str] = []
         for child in self.children:
-            child_deriv = child._horiz_deriv(chr_set, word_spacing, 
+            child_deriv = child._horiz_deriv(chr_set, word_spacing,
                                              use_slashes).split('\n')
             for lidx in range(max(len(lines), len(child_deriv))):
                 if lidx < len(lines) and lidx < len(child_deriv):
                     lines[lidx] += (' ' * word_spacing) + child_deriv[lidx]
                 elif lidx < len(lines):
-                    lines[lidx] += ' ' * (len(lines[lidx - 1]) -
-                                          len(lines[lidx]))
+                    lines[lidx] += ' ' * (len(lines[lidx - 1])
+                                          - len(lines[lidx]))
                 else:
                     target_len = len(lines[lidx - 1]) if lidx > 0 else 0
                     lines.append(f'{child_deriv[lidx]:{" "}>{target_len}}')
@@ -318,43 +345,42 @@ class CCGTree:
         use_ascii: bool, default: False
             Whether to draw using ASCII characters only.
         vertical: bool, default: False
-            Whether to create a vertical tree representation, 
+            Whether to create a vertical tree representation,
             instead of the standard horizontal one.
 
         Returns
         -------
         str
-            A string that contains the graphical representation 
+            A string that contains the graphical representation
             of the CCG tree.
 
         """
 
         UNICODE_CHAR_SET = {
-            "HEAVY_LINE": '═',
-            "LINE": '─',
-            "BAR": '│',
-            "SUCH_THAT": '∋',
-            "JOINT": '├',
-            "LEFT_ARROW": '←',
-            "CORNER": '└'
+            'HEAVY_LINE': '═',
+            'LINE': '─',
+            'BAR': '│',
+            'SUCH_THAT': '∋',
+            'JOINT': '├',
+            'LEFT_ARROW': '←',
+            'CORNER': '└'
         }
 
         ASCII_CHAR_SET = {
-            "HEAVY_LINE": '=',
-            "LINE": '-',
-            "BAR": '│',
-            "SUCH_THAT": '<-',
-            "JOINT": '├',
-            "LEFT_ARROW": '<-',
-            "CORNER": '└'
+            'HEAVY_LINE': '=',
+            'LINE': '-',
+            'BAR': '│',
+            'SUCH_THAT': '<-',
+            'JOINT': '├',
+            'LEFT_ARROW': '<-',
+            'CORNER': '└'
         }
 
         if use_ascii:
             use_slashes = True
-        
-        chr_set = UNICODE_CHAR_SET if not use_ascii \
-            else ASCII_CHAR_SET
-        
+
+        chr_set = UNICODE_CHAR_SET if not use_ascii else ASCII_CHAR_SET
+
         if not vertical:
             deriv = self._horiz_deriv(chr_set, word_spacing, use_slashes)
         else:
@@ -384,9 +410,21 @@ class CCGTree:
             word = Box(self.text, Ty(), biclosed_type)
             return word, Id(biclosed_type)
 
-        child_types = [child.biclosed_type for child in self.children]
-
-        this_layer = self.rule(Ty.tensor(*child_types), biclosed_type)
+        if (self.rule == CCGRule.UNARY
+                and not planar
+                and {type(biclosed_type),
+                     type(self.children[0].biclosed_type)} == {Over, Under}):
+            this_layer = UnarySwap(biclosed_type)
+        elif (self.rule == CCGRule.FORWARD_COMPOSITION
+                and self.children[0].rule == CCGRule.FORWARD_TYPE_RAISING):
+            left = biclosed_type.left
+            right = biclosed_type.right
+            mid = (self.children[0].biclosed_type.right.left) >> left
+            this_layer = self.rule((left << mid) @ (mid << right),
+                                   biclosed_type)
+        else:
+            child_types = [child.biclosed_type for child in self.children]
+            this_layer = self.rule(Ty.tensor(*child_types), biclosed_type)
 
         children = [child._to_biclosed_diagram(planar,
                                                this_layer.dom[i:i+1])
@@ -394,22 +432,22 @@ class CCGTree:
 
         if planar and self.rule == CCGRule.BACKWARD_CROSSED_COMPOSITION:
             (words, left_diag), (right_words, right_diag) = children
-            diag = (left_diag >>
-                    PlanarBX(left_diag.cod, right_words >> right_diag))
+            diag = (left_diag
+                    >> PlanarBX(left_diag.cod, right_words >> right_diag))
         elif planar and self.rule == CCGRule.FORWARD_CROSSED_COMPOSITION:
             (left_words, left_diag), (words, right_diag) = children
-            diag = (right_diag >>
-                    PlanarFX(right_diag.cod, left_words >> left_diag))
-        elif (planar and
-              self.rule == CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION):
+            diag = (right_diag
+                    >> PlanarFX(right_diag.cod, left_words >> left_diag))
+        elif planar and (self.rule
+                         == CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION):
             (words, left_diag), (right_words, right_diag) = children
-            diag = (left_diag >>
-                    PlanarGBX(left_diag.cod, right_words >> right_diag))
-        elif (planar and
-              self.rule == CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION):
+            diag = (left_diag
+                    >> PlanarGBX(left_diag.cod, right_words >> right_diag))
+        elif planar and (self.rule
+                         == CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION):
             (left_words, left_diag), (words, right_diag) = children
-            diag = (right_diag >>
-                    PlanarGFX(right_diag.cod, left_words >> left_diag))
+            diag = (right_diag
+                    >> PlanarGFX(right_diag.cod, left_words >> left_diag))
         else:
             words, diag = [Diagram.tensor(*d) for d in zip(*children)]
             diag >>= this_layer
@@ -448,21 +486,25 @@ class CCGTree:
                         cat = cat.right
                 return left, to_rigid_diagram(cat), right
 
+            if isinstance(box, UnarySwap):
+                cod = ob_func(box.cod)
+                return rigid.Swap(cod[1:], cod[:1])
+
             if isinstance(box, PlanarBX):
                 join = to_rigid_diagram(box.dom.left)
                 right = to_rigid_diagram(box.dom)[len(join):]
                 inner = to_rigid_diagram(box.diagram)
                 cups = rigid.cups(join, join.r)
-                return (Id(join) @ inner >>
-                        cups @ Id(inner.cod[len(join):])) @ Id(right)
+                return (Id(join) @ inner
+                        >> cups @ Id(inner.cod[len(join):])) @ Id(right)
 
             if isinstance(box, PlanarFX):
                 join = to_rigid_diagram(box.dom.right)
                 left = to_rigid_diagram(box.dom)[:-len(join)]
                 inner = to_rigid_diagram(box.diagram)
                 cups = rigid.cups(join.l, join)
-                return Id(left) @ (inner @ Id(join) >>
-                                   Id(inner.cod[:-len(join)]) @ cups)
+                return Id(left) @ (inner @ Id(join)
+                                   >> Id(inner.cod[:-len(join)]) @ cups)
 
             if isinstance(box, PlanarGBX):
                 left, join, right = split(box.dom, box.diagram.cod.left)
@@ -495,14 +537,16 @@ class CCGTree:
                 mid = to_rigid_diagram(box.dom[1].right)
                 left, join, right = split(box.dom[0], box.dom[1].left)
                 swaps = rigid.Diagram.swap(right, join >> mid)
-                return Id(left) @ (Id(join) @ swaps >>
-                                   rigid.cups(join, join.r) @ Id(mid @ right))
+                cups = rigid.cups(join, join.r)
+                return Id(left) @ (Id(join) @ swaps
+                                   >> cups @ Id(mid @ right))
 
             if isinstance(box, GFX):
                 mid = to_rigid_diagram(box.dom[0].left)
                 left, join, right = split(box.dom[1], box.dom[0].right)
-                return (rigid.Diagram.swap(mid << join, left) @ Id(join) >>
-                        Id(left @ mid) @ rigid.cups(join.l, join)) @ Id(right)
+                cups = rigid.cups(join.l, join)
+                return (rigid.Diagram.swap(mid << join, left) @ Id(join)
+                        >> Id(left @ mid) @ cups) @ Id(right)
 
             cod = to_rigid_diagram(box.cod)
             return Id(cod) if box.dom or not cod else Word(box.name, cod)

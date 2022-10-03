@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -58,6 +58,7 @@ __all__ = [
         'create_pregroup_diagram',
         'is_pregroup_diagram',
         'remove_cups',
+        'remove_swaps',
 
         'Reader',
         'LinearReader',
@@ -96,19 +97,15 @@ __all__ = [
         'QuantumTrainer',
 ]
 
-from lambeq.version import (version as __version__,
-                            version_tuple as __version_info__)
-
-from lambeq import (ansatz, bobcat, core, pregroups, rewrite,
+from lambeq import (ansatz, core, pregroups, rewrite,
                     text2diagram, tokeniser, training)
 from lambeq.ansatz import (BaseAnsatz, CircuitAnsatz, IQPAnsatz, MPSAnsatz,
                            Sim14Ansatz, Sim15Ansatz, SpiderAnsatz,
                            Symbol, TensorAnsatz)
-from lambeq.core.types import AtomicType
 from lambeq.core.globals import VerbosityLevel
-from lambeq.pregroups import (diagram2str,
-                              create_pregroup_diagram, is_pregroup_diagram,
-                              remove_cups)
+from lambeq.core.types import AtomicType
+from lambeq.pregroups import (create_pregroup_diagram, diagram2str,
+                              is_pregroup_diagram, remove_cups, remove_swaps)
 from lambeq.rewrite import (RewriteRule, CoordinationRewriteRule,
                             CurryRewriteRule, SimpleRewriteRule, Rewriter)
 from lambeq.text2diagram import (
@@ -126,3 +123,5 @@ from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
                              Model, NumpyModel, PytorchModel, QuantumModel,
                              TketModel, Trainer, PytorchTrainer,
                              QuantumTrainer)
+from lambeq.version import (version as __version__,
+                            version_tuple as __version_info__)

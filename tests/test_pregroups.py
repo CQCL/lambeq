@@ -1,7 +1,8 @@
 from discopy import Cap, Cup, Box, Diagram, Ob, Id, Swap, Ty, Word
 from discopy.rigid import Spider
 
-from lambeq import AtomicType, create_pregroup_diagram, remove_cups
+from lambeq import (AtomicType, create_pregroup_diagram, remove_cups,
+                    remove_swaps)
 
 
 n = AtomicType.NOUN
@@ -109,3 +110,113 @@ def test_remove_cups():
     def remove_caps(diagram):
         return remove_cups(diagram.dagger()).dagger()
     assert remove_caps(remove_cups(type_raised)) == Word('w1', s) @ Word('w2', n @ s)
+
+
+def test_remove_swaps_cross_composition():
+    inp_diagr = Diagram(
+        dom=Ty(),
+        cod=s,
+        boxes=[Word('I', Ty('n')), Word('do', Ty(Ob('n', z=1), 's', Ob('s', z=-1), 'n')),
+                Word('not', Ty(Ob('s', z=1), Ob('n', z=2), Ob('n', z=1), 's')),
+                Word('run', Ty(Ob('n', z=1), 's')), Swap(Ty('n'), Ty(Ob('s', z=1))),
+                Swap(Ty(Ob('s', z=-1)), Ty(Ob('s', z=1))), Cup(Ty('s'), Ty(Ob('s', z=1))),
+                Swap(Ty('n'), Ty(Ob('n', z=2))), Swap(Ty(Ob('s', z=-1)), Ty(Ob('n', z=2))),
+                Cup(Ty(Ob('n', z=1)), Ty(Ob('n', z=2))), Swap(Ty('n'), Ty(Ob('n', z=1))),
+                Swap(Ty(Ob('s', z=-1)), Ty(Ob('n', z=1))), Cup(Ty('n'), Ty(Ob('n', z=1))),
+                Swap(Ty('n'), Ty('s')), Swap(Ty(Ob('s', z=-1)), Ty('s')),
+                Cup(Ty('n'), Ty(Ob('n', z=1))), Cup(Ty(Ob('s', z=-1)), Ty('s'))],
+            offsets= [0, 1, 5, 9, 4, 3, 2, 3, 2, 1, 2, 1, 0, 1, 0, 2, 1]
+    )
+
+    out_diagr = Diagram(
+        dom=Ty(),
+        cod=s,
+        boxes=[Word('I', Ty('n')),
+                Word('do not', Ty(Ob('n', z=1), 's', Ob('s', z=-1), 'n')),
+                Word('run', Ty(Ob('n', z=1), 's')),
+                Cup(Ty('n'), Ty(Ob('n', z=1))), Cup(Ty('n'),
+                Ty(Ob('n', z=1))),
+                Cup(Ty(Ob('s', z=-1)), Ty('s'))],
+        offsets=[0, 1, 5, 0, 2, 1]
+    )
+
+    assert remove_swaps(inp_diagr) == out_diagr
+
+
+def test_remove_swaps_cross_comp_and_unary_rule():
+    inp_diagr = Diagram(
+        dom=Ty(),
+        cod=n,
+        boxes=[Word('The', Ty('n', Ob('n', z=-1))),
+               Word('best', Ty('n', Ob('n', z=-1))), Word('film', Ty('n')),
+               Word('I', Ty('n')), Word("'ve", Ty(Ob('n', z=1), 's', Ob('s', z=-1), 'n')),
+               Word('ever', Ty(Ob('s', z=1), Ob('n', z=2), Ob('n', z=1), 'n')),
+               Word('seen', Ty(Ob('n', z=1), 's', Ob('n', z=1))),
+               Cup(Ty(Ob('n', z=-1)), Ty('n')), Cup(Ty(Ob('n', z=-1)), Ty('n')),
+               Swap(Ty('n'), Ty(Ob('s', z=1))), Swap(Ty(Ob('s', z=-1)), Ty(Ob('s', z=1))),
+               Cup(Ty('s'), Ty(Ob('s', z=1))), Swap(Ty('n'), Ty(Ob('n', z=2))),
+               Swap(Ty(Ob('s', z=-1)), Ty(Ob('n', z=2))), Cup(Ty(Ob('n', z=1)), Ty(Ob('n', z=2))),
+               Swap(Ty('n'), Ty(Ob('n', z=1))), Swap(Ty(Ob('s', z=-1)), Ty(Ob('n', z=1))),
+               Cup(Ty('n'), Ty(Ob('n', z=1))), Swap(Ty('n'), Ty('n')), Swap(Ty(Ob('s', z=-1)), Ty('n')),
+               Cup(Ty('n'), Ty(Ob('n', z=1))), Cup(Ty(Ob('s', z=-1)), Ty('s')),
+               Swap(Ty('n'), Ty(Ob('n', z=1))), Cup(Ty('n'), Ty(Ob('n', z=1)))],
+        offsets=[0, 2, 4, 5, 6, 10, 14, 1, 1, 5, 4, 3, 4, 3, 2,
+                 3, 2, 1, 2, 1, 3, 2, 1, 0]
+    )
+
+    out_diagr = Diagram(
+        dom=Ty(),
+        cod=n,
+        boxes=[Word('The', Ty('n', Ob('n', z=-1))), Word('best', Ty('n', Ob('n', z=-1))),
+                Word('film', Ty('n')), Word('I', Ty('n')),
+                Word("'ve ever", Ty(Ob('n', z=1), Ob('n', z=1), Ob('s', z=-1), 'n')),
+                Word('seen', Ty(Ob('n', z=1), 's', 'n')), Cup(Ty(Ob('n', z=-1)),
+                Ty('n')), Cup(Ty(Ob('n', z=-1)), Ty('n')), Cup(Ty('n'), Ty(Ob('n', z=1))),
+                Cup(Ty('n'), Ty(Ob('n', z=1))), Cup(Ty(Ob('s', z=-1)), Ty('s')),
+                Cup(Ty('n'), Ty(Ob('n', z=1)))],
+        offsets=[0, 2, 4, 5, 6, 10, 1, 1, 1, 3, 2, 0]
+    )
+
+    assert remove_swaps(inp_diagr) == out_diagr
+
+
+def test_remove_swaps_shorten_type():
+    inp_diagr= Diagram(
+        dom=Ty(),
+        cod=n,
+        boxes=[Word('What', Ty('n', Ob('n', z=-2), Ob('s', z=-1))), Word('Alice', Ty('n')),
+               Word('is', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+               Word('and', Ty('n', Ob('s', z=1), Ob('n', z=2), Ob('n', z=1), 's',
+                               Ob('n', z=-1), Ob('n', z=-2), Ob('s', z=-1), 'n')),
+               Word('is', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+               Word('not', Ty(Ob('s', z=1), Ob('n', z=2), Ob('n', z=1), 's')),
+               Cup(Ty(Ob('n', z=-1)), Ty('n')), Cup(Ty('s'), Ty(Ob('s', z=1))),
+               Cup(Ty(Ob('n', z=1)), Ty(Ob('n', z=2))), Cup(Ty('n'), Ty(Ob('n', z=1))),
+               Cup(Ty(Ob('s', z=-1)), Ty('s')), Cup(Ty(Ob('n', z=-2)), Ty(Ob('n', z=-1))),
+               Swap(Ty(Ob('n', z=-1)), Ty(Ob('s', z=1))), Cup(Ty('s'), Ty(Ob('s', z=1))),
+               Swap(Ty(Ob('n', z=-1)), Ty(Ob('n', z=2))), Cup(Ty(Ob('n', z=1)), Ty(Ob('n', z=2))),
+               Swap(Ty(Ob('n', z=-1)), Ty(Ob('n', z=1))), Cup(Ty('n'), Ty(Ob('n', z=1))),
+               Swap(Ty(Ob('n', z=-1)), Ty('s')), Cup(Ty(Ob('s', z=-1)), Ty('s')),
+               Cup(Ty(Ob('n', z=-2)), Ty(Ob('n', z=-1)))],
+        offsets=[0, 3, 4, 7, 16, 19, 6, 5, 4, 9, 8, 7, 6, 5, 5, 4, 4,
+                 3, 3, 2, 1]
+    )
+
+    out_diagr = Diagram(
+        dom=Ty(),
+        cod=n,
+        boxes=[Word('What', Ty('n', Ob('n', z=-2), Ob('s', z=-1))),
+               Word('Alice', Ty('n')), Word('is', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+               Word('and', Ty('n', Ob('s', z=1), Ob('n', z=2), Ob('n', z=1),
+                              Ob('n', z=-2), Ob('s', z=-1), 'n')),
+               Word('is', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+               Word('not', Ty(Ob('n', z=2), Ob('n', z=1), 's', Ob('n', z=-1))),
+               Cup(Ty(Ob('n', z=-1)), Ty('n')), Cup(Ty('s'), Ty(Ob('s', z=1))),
+               Cup(Ty(Ob('n', z=1)), Ty(Ob('n', z=2))), Cup(Ty('n'), Ty(Ob('n', z=1))),
+               Cup(Ty(Ob('s', z=-1)), Ty('s')), Cup(Ty(Ob('n', z=-2)), Ty(Ob('n', z=-1))),
+               Cup(Ty(Ob('n', z=1)), Ty(Ob('n', z=2))), Cup(Ty('n'), Ty(Ob('n', z=1))),
+               Cup(Ty(Ob('s', z=-1)), Ty('s')), Cup(Ty(Ob('n', z=-2)), Ty(Ob('n', z=-1)))],
+        offsets=[0, 3, 4, 7, 14, 17, 6, 5, 4, 7, 6, 5, 4, 3, 2, 1]
+    )
+
+    assert remove_swaps(inp_diagr) == out_diagr

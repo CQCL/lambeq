@@ -1,4 +1,4 @@
-# Copyright 2021, 2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 from __future__ import annotations
 
 __all__ = ['CCGAtomicType', 'CCGParseError', 'replace_cat_result',
@@ -21,7 +22,7 @@ from enum import Enum
 from typing import Any, Optional
 
 from discopy import rigid
-from discopy.biclosed import Ty, Over, Under
+from discopy.biclosed import Over, Ty, Under
 
 from lambeq.core.types import AtomicType
 
@@ -68,7 +69,8 @@ def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
 
         atomic_cat    = { <any character except "(", ")", "/" and "\"> }
         op            = "/" | "\"
-        bracketed_cat = atomic_cat | "(" bracketed_cat [ op bracketed_cat ] ")"
+        bracketed_cat = atomic_cat
+                        | "(" bracketed_cat [ op bracketed_cat ] ")"
         cat           = bracketed_cat [ op bracketed_cat ] [ "[conj]" ]
 
     Parameters
@@ -137,7 +139,7 @@ def biclosed2str(biclosed_type: Ty, pretty: bool = False) -> str:
     -------
     str
         The string representation of the type.
-    
+
     """
     if isinstance(biclosed_type, Over):
         template = '({0}↢{1})' if pretty else '({0}/{1})'
@@ -280,8 +282,8 @@ def replace_cat_result(cat: Ty,
     arg, res = ((cat.right, cat.left) if cat_dir == '<' else
                 (cat.left, cat.right))
 
-    # `replace` indicates whether `res` should be replaced, due to one of the
-    # following conditions being true:
+    # `replace` indicates whether `res` should be replaced, due to one
+    # of the following conditions being true:
     # - `res` matches `original`
     # - `res` is an atomic type
     # - `cat_dir` does not match the required operation
