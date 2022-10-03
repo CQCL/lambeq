@@ -26,8 +26,9 @@ from collections.abc import Mapping
 from typing import Any, Callable, Optional
 
 from discopy.quantum.circuit import (Circuit, Discard, Functor, Id,
-                                     IQPansatz as IQP, Sim14ansatz as Sim14,
-                                     Sim15ansatz as Sim15, qubit)
+                                     IQPansatz as IQP, qubit,
+                                     Sim14ansatz as Sim14,
+                                     Sim15ansatz as Sim15, )
 from discopy.quantum.gates import Bra, Ket, Rx, Rz
 from discopy.rigid import Box, Diagram, Ty
 import numpy as np
@@ -186,8 +187,8 @@ def _sim_ansatz_factory(sim_circuit_n=14):
             Parameters
             ----------
             ob_map : dict
-                A mapping from :py:class:`discopy.rigid.Ty` to the number of
-                qubits it uses in a circuit.
+                A mapping from :py:class:`discopy.rigid.Ty` to the
+                number of qubits it uses in a circuit.
             n_layers : int
                 The number of IQP layers used by the ansatz.
             n_single_qubit_params : int, default: 3
@@ -195,9 +196,9 @@ def _sim_ansatz_factory(sim_circuit_n=14):
             discard : bool, default: False
                 Discard open wires instead of post-selecting.
             special_cases : callable, optional
-                A function that transforms an arrow map into one specifying
-                special cases that should not be converted by the Ansatz
-                class.
+                A function that transforms an arrow map into one
+                specifying special cases that should not be converted by
+                the Ansatz class.
 
             """
 
