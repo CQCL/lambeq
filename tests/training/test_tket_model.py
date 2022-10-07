@@ -88,7 +88,7 @@ def test_missing_field_error():
         _ = TketModel(backend_config={})
 
 def test_missing_backend_error():
-    with pytest.raises(KeyError):
+    with pytest.raises(TypeError):
         _ = TketModel()
 
 def test_normalise():

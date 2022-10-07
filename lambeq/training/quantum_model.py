@@ -21,16 +21,13 @@ Module containing the base class for a quantum lambeq model.
 from __future__ import annotations
 
 from abc import abstractmethod
-import os
-from typing import Any, Union
+from typing import Any
 
 from discopy.tensor import Diagram, Tensor
 import numpy as np
 
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
-
-_StrPathT = Union[str, 'os.PathLike[str]']
 
 
 class QuantumModel(Model):
@@ -41,13 +38,14 @@ class QuantumModel(Model):
     symbols : list of symbols
         A sorted list of all :py:class:`Symbols <.Symbol>` occurring in
         the data.
-    weights : SizedIterable
+    weights : array
         A data structure containing the numeric values of the model
         parameters
     SMOOTHING : float
         A smoothing constant
 
     """
+    weights: np.ndarray
 
     SMOOTHING = 1e-9
 
@@ -72,11 +70,13 @@ class QuantumModel(Model):
         value of scalars.
         """
         backend = Tensor.get_backend()
+        ret: np.ndarray
         if not predictions.shape:
-            return backend.abs(predictions)
+            ret = backend.abs(predictions)
         else:
-            predictions = backend.abs(predictions) + self.SMOOTHING
-            return predictions / predictions.sum()
+            smoothed_predictions = backend.abs(predictions) + self.SMOOTHING
+            ret = smoothed_predictions / smoothed_predictions.sum()
+        return ret
 
     def initialise_weights(self) -> None:
         """Initialise the weights of the model.
@@ -93,43 +93,35 @@ class QuantumModel(Model):
         assert all(w.size == 1 for w in self.symbols)
         self.weights = np.random.rand(len(self.symbols))
 
-    @classmethod
-    def from_checkpoint(cls,
-                        checkpoint_path: _StrPathT,
-                        **kwargs: Any) -> QuantumModel:
-        """Load the weights and symbols from a training checkpoint.
+    def _load_checkpoint(self, checkpoint: Checkpoint) -> None:
+        """Load the model weights and symbols from a lambeq
+        :py:class:`.Checkpoint`.
 
         Parameters
         ----------
-        checkpoint_path : str or PathLike
-            Path that points to the checkpoint file.
+        checkpoint : :py:class:`.Checkpoint`
+            Checkpoint containing the model weights, symbols and
+            additional information.
 
-        Other Parameters
-        ----------------
-        backend_config : dict
-            Dictionary containing the backend configuration for the
-            :py:class:`TketModel`. Must include the fields `'backend'`,
-            `'compilation'` and `'shots'`.
+        """
+
+        self.symbols = checkpoint['model_symbols']
+        self.weights = checkpoint['model_weights']
+
+    def _make_checkpoint(self) -> Checkpoint:
+        """Create checkpoint that contains the model weights and symbols.
 
         Returns
         -------
-        :py:class:`QuantumModel`
-            The initialised model.
-
-        Raises
-        ------
-        FileNotFoundError
-            If checkpoint file does not exist.
+        :py:class:`.Checkpoint`
+            Checkpoint containing the model weights, symbols and
+            additional information.
 
         """
-        model = cls(**kwargs)
-        checkpoint = Checkpoint.from_file(checkpoint_path)
-        try:
-            model.symbols = checkpoint['model_symbols']
-            model.weights = checkpoint['model_weights']
-            return model
-        except KeyError as e:
-            raise e
+        checkpoint = Checkpoint()
+        checkpoint.add_many({'model_symbols': self.symbols,
+                             'model_weights': self.weights})
+        return checkpoint
 
     @abstractmethod
     def get_diagram_output(self, diagrams: list[Diagram]) -> np.ndarray:

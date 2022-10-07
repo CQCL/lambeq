@@ -60,11 +60,13 @@ class Grammar:
     type_changing_rules: list[tuple[int, str, Optional[str], str, bool]]
     type_raising_rules: list[tuple[str, str, str]]
 
-    def __post_init__(self):  # intentionally left untyped
-        self.binary_rules = [tuple(item) for item in self.binary_rules]
-        self.type_changing_rules = [tuple(item)
+    def __post_init__(self) -> None:
+        self.binary_rules = [tuple(item)  # type: ignore[misc]
+                             for item in self.binary_rules]
+        self.type_changing_rules = [tuple(item)  # type: ignore[misc]
                                     for item in self.type_changing_rules]
-        self.type_raising_rules = [tuple(it) for it in self.type_raising_rules]
+        self.type_raising_rules = [tuple(item)  # type: ignore[misc]
+                                   for item in self.type_raising_rules]
 
     @classmethod
     def load(cls, filename: StrPathT) -> Grammar:

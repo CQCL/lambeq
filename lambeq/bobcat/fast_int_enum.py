@@ -15,12 +15,14 @@
 from __future__ import annotations
 
 from typing import ClassVar, TypeVar
-
-_T = TypeVar('_T', bound='FastIntEnum')
+from typing import TYPE_CHECKING
 
 
 class FastIntEnumType(type):
-    def __getattr__(cls: type[_T], value: str) -> _T: ...  # type: ignore
+    if TYPE_CHECKING:
+        _T = TypeVar('_T', bound='FastIntEnumType')
+        @classmethod
+        def __getattr__(cls: type[_T], value: str) -> _T: ...
 
 
 class FastIntEnum(int, metaclass=FastIntEnumType):
@@ -68,7 +70,7 @@ class FastIntEnum(int, metaclass=FastIntEnumType):
     def __init_subclass__(cls) -> None:
         cls.indices = {v: i for i, v in enumerate(cls.values)}
 
-        if cls.names is None:
+        if not hasattr(cls, 'names'):
             cls.names = []
         if len(cls.values) > len(cls.names):
             cls.names.extend(map(str.upper, cls.values[len(cls.names):]))

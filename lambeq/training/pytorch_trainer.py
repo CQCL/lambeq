@@ -20,15 +20,19 @@ A trainer that wraps the training loop of a :py:class:`ClassicalModel`.
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Mapping
 import os
-from typing import Any, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 import torch
 
 from lambeq.core.globals import VerbosityLevel
+from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.pytorch_model import PytorchModel
 from lambeq.training.trainer import Trainer
+
+_StrPathT = Union[str, 'os.PathLike[str]']
+_EvalFuncT = Callable[[Any, Any], Any]
 
 
 class PytorchTrainer(Trainer):
@@ -39,15 +43,17 @@ class PytorchTrainer(Trainer):
     def __init__(
             self,
             model: PytorchModel,
-            loss_function: Callable,
+            loss_function: Callable[..., torch.Tensor],
             epochs: int,
             optimizer: type[torch.optim.Optimizer] = torch.optim.AdamW,
             learning_rate: float = 1e-3,
             device: int = -1,
-            evaluate_functions: Optional[Mapping[str, Callable]] = None,
+            *,
+            optimizer_args: Optional[dict[str, Any]] = None,
+            evaluate_functions: Optional[Mapping[str, _EvalFuncT]] = None,
             evaluate_on_train: bool = True,
             use_tensorboard: bool = False,
-            log_dir: Optional[Union[str, os.PathLike]] = None,
+            log_dir: Optional[_StrPathT] = None,
             from_checkpoint: bool = False,
             verbose: str = VerbosityLevel.TEXT.value,
             seed: Optional[int] = None) -> None:
@@ -60,15 +66,17 @@ class PytorchTrainer(Trainer):
             A lambeq Model using PyTorch for tensor computation.
         loss_function : callable
             A PyTorch loss function from `torch.nn`.
+        epochs : int
+            Number of training epochs.
         optimizer : torch.optim.Optimizer, default: torch.optim.AdamW
             A PyTorch optimizer from `torch.optim`.
         learning_rate : float, default: 1e-3
-            The learning rate for training.
-        epochs : int
-            Number of training epochs.
+            The learning rate provided to the optimizer for training.
         device : int, default: -1
             CUDA device ID used for tensor operation speed-up.
             A negative value uses the CPU.
+        optimizer_args : dict of str to Any, optional
+            Any extra arguments to pass to the optimizer.
         evaluate_functions : mapping of str to callable, optional
             Mapping of evaluation metric functions from their names.
             Structure [{"metric": func}].
@@ -105,47 +113,49 @@ class PytorchTrainer(Trainer):
                          seed)
 
         self.backend = 'pytorch'
-        self.learning_rate = learning_rate
         self.device = torch.device('cpu' if device < 0 else f'cuda:{device}')
         if device >= 0:
-            torch.set_default_tensor_type('torch.cuda.FloatTensor')
-        self.optimizer = optimizer(self.model.parameters(),  # type: ignore
-                                   lr=self.learning_rate)   # type: ignore
+            torch.set_default_tensor_type(  # pragma: no cover
+                    'torch.cuda.FloatTensor')
+
+        optimizer_args = dict(optimizer_args or {})
+        if learning_rate is not None:
+            optimizer_args['lr'] = learning_rate
+        self.optimizer = optimizer(self.model.parameters(), **optimizer_args)
         self.model.to(self.device)
 
-    def _add_extra_chkpoint_info(self) -> Mapping[str, Any]:
+    def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
         """Add any additional information to the training checkpoint.
 
         These might include model-specific information like the random
         state of the backend or the state of the optimizer.
 
-        Returns
-        -------
-        Mapping of str to any
-            Mapping containing the extra information to save.
-
-        """
-        return {'model_state_dict': self.model.state_dict(),
-                'torch_random_state': torch.get_rng_state(),
-                'optimizer_state_dict': self.optimizer.state_dict()}
-
-    def _load_extra_chkpoint_info(self,
-                                  checkpoint: Mapping[str, Any]) -> None:
-        """Load additional checkpoint information.
-
-        This includes data previously added by
-        `_add_extra_chkpoint_info()`.
+        Use `checkpoint.add_many()` to add multiple items.
 
         Parameters
         ----------
-        checkpoint : Mapping of str to any
+        checkpoint : :py:class:`.Checkpoint`
+            The checkpoint to add information to.
+
+        """
+        checkpoint.add_many(
+            {'torch_random_state': torch.get_rng_state(),
+             'optimizer_state_dict': self.optimizer.state_dict()})
+
+    def _load_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
+        """Load additional checkpoint information.
+
+        This includes data previously added by
+        `_add_extra_checkpoint_info()`.
+
+        Parameters
+        ----------
+        checkpoint : :py:class:`.Checkpoint`
             Mapping containing the checkpoint information.
 
         """
-        self.model.load_state_dict(checkpoint['model_state_dict'])
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        if self.seed is not None:
-            torch.set_rng_state(checkpoint['torch_random_state'])
+        torch.set_rng_state(checkpoint['torch_random_state'])
 
     def validation_step(
             self,
@@ -183,8 +193,8 @@ class PytorchTrainer(Trainer):
 
         Returns
         -------
-        float
-            The calculated loss.
+        Tuple of torch.Tensor and float
+            The model predictions and the calculated loss.
 
         """
         x, y = batch

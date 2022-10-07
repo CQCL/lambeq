@@ -59,7 +59,6 @@ def test_trainer(tmp_path):
     assert len(trainer.val_results["acc"]) == EPOCHS
 
 def test_restart_training(tmp_path):
-    model = NumpyModel()
     log_dir = tmp_path / 'test_runs'
     model = NumpyModel.from_diagrams(train_circuits + dev_circuits)
     trainer = QuantumTrainer(
@@ -81,8 +80,9 @@ def test_restart_training(tmp_path):
 
     trainer.fit(train_dataset, val_dataset)
 
+    model_new = NumpyModel()
     trainer_restarted = QuantumTrainer(
-        model=model,
+        model=model_new,
         loss_function=loss,
         optimizer=SPSAOptimizer,
         optim_hyperparams={'a': 0.02, 'c': 0.06, 'A':0.01*EPOCHS},
@@ -97,7 +97,28 @@ def test_restart_training(tmp_path):
     )
 
     trainer_restarted.fit(train_dataset, val_dataset)
+
+    model_uninterrupted = NumpyModel.from_diagrams(train_circuits + dev_circuits)
+    trainer_uninterrupted = QuantumTrainer(
+        model=model_uninterrupted ,
+        loss_function=loss,
+        optimizer=SPSAOptimizer,
+        optim_hyperparams={'a': 0.02, 'c': 0.06, 'A':0.01*EPOCHS},
+        epochs=EPOCHS + 1,
+        evaluate_functions={"acc": acc},
+        evaluate_on_train=True,
+        use_tensorboard=True,
+        verbose='suppress',
+        seed=42,
+    )
+
+    trainer_uninterrupted.fit(train_dataset, val_dataset)
+
     assert len(trainer_restarted.train_costs) == EPOCHS+1
     assert len(trainer_restarted.val_costs) == EPOCHS+1
     assert len(trainer_restarted.val_results["acc"]) == EPOCHS+1
     assert len(trainer_restarted.train_results["acc"]) == EPOCHS+1
+    for a, b in zip(trainer_restarted.train_costs, trainer_uninterrupted.train_costs):
+        assert np.isclose(a, b)
+    for a, b in zip(model_new.weights, model_uninterrupted.weights):
+        assert np.isclose(a, b)

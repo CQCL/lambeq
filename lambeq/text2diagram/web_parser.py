@@ -26,7 +26,6 @@ __all__ = ['WebParser', 'WebParseError']
 import sys
 from typing import Optional
 
-import requests
 from tqdm.auto import tqdm
 
 from lambeq.core.globals import VerbosityLevel
@@ -112,6 +111,8 @@ class WebParser(CCGParser):
             If the parser fails to obtain a parse tree from the server.
 
         """
+        import requests
+
         if verbose is None:
             verbose = self.verbose
         if not VerbosityLevel.has_value(verbose):

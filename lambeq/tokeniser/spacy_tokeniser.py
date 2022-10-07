@@ -25,18 +25,26 @@ __all__ = ['SpacyTokeniser']
 
 from collections.abc import Iterable
 import logging
-
-import spacy
-import spacy.cli
-from spacy.lang.en import English
+from typing import TYPE_CHECKING
 
 from lambeq.tokeniser import Tokeniser
+
+if TYPE_CHECKING:
+    import spacy
+    import spacy.cli
+
+
+def _import_spacy() -> None:
+    global spacy
+    import spacy
+    import spacy.lang.en
 
 
 class SpacyTokeniser(Tokeniser):
     """Tokeniser class based on SpaCy."""
 
     def __init__(self) -> None:
+        _import_spacy()
         try:
             self.tokeniser = spacy.load('en_core_web_sm')
         except OSError:
@@ -45,7 +53,7 @@ class SpacyTokeniser(Tokeniser):
                            'This action only has to happen once.')
             spacy.cli.download('en_core_web_sm')
             self.tokeniser = spacy.load('en_core_web_sm')
-        self.spacy_nlp = English()
+        self.spacy_nlp = spacy.lang.en.English()
         self.spacy_nlp.add_pipe('sentencizer')
 
     def split_sentences(self, text: str) -> list[str]:

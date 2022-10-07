@@ -24,21 +24,22 @@ Subclass :py:class:`Lambeq` to define a custom trainer.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Callable, Mapping
+from collections.abc import Mapping
 from datetime import datetime
 from math import ceil
 import os
 import random
 import socket
 import sys
-from typing import Any, Optional, Union
+from typing import Any, Callable, Optional, Union
 from typing import TYPE_CHECKING
 
 from discopy import Tensor
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:
-    from torch.utils.tensorboard import SummaryWriter
+    from torch.utils.tensorboard.writer import SummaryWriter
+
 
 from lambeq.core.globals import VerbosityLevel
 from lambeq.training.checkpoint import Checkpoint
@@ -49,12 +50,13 @@ from lambeq.training.model import Model
 def _import_tensorboard_writer() -> None:
     global SummaryWriter
     try:
-        from torch.utils.tensorboard import SummaryWriter
+        from torch.utils.tensorboard.writer import SummaryWriter
     except ImportError:  # pragma: no cover
         raise ImportError('tensorboard not found. Please install it using '
                           '`pip install tensorboard`.')
 
 
+_EvalFuncT = Callable[[Any, Any], Any]
 _StrPathT = Union[str, 'os.PathLike[str]']
 
 
@@ -63,12 +65,12 @@ class Trainer(ABC):
 
     def __init__(self,
                  model: Model,
-                 loss_function: Callable,
+                 loss_function: Callable[..., Any],
                  epochs: int,
-                 evaluate_functions: Optional[Mapping[str, Callable]] = None,
+                 evaluate_functions: Optional[Mapping[str, _EvalFuncT]] = None,
                  evaluate_on_train: bool = True,
                  use_tensorboard: bool = False,
-                 log_dir: Optional[Union[str, os.PathLike]] = None,
+                 log_dir: Optional[_StrPathT] = None,
                  from_checkpoint: bool = False,
                  verbose: str = VerbosityLevel.TEXT.value,
                  seed: Optional[int] = None) -> None:
@@ -188,8 +190,7 @@ class Trainer(ABC):
                 report.append(f'valid/{name}: {str_value}')
         return '   '.join(report)
 
-    def load_training_checkpoint(self,
-                                 log_dir: _StrPathT) -> Mapping[str, Any]:
+    def load_training_checkpoint(self, log_dir: _StrPathT) -> Checkpoint:
         """Load model from a checkpoint.
 
         Parameters
@@ -199,8 +200,9 @@ class Trainer(ABC):
 
         Returns
         -------
-        mapping of str to any
-            The checkpoint information.
+        py:class:`.Checkpoint`
+            Checkpoint containing the model weights, symbols and the
+            training history.
 
         Raises
         ------
@@ -211,8 +213,10 @@ class Trainer(ABC):
             print('Restore last checkpoint...', file=sys.stderr)
         checkpoint_path = os.path.join(log_dir, 'model.lt')
         checkpoint = Checkpoint.from_file(checkpoint_path)
-        self.model.weights = checkpoint['model_weights']
-        self.model.symbols = checkpoint['model_symbols']
+        # load model from checkpoint
+        self.model._load_checkpoint(checkpoint)
+
+        # load the training history
         self.train_costs = checkpoint['train_costs']
         self.train_epoch_costs = checkpoint['train_epoch_costs']
         self.train_results = checkpoint['train_results']
@@ -223,12 +227,13 @@ class Trainer(ABC):
         if self.seed is not None:
             random.setstate(checkpoint['random_state'])
         if self.verbose == VerbosityLevel.TEXT.value:
-            print('Checkpoint restored successfully!', file=sys.stderr)
+            print('Checkpoint restored successfully!',  # pragma: no cover
+                  file=sys.stderr)
         return checkpoint
 
     def save_checkpoint(self,
                         save_dict: Mapping[str, Any],
-                        log_dir: Union[str, os.PathLike]) -> None:
+                        log_dir: _StrPathT) -> None:
         """Save checkpoint.
 
         Parameters
@@ -239,34 +244,32 @@ class Trainer(ABC):
             The path where to store the `model.lt` checkpoint file.
 
         """
-        checkpoint = Checkpoint()
+        checkpoint = self.model._make_checkpoint()
         checkpoint.add_many(save_dict)
-        add_info = self._add_extra_chkpoint_info()
-        if add_info is not None:
-            checkpoint.add_many(add_info)
+        self._add_extra_checkpoint_info(checkpoint)
         checkpoint.to_file(os.path.join(log_dir, 'model.lt'))
 
     @abstractmethod
-    def _add_extra_chkpoint_info(self) -> Mapping[str, Any]:
+    def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
         """Add any additional information to the training checkpoint.
 
         These might include model-specific information like the random
         state of the backend or the state of the optimizer.
 
-        Returns
-        -------
-        mapping of str to any
-            Mapping containing the extra information to save.
+        Use `checkpoint.add_many()` to add multiple items.
 
+        Parameters
+        ----------
+        checkpoint : :py:class:`.Checkpoint`
+            The checkpoint to add information to.
         """
 
     @abstractmethod
-    def _load_extra_chkpoint_info(self,
-                                  checkpoint: Mapping[str, Any]) -> None:
+    def _load_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
         """Load additional checkpoint information.
 
         This includes data previously added by
-        `_add_extra_chkpoint_info()`.
+        `_add_extra_checkpoint_info()`.
 
         Parameters
         ----------
@@ -332,7 +335,7 @@ class Trainer(ABC):
 
         """
         if self.from_checkpoint:
-            self._load_extra_chkpoint_info(self.checkpoint)
+            self._load_extra_checkpoint_info(self.checkpoint)
 
         def writer_helper(*args: Any) -> None:
             if self.use_tensorboard:
@@ -398,7 +401,7 @@ class Trainer(ABC):
                         f'train/{name}', self.train_results[name][-1],
                         epoch+1)
                     if self.verbose == VerbosityLevel.PROGRESS.value:
-                        status_bar.set_description(
+                        status_bar.set_description(  # pragma: no cover
                                 self._generate_stat_report(
                                     train_loss=train_loss,
                                     val_loss=(self.val_costs[-1]
@@ -453,19 +456,17 @@ class Trainer(ABC):
                                     self._generate_stat_report(
                                         train_loss=train_loss,
                                         val_loss=val_loss))
-            # save checkpoint info
-            save_dict = {'epoch': epoch+1,
-                         'model_weights': self.model.weights,
-                         'model_symbols': self.model.symbols,
-                         'train_costs': self.train_costs,
-                         'train_epoch_costs': self.train_epoch_costs,
-                         'train_results': self.train_results,
-                         'val_costs': self.val_costs,
-                         'val_results': self.val_results,
-                         'random_state': random.getstate(),
-                         'step': step}
-            self.save_checkpoint(save_dict, self.log_dir)
-            if self.verbose == VerbosityLevel.TEXT.value:
+            # save training stats checkpoint
+            trainer_stats = {'epoch': epoch+1,
+                             'train_costs': self.train_costs,
+                             'train_epoch_costs': self.train_epoch_costs,
+                             'train_results': self.train_results,
+                             'val_costs': self.val_costs,
+                             'val_results': self.val_results,
+                             'random_state': random.getstate(),
+                             'step': step}
+            self.save_checkpoint(trainer_stats, self.log_dir)
+            if self.verbose == VerbosityLevel.TEXT.value:  # pragma: no cover
                 if epoch == 0 or (epoch+1) % logging_step == 0:
                     space = (len(str(self.epochs))-len(str(epoch+1)) + 2) * ' '
                     prefix = f'Epoch {epoch+1}:' + space
@@ -476,4 +477,4 @@ class Trainer(ABC):
                           file=sys.stderr)
         status_bar.close()
         if self.verbose == VerbosityLevel.TEXT.value:
-            print('\nTraining completed!', file=sys.stderr)
+            print('\nTraining completed!', file=sys.stderr)  # pragma: no cover

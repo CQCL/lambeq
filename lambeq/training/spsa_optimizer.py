@@ -21,7 +21,7 @@ Approximation optimizer.
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Mapping
 from typing import Any, Optional
 
 import numpy as np
@@ -44,7 +44,7 @@ class SPSAOptimizer(Optimizer):
 
     def __init__(self, model: QuantumModel,
                  hyperparams: dict[str, float],
-                 loss_fn: Callable[[Any, Any], Any],
+                 loss_fn: Callable[[Any, Any], float],
                  bounds: Optional[ArrayLike] = None) -> None:
         """Initialise the SPSA optimizer.
 
@@ -91,6 +91,7 @@ class SPSAOptimizer(Optimizer):
         self.ak = self.a/(self.current_sweep+self.A)**self.alpha
         self.ck = self.c/(self.current_sweep)**self.gamma
 
+        self.project: Callable[[np.ndarray], np.ndarray]
         if self.bounds is None:
             self.project = lambda _: _
         else:
@@ -98,11 +99,11 @@ class SPSAOptimizer(Optimizer):
             if len(bds) != len(self.model.weights):
                 raise ValueError('Length of `bounds` must be the same as the '
                                  'number of the model parameters')
-            self.project = lambda x: np.clip(x, bds[:, 0], bds[:, 1])
+            self.project = lambda x: x.clip(bds[:, 0], bds[:, 1])
 
     def backward(
             self,
-            batch: tuple[Iterable, np.ndarray]) -> float:
+            batch: tuple[Iterable[Any], np.ndarray]) -> float:
         """Calculate the gradients of the loss function.
 
         The gradients are calculated with respect to the model
@@ -116,8 +117,8 @@ class SPSAOptimizer(Optimizer):
 
         Returns
         -------
-        tuple of np.ndarray and float
-            The model predictions and the calculated loss.
+        float
+            The calculated loss.
 
         """
         diagrams, targets = batch
@@ -156,7 +157,7 @@ class SPSAOptimizer(Optimizer):
         self.update_hyper_params()
         self.zero_grad()
 
-    def update_hyper_params(self):
+    def update_hyper_params(self) -> None:
         """Update the hyperparameters of the SPSA algorithm."""
         self.current_sweep += 1
         a_decay = (self.current_sweep+self.A)**self.alpha
@@ -164,7 +165,7 @@ class SPSAOptimizer(Optimizer):
         self.ak = self.hyperparams['a']/a_decay
         self.ck = self.hyperparams['c']/c_decay
 
-    def state_dict(self) -> dict:
+    def state_dict(self) -> dict[str, Any]:
         """Return optimizer states as dictionary.
 
         Returns
@@ -180,7 +181,7 @@ class SPSAOptimizer(Optimizer):
                 'ck': self.ck,
                 'current_sweep': self.current_sweep}
 
-    def load_state_dict(self, state_dict: dict) -> None:
+    def load_state_dict(self, state_dict: Mapping[str, Any]) -> None:
         """Load state of the optimizer from the state dictionary.
 
         Parameters

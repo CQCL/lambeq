@@ -20,29 +20,34 @@ Module implementing a basic lambeq model based on a Pytorch backend.
 """
 from __future__ import annotations
 
-import os
 import pickle
-from typing import Any, Union
 
 from discopy import Tensor
 from discopy.tensor import Diagram
-import tensornetwork as tn
 import torch
 
 from lambeq.ansatz.base import Symbol
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
-_StrPathT = Union[str, 'os.PathLike[str]']
-
 
 class PytorchModel(Model, torch.nn.Module):
     """A lambeq model for the classical pipeline using PyTorch."""
 
-    def __init__(self, **kwargs) -> None:
+    weights: torch.nn.ParameterList  # type: ignore[assignment]
+
+    def __init__(self) -> None:
         """Initialise a PytorchModel."""
         Model.__init__(self)
         torch.nn.Module.__init__(self)
+
+    def _reinitialise_modules(self) -> None:
+        """Reinitialise all modules in the model."""
+        for module in self.modules():
+            try:
+                module.reset_parameters()  # type: ignore[operator]
+            except (AttributeError, TypeError):
+                pass
 
     def initialise_weights(self) -> None:
         """Initialise the weights of the model.
@@ -53,64 +58,45 @@ class PytorchModel(Model, torch.nn.Module):
             If `model.symbols` are not initialised.
 
         """
-        for module in self.modules():
-            if hasattr(module, 'reset_parameters'):
-                module.reset_parameters()  # type: ignore
+        self._reinitialise_modules()
         if not self.symbols:
             raise ValueError('Symbols not initialised. Instantiate through '
                              '`PytorchModel.from_diagrams()`.')
         self.weights = torch.nn.ParameterList(
-            [torch.nn.Parameter(torch.rand(w.size, requires_grad=True))
-                for w in self.symbols])
+            [torch.nn.init.xavier_uniform_(torch.empty(w.size, 1)).squeeze(1)
+             for w in self.symbols])
 
-    @classmethod
-    def from_checkpoint(cls,
-                        checkpoint_path: _StrPathT,
-                        **kwargs: Any) -> PytorchModel:
-        """Load the weights and symbols from a training checkpoint.
+    def _load_checkpoint(self, checkpoint: Checkpoint) -> None:
+        """Load the model weights and symbols from a lambeq
+        :py:class:`.Checkpoint`.
 
         Parameters
         ----------
-        checkpoint_path : str or PathLike
-            Path that points to the checkpoint file.
-
-        Raises
-        ------
-        FileNotFoundError
-            If checkpoint file does not exist.
+        checkpoint : :py:class:`.Checkpoint`
+            Checkpoint containing the model weights,
+            symbols and additional information.
 
         """
-        model = cls(**kwargs)
-        checkpoint = Checkpoint.from_file(checkpoint_path)
-        try:
-            model.symbols = checkpoint['model_symbols']
-            model.weights = checkpoint['model_weights']
-            model.load_state_dict(checkpoint['model_state_dict'])
-            return model
-        except KeyError as e:
-            raise e
 
-    def make_checkpoint(self, checkpoint_path: _StrPathT) -> None:
-        """Save the model weights and symbols to a training checkpoint.
+        self.symbols = checkpoint['model_symbols']
+        self.weights = checkpoint['model_weights']
+        self.load_state_dict(checkpoint['model_state_dict'])
 
-        Parameters
-        ----------
-        checkpoint_path : str or `os.PathLike`
-            Path that points to the checkpoint file. If
-            the file does not exist, it will be created.
+    def _make_checkpoint(self) -> Checkpoint:
+        """Create checkpoint that contains the model weights and symbols.
 
-        Raises
-        ------
-        FileNotFoundError
-            If the directory in which the checkpoint file is to be
-            saved does not exist.
+        Returns
+        -------
+        :py:class:`.Checkpoint`
+            Checkpoint containing the model weights, symbols and
+            additional information.
 
         """
         checkpoint = Checkpoint()
         checkpoint.add_many({'model_symbols': self.symbols,
                              'model_weights': self.weights,
                              'model_state_dict': self.state_dict()})
-        checkpoint.to_file(checkpoint_path)
+        return checkpoint
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
         """Contract diagrams using tensornetwork.
@@ -132,6 +118,8 @@ class PytorchModel(Model, torch.nn.Module):
             Resulting tensor.
 
         """
+        import tensornetwork as tn
+
         parameters = {k: v for k, v in zip(self.symbols, self.weights)}
         diagrams = pickle.loads(pickle.dumps(diagrams))  # deepcopy, but faster
         for diagram in diagrams:

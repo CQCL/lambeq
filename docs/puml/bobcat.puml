@@ -1,0 +1,31 @@
+@startuml
+
+set namespaceseparator none
+skinparam dpi 96
+skinparam ArrowColor Black
+skinparam shadowing true
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+skinparam object {
+  backgroundColor lavender
+  borderColor black
+}
+
+abstract class text2diagram.Reader {}
+abstract class text2diagram.CCGParser {}
+class text2diagram.Bobcat {}
+class bobcat.Tagger {}
+class bobcat.ChartParser {}
+
+package transformers {}
+
+text2diagram.Reader <|-- text2diagram.CCGParser
+text2diagram.CCGParser <|-- text2diagram.Bobcat
+text2diagram.Bobcat *-- bobcat.Tagger
+text2diagram.Bobcat *-- bobcat.ChartParser
+
+bobcat.Tagger -- transformers
+
+@enduml

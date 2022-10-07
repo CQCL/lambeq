@@ -10,6 +10,7 @@ from discopy.quantum.circuit import Id
 from discopy.rigid import Spider
 
 import numpy as np
+import torch
 from torch import Size
 from torch.nn import Parameter
 
@@ -17,6 +18,16 @@ from lambeq import AtomicType, PytorchModel, SpiderAnsatz, Symbol
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
+
+
+class CustomPytorchModel(PytorchModel):
+    def __init__(self):
+        super().__init__()
+        self.fcc = torch.nn.Linear(2, 2)
+
+    def forward(self, x) -> torch.Tensor:
+        res = super().forward(x)
+        return self.fcc(res)
 
 
 def test_init():
@@ -41,6 +52,13 @@ def test_forward():
     pred = instance.forward(diagrams)
     assert pred.size() == Size([len(diagrams), s_dim])
 
+def test_initialise_weights():
+    model = CustomPytorchModel()
+    model.symbols = [Symbol('phi', size=2), Symbol('theta', size=2)]
+    tmp_w = pickle.loads(pickle.dumps(model.fcc.weight))
+    model.initialise_weights()
+    assert model.weights
+    assert not torch.equal(model.fcc.weight, tmp_w)
 
 def test_pickling():
     phi = Symbol('phi', size=123)

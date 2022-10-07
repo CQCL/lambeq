@@ -1,0 +1,73 @@
+@startuml
+
+set namespaceseparator none
+skinparam dpi 96
+skinparam shadowing true
+skinparam ArrowColor Black
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+
+abstract class BaseAnsatz {
+    ob_map: dict
+}
+class TensorAnsatz {
+    ob_map: Mapping[Ty, Dim]
+    functor
+}
+class CircuitAnsatz {
+    functor
+    ob_map: Mapping[Ty, int]
+}
+class MPSAnsatz {
+    BOND_TYPE
+    bond_dim: int
+    max_order: int
+    split_functor
+    tensor_functor
+}
+class SpiderAnsatz {
+    max_order: int
+    split_functor
+    tensor_functor
+}
+class IQPAnsatz {
+    discard: bool
+    functor
+    n_layers: int
+    n_single_qubit_params: int
+}
+class Symbol {
+    size: int
+    sort_key(order)
+}
+class sympy.core.symbol.Symbol #back:wheat;line:tomato {}
+
+class discopy.rigid.Ty #back:lightblue;line:black {}
+class discopy.rigid.Ob #back:lightblue;line:black {}
+class discopy.rigid.Functor #back:lightblue;line:black {}
+class discopy.quantum.circuit.Functor #back:lightblue;line:black {}
+class discopy.monoidal.Ty #back:lightblue;line:black {}
+
+discopy.rigid.Ob <|-- discopy.rigid.Ty
+discopy.rigid.Functor <|-- discopy.quantum.circuit.Functor
+
+BaseAnsatz <|-- TensorAnsatz
+BaseAnsatz <|-- CircuitAnsatz
+TensorAnsatz <|-- MPSAnsatz
+TensorAnsatz <|-- SpiderAnsatz
+CircuitAnsatz <|-- IQPAnsatz
+discopy.monoidal.Ty <|-- discopy.rigid.Ty
+
+MPSAnsatz::split_functor *-left- discopy.rigid.Functor
+MPSAnsatz::tensor_functor *-- discopy.rigid.Functor
+SpiderAnsatz::split_functor *-- discopy.rigid.Functor
+SpiderAnsatz::tensor_functor *-- discopy.rigid.Functor
+MPSAnsatz::BOND_TYPE *--left discopy.rigid.Ty
+CircuitAnsatz::functor *-- discopy.quantum.circuit.Functor
+TensorAnsatz::functor *-- discopy.quantum.circuit.Functor
+IQPAnsatz::functor *-- discopy.quantum.circuit.Functor
+sympy.core.symbol.Symbol <|-- Symbol
+
+@enduml

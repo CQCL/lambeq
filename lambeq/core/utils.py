@@ -14,7 +14,8 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Iterator, List, Mapping, Union
+from collections.abc import Iterable, Iterator, Mapping
+from typing import Any, List, Union
 
 from discopy import Diagram
 
@@ -37,7 +38,7 @@ def tokenised_batch_type_check(batch: SentenceBatchType) -> bool:
             tokenised_sentence_type_check(s) for s in batch)
 
 
-def flatten(diagrams: Iterable) -> Iterator[Diagram]:
+def flatten(diagrams: Iterable[Any]) -> Iterator[Diagram]:
     """Flatten a nested iterator of diagrams into a single iterator.
 
     Parameters

@@ -272,7 +272,7 @@ class CoordinationRewriteRule(RewriteRule):
         if box.name in self.words and len(box.cod) % 3 == 0:
             n = len(box.cod) // 3
             left, mid, right = box.cod[:n], box.cod[n:2*n], box.cod[2*n:]
-            return right.r == mid == left.l
+            return bool(right.r == mid == left.l)
         return False
 
     def rewrite(self, box: Box) -> Diagram:
@@ -298,7 +298,7 @@ class CurryRewriteRule(RewriteRule):
         """
 
     def matches(self, box: Box) -> bool:
-        return box.cod and (box.cod[0].z or box.cod[-1].z)
+        return bool(box.cod and (box.cod[0].z or box.cod[-1].z))
 
     def rewrite(self, box: Box) -> Diagram:
         cod = box.cod

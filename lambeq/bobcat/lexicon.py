@@ -19,7 +19,7 @@ __all__ = ['Atom', 'Feature', 'Relation', 'Category']
 from collections.abc import Mapping
 from dataclasses import dataclass
 import re
-from typing import Any, ClassVar, Optional, Tuple
+from typing import Any, ClassVar, Optional, TYPE_CHECKING
 
 from lambeq.bobcat.fast_int_enum import FastIntEnum
 
@@ -32,14 +32,14 @@ class Atom(FastIntEnum):
     names = ['NONE', 'N', 'NP', 'S', 'PP', 'CONJ', 'COMMA', 'SEMICOLON',
              'COLON', 'PERIOD']
 
-    punct: ClassVar[set[Atom]]
+    is_punct: bool
 
-    @property
-    def is_punct(self) -> bool:
-        if Atom.punct is None:
-            Atom.punct = {Atom.COMMA, Atom.SEMICOLON, Atom.COLON, Atom.PERIOD,
-                          Atom.LQU, Atom.RQU, Atom.LRB, Atom.RRB}
-        return self in Atom.punct
+
+for atom in Atom._member_map_.values():
+    if TYPE_CHECKING:
+        from typing import cast
+        atom = cast(Atom, atom)
+    atom.is_punct = atom >= Atom.COMMA
 
 
 class Feature(FastIntEnum):
@@ -149,7 +149,7 @@ class Category:
 
     def _str(self,
              full: bool = False,
-             slot_counter: int = 0) -> Tuple[str, int]:  # pragma: no cover
+             slot_counter: int = 0) -> tuple[str, int]:  # pragma: no cover
         """Helper function to stringify a Category."""
         if self.atomic:
             output = f'{self.atom}'
@@ -183,7 +183,7 @@ class Category:
 
     def _hash(self) -> int:
         """Helper function to hash a Category."""
-        t: Tuple[Any, ...]
+        t: tuple[Any, ...]
         if self.atomic:
             t = (self.atom,
                  Feature.NONE if self.feature == Feature.X else self.feature)
@@ -254,7 +254,7 @@ VAR_SLOT_REGEX = re.compile(r'(\{(?P<var>[_A-Z]+)\*?})?'
 CAT_REGEX = re.compile(r'(?P<atom>[A-Z]+|conj|[,.;:])'
                        r'(\[(?P<feature>[Xa-z]+)])?'
                        + VAR_SLOT_REGEX.pattern, re.VERBOSE)
-CATEGORIES: dict[Tuple[str, int], Category] = {}
+CATEGORIES: dict[tuple[str, int], Category] = {}
 
 VARIABLES = '+_YZWVUTRQAB'
 

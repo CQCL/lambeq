@@ -1,0 +1,31 @@
+@startuml
+
+set namespaceseparator none
+skinparam dpi 96
+skinparam ArrowColor Black
+skinparam shadowing true
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+skinparam object {
+  backgroundColor lavender
+  borderColor black
+}
+
+package spacy #DDDDDD {}
+
+abstract class Tokeniser {
+    split_sentences()
+    tokenise_sentence()
+    tokenise_sentences()
+}
+
+class SpacyTokeniser {}
+
+
+Tokeniser <|-- SpacyTokeniser
+
+SpacyTokeniser -- spacy : > uses
+
+@enduml

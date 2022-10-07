@@ -10,11 +10,13 @@ from lambeq.text2diagram.ccg_rule import GBC, GBX, GFC, GFX, RPL, RPR
 from lambeq.text2diagram.ccg_tree import PlanarBX, PlanarFX, PlanarGBX, PlanarGFX, UnarySwap
 
 
+CONJ = AtomicType.CONJUNCTION
 N = AtomicType.NOUN
 P = AtomicType.PREPOSITIONAL_PHRASE
 S = AtomicType.SENTENCE
 
 i = biclosed.Ty()
+conj = CCGAtomicType.CONJUNCTION
 n = CCGAtomicType.NOUN
 p = CCGAtomicType.PREPOSITIONAL_PHRASE
 punc = CCGAtomicType.PUNCTUATION
@@ -126,6 +128,26 @@ class TestConjunctionRight(CCGRuleTester):
     biclosed_diagram = biclosed_words >> biclosed.BA(n >> (n << n))
 
     words = Word('it', N) @ Word('and', N >> N << N)
+    diagram = words >> (Cup(N, N.r) @ Id(N << N))
+
+
+class TestConjunctionPunctuationLeft(CCGRuleTester):
+    tree = CCGTree(rule='CONJ', biclosed_type=n >> n, children=(comma, it))
+
+    biclosed_words = Box(',', i, (n >> n) << n) @ Box('it', i, n)
+    biclosed_diagram = biclosed_words >> biclosed.FA((n >> n) << n)
+
+    words = Word(',', N >> N << N) @ Word('it', N)
+    diagram = words >> (Id(N >> N) @ Cup(N.l, N))
+
+
+class TestConjunctionPunctuationRight(CCGRuleTester):
+    tree = CCGTree(rule='CONJ', biclosed_type=n << n, children=(it, comma))
+
+    biclosed_words = Box('it', i, n) @ Box(',', i, n >> (n << n))
+    biclosed_diagram = biclosed_words >> biclosed.BA(n >> (n << n))
+
+    words = Word('it', N) @ Word(',', N >> N << N)
     diagram = words >> (Cup(N, N.r) @ Id(N << N))
 
 
@@ -277,6 +299,24 @@ class TestRemovePunctuationRight(CCGRuleTester):
     biclosed_diagram = biclosed_words >> RPR(n, punc)
 
     diagram = Word('it', N)
+
+
+class TestRemovePunctuationRightWithConjunction(CCGRuleTester):
+    tree = CCGTree(rule='LP', biclosed_type=conj, children=(comma, and_))
+
+    biclosed_words = Box(',', i, punc) @ Box('and', i, conj)
+    biclosed_diagram = biclosed_words >> RPL(punc, conj)
+
+    diagram = Word('and', CONJ)
+
+
+class TestRemovePunctuationLeftWithConjunction(CCGRuleTester):
+    tree = CCGTree(rule='RP', biclosed_type=conj, children=(and_, comma))
+
+    biclosed_words = Box('and', i, conj) @ Box(',', i, punc)
+    biclosed_diagram = biclosed_words >> RPR(conj, punc)
+
+    diagram = Word('and', CONJ)
 
 
 class TestUnary(CCGRuleTester):

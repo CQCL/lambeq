@@ -132,7 +132,26 @@ def test_pickling():
 
 def test_normalise():
     model = NumpyModel()
-    inputs = np.linspace(-10, 10, 21)
-    normalised = model._normalise_vector(inputs)
-    assert abs(normalised.sum() - 1.0) < 1e-8
-    assert np.all(normalised >= 0)
+    input1 = np.linspace(-10, 10, 21)
+    input2 = np.array(-0.5)
+    normalised1 = model._normalise_vector(input1)
+    normalised2 = model._normalise_vector(input2)
+    assert abs(normalised1.sum() - 1.0) < 1e-8
+    assert abs(normalised2 - 0.5) < 1e-8
+    assert np.all(normalised1 >= 0)
+
+def test_fast_subs_error():
+    with pytest.raises(KeyError):
+        diag = Ket(0, 0) >> CRz(Symbol('phi', size=123)) >> H @ H >> CX >> SWAP >> Measure(2)
+        model = NumpyModel()
+        model._fast_subs([diag], [])
+
+def test_get_lambda():
+    N = AtomicType.NOUN
+    S = AtomicType.SENTENCE
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    model = NumpyModel.from_diagrams([diagram], use_jit=True)
+    lam = model._get_lambda(diagram)
+    assert type(lam).__name__ == 'CompiledFunction'
+    assert model.lambdas[diagram] == model._get_lambda(diagram)

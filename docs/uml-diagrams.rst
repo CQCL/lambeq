@@ -6,64 +6,66 @@ Class diagrams
 For users who would like to contribute more actively to the development of ``lambeq``, this section provides high-level `UML class diagrams <https://en.wikipedia.org/wiki/Class_diagram>`_ for the most important sub-packages and components of the toolkit. For completeness, the diagrams contain first-degree associations with external libraries.
 
 .. note::
-    The UML diagams have been automatically generated from the Python source with the ``pyreverse`` tool, which is part of the `pylint <https://pylint.pycqa.org/en/latest/>`_ suite, post-processed, and rendered using `PlantUML <https://plantuml.com>`_.
-
-.. note::
     Click on a diagram to zoom.
+
+The significance of the colors used for the class/package boxes is explained in the following diagram:
+
+.. image:: ./puml/img/legend.png
+    :scale: 80%
 
 .. _uml_ansatz:
 
 lambeq.ansatz
 -------------
 
-.. image:: _static/images/classes_ansatz.png
-   :width: 100%
+.. image:: ./puml/img/ansatz.png
+    :width: 100%
 
 .. _uml_bobcat:
 
 lambeq.bobcat
 -------------
 
-.. image:: _static/images/classes_bobcat.png
-   :width: 100%
+.. image:: ./puml/img/bobcat.png
+    :scale: 80%
 
 .. _uml_pregroups:
 
 lambeq.pregroups
 ----------------
 
-.. image:: _static/images/classes_pregroups.png
-   :width: 70%
+.. image:: ./puml/img/pregroups.png
+    :scale: 80%
 
 .. _uml_rewrite:
 
 lambeq.rewrite
 --------------
 
-.. image:: _static/images/classes_rewrite.png
-   :width: 100%
+.. image:: ./puml/img/rewrite.png
+    :width: 100%
 
 .. _uml_text2diagram:
 
 lambeq.text2diagram
 -------------------
 
-.. image:: _static/images/classes_text2diagram.png
-   :width: 100%
+.. image:: ./puml/img/text2diagram.png
+    :width: 100%
 
 .. _uml_tokeniser:
 
 lambeq.tokeniser
 ----------------
 
-.. image:: _static/images/classes_tokeniser.png
-   :width: 70%
+.. image:: ./puml/img/tokeniser.png
+    :scale: 80%
 
 .. _uml_training:
 
 lambeq.training
 ---------------
 
-.. image:: _static/images/classes_training.png
-   :width: 100%
+.. image:: ./puml/img/training.png
+    :scale: 70%
 

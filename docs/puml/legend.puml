@@ -1,0 +1,35 @@
+@startuml
+
+set namespaceseparator none
+skinparam dpi 96
+skinparam ArrowColor Black
+skinparam shadowing true
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+skinparam object {
+  backgroundColor lavender
+  borderColor black
+}
+
+abstract class abstract_lambeq_class
+abstract class abstract_discopy_class #back:lightblue;line:black
+class lambeq_class
+class discopy_class #back:lightblue;line:black
+class class_in_external_package #back:wheat;line:tomato
+
+package external_package #DDDDDD {}
+object object_of_a_class
+
+abstract_lambeq_class <|-- lambeq_class
+abstract_discopy_class <|-- discopy_class
+
+lambeq_class *-l- discopy_class
+lambeq_class *-- class_in_external_package
+lambeq_class <.r. object_of_a_class : << isInstanceOf >>
+lambeq_class -- external_package : uses >
+
+
+
+@enduml

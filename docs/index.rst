@@ -51,6 +51,7 @@ If you use ``lambeq`` for your research, please cite the accompanying paper [Kea
    parsing
    string_diagrams
    discopy
+   use-cases
    CONTRIBUTING
 
 .. toctree::
@@ -61,6 +62,7 @@ If you use ``lambeq`` for your research, please cite the accompanying paper [Kea
    ../tutorials/rewrite.ipynb
    ../tutorials/parameterise.ipynb
    training
+   models
    manual_training
    advanced
    ../tutorials/extend-lambeq.ipynb

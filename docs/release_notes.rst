@@ -3,6 +3,45 @@
 Release notes
 =============
 
+.. _rel-0.2.7:
+
+`0.2.7 <https://github.com/CQCL/lambeq/releases/tag/0.2.7>`_
+------------------------------------------------------------
+
+Added:
+
+- Added support for Japanese to :py:class:`.DepCCGParser` (credit: `KentaroAOKI <https://github.com/CQCL/lambeq/pull/24>`_).
+- Overhauled the :py:class:`.CircuitAnsatz` interface, and added three new :term:`ansätze <ansatz (plural: ansätze)>`.
+- Added helper methods to :py:class:`.CCGTree` to get the children of a tree.
+  Added a new :py:meth:`.TreeReader.tree2diagram` method to :py:class:`.TreeReader`, extracted from :py:meth:`.TreeReader.sentence2diagram`.
+- Added a new :py:class:`.TreeReaderMode` named :py:attr:`.TreeReaderMode.HEIGHT`.
+- Added new methods to :py:class:`.Checkpoint` for creating, saving and loading checkpoints for training.
+- Documentation: added a section for how to select the right model and trainer for training.
+- Documentation: added links to glossary terms throughout the documentation.
+- Documentation: added UML class diagrams for the sub-packages in lambeq.
+
+Changed:
+
+- Dependencies: bumped the minimum versions of ``discopy`` and ``torch``.
+- :py:class:`.IQPAnsatz` now post-selects in the Hadamard basis.
+- :py:class:`.PytorchModel` now initialises using ``xavier_uniform``.
+- :py:meth:`.CCGTree.to_json` can now be applied to ``None``, returning ``None``.
+- Several slow imports have been deferred, making lambeq much faster to import for the first time.
+- In :py:meth:`.CCGRule.infer_rule`, direction checks have been made explicit.
+- :py:class:`.UnarySwap` is now specified to be a ``unaryBoxConstructor``.
+- :py:class:`.BobcatParser` has been refactored for easier use with external evaluation tools.
+- Documentation: headings have been organised in the tutorials into subsections.
+
+Fixed:
+
+- Fixed how :py:meth:`.CCGRule.infer_rule` assigns a ``punc + X`` instance: if the result is ``X\X`` the assigned rule is :py:attr:`.CCGRule.CONJUNCTION`, otherwise the rule is :py:attr:`.CCGRule.REMOVE_PUNCTUATION_LEFT` (similarly for punctuation on the right).
+
+Removed:
+
+- Removed unnecessary override of :py:meth:`.Model.from_diagrams` in :py:class:`.NumpyModel`.
+- Removed unnecessary ``kwargs`` parameters from several constructors.
+- Removed unused ``special_cases`` parameter and ``_ob`` method from :py:class:`.CircuitAnsatz`.
+
 .. _rel-0.2.6:
 
 `0.2.6 <https://github.com/CQCL/lambeq/releases/tag/0.2.6>`_

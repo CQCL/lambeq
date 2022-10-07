@@ -20,10 +20,12 @@ Module containing the lambeq checkpoint class.
 """
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Iterator, Mapping
 import os
 import pickle
-from typing import Any, Iterator, Union
+from typing import Any, Union
+
+_StrPathT = Union[str, 'os.PathLike[str]']
 
 
 class Checkpoint(Mapping):
@@ -91,7 +93,7 @@ class Checkpoint(Mapping):
             self.entries[key] = values[key]
 
     @classmethod
-    def from_file(cls, path: Union[str, os.PathLike]) -> Checkpoint:
+    def from_file(cls, path: _StrPathT) -> Checkpoint:
         """Load the checkpoint contents from the file.
 
         Parameters
@@ -114,7 +116,7 @@ class Checkpoint(Mapping):
                                     f'{path}')
         return checkpoint
 
-    def to_file(self, path: Union[str, os.PathLike]) -> None:
+    def to_file(self, path: _StrPathT) -> None:
         """Save entries to a file and deletes the in-memory copy.
 
         Parameters

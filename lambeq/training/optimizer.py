@@ -21,7 +21,8 @@ Module containing the base class for a lambeq optimizer.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Optional
+from collections.abc import Callable, Iterable, Mapping
+from typing import Any, Optional
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -32,8 +33,10 @@ from lambeq.training.model import Model
 class Optimizer(ABC):
     """Optimizer base class."""
 
-    def __init__(self, model: Model, hyperparams: dict[Any, Any],
-                 loss_fn: Callable[[Any, Any], Any],
+    def __init__(self,
+                 model: Model,
+                 hyperparams: dict[Any, Any],
+                 loss_fn: Callable[[Any, Any], float],
                  bounds: Optional[ArrayLike] = None) -> None:
         """Initialise the optimizer base class.
 
@@ -57,7 +60,7 @@ class Optimizer(ABC):
 
     @abstractmethod
     def backward(self,
-                 batch: tuple[list, np.ndarray]) -> float:
+                 batch: tuple[Iterable[Any], np.ndarray]) -> float:
         """Calculate the gradients of the loss function.
 
         The gradient is calculated with respect to the model parameters.
@@ -69,8 +72,8 @@ class Optimizer(ABC):
 
         Returns
         -------
-        Tuple of np.Array and float
-            The model predictions and the calculated loss.
+        float
+            The calculated loss.
 
         """
 
@@ -79,13 +82,13 @@ class Optimizer(ABC):
         """Perform optimisation step."""
 
     @abstractmethod
-    def state_dict(self) -> dict:
+    def state_dict(self) -> dict[str, Any]:
         """Return optimizer states as dictionary."""
 
     @abstractmethod
-    def load_state_dict(self, state: dict) -> None:
+    def load_state_dict(self, state: Mapping[str, Any]) -> None:
         """Load state of the optimizer from the state dictionary."""
 
-    def zero_grad(self):
+    def zero_grad(self) -> None:
         """Reset the gradients to zero."""
         self.gradient *= 0

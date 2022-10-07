@@ -23,8 +23,7 @@ from __future__ import annotations
 __all__ = ['TensorAnsatz', 'MPSAnsatz', 'SpiderAnsatz']
 
 from collections.abc import Mapping
-from functools import reduce
-from typing import Any
+import math
 
 from discopy import rigid, tensor, Ty, Word
 from discopy.rigid import Cup, Spider
@@ -36,7 +35,7 @@ from lambeq.ansatz import BaseAnsatz, Symbol
 class TensorAnsatz(BaseAnsatz):
     """Base class for tensor network ansatz."""
 
-    def __init__(self, ob_map: Mapping[Ty, Dim], **kwargs: Any) -> None:
+    def __init__(self, ob_map: Mapping[Ty, Dim]) -> None:
         """Instantiate a tensor network ansatz.
 
         Parameters
@@ -44,23 +43,18 @@ class TensorAnsatz(BaseAnsatz):
         ob_map : dict
             A mapping from :py:class:`discopy.rigid.Ty` to the dimension
             space it uses in a tensor network.
-        **kwargs : dict
-            Extra parameters for ansatz configuration.
 
         """
         self.ob_map = ob_map
         self.functor = rigid.Functor(
-            ob=self._ob,
+            ob=ob_map,
             ar=self._ar, ar_factory=tensor.Diagram, ob_factory=tensor.Dim)
-
-    def _ob(self, type_: Ty) -> Dim:
-        return Dim().tensor(*[self.ob_map[Ty(t.name)] for t in type_])
 
     def _ar(self, box: rigid.Box) -> tensor.Diagram:
         name = self._summarise_box(box)
-        dom = self._ob(box.dom)
-        cod = self._ob(box.cod)
-        n_params = reduce(lambda x, y: x * y, dom @ cod, 1)
+        dom = self.functor(box.dom)
+        cod = self.functor(box.cod)
+        n_params = math.prod(dom) * math.prod(cod)
         syms = Symbol(name, size=n_params)
         return tensor.Box(box.name, dom, cod, syms)
 
@@ -99,15 +93,13 @@ class MPSAnsatz(TensorAnsatz):
         ob_map = dict(ob_map)
         ob_map[self.BOND_TYPE] = Dim(bond_dim)
 
-        self.ob_map = ob_map
+        super().__init__(ob_map)
+
         self.bond_dim = bond_dim
         self.max_order = max_order
-        self.split_functor = rigid.Functor(ob=lambda ob: ob, ar=self._ar)
-        self.tensor_functor = rigid.Functor(
-            ob=self.ob_map,
-            ar=super()._ar, ar_factory=tensor.Diagram, ob_factory=tensor.Dim)
+        self.split_functor = rigid.Functor(ob=lambda ob: ob, ar=self._split_ar)
 
-    def _ar(self, ar: Word) -> rigid.Diagram:
+    def _split_ar(self, ar: Word) -> rigid.Diagram:
         bond = self.BOND_TYPE
         if len(ar.cod) <= self.max_order:
             return Word(f'{ar.name}_0', ar.cod)
@@ -125,7 +117,7 @@ class MPSAnsatz(TensorAnsatz):
         return rigid.Box.tensor(*boxes) >> rigid.Diagram.tensor(*cups[:-1])
 
     def __call__(self, diagram: rigid.Diagram) -> tensor.Diagram:
-        return self.tensor_functor(self.split_functor(diagram))
+        return self.functor(self.split_functor(diagram))
 
 
 class SpiderAnsatz(TensorAnsatz):
@@ -148,14 +140,12 @@ class SpiderAnsatz(TensorAnsatz):
         if max_order < 2:
             raise ValueError('`max_order` must be at least 2')
 
-        self.ob_map = ob_map
-        self.max_order = max_order
-        self.split_functor = rigid.Functor(ob=lambda ob: ob, ar=self._ar)
-        self.tensor_functor = rigid.Functor(
-            ob=self.ob_map,
-            ar=super()._ar, ar_factory=tensor.Diagram, ob_factory=tensor.Dim)
+        super().__init__(ob_map)
 
-    def _ar(self, ar: Word) -> rigid.Diagram:
+        self.max_order = max_order
+        self.split_functor = rigid.Functor(ob=lambda ob: ob, ar=self._split_ar)
+
+    def _split_ar(self, ar: Word) -> rigid.Diagram:
         if len(ar.cod) <= self.max_order:
             return Word(f'{ar.name}_0', ar.cod)
 
@@ -171,4 +161,4 @@ class SpiderAnsatz(TensorAnsatz):
         return rigid.Diagram.tensor(*boxes) >> rigid.Diagram.tensor(*spiders)
 
     def __call__(self, diagram: rigid.Diagram) -> tensor.Diagram:
-        return self.tensor_functor(self.split_functor(diagram))
+        return self.functor(self.split_functor(diagram))

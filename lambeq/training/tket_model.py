@@ -38,7 +38,7 @@ class TketModel(QuantumModel):
 
     """
 
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, backend_config: dict[str, Any]) -> None:
         """Initialise TketModel based on the `t|ket>` backend.
 
         Other Parameters
@@ -53,12 +53,8 @@ class TketModel(QuantumModel):
             If `backend_config` is not provided or has missing fields.
 
         """
-        if 'backend_config' not in kwargs:
-            raise KeyError('Please provide a backend configuration.')
-
         super().__init__()
 
-        backend_config = kwargs['backend_config']
         fields = ('backend', 'compilation', 'shots')
         missing_fields = [f for f in fields if f not in backend_config]
         if missing_fields:
@@ -66,12 +62,13 @@ class TketModel(QuantumModel):
                            f'Missing arguments: {missing_fields}.')
         self.backend_config = backend_config
 
-    def _make_lambda(self, diagram: Diagram) -> Callable[[Any], Any]:
+    def _make_lambda(self, diagram: Diagram) -> Callable[..., Any]:
         """Measure and lambdify diagrams."""
         measured = diagram >> Id().tensor(*[Measure()] * len(diagram.cod))
-        return measured.lambdify(*self.symbols)
+        ret: Callable = measured.lambdify(*self.symbols)
+        return ret
 
-    def _randint(self, low=-1 << 63, high=(1 << 63)-1):
+    def _randint(self, low: int = -1 << 63, high: int = (1 << 63)-1) -> int:
         return np.random.randint(low, high, dtype=np.int64)
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> np.ndarray:

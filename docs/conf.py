@@ -46,7 +46,8 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'discopy': ("https://discopy.readthedocs.io/en/main/", None)
+    'discopy': ("https://discopy.readthedocs.io/en/main/", None),
+    'pennylane': ("https://pennylane.readthedocs.io/en/stable/", None),
 }
 
 autodoc_default_options = {
@@ -74,6 +75,9 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
+html_theme_options = {
+  'navigation_depth': -1
+}
 html_context = {
   'display_github': True,
   'github_user': 'CQCL',
@@ -89,6 +93,10 @@ html_static_path = ['_static']
 html_logo = '_static/images/lambeq_logo.png'
 html_favicon = '_static/images/favicon.ico'
 
+# CSS for allowing text wrapping within table cells
+html_css_files = [
+    'css/table-wrap.css',
+]
 
 def autodoc_skip_member(app, what, name, obj, skip, options):
     if name == 'Symbol':

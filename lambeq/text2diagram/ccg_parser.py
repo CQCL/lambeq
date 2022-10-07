@@ -17,8 +17,9 @@ from __future__ import annotations
 __all__ = ['CCGParser']
 
 from abc import abstractmethod
+from collections.abc import Iterable
 import sys
-from typing import Any, Optional
+from typing import Optional
 
 from discopy import Diagram
 from tqdm.autonotebook import tqdm
@@ -37,8 +38,8 @@ class CCGParser(Reader):
 
     @abstractmethod
     def __init__(self,
-                 verbose: str = VerbosityLevel.SUPPRESS.value,
-                 **kwargs: Any) -> None:
+                 root_cats: Optional[Iterable[str]] = None,
+                 verbose: str = VerbosityLevel.SUPPRESS.value) -> None:
         """Initialise the CCG parser."""
 
     @abstractmethod

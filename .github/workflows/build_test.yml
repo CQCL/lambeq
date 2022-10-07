@@ -54,15 +54,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Determine if depccg tests should be run
-      # only test depccg if it is explicitly changed, since it is very slow
-      # (also ignore it on 3.10 because it doesn't install properly)
-      id: depccg-enabled
-      continue-on-error: true  # this is expected to fail but the job should still succeed
-      run: >
-        ${{ matrix.python-version != '3.10' }}
-        && git fetch --depth=1 origin ${{ github.base_ref || github.event.before }}:before
-        && git diff --name-only before | grep depccg
     - name: Locate pip cache
       id: loc-pip-cache
       run: echo "::set-output name=dir::$(pip cache dir)"
@@ -83,23 +74,6 @@ jobs:
       run: python -c 'import lambeq'
     - name: Install extra dependencies and tester
       run: pip install .[extras] .[test]
-    - name: Install depccg and locate depccg pre-trained model cache
-      id: loc-depccg-cache
-      if: steps.depccg-enabled.outcome == 'success'
-      run: |
-        pip install cython  # must be installed before depccg
-        pip install depccg==2.0.3.2
-        echo "::set-output name=dir::$(python -c 'from depccg.instance_models import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
-    - name: Restore depccg pre-trained model from cache
-      id: depccg-cache
-      if: steps.depccg-enabled.outcome == 'success'
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.loc-depccg-cache.outputs.dir }}
-        key: depccg
-    - name: Download depccg pre-trained model if needed
-      if: steps.depccg-cache.outputs.cache-hit == 'false'
-      run: python -c 'import tarfile, urllib;from depccg.instance_models import MODEL_DIRECTORY;tarfile.open(urllib.request.urlretrieve("https://qnlp.cambridgequantum.com/models/tri_headfirst.tar.gz")[0]).extractall(MODEL_DIRECTORY)'
     - name: Locate bobcat pre-trained model cache
       id: loc-bobcat-cache
       run: echo "::set-output name=dir::$(python -c 'from lambeq.text2diagram.bobcat_parser import get_model_dir; print(get_model_dir("bert"))')"
@@ -117,6 +91,31 @@ jobs:
         --durations=50
         --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py
         --ignore=docs/extract_code_cells.py
+    - name: Determine if depccg tests should be run
+      # only test depccg if it is explicitly changed, since it is very slow
+      id: depccg-enabled
+      continue-on-error: true  # this is expected to fail but the job should still succeed
+      run: >
+        git fetch --depth=1 origin ${{ github.base_ref || github.event.before }}:before
+        && git diff --name-only before | grep depccg
+    - name: Install depccg and locate depccg pre-trained model cache
+      id: loc-depccg-cache
+      if: steps.depccg-enabled.outcome == 'success'
+      run: |
+        pip install cython  # must be installed before depccg
+        pip install depccg==2.0.3.2
+        echo "::set-output name=dir::$(python -c 'from depccg.instance_models import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
+        pip install lambeq  # override dependency conflicts
+    - name: Restore depccg pre-trained model from cache
+      id: depccg-cache
+      if: steps.depccg-enabled.outcome == 'success'
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.loc-depccg-cache.outputs.dir }}
+        key: depccg
+    - name: Download depccg pre-trained model if needed
+      if: steps.depccg-cache.outputs.cache-hit == 'false'
+      run: python -c 'import tarfile, urllib;from depccg.instance_models import MODEL_DIRECTORY;tarfile.open(urllib.request.urlretrieve("https://qnlp.cambridgequantum.com/models/tri_headfirst.tar.gz")[0]).extractall(MODEL_DIRECTORY)'
     - name: Test DepCCGParser
       if: steps.depccg-enabled.outcome == 'success'
       continue-on-error: true

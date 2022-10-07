@@ -23,7 +23,7 @@ from typing import Any, Dict, Optional, Union
 from typing import overload
 
 from discopy import rigid, Word
-from discopy.biclosed import biclosed2rigid_ob
+from discopy.biclosed import biclosed2rigid_ob, unaryBoxConstructor
 from discopy.biclosed import Box, Diagram, Functor, Id, Over, Ty, Under
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
@@ -35,7 +35,7 @@ from lambeq.text2diagram.ccg_types import CCGAtomicType
 _JSONDictT = Dict[str, Any]
 
 
-class UnarySwap(Box):
+class UnarySwap(unaryBoxConstructor('cod'), Box):  # type: ignore[misc]
     """Unary Swap box, for unary rules that change the type direction.
 
     For example, the unary rule `S/NP -> NP\\NP` is handled by
@@ -167,12 +167,38 @@ class CCGTree:
         if text and not children:
             self.rule = CCGRule.LEXICAL
 
+        self.is_leaf = len(self.children) == 0
+        self.is_unary = len(self.children) == 1
+        self.is_binary = len(self.children) == 2
+
     @property
     def text(self) -> str:
         """The word or phrase associated to the tree."""
         if self._text is None:
             self._text = ' '.join(child.text for child in self.children)
         return self._text
+
+    @property
+    def child(self) -> CCGTree:
+        """Get the child of a unary tree."""
+        if not self.is_unary:
+            raise ValueError('Cannot get the child of a non-unary tree.')
+        return self.children[0]
+
+    @property
+    def left(self) -> CCGTree:
+        """Get the left child of a binary tree."""
+        if not self.is_binary:
+            raise ValueError('Cannot get the left child of a non-binary tree.')
+        return self.children[0]
+
+    @property
+    def right(self) -> CCGTree:
+        """Get the right child of a binary tree."""
+        if not self.is_binary:
+            raise ValueError(
+                    'Cannot get the right child of a non-binary tree.')
+        return self.children[1]
 
     @overload
     @classmethod
@@ -239,6 +265,9 @@ class CCGTree:
 
     def to_json(self) -> _JSONDictT:
         """Convert tree into JSON form."""
+        if self is None:  # Allows doing CCGTree.to_json(X) for optional X
+            return None  # type: ignore[unreachable]
+
         data: _JSONDictT = {'type': biclosed2str(self.biclosed_type)}
         if self.rule != CCGRule.UNKNOWN:
             data['rule'] = self.rule.value

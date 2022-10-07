@@ -29,6 +29,8 @@ from discopy.rigid import Ty
 class AtomicType(Ty, Enum):
     """Standard pregroup atomic types mapping to their rigid type."""
 
+    _value_: str
+
     def __new__(cls, value: str) -> Ty:
         return object.__new__(Ty)
 

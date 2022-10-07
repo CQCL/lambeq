@@ -21,24 +21,17 @@ Module containing the base class for a lambeq model.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from collections.abc import Collection
 import os
-from typing import Any, Protocol, Union
+from typing import Any, Union
 
 from discopy.tensor import Diagram
 from sympy import default_sort_key
 
+from lambeq.ansatz.base import Symbol
 from lambeq.training.checkpoint import Checkpoint
 
 _StrPathT = Union[str, 'os.PathLike[str]']
-
-
-class SizedIterable(Protocol):
-    """Custom type for a data that has a length and is iterable."""
-    def __len__(self):
-        pass    # pragma: no cover
-
-    def __iter__(self):
-        pass    # pragma: no cover
 
 
 class Model(ABC):
@@ -49,7 +42,7 @@ class Model(ABC):
     symbols : list of symbols
         A sorted list of all :py:class:`Symbols <.Symbol>` occuring in
         the data.
-    weights : SizedIterable
+    weights : Collection
         A data structure containing the numeric values of
         the model's parameters.
 
@@ -57,8 +50,8 @@ class Model(ABC):
 
     def __init__(self) -> None:
         """Initialise an instance of :py:class:`Model` base class."""
-        self.symbols: list = []
-        self.weights: SizedIterable = []
+        self.symbols: list[Symbol] = []
+        self.weights: Collection = []
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
         return self.forward(*args, **kwds)
@@ -68,7 +61,6 @@ class Model(ABC):
         """Initialise the weights of the model."""
 
     @classmethod
-    @abstractmethod
     def from_checkpoint(cls,
                         checkpoint_path: _StrPathT,
                         **kwargs: Any) -> Model:
@@ -88,26 +80,67 @@ class Model(ABC):
 
         """
 
-    def make_checkpoint(self, checkpoint_path: _StrPathT) -> None:
-        """Save the model weights and symbols to a training checkpoint.
+        model = cls(**kwargs)
+        checkpoint = Checkpoint.from_file(checkpoint_path)
+        model._load_checkpoint(checkpoint)
+        return model
+
+    @abstractmethod
+    def _load_checkpoint(self, checkpoint: Checkpoint) -> None:
+        """Load the model weights and symbols from a lambeq
+        :py:class:`.Checkpoint`.
 
         Parameters
         ----------
-        checkpoint_path : str or `os.PathLike`
-            Path that points to the checkpoint file. If
-            the file does not exist, it will be created.
-
-        Raises
-        ------
-        FileNotFoundError
-            If the directory in which the checkpoint file is to be
-            saved does not exist.
+        checkpoint : Checkpoint
+            :py:class:`.Checkpoint` containing the model weights,
+            symbols and additional information.
 
         """
-        checkpoint = Checkpoint()
-        checkpoint.add_many({'model_symbols': self.symbols,
-                             'model_weights': self.weights})
+
+    @abstractmethod
+    def _make_checkpoint(self) -> Checkpoint:
+        """Create checkpoint that contains the model weights and symbols.
+
+        Returns
+        -------
+        Checkpoint
+            :py:class:`.Checkpoint` containing the model weights,
+            symbols and additional information.
+
+        """
+
+    def save(self, checkpoint_path: _StrPathT) -> None:
+        """Create a lambeq :py:class:`.Checkpoint` and save to a path.
+
+        Example:
+        >>> from lambeq import PytorchModel
+        >>> model = PytorchModel()
+        >>> model.save('my_checkpoint.lt')
+
+        Parameters
+        ----------
+        checkpoint_path : str or PathLike
+            Path that points to the checkpoint file.
+
+        """
+        checkpoint = self._make_checkpoint()
         checkpoint.to_file(checkpoint_path)
+
+    def load(self, checkpoint_path: _StrPathT) -> None:
+        """Load model data from a path pointing to a lambeq checkpoint.
+
+        Checkpoints that are created by a lambeq :py:class:`Trainer`
+        usually have the extension `.lt`.
+
+        Parameters
+        ----------
+        checkpoint_path : str or PathLike
+            Path that points to the checkpoint file.
+
+        """
+        checkpoint = Checkpoint.from_file(checkpoint_path)
+        self._load_checkpoint(checkpoint)
 
     @abstractmethod
     def get_diagram_output(self, diagrams: list[Diagram]) -> Any:
@@ -125,7 +158,7 @@ class Model(ABC):
         """The forward pass of the model."""
 
     @classmethod
-    def from_diagrams(cls, diagrams: list[Diagram], **kwargs) -> Model:
+    def from_diagrams(cls, diagrams: list[Diagram], **kwargs: Any) -> Model:
         """Build model from a list of
         :py:class:`Diagrams <discopy.tensor.Diagram>`.
 
@@ -140,6 +173,9 @@ class Model(ABC):
             Dictionary containing the backend configuration for the
             :py:class:`TketModel`. Must include the fields `'backend'`,
             `'compilation'` and `'shots'`.
+        use_jit : bool, default: False
+            Whether to use JAX's Just-In-Time compilation in
+            :py:class:`NumpyModel`.
 
         """
         model = cls(**kwargs)

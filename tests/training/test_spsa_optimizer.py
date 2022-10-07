@@ -36,6 +36,10 @@ class ModelDummy(Model):
         pass
     def get_diagram_output(self):
         pass
+    def _make_checkpoint(self):
+        pass
+    def _load_checkpoint(self):
+        pass
     def forward(self, x):
         return self.weights.sum()
 

@@ -20,17 +20,21 @@ A trainer that wraps the training loop of a :py:class:`QuantumModel`
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Mapping
 import os
-from typing import Any, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 import numpy as np
 
 from lambeq.core.globals import VerbosityLevel
+from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
 from lambeq.training.trainer import Trainer
+
+_StrPathT = Union[str, 'os.PathLike[str]']
+_EvalFuncT = Callable[[Any, Any], Any]
 
 
 class QuantumTrainer(Trainer):
@@ -41,14 +45,16 @@ class QuantumTrainer(Trainer):
     def __init__(
             self,
             model: QuantumModel,
-            loss_function: Callable,
+            loss_function: Callable[..., float],
             epochs: int,
             optimizer: type[Optimizer],
             optim_hyperparams: dict[str, float],
-            evaluate_functions: Optional[Mapping[str, Callable]] = None,
+            *,
+            optimizer_args: Optional[dict[str, Any]] = None,
+            evaluate_functions: Optional[Mapping[str, _EvalFuncT]] = None,
             evaluate_on_train: bool = True,
             use_tensorboard: bool = False,
-            log_dir: Optional[Union[str, os.PathLike]] = None,
+            log_dir: Optional[_StrPathT] = None,
             from_checkpoint: bool = False,
             verbose: str = VerbosityLevel.TEXT.value,
             seed: Optional[int] = None) -> None:
@@ -64,6 +70,10 @@ class QuantumTrainer(Trainer):
             Number of training epochs
         optimizer : Optimizer
             An optimizer of type :py:class:`lambeq.training.Optimizer`.
+        optim_hyperparams : dict of str to float
+            The hyperparameters to be used by the optimizer.
+        optimizer_args : dict of str to Any, optional
+            Any extra arguments to pass to the optimizer.
         evaluate_functions : mapping of str to callable, optional
             Mapping of evaluation metric functions from their names.
             Structure [{"metric": func}].
@@ -101,29 +111,32 @@ class QuantumTrainer(Trainer):
 
         self.optimizer = optimizer(self.model,
                                    optim_hyperparams,
-                                   self.loss_function)
+                                   self.loss_function,
+                                   **(optimizer_args or {}))
 
-    def _add_extra_chkpoint_info(self) -> Mapping[str, Any]:
+    def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
         """Add any additional information to the training checkpoint.
 
         These might include model-specific information like the random
         state of the backend or the state of the optimizer.
 
-        Returns
-        -------
-        mapping of str to any
-            Mapping containing the extra information to save.
+        Use `checkpoint.add_many()` to add multiple items.
+
+        Parameters
+        ----------
+        checkpoint : :py:class:`.Checkpoint`
+            The checkpoint to add information to.
 
         """
-        return {'numpy_random_state': np.random.get_state(),
-                'optimizer_state_dict': self.optimizer.state_dict()}
+        checkpoint.add_many(
+            {'numpy_random_state': np.random.get_state(),
+             'optimizer_state_dict': self.optimizer.state_dict()})
 
-    def _load_extra_chkpoint_info(self,
-                                  checkpoint: Mapping[str, Any]) -> None:
+    def _load_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
         """Load additional checkpoint information.
 
         This includes data previously added by
-        `_add_extra_chkpoint_info()`.
+        `_add_extra_checkpoint_info()`.
 
         Parameters
         ----------
@@ -132,8 +145,7 @@ class QuantumTrainer(Trainer):
 
         """
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-        if self.seed is not None:
-            np.random.set_state(checkpoint['numpy_random_state'])
+        np.random.set_state(checkpoint['numpy_random_state'])
 
     def training_step(
             self,

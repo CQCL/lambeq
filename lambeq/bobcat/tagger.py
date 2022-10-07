@@ -94,7 +94,7 @@ class ChartClassifierConfig(BertConfig):
 
 
 class BertForChartClassification(BertPreTrainedModel):
-    config_class = ChartClassifierConfig  # type: ignore
+    config_class = ChartClassifierConfig
 
     def __init__(self, config: ChartClassifierConfig) -> None:
         super().__init__(config)
@@ -310,6 +310,7 @@ class Tagger:
                        inputs: Sequence[Sequence[str]],
                        word_mask: bool = False) -> dict[str, Any]:
         """Prepare a batch of sentences for parsing."""
+        encodings: dict[str, Any]
         encodings = self.tokenizer(inputs,
                                    is_split_into_words=True,
                                    return_offsets_mapping=word_mask,

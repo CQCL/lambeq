@@ -26,16 +26,16 @@ calculations are exact i.e. noiseless and not shot-based.
 """
 from __future__ import annotations
 
+from collections.abc import Callable, Iterable
 import pickle
-from typing import Any, Callable
+from typing import Any
 
 from discopy import Tensor
 from discopy.tensor import Diagram
 import numpy
-from sympy import default_sort_key, lambdify
-import tensornetwork as tn
+from numpy.typing import ArrayLike
+from sympy import lambdify
 
-from lambeq.training.model import SizedIterable
 from lambeq.training.quantum_model import QuantumModel
 
 
@@ -43,7 +43,7 @@ class NumpyModel(QuantumModel):
     """A lambeq model for an exact classical simulation of a
     quantum pipeline."""
 
-    def __init__(self, use_jit: bool = False, **kwargs) -> None:
+    def __init__(self, use_jit: bool = False) -> None:
         """Initialise an NumpyModel.
 
         Parameters
@@ -54,35 +54,7 @@ class NumpyModel(QuantumModel):
         """
         super().__init__()
         self.use_jit = use_jit
-        self.lambdas: dict[Diagram, Callable] = {}
-
-    @classmethod
-    def from_diagrams(cls,
-                      diagrams: list[Diagram],
-                      use_jit: bool = False,
-                      **kwargs) -> NumpyModel:
-        """Build model from a list of
-        :py:class:`Diagrams <discopy.tensor.Diagram>`
-
-        Parameters
-        ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
-            to be evaluated.
-        use_jit : bool, default: False
-            Whether to use JAX's Just-In-Time compilation.
-
-        Returns
-        -------
-        NumpyModel
-            The NumPy model initialised from the diagrams.
-
-        """
-        model = cls(use_jit=use_jit, **kwargs)
-        model.symbols = sorted(
-            {sym for circ in diagrams for sym in circ.free_symbols},
-            key=default_sort_key)
-        return model
+        self.lambdas: dict[Diagram, Callable[..., Any]] = {}
 
     def _get_lambda(self, diagram: Diagram) -> Callable[[Any], Any]:
         """Get lambda function that evaluates the provided diagram.
@@ -94,13 +66,15 @@ class NumpyModel(QuantumModel):
 
         """
         from jax import jit
+        import tensornetwork as tn
+
         if not self.symbols:
             raise ValueError('Symbols not initialised. Instantiate through '
                              '`NumpyModel.from_diagrams()`.')
         if diagram in self.lambdas:
             return self.lambdas[diagram]
 
-        def diagram_output(*x):
+        def diagram_output(*x: ArrayLike) -> ArrayLike:
             with Tensor.backend('jax'), tn.DefaultBackend('jax'):
                 sub_circuit = self._fast_subs([diagram], x)[0]
                 result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
@@ -114,7 +88,7 @@ class NumpyModel(QuantumModel):
 
     def _fast_subs(self,
                    diagrams: list[Diagram],
-                   weights: SizedIterable) -> list[Diagram]:
+                   weights: Iterable[ArrayLike]) -> list[Diagram]:
         """Substitute weights into a list of parameterised circuit."""
         parameters = {k: v for k, v in zip(self.symbols, weights)}
         diagrams = pickle.loads(pickle.dumps(diagrams))  # does fast deepcopy
@@ -158,6 +132,8 @@ class NumpyModel(QuantumModel):
             Resulting array.
 
         """
+        import tensornetwork as tn
+
         if len(self.weights) == 0 or not self.symbols:
             raise ValueError('Weights and/or symbols not initialised. '
                              'Instantiate through '

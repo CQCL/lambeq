@@ -24,7 +24,7 @@ from lambeq.bobcat.grammar import Grammar
 from lambeq.bobcat.lexicon import Atom, Category
 from lambeq.bobcat.lexicon import CATEGORIES
 from lambeq.bobcat.rules import Rules
-from lambeq.bobcat.tree import Lexical, ParseTree
+from lambeq.bobcat.tree import Dependency, Lexical, ParseTree
 
 SpanT = Tuple[int, int]
 
@@ -257,34 +257,46 @@ class ParseResult:
                                                              list[ParseTree]]:
         return self.root[index]
 
-    def c_line(self) -> str:  # pragma: no cover
-        ret = '<c>'
-        for word, tag in zip(self.words, self._output_tags):
-            ret += f' {word}|UNK|{tag}'.replace('[X]', '')
-        return ret
+    def deps(
+        self,
+        tree: Optional[ParseTree] = None
+    ) -> tuple[list[Dependency], list[str]]:  # pragma: no cover
+        """Get the dependencies and output tags of the parse.
 
-    def deps(self) -> str:  # pragma: no cover
-        return self._deps(self.root[0])
+        If `tree` is not specified, then this looks for the best scoring
+        tree at the root of the parse; if there is none, then it
+        amalgamates results from the best-scoring trees in the chart.
 
-    def _deps(self, tree: ParseTree) -> str:  # pragma: no cover
-        output = ''.join(f'{dep}\n' for dep in tree.filled_deps)
+        """
 
+        if tree is None:
+            try:
+                tree = self.root[0]
+            except IndexError:
+                return self._skim_deps()
+
+        deps = tree.filled_deps.copy()
+        tags = []
         if tree.left:
-            output += self._deps(tree.left)
-            if tree.right:
-                output += self._deps(tree.right)
+            for child in (tree.left, tree.right):
+                if child:
+                    child_deps, child_tags = self.deps(child)
+                    deps += child_deps
+                    tags += child_tags
         else:
-            self._output_tags.append(tree.cat)
-        return output
+            tags.append(str(tree.cat).replace('[X]', ''))
+        return deps, tags
 
-    def skim_deps(self,
-                  start: int = 0,
-                  end: Optional[int] = None) -> str:  # pragma: no cover
+    def _skim_deps(
+        self,
+        start: int = 0,
+        end: Optional[int] = None
+    ) -> tuple[list[Dependency], list[str]]:  # pragma: no cover
         if end is None:
             end = len(self.words) - 1
 
         if start > end:
-            return ''
+            return [], []
 
         result_start = result_end = max_tree = None
         for span_length in reversed(range(end + 1 - start)):
@@ -305,9 +317,11 @@ class ParseResult:
             if max_tree:
                 break
 
-        return (self.skim_deps(start, result_start - 1)
-                + self._deps(max_tree)
-                + self.skim_deps(result_end + 1, end))
+        left_deps, left_tags = self._skim_deps(start, result_start - 1)
+        tree_deps, tree_tags = self.deps(max_tree)
+        right_deps, right_tags = self._skim_deps(result_end + 1, end)
+        return (left_deps + tree_deps + right_deps,
+                left_tags + tree_tags + right_tags)
 
 
 class ChartParser:

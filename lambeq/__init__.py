@@ -29,7 +29,10 @@ __all__ = [
         'CircuitAnsatz',
         'IQPAnsatz',
         'MPSAnsatz',
+        'Sim14Ansatz',
+        'Sim15Ansatz',
         'SpiderAnsatz',
+        'StronglyEntanglingAnsatz',
         'Symbol',
         'TensorAnsatz',
 
@@ -98,7 +101,8 @@ __all__ = [
 from lambeq import (ansatz, core, pregroups, rewrite,
                     text2diagram, tokeniser, training)
 from lambeq.ansatz import (BaseAnsatz, CircuitAnsatz, IQPAnsatz, MPSAnsatz,
-                           SpiderAnsatz, Symbol, TensorAnsatz)
+                           Sim14Ansatz, Sim15Ansatz, SpiderAnsatz,
+                           StronglyEntanglingAnsatz, Symbol, TensorAnsatz)
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.types import AtomicType
 from lambeq.pregroups import (create_pregroup_diagram, diagram2str,
@@ -117,8 +121,8 @@ from lambeq.text2diagram import (
         stairs_reader, word_sequence_reader)
 from lambeq.tokeniser import Tokeniser, SpacyTokeniser
 from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
-                             Model, NumpyModel, PytorchModel, QuantumModel,
-                             TketModel, Trainer, PytorchTrainer,
+                             Model, NumpyModel, PytorchModel,
+                             QuantumModel, TketModel, Trainer, PytorchTrainer,
                              QuantumTrainer)
 from lambeq.version import (version as __version__,
                             version_tuple as __version_info__)
