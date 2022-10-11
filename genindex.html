@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>Index &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -210,7 +213,13 @@
 </li>
         <li><a href="lambeq.ansatz.html#lambeq.ansatz.MPSAnsatz.__init__">(lambeq.ansatz.MPSAnsatz method)</a>
 </li>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.Sim14Ansatz.__init__">(lambeq.ansatz.Sim14Ansatz method)</a>
+</li>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.Sim15Ansatz.__init__">(lambeq.ansatz.Sim15Ansatz method)</a>
+</li>
         <li><a href="lambeq.ansatz.html#lambeq.ansatz.SpiderAnsatz.__init__">(lambeq.ansatz.SpiderAnsatz method)</a>
+</li>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.StronglyEntanglingAnsatz.__init__">(lambeq.ansatz.StronglyEntanglingAnsatz method)</a>
 </li>
         <li><a href="lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz.__init__">(lambeq.ansatz.TensorAnsatz method)</a>
 </li>
@@ -292,6 +301,10 @@
 </li>
         <li><a href="root-api.html#lambeq.Rewriter.__init__">(lambeq.Rewriter method)</a>
 </li>
+        <li><a href="root-api.html#lambeq.Sim14Ansatz.__init__">(lambeq.Sim14Ansatz method)</a>
+</li>
+        <li><a href="root-api.html#lambeq.Sim15Ansatz.__init__">(lambeq.Sim15Ansatz method)</a>
+</li>
         <li><a href="root-api.html#lambeq.SimpleRewriteRule.__init__">(lambeq.SimpleRewriteRule method)</a>
 </li>
         <li><a href="root-api.html#lambeq.SpacyTokeniser.__init__">(lambeq.SpacyTokeniser method)</a>
@@ -299,6 +312,8 @@
         <li><a href="root-api.html#lambeq.SpiderAnsatz.__init__">(lambeq.SpiderAnsatz method)</a>
 </li>
         <li><a href="root-api.html#lambeq.SPSAOptimizer.__init__">(lambeq.SPSAOptimizer method)</a>
+</li>
+        <li><a href="root-api.html#lambeq.StronglyEntanglingAnsatz.__init__">(lambeq.StronglyEntanglingAnsatz method)</a>
 </li>
         <li><a href="root-api.html#lambeq.TensorAnsatz.__init__">(lambeq.TensorAnsatz method)</a>
 </li>
@@ -615,6 +630,12 @@
         <li><a href="lambeq.training.html#lambeq.training.Checkpoint">(class in lambeq.training)</a>
 </li>
       </ul></li>
+      <li><a href="root-api.html#lambeq.CCGTree.child">child (lambeq.CCGTree property)</a>
+
+      <ul>
+        <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree.child">(lambeq.text2diagram.CCGTree property)</a>
+</li>
+      </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.children">children() (lambeq.bobcat.BertForChartClassification method)</a>
 
       <ul>
@@ -623,6 +644,12 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="lambeq.ansatz.html#lambeq.ansatz.StronglyEntanglingAnsatz.circuit">circuit() (lambeq.ansatz.StronglyEntanglingAnsatz method)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.StronglyEntanglingAnsatz.circuit">(lambeq.StronglyEntanglingAnsatz method)</a>
+</li>
+      </ul></li>
       <li><a href="root-api.html#lambeq.CircuitAnsatz">CircuitAnsatz (class in lambeq)</a>
 
       <ul>
@@ -880,10 +907,6 @@
       <li><a href="root-api.html#lambeq.Model.from_checkpoint">from_checkpoint() (lambeq.Model class method)</a>
 
       <ul>
-        <li><a href="root-api.html#lambeq.PytorchModel.from_checkpoint">(lambeq.PytorchModel class method)</a>
-</li>
-        <li><a href="root-api.html#lambeq.QuantumModel.from_checkpoint">(lambeq.QuantumModel class method)</a>
-</li>
         <li><a href="lambeq.training.html#lambeq.training.Model.from_checkpoint">(lambeq.training.Model class method)</a>
 </li>
         <li><a href="lambeq.training.html#lambeq.training.NumpyModel.from_checkpoint">(lambeq.training.NumpyModel class method)</a>
@@ -898,8 +921,6 @@
       <li><a href="root-api.html#lambeq.Model.from_diagrams">from_diagrams() (lambeq.Model class method)</a>
 
       <ul>
-        <li><a href="root-api.html#lambeq.NumpyModel.from_diagrams">(lambeq.NumpyModel class method)</a>
-</li>
         <li><a href="lambeq.training.html#lambeq.training.Model.from_diagrams">(lambeq.training.Model class method)</a>
 </li>
         <li><a href="lambeq.training.html#lambeq.training.NumpyModel.from_diagrams">(lambeq.training.NumpyModel class method)</a>
@@ -1007,6 +1028,8 @@
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.get_input_embeddings">get_input_embeddings() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
+      <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.get_memory_footprint">get_memory_footprint() (lambeq.bobcat.BertForChartClassification method)</a>
+</li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.get_output_embeddings">get_output_embeddings() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.get_parameter">get_parameter() (lambeq.bobcat.BertForChartClassification method)</a>
@@ -1047,10 +1070,18 @@
         <li><a href="lambeq.training.html#lambeq.training.PytorchModel.half">(lambeq.training.PytorchModel method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="root-api.html#lambeq.VerbosityLevel.has_value">has_value() (lambeq.VerbosityLevel class method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="lambeq.text2diagram.html#term-HEIGHT"><strong>HEIGHT</strong></a>, <a href="root-api.html#term-HEIGHT"><strong>[1]</strong></a>
+
+      <ul>
+        <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReaderMode.HEIGHT">(lambeq.text2diagram.TreeReaderMode attribute)</a>
+</li>
+        <li><a href="root-api.html#lambeq.TreeReaderMode.HEIGHT">(lambeq.TreeReaderMode attribute)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -1129,6 +1160,8 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="root-api.html#lambeq.NumpyModel.lambdas">lambdas (lambeq.NumpyModel attribute)</a>
+</li>
       <li>
     lambeq
 
@@ -1185,16 +1218,22 @@
         <li><a href="lambeq.training.html#module-lambeq.training">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.ParseTree.left">left (lambeq.bobcat.ParseTree attribute)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.CCGTree.left">(lambeq.CCGTree property)</a>
 </li>
+        <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree.left">(lambeq.text2diagram.CCGTree property)</a>
+</li>
+      </ul></li>
       <li><a href="root-api.html#lambeq.CCGRule.LEXICAL">LEXICAL (lambeq.CCGRule attribute)</a>
 
       <ul>
         <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.CCGRule.LEXICAL">(lambeq.text2diagram.CCGRule attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="root-api.html#lambeq.LinearReader">LinearReader (class in lambeq)</a>
 
       <ul>
@@ -1202,7 +1241,21 @@
 </li>
       </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Grammar.load">load() (lambeq.bobcat.Grammar class method)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.Model.load">(lambeq.Model method)</a>
 </li>
+        <li><a href="lambeq.training.html#lambeq.training.Model.load">(lambeq.training.Model method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.NumpyModel.load">(lambeq.training.NumpyModel method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.PytorchModel.load">(lambeq.training.PytorchModel method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.QuantumModel.load">(lambeq.training.QuantumModel method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.TketModel.load">(lambeq.training.TketModel method)</a>
+</li>
+      </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.load_state_dict">load_state_dict() (lambeq.bobcat.BertForChartClassification method)</a>
 
       <ul>
@@ -1237,22 +1290,6 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.main_input_name">main_input_name (lambeq.bobcat.BertForChartClassification attribute)</a>
 </li>
-      <li><a href="root-api.html#lambeq.Model.make_checkpoint">make_checkpoint() (lambeq.Model method)</a>
-
-      <ul>
-        <li><a href="root-api.html#lambeq.PytorchModel.make_checkpoint">(lambeq.PytorchModel method)</a>
-</li>
-        <li><a href="lambeq.training.html#lambeq.training.Model.make_checkpoint">(lambeq.training.Model method)</a>
-</li>
-        <li><a href="lambeq.training.html#lambeq.training.NumpyModel.make_checkpoint">(lambeq.training.NumpyModel method)</a>
-</li>
-        <li><a href="lambeq.training.html#lambeq.training.PytorchModel.make_checkpoint">(lambeq.training.PytorchModel method)</a>
-</li>
-        <li><a href="lambeq.training.html#lambeq.training.QuantumModel.make_checkpoint">(lambeq.training.QuantumModel method)</a>
-</li>
-        <li><a href="lambeq.training.html#lambeq.training.TketModel.make_checkpoint">(lambeq.training.TketModel method)</a>
-</li>
-      </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Category.matches">matches() (lambeq.bobcat.Category method)</a>
 
       <ul>
@@ -1283,8 +1320,6 @@
         <li><a href="lambeq.training.html#lambeq.training.Model">(class in lambeq.training)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="root-api.html#lambeq.PytorchTrainer.model">model (lambeq.PytorchTrainer attribute)</a>
 
       <ul>
@@ -1299,6 +1334,8 @@
         <li><a href="lambeq.training.html#lambeq.training.SPSAOptimizer.model">(lambeq.training.SPSAOptimizer attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     module
 
@@ -1372,6 +1409,8 @@
       </ul></li>
       <li><a href="glossary.html#term-natural-language-processing-NLP"><strong>natural language processing (NLP)</strong></a>
 </li>
+      <li><a href="glossary.html#term-NISQ"><strong>NISQ</strong></a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.text2diagram.html#term-NO_TYPE"><strong>NO_TYPE</strong></a>, <a href="root-api.html#term-NO_TYPE"><strong>[1]</strong></a>
@@ -1382,6 +1421,8 @@
         <li><a href="root-api.html#lambeq.TreeReaderMode.NO_TYPE">(lambeq.TreeReaderMode attribute)</a>
 </li>
       </ul></li>
+      <li><a href="glossary.html#term-noise"><strong>noise</strong></a>
+</li>
       <li><a href="root-api.html#lambeq.AtomicType.NOUN">NOUN (lambeq.AtomicType attribute)</a>
 
       <ul>
@@ -1412,6 +1453,14 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz.ob_size">ob_size() (lambeq.ansatz.CircuitAnsatz method)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.CircuitAnsatz.ob_size">(lambeq.CircuitAnsatz method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="root-api.html#lambeq.Optimizer">Optimizer (class in lambeq)</a>
 
       <ul>
@@ -1430,6 +1479,28 @@
         <li><a href="lambeq.training.html#lambeq.training.PytorchModel.parameters">(lambeq.training.PytorchModel method)</a>
 </li>
       </ul></li>
+      <li><a href="lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz.params_shape">params_shape() (lambeq.ansatz.CircuitAnsatz method)</a>
+
+      <ul>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz.params_shape">(lambeq.ansatz.IQPAnsatz method)</a>
+</li>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.Sim14Ansatz.params_shape">(lambeq.ansatz.Sim14Ansatz method)</a>
+</li>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.Sim15Ansatz.params_shape">(lambeq.ansatz.Sim15Ansatz method)</a>
+</li>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.StronglyEntanglingAnsatz.params_shape">(lambeq.ansatz.StronglyEntanglingAnsatz method)</a>
+</li>
+        <li><a href="root-api.html#lambeq.CircuitAnsatz.params_shape">(lambeq.CircuitAnsatz method)</a>
+</li>
+        <li><a href="root-api.html#lambeq.IQPAnsatz.params_shape">(lambeq.IQPAnsatz method)</a>
+</li>
+        <li><a href="root-api.html#lambeq.Sim14Ansatz.params_shape">(lambeq.Sim14Ansatz method)</a>
+</li>
+        <li><a href="root-api.html#lambeq.Sim15Ansatz.params_shape">(lambeq.Sim15Ansatz method)</a>
+</li>
+        <li><a href="root-api.html#lambeq.StronglyEntanglingAnsatz.params_shape">(lambeq.StronglyEntanglingAnsatz method)</a>
+</li>
+      </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Category.parse">parse() (lambeq.bobcat.Category static method)</a>
 
       <ul>
@@ -1440,19 +1511,23 @@
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.ParseTree">ParseTree (class in lambeq.bobcat)</a>
 </li>
+      <li><a href="glossary.html#term-PennyLane"><strong>PennyLane</strong></a>
+</li>
       <li><a href="lambeq.rewrite.html#lambeq.rewrite.SimpleRewriteRule.placeholder">placeholder() (lambeq.rewrite.SimpleRewriteRule class method)</a>
 
       <ul>
         <li><a href="root-api.html#lambeq.SimpleRewriteRule.placeholder">(lambeq.SimpleRewriteRule class method)</a>
 </li>
       </ul></li>
+      <li><a href="glossary.html#term-post-selection"><strong>post-selection</strong></a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.post_init">post_init() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
       <li><a href="glossary.html#term-pregroup-grammar"><strong>pregroup grammar</strong></a>
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Tagger.prepare_inputs">prepare_inputs() (lambeq.bobcat.Tagger method)</a>
-</li>
-      <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.prepare_inputs_for_generation">prepare_inputs_for_generation() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
       <li><a href="root-api.html#lambeq.AtomicType.PREPOSITIONAL_PHRASE">PREPOSITIONAL_PHRASE (lambeq.AtomicType attribute)</a>
 
@@ -1462,11 +1537,11 @@
         <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.CCGAtomicType.PREPOSITIONAL_PHRASE">(lambeq.text2diagram.CCGAtomicType attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Supertag.probability">probability (lambeq.bobcat.Supertag attribute)</a>
 </li>
       <li><a href="root-api.html#lambeq.VerbosityLevel.PROGRESS">PROGRESS (lambeq.VerbosityLevel attribute)</a>
+</li>
+      <li><a href="root-api.html#lambeq.SPSAOptimizer.project">project (lambeq.SPSAOptimizer attribute)</a>
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.prune_heads">prune_heads() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
@@ -1481,6 +1556,8 @@
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.push_to_hub">push_to_hub() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
       <li><a href="glossary.html#term-pytket"><strong>pytket</strong></a>
+</li>
+      <li><a href="glossary.html#term-PyTorch"><strong>PyTorch</strong></a>
 </li>
       <li><a href="root-api.html#lambeq.PytorchModel">PytorchModel (class in lambeq)</a>
 
@@ -1500,7 +1577,7 @@
 <h2 id="Q">Q</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="glossary.html#term-qiskit"><strong>qiskit</strong></a>
+      <li><a href="glossary.html#term-Qiskit"><strong>Qiskit</strong></a>
 </li>
       <li><a href="glossary.html#term-quantum-circuit"><strong>quantum circuit</strong></a>
 </li>
@@ -1614,14 +1691,14 @@
         <li><a href="lambeq.pregroups.html#lambeq.pregroups.remove_swaps">(in module lambeq.pregroups)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.requires_grad_">requires_grad_() (lambeq.bobcat.BertForChartClassification method)</a>
 
       <ul>
         <li><a href="lambeq.training.html#lambeq.training.PytorchModel.requires_grad_">(lambeq.training.PytorchModel method)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.reset_memory_hooks_state">reset_memory_hooks_state() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.resize_position_embeddings">resize_position_embeddings() (lambeq.bobcat.BertForChartClassification method)</a>
@@ -1665,7 +1742,13 @@
 </li>
       </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.ParseTree.right">right (lambeq.bobcat.ParseTree attribute)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.CCGTree.right">(lambeq.CCGTree property)</a>
 </li>
+        <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree.right">(lambeq.text2diagram.CCGTree property)</a>
+</li>
+      </ul></li>
       <li><a href="glossary.html#term-rigid-category"><strong>rigid category</strong></a>
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.ParseTree.rule">rule (lambeq.bobcat.ParseTree attribute)</a>
@@ -1695,7 +1778,21 @@
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.sample">sample() (lambeq.bobcat.BertForChartClassification method)</a>
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Grammar.save">save() (lambeq.bobcat.Grammar method)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.Model.save">(lambeq.Model method)</a>
 </li>
+        <li><a href="lambeq.training.html#lambeq.training.Model.save">(lambeq.training.Model method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.NumpyModel.save">(lambeq.training.NumpyModel method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.PytorchModel.save">(lambeq.training.PytorchModel method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.QuantumModel.save">(lambeq.training.QuantumModel method)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.TketModel.save">(lambeq.training.TketModel method)</a>
+</li>
+      </ul></li>
       <li><a href="root-api.html#lambeq.Trainer.save_checkpoint">save_checkpoint() (lambeq.Trainer method)</a>
 
       <ul>
@@ -1850,16 +1947,36 @@
         <li><a href="lambeq.training.html#lambeq.training.PytorchModel.share_memory">(lambeq.training.PytorchModel method)</a>
 </li>
       </ul></li>
+      <li><a href="glossary.html#term-shots"><strong>shots</strong></a>
+</li>
       <li><a href="root-api.html#lambeq.Dataset.shuffle_data">shuffle_data() (lambeq.Dataset static method)</a>
 
       <ul>
         <li><a href="lambeq.training.html#lambeq.training.Dataset.shuffle_data">(lambeq.training.Dataset static method)</a>
 </li>
       </ul></li>
+      <li><a href="root-api.html#lambeq.Sim14Ansatz">Sim14Ansatz (class in lambeq)</a>
+
+      <ul>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.Sim14Ansatz">(class in lambeq.ansatz)</a>
+</li>
+      </ul></li>
+      <li><a href="root-api.html#lambeq.Sim15Ansatz">Sim15Ansatz (class in lambeq)</a>
+
+      <ul>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.Sim15Ansatz">(class in lambeq.ansatz)</a>
+</li>
+      </ul></li>
       <li><a href="root-api.html#lambeq.SimpleRewriteRule">SimpleRewriteRule (class in lambeq)</a>
 
       <ul>
         <li><a href="lambeq.rewrite.html#lambeq.rewrite.SimpleRewriteRule">(class in lambeq.rewrite)</a>
+</li>
+      </ul></li>
+      <li><a href="lambeq.ansatz.html#lambeq.ansatz.Symbol.size">size (lambeq.ansatz.Symbol attribute)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.Symbol.size">(lambeq.Symbol attribute)</a>
 </li>
       </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Category.slash">slash() (lambeq.bobcat.Category method)</a>
@@ -1936,6 +2053,12 @@
 </li>
       <li><a href="glossary.html#term-string-diagram"><strong>string diagram</strong></a>
 </li>
+      <li><a href="root-api.html#lambeq.StronglyEntanglingAnsatz">StronglyEntanglingAnsatz (class in lambeq)</a>
+
+      <ul>
+        <li><a href="lambeq.ansatz.html#lambeq.ansatz.StronglyEntanglingAnsatz">(class in lambeq.ansatz)</a>
+</li>
+      </ul></li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.Supertag">Supertag (class in lambeq.bobcat)</a>
 </li>
       <li><a href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification.supports_gradient_checkpointing">supports_gradient_checkpointing (lambeq.bobcat.BertForChartClassification attribute)</a>
@@ -1958,8 +2081,18 @@
         <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.CCGRule.symbol">(lambeq.text2diagram.CCGRule property)</a>
 </li>
       </ul></li>
-      <li><a href="root-api.html#lambeq.PytorchModel.symbols">symbols (lambeq.PytorchModel attribute)</a>
+      <li><a href="root-api.html#lambeq.NumpyModel.symbols">symbols (lambeq.NumpyModel attribute)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.PytorchModel.symbols">(lambeq.PytorchModel attribute)</a>
 </li>
+        <li><a href="root-api.html#lambeq.QuantumModel.symbols">(lambeq.QuantumModel attribute)</a>
+</li>
+        <li><a href="root-api.html#lambeq.TketModel.symbols">(lambeq.TketModel attribute)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.TketModel.symbols">(lambeq.training.TketModel attribute)</a>
+</li>
+      </ul></li>
       <li><a href="glossary.html#term-symmetric-monoidal-category"><strong>symmetric monoidal category</strong></a>
 </li>
       <li><a href="glossary.html#term-syntax-tree"><strong>syntax tree</strong></a>
@@ -2128,6 +2261,12 @@
 </li>
       <li><a href="glossary.html#term-tree-reader"><strong>tree reader</strong></a>
 </li>
+      <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader.tree2diagram">tree2diagram() (lambeq.text2diagram.TreeReader static method)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.TreeReader.tree2diagram">(lambeq.TreeReader static method)</a>
+</li>
+      </ul></li>
       <li><a href="root-api.html#lambeq.TreeReader">TreeReader (class in lambeq)</a>
 
       <ul>
@@ -2240,8 +2379,26 @@
         <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.WebParser">(class in lambeq.text2diagram)</a>
 </li>
       </ul></li>
-      <li><a href="root-api.html#lambeq.PytorchModel.weights">weights (lambeq.PytorchModel attribute)</a>
+      <li><a href="root-api.html#lambeq.NumpyModel.weights">weights (lambeq.NumpyModel attribute)</a>
+
+      <ul>
+        <li><a href="root-api.html#lambeq.PytorchModel.weights">(lambeq.PytorchModel attribute)</a>
 </li>
+        <li><a href="root-api.html#lambeq.QuantumModel.weights">(lambeq.QuantumModel attribute)</a>
+</li>
+        <li><a href="root-api.html#lambeq.TketModel.weights">(lambeq.TketModel attribute)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.NumpyModel.weights">(lambeq.training.NumpyModel attribute)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.PytorchModel.weights">(lambeq.training.PytorchModel attribute)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.QuantumModel.weights">(lambeq.training.QuantumModel attribute)</a>
+</li>
+        <li><a href="lambeq.training.html#lambeq.training.TketModel.weights">(lambeq.training.TketModel attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.BobcatParseError.with_traceback">with_traceback() (lambeq.text2diagram.BobcatParseError method)</a>
 
       <ul>
@@ -2254,8 +2411,6 @@
         <li><a href="lambeq.text2diagram.html#lambeq.text2diagram.WebParseError.with_traceback">(lambeq.text2diagram.WebParseError method)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="root-api.html#lambeq.CCGTree.without_trivial_unary_rules">without_trivial_unary_rules() (lambeq.CCGTree method)</a>
 
       <ul>

@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.tokeniser.spacy_tokeniser &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.tokeniser.spacy_tokeniser &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -135,18 +138,26 @@
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-
-<span class="kn">import</span> <span class="nn">spacy</span>
-<span class="kn">import</span> <span class="nn">spacy.cli</span>
-<span class="kn">from</span> <span class="nn">spacy.lang.en</span> <span class="kn">import</span> <span class="n">English</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.tokeniser</span> <span class="kn">import</span> <span class="n">Tokeniser</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">spacy</span>
+    <span class="kn">import</span> <span class="nn">spacy.cli</span>
+
+
+<span class="k">def</span> <span class="nf">_import_spacy</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">global</span> <span class="n">spacy</span>
+    <span class="kn">import</span> <span class="nn">spacy</span>
+    <span class="kn">import</span> <span class="nn">spacy.lang.en</span>
 
 
 <div class="viewcode-block" id="SpacyTokeniser"><a class="viewcode-back" href="../../../root-api.html#lambeq.tokeniser.SpacyTokeniser">[docs]</a><span class="k">class</span> <span class="nc">SpacyTokeniser</span><span class="p">(</span><span class="n">Tokeniser</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Tokeniser class based on SpaCy.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SpacyTokeniser.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.tokeniser.SpacyTokeniser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">_import_spacy</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tokeniser</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;en_core_web_sm&#39;</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
@@ -155,7 +166,7 @@
                            <span class="s1">&#39;This action only has to happen once.&#39;</span><span class="p">)</span>
             <span class="n">spacy</span><span class="o">.</span><span class="n">cli</span><span class="o">.</span><span class="n">download</span><span class="p">(</span><span class="s1">&#39;en_core_web_sm&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">tokeniser</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;en_core_web_sm&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">spacy_nlp</span> <span class="o">=</span> <span class="n">English</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacy_nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">lang</span><span class="o">.</span><span class="n">en</span><span class="o">.</span><span class="n">English</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spacy_nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="s1">&#39;sentencizer&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SpacyTokeniser.split_sentences"><a class="viewcode-back" href="../../../root-api.html#lambeq.tokeniser.SpacyTokeniser.split_sentences">[docs]</a>    <span class="k">def</span> <span class="nf">split_sentences</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>

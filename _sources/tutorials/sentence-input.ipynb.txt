@@ -19,14 +19,18 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Syntax-based model: DisCoCat"
+   ]
+  },
+  {
    "cell_type": "raw",
    "metadata": {
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "Syntax-based model: DisCoCat\n",
-    "----------------------------\n",
-    "\n",
     "In order to obtain a :term:`DisCoCat`\\ -like output, we first use the :py:class:`.BobcatParser` class from :py:mod:`~lambeq.text2diagram` package, which, in turn,  calls the :term:`parser`, obtains a :term:`CCG <Combinatory Categorial Grammar (CCG)>` derivation for the sentence, and converts it into a :term:`string diagram`. The code below uses the default :term:`Bobcat` parser in order to produce a :term:`string diagram` for the sentence \"John walks in the park\".\n",
     "\n",
     ".. note::\n",
@@ -79,14 +83,18 @@
    ]
   },
   {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Bag-of-words: Spiders reader"
+   ]
+  },
+  {
    "cell_type": "raw",
    "metadata": {
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "Bag-of-words: Spiders reader\n",
-    "----------------------------\n",
-    "\n",
     ":term:`DisCoCat` is not the only :term:`compositional model` that ``lambeq`` supports. In fact, any compositional scheme that manifests sentences as :term:`string diagrams <string diagram>`\\ /:term:`tensor networks <tensor network>` can be added to the toolkit via the readers of the :py:mod:`.text2diagram` package. For example, the :py:obj:`~lambeq.text2diagram.spiders_reader` object of the :py:class:`.LinearReader` class represents a sentence as a \":term:`bag-of-words`\", composing the words using a :term:`spider` (a commutative operation)."
    ]
   },
@@ -124,11 +132,22 @@
    "source": [
     ".. note::\n",
     "\n",
-    "   Note that this time the drawing is performed with diagram's own method :py:meth:`monoidal.Diagram.draw() <discopy.monoidal.Diagram.draw>`, which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using :py:class:`grammar.draw() <discopy.grammar.pregroup.draw>` in the previous section, which can only be used in pregroup diagrams.\n",
-    "\n",
-    "Word-sequence models: Cups and stairs readers\n",
-    "---------------------------------------------\n",
-    "\n",
+    "   Note that this time the drawing is performed with diagram's own method :py:meth:`monoidal.Diagram.draw() <discopy.monoidal.Diagram.draw>`, which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using :py:class:`grammar.draw() <discopy.grammar.pregroup.draw>` in the previous section, which can only be used in pregroup diagrams."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Word-sequence models: Cups and stairs readers"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
     "The :py:class:`.LinearReader` class can be used to create any kind of model where words are composed in sequence, from left to right. For example, the :py:obj:`~lambeq.text2diagram.cups_reader` instance of this class generates a \":term:`tensor train`\"."
    ]
   },
@@ -206,11 +225,22 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    ".. _sec-tree_readers:\n",
-    "\n",
-    "Tree readers\n",
-    "------------\n",
-    "\n",
+    ".. _sec-tree_readers:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Tree readers"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
     "A :term:`CCG <combinatory categorial grammar (CCG)>` derivation follows a biclosed form [YK2021]_ , which can be directly interpreted as a series of compositions without any explicit conversion into a :term:`pregroup <pregroup grammar>` form. Class :py:class:`.TreeReader` implements a number of compositional models by taking advantage of this fact. In order to demonstrate the way they work, it would be useful to first examine how a CCG diagram looks like:"
    ]
   },
@@ -304,10 +334,8 @@
    ]
   },
   {
-   "cell_type": "raw",
-   "metadata": {
-    "raw_mimetype": "text/restructuredtext"
-   },
+   "cell_type": "markdown",
+   "metadata": {},
    "source": [
     "In the above, each unique CCG rule gets its own box: FA boxes correspond to forward application, and BA boxes to backward application. For certain tasks, making the composition box rule-specific might lead to better generalisation and overall performance."
    ]

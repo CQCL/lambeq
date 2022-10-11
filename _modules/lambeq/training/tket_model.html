@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.tket_model &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.training.tket_model &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -148,7 +151,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="TketModel.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.TketModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="TketModel.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.TketModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initialise TketModel based on the `t|ket&gt;` backend.</span>
 
 <span class="sd">        Other Parameters</span>
@@ -163,12 +166,8 @@
 <span class="sd">            If `backend_config` is not provided or has missing fields.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s1">&#39;backend_config&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Please provide a backend configuration.&#39;</span><span class="p">)</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
-        <span class="n">backend_config</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;backend_config&#39;</span><span class="p">]</span>
         <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;backend&#39;</span><span class="p">,</span> <span class="s1">&#39;compilation&#39;</span><span class="p">,</span> <span class="s1">&#39;shots&#39;</span><span class="p">)</span>
         <span class="n">missing_fields</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">fields</span> <span class="k">if</span> <span class="n">f</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">backend_config</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">missing_fields</span><span class="p">:</span>
@@ -176,12 +175,13 @@
                            <span class="sa">f</span><span class="s1">&#39;Missing arguments: </span><span class="si">{</span><span class="n">missing_fields</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backend_config</span> <span class="o">=</span> <span class="n">backend_config</span></div>
 
-    <span class="k">def</span> <span class="nf">_make_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_make_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Measure and lambdify diagrams.&quot;&quot;&quot;</span>
         <span class="n">measured</span> <span class="o">=</span> <span class="n">diagram</span> <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">Measure</span><span class="p">()]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">measured</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="n">Callable</span> <span class="o">=</span> <span class="n">measured</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
 
-    <span class="k">def</span> <span class="nf">_randint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">low</span><span class="o">=-</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">63</span><span class="p">,</span> <span class="n">high</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">63</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_randint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">low</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">63</span><span class="p">,</span> <span class="n">high</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">63</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TketModel.get_diagram_output"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.TketModel.get_diagram_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>

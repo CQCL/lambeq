@@ -4,10 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training: Classical case &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>Training: Classical case &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -36,7 +37,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -54,6 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -63,21 +65,27 @@
 <li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../training.html">Step 4: Training</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Training: Classical case</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Preparation">Preparation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Input-data">Input data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Instantiate-the-model">Instantiate the model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Define-evaluation-metric">Define evaluation metric</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Initialise-trainer">Initialise trainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Creating-the-datasets">Creating the datasets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Train-the-model">Train the model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Show-results">Show results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Preparation">Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Input-data">Input data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Training">Training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-model">Instantiate model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Define-evaluation-metric">Define evaluation metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Initialise-trainer">Initialise trainer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Create-datasets">Create datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Train">Train</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Results">Results</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Adding-custom-layers-to-the-model">Adding custom layers to the model</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="trainer_quantum.html">Training: Quantum case</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -420,9 +428,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-</section>
 <section id="Input-data">
-<h2>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h2>
+<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h3>
 <p>Let’s read the data and print some example sentences.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -485,7 +492,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Creating-and-parameterising-diagrams">
-<h2>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this headline"></a></h2>
+<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this headline"></a></h3>
 <p>The first step is to convert sentences into <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -541,12 +548,15 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_classical_11_0.png" src="../_images/tutorials_trainer_classical_11_0.png" />
+<img alt="../_images/tutorials_trainer_classical_13_0.png" src="../_images/tutorials_trainer_classical_13_0.png" />
 </div>
 </div>
 </section>
-<section id="Instantiate-the-model">
-<h2>Instantiate the model<a class="headerlink" href="#Instantiate-the-model" title="Permalink to this headline"></a></h2>
+</section>
+<section id="Training">
+<h2>Training<a class="headerlink" href="#Training" title="Permalink to this headline"></a></h2>
+<section id="Instantiate-model">
+<h3>Instantiate model<a class="headerlink" href="#Instantiate-model" title="Permalink to this headline"></a></h3>
 <p>We can now initialise the model by importing the <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> class, and passing all diagrams to the class method <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel.from_diagrams" title="lambeq.training.PytorchModel.from_diagrams"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PytorchModel.from_diagrams()</span></code></a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -565,7 +575,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Define-evaluation-metric">
-<h2>Define evaluation metric<a class="headerlink" href="#Define-evaluation-metric" title="Permalink to this headline"></a></h2>
+<h3>Define evaluation metric<a class="headerlink" href="#Define-evaluation-metric" title="Permalink to this headline"></a></h3>
 <p>Optionally, we can provide a dictionary of callable evaluation metrics with the signature <code class="docutils literal notranslate"><span class="pre">metric(y_hat,</span> <span class="pre">y)</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -582,7 +592,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Initialise-trainer">
-<h2>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this headline"></a></h2>
+<h3>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this headline"></a></h3>
 <p>Next step is to initialise a <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> object. Because this is a binary classification task, we will use binary cross-entropy as the loss. As an optimizer, we choose Adam with weight decay.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
@@ -604,8 +614,8 @@ Turning parse trees to diagrams.
 </div>
 </div>
 </section>
-<section id="Creating-the-datasets">
-<h2>Creating the datasets<a class="headerlink" href="#Creating-the-datasets" title="Permalink to this headline"></a></h2>
+<section id="Create-datasets">
+<h3>Create datasets<a class="headerlink" href="#Create-datasets" title="Permalink to this headline"></a></h3>
 <p>To facilitate batching and data shuffling, lambeq provides a <a class="reference internal" href="../lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> interface. Shuffling is enabled by default, and if not specified, the batch size is set to the length of the dataset. In our example we will use the <code class="xref py py-attr docutils literal notranslate"><span class="pre">BATCH_SIZE</span></code> we have set above.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -623,8 +633,8 @@ Turning parse trees to diagrams.
 </div>
 </div>
 </section>
-<section id="Train-the-model">
-<h2>Train the model<a class="headerlink" href="#Train-the-model" title="Permalink to this headline"></a></h2>
+<section id="Train">
+<h3>Train<a class="headerlink" href="#Train" title="Permalink to this headline"></a></h3>
 <p>Now we can pass the datasets to the <a class="reference internal" href="../root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the <a class="reference internal" href="../glossary.html#term-trainer"><span class="xref std std-term">trainer</span></a> to start the training.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -655,8 +665,9 @@ Training completed!
 <p>The <code class="xref py py-attr docutils literal notranslate"><span class="pre">evaluation_step</span></code> controls the interval in which the model is evaluated on the validation dataset. Default is 1. If evaluation on the validation dataset is expensive, we recommend setting it to a higher value.</p>
 </div>
 </section>
-<section id="Show-results">
-<h2>Show results<a class="headerlink" href="#Show-results" title="Permalink to this headline"></a></h2>
+</section>
+<section id="Results">
+<h2>Results<a class="headerlink" href="#Results" title="Permalink to this headline"></a></h2>
 <p>Finally, we visualise the results and evaluate the model on the test data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -697,7 +708,7 @@ Test accuracy: 0.9833333492279053
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_classical_25_1.png" src="../_images/tutorials_trainer_classical_25_1.png" />
+<img alt="../_images/tutorials_trainer_classical_31_1.png" src="../_images/tutorials_trainer_classical_31_1.png" />
 </div>
 </div>
 </section>
@@ -721,7 +732,7 @@ Test accuracy: 0.9833333492279053
 </pre></div>
 </div>
 </div>
-<p>The rest follows the same procedure as explained above. I.e. initialise a trainer, fit the model and visualise the results.</p>
+<p>The rest follows the same procedure as explained above, i.e. initialise a trainer, fit the model and visualise the results.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -796,11 +807,12 @@ Test accuracy: 0.9833333492279053
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_classical_30_1.png" src="../_images/tutorials_trainer_classical_30_1.png" />
+<img alt="../_images/tutorials_trainer_classical_37_1.png" src="../_images/tutorials_trainer_classical_37_1.png" />
 </div>
 </div>
 <p class="rubric">See also:</p>
 <ul class="simple">
+<li><p><a class="reference external" href="./trainer_hybrid.ipynb">Training: Hybrid case</a></p></li>
 <li><p><a class="reference internal" href="trainer_quantum.html"><span class="doc">Training: Quantum case</span></a></p></li>
 <li><p><a class="reference internal" href="../manual_training.html"><span class="doc">Advanced: Manual training</span></a></p></li>
 </ul>

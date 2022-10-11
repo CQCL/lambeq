@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.depccg_parser &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.text2diagram.depccg_parser &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -213,15 +216,14 @@
 <span class="sd">            The language to use: &#39;en&#39; for English, &#39;ja&#39; for Japanese.</span>
 <span class="sd">        model : str, optional</span>
 <span class="sd">            The name of the model variant to use, if any.</span>
-<span class="sd">            At time of writing, `depccg` supports &#39;elmo&#39;, &#39;rebank&#39; and</span>
-<span class="sd">            &#39;elmo_rebank&#39; for English only.</span>
+<span class="sd">            `depccg` only has English model variants, namely</span>
+<span class="sd">            &#39;elmo&#39;, &#39;rebank&#39; and &#39;elmo_rebank&#39;.</span>
 <span class="sd">        use_model_unary_rules : bool, default: False</span>
 <span class="sd">            Use the unary rules supplied by the model instead of the</span>
 <span class="sd">            ones by `lambeq`.</span>
 <span class="sd">        annotator : str, default: &#39;janome&#39;</span>
-<span class="sd">            The annotator to use, if any.</span>
-<span class="sd">            At time of writing `depccg` supports &#39;candc&#39; and &#39;spacy&#39; for</span>
-<span class="sd">            English, and &#39;janome&#39; and &#39;jigg&#39; for Japanese.</span>
+<span class="sd">            The annotator to use, if any. `depccg` supports &#39;candc&#39; and</span>
+<span class="sd">            &#39;spacy&#39; for English, and &#39;janome&#39; and &#39;jigg&#39; for Japanese.</span>
 <span class="sd">            By default, no annotator is used for English, and &#39;janome&#39;</span>
 <span class="sd">            is used for Japanese.</span>
 <span class="sd">        tokenize : bool, optional</span>
@@ -524,13 +526,15 @@
         <span class="n">doc</span><span class="p">,</span> <span class="n">score_result</span> <span class="o">=</span> <span class="n">depccg</span><span class="o">.</span><span class="n">parsing</span><span class="o">.</span><span class="n">apply_category_filters</span><span class="p">(</span>
                 <span class="n">doc</span><span class="p">,</span> <span class="n">score_result</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">category_dict</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">depccg</span><span class="o">.</span><span class="n">parsing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span>  <span class="c1"># type: ignore[no-any-return]</span>
-                                  <span class="n">score_result</span><span class="p">,</span>
-                                  <span class="bp">self</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
-                                  <span class="bp">self</span><span class="o">.</span><span class="n">root_categories</span><span class="p">,</span>
-                                  <span class="bp">self</span><span class="o">.</span><span class="n">apply_binary_rules</span><span class="p">,</span>
-                                  <span class="bp">self</span><span class="o">.</span><span class="n">apply_unary_rules</span><span class="p">,</span>
-                                  <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">ret</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">depccg</span><span class="o">.</span><span class="n">tree</span><span class="o">.</span><span class="n">ScoredTree</span><span class="p">]]</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">depccg</span><span class="o">.</span><span class="n">parsing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span>
+                                 <span class="n">score_result</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">categories</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">root_categories</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">apply_binary_rules</span><span class="p">,</span>
+                                 <span class="bp">self</span><span class="o">.</span><span class="n">apply_unary_rules</span><span class="p">,</span>
+                                 <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ret</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_to_biclosed</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="n">Category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>

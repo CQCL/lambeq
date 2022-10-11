@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.pytorch_trainer &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.training.pytorch_trainer &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -130,15 +133,19 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">torch</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
+<span class="kn">from</span> <span class="nn">lambeq.training.checkpoint</span> <span class="kn">import</span> <span class="n">Checkpoint</span>
 <span class="kn">from</span> <span class="nn">lambeq.training.pytorch_model</span> <span class="kn">import</span> <span class="n">PytorchModel</span>
 <span class="kn">from</span> <span class="nn">lambeq.training.trainer</span> <span class="kn">import</span> <span class="n">Trainer</span>
+
+<span class="n">_StrPathT</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;os.PathLike[str]&#39;</span><span class="p">]</span>
+<span class="n">_EvalFuncT</span> <span class="o">=</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="PytorchTrainer"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchTrainer">[docs]</a><span class="k">class</span> <span class="nc">PytorchTrainer</span><span class="p">(</span><span class="n">Trainer</span><span class="p">):</span>
@@ -149,15 +156,17 @@
 <div class="viewcode-block" id="PytorchTrainer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchTrainer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">model</span><span class="p">:</span> <span class="n">PytorchModel</span><span class="p">,</span>
-            <span class="n">loss_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+            <span class="n">loss_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">],</span>
             <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
             <span class="n">optimizer</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">AdamW</span><span class="p">,</span>
             <span class="n">learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
             <span class="n">device</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-            <span class="n">evaluate_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="o">*</span><span class="p">,</span>
+            <span class="n">optimizer_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">evaluate_functions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">_EvalFuncT</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">evaluate_on_train</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
             <span class="n">use_tensorboard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">log_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">log_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_StrPathT</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">from_checkpoint</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -170,15 +179,17 @@
 <span class="sd">            A lambeq Model using PyTorch for tensor computation.</span>
 <span class="sd">        loss_function : callable</span>
 <span class="sd">            A PyTorch loss function from `torch.nn`.</span>
+<span class="sd">        epochs : int</span>
+<span class="sd">            Number of training epochs.</span>
 <span class="sd">        optimizer : torch.optim.Optimizer, default: torch.optim.AdamW</span>
 <span class="sd">            A PyTorch optimizer from `torch.optim`.</span>
 <span class="sd">        learning_rate : float, default: 1e-3</span>
-<span class="sd">            The learning rate for training.</span>
-<span class="sd">        epochs : int</span>
-<span class="sd">            Number of training epochs.</span>
+<span class="sd">            The learning rate provided to the optimizer for training.</span>
 <span class="sd">        device : int, default: -1</span>
 <span class="sd">            CUDA device ID used for tensor operation speed-up.</span>
 <span class="sd">            A negative value uses the CPU.</span>
+<span class="sd">        optimizer_args : dict of str to Any, optional</span>
+<span class="sd">            Any extra arguments to pass to the optimizer.</span>
 <span class="sd">        evaluate_functions : mapping of str to callable, optional</span>
 <span class="sd">            Mapping of evaluation metric functions from their names.</span>
 <span class="sd">            Structure [{&quot;metric&quot;: func}].</span>
@@ -215,47 +226,49 @@
                          <span class="n">seed</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">backend</span> <span class="o">=</span> <span class="s1">&#39;pytorch&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span> <span class="k">if</span> <span class="n">device</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;cuda:</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">device</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">set_default_tensor_type</span><span class="p">(</span><span class="s1">&#39;torch.cuda.FloatTensor&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span>  <span class="c1"># type: ignore</span>
-                                   <span class="n">lr</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="p">)</span>   <span class="c1"># type: ignore</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">set_default_tensor_type</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
+                    <span class="s1">&#39;torch.cuda.FloatTensor&#39;</span><span class="p">)</span>
+
+        <span class="n">optimizer_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">optimizer_args</span> <span class="ow">or</span> <span class="p">{})</span>
+        <span class="k">if</span> <span class="n">learning_rate</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">optimizer_args</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span> <span class="o">=</span> <span class="n">optimizer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="o">**</span><span class="n">optimizer_args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_add_extra_chkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_add_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint.</span>
 
 <span class="sd">        These might include model-specific information like the random</span>
 <span class="sd">        state of the backend or the state of the optimizer.</span>
 
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        Mapping of str to any</span>
-<span class="sd">            Mapping containing the extra information to save.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span>
-                <span class="s1">&#39;torch_random_state&#39;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_rng_state</span><span class="p">(),</span>
-                <span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()}</span>
-
-    <span class="k">def</span> <span class="nf">_load_extra_chkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                                  <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
-
-<span class="sd">        This includes data previously added by</span>
-<span class="sd">        `_add_extra_chkpoint_info()`.</span>
+<span class="sd">        Use `checkpoint.add_many()` to add multiple items.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        checkpoint : Mapping of str to any</span>
+<span class="sd">        checkpoint : :py:class:`.Checkpoint`</span>
+<span class="sd">            The checkpoint to add information to.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">checkpoint</span><span class="o">.</span><span class="n">add_many</span><span class="p">(</span>
+            <span class="p">{</span><span class="s1">&#39;torch_random_state&#39;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">get_rng_state</span><span class="p">(),</span>
+             <span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()})</span>
+
+    <span class="k">def</span> <span class="nf">_load_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
+
+<span class="sd">        This includes data previously added by</span>
+<span class="sd">        `_add_extra_checkpoint_info()`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        checkpoint : :py:class:`.Checkpoint`</span>
 <span class="sd">            Mapping containing the checkpoint information.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">])</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">set_rng_state</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;torch_random_state&#39;</span><span class="p">])</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">set_rng_state</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;torch_random_state&#39;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="PytorchTrainer.validation_step"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchTrainer.validation_step">[docs]</a>    <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
@@ -293,8 +306,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        float</span>
-<span class="sd">            The calculated loss.</span>
+<span class="sd">        Tuple of torch.Tensor and float</span>
+<span class="sd">            The model predictions and the calculated loss.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>

@@ -4,10 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training: Quantum case &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>Training: Quantum case &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -23,7 +24,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Advanced: Manual training" href="../manual_training.html" />
+    <link rel="next" title="Choosing a model" href="../models.html" />
     <link rel="prev" title="Training: Classical case" href="trainer_classical.html" /> 
 </head>
 
@@ -36,7 +37,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -54,6 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -64,21 +66,27 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../training.html">Step 4: Training</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="trainer_classical.html">Training: Classical case</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Training: Quantum case</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Preparation">Preparation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Input-data">Input data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Filter-and-simplify-diagrams">Filter and simplify diagrams</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Create-circuits">Create circuits</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Instantiate-the-model">Instantiate the model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Define-loss-and-the-evaluation-metric">Define loss and the evaluation metric</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Initialise-trainer">Initialise trainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Creating-the-datasets">Creating the datasets</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Train-the-model">Train the model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Show-results">Show results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Preparation">Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Input-data">Input data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Filter-and-simplify-diagrams">Filter and simplify diagrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Create-circuits">Create circuits</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Training">Training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-the-model">Instantiate the model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Define-loss-and-evaluation-metric">Define loss and evaluation metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Initialise-trainer">Initialise trainer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Create-datasets">Create datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Train">Train</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Results">Results</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -437,9 +445,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-</section>
 <section id="Input-data">
-<h2>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h2>
+<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h3>
 <p>Let’s read the data and print some example sentences.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -501,7 +508,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Creating-and-parameterising-diagrams">
-<h2>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this headline"></a></h2>
+<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this headline"></a></h3>
 <p>The first step is to convert sentences into <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -535,7 +542,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Filter-and-simplify-diagrams">
-<h2>Filter and simplify diagrams<a class="headerlink" href="#Filter-and-simplify-diagrams" title="Permalink to this headline"></a></h2>
+<h3>Filter and simplify diagrams<a class="headerlink" href="#Filter-and-simplify-diagrams" title="Permalink to this headline"></a></h3>
 <p>We simplify the diagrams by calling <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.normal_form" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a> and filter out any diagrams that could not be parsed.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -575,7 +582,7 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_15_0.png" src="../_images/tutorials_trainer_quantum_15_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_18_0.png" src="../_images/tutorials_trainer_quantum_18_0.png" />
 </div>
 </div>
 <p>In object-based relative clauses the noun that follows the relative pronoun is the object of the sentence:</p>
@@ -591,12 +598,12 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_17_0.png" src="../_images/tutorials_trainer_quantum_17_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_20_0.png" src="../_images/tutorials_trainer_quantum_20_0.png" />
 </div>
 </div>
 </section>
 <section id="Create-circuits">
-<h2>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this headline"></a></h2>
+<h3>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this headline"></a></h3>
 <p>In order to run the experiments on a quantum computer, we need to apply to string diagrams a quantum <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a>. For this experiment, we will use an <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a>, where noun wires (<code class="docutils literal notranslate"><span class="pre">n</span></code>) are represented by a one-qubit system, and sentence wires (<code class="docutils literal notranslate"><span class="pre">s</span></code>) are discarded (since we deal with noun phrases).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -618,10 +625,10 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_19_0.png" src="../_images/tutorials_trainer_quantum_19_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_23_0.png" src="../_images/tutorials_trainer_quantum_23_0.png" />
 </div>
 </div>
-<p>Note that we remove the <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> before parameterising the diagrams. By doing so, we reduce the number of post-selections, which makes the model computationally more efficient. The effect of cups removal on a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> is demonstrated below:</p>
+<p>Note that we remove the <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> before parameterising the diagrams. By doing so, we reduce the number of :<cite>term:`post-selections &lt;post-selection&gt;</cite>, which makes the model computationally more efficient. The effect of cups removal on a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> is demonstrated below:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
@@ -639,14 +646,17 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_21_0.png" src="../_images/tutorials_trainer_quantum_21_0.png" />
+<img alt="../_images/tutorials_trainer_quantum_25_0.png" src="../_images/tutorials_trainer_quantum_25_0.png" />
 </div>
 </div>
 </section>
+</section>
+<section id="Training">
+<h2>Training<a class="headerlink" href="#Training" title="Permalink to this headline"></a></h2>
 <section id="Instantiate-the-model">
-<h2>Instantiate the model<a class="headerlink" href="#Instantiate-the-model" title="Permalink to this headline"></a></h2>
+<h3>Instantiate the model<a class="headerlink" href="#Instantiate-the-model" title="Permalink to this headline"></a></h3>
 <p>We will use a <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a>, which we initialise by passing all diagrams to the class method
-<a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel.from_diagrams" title="lambeq.training.TketModel.from_diagrams"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TketModel.from_diagrams()</span></code></a>. The <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> needs a backend configuration dictionary passed as a keyword argument to the initialisation method. This dictionary must contain entries for <code class="docutils literal notranslate"><span class="pre">backend</span></code>, <code class="docutils literal notranslate"><span class="pre">compilation</span></code> and <code class="docutils literal notranslate"><span class="pre">shots</span></code>. The backend is provided by <a class="reference external" href="https://github.com/CQCL/pytket-extensions">pytket-extensions</a>. In this example, we use <a class="reference internal" href="../glossary.html#term-qiskit"><span class="xref std std-term">qiskit</span></a>‘s AerBackend with 8192 shots.</p>
+<a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel.from_diagrams" title="lambeq.training.TketModel.from_diagrams"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TketModel.from_diagrams()</span></code></a>. The <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> needs a backend configuration dictionary passed as a keyword argument to the initialisation method. This dictionary must contain entries for <code class="docutils literal notranslate"><span class="pre">backend</span></code>, <code class="docutils literal notranslate"><span class="pre">compilation</span></code> and <code class="docutils literal notranslate"><span class="pre">shots</span></code>. The backend is provided by <a class="reference external" href="https://github.com/CQCL/pytket-extensions">pytket-extensions</a>. In this example, we use <a class="reference internal" href="../glossary.html#term-Qiskit"><span class="xref std std-term">Qiskit</span></a>‘s AerBackend with 8192 <a class="reference internal" href="../glossary.html#term-shots"><span class="xref std std-term">shots</span></a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
@@ -672,8 +682,8 @@ Turning parse trees to diagrams.
 <p>The model can also be instantiated by calling <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel.from_checkpoint" title="lambeq.training.TketModel.from_checkpoint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TketModel.from_checkpoint()</span></code></a>, in case a pre-trained checkpoint is available.</p>
 </div>
 </section>
-<section id="Define-loss-and-the-evaluation-metric">
-<h2>Define loss and the evaluation metric<a class="headerlink" href="#Define-loss-and-the-evaluation-metric" title="Permalink to this headline"></a></h2>
+<section id="Define-loss-and-evaluation-metric">
+<h3>Define loss and evaluation metric<a class="headerlink" href="#Define-loss-and-evaluation-metric" title="Permalink to this headline"></a></h3>
 <p>We use standard binary cross-entropy as the loss. Optionally, we can provide a dictionary of callable evaluation metrics with the signature <code class="docutils literal notranslate"><span class="pre">metric(y_hat,</span> <span class="pre">y)</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -688,7 +698,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Initialise-trainer">
-<h2>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this headline"></a></h2>
+<h3>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this headline"></a></h3>
 <p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, quantum pipelines are based on the <a class="reference internal" href="../lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a> class. Furthermore, we will use the standard <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> SPSA optimizer, implemented in the <a class="reference internal" href="../lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a> class. This needs three hyperameters:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: The initial learning rate (decays over time),</p></li>
@@ -716,8 +726,8 @@ Turning parse trees to diagrams.
 </div>
 </div>
 </section>
-<section id="Creating-the-datasets">
-<h2>Creating the datasets<a class="headerlink" href="#Creating-the-datasets" title="Permalink to this headline"></a></h2>
+<section id="Create-datasets">
+<h3>Create datasets<a class="headerlink" href="#Create-datasets" title="Permalink to this headline"></a></h3>
 <p>To facilitate data shuffling and batching, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a native <a class="reference internal" href="../lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> class. Shuffling is enabled by default, and if not specified, the batch size is set to the length of the dataset.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -735,8 +745,8 @@ Turning parse trees to diagrams.
 </div>
 </div>
 </section>
-<section id="Train-the-model">
-<h2>Train the model<a class="headerlink" href="#Train-the-model" title="Permalink to this headline"></a></h2>
+<section id="Train">
+<h3>Train<a class="headerlink" href="#Train" title="Permalink to this headline"></a></h3>
 <p>We can now pass the datasets to the <a class="reference internal" href="../root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the trainer to start the training.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -767,9 +777,10 @@ Training completed!
 </pre></div></div>
 </div>
 </section>
-<section id="Show-results">
-<h2>Show results<a class="headerlink" href="#Show-results" title="Permalink to this headline"></a></h2>
-<p>It’s time to visualise the results and evaluate the model on the test data.</p>
+</section>
+<section id="Results">
+<h2>Results<a class="headerlink" href="#Results" title="Permalink to this headline"></a></h2>
+<p>Finally, we visualise the results and evaluate the model on the test data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -808,12 +819,13 @@ Validation accuracy: 0.7419354838709677
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_trainer_quantum_34_1.png" src="../_images/tutorials_trainer_quantum_34_1.png" />
+<img alt="../_images/tutorials_trainer_quantum_43_1.png" src="../_images/tutorials_trainer_quantum_43_1.png" />
 </div>
 </div>
 <p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="trainer_classical.html"><span class="doc">Training: Classical case</span></a></p></li>
+<li><p><a class="reference external" href="./trainer_hybrid.ipynb">Training: Hybrid case</a></p></li>
 <li><p><a class="reference internal" href="../manual_training.html"><span class="doc">Advanced: Manual training</span></a></p></li>
 </ul>
 </section>
@@ -824,7 +836,7 @@ Validation accuracy: 0.7419354838709677
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="trainer_classical.html" class="btn btn-neutral float-left" title="Training: Classical case" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../manual_training.html" class="btn btn-neutral float-right" title="Advanced: Manual training" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../models.html" class="btn btn-neutral float-right" title="Choosing a model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

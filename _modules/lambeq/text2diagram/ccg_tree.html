@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_tree &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.text2diagram.ccg_tree &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -133,7 +136,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">overload</span>
 
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">rigid</span><span class="p">,</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">biclosed2rigid_ob</span>
+<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">biclosed2rigid_ob</span><span class="p">,</span> <span class="n">unaryBoxConstructor</span>
 <span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Over</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Under</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span><span class="p">,</span> <span class="n">GBC</span><span class="p">,</span> <span class="n">GBX</span><span class="p">,</span> <span class="n">GFC</span><span class="p">,</span> <span class="n">GFX</span>
@@ -145,7 +148,7 @@
 <span class="n">_JSONDictT</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
 
 
-<span class="k">class</span> <span class="nc">UnarySwap</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">UnarySwap</span><span class="p">(</span><span class="n">unaryBoxConstructor</span><span class="p">(</span><span class="s1">&#39;cod&#39;</span><span class="p">),</span> <span class="n">Box</span><span class="p">):</span>  <span class="c1"># type: ignore[misc]</span>
     <span class="sd">&quot;&quot;&quot;Unary Swap box, for unary rules that change the type direction.</span>
 
 <span class="sd">    For example, the unary rule `S/NP -&gt; NP\\NP` is handled by</span>
@@ -275,7 +278,11 @@
                              <span class="sa">f</span><span class="s1">&#39;rule &quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="si">}</span><span class="s1">&quot;&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">text</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">children</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_leaf</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_unary</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_binary</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -283,6 +290,28 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_text</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">child</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGTree</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the child of a unary tree.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_unary</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot get the child of a non-unary tree.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">left</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGTree</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the left child of a binary tree.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_binary</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot get the left child of a non-binary tree.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">right</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGTree</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Get the right child of a binary tree.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_binary</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s1">&#39;Cannot get the right child of a non-binary tree.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@overload</span>
     <span class="nd">@classmethod</span>
@@ -349,6 +378,9 @@
 
 <div class="viewcode-block" id="CCGTree.to_json"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGTree.to_json">[docs]</a>    <span class="k">def</span> <span class="nf">to_json</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_JSONDictT</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Convert tree into JSON form.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Allows doing CCGTree.to_json(X) for optional X</span>
+            <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># type: ignore[unreachable]</span>
+
         <span class="n">data</span><span class="p">:</span> <span class="n">_JSONDictT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">biclosed2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">)}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">!=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s1">&#39;rule&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">value</span>

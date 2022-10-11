@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.tree_reader &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.text2diagram.tree_reader &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -130,13 +133,14 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TreeReader&#39;</span><span class="p">,</span> <span class="s1">&#39;TreeReaderMode&#39;</span><span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="n">SentenceType</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.base</span> <span class="kn">import</span> <span class="n">Reader</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.bobcat_parser</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
 
 <span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
 
@@ -163,10 +167,17 @@
 <span class="sd">            forward application rule :py:obj:`FA(N &lt;&lt; N)`, the rule box</span>
 <span class="sd">            will be named :py:obj:`FA(N &lt;&lt; N)`.</span>
 
+<span class="sd">        HEIGHT</span>
+<span class="sd">            The &#39;height&#39; mode names every rule box based on the</span>
+<span class="sd">            tree height of its subtree. For example, a rule</span>
+<span class="sd">            box directly combining two words will be named</span>
+<span class="sd">            :py:obj:`layer_1`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">NO_TYPE</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">RULE_ONLY</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">RULE_TYPE</span> <span class="o">=</span> <span class="mi">2</span></div>
+    <span class="n">RULE_TYPE</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">HEIGHT</span> <span class="o">=</span> <span class="mi">3</span></div>
 
 
 <div class="viewcode-block" id="TreeReader"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.TreeReader">[docs]</a><span class="k">class</span> <span class="nc">TreeReader</span><span class="p">(</span><span class="n">Reader</span><span class="p">):</span>
@@ -176,8 +187,7 @@
                  <span class="n">ccg_parser</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">CCGParser</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">CCGParser</span><span class="p">]]</span> <span class="o">=</span>
                  <span class="n">BobcatParser</span><span class="p">,</span>
                  <span class="n">mode</span><span class="p">:</span> <span class="n">TreeReaderMode</span> <span class="o">=</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">NO_TYPE</span><span class="p">,</span>
-                 <span class="n">word_type</span><span class="p">:</span> <span class="n">Ty</span> <span class="o">=</span> <span class="n">S</span><span class="p">,</span>
-                 <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">word_type</span><span class="p">:</span> <span class="n">Ty</span> <span class="o">=</span> <span class="n">S</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initialise a tree reader.</span>
 
 <span class="sd">        Parameters</span>
@@ -192,10 +202,6 @@
 <span class="sd">        word_type : Ty, default: core.types.AtomicType.SENTENCE</span>
 <span class="sd">            The type of each word box. By default, it uses the sentence</span>
 <span class="sd">            type from :py:class:`.core.types.AtomicType`.</span>
-<span class="sd">        suppress_exceptions : bool, default: False</span>
-<span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if a</span>
-<span class="sd">            sentence fails to parse, instead of raising an exception,</span>
-<span class="sd">            its return entry is :py:obj:`None`.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">TreeReaderMode</span><span class="p">):</span>
@@ -210,17 +216,93 @@
                                  <span class="s1">&#39;function that returns a CCGParser.&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ccg_parser</span> <span class="o">=</span> <span class="n">ccg_parser</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">word_type</span> <span class="o">=</span> <span class="n">word_type</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">suppress_exceptions</span> <span class="o">=</span> <span class="n">suppress_exceptions</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">word_type</span> <span class="o">=</span> <span class="n">word_type</span></div>
 
 <div class="viewcode-block" id="TreeReader.available_modes"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.TreeReader.available_modes">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">available_modes</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;The list of modes for initialising a tree reader.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">TreeReaderMode</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TreeReader.sentence2diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.TreeReader.sentence2diagram">[docs]</a>    <span class="k">def</span> <span class="nf">sentence2diagram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                         <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
-                         <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
+<div class="viewcode-block" id="TreeReader.tree2diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.TreeReader.tree2diagram">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">tree2diagram</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">CCGTree</span><span class="p">,</span>
+                     <span class="n">mode</span><span class="p">:</span> <span class="n">TreeReaderMode</span> <span class="o">=</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">NO_TYPE</span><span class="p">,</span>
+                     <span class="n">word_type</span><span class="p">:</span> <span class="n">Ty</span> <span class="o">=</span> <span class="n">S</span><span class="p">,</span>
+                     <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;Convert a :py:class:`~.CCGTree` into a</span>
+<span class="sd">        :py:class:`~discopy.rigid.Diagram` .</span>
+
+<span class="sd">        This produces a tree-shaped diagram based on the output of the</span>
+<span class="sd">        CCG parser.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        tree : :py:class:`~.CCGTree`</span>
+<span class="sd">            The CCG tree to be converted.</span>
+<span class="sd">        mode : TreeReaderMode, default: TreeReaderMode.NO_TYPE</span>
+<span class="sd">            Determines what boxes are used to combine the tree.</span>
+<span class="sd">            See :py:class:`TreeReaderMode` for options.</span>
+<span class="sd">        word_type : Ty, default: core.types.AtomicType.SENTENCE</span>
+<span class="sd">            The type of each word box. By default, it uses the sentence</span>
+<span class="sd">            type from :py:class:`.core.types.AtomicType`.</span>
+<span class="sd">        suppress_exceptions : bool, default: False</span>
+<span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if a</span>
+<span class="sd">            sentence fails to parse, instead of raising an exception,</span>
+<span class="sd">            its return entry is :py:obj:`None`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :py:class:`discopy.rigid.Diagram` or None</span>
+<span class="sd">            The parsed diagram, or :py:obj:`None` on failure.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ccg_words</span><span class="p">,</span> <span class="n">ccg_parse</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">_to_biclosed_diagram</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="n">tree_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">Word</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">word_type</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">ccg_words</span><span class="o">.</span><span class="n">boxes</span><span class="p">]</span>
+        <span class="n">tree_boxes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">ccg_parse</span><span class="o">.</span><span class="n">boxes</span><span class="p">:</span>
+            <span class="n">dom</span> <span class="o">=</span> <span class="n">word_type</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
+            <span class="n">cod</span> <span class="o">=</span> <span class="n">word_type</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">NO_TYPE</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;UNIBOX&#39;</span>
+            <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">HEIGHT</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;layer_?&#39;</span>
+            <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">RULE_ONLY</span><span class="p">:</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">assert</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">RULE_TYPE</span>
+                <span class="n">name</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">tree_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">))</span>
+
+        <span class="n">diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span>
+            <span class="n">dom</span><span class="o">=</span><span class="n">Ty</span><span class="p">(),</span>
+            <span class="n">cod</span><span class="o">=</span><span class="n">word_type</span><span class="p">,</span>
+            <span class="n">boxes</span><span class="o">=</span><span class="n">tree_words</span> <span class="o">+</span> <span class="n">tree_boxes</span><span class="p">,</span>
+            <span class="n">offsets</span><span class="o">=</span><span class="p">(</span><span class="n">ccg_words</span> <span class="o">&gt;&gt;</span> <span class="n">ccg_parse</span><span class="p">)</span><span class="o">.</span><span class="n">offsets</span>
+        <span class="p">)</span>
+
+        <span class="c1"># augment tree diagram with height labels</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">HEIGHT</span><span class="p">:</span>
+            <span class="n">fols</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">foliation</span><span class="p">()</span><span class="o">.</span><span class="n">boxes</span>
+            <span class="n">diagram</span> <span class="o">=</span> <span class="n">fols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fols</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+                <span class="k">for</span> <span class="n">left</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">right</span> <span class="ow">in</span> <span class="n">fol</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+                    <span class="n">new_box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;layer_</span><span class="si">{</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+                    <span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">new_box</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">diagram</span></div>
+
+<div class="viewcode-block" id="TreeReader.sentence2diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.TreeReader.sentence2diagram">[docs]</a>    <span class="k">def</span> <span class="nf">sentence2diagram</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
+            <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Parse a sentence into a :py:class:`~discopy.rigid.Diagram` .</span>
 
 <span class="sd">        This produces a tree-shaped diagram based on the output of the</span>
@@ -232,6 +314,10 @@
 <span class="sd">            The sentence to be parsed.</span>
 <span class="sd">        tokenised : bool, default: False</span>
 <span class="sd">            Whether the sentence has been passed as a list of tokens.</span>
+<span class="sd">        suppress_exceptions : bool, default: False</span>
+<span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if a</span>
+<span class="sd">            sentence fails to parse, instead of raising an exception,</span>
+<span class="sd">            its return entry is :py:obj:`None`.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -240,39 +326,17 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">typ</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">word_type</span>
         <span class="n">tree</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ccg_parser</span><span class="o">.</span><span class="n">sentence2tree</span><span class="p">(</span>
             <span class="n">sentence</span><span class="o">=</span><span class="n">sentence</span><span class="p">,</span>
             <span class="n">tokenised</span><span class="o">=</span><span class="n">tokenised</span><span class="p">,</span>
-            <span class="n">suppress_exceptions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">suppress_exceptions</span><span class="p">)</span>
+            <span class="n">suppress_exceptions</span><span class="o">=</span><span class="n">suppress_exceptions</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">tree</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="n">ccg_words</span><span class="p">,</span> <span class="n">ccg_parse</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">_to_biclosed_diagram</span><span class="p">()</span>
-
-        <span class="n">tree_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">Word</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">typ</span><span class="p">)</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">ccg_words</span><span class="o">.</span><span class="n">boxes</span><span class="p">]</span>
-        <span class="n">tree_boxes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">ccg_parse</span><span class="o">.</span><span class="n">boxes</span><span class="p">:</span>
-            <span class="n">dom</span> <span class="o">=</span> <span class="n">typ</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
-            <span class="n">cod</span> <span class="o">=</span> <span class="n">typ</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">NO_TYPE</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;UNIBOX&#39;</span>
-            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">RULE_ONLY</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">RULE_TYPE</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span>
-            <span class="n">tree_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">))</span>
-
-        <span class="n">diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span>
-            <span class="n">dom</span><span class="o">=</span><span class="n">Ty</span><span class="p">(),</span>
-            <span class="n">cod</span><span class="o">=</span><span class="n">typ</span><span class="p">,</span>
-            <span class="n">boxes</span><span class="o">=</span><span class="n">tree_words</span> <span class="o">+</span> <span class="n">tree_boxes</span><span class="p">,</span>
-            <span class="n">offsets</span><span class="o">=</span><span class="p">(</span><span class="n">ccg_words</span> <span class="o">&gt;&gt;</span> <span class="n">ccg_parse</span><span class="p">)</span><span class="o">.</span><span class="n">offsets</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">diagram</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree2diagram</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span>
+                                 <span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+                                 <span class="n">word_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">word_type</span><span class="p">,</span>
+                                 <span class="n">suppress_exceptions</span><span class="o">=</span><span class="n">suppress_exceptions</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

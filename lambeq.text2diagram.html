@@ -4,10 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.text2diagram &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -32,7 +33,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -50,6 +51,7 @@
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -58,6 +60,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -749,12 +752,12 @@ suppressed, that entry is <code class="xref py py-obj docutils literal notransla
 
 <dl class="py class">
 <dt class="sig sig-object py" id="lambeq.text2diagram.CCGParser">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.text2diagram.</span></span><span class="sig-name descname"><span class="pre">CCGParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'suppress'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.CCGParser" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.text2diagram.</span></span><span class="sig-name descname"><span class="pre">CCGParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_cats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'suppress'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.CCGParser" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.Reader" title="lambeq.text2diagram.base.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.text2diagram.base.Reader</span></code></a></p>
 <p>Base class for CCG parsers.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.text2diagram.CCGParser.__init__">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'suppress'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.CCGParser.__init__" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">root_cats</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'suppress'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.CCGParser.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialise the CCG parser.</p>
 </dd></dl>
 
@@ -1102,6 +1105,12 @@ combined with the <code class="xref py py-obj docutils literal notranslate"><spa
 </dl>
 </dd></dl>
 
+<dl class="py property">
+<dt class="sig sig-object py" id="lambeq.text2diagram.CCGTree.child">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">child</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="root-api.html#lambeq.CCGTree" title="lambeq.text2diagram.ccg_tree.CCGTree"><span class="pre">lambeq.text2diagram.ccg_tree.CCGTree</span></a></em><a class="headerlink" href="#lambeq.text2diagram.CCGTree.child" title="Permalink to this definition"></a></dt>
+<dd><p>Get the child of a unary tree.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.text2diagram.CCGTree.deriv">
 <span class="sig-name descname"><span class="pre">deriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_slashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.deriv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.CCGTree.deriv" title="Permalink to this definition"></a></dt>
@@ -1156,6 +1165,18 @@ children.</p>
 </dd>
 </dl>
 </div></blockquote>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lambeq.text2diagram.CCGTree.left">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">left</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="root-api.html#lambeq.CCGTree" title="lambeq.text2diagram.ccg_tree.CCGTree"><span class="pre">lambeq.text2diagram.ccg_tree.CCGTree</span></a></em><a class="headerlink" href="#lambeq.text2diagram.CCGTree.left" title="Permalink to this definition"></a></dt>
+<dd><p>Get the left child of a binary tree.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="lambeq.text2diagram.CCGTree.right">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">right</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="root-api.html#lambeq.CCGTree" title="lambeq.text2diagram.ccg_tree.CCGTree"><span class="pre">lambeq.text2diagram.ccg_tree.CCGTree</span></a></em><a class="headerlink" href="#lambeq.text2diagram.CCGTree.right" title="Permalink to this definition"></a></dt>
+<dd><p>Get the right child of a binary tree.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -1258,15 +1279,14 @@ set self.__traceback__ to tb and return self.</p>
 <dt><strong>lang</strong><span class="classifier">{ ‘en’, ‘ja’ }</span></dt><dd><p>The language to use: ‘en’ for English, ‘ja’ for Japanese.</p>
 </dd>
 <dt><strong>model</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the model variant to use, if any.
-At time of writing, <cite>depccg</cite> supports ‘elmo’, ‘rebank’ and
-‘elmo_rebank’ for English only.</p>
+<cite>depccg</cite> only has English model variants, namely
+‘elmo’, ‘rebank’ and ‘elmo_rebank’.</p>
 </dd>
 <dt><strong>use_model_unary_rules</strong><span class="classifier">bool, default: False</span></dt><dd><p>Use the unary rules supplied by the model instead of the
 ones by <cite>lambeq</cite>.</p>
 </dd>
-<dt><strong>annotator</strong><span class="classifier">str, default: ‘janome’</span></dt><dd><p>The annotator to use, if any.
-At time of writing <cite>depccg</cite> supports ‘candc’ and ‘spacy’ for
-English, and ‘janome’ and ‘jigg’ for Japanese.
+<dt><strong>annotator</strong><span class="classifier">str, default: ‘janome’</span></dt><dd><p>The annotator to use, if any. <cite>depccg</cite> supports ‘candc’ and
+‘spacy’ for English, and ‘janome’ and ‘jigg’ for Japanese.
 By default, no annotator is used for English, and ‘janome’
 is used for Japanese.</p>
 </dd>
@@ -1544,12 +1564,12 @@ invalid mode or parser is passed to the initialiser.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="lambeq.text2diagram.TreeReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.text2diagram.</span></span><span class="sig-name descname"><span class="pre">TreeReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ccg_parser:</span> <span class="pre">typing.Union[lambeq.text2diagram.ccg_parser.CCGParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Callable[[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambeq.text2diagram.ccg_parser.CCGParser]]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'lambeq.text2diagram.bobcat_parser.BobcatParser'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode:</span> <span class="pre">lambeq.text2diagram.tree_reader.TreeReaderMode</span> <span class="pre">=</span> <span class="pre">TreeReaderMode.NO_TYPE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_type:</span> <span class="pre">discopy.rigid.Ty</span> <span class="pre">=</span> <span class="pre">Ty('s')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.TreeReader" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.text2diagram.</span></span><span class="sig-name descname"><span class="pre">TreeReader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ccg_parser:</span> <span class="pre">typing.Union[lambeq.text2diagram.ccg_parser.CCGParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Callable[[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambeq.text2diagram.ccg_parser.CCGParser]]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'lambeq.text2diagram.bobcat_parser.BobcatParser'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode:</span> <span class="pre">lambeq.text2diagram.tree_reader.TreeReaderMode</span> <span class="pre">=</span> <span class="pre">TreeReaderMode.NO_TYPE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_type:</span> <span class="pre">discopy.rigid.Ty</span> <span class="pre">=</span> <span class="pre">Ty('s')</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.TreeReader" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.Reader" title="lambeq.text2diagram.base.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.text2diagram.base.Reader</span></code></a></p>
 <p>A reader that combines words according to a parse tree.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.text2diagram.TreeReader.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ccg_parser:</span> <span class="pre">typing.Union[lambeq.text2diagram.ccg_parser.CCGParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Callable[[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambeq.text2diagram.ccg_parser.CCGParser]]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'lambeq.text2diagram.bobcat_parser.BobcatParser'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode:</span> <span class="pre">lambeq.text2diagram.tree_reader.TreeReaderMode</span> <span class="pre">=</span> <span class="pre">TreeReaderMode.NO_TYPE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_type:</span> <span class="pre">discopy.rigid.Ty</span> <span class="pre">=</span> <span class="pre">Ty('s')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.TreeReader.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ccg_parser:</span> <span class="pre">typing.Union[lambeq.text2diagram.ccg_parser.CCGParser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">typing.Callable[[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambeq.text2diagram.ccg_parser.CCGParser]]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'lambeq.text2diagram.bobcat_parser.BobcatParser'&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode:</span> <span class="pre">lambeq.text2diagram.tree_reader.TreeReaderMode</span> <span class="pre">=</span> <span class="pre">TreeReaderMode.NO_TYPE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_type:</span> <span class="pre">discopy.rigid.Ty</span> <span class="pre">=</span> <span class="pre">Ty('s')</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.TreeReader.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialise a tree reader.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -1564,10 +1584,6 @@ See <a class="reference internal" href="#lambeq.text2diagram.TreeReaderMode" tit
 <dt><strong>word_type</strong><span class="classifier">Ty, default: core.types.AtomicType.SENTENCE</span></dt><dd><p>The type of each word box. By default, it uses the sentence
 type from <a class="reference internal" href="root-api.html#lambeq.AtomicType" title="lambeq.core.types.AtomicType"><code class="xref py py-class docutils literal notranslate"><span class="pre">core.types.AtomicType</span></code></a>.</p>
 </dd>
-<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
-sentence fails to parse, instead of raising an exception,
-its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</dd>
 </dl>
 </dd>
 </dl>
@@ -1581,7 +1597,7 @@ its return entry is <code class="xref py py-obj docutils literal notranslate"><s
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.text2diagram.TreeReader.sentence2diagram">
-<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.TreeReader.sentence2diagram" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.TreeReader.sentence2diagram" title="Permalink to this definition"></a></dt>
 <dd><p>Parse a sentence into a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diagram</span></code></a> .</p>
 <p>This produces a tree-shaped diagram based on the output of the
 CCG parser.</p>
@@ -1591,6 +1607,10 @@ CCG parser.</p>
 <dt><strong>sentence</strong><span class="classifier">str or list of str</span></dt><dd><p>The sentence to be parsed.</p>
 </dd>
 <dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether the sentence has been passed as a list of tokens.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd>
 </dl>
 </dd>
@@ -1607,6 +1627,39 @@ CCG parser.</p>
 <dt class="sig sig-object py" id="lambeq.text2diagram.TreeReader.sentences2diagrams">
 <span class="sig-name descname"><span class="pre">sentences2diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentences</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceBatchType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Diagram</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lambeq.text2diagram.TreeReader.sentences2diagrams" title="Permalink to this definition"></a></dt>
 <dd><p>Parse multiple sentences into a list of DisCoPy diagrams.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.text2diagram.TreeReader.tree2diagram">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tree2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="root-api.html#lambeq.CCGTree" title="lambeq.text2diagram.ccg_tree.CCGTree"><span class="pre">lambeq.text2diagram.ccg_tree.CCGTree</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode" title="lambeq.text2diagram.tree_reader.TreeReaderMode"><span class="pre">lambeq.text2diagram.tree_reader.TreeReaderMode</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">TreeReaderMode.NO_TYPE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Ty.html#discopy.rigid.Ty" title="(in discopy)"><span class="pre">discopy.rigid.Ty</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Ty('s')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><span class="pre">discopy.rigid.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader.tree2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.text2diagram.TreeReader.tree2diagram" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a <a class="reference internal" href="#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> into a
+<a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diagram</span></code></a> .</p>
+<p>This produces a tree-shaped diagram based on the output of the
+CCG parser.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>tree</strong><span class="classifier"><a class="reference internal" href="#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a></span></dt><dd><p>The CCG tree to be converted.</p>
+</dd>
+<dt><strong>mode</strong><span class="classifier">TreeReaderMode, default: TreeReaderMode.NO_TYPE</span></dt><dd><p>Determines what boxes are used to combine the tree.
+See <a class="reference internal" href="#lambeq.text2diagram.TreeReaderMode" title="lambeq.text2diagram.TreeReaderMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReaderMode</span></code></a> for options.</p>
+</dd>
+<dt><strong>word_type</strong><span class="classifier">Ty, default: core.types.AtomicType.SENTENCE</span></dt><dd><p>The type of each word box. By default, it uses the sentence
+type from <a class="reference internal" href="root-api.html#lambeq.AtomicType" title="lambeq.core.types.AtomicType"><code class="xref py py-class docutils literal notranslate"><span class="pre">core.types.AtomicType</span></code></a>.</p>
+</dd>
+<dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
+sentence fails to parse, instead of raising an exception,
+its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a> or None</dt><dd><p>The parsed diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> on failure.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -1630,7 +1683,17 @@ and type of the original CCG rule. For example, for the
 forward application rule <code class="xref py py-obj docutils literal notranslate"><span class="pre">FA(N</span> <span class="pre">&lt;&lt;</span> <span class="pre">N)</span></code>, the rule box
 will be named <code class="xref py py-obj docutils literal notranslate"><span class="pre">FA(N</span> <span class="pre">&lt;&lt;</span> <span class="pre">N)</span></code>.</p>
 </dd>
+<dt id="term-HEIGHT">HEIGHT<a class="headerlink" href="#term-HEIGHT" title="Permalink to this term"></a></dt><dd><p>The ‘height’ mode names every rule box based on the
+tree height of its subtree. For example, a rule
+box directly combining two words will be named
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">layer_1</span></code>.</p>
+</dd>
 </dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.text2diagram.TreeReaderMode.HEIGHT">
+<span class="sig-name descname"><span class="pre">HEIGHT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#lambeq.text2diagram.TreeReaderMode.HEIGHT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="lambeq.text2diagram.TreeReaderMode.NO_TYPE">
 <span class="sig-name descname"><span class="pre">NO_TYPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#lambeq.text2diagram.TreeReaderMode.NO_TYPE" title="Permalink to this definition"></a></dt>

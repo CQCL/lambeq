@@ -4,10 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 4: Training &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>Step 4: Training &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
@@ -34,7 +35,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,6 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -64,6 +66,7 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html">Training: Quantum case</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -143,8 +146,8 @@
 <p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, all low-level processing that takes place in training is hidden in the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package, which provides convenient high-level abstractions for all important supervised learning scenarios with the toolkit, classical and quantum. More specifically, the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package contains the following high-level/abstract classes and several concrete implementations for them:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>: A class that provides functionality for easy management and manipulation of datasets, including batching, shuffling, and preparation based on the selected backend (tket, NumPy, PyTorch).</p></li>
-<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>: The abstract interface for <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">models</span></a>. A <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> bundles the basic attributes and methods used for training, given a specific backend. It stores the <a class="reference internal" href="glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> and the corresponding weights, and implements the forward pass of the model. Concrete implementations are the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a>, <a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a>, and <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> classes.</p></li>
-<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Optimizer" title="lambeq.training.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a>:  a <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> optimizer calculates the gradient of a given loss function with respect to the parameters of a model. It contains a <a class="reference internal" href="root-api.html#lambeq.Optimizer.step" title="lambeq.Optimizer.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> method to modify the model parameters according to the optimizer’s update rule. Currently, we support the SPSA algorithm by <a class="reference internal" href="bibliography.html#spa1998" id="id1"><span>[Spa1998]</span></a>, implemented in the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a> class.</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>: The abstract interface for <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">models</span></a>. A <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> bundles the basic attributes and methods used for training, given a specific backend. It stores the <a class="reference internal" href="glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> and the corresponding weights, and implements the forward pass of the model. Concrete implementations are the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a>, <a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a>, and <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> classes (for more details see Section <a class="reference internal" href="models.html#sec-models"><span class="std std-ref">Choosing a model</span></a> below).</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Optimizer" title="lambeq.training.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a>: a <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> optimizer calculates the gradient of a given loss function with respect to the parameters of a model. It contains a <a class="reference internal" href="root-api.html#lambeq.Optimizer.step" title="lambeq.Optimizer.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> method to modify the model parameters according to the optimizer’s update rule. Currently, we support the SPSA algorithm by <a class="reference internal" href="bibliography.html#spa1998" id="id1"><span>[Spa1998]</span></a>, implemented in the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a> class.</p></li>
 <li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a>: The main interface for supervised learning in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>. A <a class="reference internal" href="glossary.html#term-trainer"><span class="xref std std-term">trainer</span></a> implements the (quantum) machine learning routine given a specific backend, using a loss function and an optimizer. Concrete implementations are the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> and <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a> classes.</p></li>
 </ul>
 <p>The process of training a <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> involves the following steps:</p>
@@ -154,34 +157,48 @@
 <li><p>Create a <a class="reference internal" href="lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> for training, and optionally, one for evaluation.</p></li>
 <li><p>Train the <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> by handing the dataset to the <a class="reference internal" href="root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the <a class="reference internal" href="glossary.html#term-trainer"><span class="xref std std-term">trainer</span></a>.</p></li>
 </ol>
-<p>The following sections demonstrate the usage of the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package for classical and quantum training scenarios.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> covers a wide range of training use cases, which are described in detail under <a class="reference internal" href="use-cases.html#sec-usecases"><span class="std std-ref">lambeq use cases</span></a>. Depending on your specific use case (e.g., classical or (simulated) quantum machine learning, etc.), you can choose from a variety of models and their according trainers. Refer to Section <a class="reference internal" href="models.html#sec-models"><span class="std std-ref">Choosing a model</span></a> for a detailed overview of the available models and trainers.</p>
+</div>
+<p>The following examples demonstrate the usage of the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package for classical and quantum training scenarios.</p>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/trainer_classical.html">Training: Classical case</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Preparation">Preparation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Input-data">Input data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Instantiate-the-model">Instantiate the model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Define-evaluation-metric">Define evaluation metric</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Initialise-trainer">Initialise trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Creating-the-datasets">Creating the datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Train-the-model">Train the model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Show-results">Show results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Preparation">Preparation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_classical.html#Input-data">Input data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_classical.html#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Training">Training</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_classical.html#Instantiate-model">Instantiate model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_classical.html#Define-evaluation-metric">Define evaluation metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_classical.html#Initialise-trainer">Initialise trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_classical.html#Create-datasets">Create datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_classical.html#Train">Train</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Results">Results</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html#Adding-custom-layers-to-the-model">Adding custom layers to the model</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/trainer_quantum.html">Training: Quantum case</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Preparation">Preparation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Input-data">Input data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Filter-and-simplify-diagrams">Filter and simplify diagrams</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Create-circuits">Create circuits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Instantiate-the-model">Instantiate the model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Define-loss-and-the-evaluation-metric">Define loss and the evaluation metric</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Initialise-trainer">Initialise trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Creating-the-datasets">Creating the datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Train-the-model">Train the model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Show-results">Show results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Preparation">Preparation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Input-data">Input data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Filter-and-simplify-diagrams">Filter and simplify diagrams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Create-circuits">Create circuits</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Training">Training</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Instantiate-the-model">Instantiate the model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Define-loss-and-evaluation-metric">Define loss and evaluation metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Initialise-trainer">Initialise trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Create-datasets">Create datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_quantum.html#Train">Train</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Results">Results</a></li>
 </ul>
 </li>
 </ul>

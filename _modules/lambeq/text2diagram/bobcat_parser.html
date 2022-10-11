@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -144,7 +147,6 @@
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Ty</span>
-<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">TqdmWarning</span>
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
@@ -153,6 +155,7 @@
 <span class="kn">from</span> <span class="nn">lambeq.bobcat</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BertForChartClassification</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span>
                            <span class="n">ChartParser</span><span class="p">,</span> <span class="n">Grammar</span><span class="p">,</span> <span class="n">ParseTree</span><span class="p">,</span>
                            <span class="n">Sentence</span><span class="p">,</span> <span class="n">Supertag</span><span class="p">,</span> <span class="n">Tagger</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.bobcat.tagger</span> <span class="kn">import</span> <span class="n">TaggerOutputSentence</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SentenceBatchType</span><span class="p">,</span>
                                <span class="n">tokenised_batch_type_check</span><span class="p">,</span>
@@ -194,6 +197,7 @@
 
 
 <span class="k">def</span> <span class="nf">model_is_stale</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">VERSION_FNAME</span>
     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
@@ -210,7 +214,7 @@
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">local_version</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">return</span> <span class="n">remote_version</span> <span class="o">!=</span> <span class="n">local_version</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">remote_version</span> <span class="o">!=</span> <span class="n">local_version</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">download_model</span><span class="p">(</span>
@@ -218,6 +222,7 @@
         <span class="n">model_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPathT</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span>
         <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+    <span class="kn">import</span> <span class="nn">requests</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/model.tar.gz&#39;</span>
 
     <span class="k">if</span> <span class="n">model_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -400,6 +405,16 @@
                                   <span class="n">root_cats</span><span class="p">,</span>
                                   <span class="o">**</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;parser&#39;</span><span class="p">])</span></div>
 
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_prepare_sentence</span><span class="p">(</span><span class="n">sent</span><span class="p">:</span> <span class="n">TaggerOutputSentence</span><span class="p">,</span>
+                          <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sentence</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Turn JSON input into a Sentence for parsing.&quot;&quot;&quot;</span>
+        <span class="n">sent_tags</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Supertag</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="n">prob</span><span class="p">)</span> <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">supertags</span><span class="p">]</span>
+                     <span class="k">for</span> <span class="n">supertags</span> <span class="ow">in</span> <span class="n">sent</span><span class="o">.</span><span class="n">tags</span><span class="p">]</span>
+        <span class="n">spans</span> <span class="o">=</span> <span class="p">{(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="n">score</span> <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">}</span>
+                 <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">scores</span> <span class="ow">in</span> <span class="n">sent</span><span class="o">.</span><span class="n">spans</span><span class="p">}</span>
+        <span class="k">return</span> <span class="n">Sentence</span><span class="p">(</span><span class="n">sent</span><span class="o">.</span><span class="n">words</span><span class="p">,</span> <span class="n">sent_tags</span><span class="p">,</span> <span class="n">spans</span><span class="p">)</span>
+
 <div class="viewcode-block" id="BobcatParser.sentences2trees"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.sentences2trees">[docs]</a>    <span class="k">def</span> <span class="nf">sentences2trees</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">sentences</span><span class="p">:</span> <span class="n">SentenceBatchType</span><span class="p">,</span>
@@ -473,21 +488,16 @@
                     <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Parsing tagged sentences&#39;</span><span class="p">,</span>
                     <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                     <span class="n">disable</span><span class="o">=</span><span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-                <span class="n">words</span> <span class="o">=</span> <span class="n">sent</span><span class="o">.</span><span class="n">words</span>
-                <span class="n">sent_tags</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Supertag</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="n">prob</span><span class="p">)</span>
-                              <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">supertags</span><span class="p">]</span>
-                             <span class="k">for</span> <span class="n">supertags</span> <span class="ow">in</span> <span class="n">sent</span><span class="o">.</span><span class="n">tags</span><span class="p">]</span>
-                <span class="n">spans</span> <span class="o">=</span> <span class="p">{(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="n">score</span> <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">}</span>
-                         <span class="k">for</span> <span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">,</span> <span class="n">scores</span> <span class="ow">in</span> <span class="n">sent</span><span class="o">.</span><span class="n">spans</span><span class="p">}</span>
 
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">Sentence</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">sent_tags</span><span class="p">,</span> <span class="n">spans</span><span class="p">))</span>
+                    <span class="n">sentence_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_sentence</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">tags</span><span class="p">)</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">sentence_input</span><span class="p">)</span>
                     <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
                 <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
                         <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">BobcatParseError</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="n">BobcatParseError</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sent</span><span class="o">.</span><span class="n">words</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">empty_indices</span><span class="p">:</span>
             <span class="n">trees</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>

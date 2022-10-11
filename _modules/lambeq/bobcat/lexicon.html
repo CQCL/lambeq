@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.lexicon &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.bobcat.lexicon &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -129,7 +132,7 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.bobcat.fast_int_enum</span> <span class="kn">import</span> <span class="n">FastIntEnum</span>
 
@@ -142,14 +145,14 @@
     <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;NONE&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;PP&#39;</span><span class="p">,</span> <span class="s1">&#39;CONJ&#39;</span><span class="p">,</span> <span class="s1">&#39;COMMA&#39;</span><span class="p">,</span> <span class="s1">&#39;SEMICOLON&#39;</span><span class="p">,</span>
              <span class="s1">&#39;COLON&#39;</span><span class="p">,</span> <span class="s1">&#39;PERIOD&#39;</span><span class="p">]</span>
 
-    <span class="n">punct</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="n">Atom</span><span class="p">]]</span>
+    <span class="n">is_punct</span><span class="p">:</span> <span class="nb">bool</span>
 
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_punct</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">Atom</span><span class="o">.</span><span class="n">punct</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">Atom</span><span class="o">.</span><span class="n">punct</span> <span class="o">=</span> <span class="p">{</span><span class="n">Atom</span><span class="o">.</span><span class="n">COMMA</span><span class="p">,</span> <span class="n">Atom</span><span class="o">.</span><span class="n">SEMICOLON</span><span class="p">,</span> <span class="n">Atom</span><span class="o">.</span><span class="n">COLON</span><span class="p">,</span> <span class="n">Atom</span><span class="o">.</span><span class="n">PERIOD</span><span class="p">,</span>
-                          <span class="n">Atom</span><span class="o">.</span><span class="n">LQU</span><span class="p">,</span> <span class="n">Atom</span><span class="o">.</span><span class="n">RQU</span><span class="p">,</span> <span class="n">Atom</span><span class="o">.</span><span class="n">LRB</span><span class="p">,</span> <span class="n">Atom</span><span class="o">.</span><span class="n">RRB</span><span class="p">}</span>
-        <span class="k">return</span> <span class="bp">self</span> <span class="ow">in</span> <span class="n">Atom</span><span class="o">.</span><span class="n">punct</span>
+
+<span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">Atom</span><span class="o">.</span><span class="n">_member_map_</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
+        <span class="n">atom</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Atom</span><span class="p">,</span> <span class="n">atom</span><span class="p">)</span>
+    <span class="n">atom</span><span class="o">.</span><span class="n">is_punct</span> <span class="o">=</span> <span class="n">atom</span> <span class="o">&gt;=</span> <span class="n">Atom</span><span class="o">.</span><span class="n">COMMA</span>
 
 
 <span class="k">class</span> <span class="nc">Feature</span><span class="p">(</span><span class="n">FastIntEnum</span><span class="p">):</span>
@@ -259,7 +262,7 @@
 
     <span class="k">def</span> <span class="nf">_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
              <span class="n">full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-             <span class="n">slot_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>  <span class="c1"># pragma: no cover</span>
+             <span class="n">slot_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>  <span class="c1"># pragma: no cover</span>
         <span class="sd">&quot;&quot;&quot;Helper function to stringify a Category.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
             <span class="n">output</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="si">}</span><span class="s1">&#39;</span>
@@ -293,7 +296,7 @@
 
     <span class="k">def</span> <span class="nf">_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Helper function to hash a Category.&quot;&quot;&quot;</span>
-        <span class="n">t</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+        <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
             <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="p">,</span>
                  <span class="n">Feature</span><span class="o">.</span><span class="n">NONE</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">==</span> <span class="n">Feature</span><span class="o">.</span><span class="n">X</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature</span><span class="p">)</span>
@@ -364,7 +367,7 @@
 <span class="n">CAT_REGEX</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(?P&lt;atom&gt;[A-Z]+|conj|[,.;:])&#39;</span>
                        <span class="sa">r</span><span class="s1">&#39;(\[(?P&lt;feature&gt;[Xa-z]+)])?&#39;</span>
                        <span class="o">+</span> <span class="n">VAR_SLOT_REGEX</span><span class="o">.</span><span class="n">pattern</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">VERBOSE</span><span class="p">)</span>
-<span class="n">CATEGORIES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Category</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">CATEGORIES</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">Category</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="n">VARIABLES</span> <span class="o">=</span> <span class="s1">&#39;+_YZWVUTRQAB&#39;</span>
 

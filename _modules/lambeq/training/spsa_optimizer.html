@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
@@ -31,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -49,6 +50,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -57,6 +59,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -131,7 +134,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -154,7 +157,7 @@
 
 <div class="viewcode-block" id="SPSAOptimizer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">QuantumModel</span><span class="p">,</span>
                  <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
-                 <span class="n">loss_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span>
+                 <span class="n">loss_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
                  <span class="n">bounds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Initialise the SPSA optimizer.</span>
 
@@ -201,6 +204,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ak</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ck</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="n">_</span>
         <span class="k">else</span><span class="p">:</span>
@@ -208,11 +212,11 @@
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bds</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of `bounds` must be the same as the &#39;</span>
                                  <span class="s1">&#39;number of the model parameters&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">bds</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">project</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">bds</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">bds</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="SPSAOptimizer.backward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
-            <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+            <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function.</span>
 
 <span class="sd">        The gradients are calculated with respect to the model</span>
@@ -226,8 +230,8 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        tuple of np.ndarray and float</span>
-<span class="sd">            The model predictions and the calculated loss.</span>
+<span class="sd">        float</span>
+<span class="sd">            The calculated loss.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">diagrams</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="n">batch</span>
@@ -266,7 +270,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">update_hyper_params</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="SPSAOptimizer.update_hyper_params"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.update_hyper_params">[docs]</a>    <span class="k">def</span> <span class="nf">update_hyper_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SPSAOptimizer.update_hyper_params"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.update_hyper_params">[docs]</a>    <span class="k">def</span> <span class="nf">update_hyper_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Update the hyperparameters of the SPSA algorithm.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">a_decay</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
@@ -274,7 +278,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ak</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparams</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">a_decay</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ck</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparams</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">c_decay</span></div>
 
-<div class="viewcode-block" id="SPSAOptimizer.state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<div class="viewcode-block" id="SPSAOptimizer.state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;Return optimizer states as dictionary.</span>
 
 <span class="sd">        Returns</span>
@@ -290,7 +294,7 @@
                 <span class="s1">&#39;ck&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ck</span><span class="p">,</span>
                 <span class="s1">&#39;current_sweep&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="p">}</span></div>
 
-<div class="viewcode-block" id="SPSAOptimizer.load_state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="viewcode-block" id="SPSAOptimizer.load_state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Load state of the optimizer from the state dictionary.</span>
 
 <span class="sd">        Parameters</span>

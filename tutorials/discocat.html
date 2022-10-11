@@ -4,10 +4,11 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DisCoCat in DisCoPy &mdash; lambeq 0.2.6 [git latest] documentation</title>
+  <title>DisCoCat in DisCoPy &mdash; lambeq 0.2.7 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/table-wrap.css" type="text/css" />
     <link rel="shortcut icon" href="../_static/favicon.ico"/>
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
@@ -36,7 +37,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.6 [git latest]
+                0.2.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -54,6 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
@@ -62,13 +64,14 @@
 <li class="toctree-l1"><a class="reference internal" href="rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="monoidal.html">Monoidal categories in DisCoPy</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">DisCoCat in DisCoPy</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Pregroup-grammars">Pregroup grammars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Functors">Functors</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Example-1:-&quot;Very&quot;-functor">Example 1: “Very” functor</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Example-1:-“Very”-functor">Example 1: “Very” functor</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Example-2:-Twist-functor">Example 2: Twist functor</a></li>
 </ul>
 </li>
@@ -441,7 +444,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_3_0.png" src="../_images/tutorials_discocat_3_0.png" />
+<img alt="../_images/tutorials_discocat_4_0.png" src="../_images/tutorials_discocat_4_0.png" />
 </div>
 </div>
 <div class="admonition note">
@@ -507,7 +510,7 @@ After normal form: [Word(&#39;she&#39;, Ty(&#39;n&#39;)), Word(&#39;goes&#39;, T
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_5_1.png" src="../_images/tutorials_discocat_5_1.png" />
+<img alt="../_images/tutorials_discocat_6_1.png" src="../_images/tutorials_discocat_6_1.png" />
 </div>
 </div>
 <p>In the example above, the application of normal form to the diagram introduces a <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a> before the word “home”, so the normalised version cannot be drawn with <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.grammar.pregroup.draw.html#discopy.grammar.pregroup.draw" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.draw()</span></code></a> anymore.</p>
@@ -530,8 +533,8 @@ After normal form: [Word(&#39;she&#39;, Ty(&#39;n&#39;)), Word(&#39;goes&#39;, T
 <li><p><a class="reference internal" href="../root-api.html#lambeq.CircuitAnsatz" title="lambeq.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.CircuitAnsatz</span></code></a> functorially transforms a rigid DisCoCat diagram to a <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a>, for evaluation on a quantum device.</p></li>
 </ul>
 <p>Below we present two examples of <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functors</span></a>, implemented in <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>.</p>
-<section id="Example-1:-&quot;Very&quot;-functor">
-<h3>Example 1: “Very” functor<a class="headerlink" href="#Example-1:-"Very"-functor" title="Permalink to this headline"></a></h3>
+<section id="Example-1:-“Very”-functor">
+<h3>Example 1: “Very” functor<a class="headerlink" href="#Example-1:-“Very”-functor" title="Permalink to this headline"></a></h3>
 <p>This <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> adds the word “very” in front of every adjective in a <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> diagram.
 Since the mapping is from a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a> to another <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a>, a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.rigid.Functor.html#discopy.rigid.Functor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Functor</span></code></a> should be used. Further, the word “very” modifies an adjective to return another adjective, so it should have type
 <span class="math notranslate nohighlight">\((n \otimes n^l) \otimes (n \otimes n^l)^l = n \otimes n^l \otimes n^{ll} \otimes n^l\)</span>.</p>
@@ -582,7 +585,7 @@ Since the mapping is from a <a class="reference external" href="https://discopy.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_8_0.png" src="../_images/tutorials_discocat_8_0.png" />
+<img alt="../_images/tutorials_discocat_13_0.png" src="../_images/tutorials_discocat_13_0.png" />
 </div>
 </div>
 </section>
@@ -632,21 +635,21 @@ Since the mapping is from a <a class="reference external" href="https://discopy.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_10_0.png" src="../_images/tutorials_discocat_10_0.png" />
+<img alt="../_images/tutorials_discocat_16_0.png" src="../_images/tutorials_discocat_16_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_10_1.png" src="../_images/tutorials_discocat_10_1.png" />
+<img alt="../_images/tutorials_discocat_16_1.png" src="../_images/tutorials_discocat_16_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_10_2.png" src="../_images/tutorials_discocat_10_2.png" />
+<img alt="../_images/tutorials_discocat_16_2.png" src="../_images/tutorials_discocat_16_2.png" />
 </div>
 </div>
 <div class="admonition note">
@@ -691,7 +694,7 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_15_1.png" src="../_images/tutorials_discocat_15_1.png" />
+<img alt="../_images/tutorials_discocat_20_1.png" src="../_images/tutorials_discocat_20_1.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -725,7 +728,7 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_16_0.png" src="../_images/tutorials_discocat_16_0.png" />
+<img alt="../_images/tutorials_discocat_21_0.png" src="../_images/tutorials_discocat_21_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -880,7 +883,7 @@ Tensor(dom=Dim(1), cod=Dim(2), array=[8., 8.])
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_26_0.png" src="../_images/tutorials_discocat_26_0.png" />
+<img alt="../_images/tutorials_discocat_30_0.png" src="../_images/tutorials_discocat_30_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -924,7 +927,7 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_28_0.png" src="../_images/tutorials_discocat_28_0.png" />
+<img alt="../_images/tutorials_discocat_32_0.png" src="../_images/tutorials_discocat_32_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -951,14 +954,14 @@ tk.Circuit(3).CX(2, 0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_30_0.png" src="../_images/tutorials_discocat_30_0.png" />
+<img alt="../_images/tutorials_discocat_34_0.png" src="../_images/tutorials_discocat_34_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_30_1.png" src="../_images/tutorials_discocat_30_1.png" />
+<img alt="../_images/tutorials_discocat_34_1.png" src="../_images/tutorials_discocat_34_1.png" />
 </div>
 </div>
 <p>So far, our <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> have been “pure” circuits, consisting of unitaries. Pure circuits can be evaluated locally to return a <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>. Circuits containing <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Discard.html#discopy.quantum.circuit.Discard" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code></a>s and <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.quantum.circuit.Measure.html#discopy.quantum.circuit.Measure" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a>s are considered “mixed”, and return <a class="reference external" href="https://discopy.readthedocs.io/en/main/discopy/quantum.cqmap.html#module-discopy.quantum.cqmap" title="(in discopy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">CQMap</span></code></a>s instead of <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>s when evaluated, as they are not unitaries but rather classical-quantum maps (for more details, see Chapter 5 in <a class="reference internal" href="../bibliography.html#hv2013" id="id5"><span>[HV2013]</span></a>).</p>
@@ -1048,7 +1051,7 @@ CQMap(dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)), array=[1.+0.j, 0.+0.j, 0.+0.j, ..., 0.
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
         <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="c1"># Add Bras (postselection) and Kets (states)</span>
+    <span class="c1"># Add Bras (post-selection) and Kets (states)</span>
     <span class="c1"># to get a circuit with the right amount of</span>
     <span class="c1"># input and output wires</span>
     <span class="k">if</span> <span class="n">cod</span> <span class="o">&lt;=</span> <span class="n">dom</span><span class="p">:</span>
@@ -1067,14 +1070,14 @@ CQMap(dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)), array=[1.+0.j, 0.+0.j, 0.+0.j, ..., 0.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_38_0.png" src="../_images/tutorials_discocat_38_0.png" />
+<img alt="../_images/tutorials_discocat_42_0.png" src="../_images/tutorials_discocat_42_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_38_1.png" src="../_images/tutorials_discocat_38_1.png" />
+<img alt="../_images/tutorials_discocat_42_1.png" src="../_images/tutorials_discocat_42_1.png" />
 </div>
 </div>
 </section>
