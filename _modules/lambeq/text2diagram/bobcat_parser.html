@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -275,7 +275,7 @@
 
 
 <div class="viewcode-block" id="BobcatParser"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser">[docs]</a><span class="k">class</span> <span class="nc">BobcatParser</span><span class="p">(</span><span class="n">CCGParser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;CCG parser using Bobcat as the backend.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;CCG parser using Bobcat as the backend.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BobcatParser.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">model_name_or_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;bert&#39;</span><span class="p">,</span>
@@ -285,7 +285,7 @@
                  <span class="n">force_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a BobcatParser.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a BobcatParser.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -390,7 +390,7 @@
 
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;BobcatParser got unexpected keyword argument(s): &#39;</span>
-                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                            <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">repr</span><span class="p">,</span><span class="w"> </span><span class="n">kwargs</span><span class="p">))</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="n">device_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span> <span class="k">if</span> <span class="n">device</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="sa">f</span><span class="s1">&#39;cuda:</span><span class="si">{</span><span class="n">device</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">model</span> <span class="o">=</span> <span class="p">(</span><span class="n">BertForChartClassification</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_dir</span><span class="p">)</span>
@@ -408,7 +408,7 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_prepare_sentence</span><span class="p">(</span><span class="n">sent</span><span class="p">:</span> <span class="n">TaggerOutputSentence</span><span class="p">,</span>
                           <span class="n">tags</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Sentence</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Turn JSON input into a Sentence for parsing.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Turn JSON input into a Sentence for parsing.&quot;&quot;&quot;</span>
         <span class="n">sent_tags</span> <span class="o">=</span> <span class="p">[[</span><span class="n">Supertag</span><span class="p">(</span><span class="n">tags</span><span class="p">[</span><span class="nb">id</span><span class="p">],</span> <span class="n">prob</span><span class="p">)</span> <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">prob</span> <span class="ow">in</span> <span class="n">supertags</span><span class="p">]</span>
                      <span class="k">for</span> <span class="n">supertags</span> <span class="ow">in</span> <span class="n">sent</span><span class="o">.</span><span class="n">tags</span><span class="p">]</span>
         <span class="n">spans</span> <span class="o">=</span> <span class="p">{(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">):</span> <span class="p">{</span><span class="nb">id</span><span class="p">:</span> <span class="n">score</span> <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">score</span> <span class="ow">in</span> <span class="n">scores</span><span class="p">}</span>
@@ -422,7 +422,7 @@
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of :py:class:`.CCGTree` s.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of :py:class:`.CCGTree` s.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -506,7 +506,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_to_biclosed</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="n">Category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Transform a Bobcat category into a biclosed type.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform a Bobcat category into a biclosed type.&quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">atom</span><span class="o">.</span><span class="n">is_punct</span><span class="p">:</span>
@@ -529,7 +529,7 @@
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_build_ccgtree</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">ParseTree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGTree</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Transform a Bobcat parse tree into a `CCGTree`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform a Bobcat parse tree into a `CCGTree`.&quot;&quot;&quot;</span>
 
         <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">BobcatParser</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">tree</span><span class="o">.</span><span class="n">right</span><span class="p">))]</span>
@@ -540,7 +540,7 @@
 
 <div class="viewcode-block" id="BobcatParser.available_models"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.available_models">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">available_models</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;List the available models.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;List the available models.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="o">*</span><span class="n">MODELS</span><span class="p">]</span></div></div>
 </pre></div>
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.pregroups.utils &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.pregroups.utils &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -135,7 +135,7 @@
 
 
 <div class="viewcode-block" id="is_pregroup_diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.is_pregroup_diagram">[docs]</a><span class="k">def</span> <span class="nf">is_pregroup_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Check if a diagram is a pregroup diagram.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a diagram is a pregroup diagram.</span>
 
 <span class="sd">    Adapted from :py:class:`discopy.grammar.pregroup.draw`.</span>
 
@@ -168,7 +168,7 @@
     <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
     <span class="n">morphisms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a :py:class:`discopy.rigid.Diagram` from cups and swaps.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a :py:class:`discopy.rigid.Diagram` from cups and swaps.</span>
 
 <span class="sd">        &gt;&gt;&gt; n, s = Ty(&#39;n&#39;), Ty(&#39;s&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; words = [Word(&#39;she&#39;, n), Word(&#39;goes&#39;, n.r @ s @ n.l),</span>
@@ -292,7 +292,7 @@
 
 
 <div class="viewcode-block" id="remove_cups"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.remove_cups">[docs]</a><span class="k">def</span> <span class="nf">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Remove cups from a :py:class:`discopy.rigid.Diagram`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove cups from a :py:class:`discopy.rigid.Diagram`.</span>
 
 <span class="sd">    Diagrams with less cups become circuits with less post-selection,</span>
 <span class="sd">    which results in faster QML experiments.</span>
@@ -316,14 +316,14 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">_Word</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Helper class for :py:meth:`_remove_detached_cups` method.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class for :py:meth:`_remove_detached_cups` method.&quot;&quot;&quot;</span>
     <span class="n">word</span><span class="p">:</span> <span class="n">Word</span>
     <span class="n">offset</span><span class="p">:</span> <span class="nb">int</span>
 
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">_Morphism</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Helper class for :py:meth:`_remove_detached_cups` method.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper class for :py:meth:`_remove_detached_cups` method.&quot;&quot;&quot;</span>
     <span class="n">morphism</span><span class="p">:</span> <span class="n">Box</span>
     <span class="n">start</span><span class="p">:</span> <span class="nb">int</span>
     <span class="n">end</span><span class="p">:</span> <span class="nb">int</span>
@@ -332,7 +332,7 @@
 
 
 <span class="k">def</span> <span class="nf">_remove_detached_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Remove any detached cups from a diagram.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove any detached cups from a diagram.</span>
 
 <span class="sd">    Helper function for :py:meth:`remove_swaps` method.</span>
 
@@ -412,7 +412,7 @@
 
 
 <div class="viewcode-block" id="remove_swaps"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.remove_swaps">[docs]</a><span class="k">def</span> <span class="nf">remove_swaps</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Produce a proper pregroup diagram by removing any swaps.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce a proper pregroup diagram by removing any swaps.</span>
 
 <span class="sd">    Direct conversion of a CCG derivation into a string diagram form</span>
 <span class="sd">    may introduce swaps, caused by cross-composition rules and unary</span>

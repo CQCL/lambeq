@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_rule &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.text2diagram.ccg_rule &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -139,7 +139,7 @@
 
 
 <div class="viewcode-block" id="CCGRuleUseError"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGRuleUseError">[docs]</a><span class="k">class</span> <span class="nc">CCGRuleUseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Error raised when a :py:class:`CCGRule` is applied incorrectly.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error raised when a :py:class:`CCGRule` is applied incorrectly.&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="CCGRuleUseError.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGRuleUseError.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule</span><span class="p">:</span> <span class="n">CCGRule</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">=</span> <span class="n">rule</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">message</span> <span class="o">=</span> <span class="n">message</span></div>
@@ -149,7 +149,7 @@
 
 
 <span class="k">class</span> <span class="nc">GBC</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generalized Backward Composition box.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized Backward Composition box.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dom</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span>
         <span class="n">cod</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">)</span>
@@ -159,7 +159,7 @@
 
 
 <span class="k">class</span> <span class="nc">GBX</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generalized Backward Crossed Composition box.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized Backward Crossed Composition box.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dom</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span>
         <span class="n">cod</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="s1">&#39;&lt;|&#39;</span><span class="p">)</span>
@@ -170,7 +170,7 @@
 
 
 <span class="k">class</span> <span class="nc">GFC</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generalized Forward Composition box.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized Forward Composition box.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dom</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span>
         <span class="n">cod</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span>
@@ -180,7 +180,7 @@
 
 
 <span class="k">class</span> <span class="nc">GFX</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generalized Forward Crossed Composition box.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Generalized Forward Crossed Composition box.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dom</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span>
         <span class="n">cod</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">replace_cat_result</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="s1">&#39;&gt;|&#39;</span><span class="p">)</span>
@@ -191,7 +191,7 @@
 
 
 <span class="k">class</span> <span class="nc">RPL</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove Left Punctuation box.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove Left Punctuation box.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">right</span>
         <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;RPL(</span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">right</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
@@ -199,7 +199,7 @@
 
 
 <span class="k">class</span> <span class="nc">RPR</span><span class="p">(</span><span class="n">BinaryBoxConstructor</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Remove Right Punctuation box.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove Right Punctuation box.&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span>
         <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;RPR(</span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">right</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
@@ -207,7 +207,7 @@
 
 
 <div class="viewcode-block" id="CCGRule"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGRule">[docs]</a><span class="k">class</span> <span class="nc">CCGRule</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An enumeration of the available CCG rules.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An enumeration of the available CCG rules.&quot;&quot;&quot;</span>
 
     <span class="n">_symbol</span><span class="p">:</span> <span class="nb">str</span>
 
@@ -238,7 +238,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;The standard CCG symbol for the rule.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;The standard CCG symbol for the rule.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CCGRuleUseError</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;unknown CCG rule&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -249,13 +249,13 @@
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">UNKNOWN</span>
 
 <div class="viewcode-block" id="CCGRule.check_match"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGRule.check_match">[docs]</a>    <span class="k">def</span> <span class="nf">check_match</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Raise an exception if `left` does not match `right`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Raise an exception if `left` does not match `right`.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">left</span> <span class="o">!=</span> <span class="n">right</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CCGRuleUseError</span><span class="p">(</span>
                     <span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;mismatched composing types - </span><span class="si">{</span><span class="n">left</span><span class="si">}</span><span class="s1"> != </span><span class="si">{</span><span class="n">right</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CCGRule.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGRule.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dom</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Produce a DisCoPy diagram for this rule.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Produce a DisCoPy diagram for this rule.</span>
 
 <span class="sd">        If it is not possible to produce a valid diagram with the given</span>
 <span class="sd">        parameters, the domain may be rewritten.</span>
@@ -340,7 +340,7 @@
 
 <div class="viewcode-block" id="CCGRule.infer_rule"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGRule.infer_rule">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">infer_rule</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">dom</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGRule</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Infer the CCG rule that admits the given domain and codomain.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Infer the CCG rule that admits the given domain and codomain.</span>
 
 <span class="sd">        Return :py:attr:`CCGRule.UNKNOWN` if no other rule matches.</span>
 

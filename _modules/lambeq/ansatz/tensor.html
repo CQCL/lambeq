@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.ansatz.tensor &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.ansatz.tensor &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -146,10 +146,10 @@
 
 
 <div class="viewcode-block" id="TensorAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.TensorAnsatz">[docs]</a><span class="k">class</span> <span class="nc">TensorAnsatz</span><span class="p">(</span><span class="n">BaseAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for tensor network ansatz.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for tensor network ansatz.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="TensorAnsatz.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.TensorAnsatz.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Ty</span><span class="p">,</span> <span class="n">Dim</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a tensor network ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a tensor network ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -172,12 +172,12 @@
         <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="n">syms</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TensorAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.TensorAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy tensor.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy tensor.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="MPSAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.MPSAnsatz">[docs]</a><span class="k">class</span> <span class="nc">MPSAnsatz</span><span class="p">(</span><span class="n">TensorAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Split large boxes into matrix product states.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split large boxes into matrix product states.&quot;&quot;&quot;</span>
 
     <span class="n">BOND_TYPE</span><span class="p">:</span> <span class="n">Ty</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
 
@@ -185,7 +185,7 @@
                  <span class="n">ob_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Ty</span><span class="p">,</span> <span class="n">Dim</span><span class="p">],</span>
                  <span class="n">bond_dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">max_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a matrix product state ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a matrix product state ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -234,12 +234,12 @@
 
 
 <div class="viewcode-block" id="SpiderAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.SpiderAnsatz">[docs]</a><span class="k">class</span> <span class="nc">SpiderAnsatz</span><span class="p">(</span><span class="n">TensorAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Split large boxes into spiders.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Split large boxes into spiders.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="SpiderAnsatz.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.SpiderAnsatz.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">ob_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Ty</span><span class="p">,</span> <span class="n">Dim</span><span class="p">],</span>
                  <span class="n">max_order</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a spider ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a spider ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

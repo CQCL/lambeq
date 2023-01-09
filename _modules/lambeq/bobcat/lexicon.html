@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.lexicon &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.bobcat.lexicon &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -138,7 +138,7 @@
 
 
 <span class="k">class</span> <span class="nc">Atom</span><span class="p">(</span><span class="n">FastIntEnum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The possible atomic types for a category.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The possible atomic types for a category.&quot;&quot;&quot;</span>
 
     <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">,</span> <span class="s1">&#39;PP&#39;</span><span class="p">,</span> <span class="s1">&#39;conj&#39;</span><span class="p">,</span> <span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="s1">&#39;LQU&#39;</span><span class="p">,</span>
               <span class="s1">&#39;RQU&#39;</span><span class="p">,</span> <span class="s1">&#39;LRB&#39;</span><span class="p">,</span> <span class="s1">&#39;RRB&#39;</span><span class="p">]</span>
@@ -156,7 +156,7 @@
 
 
 <span class="k">class</span> <span class="nc">Feature</span><span class="p">(</span><span class="n">FastIntEnum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;The possible features for a category.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The possible features for a category.&quot;&quot;&quot;</span>
 
     <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;X&#39;</span><span class="p">,</span> <span class="s1">&#39;adj&#39;</span><span class="p">,</span> <span class="s1">&#39;as&#39;</span><span class="p">,</span> <span class="s1">&#39;asup&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;bem&#39;</span><span class="p">,</span> <span class="s1">&#39;dcl&#39;</span><span class="p">,</span> <span class="s1">&#39;em&#39;</span><span class="p">,</span> <span class="s1">&#39;expl&#39;</span><span class="p">,</span>
               <span class="s1">&#39;for&#39;</span><span class="p">,</span> <span class="s1">&#39;frg&#39;</span><span class="p">,</span> <span class="s1">&#39;intj&#39;</span><span class="p">,</span> <span class="s1">&#39;inv&#39;</span><span class="p">,</span> <span class="s1">&#39;nb&#39;</span><span class="p">,</span> <span class="s1">&#39;ng&#39;</span><span class="p">,</span> <span class="s1">&#39;num&#39;</span><span class="p">,</span> <span class="s1">&#39;poss&#39;</span><span class="p">,</span> <span class="s1">&#39;pss&#39;</span><span class="p">,</span>
@@ -184,7 +184,7 @@
 
 <div class="viewcode-block" id="Category"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Category">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Category</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The type of a constituent in a CCG.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The type of a constituent in a CCG.</span>
 
 <span class="sd">    A category may be atomic (e.g. N) or complex (e.g. S/NP).</span>
 
@@ -224,7 +224,7 @@
               <span class="n">var</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
               <span class="n">relation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Relation</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
               <span class="n">type_raising_dep_var</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Category</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create a complex category.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a complex category.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">Category</span><span class="p">(</span><span class="n">Atom</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
                         <span class="n">Feature</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span>
                         <span class="n">var</span><span class="p">,</span>
@@ -237,7 +237,7 @@
 <div class="viewcode-block" id="Category.translate"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Category.translate">[docs]</a>    <span class="k">def</span> <span class="nf">translate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                   <span class="n">var_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
                   <span class="n">feature</span><span class="p">:</span> <span class="n">Feature</span> <span class="o">=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">NONE</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Category</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Translate a category.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Translate a category.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -263,7 +263,7 @@
     <span class="k">def</span> <span class="nf">_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
              <span class="n">full</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
              <span class="n">slot_counter</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sd">&quot;&quot;&quot;Helper function to stringify a Category.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function to stringify a Category.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
             <span class="n">output</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="si">}</span><span class="s1">&#39;</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">!=</span> <span class="n">Feature</span><span class="o">.</span><span class="n">NONE</span><span class="p">:</span>
@@ -295,7 +295,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_str</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_hash</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Helper function to hash a Category.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function to hash a Category.&quot;&quot;&quot;</span>
         <span class="n">t</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
             <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span><span class="p">,</span>
@@ -308,7 +308,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash</span>
 
     <span class="k">def</span> <span class="nf">_equals</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Helper function to test Category equality.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function to test Category equality.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">hash</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">hash</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -328,7 +328,7 @@
                 <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Category</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_equals</span><span class="p">(</span><span class="n">other</span><span class="p">))</span>
 
     <span class="k">def</span> <span class="nf">_matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Category</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Helper function to test Category pattern matching.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Helper function to test Category pattern matching.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">atomic</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">atom</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">atom</span>
                     <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Feature</span><span class="o">.</span><span class="n">NONE</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">feature</span><span class="p">))</span>
@@ -338,7 +338,7 @@
                     <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">_matches</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">argument</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Category.matches"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Category.matches">[docs]</a>    <span class="k">def</span> <span class="nf">matches</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Check if the template set out in this matches the argument.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check if the template set out in this matches the argument.</span>
 
 <span class="sd">        Like == but the NONE feature matches with everything.</span>
 
@@ -348,17 +348,17 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">bwd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Whether this is a backward complex category.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether this is a backward complex category.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fwd</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Whether this is a forward complex category.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether this is a forward complex category.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">==</span> <span class="s1">&#39;/&#39;</span>
 
 <div class="viewcode-block" id="Category.parse"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Category.parse">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">type_raising_dep_var</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;+&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Category</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a category string.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a category string.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">parse</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="n">type_raising_dep_var</span><span class="p">)</span></div></div>
 
 

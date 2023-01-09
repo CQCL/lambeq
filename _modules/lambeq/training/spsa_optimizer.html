@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -146,7 +146,7 @@
 
 
 <div class="viewcode-block" id="SPSAOptimizer"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer">[docs]</a><span class="k">class</span> <span class="nc">SPSAOptimizer</span><span class="p">(</span><span class="n">Optimizer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;An Optimizer using SPSA.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An Optimizer using SPSA.</span>
 
 <span class="sd">    SPSA = Simultaneous Perturbation Stochastic Spproximations.</span>
 <span class="sd">    See https://ieeexplore.ieee.org/document/705889 for details.</span>
@@ -159,7 +159,7 @@
                  <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
                  <span class="n">loss_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
                  <span class="n">bounds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise the SPSA optimizer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the SPSA optimizer.</span>
 
 <span class="sd">        The hyperparameters must contain the following key value pairs::</span>
 
@@ -217,7 +217,7 @@
 <div class="viewcode-block" id="SPSAOptimizer.backward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.backward">[docs]</a>    <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function.</span>
 
 <span class="sd">        The gradients are calculated with respect to the model</span>
 <span class="sd">        parameters.</span>
@@ -264,14 +264,14 @@
         <span class="k">return</span> <span class="n">loss</span></div>
 
 <div class="viewcode-block" id="SPSAOptimizer.step"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Perform optimisation step.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform optimisation step.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ak</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">update_hyper_params</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="SPSAOptimizer.update_hyper_params"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.update_hyper_params">[docs]</a>    <span class="k">def</span> <span class="nf">update_hyper_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Update the hyperparameters of the SPSA algorithm.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the hyperparameters of the SPSA algorithm.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">a_decay</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">A</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
         <span class="n">c_decay</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="p">)</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">gamma</span>
@@ -279,7 +279,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ck</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparams</span><span class="p">[</span><span class="s1">&#39;c&#39;</span><span class="p">]</span><span class="o">/</span><span class="n">c_decay</span></div>
 
 <div class="viewcode-block" id="SPSAOptimizer.state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Return optimizer states as dictionary.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return optimizer states as dictionary.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -295,7 +295,7 @@
                 <span class="s1">&#39;current_sweep&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span><span class="p">}</span></div>
 
 <div class="viewcode-block" id="SPSAOptimizer.load_state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.load_state_dict">[docs]</a>    <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load state of the optimizer from the state dictionary.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load state of the optimizer from the state dictionary.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

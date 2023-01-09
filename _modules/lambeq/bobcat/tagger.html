@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.tagger &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.bobcat.tagger &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -322,7 +322,7 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">TaggerOutputSentence</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A sentence in the tagger output.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A sentence in the tagger output.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -357,7 +357,7 @@
         <span class="k">return</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">idx</span><span class="si">}</span><span class="s1">=</span><span class="si">{</span><span class="n">logp</span><span class="si">:</span><span class="s1">.</span><span class="si">{</span><span class="n">precision</span><span class="si">}}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">logp</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">astext</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sd">&quot;&quot;&quot;Convert into a form that can be passed to Java C&amp;C.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert into a form that can be passed to Java C&amp;C.&quot;&quot;&quot;</span>
 
         <span class="n">tags</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tags</span><span class="p">)</span>
         <span class="n">cats</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cats</span><span class="p">)</span>
@@ -422,7 +422,7 @@
 <div class="viewcode-block" id="Tagger.prepare_inputs"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Tagger.prepare_inputs">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                        <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
                        <span class="n">word_mask</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Prepare a batch of sentences for parsing.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare a batch of sentences for parsing.&quot;&quot;&quot;</span>
         <span class="n">encodings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
         <span class="n">encodings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span>
                                    <span class="n">is_split_into_words</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -440,7 +440,7 @@
 
 <div class="viewcode-block" id="Tagger.parse"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Tagger.parse">[docs]</a>    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
               <span class="n">inputs</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">TaggerOutputSentence</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a batch of sentences.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a batch of sentences.&quot;&quot;&quot;</span>
         <span class="n">encodings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepare_inputs</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">word_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
                                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">encodings</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
@@ -500,7 +500,7 @@
                  <span class="n">batch_size</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span>
                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TaggerOutput</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a list of sentences.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a list of sentences.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">batch_size</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">batch_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span>
 

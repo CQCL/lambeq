@@ -3,6 +3,20 @@
 Release notes
 =============
 
+.. _rel-0.2.8:
+
+`0.2.8 <https://github.com/CQCL/lambeq/releases/tag/0.2.8>`_
+------------------------------------------------------------
+Changed:
+
+- Improved the performance of :py:class:`.NumpyModel` when using Jax JIT-compilation.
+- Dependencies: pinned the required version of DisCoPy to 0.5.X.
+
+Fixed:
+
+- Fixed incorrectly scaled validation loss in progress bar during model training.
+- Fixed symbol type mismatch in the quantum models when a circuit was previously converted to tket.
+
 .. _rel-0.2.7:
 
 `0.2.7 <https://github.com/CQCL/lambeq/releases/tag/0.2.7>`_

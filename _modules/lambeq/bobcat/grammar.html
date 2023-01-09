@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.grammar &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.bobcat.grammar &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -138,7 +138,7 @@
 
 <div class="viewcode-block" id="Grammar"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Grammar">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Grammar</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The grammar dataclass.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;The grammar dataclass.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -183,19 +183,19 @@
 
 <div class="viewcode-block" id="Grammar.load"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Grammar.load">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Grammar</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load a grammar from a JSON file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a grammar from a JSON file.&quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="o">**</span><span class="n">data</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Grammar.save"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Grammar.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">:</span> <span class="n">StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sd">&quot;&quot;&quot;Save the grammar to a JSON file.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the grammar to a JSON file.&quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">asdict</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">f</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">read_grammar_dir</span><span class="p">(</span><span class="n">directory</span><span class="p">:</span> <span class="n">StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Grammar</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-    <span class="sd">&quot;&quot;&quot;Read a grammar from a directory.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read a grammar from a directory.&quot;&quot;&quot;</span>
 
     <span class="n">grammar_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">grammar_dir</span> <span class="o">/</span> <span class="s1">&#39;markedup&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>

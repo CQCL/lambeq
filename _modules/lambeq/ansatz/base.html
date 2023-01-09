@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.ansatz.base &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.ansatz.base &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -144,7 +144,7 @@
 
 
 <div class="viewcode-block" id="Symbol"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Symbol">[docs]</a><span class="k">class</span> <span class="nc">Symbol</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A sympy symbol augmented with extra information.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A sympy symbol augmented with extra information.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -155,7 +155,7 @@
     <span class="n">size</span><span class="p">:</span> <span class="nb">int</span>
 
     <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="o">**</span><span class="n">assumptions</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Symbol</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a symbol.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a symbol.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -184,11 +184,11 @@
 
 
 <div class="viewcode-block" id="BaseAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.BaseAnsatz">[docs]</a><span class="k">class</span> <span class="nc">BaseAnsatz</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for ansatz.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for ansatz.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="BaseAnsatz.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.BaseAnsatz.__init__">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">rigid</span><span class="o">.</span><span class="n">Ty</span><span class="p">,</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Ty</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate an ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate an ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -202,11 +202,11 @@
 
 <div class="viewcode-block" id="BaseAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.BaseAnsatz.__call__">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy circuit or tensor.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy circuit or tensor.&quot;&quot;&quot;</span></div>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Summarise the given DisCoPy box.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Summarise the given DisCoPy box.&quot;&quot;&quot;</span>
 
         <span class="n">dom</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; @ &#39;</span><span class="p">,</span> <span class="s1">&#39;@&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
         <span class="n">cod</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; @ &#39;</span><span class="p">,</span> <span class="s1">&#39;@&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>

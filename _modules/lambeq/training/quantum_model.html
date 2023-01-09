@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.quantum_model &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.quantum_model &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -134,17 +134,22 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Tensor</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
+
 
 <span class="kn">from</span> <span class="nn">lambeq.training.checkpoint</span> <span class="kn">import</span> <span class="n">Checkpoint</span>
 <span class="kn">from</span> <span class="nn">lambeq.training.model</span> <span class="kn">import</span> <span class="n">Model</span>
 
 
 <div class="viewcode-block" id="QuantumModel"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.QuantumModel">[docs]</a><span class="k">class</span> <span class="nc">QuantumModel</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Quantum Model base class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Quantum Model base class.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -163,22 +168,22 @@
     <span class="n">SMOOTHING</span> <span class="o">=</span> <span class="mf">1e-9</span>
 
 <div class="viewcode-block" id="QuantumModel.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.QuantumModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a :py:class:`QuantumModel`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a :py:class:`QuantumModel`.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_training</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_train_predictions</span> <span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></div>
 
     <span class="k">def</span> <span class="nf">_log_prediction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Log a prediction of the model.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Log a prediction of the model.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_train_predictions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_clear_predictions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Clear the logged predictions of the model.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Clear the logged predictions of the model.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_train_predictions</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">_normalise_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Normalise the vector input.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise the vector input.</span>
 <span class="sd">        Does not normalise scalar values; instead, returns the absolute</span>
 <span class="sd">        value of scalars.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -192,7 +197,7 @@
         <span class="k">return</span> <span class="n">ret</span>
 
 <div class="viewcode-block" id="QuantumModel.initialise_weights"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.QuantumModel.initialise_weights">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise the weights of the model.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the weights of the model.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -203,11 +208,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Symbols not initialised. Instantiate through &#39;</span>
                              <span class="s1">&#39;`from_diagrams()`.&#39;</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">))</span></div>
 
     <span class="k">def</span> <span class="nf">_load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load the model weights and symbols from a lambeq</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the model weights and symbols from a lambeq</span>
 <span class="sd">        :py:class:`.Checkpoint`.</span>
 
 <span class="sd">        Parameters</span>
@@ -222,7 +226,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;model_weights&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">_make_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Checkpoint</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create checkpoint that contains the model weights and symbols.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create checkpoint that contains the model weights and symbols.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -237,8 +241,9 @@
         <span class="k">return</span> <span class="n">checkpoint</span>
 
 <div class="viewcode-block" id="QuantumModel.get_diagram_output"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.QuantumModel.get_diagram_output">[docs]</a>    <span class="nd">@abstractmethod</span>
-    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return the diagram prediction.</span>
+    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                                                                   <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the diagram prediction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -256,7 +261,7 @@
 
 <div class="viewcode-block" id="QuantumModel.forward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.QuantumModel.forward">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Compute the forward pass of the model using</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the forward pass of the model using</span>
 <span class="sd">        `get_model_output`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span></div></div>

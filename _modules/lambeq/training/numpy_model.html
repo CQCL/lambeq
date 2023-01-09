@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.numpy_model &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.numpy_model &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -141,7 +141,7 @@
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Tensor</span>
 <span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Diagram</span>
@@ -149,15 +149,20 @@
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">lambdify</span>
 
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
+
+
 <span class="kn">from</span> <span class="nn">lambeq.training.quantum_model</span> <span class="kn">import</span> <span class="n">QuantumModel</span>
 
 
 <div class="viewcode-block" id="NumpyModel"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel">[docs]</a><span class="k">class</span> <span class="nc">NumpyModel</span><span class="p">(</span><span class="n">QuantumModel</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A lambeq model for an exact classical simulation of a</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A lambeq model for an exact classical simulation of a</span>
 <span class="sd">    quantum pipeline.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="NumpyModel.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">use_jit</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise an NumpyModel.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise an NumpyModel.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -170,7 +175,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span></div>
 
     <span class="k">def</span> <span class="nf">_get_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Get lambda function that evaluates the provided diagram.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get lambda function that evaluates the provided diagram.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -187,7 +192,7 @@
         <span class="k">if</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">diagram</span><span class="p">]</span>
 
-        <span class="k">def</span> <span class="nf">diagram_output</span><span class="p">(</span><span class="o">*</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">diagram_output</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
             <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">),</span> <span class="n">tn</span><span class="o">.</span><span class="n">DefaultBackend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">):</span>
                 <span class="n">sub_circuit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fast_subs</span><span class="p">([</span><span class="n">diagram</span><span class="p">],</span> <span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">sub_circuit</span><span class="o">.</span><span class="n">to_tn</span><span class="p">())</span><span class="o">.</span><span class="n">tensor</span>
@@ -202,7 +207,7 @@
     <span class="k">def</span> <span class="nf">_fast_subs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                    <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">],</span>
                    <span class="n">weights</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Substitute weights into a list of parameterised circuit.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Substitute weights into a list of parameterised circuit.&quot;&quot;&quot;</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="n">weights</span><span class="p">)}</span>
         <span class="n">diagrams</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">diagrams</span><span class="p">))</span>  <span class="c1"># does fast deepcopy</span>
         <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">:</span>
@@ -225,8 +230,10 @@
                         <span class="n">b</span><span class="o">.</span><span class="n">_phase</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">_data</span>
         <span class="k">return</span> <span class="n">diagrams</span>
 
-<div class="viewcode-block" id="NumpyModel.get_diagram_output"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.get_diagram_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Return the exact prediction for each diagram.</span>
+<div class="viewcode-block" id="NumpyModel.get_diagram_output"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.get_diagram_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                                                             <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the exact prediction for each diagram.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -255,9 +262,13 @@
                              <span class="s1">&#39;from pre-trained checkpoint.&#39;</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_jit</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
+
             <span class="n">lambdified_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_lambda</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">]</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">diag_f</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
-                                <span class="k">for</span> <span class="n">diag_f</span> <span class="ow">in</span> <span class="n">lambdified_diagrams</span><span class="p">])</span>
+            <span class="n">res</span><span class="p">:</span> <span class="n">jnp</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">=</span> <span class="n">jnp</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">diag_f</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+                                          <span class="k">for</span> <span class="n">diag_f</span> <span class="ow">in</span> <span class="n">lambdified_diagrams</span><span class="p">])</span>
+
+            <span class="k">return</span> <span class="n">res</span>
 
         <span class="n">diagrams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fast_subs</span><span class="p">(</span><span class="n">diagrams</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
         <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;numpy&#39;</span><span class="p">):</span>
@@ -271,7 +282,7 @@
             <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="NumpyModel.forward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Perform default forward pass of a lambeq model.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform default forward pass of a lambeq model.</span>
 
 <span class="sd">        In case of a different datapoint (e.g. list of tuple) or</span>
 <span class="sd">        additional computational steps, please override this method.</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.pregroups.text_printer &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.pregroups.text_printer &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -147,7 +147,7 @@
                 <span class="n">discopy_types</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                 <span class="n">compress_layers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="n">use_ascii</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Produces a string that graphically represents the input diagram</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produces a string that graphically represents the input diagram</span>
 <span class="sd">    with text characters, without the need of first creating a printer.</span>
 <span class="sd">    For specific arguments, see the constructor of the</span>
 <span class="sd">    :py:class:`.TextDiagramPrinter` class.&quot;&quot;&quot;</span>
@@ -159,7 +159,7 @@
 
 
 <span class="k">class</span> <span class="nc">_MorphismType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Enumeration for expected morphism types in a diagram.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Enumeration for expected morphism types in a diagram.&quot;&quot;&quot;</span>
     <span class="n">ID</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">CUP</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">SWAP</span> <span class="o">=</span> <span class="mi">2</span>
@@ -168,7 +168,7 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">_Morphism</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Represents a morphism. `start` and `end` refer to the original</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Represents a morphism. `start` and `end` refer to the original</span>
 <span class="sd">    positions of the involved atomic types in the diagram.&quot;&quot;&quot;</span>
     <span class="n">morphism</span><span class="p">:</span> <span class="n">_MorphismType</span>
     <span class="n">start</span><span class="p">:</span> <span class="nb">int</span>
@@ -176,7 +176,7 @@
 
 
 <div class="viewcode-block" id="TextDiagramPrinter"><a class="viewcode-back" href="../../../lambeq.pregroups.html#lambeq.pregroups.TextDiagramPrinter">[docs]</a><span class="k">class</span> <span class="nc">TextDiagramPrinter</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A text printer for pregroup diagrams.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A text printer for pregroup diagrams.&quot;&quot;&quot;</span>
 
     <span class="n">UNICODE_CHAR_SET</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;BAR&#39;</span><span class="p">:</span> <span class="s1">&#39;│&#39;</span><span class="p">,</span>
@@ -203,7 +203,7 @@
                  <span class="n">discopy_types</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">compress_layers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                  <span class="n">use_ascii</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a text diagram printer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a text diagram printer.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -227,7 +227,7 @@
                         <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">ASCII_CHAR_SET</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TextDiagramPrinter.diagram2str"><a class="viewcode-back" href="../../../lambeq.pregroups.html#lambeq.pregroups.TextDiagramPrinter.diagram2str">[docs]</a>    <span class="k">def</span> <span class="nf">diagram2str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Produces a string that contains a graphical representation of</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Produces a string that contains a graphical representation of</span>
 <span class="sd">        the input diagram using text characters. The diagram is expected</span>
 <span class="sd">        to be in pregroup form, i.e. all words must precede morphisms.</span>
 

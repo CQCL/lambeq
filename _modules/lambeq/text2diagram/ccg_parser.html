@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_parser &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.text2diagram.ccg_parser &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -135,7 +135,7 @@
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Diagram</span>
-<span class="kn">from</span> <span class="nn">tqdm.autonotebook</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="p">(</span><span class="n">SentenceBatchType</span><span class="p">,</span> <span class="n">SentenceType</span><span class="p">,</span>
@@ -145,7 +145,7 @@
 
 
 <div class="viewcode-block" id="CCGParser"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGParser">[docs]</a><span class="k">class</span> <span class="nc">CCGParser</span><span class="p">(</span><span class="n">Reader</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for CCG parsers.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for CCG parsers.&quot;&quot;&quot;</span>
 
     <span class="n">verbose</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span>
 
@@ -153,7 +153,7 @@
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">root_cats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise the CCG parser.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the CCG parser.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="CCGParser.sentences2trees"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGParser.sentences2trees">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">sentences2trees</span><span class="p">(</span>
@@ -162,7 +162,7 @@
             <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of :py:class:`.CCGTree` s.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of :py:class:`.CCGTree` s.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -194,7 +194,7 @@
                       <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
                       <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                       <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a sentence into a :py:class:`.CCGTree`.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence into a :py:class:`.CCGTree`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -242,7 +242,7 @@
             <span class="n">planar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of discopy diagrams.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of discopy diagrams.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -303,7 +303,7 @@
             <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">planar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a sentence into a DisCoPy diagram.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence into a DisCoPy diagram.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

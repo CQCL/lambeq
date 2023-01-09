@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.parser &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.bobcat.parser &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -146,14 +146,14 @@
 
 <div class="viewcode-block" id="Supertag"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Supertag">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Supertag</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A string category, annotated with its log probability.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A string category, annotated with its log probability.&quot;&quot;&quot;</span>
     <span class="n">category</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">probability</span><span class="p">:</span> <span class="nb">float</span></div>
 
 
 <div class="viewcode-block" id="Sentence"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.Sentence">[docs]</a><span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Sentence</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;An input sentence.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An input sentence.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -181,7 +181,7 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Cell</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;A cell in the chart.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A cell in the chart.</span>
 
 <span class="sd">    The cell maintains a list of trees in sorted order, up to the beam</span>
 <span class="sd">    size (though may be larger if there are ties at the bottom), with</span>
@@ -195,7 +195,7 @@
     <span class="n">min_score</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">NEGATIVE_INFINITY</span>
 
     <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">score</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Find the index where a tree with the given score can go.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Find the index where a tree with the given score can go.&quot;&quot;&quot;</span>
         <span class="n">trees</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trees</span>
         <span class="n">lo</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">hi</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span>
@@ -211,7 +211,7 @@
         <span class="k">return</span> <span class="n">lo</span>
 
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_add</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add the trees to the cell.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add the trees to the cell.</span>
 
 <span class="sd">        For each tree that is to be added, it is checked against the</span>
 <span class="sd">        existing trees to determine whether it should be added, and if</span>
@@ -278,7 +278,7 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">Chart</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;The parse chart, containing a mapping from span to cell.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The parse chart, containing a mapping from span to cell.</span>
 
 <span class="sd">    A span (i, j) represents the phrase from the ith word to the jth</span>
 <span class="sd">    word (inclusive), indexed from 0.</span>
@@ -294,14 +294,14 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">.</span><span class="n">trees</span>
 
     <span class="k">def</span> <span class="nf">min_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get the lowest score needed to add a tree to the given cell.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the lowest score needed to add a tree to the given cell.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart</span><span class="p">[</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">min_score</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">NEGATIVE_INFINITY</span>
 
     <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">to_add</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add parse trees to the cell in the chart.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add parse trees to the cell in the chart.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">to_add</span><span class="p">:</span>
             <span class="k">return</span>
 
@@ -315,7 +315,7 @@
 
 <span class="nd">@dataclass</span>
 <span class="k">class</span> <span class="nc">ParseResult</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;The result of a parse.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;The result of a parse.</span>
 
 <span class="sd">    This acts as a list of the most probable parse trees, in order, i.e.</span>
 <span class="sd">    use `parse_result[0]` to access the most probable parse tree.</span>
@@ -374,7 +374,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">tree</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ParseTree</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Dependency</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="sd">&quot;&quot;&quot;Get the dependencies and output tags of the parse.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the dependencies and output tags of the parse.</span>
 
 <span class="sd">        If `tree` is not specified, then this looks for the best scoring</span>
 <span class="sd">        tree at the root of the parse; if there is none, then it</span>
@@ -517,7 +517,7 @@
             <span class="k">return</span> <span class="n">results</span></div>
 
 <div class="viewcode-block" id="ChartParser.__call__"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.ChartParser.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">:</span> <span class="n">Sentence</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParseResult</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a sentence.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence.&quot;&quot;&quot;</span>
         <span class="n">chart</span> <span class="o">=</span> <span class="n">Chart</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">beam_size</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">supertags</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sentence</span><span class="o">.</span><span class="n">words</span><span class="p">,</span>
@@ -597,7 +597,7 @@
 <div class="viewcode-block" id="ChartParser.calc_score_unary"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.ChartParser.calc_score_unary">[docs]</a>    <span class="k">def</span> <span class="nf">calc_score_unary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                          <span class="n">tree</span><span class="p">:</span> <span class="n">ParseTree</span><span class="p">,</span>
                          <span class="n">span_scores</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the score for a unary tree (chain).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the score for a unary tree (chain).&quot;&quot;&quot;</span>
         <span class="n">left</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">left</span>
         <span class="n">res_cat</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Category</span><span class="p">,</span> <span class="o">...</span><span class="p">]]</span>
         <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -618,7 +618,7 @@
 <div class="viewcode-block" id="ChartParser.calc_score_binary"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.ChartParser.calc_score_binary">[docs]</a>    <span class="k">def</span> <span class="nf">calc_score_binary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                           <span class="n">tree</span><span class="p">:</span> <span class="n">ParseTree</span><span class="p">,</span>
                           <span class="n">span_scores</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the score for a binary tree.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the score for a binary tree.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">coordinated</span><span class="p">:</span>
             <span class="n">cat_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result_cats</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="s1">&#39;conj&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">cat</span><span class="p">,)))</span>
         <span class="k">else</span><span class="p">:</span>
@@ -639,7 +639,7 @@
 <div class="viewcode-block" id="ChartParser.get_span_score"><a class="viewcode-back" href="../../../lambeq.bobcat.html#lambeq.bobcat.ChartParser.get_span_score">[docs]</a>    <span class="k">def</span> <span class="nf">get_span_score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                        <span class="n">span_scores</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
                        <span class="n">cat_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Get the score in a span for a category (chain) ID.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the score in a span for a category (chain) ID.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">cat_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing_cat_score</span>
         <span class="k">try</span><span class="p">:</span>

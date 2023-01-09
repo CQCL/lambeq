@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.pytorch_trainer &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.pytorch_trainer &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -149,7 +149,7 @@
 
 
 <div class="viewcode-block" id="PytorchTrainer"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchTrainer">[docs]</a><span class="k">class</span> <span class="nc">PytorchTrainer</span><span class="p">(</span><span class="n">Trainer</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A PyTorch trainer for the classical pipeline.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A PyTorch trainer for the classical pipeline.&quot;&quot;&quot;</span>
 
     <span class="n">model</span><span class="p">:</span> <span class="n">PytorchModel</span>
 
@@ -170,7 +170,7 @@
             <span class="n">from_checkpoint</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
             <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a :py:class:`.Trainer` instance using the PyTorch</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a :py:class:`.Trainer` instance using the PyTorch</span>
 <span class="sd">        backend.</span>
 
 <span class="sd">        Parameters</span>
@@ -238,7 +238,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">device</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_add_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint.</span>
 
 <span class="sd">        These might include model-specific information like the random</span>
 <span class="sd">        state of the backend or the state of the optimizer.</span>
@@ -256,7 +256,7 @@
              <span class="s1">&#39;optimizer_state_dict&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">optimizer</span><span class="o">.</span><span class="n">state_dict</span><span class="p">()})</span>
 
     <span class="k">def</span> <span class="nf">_load_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
 
 <span class="sd">        This includes data previously added by</span>
 <span class="sd">        `_add_extra_checkpoint_info()`.</span>
@@ -274,7 +274,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
                                                             <span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Perform a validation step.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a validation step.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -297,7 +297,7 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span>
                                                             <span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Perform a training step.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a training step.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

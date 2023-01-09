@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced: Extending lambeq &mdash; lambeq 0.2.7 documentation</title>
+  <title>Advanced: Extending lambeq &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
             <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -442,7 +442,7 @@ div.rendered_html tbody tr:hover {
 <img alt="../_images/tutorials_extend-lambeq_5_0.png" src="../_images/tutorials_extend-lambeq_5_0.png" />
 </div>
 </div>
-<p>Note that, in the above code, the method <a class="reference external" href="https://discopy.readthedocs.io/en/main/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.tensor" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tensor()</span></code></a> refers to the monoidal product and not to a physical tensor object. What the specific line does, using the monoidal identity <code class="xref py py-obj docutils literal notranslate"><span class="pre">Id()</span></code> as a starting point, is to tensor one-by-one the boxes of the words in the sentence accumulatively, from left to right, into a single diagram, as in a standard fold operation.</p>
+<p>Note that, in the above code, the method <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.tensor" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tensor()</span></code></a> refers to the monoidal product and not to a physical tensor object. What the specific line does, using the monoidal identity <code class="xref py py-obj docutils literal notranslate"><span class="pre">Id()</span></code> as a starting point, is to tensor one-by-one the boxes of the words in the sentence accumulatively, from left to right, into a single diagram, as in a standard fold operation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -627,7 +627,7 @@ div.rendered_html tbody tr:hover {
             <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">):</span>
                 <span class="n">offset</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">n_qubits</span>
-                <span class="n">syms</span> <span class="o">=</span> <span class="p">[</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">offset</span> <span class="o">+</span> <span class="n">j</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)]</span>
+                <span class="n">syms</span> <span class="o">=</span> <span class="p">[</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)]</span>
 
                 <span class="c1"># adds a ladder of CNOTs</span>
                 <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.pytorch_model &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.pytorch_model &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -145,17 +145,18 @@
 
 
 <div class="viewcode-block" id="PytorchModel"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchModel">[docs]</a><span class="k">class</span> <span class="nc">PytorchModel</span><span class="p">(</span><span class="n">Model</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A lambeq model for the classical pipeline using PyTorch.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A lambeq model for the classical pipeline using PyTorch.&quot;&quot;&quot;</span>
 
     <span class="n">weights</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ParameterList</span>  <span class="c1"># type: ignore[assignment]</span>
+    <span class="n">symbols</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Symbol</span><span class="p">]</span>  <span class="c1"># type: ignore[assignment]</span>
 
 <div class="viewcode-block" id="PytorchModel.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchModel.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a PytorchModel.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a PytorchModel.&quot;&quot;&quot;</span>
         <span class="n">Model</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">_reinitialise_modules</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Reinitialise all modules in the model.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reinitialise all modules in the model.&quot;&quot;&quot;</span>
         <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">modules</span><span class="p">():</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">module</span><span class="o">.</span><span class="n">reset_parameters</span><span class="p">()</span>  <span class="c1"># type: ignore[operator]</span>
@@ -163,7 +164,7 @@
                 <span class="k">pass</span>
 
 <div class="viewcode-block" id="PytorchModel.initialise_weights"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchModel.initialise_weights">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise the weights of the model.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the weights of the model.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -180,7 +181,7 @@
              <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">])</span></div>
 
     <span class="k">def</span> <span class="nf">_load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load the model weights and symbols from a lambeq</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the model weights and symbols from a lambeq</span>
 <span class="sd">        :py:class:`.Checkpoint`.</span>
 
 <span class="sd">        Parameters</span>
@@ -196,7 +197,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;model_state_dict&#39;</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">_make_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Checkpoint</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Create checkpoint that contains the model weights and symbols.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create checkpoint that contains the model weights and symbols.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -212,7 +213,7 @@
         <span class="k">return</span> <span class="n">checkpoint</span>
 
 <div class="viewcode-block" id="PytorchModel.get_diagram_output"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchModel.get_diagram_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Contract diagrams using tensornetwork.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Contract diagrams using tensornetwork.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -249,7 +250,7 @@
                 <span class="p">[</span><span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="o">.</span><span class="n">to_tn</span><span class="p">())</span><span class="o">.</span><span class="n">tensor</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="PytorchModel.forward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.PytorchModel.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Perform default forward pass by contracting tensors.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform default forward pass by contracting tensors.</span>
 
 <span class="sd">        In case of a different datapoint (e.g. list of tuple) or</span>
 <span class="sd">        additional computational steps, please override this method.</span>

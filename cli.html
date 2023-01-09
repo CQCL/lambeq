@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command-line interface &mdash; lambeq 0.2.7 documentation</title>
+  <title>Command-line interface &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -35,7 +35,7 @@
             <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -158,19 +158,19 @@
 <span id="sec-cli"></span><h1>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline"></a></h1>
 <p>While <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is primarily aimed for programmatic use, since Release <a class="reference internal" href="release_notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> it is also equipped with a command-line interface that provides immediate and easy access to most of the toolkit’s functionality. For example, this addition allows <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to be used as a dual <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>, capable of providing syntactic derivations in both <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> and <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> form.</p>
 <p>A summary of the available options is given below.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-m <span class="o">{</span>string-diagram,pregroups,ccg<span class="o">}]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span>
-       <span class="o">[</span>-f <span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
-       <span class="o">[</span>-g <span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
-       <span class="o">[</span>-u <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]</span> <span class="o">[</span>-o OUTPUT_FILE <span class="p">|</span> -d OUTPUT_DIR<span class="o">]</span>
-       <span class="o">[</span>-p <span class="o">{</span>bobcat,depccg<span class="o">}]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-s<span class="o">]</span> <span class="o">[</span>-r <span class="o">{</span>spiders,stairs,cups,tree<span class="o">}]</span>
-       <span class="o">[</span>-c <span class="o">[</span>ROOT_CAT ...<span class="o">]]</span> <span class="o">[</span>-w <span class="o">[</span>REWRITE_RULE ...<span class="o">]]</span>
-       <span class="o">[</span>-a <span class="o">{</span>iqp,tensor,spider,mps<span class="o">}]</span> <span class="o">[</span>-n <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]</span> <span class="o">[</span>-y STORE_ARGS<span class="o">]</span>
-       <span class="o">[</span>-l LOAD_ARGS<span class="o">]</span>
-       <span class="o">[</span>input_sentence<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lambeq<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-v<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span><span class="o">{</span>string-diagram,pregroups,ccg<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-i<span class="w"> </span>INPUT_FILE<span class="o">]</span>
+<span class="w">       </span><span class="o">[</span>-f<span class="w"> </span><span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
+<span class="w">       </span><span class="o">[</span>-g<span class="w"> </span><span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
+<span class="w">       </span><span class="o">[</span>-u<span class="w"> </span><span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR<span class="w"> </span>...<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-o<span class="w"> </span>OUTPUT_FILE<span class="w"> </span><span class="p">|</span><span class="w"> </span>-d<span class="w"> </span>OUTPUT_DIR<span class="o">]</span>
+<span class="w">       </span><span class="o">[</span>-p<span class="w"> </span><span class="o">{</span>bobcat,depccg<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-t<span class="o">]</span><span class="w"> </span><span class="o">[</span>-s<span class="o">]</span><span class="w"> </span><span class="o">[</span>-r<span class="w"> </span><span class="o">{</span>spiders,stairs,cups,tree<span class="o">}]</span>
+<span class="w">       </span><span class="o">[</span>-c<span class="w"> </span><span class="o">[</span>ROOT_CAT<span class="w"> </span>...<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-w<span class="w"> </span><span class="o">[</span>REWRITE_RULE<span class="w"> </span>...<span class="o">]]</span>
+<span class="w">       </span><span class="o">[</span>-a<span class="w"> </span><span class="o">{</span>iqp,tensor,spider,mps<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-n<span class="w"> </span><span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR<span class="w"> </span>...<span class="o">]]</span><span class="w"> </span><span class="o">[</span>-y<span class="w"> </span>STORE_ARGS<span class="o">]</span>
+<span class="w">       </span><span class="o">[</span>-l<span class="w"> </span>LOAD_ARGS<span class="o">]</span>
+<span class="w">       </span><span class="o">[</span>input_sentence<span class="o">]</span>
 </pre></div>
 </div>
 <p>To get detailed help about the available options, type:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq --help
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>--help
 </pre></div>
 </div>
 <p>The following sections provide an introduction to the command-line interface usage via specific examples, while all available options are described in depth in Section <a class="reference internal" href="#sec-detailed-options"><span class="std std-ref">Detailed Options</span></a>.</p>
@@ -183,7 +183,7 @@
 <li><p>The <code class="docutils literal notranslate"><span class="pre">ccg</span></code> mode returns the original CCG tree, instead of a string or pregroup diagram.</p></li>
 </ul>
 <p>For example, to get the default string diagram output for a sentence, use the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq <span class="s2">&quot;John gave Mary a flower&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span><span class="s2">&quot;John gave Mary a flower&quot;</span>
 
 <span class="go">John       gave      Mary    a    flower</span>
 <span class="go">────  ─────────────  ────  ─────  ──────</span>
@@ -194,7 +194,7 @@
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> will use the default <a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a> to parse the sentence and output the string diagram in the console with text drawing characters.</p>
 <p>In order to get the corresponding CCG derivation, type:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -m ccg <span class="s2">&quot;John gave Mary a flower&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-m<span class="w"> </span>ccg<span class="w"> </span><span class="s2">&quot;John gave Mary a flower&quot;</span>
 
 <span class="go">John     gave      Mary   a   flower</span>
 <span class="go">════  ═══════════  ════  ═══  ══════</span>
@@ -208,7 +208,7 @@
 </pre></div>
 </div>
 <p>Use the following command to read an entire file of sentences, tokenise them, parse them with the default parser, and store the pregroup or CCG diagrams in a new file:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -o diagrams.txt
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-t<span class="w"> </span>-o<span class="w"> </span>diagrams.txt
 </pre></div>
 </div>
 <div class="admonition note">
@@ -218,7 +218,7 @@
 <p>In the above example, file <code class="docutils literal notranslate"><span class="pre">sentences.txt</span></code> is expected to contain one sentence per line. The output will be written to file <code class="docutils literal notranslate"><span class="pre">diagrams.txt</span></code>.
 In case your input file does not contain one sentence per line, you can add the <code class="docutils literal notranslate"><span class="pre">--split_sentences</span></code> or <code class="docutils literal notranslate"><span class="pre">-s</span></code> flag.</p>
 <p>If the text output is not good enough for your purposes, you can ask <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to prepare images for the diagrams in a variety of formats and store them in a specific folder for you:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -d image_folder -f image -g png
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-t<span class="w"> </span>-d<span class="w"> </span>image_folder<span class="w"> </span>-f<span class="w"> </span>image<span class="w"> </span>-g<span class="w"> </span>png
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> will prepare a <code class="docutils literal notranslate"><span class="pre">png</span></code> file for each one of the sentences, and store it in folder <code class="docutils literal notranslate"><span class="pre">image_folder</span></code> using the line number of the sentence in the input file to name the image file, e.g. <code class="docutils literal notranslate"><span class="pre">diagram_1.png</span></code>, <code class="docutils literal notranslate"><span class="pre">diagram_2.png</span></code> and so on.</p>
@@ -227,7 +227,7 @@ In case your input file does not contain one sentence per line, you can add the 
 <p>Image generation is currently available only in <code class="docutils literal notranslate"><span class="pre">string-diagram</span></code> and <code class="docutils literal notranslate"><span class="pre">pregroups</span></code> modes.</p>
 </div>
 <p>It is also possible to parse a single sentence and store it as an image – for example, in PDF format in order to use it in a paper. In this case, you can name the file yourself and apply specific format options, such as the exact size of the figure or the font size used in the diagram. Note that it is not necessary to specify the image format if it is already contained in the file name (e.g. pdf).</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f image -u <span class="nv">fig_width</span><span class="o">=</span><span class="m">16</span> <span class="nv">fig_height</span><span class="o">=</span><span class="m">3</span> <span class="nv">fontsize</span><span class="o">=</span><span class="m">12</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-f<span class="w"> </span>image<span class="w"> </span>-u<span class="w"> </span><span class="nv">fig_width</span><span class="o">=</span><span class="m">16</span><span class="w"> </span><span class="nv">fig_height</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="nv">fontsize</span><span class="o">=</span><span class="m">12</span>
 <span class="go">&gt;        -o diagram.pdf</span>
 <span class="go">&gt;        &quot;Mary does not like John&quot;</span>
 </pre></div>
@@ -236,7 +236,7 @@ In case your input file does not contain one sentence per line, you can add the 
 <section id="strict-pregroups-mode">
 <span id="sec-pregroups-mode"></span><span id="sec-advanced-options"></span><h2>Strict pregroups mode<a class="headerlink" href="#strict-pregroups-mode" title="Permalink to this headline"></a></h2>
 <p>We already discussed that <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can provide its outputs as string diagrams or CCG trees. There is also a third mode available (<code class="docutils literal notranslate"><span class="pre">pregroups</span></code>), which removes any swaps from the string diagram and converts it into a strict pregroup form, conforming to the definition of a formal <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup grammar</span></a>. Swaps can be introduced by cross-composition and unary rules in the original CCG derivation. For example, consider the following CCG tree:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -t -m ccg <span class="s2">&quot;The best movie I&#39;ve ever seen&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-t<span class="w"> </span>-m<span class="w"> </span>ccg<span class="w"> </span><span class="s2">&quot;The best movie I&#39;ve ever seen&quot;</span>
 
 <span class="go">The  best  movie     I         &#39;ve         ever       seen</span>
 <span class="go">═══  ════  ═════     ═     ═══════════  ═══════════  ═══════</span>
@@ -254,7 +254,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </pre></div>
 </div>
 <p>Note that “‘ve” and “ever” are combined using cross-composition (<code class="docutils literal notranslate"><span class="pre">Bx</span></code> rule), while there is also a unary (<code class="docutils literal notranslate"><span class="pre">&lt;U&gt;</span></code>) type-changing rule, from <code class="docutils literal notranslate"><span class="pre">s/n</span></code> to <code class="docutils literal notranslate"><span class="pre">n\n</span></code>. CCG parsers use these features to avoid associate a single word with many different types, keeping in that way the size of the vocabulary relatively small. When this derivation is converted into a string diagram, it takes the following form:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -t <span class="s2">&quot;The best movie I&#39;ve ever seen&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-t<span class="w"> </span><span class="s2">&quot;The best movie I&#39;ve ever seen&quot;</span>
 
 <span class="go"> The    best  movie  I      &#39;ve            ever           seen</span>
 <span class="go"> ─────  ─────  ─────  ─  ───────────  ───────────────  ─────────</span>
@@ -276,7 +276,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </pre></div>
 </div>
 <p>Even for relativery short sentences like the above, the swaps may result in diagrams that are difficult to read and follow. In cases where diagrammatic clarity and conformance to a strict pregroup form is important, one can use <code class="docutils literal notranslate"><span class="pre">pregroups</span></code> mode:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -t -m pregroups <span class="s2">&quot;The best movie I&#39;ve ever seen&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-t<span class="w"> </span>-m<span class="w"> </span>pregroups<span class="w"> </span><span class="s2">&quot;The best movie I&#39;ve ever seen&quot;</span>
 
 <span class="go"> The    best  movie  I     &#39;ve ever      seen</span>
 <span class="go">─────  ─────  ─────  ─  ─────────────  ───────</span>
@@ -302,7 +302,7 @@ In case your input file does not contain one sentence per line, you can add the 
 <p>Option only applicable to string and pregroup diagrams.</p>
 </div>
 <p>Instead of the parser, users may prefer to apply one of the available <a class="reference internal" href="glossary.html#term-reader"><span class="xref std std-term">readers</span></a>, each corresponding to a different <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional scheme</span></a>. For example, to encode a sentence as a <a class="reference internal" href="glossary.html#term-tensor-train"><span class="xref std std-term">tensor train</span></a>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -r cups <span class="s2">&quot;John gave Mary a flower&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-r<span class="w"> </span>cups<span class="w"> </span><span class="s2">&quot;John gave Mary a flower&quot;</span>
 
 <span class="go">START   John   gave   Mary    a    flower</span>
 <span class="go">─────  ─────  ─────  ─────  ─────  ──────</span>
@@ -311,7 +311,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </pre></div>
 </div>
 <p>Readers can be used for batch processing of entire files with the <code class="docutils literal notranslate"><span class="pre">-i</span></code> option, exactly as in the parser case.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -r cups -i sentences.txt -o diagrams.txt
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-r<span class="w"> </span>cups<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-o<span class="w"> </span>diagrams.txt
 </pre></div>
 </div>
 <div class="admonition note">
@@ -326,7 +326,7 @@ In case your input file does not contain one sentence per line, you can add the 
 <p>Option only applicable to string and pregroup diagrams.</p>
 </div>
 <p>The command-line interface supports all stages of the <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> <a class="reference internal" href="pipeline.html#sec-pipeline"><span class="std std-ref">pipeline</span></a>, such as application of <a class="reference internal" href="glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> and use of <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> for converting the sentences into <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a> or <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a>. For example, to read a file of sentences, parse them, apply the <code class="docutils literal notranslate"><span class="pre">prepositional_phrase</span></code> and <code class="docutils literal notranslate"><span class="pre">determiner</span></code> <a class="reference internal" href="glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a>, and use an <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a> with 1 <a class="reference internal" href="glossary.html#term-qubit"><span class="xref std std-term">qubit</span></a> assigned to sentence type, 1 <a class="reference internal" href="glossary.html#term-qubit"><span class="xref std std-term">qubit</span></a> to noun type, and 2 IQP layers, use the command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -f image -g png
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-t<span class="w"> </span>-f<span class="w"> </span>image<span class="w"> </span>-g<span class="w"> </span>png
 <span class="go">&gt;        -w prepositional_phrase determiner</span>
 <span class="go">&gt;        -a iqp -n dim_n=1 dim_s=1 n_layers=2</span>
 <span class="go">&gt;        -d image_folder</span>
@@ -337,7 +337,7 @@ In case your input file does not contain one sentence per line, you can add the 
 <p>Since <a class="reference internal" href="glossary.html#term-rewrite-rule"><span class="xref std std-term">rewrite rules</span></a> and <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> can produce output that is too complicated to be properly rendered in purely text form, text output in the console is not available for these cases.</p>
 </div>
 <p>For the classical case, applying a <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.SpiderAnsatz" title="lambeq.ansatz.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a> with 2 dimensions assigned to sentence type and 4 dimensions to noun type, and the same rewrite rules as above, can be done with the following command:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -i sentences.txt -t -f image -g png
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-t<span class="w"> </span>-f<span class="w"> </span>image<span class="w"> </span>-g<span class="w"> </span>png
 <span class="go">&gt;         -w prepositional_phrase determiner</span>
 <span class="go">&gt;         -a spider -n dim_n=4 dim_s=2</span>
 <span class="go">&gt;         -d image_folder</span>
@@ -347,15 +347,15 @@ In case your input file does not contain one sentence per line, you can add the 
 <section id="other-options">
 <h2>Other options<a class="headerlink" href="#other-options" title="Permalink to this headline"></a></h2>
 <p>To store the <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> (for string diagrams) or the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> objects (for the CCG trees) in <code class="docutils literal notranslate"><span class="pre">json</span></code> or <code class="docutils literal notranslate"><span class="pre">pickle</span></code> format, type:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f pickle -i sentences.txt -o diagrams.pickle
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-f<span class="w"> </span>pickle<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-o<span class="w"> </span>diagrams.pickle
 </pre></div>
 </div>
 <p>or</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f json -i sentences.txt -o diagrams.json
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-f<span class="w"> </span>json<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-o<span class="w"> </span>diagrams.json
 </pre></div>
 </div>
 <p>Text output is also available with ascii-only characters:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq -f text-ascii <span class="s2">&quot;John gave Mary a flower.&quot;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-f<span class="w"> </span>text-ascii<span class="w"> </span><span class="s2">&quot;John gave Mary a flower.&quot;</span>
 
 <span class="go"> John       gave      Mary    a    flower.</span>
 <span class="go"> ____  _____________  ____  _____  _______</span>
@@ -371,16 +371,16 @@ To load the configuration from this file next time, <code class="docutils litera
 <span id="sec-detailed-options"></span><h2>Detailed options<a class="headerlink" href="#detailed-options" title="Permalink to this headline"></a></h2>
 <p><p>Command-line interface for lambeq.</p>
 </p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage: lambeq <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-v<span class="o">]</span> <span class="o">[</span>-m <span class="o">{</span>string-diagram,pregroups,ccg<span class="o">}]</span> <span class="o">[</span>-i INPUT_FILE<span class="o">]</span>
-              <span class="o">[</span>-f <span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
-              <span class="o">[</span>-g <span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
-              <span class="o">[</span>-u <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]]</span> <span class="o">[</span>-o OUTPUT_FILE <span class="p">|</span> -d OUTPUT_DIR<span class="o">]</span>
-              <span class="o">[</span>-p <span class="o">{</span>bobcat,depccg<span class="o">}]</span> <span class="o">[</span>-t<span class="o">]</span> <span class="o">[</span>-s<span class="o">]</span> <span class="o">[</span>-r <span class="o">{</span>spiders,stairs,cups,tree<span class="o">}]</span>
-              <span class="o">[</span>-c <span class="o">[</span>ROOT_CAT <span class="o">[</span>ROOT_CAT ...<span class="o">]]]</span>
-              <span class="o">[</span>-w <span class="o">[</span>REWRITE_RULE <span class="o">[</span>REWRITE_RULE ...<span class="o">]]]</span>
-              <span class="o">[</span>-a <span class="o">{</span>iqp,tensor,spider,mps<span class="o">}]</span> <span class="o">[</span>-n <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR <span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR ...<span class="o">]]]</span>
-              <span class="o">[</span>-y STORE_ARGS<span class="o">]</span> <span class="o">[</span>-l LOAD_ARGS<span class="o">]</span>
-              <span class="o">[</span>input_sentence<span class="o">]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>lambeq<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-v<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span><span class="o">{</span>string-diagram,pregroups,ccg<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-i<span class="w"> </span>INPUT_FILE<span class="o">]</span>
+<span class="w">              </span><span class="o">[</span>-f<span class="w"> </span><span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
+<span class="w">              </span><span class="o">[</span>-g<span class="w"> </span><span class="o">{</span>png,pdf,jpeg,jpg,eps,pgf,ps,raw,rgba,svg,svgz,tif,tiff<span class="o">}]</span>
+<span class="w">              </span><span class="o">[</span>-u<span class="w"> </span><span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR<span class="w"> </span><span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR<span class="w"> </span>...<span class="o">]]]</span><span class="w"> </span><span class="o">[</span>-o<span class="w"> </span>OUTPUT_FILE<span class="w"> </span><span class="p">|</span><span class="w"> </span>-d<span class="w"> </span>OUTPUT_DIR<span class="o">]</span>
+<span class="w">              </span><span class="o">[</span>-p<span class="w"> </span><span class="o">{</span>bobcat,depccg<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-t<span class="o">]</span><span class="w"> </span><span class="o">[</span>-s<span class="o">]</span><span class="w"> </span><span class="o">[</span>-r<span class="w"> </span><span class="o">{</span>spiders,stairs,cups,tree<span class="o">}]</span>
+<span class="w">              </span><span class="o">[</span>-c<span class="w"> </span><span class="o">[</span>ROOT_CAT<span class="w"> </span><span class="o">[</span>ROOT_CAT<span class="w"> </span>...<span class="o">]]]</span>
+<span class="w">              </span><span class="o">[</span>-w<span class="w"> </span><span class="o">[</span>REWRITE_RULE<span class="w"> </span><span class="o">[</span>REWRITE_RULE<span class="w"> </span>...<span class="o">]]]</span>
+<span class="w">              </span><span class="o">[</span>-a<span class="w"> </span><span class="o">{</span>iqp,tensor,spider,mps<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-n<span class="w"> </span><span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR<span class="w"> </span><span class="o">[</span><span class="nv">KEY</span><span class="o">=</span>VAR<span class="w"> </span>...<span class="o">]]]</span>
+<span class="w">              </span><span class="o">[</span>-y<span class="w"> </span>STORE_ARGS<span class="o">]</span><span class="w"> </span><span class="o">[</span>-l<span class="w"> </span>LOAD_ARGS<span class="o">]</span>
+<span class="w">              </span><span class="o">[</span>input_sentence<span class="o">]</span>
 </pre></div>
 </div>
 <section id="Positional Arguments">

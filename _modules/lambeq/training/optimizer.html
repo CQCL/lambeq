@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.optimizer &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.optimizer &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -144,14 +144,14 @@
 
 
 <div class="viewcode-block" id="Optimizer"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer">[docs]</a><span class="k">class</span> <span class="nc">Optimizer</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Optimizer base class.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimizer base class.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Optimizer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
                  <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
                  <span class="n">loss_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
                  <span class="n">bounds</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise the optimizer base class.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the optimizer base class.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -174,7 +174,7 @@
 <div class="viewcode-block" id="Optimizer.backward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer.backward">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the gradients of the loss function.</span>
 
 <span class="sd">        The gradient is calculated with respect to the model parameters.</span>
 
@@ -192,18 +192,18 @@
 
 <div class="viewcode-block" id="Optimizer.step"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer.step">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Perform optimisation step.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform optimisation step.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Optimizer.state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer.state_dict">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Return optimizer states as dictionary.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return optimizer states as dictionary.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Optimizer.load_state_dict"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer.load_state_dict">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">load_state_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load state of the optimizer from the state dictionary.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load state of the optimizer from the state dictionary.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Optimizer.zero_grad"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer.zero_grad">[docs]</a>    <span class="k">def</span> <span class="nf">zero_grad</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Reset the gradients to zero.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset the gradients to zero.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span> <span class="o">*=</span> <span class="mi">0</span></div></div>
 </pre></div>
 

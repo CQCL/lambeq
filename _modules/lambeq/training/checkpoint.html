@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.checkpoint &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.checkpoint &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -142,7 +142,7 @@
 
 
 <div class="viewcode-block" id="Checkpoint"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Checkpoint">[docs]</a><span class="k">class</span> <span class="nc">Checkpoint</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Checkpoint class.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Checkpoint class.</span>
 
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
@@ -152,15 +152,15 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Checkpoint.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Checkpoint.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a :py:class:`Checkpoint`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a :py:class:`Checkpoint`.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span></div>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Returns the number of the entries in the checkpoint.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the number of the entries in the checkpoint.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Sets the value in the checkpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sets the value in the checkpoint.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -173,7 +173,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Accesses the value in the checkpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Accesses the value in the checkpoint.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -194,7 +194,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">entries</span><span class="o">.</span><span class="fm">__iter__</span><span class="p">()</span>
 
 <div class="viewcode-block" id="Checkpoint.add_many"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Checkpoint.add_many">[docs]</a>    <span class="k">def</span> <span class="nf">add_many</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Adds several values into the checkpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Adds several values into the checkpoint.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -207,7 +207,7 @@
 
 <div class="viewcode-block" id="Checkpoint.from_file"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Checkpoint.from_file">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">from_file</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">_StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Checkpoint</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load the checkpoint contents from the file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the checkpoint contents from the file.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -230,7 +230,7 @@
         <span class="k">return</span> <span class="n">checkpoint</span></div>
 
 <div class="viewcode-block" id="Checkpoint.to_file"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Checkpoint.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">_StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Save entries to a file and deletes the in-memory copy.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save entries to a file and deletes the in-memory copy.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

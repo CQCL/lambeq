@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.base &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.text2diagram.base &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -168,19 +168,19 @@
 
 
 <div class="viewcode-block" id="Reader"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.Reader">[docs]</a><span class="k">class</span> <span class="nc">Reader</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for readers and parsers.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for readers and parsers.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Reader.sentence2diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.Reader.sentence2diagram">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">sentence2diagram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                          <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
                          <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a sentence into a DisCoPy diagram.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence into a DisCoPy diagram.&quot;&quot;&quot;</span></div>
 
 <div class="viewcode-block" id="Reader.sentences2diagrams"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.Reader.sentences2diagrams">[docs]</a>    <span class="k">def</span> <span class="nf">sentences2diagrams</span><span class="p">(</span>
                     <span class="bp">self</span><span class="p">,</span>
                     <span class="n">sentences</span><span class="p">:</span> <span class="n">SentenceBatchType</span><span class="p">,</span>
                     <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of DisCoPy diagrams.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of DisCoPy diagrams.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">tokenised</span><span class="o">=</span><span class="n">tokenised</span><span class="p">)</span>
                 <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">]</span></div></div>
 </pre></div>

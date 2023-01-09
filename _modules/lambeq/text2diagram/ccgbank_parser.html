@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -161,7 +161,7 @@
 
 
 <div class="viewcode-block" id="CCGBankParseError"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGBankParseError">[docs]</a><span class="k">class</span> <span class="nc">CCGBankParseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Error raised if parsing fails in CCGBank.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Error raised if parsing fails in CCGBank.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CCGBankParseError.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGBankParseError.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sentence</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">message</span><span class="p">:</span>
@@ -178,7 +178,7 @@
 
 
 <div class="viewcode-block" id="CCGBankParser"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGBankParser">[docs]</a><span class="k">class</span> <span class="nc">CCGBankParser</span><span class="p">(</span><span class="n">CCGParser</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A parser for CCGBank trees.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A parser for CCGBank trees.&quot;&quot;&quot;</span>
 
     <span class="n">ccg_type_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
             <span class="sa">r</span><span class="s1">&#39;((?P&lt;bare_cat&gt;N|NP|S|PP)(\[[a-z]+])?|conj|LRB|RRB|[,.:;])&#39;</span><span class="p">)</span>
@@ -210,7 +210,7 @@
 <div class="viewcode-block" id="CCGBankParser.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGBankParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">root</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">PathLike</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a CCGBank parser.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a CCGBank parser.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -233,7 +233,7 @@
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into trees.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a CCGBank section into trees.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -271,7 +271,7 @@
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span>
                                         <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into trees, given as a generator.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a CCGBank section into trees, given as a generator.</span>
 
 <span class="sd">        The generator only reads data when it is accessed, providing the</span>
 <span class="sd">        user with control over the reading process.</span>
@@ -341,7 +341,7 @@
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into diagrams.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a CCGBank section into diagrams.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -383,7 +383,7 @@
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span>
                                         <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a CCGBank section into diagrams, given as a generator.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a CCGBank section into diagrams, given as a generator.</span>
 
 <span class="sd">        The generator only reads data when it is accessed, providing the</span>
 <span class="sd">        user with control over the reading process.</span>
@@ -443,7 +443,7 @@
             <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
-        <span class="sd">&quot;&quot;&quot;Parse a CCGBank sentence derivation into a CCGTree.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a CCGBank sentence derivation into a CCGTree.</span>
 
 <span class="sd">        The sentence must be in the format outlined in the CCGBank</span>
 <span class="sd">        manual section D.2 and not just a list of words.</span>

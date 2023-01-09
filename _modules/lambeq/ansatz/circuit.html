@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.ansatz.circuit &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.ansatz.circuit &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -147,15 +147,15 @@
 <span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">Bra</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Rx</span><span class="p">,</span> <span class="n">Ry</span><span class="p">,</span> <span class="n">Rz</span>
 <span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Ty</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">symbols</span>
+<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">Symbol</span><span class="p">,</span> <span class="n">symbols</span>
 
-<span class="kn">from</span> <span class="nn">lambeq.ansatz</span> <span class="kn">import</span> <span class="n">BaseAnsatz</span><span class="p">,</span> <span class="n">Symbol</span>
+<span class="kn">from</span> <span class="nn">lambeq.ansatz</span> <span class="kn">import</span> <span class="n">BaseAnsatz</span>
 
 <span class="n">computational_basis</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">qubit</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="CircuitAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz">[docs]</a><span class="k">class</span> <span class="nc">CircuitAnsatz</span><span class="p">(</span><span class="n">BaseAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for circuit ansatz.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for circuit ansatz.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="CircuitAnsatz.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">ob_map</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">Ty</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
@@ -165,7 +165,7 @@
                  <span class="n">discard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">single_qubit_rotations</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Circuit</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">postselection_basis</span><span class="p">:</span> <span class="n">Circuit</span> <span class="o">=</span> <span class="n">computational_basis</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a circuit ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a circuit ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -203,16 +203,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">ob_map</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CircuitAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy circuit.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy circuit.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CircuitAnsatz.ob_size"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.ob_size">[docs]</a>    <span class="k">def</span> <span class="nf">ob_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pg_type</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the number of qubits used for a given type.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the number of qubits used for a given type.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ob_map</span><span class="p">[</span><span class="n">Ty</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">pg_type</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CircuitAnsatz.params_shape"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.params_shape">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">params_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the shape of the parameters required.&quot;&quot;&quot;</span></div>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the shape of the parameters required.&quot;&quot;&quot;</span></div>
 
     <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
         <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
@@ -244,7 +244,7 @@
 
 
 <div class="viewcode-block" id="IQPAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.IQPAnsatz">[docs]</a><span class="k">class</span> <span class="nc">IQPAnsatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Instantaneous Quantum Polynomial ansatz.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Instantaneous Quantum Polynomial ansatz.</span>
 
 <span class="sd">    An IQP ansatz interleaves layers of Hadamard gates with diagonal</span>
 <span class="sd">    unitaries. This class uses :py:obj:`n_layers-1` adjacent CRz gates</span>
@@ -257,7 +257,7 @@
                  <span class="n">n_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">n_single_qubit_params</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
                  <span class="n">discard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate an IQP ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate an IQP ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -285,7 +285,7 @@
 
 
 <div class="viewcode-block" id="Sim14Ansatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim14Ansatz">[docs]</a><span class="k">class</span> <span class="nc">Sim14Ansatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Modification of circuit 14 from Sim et al.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Modification of circuit 14 from Sim et al.</span>
 
 <span class="sd">    Replaces circuit-block construction with two rings of CRx gates, in</span>
 <span class="sd">    opposite orientation.</span>
@@ -299,7 +299,7 @@
                  <span class="n">n_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">n_single_qubit_params</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
                  <span class="n">discard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a Sim 14 ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a Sim 14 ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -326,7 +326,7 @@
 
 
 <div class="viewcode-block" id="Sim15Ansatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim15Ansatz">[docs]</a><span class="k">class</span> <span class="nc">Sim15Ansatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Modification of circuit 15 from Sim et al.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Modification of circuit 15 from Sim et al.</span>
 
 <span class="sd">    Replaces circuit-block construction with two rings of CNOT gates, in</span>
 <span class="sd">    opposite orientation.</span>
@@ -340,7 +340,7 @@
                  <span class="n">n_layers</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
                  <span class="n">n_single_qubit_params</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
                  <span class="n">discard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a Sim 15 ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a Sim 15 ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -367,7 +367,7 @@
 
 
 <div class="viewcode-block" id="StronglyEntanglingAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.StronglyEntanglingAnsatz">[docs]</a><span class="k">class</span> <span class="nc">StronglyEntanglingAnsatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Strongly entangling ansatz.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Strongly entangling ansatz.</span>
 
 <span class="sd">    Ansatz using three single qubit rotations (RzRyRz) followed by a</span>
 <span class="sd">    ladder of CNOT gates with different ranges per layer.</span>
@@ -387,7 +387,7 @@
                  <span class="n">n_single_qubit_params</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
                  <span class="n">ranges</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">discard</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Instantiate a strongly entangling ansatz.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Instantiate a strongly entangling ansatz.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>

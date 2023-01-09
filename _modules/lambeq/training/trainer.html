@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.trainer &mdash; lambeq 0.2.7 documentation</title>
+  <title>lambeq.training.trainer &mdash; lambeq 0.2.8 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -32,7 +32,7 @@
             <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.7
+                0.2.8
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -174,7 +174,7 @@
 
 
 <div class="viewcode-block" id="Trainer"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer">[docs]</a><span class="k">class</span> <span class="nc">Trainer</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for a lambeq trainer.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Base class for a lambeq trainer.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Trainer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
@@ -187,7 +187,7 @@
                  <span class="n">from_checkpoint</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                  <span class="n">seed</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Initialise a lambeq trainer.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a lambeq trainer.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -270,7 +270,7 @@
     <span class="k">def</span> <span class="nf">_generate_stat_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                               <span class="n">train_loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                               <span class="n">val_loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Generate the text to display with the progress bar.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the text to display with the progress bar.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -304,7 +304,7 @@
         <span class="k">return</span> <span class="s1">&#39;   &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Trainer.load_training_checkpoint"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.load_training_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">load_training_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">log_dir</span><span class="p">:</span> <span class="n">_StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Checkpoint</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load model from a checkpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load model from a checkpoint.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -347,7 +347,7 @@
 <div class="viewcode-block" id="Trainer.save_checkpoint"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.save_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">save_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
                         <span class="n">log_dir</span><span class="p">:</span> <span class="n">_StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Save checkpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save checkpoint.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -364,7 +364,7 @@
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_add_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add any additional information to the training checkpoint.</span>
 
 <span class="sd">        These might include model-specific information like the random</span>
 <span class="sd">        state of the backend or the state of the optimizer.</span>
@@ -379,7 +379,7 @@
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_load_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load additional checkpoint information.</span>
 
 <span class="sd">        This includes data previously added by</span>
 <span class="sd">        `_add_extra_checkpoint_info()`.</span>
@@ -394,7 +394,7 @@
 <div class="viewcode-block" id="Trainer.training_step"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.training_step">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                       <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Perform a training step.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a training step.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -411,7 +411,7 @@
 <div class="viewcode-block" id="Trainer.validation_step"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.validation_step">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-        <span class="sd">&quot;&quot;&quot;Perform a validation step.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a validation step.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -430,7 +430,7 @@
             <span class="n">val_dataset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dataset</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">evaluation_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">logging_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;Fit the model on the training data and, optionally,</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model on the training data and, optionally,</span>
 <span class="sd">        evaluate it on the validation data.</span>
 
 <span class="sd">        Parameters</span>
@@ -524,6 +524,7 @@
             <span class="k">if</span> <span class="n">val_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">evaluation_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">val_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+                    <span class="n">seen_so_far</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="n">batches_per_validation</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span>
                                                   <span class="o">/</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
                     <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
@@ -538,6 +539,7 @@
                             <span class="n">x_val</span><span class="p">,</span> <span class="n">y_label_val</span> <span class="o">=</span> <span class="n">v_batch</span>
                             <span class="n">y_hat_val</span><span class="p">,</span> <span class="n">cur_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_step</span><span class="p">(</span><span class="n">v_batch</span><span class="p">)</span>
                             <span class="n">val_loss</span> <span class="o">+=</span> <span class="n">cur_loss</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
+                            <span class="n">seen_so_far</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                                 <span class="k">for</span> <span class="n">metr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="p">(</span>
                                         <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
@@ -547,7 +549,7 @@
                             <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
                                     <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
                                         <span class="n">train_loss</span><span class="o">=</span><span class="n">train_loss</span><span class="p">,</span>
-                                        <span class="n">val_loss</span><span class="o">=</span><span class="n">val_loss</span><span class="p">))</span>
+                                        <span class="n">val_loss</span><span class="o">=</span><span class="n">val_loss</span><span class="o">/</span><span class="n">seen_so_far</span><span class="p">))</span>
                         <span class="n">val_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
                         <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
