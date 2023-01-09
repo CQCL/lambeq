@@ -411,6 +411,7 @@ class Trainer(ABC):
             if val_dataset is not None:
                 if epoch % evaluation_step == 0:
                     val_loss = 0.0
+                    seen_so_far = 0
                     batches_per_validation = ceil(len(val_dataset)
                                                   / val_dataset.batch_size)
                     with Tensor.backend(self.backend):
@@ -425,6 +426,7 @@ class Trainer(ABC):
                             x_val, y_label_val = v_batch
                             y_hat_val, cur_loss = self.validation_step(v_batch)
                             val_loss += cur_loss * len(x_val)
+                            seen_so_far += len(x_val)
                             if self.evaluate_functions is not None:
                                 for metr, func in (
                                         self.evaluate_functions.items()):
@@ -434,7 +436,7 @@ class Trainer(ABC):
                             status_bar.set_description(
                                     self._generate_stat_report(
                                         train_loss=train_loss,
-                                        val_loss=val_loss))
+                                        val_loss=val_loss/seen_so_far))
                         val_loss /= len(val_dataset)
                         self.val_costs.append(val_loss)
                         status_bar.set_description(

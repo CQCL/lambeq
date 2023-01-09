@@ -22,7 +22,7 @@ import sys
 from typing import Optional
 
 from discopy import Diagram
-from tqdm.autonotebook import tqdm
+from tqdm.auto import tqdm
 
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (SentenceBatchType, SentenceType,

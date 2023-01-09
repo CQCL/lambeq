@@ -4,10 +4,11 @@ from discopy import Discard
 from discopy.quantum import (Bra, CRz, CRx, CX, X, H, Ket,
                              qubit, Rx, Ry, Rz, sqrt, Controlled)
 from discopy.quantum.circuit import Circuit, Id
+from discopy.quantum.tk import from_tk
+from sympy import Symbol as sym
 
 from lambeq import (AtomicType, IQPAnsatz, Sim14Ansatz, Sim15Ansatz,
                     StronglyEntanglingAnsatz)
-from lambeq import Symbol as sym
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -255,3 +256,11 @@ def test_strongly_entangling_ansatz_ranges_error2():
     with pytest.raises(ValueError):
         ansatz = StronglyEntanglingAnsatz({q: 2}, 3, ranges=[1, 1, 2])
         ansatz(box)
+
+def test_discopy_tket_conversion():
+    word1, word2 = Word('Alice', N), Word('Bob', N.r)
+    sentence = word1 @ word2 >> Cup(N, N.r)
+    ansatz = IQPAnsatz({N: 1}, n_layers=1)
+    circuit = ansatz(sentence)
+    circuit_converted = from_tk(circuit.to_tk())
+    assert circuit.free_symbols == circuit_converted.free_symbols

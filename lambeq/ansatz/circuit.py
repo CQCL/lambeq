@@ -34,9 +34,9 @@ from discopy.quantum.circuit import (Circuit, Discard, Functor, Id,
 from discopy.quantum.gates import Bra, H, Ket, Rx, Ry, Rz
 from discopy.rigid import Box, Diagram, Ty
 import numpy as np
-from sympy import symbols
+from sympy import Symbol, symbols
 
-from lambeq.ansatz import BaseAnsatz, Symbol
+from lambeq.ansatz import BaseAnsatz
 
 computational_basis = Id(qubit)
 

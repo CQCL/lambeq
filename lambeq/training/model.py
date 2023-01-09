@@ -26,7 +26,7 @@ import os
 from typing import Any, Union
 
 from discopy.tensor import Diagram
-from sympy import default_sort_key
+from sympy import default_sort_key, Symbol as SymPySymbol
 
 from lambeq.ansatz.base import Symbol
 from lambeq.training.checkpoint import Checkpoint
@@ -50,7 +50,7 @@ class Model(ABC):
 
     def __init__(self) -> None:
         """Initialise an instance of :py:class:`Model` base class."""
-        self.symbols: list[Symbol] = []
+        self.symbols: list[Union[Symbol, SymPySymbol]] = []
         self.weights: Collection = []
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:

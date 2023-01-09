@@ -17,11 +17,10 @@ __all__ = [
         '__version_info__',
 
         'ansatz',
-        'text2diagram',
         'core',
         'pregroups',
-        'reader',
         'rewrite',
+        'text2diagram',
         'tokeniser',
         'training',
 
