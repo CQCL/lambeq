@@ -35,7 +35,7 @@ def read_data(filename):
     return labels, sentences
 
 
-train_labels, train_data = read_data('../../examples/datasets/lestat_train_data.txt')
+train_labels, train_data = read_data('../../examples/datasets/small_train_data.txt')
 val_labels, val_data = read_data('../../examples/datasets/mc_dev_data.txt')
 test_labels, test_data = read_data('../../examples/datasets/mc_test_data.txt')
 
@@ -59,17 +59,19 @@ train_labels[:5]
 # In[5]:
 
 
-from lambeq import BobcatParser
-parser = BobcatParser(verbose='text')
-
-#train_diagrams = parser.sentences2diagrams(train_data)
-val_diagrams = parser.sentences2diagrams(val_data)
-test_diagrams = parser.sentences2diagrams(test_data)
+# from lambeq import BobcatParser
+# parser = BobcatParser(verbose='text')
+#
+# #train_diagrams = parser.sentences2diagrams(train_data)
+# val_diagrams = parser.sentences2diagrams(val_data)
+# test_diagrams = parser.sentences2diagrams(test_data)
 
 
 
 from lambeq import spiders_reader
 train_diagrams = [spiders_reader.sentence2diagram(sent) for sent in train_data]
+val_diagrams = [spiders_reader.sentence2diagram(sent) for sent in train_data]
+test_diagrams = [spiders_reader.sentence2diagram(sent) for sent in train_data]
 #train_diagrams[0].draw(figsize=(13,6), fontsize=12)
 
 
@@ -90,7 +92,7 @@ train_circuits = [ansatz(diagram) for diagram in train_diagrams]
 val_circuits =  [ansatz(diagram) for diagram in val_diagrams]
 test_circuits = [ansatz(diagram) for diagram in test_diagrams]
 
-#train_circuits[0].draw()
+train_circuits[0].draw()
 
 # ## Training
 # 
