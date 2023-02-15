@@ -30,6 +30,7 @@ from lambeq.core.globals import VerbosityLevel
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.pytorch_model import PytorchModel
 from lambeq.training.trainer import Trainer
+from lestat_trainer import LestatTrainer
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -38,7 +39,7 @@ _EvalFuncT = Callable[[Any, Any], Any]
 
 
 
-class PytorchTrainerCosineSim(Trainer):
+class PytorchTrainerCosineSim(LestatTrainer):
     """A PyTorch trainer for the classical pipeline."""
 
     model: PytorchModel
@@ -200,29 +201,44 @@ class PytorchTrainerCosineSim(Trainer):
             The model predictions and the calculated loss.
 
         """
-
-       #logging.info("inside training_step")
-
-        logging.info("batch[0]=%s",batch[0])
-        logging.info("batch[1]=%s", batch[1])
-        #logging.info("length batch=%s", len(batch))
-        logging.info("length batch[0]=%s", len(batch[0]))
-        logging.info("length batch[0][0]=%s", len(batch[0][0]))
-        logging.info("length batch[0][1]=%s", len(batch[0][1]))
-        # logging.info("length batch[0][2]=%s", len(batch[0][2]))
+        logging.info("inside training_step of pytorch_trainer_cosinesim")
+        logging.info("lenght/batch=%s", len(batch))
+        logging.info("len batch[0]=%s", len(batch[0]))
+        logging.info("len batch[0][0]=%s", len(batch[0][0]))
 
 
-        x1=batch[0][0]
-        x2=batch[0][1]
-        y = batch[1]
-        pred_sentA = self.model(x1)
-        pred_sentB = self.model(x2)
-        cos = torch.nn.CosineSimilarity(dim=0)
-        y_hat = cos(pred_sentA, pred_sentB)
+        #batch[0] is the guy which has all n data points, but each datapoints is divided into (claim,evidence)
+        all_datapoints = batch[0]
+
+        for index,datapoint in enumerate(all_datapoints):
+            x1=datapoint[0]
+            x2=datapoint[1]
+            y = batch[1][index]
+            logging.info("x1=%s", (x1))
+            logging.info("x2=%s", (x2))
+            logging.info("x1.shape=%s", len(x1))
+            logging.info("x2.shape=%s", len(x2))
+
+            pred_sentA = self.model(x1)
+            pred_sentB = self.model(x2)
+            logging.info("pred_sentA.=%s", pred_sentA)
+            logging.info("pred_sentB.=%s", pred_sentB)
+
+            logging.info("pred_sentA.shape=%s", pred_sentA.shape)
+            logging.info("pred_sentB.shape=%s", pred_sentB.shape)
+
+            cos = torch.nn.CosineSimilarity(dim=0)
+            y_hat = cos(pred_sentA, pred_sentB)
 
 
-        loss = self.loss_function(y_hat, y.to(self.device))
-        self.train_costs.append(loss.item())
+
+            logging.info("pred_sentA.shape=%s", pred_sentA.shape)
+            logging.info("pred_sentB.shape=%s", pred_sentB.shape)
+            logging.info("y_hat.shape=%s", y_hat.shape)
+            logging.info("y.shape=%s", y.shape)
+
+            loss = self.loss_function(y_hat, y.to(self.device))
+            self.train_costs.append(loss.item())
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()

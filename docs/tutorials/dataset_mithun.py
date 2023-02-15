@@ -67,12 +67,14 @@ class Dataset:
 
         """
 
-        print("length of data inside init=%s", len(data))
+        print("length of data0 inside init=%s", len(data[0]))
+        print("length of data1 inside init=%s", len(data[1]))
         print("length of targets inside init=%s", len(targets))
         if len(data[0]) != len(targets):
             raise ValueError('Lengthsss of `data` and `targets` differ.')
         self.data1 = data[0]
         self.data2 = data[1]
+
         self.targets = targets
         self.batch_size = batch_size
         self.shuffle = shuffle
