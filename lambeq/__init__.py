@@ -94,6 +94,7 @@ __all__ = [
 
         'Trainer',
         'PytorchTrainer',
+        'PytorchTrainerCosineSim',
         'QuantumTrainer',
 ]
 
@@ -121,7 +122,9 @@ from lambeq.text2diagram import (
 from lambeq.tokeniser import Tokeniser, SpacyTokeniser
 from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
                              Model, NumpyModel, PytorchModel,
-                             QuantumModel, TketModel, Trainer, PytorchTrainer,
+                             QuantumModel, TketModel, Trainer, PytorchTrainer, PytorchTrainerCosineSim,
                              QuantumTrainer)
 from lambeq.version import (version as __version__,
                             version_tuple as __version_info__)
+
+

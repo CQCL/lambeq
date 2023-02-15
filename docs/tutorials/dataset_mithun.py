@@ -78,18 +78,20 @@ class Dataset:
         self.shuffle = shuffle
 
         if self.batch_size == 0:
-            self.batch_size = len(self.data)
+            self.batch_size = len(self.data1)
 
-        self.batches_per_epoch = ceil(len(self.data) / self.batch_size)
+        self.batches_per_epoch = ceil(len(self.data1) / self.batch_size)
 
     def __getitem__(self, index: Union[int, slice]) -> tuple[Any, Any]:
         """Get a single item or a subset from the dataset."""
-        x = self.data[index]
+        x1 = self.data1[index]
+        x2= self.data2[index]
         y = self.targets[index]
         return x, Tensor.get_backend().array(y)
 
     def __len__(self) -> int:
-        return len(self.data)
+        print("inside __len__")
+        return len(self.data1)
 
     def __iter__(self) -> Iterator[tuple[list[Any], Any]]:
         """Iterate over data batches.
@@ -101,13 +103,14 @@ class Dataset:
 
         """
 
-        new_data, new_targets = self.data, self.targets
+        print("inside __iter__")
+        new_data, new_targets = zip(self.data1,self.data2), self.targets
 
         if self.shuffle:
             new_data, new_targets = self.shuffle_data(new_data, new_targets)
 
         backend = Tensor.get_backend()
-        for start_idx in range(0, len(self.data), self.batch_size):
+        for start_idx in range(0, len(self.data1), self.batch_size):
             yield (new_data[start_idx: start_idx+self.batch_size],
                    backend.array(
                        new_targets[start_idx: start_idx+self.batch_size],
@@ -131,6 +134,7 @@ class Dataset:
             The shuffled dataset.
 
         """
+        print("inside shuiffle_data")
         joint_list = list(zip(data, targets))
         random.shuffle(joint_list)
         data, targets = zip(*joint_list)

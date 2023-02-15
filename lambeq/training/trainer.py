@@ -334,6 +334,7 @@ class Trainer(ABC):
             printed if `verbose = 'text'` (otherwise ignored).
 
         """
+        print("inside fit")
         if self.from_checkpoint:
             self._load_extra_checkpoint_info(self.checkpoint)
 
