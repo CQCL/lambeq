@@ -35,7 +35,7 @@ def read_data(filename):
     return labels, sentences
 
 
-train_labels, train_data = read_data('../examples/datasets/lestat_train_data.txt')
+train_labels, train_data = read_data('../examples/datasets/lestat_train_data_claim.txt')
 val_labels, val_data = read_data('../examples/datasets/lestat_dev_data.txt')
 test_labels, test_data = read_data('../examples/datasets/lestat_test_data.txt')
 

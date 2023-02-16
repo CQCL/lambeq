@@ -89,7 +89,7 @@ train_diagrams_claim = [spiders_reader.sentence2diagram(sent) for sent in train_
 train_diagrams_evidence = [spiders_reader.sentence2diagram(sent) for sent in train_data_evidence]
 val_diagrams = [spiders_reader.sentence2diagram(sent) for sent in val_data]
 test_diagrams = [spiders_reader.sentence2diagram(sent) for sent in test_data]
-#train_diagrams_evidence[0].draw(figsize=(13,6), fontsize=12)
+train_diagrams_evidence[0].draw(figsize=(13,6), fontsize=12)
 
 logging.info("after converting sentence to diagrams")
 
