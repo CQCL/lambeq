@@ -43,5 +43,5 @@ from lambeq.training.optimizer import Optimizer
 from lambeq.training.spsa_optimizer import SPSAOptimizer
 
 from lambeq.training.trainer import Trainer
-from lambeq.training.pytorch_trainer import PytorchTrainer, PytorchTrainerCosineSim
+from lambeq.training.pytorch_trainer import PytorchTrainer
 from lambeq.training.quantum_trainer import QuantumTrainer

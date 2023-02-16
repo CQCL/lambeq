@@ -122,9 +122,9 @@ from lambeq.text2diagram import (
 from lambeq.tokeniser import Tokeniser, SpacyTokeniser
 from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
                              Model, NumpyModel, PytorchModel,
-                             QuantumModel, TketModel, Trainer, PytorchTrainer, PytorchTrainerCosineSim,
+                             QuantumModel, TketModel, Trainer, PytorchTrainer,
                              QuantumTrainer)
-from lambeq.version import (version as __version__,
-                            version_tuple as __version_info__)
+# from lambeq.version import (version as __version__,
+#                             version_tuple as __version_info__)
 
 

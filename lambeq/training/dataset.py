@@ -66,13 +66,9 @@ class Dataset:
             When 'data' and 'targets' do not match in size.
 
         """
-
-        print("length of data inside init=%s", len(data))
-        print("length of targets inside init=%s", len(targets))
-        if len(data[0]) != len(targets):
-            raise ValueError('Lengthsss of `data` and `targets` differ.')
-        self.data1 = data[0]
-        self.data2 = data[1]
+        if len(data) != len(targets):
+            raise ValueError('Lengths of `data` and `targets` differ.')
+        self.data = data
         self.targets = targets
         self.batch_size = batch_size
         self.shuffle = shuffle

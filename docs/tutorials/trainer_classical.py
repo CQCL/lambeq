@@ -8,11 +8,9 @@
 # We start with importing PyTorch and specifying some training hyperparameters.
 
 # In[1]:
-from pytorch_trainer_cosinesim import PytorchTrainerCosineSim
+
 
 import torch
-import logging
-logging.basicConfig(level=logging.INFO)
 
 BATCH_SIZE = 30
 EPOCHS = 30
@@ -36,17 +34,16 @@ def read_data(filename):
             sentences.append(line[1:].strip())
     return labels, sentences
 
-logging.info("before reading data")
-train_labels, train_data_claim = read_data('../examples/datasets/lestat_small_train_data_claim.txt')
-train_labels, train_data_evidence = read_data('../examples/datasets/lestat_small_train_data_evidence.txt')
-val_labels, val_data = read_data('../examples/datasets/lestat_small_dev_data.txt')
-test_labels, test_data = read_data('../examples/datasets/lestat_small_test_data.txt')
-logging.info("after reading data")
+
+train_labels, train_data = read_data('../examples/datasets/mc_train_data.txt')
+val_labels, val_data = read_data('../examples/datasets/mc_dev_data.txt')
+test_labels, test_data = read_data('../examples/datasets/mc_test_data.txt')
+
 
 # In[3]:
 
 
-#train_data[:5]
+train_data[:5]
 
 
 # Targets are represented as 2-dimensional arrays:
@@ -62,24 +59,13 @@ train_labels[:5]
 # In[5]:
 
 
-# from lambeq import BobcatParser
-# parser = BobcatParser(verbose='text')
-#
-# #train_diagrams = parser.sentences2diagrams(train_data)
-# val_diagrams = parser.sentences2diagrams(val_data)
-# test_diagrams = parser.sentences2diagrams(test_data)
+from lambeq import BobcatParser
 
+parser = BobcatParser(verbose='text')
 
-logging.info("before converting sentence to diagrams")
-from lambeq import spiders_reader
-train_diagrams_claim = [spiders_reader.sentence2diagram(sent) for sent in train_data_claim]
-train_diagrams_evidence = [spiders_reader.sentence2diagram(sent) for sent in train_data_evidence]
-val_diagrams = [spiders_reader.sentence2diagram(sent) for sent in val_data]
-test_diagrams = [spiders_reader.sentence2diagram(sent) for sent in test_data]
-#train_diagrams[0].draw(figsize=(13,6), fontsize=12)
-
-logging.info("after converting sentence to diagrams")
-
+train_diagrams = parser.sentences2diagrams(train_data)
+val_diagrams = parser.sentences2diagrams(val_data)
+test_diagrams = parser.sentences2diagrams(test_data)
 
 
 # In[6]:
@@ -88,17 +74,16 @@ logging.info("after converting sentence to diagrams")
 from discopy import Dim
 
 from lambeq import AtomicType, SpiderAnsatz
-logging.info("before ansatz")
+
 ansatz = SpiderAnsatz({AtomicType.NOUN: Dim(2),
                        AtomicType.SENTENCE: Dim(2)})
 
-train_circuits_claim = [ansatz(diagram) for diagram in train_diagrams_claim]
-train_circuits_evidence = [ansatz(diagram) for diagram in train_diagrams_evidence]
-
+train_circuits = [ansatz(diagram) for diagram in train_diagrams]
 val_circuits =  [ansatz(diagram) for diagram in val_diagrams]
 test_circuits = [ansatz(diagram) for diagram in test_diagrams]
-logging.info("after ansatz")
-#train_circuits[0].draw()
+
+train_circuits[0].draw()
+
 
 # ## Training
 # 
@@ -106,11 +91,10 @@ logging.info("after ansatz")
 
 # In[7]:
 
-logging.info("going to load model")
+
 from lambeq import PytorchModel
 
-all_circuits = train_circuits_claim +val_circuits + test_circuits
-all_labels=train_labels+val_labels+test_labels
+all_circuits = train_circuits + val_circuits + test_circuits
 model = PytorchModel.from_diagrams(all_circuits)
 
 
@@ -120,11 +104,10 @@ model = PytorchModel.from_diagrams(all_circuits)
 
 # In[8]:
 
-logging.info("after loading model")
+
 sig = torch.sigmoid
 
 def accuracy(y_hat, y):
-    print(f"y_hat={y_hat}")
     return torch.sum(torch.eq(torch.round(sig(y_hat)), y))/len(y)/2  # half due to double-counting
 
 eval_metrics = {"acc": accuracy}
@@ -133,12 +116,11 @@ eval_metrics = {"acc": accuracy}
 # ### Initialise trainer
 
 # In[9]:
-logging.info("before calling trainer")
 
 
+from lambeq import PytorchTrainer
 
-
-trainer = PytorchTrainerCosineSim(
+trainer = PytorchTrainer(
         model=model,
         loss_function=torch.nn.BCEWithLogitsLoss(),
         optimizer=torch.optim.AdamW,
@@ -154,29 +136,24 @@ trainer = PytorchTrainerCosineSim(
 
 # In[10]:
 
-logging.info("before calling dataset")
-from dataset_mithun import Dataset
-input_data=(train_circuits_claim, train_circuits_evidence)
-logging.info("length of data[0]=%s",len(input_data[0]))
-logging.info("length of targets=%s",len(train_labels))
+
+from lambeq import Dataset
+
 train_dataset = Dataset(
-            input_data,
+            train_circuits,
             train_labels,
             batch_size=BATCH_SIZE)
 
-
-
-#logging.info("after calling trainer before dataset")
-#val_dataset = Dataset(val_circuits, val_labels, shuffle=False)
+val_dataset = Dataset(val_circuits, val_labels, shuffle=False)
 
 
 # ### Train
 
 # In[11]:
-logging.info("after loading datasets . before trainer.fit")
 
-trainer.fit(train_dataset, train_dataset, evaluation_step=1, logging_step=5)
-logging.info("after e trainer.fit")
+
+trainer.fit(train_dataset, val_dataset, evaluation_step=1, logging_step=5)
+
 
 # ## Results
 # 
