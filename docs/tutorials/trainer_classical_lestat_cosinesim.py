@@ -9,7 +9,7 @@
 
 # In[1]:
 from pytorch_trainer_cosinesim import PytorchTrainerCosineSim
-
+from lambeq import PytorchModel
 import torch
 import logging
 logging.basicConfig(level=logging.INFO)
@@ -25,6 +25,18 @@ SEED = 0
 # Let's read the data and print some example sentences.
 
 # In[2]:
+
+
+class MyCustomModel(PytorchModel):
+    def __init__(self):
+        super().__init__()
+        self.net = torch.nn.Linear(2, 100)
+
+    def forward(self, input):
+        """define a custom forward pass here"""
+        preds = self.get_diagram_output(input)
+        preds = self.net(preds)
+        return preds
 
 
 def read_data(filename):
@@ -64,19 +76,19 @@ train_labels[:5]
 
 # from lambeq import BobcatParser
 # parser = BobcatParser(verbose='text')
-#
-# #train_diagrams = parser.sentences2diagrams(train_data)
+# train_diagrams_claim = parser.sentences2diagrams(train_data_claim)
+# train_diagrams_evidence = parser.sentences2diagrams(train_data_claim_evidence)
 # val_diagrams = parser.sentences2diagrams(val_data)
 # test_diagrams = parser.sentences2diagrams(test_data)
 
-
+#
 logging.info("before converting sentence to diagrams")
 from lambeq import spiders_reader
 train_diagrams_claim = [spiders_reader.sentence2diagram(sent) for sent in train_data_claim]
 train_diagrams_evidence = [spiders_reader.sentence2diagram(sent) for sent in train_data_evidence]
 val_diagrams = [spiders_reader.sentence2diagram(sent) for sent in val_data]
 test_diagrams = [spiders_reader.sentence2diagram(sent) for sent in test_data]
-#train_diagrams[0].draw(figsize=(13,6), fontsize=12)
+#train_diagrams_evidence[0].draw(figsize=(13,6), fontsize=12)
 
 logging.info("after converting sentence to diagrams")
 
@@ -107,12 +119,14 @@ logging.info("after ansatz")
 # In[7]:
 
 logging.info("going to load model")
-from lambeq import PytorchModel
+
 
 all_circuits = train_circuits_claim +val_circuits + test_circuits
 all_labels=train_labels+val_labels+test_labels
-model = PytorchModel.from_diagrams(all_circuits)
+#model = PytorchModel.from_diagrams(all_circuits)
 
+
+custom_model = MyCustomModel.from_diagrams(all_circuits)
 
 # ### Define evaluation metric
 # 
@@ -139,7 +153,7 @@ logging.info("before calling trainer")
 
 
 trainer = PytorchTrainerCosineSim(
-        model=model,
+        model=custom_model,
         loss_function=torch.nn.BCEWithLogitsLoss(),
         optimizer=torch.optim.AdamW,
         learning_rate=LEARNING_RATE,
@@ -210,18 +224,6 @@ print('Test accuracy:', test_acc.item())
 # ## Adding custom layers to the model
 
 # In[13]:
-
-
-class MyCustomModel(PytorchModel):
-    def __init__(self):
-        super().__init__()
-        self.net = torch.nn.Linear(2, 2)
-
-    def forward(self, input):
-        """define a custom forward pass here"""
-        preds = self.get_diagram_output(input)
-        preds = self.net(preds)
-        return preds
 
 
 # The rest follows the same procedure as explained above, i.e. initialise a trainer, fit the model and visualise the results.
