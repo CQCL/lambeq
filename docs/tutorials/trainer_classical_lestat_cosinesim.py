@@ -43,9 +43,10 @@ def read_data(filename):
     labels, sentences = [], []
     with open(filename) as f:
         for line in f:
-            t = float(line[0])
-            labels.append([t, 1-t])
-            sentences.append(line[1:].strip())
+            line_split=line.split("\t")
+            t = float(line_split[0])
+            labels.append([t])
+            sentences.append(line_split[1].strip())
     return labels, sentences
 
 logging.info("before reading data")
