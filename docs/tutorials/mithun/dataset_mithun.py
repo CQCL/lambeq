@@ -31,7 +31,7 @@ from discopy import Tensor
 class Dataset:
     """Dataset class for the training of a lambeq model.
 
-    Data is returned in the format of
+    data is returned in the format of
     :py:class:`discopy.tensor.Tensor`'s backend, which by default is set
     to NumPy. For example, to access the dataset as PyTorch tensors:
 
@@ -52,7 +52,7 @@ class Dataset:
         Parameters
         ----------
         data : list
-            Data used for training.
+            data used for training.
         targets : list
             List of labels.
         batch_size : int, default: 0
