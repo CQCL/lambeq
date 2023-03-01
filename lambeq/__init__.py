@@ -94,6 +94,7 @@ __all__ = [
 
         'Trainer',
         'PytorchTrainer',
+        'PytorchTrainerCosineSim',
         'QuantumTrainer',
 ]
 
@@ -123,5 +124,7 @@ from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
                              Model, NumpyModel, PytorchModel,
                              QuantumModel, TketModel, Trainer, PytorchTrainer,
                              QuantumTrainer)
-from lambeq.version import (version as __version__,
-                            version_tuple as __version_info__)
+# from lambeq.version import (version as __version__,
+#                             version_tuple as __version_info__)
+
+

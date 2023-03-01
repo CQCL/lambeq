@@ -1,7 +1,7 @@
 import pytest
 
 from lambeq.core.utils import (tokenised_batch_type_check,
-        tokenised_sentence_type_check, untokenised_batch_type_check)
+                               tokenised_sentence_type_check, untokenised_batch_type_check)
 
 @pytest.fixture
 def sentence():

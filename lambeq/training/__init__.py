@@ -26,6 +26,7 @@ __all__ = ['Checkpoint',
 
            'Trainer',
            'PytorchTrainer',
+            'PytorchTrainerCosineSim',
            'QuantumTrainer']
 
 from lambeq.training.checkpoint import Checkpoint
