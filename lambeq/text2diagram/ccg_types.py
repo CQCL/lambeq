@@ -79,8 +79,8 @@ def str2categorial(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
         The string to be parsed.
     str2type: callable, default: discopy.grammar.categorial.Ty
         A function that parses an atomic category into a categorial type.
-        The default uses :py:class:`discopy.grammar.categorial.Ty` to produce a
-        type with the same name as the atomic category.
+        The default uses :py:class:`discopy.grammar.categorial.Ty` to
+        produce a type with the same name as the atomic category.
 
     Returns
     -------
@@ -156,8 +156,8 @@ def categorial2str(categorial_type: Ty, pretty: bool = False) -> str:
 
 
 def _compound_str2categorial(cat: str,
-                           str2type: Callable[[str], Ty],
-                           start: int) -> tuple[Ty, int]:
+                             str2type: Callable[[str], Ty],
+                             start: int) -> tuple[Ty, int]:
     categorial_type, end = _clean_str2categorial(cat, str2type, start)
     try:
         op = cat[end]
@@ -167,13 +167,13 @@ def _compound_str2categorial(cat: str,
         if op in r'\/':
             right, end = _clean_str2categorial(cat, str2type, end + 1)
             categorial_type = (categorial_type << right if op == '/' else
-                             right >> categorial_type)
+                               right >> categorial_type)
     return categorial_type, end
 
 
 def _clean_str2categorial(cat: str,
-                        str2type: Callable[[str], Ty],
-                        start: int) -> tuple[Ty, int]:
+                          str2type: Callable[[str], Ty],
+                          start: int) -> tuple[Ty, int]:
     if not cat[start:]:
         raise CCGParseError(cat, 'unexpected end of input')
     if cat[start] != '(':

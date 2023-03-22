@@ -42,8 +42,8 @@ class TensorAnsatz(BaseAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.pregroup.Ty` to the dimension
-            space it uses in a tensor network.
+            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            dimension space it uses in a tensor network.
 
         """
         self.ob_map = ob_map
@@ -126,8 +126,8 @@ class MPSAnsatz(TensorAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.pregroup.Ty` to the dimension
-            space it uses in a tensor network.
+            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            dimension space it uses in a tensor network.
         bond_dim: int
             The size of the bonding dimension.
         max_order: int
@@ -182,8 +182,8 @@ class SpiderAnsatz(TensorAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.pregroup.Ty` to the dimension
-            space it uses in a tensor network.
+            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            dimension space it uses in a tensor network.
         max_order: int
             The maximum order of each tensor, which must be at least 2.
 
