@@ -24,7 +24,7 @@ from typing import overload
 
 from discopy.grammar import pregroup
 from discopy.grammar.categorial import (
-    Word, Box, Diagram, Functor, Id, Over, Ty, Under, unaryBoxConstructor)
+    Box, Diagram, Functor, Id, Over, Ty, Under, unaryBoxConstructor)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (categorial2str, replace_cat_result,
@@ -300,7 +300,7 @@ class CCGTree:
         else:
             deriv = (f'{self.rule}: {output_type} {chr_set["LEFT_ARROW"]} '
                      + ' + '.join(categorial2str(child.categorial_type,
-                                               not use_slashes)
+                                                 not use_slashes)
                                   for child in self.children))
         deriv = f'{_prefix}{deriv}'
 
@@ -456,7 +456,7 @@ class CCGTree:
             this_layer = self.rule(Ty.tensor(*child_types), categorial_type)
 
         children = [child._to_categorial_diagram(planar,
-                                               this_layer.dom[i:i+1])
+                                                 this_layer.dom[i:i+1])
                     for i, child in enumerate(self.children)]
 
         if planar and self.rule == CCGRule.BACKWARD_CROSSED_COMPOSITION:

@@ -457,8 +457,9 @@ class DepCCGParser(CCGParser):
         else:
             children = [*map(DepCCGParser._build_ccgtree, tree.children)]
             if tree.op_string == 'tr':
-                rule = ('BTR' if categorial_type.left.left == categorial_type.right
-                        else 'FTR')
+                rule = (
+                    'BTR' if categorial_type.left.left == categorial_type.right
+                    else 'FTR')
             elif tree.op_symbol == '<un>':
                 rule = 'U'
             elif tree.op_string in ('gbx', 'gfc'):
