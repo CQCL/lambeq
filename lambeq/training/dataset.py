@@ -25,7 +25,7 @@ from math import ceil
 import random
 from typing import Any
 
-from discopy import Tensor
+from discopy.tensor import Tensor
 
 
 class Dataset:

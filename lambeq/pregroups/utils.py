@@ -16,7 +16,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from discopy import Box, Cup, Diagram, grammar, Id, Swap, Ty, Word
+
+from discopy.grammar import pregroup
+from discopy.grammar.pregroup import Ty, Box, Cup, Diagram, Id, Swap, Word
 
 CUP_TOKEN = '**CUP**'
 
@@ -377,7 +379,7 @@ def remove_swaps(diagram: Diagram) -> Diagram:
 
     if not is_pregroup_diagram(diagram):
         try:
-            diagram = grammar.normal_form(diagram)
+            diagram = pregroup.normal_form(diagram)
         except ValueError as e:
             raise ValueError('Not a valid pregroup diagram.') from e
 
