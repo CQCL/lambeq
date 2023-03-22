@@ -1,7 +1,7 @@
 import pytest
 
-from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups
+from discopy.grammar.pregroup import (
+    Word, Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty)
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, SimpleRewriteRule)

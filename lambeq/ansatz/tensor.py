@@ -28,7 +28,7 @@ import math
 from discopy import tensor
 from discopy.grammar import pregroup
 from discopy.grammar.pregroup import Ty, Word, Cup, Spider
-from discopy.tensor import Dim
+from discopy.tensor import Dim, Category
 
 from lambeq.ansatz import BaseAnsatz, Symbol
 
@@ -49,13 +49,14 @@ class TensorAnsatz(BaseAnsatz):
         self.ob_map = ob_map
         self.functor = pregroup.Functor(
             ob=ob_map,
-            ar=self._ar, ar_factory=tensor.Diagram, ob_factory=tensor.Dim)
+            ar=self._ar,
+            cod=Category(Dim, tensor.Diagram))
 
     def _ar(self, box: pregroup.Box) -> tensor.Diagram:
         name = self._summarise_box(box)
         dom = self.functor(box.dom)
         cod = self.functor(box.cod)
-        n_params = math.prod(dom) * math.prod(cod)
+        n_params = math.prod(dom.inside) * math.prod(cod.inside)
         syms = Symbol(name, size=n_params)
         return tensor.Box(box.name, dom, cod, syms)
 

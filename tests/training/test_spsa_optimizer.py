@@ -2,8 +2,7 @@ import pytest
 
 import numpy as np
 
-from discopy import Cup, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Word
 
 from lambeq import AtomicType, IQPAnsatz, SPSAOptimizer
 
@@ -13,8 +12,8 @@ S = AtomicType.SENTENCE
 ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1, n_single_qubit_params=1)
 
 diagrams = [
-    ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S))),
-    ansatz((Word("Alice", N) @ Word("walks", N >> S) >> Cup(N, N.r) @ Id(S)))
+    ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S)),
+    ansatz((Word("Alice", N) @ Word("walks", N >> S) >> Cup(N, N.r) @ S))
 ]
 
 from lambeq.training.model import Model

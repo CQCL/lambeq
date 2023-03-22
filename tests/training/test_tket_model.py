@@ -4,8 +4,7 @@ import pytest
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from discopy import Cup, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Word
 from pytket.extensions.qiskit import AerBackend
 
 from lambeq import AtomicType, IQPAnsatz, TketModel
@@ -23,7 +22,7 @@ backend_config = {
 
 ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
 diagrams = [
-    ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
 ]
 
 def test_init():
@@ -49,7 +48,7 @@ def test_get_diagram_output_error():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     with pytest.raises(ValueError):
         model = TketModel(backend_config=backend_config)
         model.get_diagram_output([diagram])

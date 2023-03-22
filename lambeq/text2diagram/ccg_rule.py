@@ -19,7 +19,7 @@ __all__ = ['CCGRule', 'CCGRuleUseError']
 from enum import Enum
 from typing import Any
 
-from discopy.closed import Box, Diagram, Id, Over, Ty, Under
+from discopy.grammar.categorial import Box, Diagram, Id, Over, Ty, Under
 from discopy.utils import BinaryBoxConstructor
 
 from lambeq.text2diagram.ccg_types import CCGAtomicType, replace_cat_result

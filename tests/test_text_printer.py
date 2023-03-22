@@ -1,6 +1,6 @@
 import pytest
 
-from discopy import Word, Id, Ty, Cup, Swap
+from discopy.grammar.pregroup import Word, Id, Ty, Cup, Swap
 from lambeq import AtomicType, diagram2str, cups_reader
 
 

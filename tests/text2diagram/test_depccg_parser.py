@@ -2,8 +2,7 @@ import pytest
 
 from unittest.mock import Mock
 
-from discopy import Word
-from discopy.rigid import Cup, Diagram, Id, Swap, Ty
+from discopy.grammar.pregroup import Word, Cup, Diagram, Id, Swap, Ty
 
 from lambeq import AtomicType, DepCCGParser, DepCCGParseError, VerbosityLevel
 

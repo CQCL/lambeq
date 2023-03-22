@@ -24,7 +24,7 @@ from typing import overload
 
 from discopy.grammar import pregroup
 from discopy.grammar.categorial import (
-    Box, Diagram, Functor, Id, Over, Ty, Under, unaryBoxConstructor)
+    Word, Box, Diagram, Functor, Id, Over, Ty, Under, unaryBoxConstructor)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (categorial2str, replace_cat_result,
@@ -522,66 +522,64 @@ class CCGTree:
                 join = to_pregroup_diagram(box.dom.left)
                 right = to_pregroup_diagram(box.dom)[len(join):]
                 inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.cups(join, join.r)
-                return (Id(join) @ inner
-                        >> cups @ Id(inner.cod[len(join):])) @ Id(right)
+                cups = pregroup.Diagram.cups(join, join.r)
+                return (join @ inner
+                        >> cups @ inner.cod[len(join):]) @ right
 
             if isinstance(box, PlanarFX):
                 join = to_pregroup_diagram(box.dom.right)
                 left = to_pregroup_diagram(box.dom)[:-len(join)]
                 inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.cups(join.l, join)
-                return Id(left) @ (inner @ Id(join)
-                                   >> Id(inner.cod[:-len(join)]) @ cups)
+                cups = pregroup.Diagram.cups(join.l, join)
+                return left @ (inner @ join >> inner.cod[:-len(join)] @ cups)
 
             if isinstance(box, PlanarGBX):
                 left, join, right = split(box.dom, box.diagram.cod.left)
                 inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.cups(join, join.r)
-                mid = (Id(join) @ inner) >> (cups @ Id(inner.cod[len(join):]))
-                return Id(left) @ mid @ Id(right)
+                cups = pregroup.Diagram.cups(join, join.r)
+                mid = (join @ inner) >> (cups @ inner.cod[len(join):])
+                return left @ mid @ right
 
             if isinstance(box, PlanarGFX):
                 left, join, right = split(box.dom, box.diagram.cod.right)
                 inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.cups(join.l, join)
-                mid = (inner @ Id(join)) >> (Id(inner.cod[:-len(join)]) @ cups)
-                return Id(left) @ mid @ Id(right)
+                cups = pregroup.Diagram.cups(join.l, join)
+                mid = (inner @ join) >> (inner.cod[:-len(join)] @ cups)
+                return left @ mid @ right
 
             if isinstance(box, GBC):
                 left = to_pregroup_diagram(box.dom[0])
                 mid = to_pregroup_diagram(box.dom[1].left)
                 right = to_pregroup_diagram(box.dom[1].right)
-                return (Id(left[:-len(mid)]) @ pregroup.cups(mid, mid.r) @
-                        Id(right))
+                cups = pregroup.Diagram.cups(mid, mid.r)
+                return left[:-len(mid)] @ cups @ right
 
             if isinstance(box, GFC):
                 left = to_pregroup_diagram(box.dom[0].left)
                 mid = to_pregroup_diagram(box.dom[0].right)
                 right = to_pregroup_diagram(box.dom[1])
-                return (Id(left) @ pregroup.cups(mid.l, mid) @
-                        Id(right[len(mid):]))
+                cups = pregroup.Diagram.cups(mid.l, mid)
+                return left @ cups @ right[len(mid):]
 
             if isinstance(box, GBX):
                 mid = to_pregroup_diagram(box.dom[1].right)
                 left, join, right = split(box.dom[0], box.dom[1].left)
                 swaps = pregroup.Diagram.swap(right, join >> mid)
-                cups = pregroup.cups(join, join.r)
-                return Id(left) @ (Id(join) @ swaps
-                                   >> cups @ Id(mid @ right))
+                cups = pregroup.Diagram.cups(join, join.r)
+                return left @ (join @ swaps >> cups @ mid @ right)
 
             if isinstance(box, GFX):
                 mid = to_pregroup_diagram(box.dom[0].left)
                 left, join, right = split(box.dom[1], box.dom[0].right)
-                cups = pregroup.cups(join.l, join)
-                return (pregroup.Diagram.swap(mid << join, left) @ Id(join)
-                        >> Id(left @ mid) @ cups) @ Id(right)
+                cups = pregroup.Diagram.cups(join.l, join)
+                return (pregroup.Diagram.swap(mid << join, left) @ join
+                        >> left @ mid @ cups) @ right
 
             cod = to_pregroup_diagram(box.cod)
-            return Id(cod) if box.dom or not cod else Word(box.name, cod)
+            return pregroup.Id(cod) if box.dom or not cod\
+                else pregroup.Word(box.name, cod)
 
         to_pregroup_diagram = Functor(ob=ob_func,
-                                   ar=ar_func,
-                                   ob_factory=pregroup.Ty,
-                                   ar_factory=pregroup.Diagram)
+                                      ar=ar_func,
+                                      cod=pregroup.Category())
         return to_pregroup_diagram(self.to_categorial_diagram(planar=planar))

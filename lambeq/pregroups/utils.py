@@ -41,7 +41,7 @@ def is_pregroup_diagram(diagram: Diagram) -> bool:
     """
 
     in_words = True
-    for _, box, right in diagram.layers:
+    for _, box, right in diagram.inside:
         if in_words and isinstance(box, Word):
             if right:  # word boxes should be tensored left to right.
                 return False
