@@ -4,10 +4,9 @@ import pytest
 from copy import deepcopy
 from unittest.mock import mock_open, patch
 
-from discopy import Box, Cap, Cup, Dim, Swap, Word
-from discopy.tensor import Id as tensor_Id
+from discopy.grammar.pregroup import Box, Cap, Cup, Swap, Word, Spider
+from discopy.tensor import Dim, Id as tensor_Id
 from discopy.quantum.circuit import Id
-from discopy.rigid import Spider
 
 import numpy as np
 import torch

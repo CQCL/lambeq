@@ -1,8 +1,7 @@
 import pytest
 from requests.exceptions import MissingSchema
 
-from discopy import Word
-from discopy.rigid import Box, Diagram, Id, Spider
+from discopy.grammar.pregroup import Word, Box, Diagram, Id, Spider
 from discopy.quantum.circuit import Circuit, Ty as QTy, qubit
 from discopy.quantum.gates import Ket, Bra, CX
 

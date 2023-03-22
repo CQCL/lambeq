@@ -4,7 +4,8 @@ from copy import deepcopy
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from discopy import Cup, Word, Tensor
+from discopy.tensor import Tensor
+from discopy.grammar.pregroup import Cup, Word
 from discopy.quantum import CRz, CX, H, Id, Ket, Measure, SWAP
 
 from lambeq import AtomicType, IQPAnsatz, NumpyModel, Symbol

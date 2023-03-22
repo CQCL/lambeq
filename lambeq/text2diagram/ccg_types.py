@@ -21,8 +21,8 @@ from collections.abc import Callable
 from enum import Enum
 from typing import Any
 
-from discopy import rigid
-from discopy.closed import Over, Ty, Under
+from discopy.grammar import pregroup
+from discopy.grammar.categorial import Over, Ty, Under
 
 from lambeq.core.types import AtomicType
 
@@ -41,7 +41,7 @@ class CCGParseError(Exception):
 
 
 class _CCGAtomicTypeMeta(Ty, Enum):
-    def __new__(cls, value: rigid.Ty) -> Ty:
+    def __new__(cls, value: pregroup.Ty) -> Ty:
         return object.__new__(Ty)
 
     @staticmethod

@@ -1,5 +1,5 @@
-from discopy import Cap, Cup, Box, Diagram, Ob, Id, Swap, Ty, Word
-from discopy.rigid import Spider
+from discopy.grammar.pregroup import (
+    Cap, Cup, Box, Diagram, Ob, Id, Swap, Ty, Word, Spider)
 
 from lambeq import (AtomicType, create_pregroup_diagram, remove_cups,
                     remove_swaps)

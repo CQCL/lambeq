@@ -1,7 +1,6 @@
 import numpy as np
 import tensornetwork as tn
-from discopy import Cup, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Word
 
 from lambeq import AtomicType, IQPAnsatz, Dataset, NumpyModel, QuantumTrainer, SPSAOptimizer
 
@@ -10,16 +9,16 @@ S = AtomicType.SENTENCE
 EPOCHS = 1
 
 train_diagrams = [
-    (Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)),
-    (Word("Alice", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ Id(S)),
-    (Word("Bob", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)),
-    (Word("Bob", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ Id(S)),
+    (Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S),
+    (Word("Alice", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ S),
+    (Word("Bob", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S),
+    (Word("Bob", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ S),
 ]
 train_targets = [[1, 0], [0, 1], [0, 1], [1, 0]]
 
 dev_diagrams = [
-    (Word("Alice", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ Id(S)),
-    (Word("Bob", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ Id(S)),
+    (Word("Alice", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ S),
+    (Word("Bob", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ S),
 ]
 dev_targets = [[0, 1], [1, 0]]
 

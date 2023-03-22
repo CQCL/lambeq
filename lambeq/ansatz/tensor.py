@@ -28,7 +28,7 @@ import math
 from discopy import tensor
 from discopy.grammar import pregroup
 from discopy.grammar.pregroup import Ty, Word, Cup, Spider
-from discopy.tensor import Dim
+from discopy.tensor import Dim, Category
 
 from lambeq.ansatz import BaseAnsatz, Symbol
 
@@ -49,7 +49,8 @@ class TensorAnsatz(BaseAnsatz):
         self.ob_map = ob_map
         self.functor = pregroup.Functor(
             ob=ob_map,
-            ar=self._ar, ar_factory=tensor.Diagram, ob_factory=tensor.Dim)
+            ar=self._ar,
+            cod=Category(Dim, tensor.Diagram))
 
     def _ar(self, box: pregroup.Box) -> tensor.Diagram:
         name = self._summarise_box(box)
@@ -62,7 +63,6 @@ class TensorAnsatz(BaseAnsatz):
         # Box domain and codomain are unchanged
         dom = self.functor(box.dom)
         cod = self.functor(box.cod)
-
         return tensor.Box(box.name, dom, cod, syms)
 
     def _generate_directed_dom_cod(self, box: pregroup.Box) -> tuple[Dim, Dim]:
