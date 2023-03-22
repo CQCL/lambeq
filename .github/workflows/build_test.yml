@@ -21,9 +21,9 @@ jobs:
     outputs:
       error-check: ${{ steps.error-check.conclusion }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install linter
@@ -49,25 +49,14 @@ jobs:
       matrix:
         python-version: [ 3.8, 3.9, "3.10" ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Locate pip cache
-      id: loc-pip-cache
-      run: echo "::set-output name=dir::$(pip cache dir)"
-    - name: Restore pip dependencies from cache
-      uses: actions/cache@v2
-      with:
-        path: ${{ steps.loc-pip-cache.outputs.dir }}
-        key: build_and_test-${{ runner.os }}-pip-${{ matrix.python-version }}-${{ hashFiles('setup.cfg') }}
-        restore-keys: |
-          build_and_test-${{ runner.os }}-pip-${{ matrix.python-version }}-
-          build_and_test-${{ runner.os }}-pip-
-    - name: Install DisCoPy from GitHub
+    - name: Install DisCoPy 0.5 from GitHub
       if: github.ref_name != 'release' && github.ref_name != 'beta'
-      run: pip install git+https://github.com/oxford-quantum-group/discopy
+      run: pip install git+https://github.com/discopy/discopy@0.5
     - name: Install base package
       run: pip install .
     - name: Check package import works
@@ -130,9 +119,9 @@ jobs:
       matrix:
         python-version: [ 3.8, 3.9, "3.10" ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies with type hints

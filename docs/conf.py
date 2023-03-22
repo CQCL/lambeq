@@ -46,7 +46,7 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'discopy': ("https://discopy.readthedocs.io/en/main/", None),
+    'discopy': ("https://discopy.readthedocs.io/en/0.5/", None),
     'pennylane': ("https://pennylane.readthedocs.io/en/stable/", None),
 }
 

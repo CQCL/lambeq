@@ -34,6 +34,7 @@ class PytorchModel(Model, torch.nn.Module):
     """A lambeq model for the classical pipeline using PyTorch."""
 
     weights: torch.nn.ParameterList  # type: ignore[assignment]
+    symbols: list[Symbol]  # type: ignore[assignment]
 
     def __init__(self) -> None:
         """Initialise a PytorchModel."""

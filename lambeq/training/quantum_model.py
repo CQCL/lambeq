@@ -21,10 +21,15 @@ Module containing the base class for a quantum lambeq model.
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Any
+from typing import Any, TYPE_CHECKING, Union
 
 from discopy.tensor import Diagram, Tensor
 import numpy as np
+
+
+if TYPE_CHECKING:
+    from jax import numpy as jnp
+
 
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
@@ -90,7 +95,6 @@ class QuantumModel(Model):
         if not self.symbols:
             raise ValueError('Symbols not initialised. Instantiate through '
                              '`from_diagrams()`.')
-        assert all(w.size == 1 for w in self.symbols)
         self.weights = np.random.rand(len(self.symbols))
 
     def _load_checkpoint(self, checkpoint: Checkpoint) -> None:
@@ -124,7 +128,8 @@ class QuantumModel(Model):
         return checkpoint
 
     @abstractmethod
-    def get_diagram_output(self, diagrams: list[Diagram]) -> np.ndarray:
+    def get_diagram_output(self, diagrams: list[Diagram]) -> Union[jnp.ndarray,
+                                                                   np.ndarray]:
         """Return the diagram prediction.
 
         Parameters

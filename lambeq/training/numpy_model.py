@@ -28,12 +28,17 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterable
 import pickle
-from typing import Any
+from typing import Any, TYPE_CHECKING, Union
 
 from discopy.tensor import Tensor, Diagram
 import numpy
 from numpy.typing import ArrayLike
 from sympy import lambdify
+
+
+if TYPE_CHECKING:
+    from jax import numpy as jnp
+
 
 from lambeq.training.quantum_model import QuantumModel
 
@@ -73,7 +78,7 @@ class NumpyModel(QuantumModel):
         if diagram in self.lambdas:
             return self.lambdas[diagram]
 
-        def diagram_output(*x: ArrayLike) -> ArrayLike:
+        def diagram_output(x: Iterable[ArrayLike]) -> ArrayLike:
             with Tensor.backend('jax'), tn.DefaultBackend('jax'):
                 sub_circuit = self._fast_subs([diagram], x)[0]
                 result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
@@ -111,7 +116,9 @@ class NumpyModel(QuantumModel):
                         b._phase = b._data
         return diagrams
 
-    def get_diagram_output(self, diagrams: list[Diagram]) -> numpy.ndarray:
+    def get_diagram_output(self,
+                           diagrams: list[Diagram]) -> Union[jnp.ndarray,
+                                                             numpy.ndarray]:
         """Return the exact prediction for each diagram.
 
         Parameters
@@ -141,9 +148,13 @@ class NumpyModel(QuantumModel):
                              'from pre-trained checkpoint.')
 
         if self.use_jit:
+            from jax import numpy as jnp
+
             lambdified_diagrams = [self._get_lambda(d) for d in diagrams]
-            return numpy.array([diag_f(*self.weights)
-                                for diag_f in lambdified_diagrams])
+            res: jnp.ndarray = jnp.array([diag_f(self.weights)
+                                          for diag_f in lambdified_diagrams])
+
+            return res
 
         diagrams = self._fast_subs(diagrams, self.weights)
         with Tensor.backend('numpy'):
