@@ -24,7 +24,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
-from discopy import Cup, Diagram, Word
+from discopy.grammar.pregroup import Cup, Diagram, Word
 
 from lambeq.pregroups.utils import is_pregroup_diagram
 

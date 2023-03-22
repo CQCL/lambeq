@@ -21,7 +21,7 @@ from collections.abc import Iterable
 import sys
 from typing import Optional
 
-from discopy import Diagram
+from discopy.grammar.pregroup import Diagram
 from tqdm.autonotebook import tqdm
 
 from lambeq.core.globals import VerbosityLevel

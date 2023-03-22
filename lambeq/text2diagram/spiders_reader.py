@@ -14,8 +14,7 @@
 
 __all__ = ['SpidersReader', 'bag_of_words_reader', 'spiders_reader']
 
-from discopy import Word
-from discopy.rigid import Diagram, Spider
+from discopy.grammar.pregroup import Word, Diagram, Spider
 
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType, tokenised_sentence_type_check

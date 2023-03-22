@@ -34,7 +34,7 @@ import sys
 from typing import Any, Callable, Optional, Union
 from typing import TYPE_CHECKING
 
-from discopy import Tensor
+from discopy.tensor import Tensor
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:

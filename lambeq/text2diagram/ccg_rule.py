@@ -19,8 +19,8 @@ __all__ = ['CCGRule', 'CCGRuleUseError']
 from enum import Enum
 from typing import Any
 
-from discopy.biclosed import Box, Diagram, Id, Over, Ty, Under
-from discopy.monoidal import BinaryBoxConstructor
+from discopy.closed import Box, Diagram, Id, Over, Ty, Under
+from discopy.utils import BinaryBoxConstructor
 
 from lambeq.text2diagram.ccg_types import CCGAtomicType, replace_cat_result
 
@@ -149,14 +149,14 @@ class CCGRule(str, Enum):
 
         Parameters
         ----------
-        dom : discopy.biclosed.Ty
+        dom : discopy.grammar.categorial.Ty
             The expected domain of the diagram.
-        cod : discopy.biclosed.Ty
+        cod : discopy.grammar.categorial.Ty
             The expected codomain of the diagram.
 
         Returns
         -------
-        discopy.biclosed.Diagram
+        discopy.grammar.categorial.Diagram
             The resulting diagram.
 
         Raises
@@ -233,9 +233,9 @@ class CCGRule(str, Enum):
 
         Parameters
         ----------
-        dom : discopy.biclosed.Ty
+        dom : discopy.grammar.categorial.Ty
             The domain of the rule.
-        cod : discopy.biclosed.Ty
+        cod : discopy.grammar.categorial.Ty
             The codomain of the rule.
 
         Returns

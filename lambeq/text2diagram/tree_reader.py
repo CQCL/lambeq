@@ -19,8 +19,7 @@ from typing import Callable, Optional, Union
 
 __all__ = ['TreeReader', 'TreeReaderMode']
 
-from discopy import Word
-from discopy.rigid import Box, Diagram, Id, Ty
+from discopy.grammar.pregroup import Word, Box, Diagram, Id, Ty
 
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType
@@ -144,7 +143,7 @@ class TreeReader(Reader):
         """
 
         try:
-            ccg_words, ccg_parse = tree._to_biclosed_diagram()
+            ccg_words, ccg_parse = tree._to_categorial_diagram()
         except Exception as e:
             if suppress_exceptions:
                 return None

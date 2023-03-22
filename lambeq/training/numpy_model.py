@@ -30,8 +30,7 @@ from collections.abc import Callable, Iterable
 import pickle
 from typing import Any
 
-from discopy import Tensor
-from discopy.tensor import Diagram
+from discopy.tensor import Tensor, Diagram
 import numpy
 from numpy.typing import ArrayLike
 from sympy import lambdify

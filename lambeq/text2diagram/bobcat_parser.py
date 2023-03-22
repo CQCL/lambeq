@@ -33,7 +33,7 @@ import tempfile
 from typing import Any, Optional, Union
 import warnings
 
-from discopy.biclosed import Ty
+from discopy.grammar.categorial import Ty
 import torch
 from tqdm import TqdmWarning
 from tqdm.auto import tqdm
@@ -392,8 +392,8 @@ class BobcatParser(CCGParser):
         return trees
 
     @staticmethod
-    def _to_biclosed(cat: Category) -> Ty:
-        """Transform a Bobcat category into a biclosed type."""
+    def _to_categorial(cat: Category) -> Ty:
+        """Transform a Bobcat category into a categorial type."""
 
         if cat.atomic:
             if cat.atom.is_punct:
@@ -410,8 +410,8 @@ class BobcatParser(CCGParser):
                     return CCGAtomicType.CONJUNCTION
             raise ValueError(f'Invalid atomic type: {cat.atom!r}')
         else:
-            result = BobcatParser._to_biclosed(cat.result)
-            argument = BobcatParser._to_biclosed(cat.argument)
+            result = BobcatParser._to_categorial(cat.result)
+            argument = BobcatParser._to_categorial(cat.argument)
             return result << argument if cat.fwd else argument >> result
 
     @staticmethod
@@ -422,7 +422,7 @@ class BobcatParser(CCGParser):
                     for child in filter(None, (tree.left, tree.right))]
         return CCGTree(text=tree.word,
                        rule=CCGRule(tree.rule.name),
-                       biclosed_type=BobcatParser._to_biclosed(tree.cat),
+                       categorial_type=BobcatParser._to_categorial(tree.cat),
                        children=children)
 
     @staticmethod

@@ -22,13 +22,13 @@ import json
 from typing import Any, Dict, Optional, Union
 from typing import overload
 
-from discopy import rigid, Word
-from discopy.biclosed import biclosed2rigid_ob, unaryBoxConstructor
-from discopy.biclosed import Box, Diagram, Functor, Id, Over, Ty, Under
+from discopy.grammar import pregroup
+from discopy.grammar.categorial import (
+    Box, Diagram, Functor, Id, Over, Ty, Under, unaryBoxConstructor)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
-from lambeq.text2diagram.ccg_types import (biclosed2str, replace_cat_result,
-                                           str2biclosed)
+from lambeq.text2diagram.ccg_types import (categorial2str, replace_cat_result,
+                                           str2categorial)
 from lambeq.text2diagram.ccg_types import CCGAtomicType
 
 # Types
@@ -39,7 +39,7 @@ class UnarySwap(unaryBoxConstructor('cod'), Box):  # type: ignore[misc]
     """Unary Swap box, for unary rules that change the type direction.
 
     For example, the unary rule `S/NP -> NP\\NP` is handled by
-    `UnarySwap(n >> n)`, which becomes `Swap(n @ n.r)` in a rigid
+    `UnarySwap(n >> n)`, which becomes `Swap(n @ n.r)` in a pregroup
     diagram.
 
     """
@@ -130,7 +130,7 @@ class CCGTree:
                  text: Optional[str] = None,
                  *,
                  rule: Union[str, CCGRule] = CCGRule.UNKNOWN,
-                 biclosed_type: Ty,
+                 categorial_type: Ty,
                  children: Optional[Sequence[CCGTree]] = None) -> None:
         """Initialise a CCG tree.
 
@@ -141,7 +141,7 @@ class CCGTree:
             :py:obj:`None`, it is inferred from its children.
         rule : CCGRule, default: CCGRule.UNKNOWN
             The final :py:class:`.CCGRule` used in the derivation.
-        biclosed_type : discopy.biclosed.Ty
+        categorial_type : discopy.grammar.categorial.Ty
             The type associated to the derived phrase.
         children : list of CCGTree, optional
             A list of JSON subtrees. The types of these subtrees can be
@@ -151,7 +151,7 @@ class CCGTree:
         """
         self._text = text
         self.rule = CCGRule(rule)
-        self.biclosed_type = biclosed_type
+        self.categorial_type = categorial_type
         self.children = children if children is not None else []
 
         n_children = len(self.children)
@@ -221,7 +221,7 @@ class CCGTree:
                 :py:obj:`None`, it is inferred from its children.
             `rule` : :py:class:`.CCGRule`
                 The final :py:class:`.CCGRule` used in the derivation.
-            `type` : :py:class:`discopy.biclosed.Ty`
+            `type` : :py:class:`discopy.grammar.categorial.Ty`
                 The type associated to the derived phrase.
             `children` : :py:class:`list` or :py:class:`None`
                 A list of JSON subtrees. The types of these subtrees can
@@ -236,7 +236,7 @@ class CCGTree:
         data_dict = json.loads(data) if isinstance(data, str) else data
         return cls(text=data_dict.get('text'),
                    rule=data_dict.get('rule', CCGRule.UNKNOWN),
-                   biclosed_type=str2biclosed(data_dict['type']),
+                   categorial_type=str2categorial(data_dict['type']),
                    children=[cls.from_json(child)
                              for child in data_dict.get('children', [])])
 
@@ -256,8 +256,8 @@ class CCGTree:
         """
         new_tree = deepcopy(self)
         while (new_tree.rule == CCGRule.UNARY
-               and (new_tree.biclosed_type
-                    == new_tree.children[0].biclosed_type)):
+               and (new_tree.categorial_type
+                    == new_tree.children[0].categorial_type)):
             new_tree = new_tree.children[0]
         new_tree.children = [child.without_trivial_unary_rules() for child
                              in new_tree.children]
@@ -268,7 +268,7 @@ class CCGTree:
         if self is None:  # Allows doing CCGTree.to_json(X) for optional X
             return None  # type: ignore[unreachable]
 
-        data: _JSONDictT = {'type': biclosed2str(self.biclosed_type)}
+        data: _JSONDictT = {'type': categorial2str(self.categorial_type)}
         if self.rule != CCGRule.UNKNOWN:
             data['rule'] = self.rule.value
         if self.text != ' '.join(child.text for child in self.children):
@@ -281,7 +281,7 @@ class CCGTree:
         return (isinstance(other, CCGTree)
                 and self.text == other.text
                 and self.rule == other.rule
-                and self.biclosed_type == other.biclosed_type
+                and self.categorial_type == other.categorial_type
                 and len(self.children) == len(other.children)
                 and all(c1 == c2
                         for c1, c2 in zip(self.children, other.children)))
@@ -294,12 +294,12 @@ class CCGTree:
                     use_slashes: bool,
                     _prefix: str = '') -> str:  # pragma: no cover
         """Create a vertical string representation of the CCG tree."""
-        output_type = biclosed2str(self.biclosed_type, not use_slashes)
+        output_type = categorial2str(self.categorial_type, not use_slashes)
         if self.rule == CCGRule.LEXICAL:
             deriv = f' {output_type} {chr_set["SUCH_THAT"]} "{self.text}"'
         else:
             deriv = (f'{self.rule}: {output_type} {chr_set["LEFT_ARROW"]} '
-                     + ' + '.join(biclosed2str(child.biclosed_type,
+                     + ' + '.join(categorial2str(child.categorial_type,
                                                not use_slashes)
                                   for child in self.children))
         deriv = f'{_prefix}{deriv}'
@@ -322,7 +322,7 @@ class CCGTree:
                      use_slashes: bool) -> str:  # pragma: no cover
         """Create a standard CCG diagram for the tree with the
         words arranged horizontally."""
-        output_type = biclosed2str(self.biclosed_type, not use_slashes)
+        output_type = categorial2str(self.categorial_type, not use_slashes)
         if output_type.startswith('('):
             output_type = output_type[1:-1]
         if self.rule == CCGRule.LEXICAL:
@@ -416,7 +416,7 @@ class CCGTree:
             deriv = self._vert_deriv(chr_set, use_slashes, '')
         return deriv
 
-    def to_biclosed_diagram(self, planar: bool = False) -> Diagram:
+    def to_categorial_diagram(self, planar: bool = False) -> Diagram:
         """Convert tree to a derivation in DisCoPy form.
 
         Parameters
@@ -426,36 +426,36 @@ class CCGTree:
             using cross composition.
 
         """
-        words, grammar = self._to_biclosed_diagram(planar)
+        words, grammar = self._to_categorial_diagram(planar)
         return words >> grammar
 
-    def _to_biclosed_diagram(
+    def _to_categorial_diagram(
             self,
             planar: bool = False,
             resolved_output: Optional[Ty] = None) -> tuple[Diagram, Diagram]:
-        biclosed_type = resolved_output or self.biclosed_type
+        categorial_type = resolved_output or self.categorial_type
 
         if self.rule == CCGRule.LEXICAL:
-            word = Box(self.text, Ty(), biclosed_type)
-            return word, Id(biclosed_type)
+            word = Box(self.text, Ty(), categorial_type)
+            return word, Id(categorial_type)
 
         if (self.rule == CCGRule.UNARY
                 and not planar
-                and {type(biclosed_type),
-                     type(self.children[0].biclosed_type)} == {Over, Under}):
-            this_layer = UnarySwap(biclosed_type)
+                and {type(categorial_type),
+                     type(self.children[0].categorial_type)} == {Over, Under}):
+            this_layer = UnarySwap(categorial_type)
         elif (self.rule == CCGRule.FORWARD_COMPOSITION
                 and self.children[0].rule == CCGRule.FORWARD_TYPE_RAISING):
-            left = biclosed_type.left
-            right = biclosed_type.right
-            mid = (self.children[0].biclosed_type.right.left) >> left
+            left = categorial_type.left
+            right = categorial_type.right
+            mid = (self.children[0].categorial_type.right.left) >> left
             this_layer = self.rule((left << mid) @ (mid << right),
-                                   biclosed_type)
+                                   categorial_type)
         else:
-            child_types = [child.biclosed_type for child in self.children]
-            this_layer = self.rule(Ty.tensor(*child_types), biclosed_type)
+            child_types = [child.categorial_type for child in self.children]
+            this_layer = self.rule(Ty.tensor(*child_types), categorial_type)
 
-        children = [child._to_biclosed_diagram(planar,
+        children = [child._to_categorial_diagram(planar,
                                                this_layer.dom[i:i+1])
                     for i, child in enumerate(self.children)]
 
@@ -483,7 +483,7 @@ class CCGTree:
 
         return words, diag
 
-    def to_diagram(self, planar: bool = False) -> rigid.Diagram:
+    def to_diagram(self, planar: bool = False) -> pregroup.Diagram:
         """Convert tree to a DisCoCat diagram.
 
         Parameters
@@ -493,95 +493,95 @@ class CCGTree:
             using cross composition.
 
         """
-        def ob_func(ob: Ty) -> rigid.Ty:
-            return (rigid.Ty() if ob == CCGAtomicType.PUNCTUATION
-                    else biclosed2rigid_ob(ob))
+        def ob_func(ob: Ty) -> pregroup.Ty:
+            return (pregroup.Ty() if ob == CCGAtomicType.PUNCTUATION
+                    else Diagram.to_pregroup(ob))
 
-        def ar_func(box: Box) -> rigid.Diagram:
+        def ar_func(box: Box) -> pregroup.Diagram:
             #           special box -> special diagram
             # RemovePunctuation box -> identity wire(s)
             #           punctuation -> empty diagram
             #              word box -> Word
 
-            def split(cat: Ty,
-                      base: Ty) -> tuple[rigid.Ty, rigid.Ty, rigid.Ty]:
-                left = right = rigid.Ty()
+            def split(cat: Ty, base: Ty) -> tuple[3 * (pregroup.Ty, )]:
+                left = right = pregroup.Ty()
                 while cat != base:
                     if isinstance(cat, Over):
-                        right = to_rigid_diagram(cat.right).l @ right
+                        right = to_pregroup_diagram(cat.right).l @ right
                         cat = cat.left
                     else:
-                        left @= to_rigid_diagram(cat.left).r
+                        left @= to_pregroup_diagram(cat.left).r
                         cat = cat.right
-                return left, to_rigid_diagram(cat), right
+                return left, to_pregroup_diagram(cat), right
 
             if isinstance(box, UnarySwap):
                 cod = ob_func(box.cod)
-                return rigid.Swap(cod[1:], cod[:1])
+                return pregroup.Swap(cod[1:], cod[:1])
 
             if isinstance(box, PlanarBX):
-                join = to_rigid_diagram(box.dom.left)
-                right = to_rigid_diagram(box.dom)[len(join):]
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join, join.r)
+                join = to_pregroup_diagram(box.dom.left)
+                right = to_pregroup_diagram(box.dom)[len(join):]
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.cups(join, join.r)
                 return (Id(join) @ inner
                         >> cups @ Id(inner.cod[len(join):])) @ Id(right)
 
             if isinstance(box, PlanarFX):
-                join = to_rigid_diagram(box.dom.right)
-                left = to_rigid_diagram(box.dom)[:-len(join)]
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join.l, join)
+                join = to_pregroup_diagram(box.dom.right)
+                left = to_pregroup_diagram(box.dom)[:-len(join)]
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.cups(join.l, join)
                 return Id(left) @ (inner @ Id(join)
                                    >> Id(inner.cod[:-len(join)]) @ cups)
 
             if isinstance(box, PlanarGBX):
                 left, join, right = split(box.dom, box.diagram.cod.left)
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join, join.r)
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.cups(join, join.r)
                 mid = (Id(join) @ inner) >> (cups @ Id(inner.cod[len(join):]))
                 return Id(left) @ mid @ Id(right)
 
             if isinstance(box, PlanarGFX):
                 left, join, right = split(box.dom, box.diagram.cod.right)
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join.l, join)
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.cups(join.l, join)
                 mid = (inner @ Id(join)) >> (Id(inner.cod[:-len(join)]) @ cups)
                 return Id(left) @ mid @ Id(right)
 
             if isinstance(box, GBC):
-                left = to_rigid_diagram(box.dom[0])
-                mid = to_rigid_diagram(box.dom[1].left)
-                right = to_rigid_diagram(box.dom[1].right)
-                return (Id(left[:-len(mid)]) @ rigid.cups(mid, mid.r) @
+                left = to_pregroup_diagram(box.dom[0])
+                mid = to_pregroup_diagram(box.dom[1].left)
+                right = to_pregroup_diagram(box.dom[1].right)
+                return (Id(left[:-len(mid)]) @ pregroup.cups(mid, mid.r) @
                         Id(right))
 
             if isinstance(box, GFC):
-                left = to_rigid_diagram(box.dom[0].left)
-                mid = to_rigid_diagram(box.dom[0].right)
-                right = to_rigid_diagram(box.dom[1])
-                return Id(left) @ rigid.cups(mid.l, mid) @ Id(right[len(mid):])
+                left = to_pregroup_diagram(box.dom[0].left)
+                mid = to_pregroup_diagram(box.dom[0].right)
+                right = to_pregroup_diagram(box.dom[1])
+                return (Id(left) @ pregroup.cups(mid.l, mid) @
+                        Id(right[len(mid):]))
 
             if isinstance(box, GBX):
-                mid = to_rigid_diagram(box.dom[1].right)
+                mid = to_pregroup_diagram(box.dom[1].right)
                 left, join, right = split(box.dom[0], box.dom[1].left)
-                swaps = rigid.Diagram.swap(right, join >> mid)
-                cups = rigid.cups(join, join.r)
+                swaps = pregroup.Diagram.swap(right, join >> mid)
+                cups = pregroup.cups(join, join.r)
                 return Id(left) @ (Id(join) @ swaps
                                    >> cups @ Id(mid @ right))
 
             if isinstance(box, GFX):
-                mid = to_rigid_diagram(box.dom[0].left)
+                mid = to_pregroup_diagram(box.dom[0].left)
                 left, join, right = split(box.dom[1], box.dom[0].right)
-                cups = rigid.cups(join.l, join)
-                return (rigid.Diagram.swap(mid << join, left) @ Id(join)
+                cups = pregroup.cups(join.l, join)
+                return (pregroup.Diagram.swap(mid << join, left) @ Id(join)
                         >> Id(left @ mid) @ cups) @ Id(right)
 
-            cod = to_rigid_diagram(box.cod)
+            cod = to_pregroup_diagram(box.cod)
             return Id(cod) if box.dom or not cod else Word(box.name, cod)
 
-        to_rigid_diagram = Functor(ob=ob_func,
+        to_pregroup_diagram = Functor(ob=ob_func,
                                    ar=ar_func,
-                                   ob_factory=rigid.Ty,
-                                   ar_factory=rigid.Diagram)
-        return to_rigid_diagram(self.to_biclosed_diagram(planar=planar))
+                                   ob_factory=pregroup.Ty,
+                                   ar_factory=pregroup.Diagram)
+        return to_pregroup_diagram(self.to_categorial_diagram(planar=planar))

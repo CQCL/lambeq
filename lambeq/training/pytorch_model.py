@@ -22,8 +22,7 @@ from __future__ import annotations
 
 import pickle
 
-from discopy import Tensor
-from discopy.tensor import Diagram
+from discopy.tensor import Tensor, Diagram
 import torch
 
 from lambeq.ansatz.base import Symbol

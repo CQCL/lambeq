@@ -80,9 +80,8 @@ from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
 from typing import Optional, Union
 
-from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
-from discopy.rigid import caps, spiders
+from discopy.grammar.pregroup import (
+    Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty, Word)
 
 from lambeq.core.types import AtomicType
 
@@ -135,7 +134,7 @@ class SimpleRewriteRule(RewriteRule):
     into a set template.
     """
 
-    PLACEHOLDER_WORD = object()
+    PLACEHOLDER_WORD = str()
 
     def __init__(self,
                  cod: Ty,
@@ -279,8 +278,8 @@ class CoordinationRewriteRule(RewriteRule):
         n = len(box.cod) // 3
         left, mid, right = box.cod[:n], box.cod[n:2*n], box.cod[2*n:]
         assert right.r == mid == left.l
-        return (caps(left, mid) @ caps(mid, right)
-                >> Id(left) @ spiders(2, 1, mid) @ Id(right))
+        return (Diagram.caps(left, mid) @ Diagram.caps(mid, right)
+                >> Id(left) @ Diagram.spiders(2, 1, mid) @ Id(right))
 
 
 class CurryRewriteRule(RewriteRule):
