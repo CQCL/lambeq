@@ -26,11 +26,12 @@ from abc import abstractmethod
 from collections.abc import Callable, Mapping
 from itertools import cycle
 
+from discopy.grammar.pregroup import Box, Category, Diagram, Ty
 from discopy.quantum import (
-    Circuit, Discard, Id, Bra, H, Ket, Rx, Ry, Rz,
-    IQPansatz as IQP, qubit, Sim14ansatz as Sim14, Sim15ansatz as Sim15)
+    Bra, Circuit, Discard, H, Id, Ket, qubit, Rx, Ry, Rz)
+from discopy.quantum import (
+    IQPansatz as IQP, Sim14ansatz as Sim14, Sim15ansatz as Sim15)
 from discopy.quantum.circuit import Functor
-from discopy.grammar.pregroup import Box, Diagram, Ty, Category
 import numpy as np
 from sympy import Symbol, symbols
 

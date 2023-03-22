@@ -18,7 +18,7 @@ from dataclasses import dataclass
 
 
 from discopy.grammar import pregroup
-from discopy.grammar.pregroup import Ty, Box, Cup, Diagram, Id, Swap, Word
+from discopy.grammar.pregroup import Box, Cup, Diagram, Id, Swap, Ty, Word
 
 CUP_TOKEN = '**CUP**'
 

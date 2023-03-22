@@ -23,7 +23,7 @@ from __future__ import annotations
 from math import sqrt
 import pickle
 
-from discopy.tensor import Tensor, Diagram
+from discopy.tensor import Diagram, Tensor
 import torch
 
 from lambeq.ansatz.base import Symbol
