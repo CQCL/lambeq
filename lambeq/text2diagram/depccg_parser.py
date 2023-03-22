@@ -27,8 +27,8 @@ import functools
 import logging
 from typing import Any, Optional, TYPE_CHECKING
 
-from discopy.grammar.pregroup import Diagram
 from discopy.grammar.categorial import Ty
+from discopy.grammar.pregroup import Diagram
 
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (

@@ -27,8 +27,8 @@ import math
 
 from discopy import tensor
 from discopy.grammar import pregroup
-from discopy.grammar.pregroup import Ty, Word, Cup, Spider
-from discopy.tensor import Dim, Category
+from discopy.grammar.pregroup import Cup, Spider, Ty, Word
+from discopy.tensor import Category, Dim
 
 from lambeq.ansatz import BaseAnsatz, Symbol
 
@@ -117,8 +117,8 @@ class MPSAnsatz(TensorAnsatz):
         boxes[0] = Word(boxes[0].name, boxes[0].cod[1:])
         boxes[-1] = Word(boxes[-1].name, boxes[-1].cod[:-1])
 
-        return pregroup.Diagram.tensor(*boxes)\
-            >> pregroup.Diagram.tensor(*cups[:-1])
+        return (pregroup.Diagram.tensor(*boxes)
+                >> pregroup.Diagram.tensor(*cups[:-1]))
 
     def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
         return self.functor(self.split_functor(diagram))
@@ -163,8 +163,8 @@ class SpiderAnsatz(TensorAnsatz):
             spiders += [pregroup.Id(cod[1:-1]), Spider(2, 1, cod[-1:])]
         spiders[-1] = pregroup.Id(spiders[-1].cod)
 
-        return pregroup.Diagram.tensor(*boxes)\
-            >> pregroup.Diagram.tensor(*spiders)
+        return (pregroup.Diagram.tensor(*boxes)
+                >> pregroup.Diagram.tensor(*spiders))
 
     def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
         return self.functor(self.split_functor(diagram))

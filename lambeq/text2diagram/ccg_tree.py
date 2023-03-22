@@ -24,7 +24,7 @@ from typing import overload
 
 from discopy.grammar import pregroup
 from discopy.grammar.categorial import (
-    Box, Diagram, Functor, Id, Over, Ty, Under, unaryBoxConstructor)
+    Box, Diagram, Functor, Id, Over, Ty, unaryBoxConstructor, Under)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (categorial2str, replace_cat_result,
@@ -576,8 +576,8 @@ class CCGTree:
                         >> left @ mid @ cups) @ right
 
             cod = to_pregroup_diagram(box.cod)
-            return pregroup.Id(cod) if box.dom or not cod\
-                else pregroup.Word(box.name, cod)
+            return (pregroup.Id(cod) if box.dom or not cod
+                    else pregroup.Word(box.name, cod))
 
         to_pregroup_diagram = Functor(ob=ob_func,
                                       ar=ar_func,
