@@ -18,7 +18,7 @@ class cat:
         assert f<<Id(A)==f==Id(B)<<f
 
         # arrow = h<<g<<f
-        #test7:wq
+        #test8:wq
         # print(repr(arrow))
         # # print(repr(arrow))
         # print(arrow[1:])
