@@ -172,7 +172,7 @@ class Trainer(ABC):
             Formatted text to be displayed
 
         """
-
+#test
         report = []
         for name, value in [('train/loss', train_loss),
                             ('valid/loss', val_loss)]:
