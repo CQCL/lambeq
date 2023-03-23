@@ -266,7 +266,7 @@ def test_folder_creation(parser_patch, multi_sentence_input):
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('lambeq.cli.open', unittest.mock.mock_open(
                                      read_data=multi_sentence_input)) as m,\
-         patch('lambeq.cli.discopy.grammar.draw',
+         patch('lambeq.cli.discopy.grammar.pregroup.Diagram.draw',
                new=unittest.mock.MagicMock()) as d,\
          patch('lambeq.cli.Path', new=unittest.mock.MagicMock()) as p:
         main()
@@ -282,7 +282,7 @@ def test_image_args(parser_patch, sentence_input):
                             'fig_height=3', 'fontsize=12', '-o',
                             'diagram.pdf', sentence_input]),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
-         patch('lambeq.cli.discopy.grammar.draw',
+         patch('lambeq.cli.discopy.grammar.pregroup.Diagram.draw',
                new=unittest.mock.MagicMock()) as d:
         main()
         d.assert_called()
@@ -296,7 +296,7 @@ def test_split_stdin_and_multisentece_image_error(parser_patch, multi_sentence_i
          patch('sys.stdin',
                new=StringIO(multi_sentence_input.replace('\n', ' '))),\
          patch('sys.stdout', new=StringIO()) as fake_out,\
-         patch('lambeq.cli.discopy.grammar.draw',
+         patch('lambeq.cli.discopy.grammar.pregroup.Diagram.draw',
                new=unittest.mock.MagicMock()) as d:
         with pytest.raises(ValueError):
             main()

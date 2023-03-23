@@ -34,7 +34,7 @@ import sys
 from typing import Any, Callable, Optional, Union
 from typing import TYPE_CHECKING
 
-from discopy.tensor import Tensor
+from discopy.tensor import Tensor, backend
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:
@@ -361,7 +361,7 @@ class Trainer(ABC):
                             leave=False,
                             position=1):
             train_loss = 0.0
-            with Tensor.backend(self.backend):
+            with backend(self.backend):
                 for batch in tqdm(train_dataset,
                                   desc='Batch',
                                   total=batches_per_epoch,
@@ -414,7 +414,7 @@ class Trainer(ABC):
                     seen_so_far = 0
                     batches_per_validation = ceil(len(val_dataset)
                                                   / val_dataset.batch_size)
-                    with Tensor.backend(self.backend):
+                    with backend(self.backend):
                         disable_tqdm = (self.verbose
                                         != VerbosityLevel.PROGRESS.value)
                         for v_batch in tqdm(val_dataset,

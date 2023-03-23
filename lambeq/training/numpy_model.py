@@ -30,7 +30,7 @@ from collections.abc import Callable, Iterable
 import pickle
 from typing import Any, TYPE_CHECKING, Union
 
-from discopy.tensor import Diagram, Tensor
+from discopy.tensor import Diagram, Tensor, get_backend, backend
 import numpy
 from numpy.typing import ArrayLike
 from sympy import lambdify
@@ -79,12 +79,12 @@ class NumpyModel(QuantumModel):
             return self.lambdas[diagram]
 
         def diagram_output(x: Iterable[ArrayLike]) -> ArrayLike:
-            with Tensor.backend('jax'), tn.DefaultBackend('jax'):
+            with backend('jax'), tn.DefaultBackend('jax'):
                 sub_circuit = self._fast_subs([diagram], x)[0]
                 result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
                 # square amplitudes to get probabilties for pure circuits
                 if not sub_circuit.is_mixed:
-                    result = Tensor.get_backend().abs(result) ** 2
+                    result = get_backend().abs(result) ** 2
                 return self._normalise_vector(result)
 
         self.lambdas[diagram] = jit(diagram_output)
@@ -97,7 +97,7 @@ class NumpyModel(QuantumModel):
         parameters = {k: v for k, v in zip(self.symbols, weights)}
         diagrams = pickle.loads(pickle.dumps(diagrams))  # does fast deepcopy
         for diagram in diagrams:
-            for b in diagram._boxes:
+            for b in diagram.boxes:
                 if b.free_symbols:
                     while hasattr(b, 'controlled'):
                         b._free_symbols = set()
@@ -109,11 +109,11 @@ class NumpyModel(QuantumModel):
                             values.append(parameters[sym])
                         except KeyError:
                             raise KeyError(f'Unknown symbol {sym!r}.')
-                    b._data = lambdify(syms, b._data)(*values)
+                    b.data = lambdify(syms, b._data)(*values)
                     b.drawing_name = b.name
                     b._free_symbols = set()
-                    if hasattr(b, '_phase'):
-                        b._phase = b._data
+                    if hasattr(b, 'phase'):
+                        b.phase = b.data
         return diagrams
 
     def get_diagram_output(self,
@@ -157,7 +157,7 @@ class NumpyModel(QuantumModel):
             return res
 
         diagrams = self._fast_subs(diagrams, self.weights)
-        with Tensor.backend('numpy'):
+        with backend('numpy'):
             results = []
             for d in diagrams:
                 result = tn.contractors.auto(*d.to_tn()).tensor

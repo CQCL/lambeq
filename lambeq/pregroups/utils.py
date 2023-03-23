@@ -111,7 +111,7 @@ def create_pregroup_diagram(
                 actual_idx -= 2
         offsets.append(actual_idx)
 
-    return Diagram(dom=Ty(), cod=cod, boxes=boxes, offsets=offsets)
+    return Diagram.decode(dom=Ty(), cod=cod, boxes=boxes, offsets=offsets)
 
 
 def _compress_cups(diagram: Diagram) -> Diagram:
@@ -127,7 +127,7 @@ def _compress_cups(diagram: Diagram) -> Diagram:
         else:
             layers.append((box, offset))
     boxes, offsets = zip(*layers)
-    return Diagram(
+    return Diagram.decode(
         dom=diagram.dom, cod=diagram.cod, boxes=boxes, offsets=offsets)
 
 
@@ -162,14 +162,14 @@ def _remove_cups(diagram: Diagram) -> Diagram:
                 pg_type1, pg_type2 = box.dom[:pg_len], box.dom[pg_len:]
                 if len(left.cod) == pg_len and not left.dom:
                     if pg_type1.r == pg_type2:
-                        new_diag = right >> (left.r.dagger() @ wires_r)
+                        new_diag = right >> (left.r @ wires_r)
                     else:  # illegal cup
-                        new_diag = right >> (left.l.dagger() @ wires_r)
+                        new_diag = right >> (left.l @ wires_r)
                 elif len(right.cod) == pg_len and not right.dom:
                     if pg_type1.r == pg_type2:
-                        new_diag = left >> (wires_l @ right.l.dagger())
+                        new_diag = left >> (wires_l @ right.l)
                     else:
-                        new_diag = left >> (wires_l @ right.r.dagger())
+                        new_diag = left >> (wires_l @ right.r)
                 else:
                     box = Diagram.cups(pg_type1, pg_type2)
                     new_diag = left @ right >> wires_l @ box @ wires_r
@@ -197,10 +197,7 @@ def remove_cups(diagram: Diagram) -> Diagram:
         Diagram with some cups removed.
 
     """
-    try:
-        return _remove_cups(_compress_cups(_remove_cups(diagram)))
-    except Exception:  # pragma: no cover
-        return diagram  # pragma: no cover
+    return _remove_cups(_compress_cups(_remove_cups(diagram)))
 
 
 @dataclass
@@ -231,7 +228,7 @@ def _remove_detached_cups(diagram: Diagram) -> Diagram:
         raise ValueError('Not a valid pregroup diagram.')
 
     atomic_types = [ob for b in diagram.boxes
-                    for ob in b.cod if isinstance(b, Word)]
+                    for ob in b.cod.inside if isinstance(b, Word)]
     scan = list(range(len(atomic_types)))
 
     # Create lists with offset info for words and morphisms
@@ -295,9 +292,9 @@ def _remove_detached_cups(diagram: Diagram) -> Diagram:
                         and morphisms[j].start > morphisms[m_idx].start):
                     mor_offsets[j] -= 2
 
-    return Diagram(dom=diagram.dom, cod=diagram.cod,
-                   boxes=new_words+new_morphisms,
-                   offsets=wrd_offsets+mor_offsets)
+    return Diagram.decode(
+        dom=diagram.dom, cod=diagram.cod,
+        boxes=new_words+new_morphisms, offsets=wrd_offsets+mor_offsets)
 
 
 def remove_swaps(diagram: Diagram) -> Diagram:
@@ -384,7 +381,7 @@ def remove_swaps(diagram: Diagram) -> Diagram:
             raise ValueError('Not a valid pregroup diagram.')
 
     atomic_types = [ob for b in diagram.boxes
-                    for ob in b.cod if isinstance(b, Word)]
+                    for ob in b.cod.inside if isinstance(b, Word)]
     scan = list(range(len(atomic_types)))
 
     # Create lists with offset info for words and morphisms
@@ -420,7 +417,8 @@ def remove_swaps(diagram: Diagram) -> Diagram:
             new_boxes.append(mor)
             new_offsets.append(ofs)
 
-    new_diagr = Diagram(dom=diagram.dom, cod=diagram.cod,
-                        boxes=new_boxes, offsets=new_offsets)
+    new_diagr = Diagram.decode(
+        dom=diagram.dom, cod=diagram.cod,
+        boxes=new_boxes, offsets=new_offsets)
 
     return _remove_detached_cups(new_diagr)

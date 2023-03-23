@@ -23,7 +23,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Any, TYPE_CHECKING, Union
 
-from discopy.tensor import Diagram, Tensor
+from discopy.tensor import Diagram, Tensor, get_backend
 import numpy as np
 
 
@@ -74,7 +74,7 @@ class QuantumModel(Model):
         Does not normalise scalar values; instead, returns the absolute
         value of scalars.
         """
-        backend = Tensor.get_backend()
+        backend = get_backend()
         ret: np.ndarray
         if not predictions.shape:
             ret = backend.abs(predictions)

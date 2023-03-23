@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import pickle
 
-from discopy.tensor import Diagram, Tensor
+from discopy.tensor import Diagram, Tensor, backend
 import torch
 
 from lambeq.ansatz.base import Symbol
@@ -131,7 +131,7 @@ class PytorchModel(Model, torch.nn.Module):
                     except KeyError:
                         raise KeyError(f'Unknown symbol {b._data!r}.')
 
-        with Tensor.backend('pytorch'), tn.DefaultBackend('pytorch'):
+        with backend('pytorch'), tn.DefaultBackend('pytorch'):
             return torch.stack(
                 [tn.contractors.auto(*d.to_tn()).tensor for d in diagrams])
 

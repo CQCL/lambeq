@@ -23,7 +23,7 @@ __all__ = ['AtomicType']
 
 from enum import Enum
 
-from discopy.rigid import Ty
+from discopy.grammar.pregroup import Ty
 
 
 class AtomicType(Ty, Enum):
