@@ -62,7 +62,7 @@ def test_remove_cups():
         Word("box1", n @ n @ s) @ Word("box2", (n @ s).r)
         >> Id(n) @ Diagram.cups(n @ s, (n @ s).r))
     expect_d1 = (
-        Word("box1", n @ n @ s) >> Id(n) @ Word("box2", (n @ s).r).l.dagger())
+        Word("box1", n @ n @ s) >> Id(n) @ Word("box2", (n @ s).r).l)
     assert remove_cups(d1) == expect_d1
 
     d2 = (
@@ -70,7 +70,7 @@ def test_remove_cups():
         >> Id(n) @ Cup(s, s.r) @ Cup(n, n.r) @ Id(n.r) >> Cup(n, n.r))
     expect_d2 = (
         Word("box3", n.r @ n.r) >> Id(n.r) @ Cap(s.r.r, s.r) @ Id(n.r)
-        >> Word("box2", s.r @ n).r.dagger() @ Word("box1", n @ s).r.dagger())
+        >> Word("box2", s.r @ n).r @ Word("box1", n @ s).r)
     assert remove_cups(d2) == expect_d2
 
     d3 = (
@@ -78,7 +78,7 @@ def test_remove_cups():
         >> Diagram.cups(n @ n, n.r @ n.r) @ Id(n))
     expect_d3 = (
         Word("box2", n.r @ n.r @ n)
-        >> (Word("box1", n) >> Spider(1, 2, n)).r.dagger() @ Id(n)
+        >> (Word("box1", n) >> Spider(1, 2, n)).r @ Id(n)
     )
     assert remove_cups(d3) == expect_d3
 
@@ -87,18 +87,18 @@ def test_remove_cups():
             == Id().tensor(*map(remove_cups, (d1, d2, d3))))
 
     # test illegal cups
-    assert remove_cups(d1.r) == remove_cups(d1).r
-    assert remove_cups(d3.l) == remove_cups(d3).l
+    assert remove_cups(d1.r.dagger()) == remove_cups(d1).r.dagger()
+    assert remove_cups(d3.l.dagger()) == remove_cups(d3).l.dagger()
 
     # scalars can be bent both ways
-    assert remove_cups(d2.r) == remove_cups(d2).dagger().normal_form()
+    assert remove_cups(d2.r.dagger()) == remove_cups(d2).dagger().normal_form()
 
     d4 = (
         Word('box1', n) @ Word('box2', n) @ Word('box3', n.r @ n.r @ n)
         >> Diagram.cups(n @ n, (n @ n).r) @ Id(n))
     expect_d4 = (
         Word('box3', n.r @ n.r @ n) >>
-        (Word('box1', n) @ Word('box2', n)).r.dagger() @ Id(n))
+        (Word('box1', n) @ Word('box2', n)).r @ Id(n))
     assert remove_cups(d4) == expect_d4
 
     assert remove_cups(d4 @ Id(n @ s) @ d4) == expect_d4 @ Id(n @ s) @ expect_d4
@@ -113,7 +113,7 @@ def test_remove_cups():
 
 
 def test_remove_swaps_cross_composition():
-    inp_diagr = Diagram(
+    inp_diagr = Diagram.decode(
         dom=Ty(),
         cod=s,
         boxes=[Word('I', Ty('n')), Word('do', Ty(Ob('n', z=1), 's', Ob('s', z=-1), 'n')),
@@ -128,7 +128,7 @@ def test_remove_swaps_cross_composition():
             offsets= [0, 1, 5, 9, 4, 3, 2, 3, 2, 1, 2, 1, 0, 1, 0, 2, 1]
     )
 
-    out_diagr = Diagram(
+    out_diagr = Diagram.decode(
         dom=Ty(),
         cod=s,
         boxes=[Word('I', Ty('n')),
@@ -144,7 +144,7 @@ def test_remove_swaps_cross_composition():
 
 
 def test_remove_swaps_cross_comp_and_unary_rule():
-    inp_diagr = Diagram(
+    inp_diagr = Diagram.decode(
         dom=Ty(),
         cod=n,
         boxes=[Word('The', Ty('n', Ob('n', z=-1))),
@@ -164,7 +164,7 @@ def test_remove_swaps_cross_comp_and_unary_rule():
                  3, 2, 1, 2, 1, 3, 2, 1, 0]
     )
 
-    out_diagr = Diagram(
+    out_diagr = Diagram.decode(
         dom=Ty(),
         cod=n,
         boxes=[Word('The', Ty('n', Ob('n', z=-1))), Word('best', Ty('n', Ob('n', z=-1))),
@@ -181,7 +181,7 @@ def test_remove_swaps_cross_comp_and_unary_rule():
 
 
 def test_remove_swaps_shorten_type():
-    inp_diagr= Diagram(
+    inp_diagr = Diagram.decode(
         dom=Ty(),
         cod=n,
         boxes=[Word('What', Ty('n', Ob('n', z=-2), Ob('s', z=-1))), Word('Alice', Ty('n')),
@@ -202,7 +202,7 @@ def test_remove_swaps_shorten_type():
                  3, 3, 2, 1]
     )
 
-    out_diagr = Diagram(
+    out_diagr = Diagram.decode(
         dom=Ty(),
         cod=n,
         boxes=[Word('What', Ty('n', Ob('n', z=-2), Ob('s', z=-1))),

@@ -310,9 +310,9 @@ class CurryRewriteRule(RewriteRule):
         dom = left.l @ box.dom @ right.r
         new_box = Box(box.name, dom, cod[i:j+1])
         if left:
-            new_box = Diagram.curry(new_box, n_wires=len(left), left=True)
+            new_box = Diagram.curry(new_box, n=len(left), left=True)
         if right:
-            new_box = Diagram.curry(new_box, n_wires=len(right), left=False)
+            new_box = Diagram.curry(new_box, n=len(right), left=False)
 
         return new_box
 

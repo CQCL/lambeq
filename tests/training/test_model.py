@@ -31,7 +31,7 @@ class ConcreteModel(Model):
 def test_extract_symbols():
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
     circuits = [
-        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     ]
     instance = Model.from_diagrams(circuits)
     assert len(instance.symbols) == 2

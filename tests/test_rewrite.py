@@ -123,10 +123,11 @@ def test_rel_pronoun():
 
     rewriter = Rewriter(['subject_rel_pronoun', 'object_rel_pronoun'])
 
-    diagram_subj = Id().tensor(cows, that_subj, eat, grass)
-    diagram_subj >>= Cup(N, N.r) @ Id(N) @ cups(S.l @ N, N.r @ S) @ Cup(N.l, N)
+    diagram_subj = (
+        Id().tensor(cows, that_subj, eat, grass)
+        >> Cup(N, N.r) @ N @ Diagram.cups(S.l @ N, N.r @ S) @ Cup(N.l, N))
 
-    expected_diagram_subj = Diagram(
+    expected_diagram_subj = Diagram.decode(
             dom=Ty(), cod=N,
             boxes=[cows, Spider(1, 2, N), Spider(0, 1, S.l), eat, Cup(N, N.r),
                    Cup(S.l, S), grass, Cup(N.l, N)],

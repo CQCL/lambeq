@@ -25,7 +25,7 @@ def test_sentence2diagram(web_parser):
     sentence = 'he does not sleep'
 
     n, s = AtomicType.NOUN, AtomicType.SENTENCE
-    expected_diagram = Diagram(
+    expected_diagram = Diagram.decode(
         dom=Ty(), cod=Ty('s'),
         boxes=[
             Word('he', n),

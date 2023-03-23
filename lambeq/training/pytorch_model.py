@@ -23,7 +23,7 @@ from __future__ import annotations
 from math import sqrt
 import pickle
 
-from discopy.tensor import Diagram, Tensor
+from discopy.tensor import Diagram, Tensor, backend
 import torch
 
 from lambeq.ansatz.base import Symbol
@@ -143,7 +143,7 @@ class PytorchModel(Model, torch.nn.Module):
                             f'Unknown symbol: {repr(b._data)}'
                         ) from e
 
-        with Tensor.backend('pytorch'), tn.DefaultBackend('pytorch'):
+        with backend('pytorch'), tn.DefaultBackend('pytorch'):
             return torch.stack(
                 [tn.contractors.auto(*d.to_tn()).tensor for d in diagrams])
 

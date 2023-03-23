@@ -23,7 +23,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Any, TYPE_CHECKING
 
-from discopy.tensor import Diagram, Tensor
+from discopy.tensor import Diagram, Tensor, get_backend
 import numpy as np
 
 
@@ -73,7 +73,7 @@ class QuantumModel(Model):
           * zero-vector: Returns the vector as-is.
         """
 
-        backend = Tensor.get_backend()
+        backend = get_backend()
         ret: np.ndarray = backend.abs(predictions)
 
         if predictions.shape:

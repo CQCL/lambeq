@@ -167,7 +167,7 @@ class TreeReader(Reader):
                 name = box.name
             tree_boxes.append(Box(name, dom, cod))
 
-        diagram = Diagram(
+        diagram = Diagram.decode(
             dom=Ty(),
             cod=word_type,
             boxes=tree_words + tree_boxes,

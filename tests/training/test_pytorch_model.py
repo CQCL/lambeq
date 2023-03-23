@@ -4,8 +4,9 @@ import pytest
 from copy import deepcopy
 from unittest.mock import mock_open, patch
 
+from discopy import tensor
+from discopy.tensor import Dim
 from discopy.grammar.pregroup import Box, Cap, Cup, Swap, Word, Spider
-from discopy.tensor import Dim, Id as tensor_Id
 from discopy.quantum.circuit import Id
 
 import numpy as np
@@ -32,7 +33,7 @@ class CustomPytorchModel(PytorchModel):
 def test_init():
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
     diagrams = [
-        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     ]
 
     model = PytorchModel.from_diagrams(diagrams)
@@ -44,7 +45,7 @@ def test_forward():
     s_dim = 2
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(s_dim)})
     diagrams = [
-        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     ]
     instance = PytorchModel.from_diagrams(diagrams)
     instance.initialise_weights()
@@ -62,11 +63,11 @@ def test_initialise_weights():
 def test_pickling():
     phi = Symbol('phi', size=123)
     diagram = (
-        Box("box1", Dim(2), Dim(2), data=phi)
-        >> Spider(1, 2, Dim(2))
-        >> Swap(Dim(2), Dim(2))
-        >> tensor_Id(Dim(2))
-        @ (tensor_Id(Dim(2)) @ Cap(Dim(2), Dim(2)) >> Cup(Dim(2), Dim(2)) @ tensor_Id(Dim(2)))
+        tensor.Box("box1", Dim(2), Dim(2), data=phi)
+        >> tensor.Spider(1, 2, Dim(2))
+        >> tensor.Swap(Dim(2), Dim(2))
+        >> Dim(2) @ (Dim(2) @ tensor.Cap(Dim(2), Dim(2))
+                     >> tensor.Cup(Dim(2), Dim(2)) @ Dim(2))
     )
     deepcopied_diagram = deepcopy(diagram)
     pickled_diagram = pickle.loads(pickle.dumps(diagram))
@@ -89,7 +90,7 @@ def test_get_diagram_output_error():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     with pytest.raises(KeyError):
         model = PytorchModel()
         model.get_diagram_output([diagram])
@@ -98,7 +99,7 @@ def test_checkpoint_loading():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     model = PytorchModel.from_diagrams([diagram])
     model.initialise_weights()
 

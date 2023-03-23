@@ -462,7 +462,8 @@ class RewriterModule(CLIModule):
         if cl_args.rewrite_rules is None:
             return module_input
         rewriter = lambeq.rewrite.Rewriter(cl_args.rewrite_rules)
-        return [rewriter(diagram).normal_form() for diagram in module_input]
+        return [discopy.rigid.Diagram.normal_form(rewriter(diagram))
+                for diagram in module_input]
 
 
 class AnsatzModule(CLIModule):
@@ -491,8 +492,8 @@ class AnsatzModule(CLIModule):
                                   S: s_dim},
                                  **remaining_args)
         elif issubclass(ansatz_type, TensorAnsatz):
-            ansatz = ansatz_type({N: discopy.Dim(n_dim),
-                                  S: discopy.Dim(s_dim)},
+            ansatz = ansatz_type({N: discopy.tensor.Dim(n_dim),
+                                  S: discopy.tensor.Dim(s_dim)},
                                  **remaining_args)
         return [ansatz(diagram) for diagram in module_input]
 
@@ -527,8 +528,7 @@ class DiagramSaveModule(CLIModule):
         if cl_args.output_format in ['text-ascii', 'text-unicode']:
             for i in range(len(module_input)):
                 if not is_pregroup_diagram(module_input[i]):
-                    module_input[i] = discopy.grammar.normal_form(
-                                        module_input[i])
+                    module_input[i] = module_input[i].normal_form()
                     if not is_pregroup_diagram(module_input[i]):
                         raise ValueError(  # pragma: no cover
                                 'Output format is set to '
@@ -579,15 +579,10 @@ class DiagramSaveModule(CLIModule):
                             cl_args.output_options['fig_height'])
                 if 'fontsize' in cl_args.output_options:
                     draw_args['fontsize'] = cl_args.output_options['fontsize']
-                if is_pregroup_diagram(diagram):
-                    discopy.grammar.draw(diagram, **draw_args)
-                else:
-                    try:
-                        normal_form = discopy.grammar.normal_form(diagram)
-                        discopy.grammar.draw(normal_form,  # pragma: no cover
-                                             **draw_args)
-                    except ValueError:
-                        diagram.draw(**draw_args)
+                try:
+                    diagram.normal_form().draw(**draw_args)  # pragma: no cover
+                except ValueError:
+                    diagram.draw(**draw_args)
 
 
 def main() -> None:

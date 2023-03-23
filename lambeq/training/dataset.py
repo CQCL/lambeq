@@ -25,6 +25,7 @@ from math import ceil
 import random
 from typing import Any
 
+from discopy import tensor
 from discopy.tensor import Tensor
 
 
@@ -36,7 +37,7 @@ class Dataset:
     to NumPy. For example, to access the dataset as PyTorch tensors:
 
         >>> dataset = Dataset(['data1'], [[0, 1, 2, 3]])
-        >>> with Tensor.backend('pytorch'):
+        >>> with tensor.backend('pytorch'):
         ...     print(dataset[0])  # becomes pytorch tensor
         ('data1', tensor([0, 1, 2, 3]))
         >>> print(dataset[0])  # numpy array again
@@ -82,7 +83,7 @@ class Dataset:
         """Get a single item or a subset from the dataset."""
         x = self.data[index]
         y = self.targets[index]
-        return x, Tensor.get_backend().array(y)
+        return x, tensor.get_backend().array(y)
 
     def __len__(self) -> int:
         return len(self.data)
@@ -102,7 +103,7 @@ class Dataset:
         if self.shuffle:
             new_data, new_targets = self.shuffle_data(new_data, new_targets)
 
-        backend = Tensor.get_backend()
+        backend = tensor.get_backend()
         for start_idx in range(0, len(self.data), self.batch_size):
             yield (new_data[start_idx: start_idx+self.batch_size],
                    backend.array(
