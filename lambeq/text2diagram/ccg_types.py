@@ -145,9 +145,9 @@ def categorial2str(categorial_type: Ty, pretty: bool = False) -> str:
         The string representation of the type.
 
     """
-    if isinstance(categorial_type, Over):
+    if categorial_type.is_over:
         template = '({0}↢{1})' if pretty else '({0}/{1})'
-    elif isinstance(categorial_type, Under):
+    elif categorial_type.is_under:
         template = '({0}↣{1})' if pretty else r'({1}\{0})'
     else:
         return str(categorial_type)

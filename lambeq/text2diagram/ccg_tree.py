@@ -45,14 +45,14 @@ class UnarySwap(unaryBoxConstructor('cod'), Box):  # type: ignore[misc]
     """
 
     def __init__(self, cod: Ty) -> None:
-        if isinstance(cod, Over):
+        if cod.is_over:
             # This defines a swap from Y.l @ X to X @ Y.l
             # since:
             #           Ty() << Y        -> Y.l
             #  Ty() << (Ty() << Y)       -> Y.l.l
             # (Ty() << (Ty() << Y)) >> X -> Y.l.l.r @ X = Y.l @ X
             dom = (Ty() << (Ty() << cod.left)) >> cod.right
-        elif isinstance(cod, Under):
+        elif cod.is_under:
             # Similarly, this defines a swap from Y @ X.r to X.r @ Y
             dom = cod.left << ((cod.right >> Ty()) >> Ty())
         else:
@@ -63,11 +63,11 @@ class UnarySwap(unaryBoxConstructor('cod'), Box):  # type: ignore[misc]
 class PlanarBX(Box):
     """Planar Backward Crossed Composition Box."""
     def __init__(self, dom: Ty, diagram: Diagram) -> None:
-        assert isinstance(dom, Over)
+        assert dom.is_over
         assert not diagram.dom
 
         right = diagram.cod
-        assert isinstance(right, Under)
+        assert right.is_under
         assert right.left == dom.left
 
         self.diagram = diagram
@@ -78,11 +78,11 @@ class PlanarBX(Box):
 class PlanarFX(Box):
     """Planar Forward Crossed Composition Box."""
     def __init__(self, dom: Ty, diagram: Diagram) -> None:
-        assert isinstance(dom, Under)
+        assert dom.is_under
         assert not diagram.dom
 
         left = diagram.cod
-        assert isinstance(left, Over)
+        assert left.is_over
         assert left.right == dom.right
 
         self.diagram = diagram
@@ -95,7 +95,7 @@ class PlanarGBX(Box):
         assert not diagram.dom
 
         right = diagram.cod
-        assert isinstance(right, Under)
+        assert right.is_under
 
         cod, original = replace_cat_result(dom, right.left, right.right, '<|')
         assert original == right.left
@@ -109,7 +109,7 @@ class PlanarGFX(Box):
         assert not diagram.dom
 
         left = diagram.cod
-        assert isinstance(left, Over)
+        assert left.is_over
 
         cod, original = replace_cat_result(dom, left.right, left.left, '>|')
         assert original == left.right
@@ -508,10 +508,10 @@ class CCGTree:
             def split(cat: Ty, base: Ty) -> tuple[3 * (pregroup.Ty, )]:
                 left = right = pregroup.Ty()
                 while cat != base:
-                    if isinstance(cat, Over):
+                    if cat.is_over:
                         right = to_pregroup_diagram(cat.right).l @ right
                         cat = cat.left
-                    else:
+                    elif cat.is_under:
                         left @= to_pregroup_diagram(cat.left).r
                         cat = cat.right
                 return left, to_pregroup_diagram(cat), right

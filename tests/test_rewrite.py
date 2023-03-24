@@ -137,9 +137,9 @@ def test_rel_pronoun():
 
     diagram_obj = Id().tensor(grass, that_obj, cows, eat)
     diagram_obj >>= Cup(N, N.r) @ Id(N) @ Id(N.l.l @ S.l) @ Cup(N, N.r) @ Id(S @ N.l)
-    diagram_obj >>= Id(N) @ cups(N.l.l @ S.l, S @ N.l)
+    diagram_obj >>= Id(N) @ Diagram.cups(N.l.l @ S.l, S @ N.l)
 
-    expected_diagram_obj = Diagram(
+    expected_diagram_obj = Diagram.decode(
             dom=Ty(), cod=N,
             boxes=[grass, Spider(1, 2, N), Cap(N.l, N.l.l), Swap(N.l, N.l.l),
                    Spider(0, 1, S.l), cows, eat, Cup(N, N.r), Cup(S.l, S),
