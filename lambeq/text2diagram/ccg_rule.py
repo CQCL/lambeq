@@ -211,10 +211,10 @@ class CCGRule(str, Enum):
         elif self == CCGRule.REMOVE_PUNCTUATION_RIGHT:
             return RPR(cod, dom[1:])
         elif self == CCGRule.FORWARD_TYPE_RAISING:
-            return Diagram.curry(Diagram.ba(cod.right.left, cod.left))
-        elif self == CCGRule.BACKWARD_TYPE_RAISING:
-            return Diagram.curry(Diagram.fa(cod.right, cod.left.right),
+            return Diagram.curry(Diagram.ba(cod.right.left, cod.left),
                                  left=True)
+        elif self == CCGRule.BACKWARD_TYPE_RAISING:
+            return Diagram.curry(Diagram.fa(cod.right, cod.left.right))
         elif self == CCGRule.CONJUNCTION:
             left, right = dom[:1], dom[1:]
             if CCGAtomicType.conjoinable(left):
@@ -273,24 +273,24 @@ class CCGRule(str, Enum):
             if CCGAtomicType.CONJUNCTION in (left, right):
                 return CCGRule.CONJUNCTION
 
-            if isinstance(left, Over):
-                if (isinstance(right, Over)
+            if left.is_over:
+                if (right.is_over
                         and left.right == right.left
                         and cod == left.left << right.right):
                     return CCGRule.FORWARD_COMPOSITION
-                if (isinstance(right, Under)
+                if (right.is_under
                         and left.right == right.right
                         and cod == right.left >> left.left):
                     return CCGRule.FORWARD_CROSSED_COMPOSITION
                 if (replace_cat_result(right, left.right, left.left, '<')
                         == (cod, left.right)):
                     return CCGRule.GENERALIZED_FORWARD_COMPOSITION
-            if isinstance(right, Under):
-                if (isinstance(left, Under)
+            if right.is_under:
+                if (left.is_under
                         and left.right == right.left
                         and cod == left.left >> right.right):
                     return CCGRule.BACKWARD_COMPOSITION
-                if (isinstance(left, Over)
+                if (left.is_over
                         and left.left == right.left
                         and cod == right.right << left.right):
                     return CCGRule.BACKWARD_CROSSED_COMPOSITION
@@ -302,7 +302,7 @@ class CCGRule(str, Enum):
                 if (replace_cat_result(left, right.left, right.right, '<|')
                         == (cod, right.left)):
                     return CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION
-            if (isinstance(left, Over)
+            if (left.is_over
                     and (replace_cat_result(right, left.right, left.left, '>|')
                          == (cod, left.right))):
                 return CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION
