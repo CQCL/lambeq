@@ -44,8 +44,8 @@ class MyCustomModel(PytorchModel):
         return preds
 
 
-train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['MNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
-train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['MNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
+train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
+train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 
 val_labels, val_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_DEV_LAMBEQ_FORMAT_CLAIM_SMALL']))

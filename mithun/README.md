@@ -3,7 +3,7 @@
 
 `./utils/requirements.sh`
 
-# For running domain adaptation experiments mnli vs mednli
+# For running domain adaptation experiments snli vs mednli
 
 - confirm config values in `utils/config.py`
 - `python trainer_classical_claim_ev_classification.py`
@@ -13,6 +13,7 @@ notes to self:
 - contradiction=1
 - entailment=2
 
+# for domain adaptation
 
 # todo as of march 22nd 2023
 - Load entire MNLI
