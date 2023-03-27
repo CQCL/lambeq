@@ -74,10 +74,9 @@ def test_jax_usage():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
-<<<<<<< HEAD
 
     expected_lambda_name = 'CompiledFunction'
 
@@ -87,10 +86,6 @@ def test_jax_usage():
 
     assert type(lam).__name__ == expected_lambda_name
     assert model.lambdas[diagram] == model._get_lambda(diagram)
-=======
-    import pdb; pdb.set_trace()
-    assert type(lam).__module__ == 'jaxlib.xla_extension'
->>>>>>> 9bbb85c2 (make mypy happy, remove dependence on jax internal)
 
 def test_checkpoint_loading():
     N = AtomicType.NOUN
