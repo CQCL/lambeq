@@ -134,13 +134,12 @@ class PytorchModel(Model, torch.nn.Module):
         diagrams = pickle.loads(pickle.dumps(diagrams))  # deepcopy, but faster
         for diagram in diagrams:
             for b in diagram.boxes:
-                if isinstance(b._data, Symbol):
+                if isinstance(b.data, Symbol):
                     try:
-                        b._data = parameters[b._data]
-                        b._free_symbols = {}
+                        b.data = parameters[b.data]
                     except KeyError as e:
                         raise KeyError(
-                            f'Unknown symbol: {repr(b._data)}'
+                            f'Unknown symbol: {repr(b.data)}'
                         ) from e
 
         with backend('pytorch'), tn.DefaultBackend('pytorch'):

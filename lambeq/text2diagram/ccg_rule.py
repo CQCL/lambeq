@@ -211,10 +211,11 @@ class CCGRule(str, Enum):
         elif self == CCGRule.REMOVE_PUNCTUATION_RIGHT:
             return RPR(cod, dom[1:])
         elif self == CCGRule.FORWARD_TYPE_RAISING:
-            return Diagram.curry(Diagram.ba(cod.right.left, cod.left),
-                                 left=True)
+            return Diagram.curry(
+                Diagram.ba(cod.right.left, cod.left), left=True)
         elif self == CCGRule.BACKWARD_TYPE_RAISING:
-            return Diagram.curry(Diagram.fa(cod.right, cod.left.right))
+            return Diagram.curry(
+                Diagram.fa(cod.right, cod.left.right), left=False)
         elif self == CCGRule.CONJUNCTION:
             left, right = dom[:1], dom[1:]
             if CCGAtomicType.conjoinable(left):

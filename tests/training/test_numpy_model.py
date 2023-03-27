@@ -131,7 +131,7 @@ def test_pickling():
     deepcopied_diagram = deepcopy(diagram)
     pickled_diagram = pickle.loads(pickle.dumps(diagram))
     assert pickled_diagram == diagram
-    pickled_diagram._data = 'new data'
+    pickled_diagram.data = 'new data'
     for box in pickled_diagram.boxes:
         box.name = 'Jim'
         box.data = ['random', 'data']

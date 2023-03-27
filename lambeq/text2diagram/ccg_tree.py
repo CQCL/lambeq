@@ -443,8 +443,10 @@ class CCGTree:
 
         if (self.rule == CCGRule.UNARY
                 and not planar
-                and {type(categorial_type),
-                     type(self.children[0].categorial_type)} == {Over, Under}):
+                and (categorial_type.is_over
+                     and self.children[0].categorial_type.is_under
+                     or categorial_type.is_under
+                     and self.children[0].categorial_type.is_over)):
             this_layer = UnarySwap(categorial_type)
         elif (self.rule == CCGRule.FORWARD_COMPOSITION
                 and self.children[0].rule == CCGRule.FORWARD_TYPE_RAISING):
