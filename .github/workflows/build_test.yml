@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, "3.10", "3.11" ]
+        python-version: [ 3.9, "3.10", "3.11" ]
     outputs:
       error-check: ${{ steps.error-check.conclusion }}
     steps:
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, "3.10", "3.11" ]
+        python-version: [ 3.9, "3.10", "3.11" ]
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
@@ -136,7 +136,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+<<<<<<< HEAD
         python-version: [ 3.8, 3.9, "3.10", "3.11" ]
+=======
+        python-version: [ 3.9, "3.10" ]
+>>>>>>> 636fc876 (remove python 3.8 from supported versions)
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
