@@ -112,6 +112,7 @@ class NumpyModel(QuantumModel):
                             ) from e
                     b.data = lambdify(syms, b.data)(*values)
                     b.drawing_name = b.name
+                    del b.free_symbols
         return diagrams
 
     def get_diagram_output(
