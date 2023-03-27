@@ -123,7 +123,7 @@ class PytorchModel(Model, torch.nn.Module):
         parameters = {k: v for k, v in zip(self.symbols, self.weights)}
         diagrams = pickle.loads(pickle.dumps(diagrams))  # deepcopy, but faster
         for diagram in diagrams:
-            for b in diagram._boxes:
+            for b in diagram.boxes:
                 if isinstance(b._data, Symbol):
                     try:
                         b._data = parameters[b._data]
