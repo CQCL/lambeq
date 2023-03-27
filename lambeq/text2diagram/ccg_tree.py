@@ -507,7 +507,8 @@ class CCGTree:
             #           punctuation -> empty diagram
             #              word box -> Word
 
-            def split(cat: Ty, base: Ty) -> tuple[3 * (pregroup.Ty, )]:
+            def split(cat: Ty, base: Ty) -> tuple[
+                    pregroup.Ty, pregroup.Ty, pregroup.Ty]:
                 left = right = pregroup.Ty()
                 while cat != base:
                     if cat.is_over:
