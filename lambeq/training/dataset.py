@@ -26,7 +26,6 @@ import random
 from typing import Any
 
 from discopy import tensor
-from discopy.tensor import Tensor
 
 
 class Dataset:

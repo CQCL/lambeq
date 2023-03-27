@@ -23,7 +23,7 @@ from __future__ import annotations
 from math import sqrt
 import pickle
 
-from discopy.tensor import Diagram, Tensor, backend
+from discopy.tensor import backend, Diagram
 import torch
 
 from lambeq.ansatz.base import Symbol
@@ -143,8 +143,8 @@ class PytorchModel(Model, torch.nn.Module):
                         ) from e
 
         with backend('pytorch'), tn.DefaultBackend('pytorch'):
-            return torch.stack(
-                [tn.contractors.auto(*d.to_tn(dtype=torch.float)).tensor for d in diagrams])
+            return torch.stack([tn.contractors.auto(
+                *d.to_tn(dtype=torch.float)).tensor for d in diagrams])
 
     def forward(self, x: list[Diagram]) -> torch.Tensor:
         """Perform default forward pass by contracting tensors.

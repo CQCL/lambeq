@@ -22,7 +22,7 @@ from enum import Enum
 from typing import Any
 
 from discopy.grammar import pregroup
-from discopy.grammar.categorial import Over, Ty, Under
+from discopy.grammar.categorial import Ty
 
 from lambeq.core.types import AtomicType
 

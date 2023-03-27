@@ -33,7 +33,7 @@ import socket
 import sys
 from typing import Any, Callable, TYPE_CHECKING
 
-from discopy.tensor import Tensor, backend
+from discopy.tensor import backend
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:

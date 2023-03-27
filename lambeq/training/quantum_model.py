@@ -23,7 +23,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Any, TYPE_CHECKING
 
-from discopy.tensor import Diagram, Tensor, get_backend
+from discopy.tensor import Diagram, get_backend
 import numpy as np
 
 
