@@ -19,7 +19,7 @@ from typing import Callable, Optional, Union
 
 __all__ = ['TreeReader', 'TreeReaderMode']
 
-from discopy.grammar.pregroup import Box, Diagram, Id, Ty, Word
+from discopy.grammar.pregroup import Box, Diagram, Ty, Word
 
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType

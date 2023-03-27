@@ -24,7 +24,7 @@ from typing import overload
 
 from discopy.grammar import pregroup
 from discopy.grammar.categorial import (
-    Box, Diagram, Functor, Id, Over, Ty, unaryBoxConstructor, Under)
+    Box, Diagram, Functor, Id, Ty, unaryBoxConstructor)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (categorial2str, replace_cat_result,
