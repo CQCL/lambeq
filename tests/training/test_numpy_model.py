@@ -77,7 +77,6 @@ def test_jax_usage():
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
-    import pdb; pdb.set_trace()
     assert type(lam).__module__ == 'jaxlib.xla_extension'
 
 def test_checkpoint_loading():
