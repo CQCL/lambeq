@@ -100,10 +100,9 @@ class NumpyModel(QuantumModel):
             for b in diagram.boxes:
                 if b.free_symbols:
                     while hasattr(b, 'controlled'):
-                        b._free_symbols = set()
                         b = b.controlled
                     syms, values = [], []
-                    for sym in b._free_symbols:
+                    for sym in b.free_symbols:
                         syms.append(sym)
                         try:
                             values.append(parameters[sym])
@@ -111,11 +110,8 @@ class NumpyModel(QuantumModel):
                             raise KeyError(
                                 f'Unknown symbol: {repr(sym)}'
                             ) from e
-                    b.data = lambdify(syms, b._data)(*values)
+                    b.data = lambdify(syms, b.data)(*values)
                     b.drawing_name = b.name
-                    b._free_symbols = set()
-                    if hasattr(b, 'phase'):
-                        b.phase = b.data
         return diagrams
 
     def get_diagram_output(

@@ -281,7 +281,7 @@ def replace_cat_result(cat: Ty,
 
     if not (len(direction) in (1, 2) and set(direction).issubset('<|>')):
         raise ValueError(f'Invalid direction: `{direction}`')
-    if not hasattr(cat, "left"):
+    if not cat.is_exp:
         return cat, None
 
     cat_dir = '<' if cat == cat.left << cat.right else '>'
