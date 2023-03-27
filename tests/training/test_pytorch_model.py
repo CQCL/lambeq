@@ -72,10 +72,10 @@ def test_pickling():
     deepcopied_diagram = deepcopy(diagram)
     pickled_diagram = pickle.loads(pickle.dumps(diagram))
     assert pickled_diagram == diagram
-    pickled_diagram._data = 'new data'
+    pickled_diagram.data = 'new data'
     for box in pickled_diagram.boxes:
-        box._name = 'Bob'
-        box._data = ['random', 'data']
+        box.name = 'Bob'
+        box.data = ['random', 'data']
     assert diagram == deepcopied_diagram
     assert diagram != pickled_diagram
     assert deepcopied_diagram != pickled_diagram
