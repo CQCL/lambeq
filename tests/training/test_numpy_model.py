@@ -77,7 +77,8 @@ def test_jax_usage():
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
-    assert type(lam).__name__ == 'CompiledFunction'
+    import pdb; pdb.set_trace()
+    assert type(lam).__module__ == 'jaxlib.xla_extension'
 
 def test_checkpoint_loading():
     N = AtomicType.NOUN
@@ -154,5 +155,5 @@ def test_get_lambda():
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
-    assert type(lam).__name__ == 'CompiledFunction'
+    assert type(lam).__module__ == 'jaxlib.xla_extension'
     assert model.lambdas[diagram] == model._get_lambda(diagram)
