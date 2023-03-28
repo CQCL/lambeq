@@ -43,6 +43,7 @@ class MyCustomModel(PytorchModel):
         preds = self.net(preds)
         return preds
 
+a=read_data_pandas(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAINING_DATA']))
 
 train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
 train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
