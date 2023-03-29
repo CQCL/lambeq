@@ -18,7 +18,14 @@ Module that allows drawing of DisCoPy pregroup diagrams.
 
 """
 
+from discopy import messages
+from discopy.utils import assert_isinstance
+from discopy.config import DRAWING_DEFAULT as DEFAULT
+from discopy.drawing.legacy import MatBackend, TikzBackend
 from discopy.grammar.pregroup import Ty, Diagram, Word, Id, Swap, Cup
+
+from lambeq.pregroups.utils import is_pregroup_diagram
+from lambeq.pregroups.text_printer import NOT_PREGROUP_ERROR
 
 
 def draw(diagram, **params):
@@ -51,32 +58,26 @@ def draw(diagram, **params):
         Whether to draw type labels with superscript, default is :code:`False`.
     triangles : bool, optional
         Whether to draw words as triangular states, default is :code:`False`.
+
     Raises
     ------
     ValueError
         Whenever the input is not a pregroup diagram.
     """
-    if not isinstance(diagram, Diagram):
-        raise TypeError(messages.type_err(Diagram, diagram))
-    words, is_pregroup = Id(Ty()), True
-    for _, box, right in diagram.layers:
-        if isinstance(box, Word):
-            if right:  # word boxes should be tensored left to right.
-                is_pregroup = False
-                break
-            words = words @ box
-        else:
-            break
-    cups = diagram[len(words):].foliation().boxes\
-        if len(words) < len(diagram) else []
-    is_pregroup = is_pregroup and words and all(
-        isinstance(box, Cup) or isinstance(box, Swap)
-        for s in cups for box in s.boxes)
-    if not is_pregroup:
-        raise ValueError(messages.expected_pregroup())
+    assert_isinstance(diagram, Diagram)
+    diagram = diagram.normal_form()
+    if not is_pregroup_diagram(diagram):
+        raise ValueError(NOT_PREGROUP_ERROR)
 
+    n_words = len([box for box in diagram.boxes if isinstance(box, Word)])
+    words, layers = diagram[:n_words], []
+    for layer in diagram[n_words:].foliation().inside:
+        layers.append(Id())
+        for box_or_typ in layer.boxes_or_types:
+            layers[-1] @= box_or_typ
     has_swaps = any(
         [isinstance(box, Swap) for layer in layers for box in layer.boxes])
+
     textpad = params.get('textpad', (.1, .2))
     textpad_words = params.get('textpad_words', (0, .1))
     space = params.get('space', .5)
