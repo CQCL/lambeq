@@ -20,7 +20,7 @@ Module that allows drawing of DisCoPy pregroup diagrams.
 
 from discopy.config import DRAWING_DEFAULT as DEFAULT
 from discopy.drawing.legacy import MatBackend, TikzBackend
-from discopy.grammar.pregroup import Cup, Diagram, Id, Swap, Word
+from discopy.grammar.pregroup import Cup, Diagram, Swap, Word
 from discopy.utils import assert_isinstance
 
 from lambeq.pregroups.text_printer import NOT_PREGROUP_ERROR
@@ -64,14 +64,13 @@ def draw(diagram, **params):
         Whenever the input is not a pregroup diagram.
     """
     assert_isinstance(diagram, Diagram)
-    diagram = diagram.normal_form()
     if not is_pregroup_diagram(diagram):
         raise ValueError(NOT_PREGROUP_ERROR)
 
     n_words = len([box for box in diagram.boxes if isinstance(box, Word)])
     words, layers = diagram[:n_words], []
     for layer in diagram[n_words:].foliation().inside:
-        layers.append(Id())
+        layers.append(diagram.id())
         for box_or_typ in layer.boxes_or_types:
             layers[-1] @= box_or_typ
 
