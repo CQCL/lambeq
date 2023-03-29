@@ -84,7 +84,7 @@ if(config['TYPE_OF_MODEL']=='discocat'):
     # train_diagrams_evidence = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_evidence), verbose='text',
     #                                                  tokenised=True)
     train_diagrams_evidence = parser.sentences2diagrams(train_data_evidence, verbose='text',
-                                                     tokenised=False)
+                                                     tokenised=False,suppress_exceptions=True)
     if config['DRAW']:
         grammar.draw(train_diagrams_claim[0], figsize=(14, 3), fontsize=12)
     val_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(val_data_claim), verbose='text',

@@ -376,16 +376,14 @@ class BobcatParser(CCGParser):
                     desc='Parsing tagged sentences',
                     leave=False,
                     disable=verbose != VerbosityLevel.PROGRESS.value):
-
                 try:
-                    counter=counter+1
-                    if(counter>42):
-                        print()
+                    counter += 1
                     sentence_input = self._prepare_sentence(sent, tags)
                     result = self.parser(sentence_input)
                     trees.append(self._build_ccgtree(result[0]))
                 except Exception:
                     if suppress_exceptions:
+                        print(f"key error at index {counter} with the sentence {sentence_input.words}")
                         trees.append(None)
                     else:
                         raise BobcatParseError(' '.join(sent.words))
