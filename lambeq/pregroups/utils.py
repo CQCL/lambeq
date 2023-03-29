@@ -39,7 +39,6 @@ def is_pregroup_diagram(diagram: Diagram) -> bool:
         Whether the diagram is a pregroup diagram.
 
     """
-
     in_words = True
     for _, box, right in diagram.inside:
         if in_words and isinstance(box, Word):
