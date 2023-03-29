@@ -11,6 +11,7 @@ on:
 env:
   SRC_DIR: lambeq
   TEST_DIR: tests
+  DOCS_DIR: docs
 
 jobs:
   lint:
@@ -111,6 +112,10 @@ jobs:
       run: coverage run --append --source=${{ env.SRC_DIR }} -m pytest -k test_depccg_parser.py
     - name: Coverage report
       run: coverage report -m
+    - name: Install nbmake and test notebooks
+      run: |
+        python -m pip install nbmake
+        pytest --nbmake ${{ env.DOCS_DIR }}/{examples,tutorials}/*.ipynb
   type_check:
     needs: lint
     if: ${{ always() && needs.lint.outputs.error-check == 'success' }}
