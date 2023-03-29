@@ -54,9 +54,6 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install DisCoPy 0.5 from GitHub
-      if: github.ref_name != 'release' && github.ref_name != 'beta'
-      run: pip install git+https://github.com/discopy/discopy@0.5
     - name: Install base package
       run: pip install .
     - name: Check package import works
