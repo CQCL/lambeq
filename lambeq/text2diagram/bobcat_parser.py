@@ -370,6 +370,7 @@ class BobcatParser(CCGParser):
             tags = tag_results.tags
             if verbose == VerbosityLevel.TEXT.value:
                 print('Parsing tagged sentences.', file=sys.stderr)
+            counter=0
             for sent in tqdm(
                     tag_results.sentences,
                     desc='Parsing tagged sentences',
@@ -377,6 +378,9 @@ class BobcatParser(CCGParser):
                     disable=verbose != VerbosityLevel.PROGRESS.value):
 
                 try:
+                    counter=counter+1
+                    if(counter>42):
+                        print()
                     sentence_input = self._prepare_sentence(sent, tags)
                     result = self.parser(sentence_input)
                     trees.append(self._build_ccgtree(result[0]))

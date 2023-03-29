@@ -43,14 +43,15 @@ class MyCustomModel(PytorchModel):
         preds = self.net(preds)
         return preds
 
-a=read_data_pandas(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAINING_DATA']))
-
-train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
-train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 
-val_labels, val_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_DEV_LAMBEQ_FORMAT_CLAIM_SMALL']))
-val_labels, val_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_DEV_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
+train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM']))
+train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE']))
+
+assert len(train_labels)== len(train_data_evidence) == len(train_data_claim)
+
+val_labels, val_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM']))
+val_labels, val_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE']))
 
 
 #test_labels, test_data = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
@@ -80,8 +81,10 @@ if(config['TYPE_OF_MODEL']=='discocat'):
     tokeniser = SpacyTokeniser()
     train_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_claim),verbose='text',tokenised=True)
 
-    train_diagrams_evidence = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_evidence), verbose='text',
-                                                     tokenised=True)
+    # train_diagrams_evidence = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_evidence), verbose='text',
+    #                                                  tokenised=True)
+    train_diagrams_evidence = parser.sentences2diagrams(train_data_evidence, verbose='text',
+                                                     tokenised=False)
     if config['DRAW']:
         grammar.draw(train_diagrams_claim[0], figsize=(14, 3), fontsize=12)
     val_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(val_data_claim), verbose='text',
