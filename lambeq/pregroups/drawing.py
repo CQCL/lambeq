@@ -18,19 +18,18 @@ Module that allows drawing of DisCoPy pregroup diagrams.
 
 """
 
-from discopy import messages
-from discopy.utils import assert_isinstance
 from discopy.config import DRAWING_DEFAULT as DEFAULT
 from discopy.drawing.legacy import MatBackend, TikzBackend
-from discopy.grammar.pregroup import Ty, Diagram, Word, Id, Swap, Cup
+from discopy.grammar.pregroup import Cup, Diagram, Id, Swap, Word
+from discopy.utils import assert_isinstance
 
-from lambeq.pregroups.utils import is_pregroup_diagram
 from lambeq.pregroups.text_printer import NOT_PREGROUP_ERROR
+from lambeq.pregroups.utils import is_pregroup_diagram
 
 
 def draw(diagram, **params):
     """
-    Draws a pregroup diagram, i.e. of shape :code:`word @ ... @ word >> cups`.
+    Draws a pregroup diagram of shape ``word @ ... @ word >> cups``.
 
     Parameters
     ----------
@@ -53,11 +52,11 @@ def draw(diagram, **params):
     figsize : tuple, optional
         Figure size.
     path : str, optional
-        Where to save the image, if :code:`None` we call :code:`plt.show()`.
+        Where to save the image, if ``None`` we call ``plt.show()``.
     pretty_types : bool, optional
-        Whether to draw type labels with superscript, default is :code:`False`.
+        Whether to draw type labels with superscript.
     triangles : bool, optional
-        Whether to draw words as triangular states, default is :code:`False`.
+        Whether to draw words as triangular states.
 
     Raises
     ------
@@ -75,8 +74,6 @@ def draw(diagram, **params):
         layers.append(Id())
         for box_or_typ in layer.boxes_or_types:
             layers[-1] @= box_or_typ
-    has_swaps = any(
-        [isinstance(box, Swap) for layer in layers for box in layer.boxes])
 
     textpad = params.get('textpad', (.1, .2))
     textpad_words = params.get('textpad_words', (0, .1))
@@ -84,22 +81,23 @@ def draw(diagram, **params):
     width = params.get('width', 2.)
     fontsize = params.get('fontsize', None)
 
-    backend = TikzBackend(use_tikzstyles=params.get('use_tikzstyles', None))\
-        if params.get('to_tikz', False)\
-        else MatBackend(figsize=params.get('figsize', None))
+    backend = (
+        TikzBackend(use_tikzstyles=params.get('use_tikzstyles', None))
+        if params.get('to_tikz', False)
+        else MatBackend(figsize=params.get('figsize', None)))
 
     def pretty_type(t):
         type_str = t.name
         if t.z:
-            type_str += "^{" + 'l' * -t.z + 'r' * t.z + "}"
+            type_str += '^{' + 'l' * -t.z + 'r' * t.z + '}'
         return f'${type_str}$'
 
     def draw_words(words):
         scan = []
         for i, word in enumerate(words.boxes):
             for j, _ in enumerate(word.cod):
-                x_wire = (space + width) * i\
-                    + (width / (len(word.cod) + 1)) * (j + 1)
+                x_wire = (space + width) * i + (
+                    width / (len(word.cod) + 1)) * (j + 1)
                 scan.append(x_wire)
                 if params.get('draw_type_labels', True):
                     type_str = str(word.cod[j])
@@ -116,7 +114,7 @@ def draw(diagram, **params):
                     ((space + width) * i, 0),
                     ((space + width) * i + width, 0),
                     ((space + width) * i + width / 2, 1),
-                    color=DEFAULT["color"])
+                    color=DEFAULT['color'])
             else:
                 backend.draw_polygon(
                     ((space + width) * i, 0),
@@ -124,7 +122,7 @@ def draw(diagram, **params):
                     ((space + width) * i + width, 0.4),
                     ((space + width) * i + width / 2, 0.5),
                     ((space + width) * i, 0.4),
-                    color=DEFAULT["color"])
+                    color=DEFAULT['color'])
             backend.draw_text(
                 str(word), (space + width) * i + width / 2 + textpad_words[0],
                 textpad_words[1], ha='center', fontsize=fontsize)
@@ -171,7 +169,7 @@ def draw(diagram, **params):
                 backend.draw_wire((x2, -y2), (x2, -y), bend_in=True)
 
         for i, _ in enumerate(wires[-1].cod if wires else words.cod):
-            label = ""
+            label = ''
             if wires:
                 if params.get('pretty_types', False):
                     label = pretty_type(wires[-1].cod[i])
