@@ -34,7 +34,6 @@ config = read_config()
 class MyCustomModel(PytorchModel):
     def __init__(self):
         super().__init__()
-
         self.net = torch.nn.Linear(2, config['LAST_LAYER_NEURON_COUNT'])
 
     def forward(self, input):
@@ -45,13 +44,13 @@ class MyCustomModel(PytorchModel):
 
 
 
-train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
-train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
+train_labels, train_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
+train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 assert len(train_labels)== len(train_data_evidence) == len(train_data_claim)
 
-val_labels, val_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
-val_labels, val_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
+val_labels, val_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
+val_labels, val_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 
 #test_labels, test_data = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
