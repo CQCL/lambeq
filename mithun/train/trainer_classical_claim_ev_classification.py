@@ -45,13 +45,13 @@ class MyCustomModel(PytorchModel):
 
 
 
-train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM']))
-train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE']))
+train_labels, train_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
+train_labels, train_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 assert len(train_labels)== len(train_data_evidence) == len(train_data_claim)
 
-val_labels, val_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM']))
-val_labels, val_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE']))
+val_labels, val_data_claim = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
+val_labels, val_data_evidence = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 
 #test_labels, test_data = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
@@ -80,13 +80,12 @@ if(config['TYPE_OF_MODEL']=='discocat'):
     parser = BobcatParser(verbose='text')
     tokeniser = SpacyTokeniser()
     train_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_claim),verbose='text',tokenised=True)
-
-    # train_diagrams_evidence = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_evidence), verbose='text',
-    #                                                  tokenised=True)
     train_diagrams_evidence = parser.sentences2diagrams(train_data_evidence, verbose='text',
                                                      tokenised=False,suppress_exceptions=True)
     if config['DRAW']:
-        grammar.draw(train_diagrams_claim[0], figsize=(14, 3), fontsize=12)
+        grammar.draw(train_diagrams_claim[110], figsize=(14, 3), fontsize=12)
+        grammar.draw(train_diagrams_claim[62], figsize=(14, 3), fontsize=12)
+
     val_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(val_data_claim), verbose='text',
                                                      tokenised=True)
 
@@ -113,7 +112,7 @@ logging.debug("after converting sentence to diagrams")
 
 from discopy import Dim
 
-from lambeq import AtomicType, SpiderAnsatz
+from lambeq import AtomicType, SpiderAnsatz,  TensorAnsatz
 logging.debug("before ansatz")
 ansatz = SpiderAnsatz({AtomicType.NOUN: Dim(2),
                        AtomicType.SENTENCE: Dim(2),
@@ -128,7 +127,8 @@ val_circuits_evidence = [ansatz(diagram) for diagram in val_diagrams_evidence]
 
 logging.debug("after ansatz")
 if config['DRAW']:
-    train_circuits_claim[0].draw()
+    train_circuits_claim[110].draw()
+    train_circuits_claim[62].draw()
 
 # ## Training
 # 

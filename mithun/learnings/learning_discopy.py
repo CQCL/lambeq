@@ -113,24 +113,57 @@ class mono:
             # snaayke.draw(figsize=(8,8))
 
 
-            #pregroup grammar- words
-            from discopy import grammar,Box
-            from discopy.grammar import Word
-            from discopy.rigid import Ty, Cup, Cap, Id
-
-            #john likes mary
-            s , n = Ty('s'), Ty('n')
-            j=Word('John',n)
-            l=Word('likes',n.r@s@n.l)
-            m=Word('Mary',n)
-            Words=[j,l,m]
-
-
-            cups_chain=Cup(n,n.r)@Id(s) @Cup(n.l,n)
-            d=Id().tensor(*Words)>> cups_chain
-            d.draw()
-            grammar.draw(d)
+            # #pregroup grammar- words
+            # from discopy import grammar,Box
+            # from discopy.grammar import Word
+            # from discopy.rigid import Ty, Cup, Cap, Id
+            #
+            # #john likes mary
+            # s , n = Ty('s'), Ty('n')
+            # j=Word('John',n)
+            # l=Word('likes',n.r@s@n.l)
+            # m=Word('Mary',n)
+            # Words=[j,l,m]
+            #
+            #
+            # cups_chain=Cup(n,n.r)@Id(s) @Cup(n.l,n)
+            # d=Id().tensor(*Words)>> cups_chain
+            # d.draw()
+            # grammar.draw(d)
             # cups_chain.draw().
+
+            #Tensors
+            from discopy.tensor import Dim, Box, Tensor, Cup
+            O=Dim(1)
+            A=Dim(3)
+            B = Dim(2)
+            C = Dim(4)
+
+            # box1=Box('stupid',dom=A,cod=B, data=[1,2,3,4,2,2])
+            # box2 = Box('stupid2', dom=B, cod=C, data=[1, 2323,33, 4, 2])
+            # b=box1>>box2
+            # b.draw()
+
+
+            #
+            # tensor1=Tensor(dom=A,cod=B, array=[[123,12,98],[3,2343,2343]])
+            # tensor2 = Tensor(dom=B, cod=C, array=[123, 12, 98, 3, 2343, 2343,53,4])
+            # arrow=tensor1>>tensor2
+            #
+            # c=Tensor.cups(B,B)
+            # # c.draw()
+            # print(c.array)
+            #
+            k = Tensor.caps(B, B)
+            # k.draw()
+            print(k.array)
+
+            k = Tensor.swap(B,B)
+            #k.draw()
+            print(k.array)
+
+
+
 
 
 

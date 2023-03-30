@@ -107,13 +107,20 @@ class Dataset:
 
         if self.shuffle:
             new_data, new_targets = self.shuffle_data(new_data, new_targets)
-        t = Tensor(Dim(1), Dim(1), [0])
-        backend = t.get_backend()
+
+        backend = Tensor.get_backend()
         for start_idx in range(0, len(self.data1), self.batch_size):
-            a=new_data[start_idx: start_idx+self.batch_size]
-            b=backend.array(
-                       new_targets[start_idx: start_idx+self.batch_size],dtype=backend.float32)
-            yield (a,b)
+            yield (new_data[start_idx: start_idx + self.batch_size],
+                   backend.array(
+                       new_targets[start_idx: start_idx + self.batch_size],
+                       dtype=backend.float32))
+        # t = Tensor(Dim(1), Dim(1), [0])
+        # backend = t.get_backend()
+        # for start_idx in range(0, len(self.data1), self.batch_size):
+        #     a=new_data[start_idx: start_idx+self.batch_size]
+        #     b=backend.array(
+        #                new_targets[start_idx: start_idx+self.batch_size],dtype=backend.float32)
+        #     yield (a,b)
 
     @staticmethod
     def shuffle_data(data: list[Any],

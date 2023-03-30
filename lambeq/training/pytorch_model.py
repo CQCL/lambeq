@@ -134,7 +134,7 @@ class PytorchModel(Model, torch.nn.Module):
 
         with Tensor.backend('pytorch'), tn.DefaultBackend('pytorch'):
             return torch.stack(
-                [tn.contractors.auto(*d.to_tn()).tensor for d in diagrams])
+                [tn.contractors.auto(*d.to_tn()).tensor for d in diagrams ])
 
     def forward(self, x: list[Diagram]) -> torch.Tensor:
         """Perform default forward pass by contracting tensors.
