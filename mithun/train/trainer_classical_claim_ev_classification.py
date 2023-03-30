@@ -222,23 +222,24 @@ logging.debug("after e trainer.fit")
 # In[12]:
 
 #
-# import matplotlib.pyplot as plt
-#
-# fig1, ((ax_tl, ax_tr), (ax_bl, ax_br)) = plt.subplots(2, 2, sharey='row', figsize=(10, 6))
-#
-# ax_tl.set_title('Training set')
-# ax_tr.set_title('Development set')
-# ax_bl.set_xlabel('Epochs')
-# ax_br.set_xlabel('Epochs')
-# ax_bl.set_ylabel('Accuracy')
-# ax_tl.set_ylabel('Loss')
-#
-# colours = iter(plt.rcParams['axes.prop_cycle'].by_key()['color'])
-# ax_tl.plot(trainer.train_epoch_costs, color=next(colours))
-# ax_bl.plot(trainer.train_results['acc'], color=next(colours))
-# ax_tr.plot(trainer.val_costs, color=next(colours))
-# ax_br.plot(trainer.val_results['acc'], color=next(colours))
-#
+import matplotlib.pyplot as plt
+
+fig1, ((ax_tl, ax_tr), (ax_bl, ax_br)) = plt.subplots(2, 2, sharey='row', figsize=(10, 6))
+
+ax_tl.set_title('Training set')
+ax_tr.set_title('Development set')
+ax_bl.set_xlabel('Epochs')
+ax_br.set_xlabel('Epochs')
+ax_bl.set_ylabel('Accuracy')
+ax_tl.set_ylabel('Loss')
+
+colours = iter(plt.rcParams['axes.prop_cycle'].by_key()['color'])
+ax_tl.plot(trainer.train_epoch_costs, color=next(colours))
+ax_bl.plot(trainer.train_results['acc'], color=next(colours))
+ax_tr.plot(trainer.val_costs, color=next(colours))
+ax_br.plot(trainer.val_results['acc'], color=next(colours))
+
+plt.show()
 # # print test accuracy
 # test_acc = accuracy(model(val_), torch.tensor(test_labels))
 # print('Test accuracy:', test_acc.item())
