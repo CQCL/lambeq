@@ -162,6 +162,14 @@ class PytorchTrainerCosineSim(LestatTrainer):
         self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
         torch.set_rng_state(checkpoint['torch_random_state'])
 
+    def split_into_claim_dev_run_model(self, batch):
+        all_claims, all_evidences = self.extract_claim_ev_data_separately(batch)
+        labels = batch[1]
+        pred_sentA = self.model(all_claims)
+        pred_sentB = self.model(all_evidences)
+        y_hat=pred_sentA+pred_sentB
+        return  y_hat, labels
+
     def validation_step(
             self,
             batch: tuple[list[Any], torch.Tensor]) -> tuple[torch.Tensor,
@@ -179,9 +187,8 @@ class PytorchTrainerCosineSim(LestatTrainer):
             The model predictions and the calculated loss.
 
         """
-        x, y = batch
         with torch.no_grad():
-            y_hat = self.model(x)
+            y_hat, y= self.split_into_claim_dev_run_model(batch)
             loss = self.loss_function(y_hat, y.to(self.device))
         return y_hat, loss.item()
 
@@ -211,14 +218,14 @@ class PytorchTrainerCosineSim(LestatTrainer):
             The model predictions and the calculated loss.
 
         """
-
-        all_claims, all_evidences=self.extract_claim_ev_data_separately(batch)
-        labels_gold=batch[1]
-        pred_sentA = self.model(all_claims)
-        pred_sentB = self.model(all_evidences)
-        #todo- tune and find the best way to do this
-        y_hat=pred_sentA+pred_sentB
-        loss = self.loss_function(y_hat, labels_gold.to(self.device))
+        y_hat, labels= self.split_into_claim_dev_run_model(batch)
+        # all_claims, all_evidences=self.extract_claim_ev_data_separately(batch)
+        # labels_gold=batch[1]
+        # pred_sentA = self.model(all_claims)
+        # pred_sentB = self.model(all_evidences)
+        # #todo- tune and find the best way to do this
+        # y_hat=pred_sentA+pred_sentB
+        loss = self.loss_function(y_hat, labels.to(self.device))
         logging.debug("just after loss")
         self.train_costs.append(loss.item())
         self.optimizer.zero_grad()
