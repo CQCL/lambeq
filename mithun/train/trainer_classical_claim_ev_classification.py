@@ -140,10 +140,10 @@ logging.debug("going to load model")
 
 all_circuits = train_circuits_claim +train_circuits_evidence+val_circuits_claim+val_circuits_evidence
 all_labels=train_labels+val_labels
-#model = PytorchModel.from_diagrams(all_circuits)
+model = PytorchModel.from_diagrams(all_circuits)
 
 
-custom_model = MyCustomModel.from_diagrams(all_circuits)
+#model = MyCustomModel.from_diagrams(all_circuits)
 
 # ### Define evaluation metric
 # 
@@ -169,7 +169,7 @@ eval_metrics = {"acc": accuracy}
 logging.debug(type(config['LEARNING_RATE']))
 logging.debug("before calling trainer")
 trainer = PytorchTrainerCosineSim(
-        model=custom_model,
+        model=model,
         loss_function=torch.nn.BCEWithLogitsLoss(),
         optimizer=torch.optim.AdamW,
         learning_rate=config['LEARNING_RATE'],
