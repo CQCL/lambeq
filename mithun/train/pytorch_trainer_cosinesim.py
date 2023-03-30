@@ -217,14 +217,14 @@ class PytorchTrainerCosineSim(LestatTrainer):
 
         pred_sentA = self.model(all_claims)
         pred_sentB = self.model(all_evidences)
-        # cos1 = torch.nn.CosineSimilarity(dim=1)
-        # logging.debug("just before cosine sim")
-        # y_hat1 = cos1(pred_sentA, pred_sentB)
+        cos1 = torch.nn.CosineSimilarity(dim=1)
+        y_hat = cos1(pred_sentA, pred_sentB)
         # cos2 = torch.nn.CosineSimilarity(dim=0)
         # y_hat2 = cos2(pred_sentA, pred_sentB)
         # logging.debug("just before loss")
-        y_hat=pred_sentA + pred_sentB
-        loss = self.loss_function(pred_sentA, labels_gold.to(self.device))
+        #y_hat=pred_sentA + pred_sentB
+        y_hat=y_hat.reshape(len(y_hat),1)
+        loss = self.loss_function(y_hat, labels_gold.to(self.device))
         logging.debug("just after loss")
         self.train_costs.append(loss.item())
         self.optimizer.zero_grad()
