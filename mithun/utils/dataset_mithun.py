@@ -24,6 +24,7 @@ from collections.abc import Iterator
 from math import ceil
 import random
 from typing import Any, Union
+
 from discopy import Tensor, Dim
 
 
@@ -39,8 +40,7 @@ class Dataset:
         ...     print(dataset[0])  # becomes pytorch tensor
         ('data1', tensor([0, 1, 2, 3]))
         >>> print(dataset[0])  # numpy array again
-        ('data1', array([0, 1, 2, 3]))
-    """
+        ('data1', array([0, 1, 2, 3]))"""
     def __init__(self,
                  data: list[Any],
                  targets: list[Any],
@@ -65,26 +65,32 @@ class Dataset:
             When 'data' and 'targets' do not match in size.
 
         """
-        if len(data) != len(targets):
-            raise ValueError('Lengths of `data` and `targets` differ.')
-        self.data = data
+
+
+        if len(data[0]) != len(targets):
+            raise ValueError('Lengthsss of `data` and `targets` differ.')
+        self.data1 = data[0]
+        self.data2 = data[1]
+
         self.targets = targets
         self.batch_size = batch_size
         self.shuffle = shuffle
 
         if self.batch_size == 0:
-            self.batch_size = len(self.data)
+            self.batch_size = len(self.data1)
 
-        self.batches_per_epoch = ceil(len(self.data) / self.batch_size)
+        self.batches_per_epoch = ceil(len(self.data1) / self.batch_size)
 
     def __getitem__(self, index: Union[int, slice]) -> tuple[Any, Any]:
         """Get a single item or a subset from the dataset."""
-        x = self.data[index]
+        x1 = self.data1[index]
+        x2= self.data2[index]
         y = self.targets[index]
         return x, Tensor.get_backend().array(y)
 
     def __len__(self) -> int:
-        return len(self.data)
+
+        return len(self.data1)
 
     def __iter__(self) -> Iterator[tuple[list[Any], Any]]:
         """Iterate over data batches.
@@ -96,16 +102,25 @@ class Dataset:
 
         """
 
-        new_data, new_targets = self.data, self.targets
+
+        new_data, new_targets = zip(self.data1,self.data2), self.targets
 
         if self.shuffle:
             new_data, new_targets = self.shuffle_data(new_data, new_targets)
+
         backend = Tensor.get_backend()
-        for start_idx in range(0, len(self.data), self.batch_size):
-            yield (new_data[start_idx: start_idx+self.batch_size],
+        for start_idx in range(0, len(self.data1), self.batch_size):
+            yield (new_data[start_idx: start_idx + self.batch_size],
                    backend.array(
-                       new_targets[start_idx: start_idx+self.batch_size],
+                       new_targets[start_idx: start_idx + self.batch_size],
                        dtype=backend.float32))
+        # t = Tensor(Dim(1), Dim(1), [0])
+        # backend = t.get_backend()
+        # for start_idx in range(0, len(self.data1), self.batch_size):
+        #     a=new_data[start_idx: start_idx+self.batch_size]
+        #     b=backend.array(
+        #                new_targets[start_idx: start_idx+self.batch_size],dtype=backend.float32)
+        #     yield (a,b)
 
     @staticmethod
     def shuffle_data(data: list[Any],
@@ -125,6 +140,7 @@ class Dataset:
             The shuffled dataset.
 
         """
+
         joint_list = list(zip(data, targets))
         random.shuffle(joint_list)
         data, targets = zip(*joint_list)
