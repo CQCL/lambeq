@@ -151,7 +151,7 @@ class NumpyModel(QuantumModel):
             from jax import numpy as jnp
 
             lambdified_diagrams = [self._get_lambda(d) for d in diagrams]
-            if hasattr(self.weights, "filled"):
+            if hasattr(self.weights, 'filled'):
                 self.weights = self.weights.filled()
             res: jnp.ndarray = jnp.array([diag_f(self.weights)
                                           for diag_f in lambdified_diagrams])
