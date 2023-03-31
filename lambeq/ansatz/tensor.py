@@ -161,5 +161,4 @@ class SpiderAnsatz(TensorAnsatz):
         return rigid.Diagram.tensor(*boxes) >> rigid.Diagram.tensor(*spiders)
 
     def __call__(self, diagram: rigid.Diagram) -> tensor.Diagram:
-        #diagram.draw()
         return self.functor(self.split_functor(diagram))
