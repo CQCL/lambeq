@@ -44,8 +44,8 @@ class MyCustomModel(PytorchModel):
 
 
 
-train_labels, train_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
-train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
+train_labels, train_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_MICRO']))
+train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_MICRO']))
 
 assert len(train_labels)== len(train_data_evidence) == len(train_data_claim)
 
@@ -74,7 +74,7 @@ train_labels[:5]
 
 # In[5]:
 
-if(config['TYPE_OF_MODEL']=='discocat'):
+if(config['TYPE_OF_PARSER']=='discocat'):
     parser = BobcatParser(verbose='text')
     tokeniser = SpacyTokeniser()
     train_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_claim),verbose='text',tokenised=True)
@@ -91,7 +91,7 @@ if(config['TYPE_OF_MODEL']=='discocat'):
                                                         verbose='text',
                                                         tokenised=True)
 
-if(config['TYPE_OF_MODEL']=='spider'):
+if(config['TYPE_OF_PARSER']=='spider'):
     logging.debug("before converting sentence to diagrams")
     from lambeq import spiders_reader
     train_diagrams_claim = [spiders_reader.sentence2diagram(sent) for sent in train_data_claim]
@@ -100,6 +100,26 @@ if(config['TYPE_OF_MODEL']=='spider'):
     val_diagrams_evidence = [spiders_reader.sentence2diagram(sent) for sent in val_data_evidence]
     if config['DRAW']:
         train_diagrams_evidence[0].draw(figsize=(13,6), fontsize=12)
+
+
+if(config['TYPE_OF_PARSER']=='depccg'):
+    from lambeq import DepCCGParser
+    parser=DepCCGParser()
+    tokeniser = SpacyTokeniser()
+    train_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_claim), verbose='text',
+                                                     tokenised=True)
+    train_diagrams_evidence = parser.sentences2diagrams(train_data_evidence, verbose='text',
+                                                        tokenised=False, suppress_exceptions=True)
+    if config['DRAW']:
+        grammar.draw(train_diagrams_claim[110], figsize=(14, 3), fontsize=12)
+        grammar.draw(train_diagrams_claim[62], figsize=(14, 3), fontsize=12)
+
+    val_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(val_data_claim), verbose='text',
+                                                   tokenised=True)
+
+    val_diagrams_evidence = parser.sentences2diagrams(tokeniser.tokenise_sentences(val_data_evidence),
+                                                      verbose='text',
+                                                      tokenised=True)
 
 logging.debug("after converting sentence to diagrams")
 
@@ -196,7 +216,7 @@ train_dataset = Dataset(
 
 
 val_data=(val_circuits_claim, val_circuits_evidence)
-val_dataset = Dataset(val_data, val_labels, shuffle=False)
+val_dataset = Dataset(val_data, val_labels, shuffle=False, batch_size=config['BATCH_SIZE'])
 
 
 # ### Train
@@ -204,7 +224,7 @@ val_dataset = Dataset(val_data, val_labels, shuffle=False)
 # In[11]:
 logging.debug("after loading datasets . before trainer.fit")
 
-trainer.fit(train_dataset, val_data, evaluation_step=1, logging_step=5)
+trainer.fit(train_dataset, val_dataset, evaluation_step=1, logging_step=5)
 logging.debug("after e trainer.fit")
 
 # ## Results

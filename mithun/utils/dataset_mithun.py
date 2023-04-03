@@ -107,6 +107,12 @@ class Dataset:
 
         if self.shuffle:
             new_data, new_targets = self.shuffle_data(new_data, new_targets)
+        else:
+            #mithun:make it a list without shuffling. todo: make this a function that works for both shuffle and non shuffle
+            joint_list = list(zip(new_data, new_targets))
+            data, targets = zip(*joint_list)
+            new_data, new_targets = list(data), list(targets)
+
 
         backend = Tensor.get_backend()
         for start_idx in range(0, len(self.data1), self.batch_size):
