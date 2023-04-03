@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, "3.10" ]
+        python-version: [ 3.8, 3.9, "3.10", "3.11" ]
     outputs:
       error-check: ${{ steps.error-check.conclusion }}
     steps:
@@ -47,16 +47,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, "3.10" ]
+        python-version: [ 3.8, 3.9, "3.10", "3.11" ]
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install DisCoPy 0.5 from GitHub
-      if: github.ref_name != 'release' && github.ref_name != 'beta'
-      run: pip install git+https://github.com/discopy/discopy@0.5
     - name: Install base package
       run: pip install .
     - name: Check package import works
@@ -65,7 +62,7 @@ jobs:
       run: pip install .[extras] .[test]
     - name: Locate bobcat pre-trained model cache
       id: loc-bobcat-cache
-      run: echo "::set-output name=dir::$(python -c 'from lambeq.text2diagram.bobcat_parser import get_model_dir; print(get_model_dir("bert"))')"
+      run: echo "dir=$(python -c 'from lambeq.text2diagram.model_downloader import ModelDownloader; print(ModelDownloader("bert").model_dir)')" >> $GITHUB_OUTPUT
     - name: Restore bobcat pre-trained model from cache
       id: bobcat-cache
       uses: actions/cache@v2
@@ -82,10 +79,12 @@ jobs:
         --ignore=docs/extract_code_cells.py
     - name: Determine if depccg tests should be run
       # only test depccg if it is explicitly changed, since it is very slow
+      # tests are also disabled on Python 3.11
       id: depccg-enabled
       continue-on-error: true  # this is expected to fail but the job should still succeed
       run: >
-        git fetch --depth=1 origin ${{ github.base_ref || github.event.before }}:before
+        ${{ matrix.python-version != '3.11' }}
+        && git fetch --depth=1 origin ${{ github.base_ref || github.event.before }}:before
         && git diff --name-only before | grep depccg
     - name: Install depccg and locate depccg pre-trained model cache
       id: loc-depccg-cache
@@ -93,7 +92,7 @@ jobs:
       run: |
         pip install cython  # must be installed before depccg
         pip install depccg==2.0.3.2
-        echo "::set-output name=dir::$(python -c 'from depccg.instance_models import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')"
+        echo "dir=$(python -c 'from depccg.instance_models import MODEL_DIRECTORY, MODELS; print(MODEL_DIRECTORY / MODELS["en"][1])')" >> $GITHUB_OUTPUT
         pip install lambeq  # override dependency conflicts
     - name: Restore depccg pre-trained model from cache
       id: depccg-cache
@@ -117,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, "3.10" ]
+        python-version: [ 3.8, 3.9, "3.10", "3.11" ]
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}

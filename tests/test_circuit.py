@@ -83,39 +83,39 @@ def test_sim15_ansatz():
 def test_iqp_ansatz_inverted():
     d = Box("inverted", S, Ty())
     ansatz = IQPAnsatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(d) == Bra()
+    assert ansatz(d) == Id()
 
 
 def test_s14_ansatz_inverted():
     d = Box("inverted", S, Ty())
     ansatz = Sim14Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(d) == Bra()
+    assert ansatz(d) == Id()
 
 
 def test_s15_ansatz_inverted():
     d = Box("inverted", S, Ty())
     ansatz = Sim15Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(d) == Bra()
+    assert ansatz(d) == Id()
 
 
 def test_iqp_ansatz_empty():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ Id(S))
     ansatz = IQPAnsatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(diagram) == Bra() >> Bra()
+    assert ansatz(diagram) == Id()
 
 def test_s14_ansatz_empty():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ Id(S))
     ansatz = Sim14Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(diagram) == Bra() >> Bra()
+    assert ansatz(diagram) == Id()
 
 
 def test_s15_ansatz_empty():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ Id(S))
     ansatz = Sim15Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(diagram) == Bra() >> Bra()
+    assert ansatz(diagram) == Id()
 
 
 def test_discard():
@@ -173,13 +173,13 @@ def test_strongly_entangling_ansatz():
 def test_strongly_entangling_ansatz_inverted():
     d = Box("inverted", S, Ty())
     ansatz = StronglyEntanglingAnsatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(d) == Bra()
+    assert ansatz(d) == Id()
 
 def test_strongly_entangling_ansatz_empty():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ Id(S))
     ansatz = StronglyEntanglingAnsatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(diagram) == Bra() >> Bra()
+    assert ansatz(diagram) == Id()
 
 def test_strongly_entangling_ansatz_discard():
     ansatz = StronglyEntanglingAnsatz({S: 2}, n_layers=0, discard=True)
@@ -192,9 +192,8 @@ def test_strongly_entangling_ansatz_one_qubit():
                                              cod=qubit,
                                              boxes=[Rz(sym('X_q_q_0')),
                                                     Ry(sym('X_q_q_1')),
-                                                    Rz(sym('X_q_q_2')),
-                                                    Bra()],
-                                             offsets=[0, 0, 0, 1])
+                                                    Rz(sym('X_q_q_2'))],
+                                             offsets=[0, 0, 0])
 
 def test_strongly_entangling_ansatz_ranges():
     q = Ty('q')
@@ -238,11 +237,10 @@ def test_strongly_entangling_ansatz_ranges():
                                       Rz(sym('X_q_q_26')),
                                       Controlled(X, distance=2),
                                       Controlled(X, distance=-1),
-                                      Controlled(X, distance=-1),
-                                      Bra()],
+                                      Controlled(X, distance=-1)],
                                offsets=[0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0,
                                         0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0, 0,
-                                        0, 1, 1, 1, 2, 2, 2, 0, 0, 1, 3])
+                                        0, 1, 1, 1, 2, 2, 2, 0, 0, 1])
     assert ansatz(box) == expected_circuit
 
 def test_strongly_entangling_ansatz_ranges_error():

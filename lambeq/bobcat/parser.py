@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,7 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 import math
-from typing import Optional, Tuple, Union
-from typing import overload
+from typing import overload, Tuple
 
 from lambeq.bobcat.grammar import Grammar
 from lambeq.bobcat.lexicon import Atom, Category
@@ -60,7 +59,8 @@ class Sentence:
 
     def __post_init__(self) -> None:
         if len(self.words) != len(self.input_supertags):
-            raise ValueError()
+            raise ValueError(
+                    '`words` must be the same length as `input_supertags`')
 
     def __len__(self) -> int:
         return len(self.words)
@@ -253,13 +253,12 @@ class ParseResult:
     @overload
     def __getitem__(self, index: slice) -> list[ParseTree]: ...
 
-    def __getitem__(self, index: Union[int, slice]) -> Union[ParseTree,
-                                                             list[ParseTree]]:
+    def __getitem__(self, index: int | slice) -> ParseTree | list[ParseTree]:
         return self.root[index]
 
     def deps(
         self,
-        tree: Optional[ParseTree] = None
+        tree: ParseTree | None = None
     ) -> tuple[list[Dependency], list[str]]:  # pragma: no cover
         """Get the dependencies and output tags of the parse.
 
@@ -290,7 +289,7 @@ class ParseResult:
     def _skim_deps(
         self,
         start: int = 0,
-        end: Optional[int] = None
+        end: int | None = None
     ) -> tuple[list[Dependency], list[str]]:  # pragma: no cover
         if end is None:
             end = len(self.words) - 1
@@ -328,7 +327,7 @@ class ChartParser:
     def __init__(self,
                  grammar: Grammar,
                  cats: Iterable[str],
-                 root_cats: Optional[Iterable[str]],
+                 root_cats: Iterable[str] | None,
                  eisner_normal_form: bool,
                  max_parse_trees: int,
                  beam_size: int,
@@ -377,9 +376,8 @@ class ChartParser:
 
         self.set_root_cats(root_cats)
 
-    def set_root_cats(
-            self,
-            root_cats: Optional[Iterable[Union[Category, str]]]) -> None:
+    def set_root_cats(self,
+                      root_cats: Iterable[Category | str] | None) -> None:
         if root_cats is None:
             self.root_cats = None
         else:
@@ -389,7 +387,7 @@ class ChartParser:
                                   for cat in root_cats]
             except KeyError as e:
                 raise ValueError('Grammar does not contain root category: '
-                                 f'{repr(e.args[0])}')
+                                 f'{repr(e.args[0])}') from e
 
     def filter_root(self, trees: list[ParseTree]) -> list[ParseTree]:
         if self.root_cats is None:
@@ -525,7 +523,7 @@ class ChartParser:
 
     def get_span_score(self,
                        span_scores: Mapping[int, float],
-                       cat_id: Optional[int]) -> float:
+                       cat_id: int | None) -> float:
         """Get the score in a span for a category (chain) ID."""
         if cat_id is None:
             return self.missing_cat_score

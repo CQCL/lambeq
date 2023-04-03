@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ Module implementing a basic lambeq model based on a Pytorch backend.
 """
 from __future__ import annotations
 
+from math import sqrt
 import pickle
 
 from discopy import Tensor
@@ -63,9 +64,18 @@ class PytorchModel(Model, torch.nn.Module):
         if not self.symbols:
             raise ValueError('Symbols not initialised. Instantiate through '
                              '`PytorchModel.from_diagrams()`.')
-        self.weights = torch.nn.ParameterList(
-            [torch.nn.init.xavier_uniform_(torch.empty(w.size, 1)).squeeze(1)
-             for w in self.symbols])
+
+        def mean(size: int) -> float:
+            if size < 6:
+                correction_factor = [float('nan'), 3, 2.6, 2, 1.6, 1.3][size]
+            else:
+                correction_factor = 1 / (0.16 * size - 0.04)
+            return sqrt(size/3 - 1/(15 - correction_factor))
+
+        self.weights = torch.nn.ParameterList([
+            (2 * torch.rand(w.size) - 1) / mean(w.directed_cod)
+            for w in self.symbols
+        ])
 
     def _load_checkpoint(self, checkpoint: Checkpoint) -> None:
         """Load the model weights and symbols from a lambeq
@@ -129,8 +139,10 @@ class PytorchModel(Model, torch.nn.Module):
                     try:
                         b._data = parameters[b._data]
                         b._free_symbols = {}
-                    except KeyError:
-                        raise KeyError(f'Unknown symbol {b._data!r}.')
+                    except KeyError as e:
+                        raise KeyError(
+                            f'Unknown symbol: {repr(b._data)}'
+                        ) from e
 
         with Tensor.backend('pytorch'), tn.DefaultBackend('pytorch'):
             return torch.stack(

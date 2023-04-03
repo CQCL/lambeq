@@ -59,6 +59,9 @@ Glossary
     IQP circuit
         Instantaneous Quantum Polynomial. A circuit which interleaves layers of Hadamard :term:`quantum gates <quantum gate>` with diagonal unitaries.
 
+    loss function
+        In machine learning, a function that estimates how far the prediction of a :term:`model` is from its true value. The purpose of training is to minimise the loss over the training set.
+
     matrix product state (MPS)
         A factorization of a large tensor into a chain-like product of smaller tensors. ``lambeq`` is equipped with :term:`ansätze <ansatz (plural: ansätze)>` that implement various forms of matrix product states, allowing the execution of large :term:`tensor networks <tensor network>` on classical hardware.
 
@@ -81,7 +84,7 @@ Glossary
         A statistical tool that converts a sentence into a hierarchical representation that reflects the syntactic relationships between the words (a :term:`syntax tree`) based on a specific grammar formalism.
 
     PennyLane
-        A Python library for differentiable programming of quantum computers, developed by Xanadu, enabling quantum machine learning.
+        A Python library for differentiable programming of quantum computers, developed by Xanadu, enabling quantum machine learning. See more `here <https://pennylane.ai/qml/>`_.
 
     post-selection
         The act of conditioning the probability space on a particular event. In practice, this involves disregarding measurement outcomes where a particular qubit does not match the post-selected value.

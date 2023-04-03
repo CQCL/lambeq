@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -32,7 +32,9 @@ class AtomicType(Ty, Enum):
     _value_: str
 
     def __new__(cls, value: str) -> Ty:
-        return object.__new__(Ty)
+        ret = object.__new__(Ty)
+        ret._value_ = value  # required for Python 3.11+
+        return ret
 
     NOUN = 'n'
     NOUN_PHRASE = 'n'

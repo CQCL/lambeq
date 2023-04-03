@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ __all__ = ['CCGAtomicType', 'CCGParseError', 'replace_cat_result',
 
 from collections.abc import Callable
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 from discopy import rigid
 from discopy.biclosed import Over, Ty, Under
@@ -37,7 +37,7 @@ class CCGParseError(Exception):
         self.message = message
 
     def __str__(self) -> str:
-        return f'Failed to parse "{self.cat}": {self.message}.'
+        return f'Failed to parse {repr(self.cat)}: {self.message}.'
 
 
 class _CCGAtomicTypeMeta(Ty, Enum):
@@ -114,14 +114,18 @@ def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
     try:
         biclosed_type, end = _compound_str2biclosed(clean_cat, str2type, 0)
     except CCGParseError as e:
-        raise CCGParseError(cat, e.message)  # reraise with original cat string
+        # reraise with original cat string
+        raise CCGParseError(cat, e.message) from e
 
     if is_conj:
         biclosed_type = biclosed_type >> biclosed_type
 
     extra = clean_cat[end:]
     if extra:
-        raise CCGParseError(cat, f'extra text after index {end-1} - "{extra}"')
+        raise CCGParseError(
+            cat,
+            f'extra text from index {end} - {repr(extra)}'
+        )
     return biclosed_type
 
 
@@ -175,8 +179,10 @@ def _clean_str2biclosed(cat: str,
     if cat[start] != '(':
         # base case
         if cat[start] in r'/\)':
-            raise CCGParseError(cat,
-                                f'unexpected "{cat[start]}" at index {start}')
+            raise CCGParseError(
+                cat,
+                f'unexpected {repr(cat[start])} at index {start}'
+            )
         end = start
         while end < len(cat) and cat[end] not in r'/\)':
             if cat[end] == '(':
@@ -197,7 +203,7 @@ def _clean_str2biclosed(cat: str,
 def replace_cat_result(cat: Ty,
                        original: Ty,
                        replacement: Ty,
-                       direction: str = '|') -> tuple[Ty, Optional[Ty]]:
+                       direction: str = '|') -> tuple[Ty, Ty | None]:
     """Replace the innermost category result with a new category.
 
     This attempts to replace the specified result category with a
@@ -274,7 +280,7 @@ def replace_cat_result(cat: Ty,
     """
 
     if not (len(direction) in (1, 2) and set(direction).issubset('<|>')):
-        raise ValueError(f'Invalid direction: "{direction}"')
+        raise ValueError(f'Invalid direction: `{direction}`')
     if not cat.left:
         return cat, None
 

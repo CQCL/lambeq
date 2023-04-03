@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -88,6 +88,7 @@ __all__ = [
 
         'Model',
         'NumpyModel',
+        'PennyLaneModel',
         'PytorchModel',
         'QuantumModel',
         'TketModel',
@@ -95,6 +96,11 @@ __all__ = [
         'Trainer',
         'PytorchTrainer',
         'QuantumTrainer',
+
+        'BinaryCrossEntropyLoss',
+        'CrossEntropyLoss',
+        'LossFunction',
+        'MSELoss',
 ]
 
 from lambeq import (ansatz, core, pregroups, rewrite,
@@ -120,8 +126,9 @@ from lambeq.text2diagram import (
         stairs_reader, word_sequence_reader)
 from lambeq.tokeniser import Tokeniser, SpacyTokeniser
 from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
-                             Model, NumpyModel, PytorchModel,
+                             Model, NumpyModel, PennyLaneModel, PytorchModel,
                              QuantumModel, TketModel, Trainer, PytorchTrainer,
-                             QuantumTrainer)
+                             QuantumTrainer, BinaryCrossEntropyLoss,
+                             CrossEntropyLoss, LossFunction, MSELoss)
 from lambeq.version import (version as __version__,
                             version_tuple as __version_info__)

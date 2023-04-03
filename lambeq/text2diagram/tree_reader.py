@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,8 +14,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from enum import Enum
-from typing import Callable, Optional, Union
 
 __all__ = ['TreeReader', 'TreeReaderMode']
 
@@ -70,11 +70,12 @@ class TreeReaderMode(Enum):
 class TreeReader(Reader):
     """A reader that combines words according to a parse tree."""
 
-    def __init__(self,
-                 ccg_parser: Union[CCGParser, Callable[[], CCGParser]] =
-                 BobcatParser,
-                 mode: TreeReaderMode = TreeReaderMode.NO_TYPE,
-                 word_type: Ty = S) -> None:
+    def __init__(
+        self,
+        ccg_parser: CCGParser | Callable[[], CCGParser] = BobcatParser,
+        mode: TreeReaderMode = TreeReaderMode.NO_TYPE,
+        word_type: Ty = S
+    ) -> None:
         """Initialise a tree reader.
 
         Parameters
@@ -114,7 +115,7 @@ class TreeReader(Reader):
     def tree2diagram(tree: CCGTree,
                      mode: TreeReaderMode = TreeReaderMode.NO_TYPE,
                      word_type: Ty = S,
-                     suppress_exceptions: bool = False) -> Optional[Diagram]:
+                     suppress_exceptions: bool = False) -> Diagram | None:
         """Convert a :py:class:`~.CCGTree` into a
         :py:class:`~discopy.rigid.Diagram` .
 
@@ -185,11 +186,10 @@ class TreeReader(Reader):
 
         return diagram
 
-    def sentence2diagram(
-            self,
-            sentence: SentenceType,
-            tokenised: bool = False,
-            suppress_exceptions: bool = False) -> Optional[Diagram]:
+    def sentence2diagram(self,
+                         sentence: SentenceType,
+                         tokenised: bool = False,
+                         suppress_exceptions: bool = False) -> Diagram | None:
         """Parse a sentence into a :py:class:`~discopy.rigid.Diagram` .
 
         This produces a tree-shaped diagram based on the output of the

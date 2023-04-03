@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -52,11 +52,59 @@ class TensorAnsatz(BaseAnsatz):
 
     def _ar(self, box: rigid.Box) -> tensor.Diagram:
         name = self._summarise_box(box)
+
+        directed_dom, directed_cod = self._generate_directed_dom_cod(box)
+        syms = Symbol(name,
+                      directed_dom=math.prod(directed_dom),
+                      directed_cod=math.prod(directed_cod))
+
+        # Box domain and codomain are unchanged
         dom = self.functor(box.dom)
         cod = self.functor(box.cod)
-        n_params = math.prod(dom) * math.prod(cod)
-        syms = Symbol(name, size=n_params)
+
         return tensor.Box(box.name, dom, cod, syms)
+
+    def _generate_directed_dom_cod(self, box: rigid.Box) -> tuple[Dim, Dim]:
+        """Generate the "flow" domain and codomain for a box.
+
+        To initialise normalised tensors in expectation, it is necessary
+        to assign a "flow" to a tensor network, giving a direction to
+        each edge. The directed domain and codomain for a box may differ
+        from its original domain and codomain.
+
+        Parameters
+        ----------
+        box : rigid.Box
+            Box for which directed dom and cod should be generated.
+
+        Returns
+        -------
+        Dim
+            Dimension of directed domain.
+        Dim
+            Dimension of directed codomain.
+
+        """
+
+        dom, cod = Ty(), Ty()
+
+        # Types in the box-cod are assigned to the flow-cod if they have
+        # even winding numbers. Else, they are assigned to the flow-dom.
+        for ty in box.cod:
+            if ty.z % 2:
+                dom @= Ty(ty)
+            else:
+                cod @= Ty(ty)
+
+        # Types in the box-dom are assigned to the flow-dom if they have
+        # even winding numbers. Else, they are assigned to the flow-cod.
+        for ty in box.dom:
+            if ty.z % 2:
+                cod @= Ty(ty)
+            else:
+                dom @= Ty(ty)
+
+        return self.functor(dom), self.functor(cod)
 
     def __call__(self, diagram: rigid.Diagram) -> tensor.Diagram:
         """Convert a DisCoPy diagram into a DisCoPy tensor."""

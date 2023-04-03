@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,9 +20,8 @@ A trainer that wraps the training loop of a :py:class:`QuantumModel`
 """
 from __future__ import annotations
 
-from collections.abc import Mapping
-import os
-from typing import Any, Callable, Optional, Union
+from collections.abc import Callable, Mapping
+from typing import Any
 
 import numpy as np
 
@@ -31,10 +30,8 @@ from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
-from lambeq.training.trainer import Trainer
-
-_StrPathT = Union[str, 'os.PathLike[str]']
-_EvalFuncT = Callable[[Any, Any], Any]
+from lambeq.training.trainer import EvalFuncT, Trainer
+from lambeq.typing import StrPathT
 
 
 class QuantumTrainer(Trainer):
@@ -42,22 +39,21 @@ class QuantumTrainer(Trainer):
 
     model: QuantumModel
 
-    def __init__(
-            self,
-            model: QuantumModel,
-            loss_function: Callable[..., float],
-            epochs: int,
-            optimizer: type[Optimizer],
-            optim_hyperparams: dict[str, float],
-            *,
-            optimizer_args: Optional[dict[str, Any]] = None,
-            evaluate_functions: Optional[Mapping[str, _EvalFuncT]] = None,
-            evaluate_on_train: bool = True,
-            use_tensorboard: bool = False,
-            log_dir: Optional[_StrPathT] = None,
-            from_checkpoint: bool = False,
-            verbose: str = VerbosityLevel.TEXT.value,
-            seed: Optional[int] = None) -> None:
+    def __init__(self,
+                 model: QuantumModel,
+                 loss_function: Callable[..., float],
+                 epochs: int,
+                 optimizer: type[Optimizer],
+                 optim_hyperparams: dict[str, float],
+                 *,
+                 optimizer_args: dict[str, Any] | None = None,
+                 evaluate_functions: Mapping[str, EvalFuncT] | None = None,
+                 evaluate_on_train: bool = True,
+                 use_tensorboard: bool = False,
+                 log_dir: StrPathT | None = None,
+                 from_checkpoint: bool = False,
+                 verbose: str = VerbosityLevel.TEXT.value,
+                 seed: int | None = None) -> None:
         """Initialise a :py:class:`.Trainer` using a quantum backend.
 
         Parameters
@@ -194,7 +190,7 @@ class QuantumTrainer(Trainer):
 
     def fit(self,
             train_dataset: Dataset,
-            val_dataset: Optional[Dataset] = None,
+            val_dataset: Dataset | None = None,
             evaluation_step: int = 1,
             logging_step: int = 1) -> None:
 

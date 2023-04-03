@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ Module containing the base class for a quantum lambeq model.
 from __future__ import annotations
 
 from abc import abstractmethod
-from typing import Any, TYPE_CHECKING, Union
+from typing import Any, TYPE_CHECKING
 
 from discopy.tensor import Diagram, Tensor
 import numpy as np
@@ -46,13 +46,9 @@ class QuantumModel(Model):
     weights : array
         A data structure containing the numeric values of the model
         parameters
-    SMOOTHING : float
-        A smoothing constant
 
     """
     weights: np.ndarray
-
-    SMOOTHING = 1e-9
 
     def __init__(self) -> None:
         """Initialise a :py:class:`QuantumModel`."""
@@ -71,16 +67,20 @@ class QuantumModel(Model):
 
     def _normalise_vector(self, predictions: np.ndarray) -> np.ndarray:
         """Normalise the vector input.
-        Does not normalise scalar values; instead, returns the absolute
-        value of scalars.
+
+        Special cases:
+          * scalar value: Returns the absolute value.
+          * zero-vector: Returns the vector as-is.
         """
+
         backend = Tensor.get_backend()
-        ret: np.ndarray
-        if not predictions.shape:
-            ret = backend.abs(predictions)
-        else:
-            smoothed_predictions = backend.abs(predictions) + self.SMOOTHING
-            ret = smoothed_predictions / smoothed_predictions.sum()
+        ret: np.ndarray = backend.abs(predictions)
+
+        if predictions.shape:
+            # Prevent division by 0
+            l1_norm = backend.maximum(1e-9, ret.sum())
+            ret = ret / l1_norm
+
         return ret
 
     def initialise_weights(self) -> None:
@@ -128,8 +128,10 @@ class QuantumModel(Model):
         return checkpoint
 
     @abstractmethod
-    def get_diagram_output(self, diagrams: list[Diagram]) -> Union[jnp.ndarray,
-                                                                   np.ndarray]:
+    def get_diagram_output(
+        self,
+        diagrams: list[Diagram]
+    ) -> jnp.ndarray | np.ndarray:
         """Return the diagram prediction.
 
         Parameters

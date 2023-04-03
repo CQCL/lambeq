@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -31,8 +31,7 @@ import os
 import random
 import socket
 import sys
-from typing import Any, Callable, Optional, Union
-from typing import TYPE_CHECKING
+from typing import Any, Callable, TYPE_CHECKING
 
 from discopy import Tensor
 from tqdm.auto import tqdm, trange
@@ -45,19 +44,21 @@ from lambeq.core.globals import VerbosityLevel
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.model import Model
+from lambeq.typing import StrPathT
 
 
 def _import_tensorboard_writer() -> None:
     global SummaryWriter
     try:
         from torch.utils.tensorboard.writer import SummaryWriter
-    except ImportError:  # pragma: no cover
-        raise ImportError('tensorboard not found. Please install it using '
-                          '`pip install tensorboard`.')
+    except ImportError as e:  # pragma: no cover
+        raise ImportError(
+            'tensorboard not found. Please install it using '
+            '`pip install tensorboard`.'
+        ) from e
 
 
-_EvalFuncT = Callable[[Any, Any], Any]
-_StrPathT = Union[str, 'os.PathLike[str]']
+EvalFuncT = Callable[[Any, Any], Any]
 
 
 class Trainer(ABC):
@@ -67,13 +68,13 @@ class Trainer(ABC):
                  model: Model,
                  loss_function: Callable[..., Any],
                  epochs: int,
-                 evaluate_functions: Optional[Mapping[str, _EvalFuncT]] = None,
+                 evaluate_functions: Mapping[str, EvalFuncT] | None = None,
                  evaluate_on_train: bool = True,
                  use_tensorboard: bool = False,
-                 log_dir: Optional[_StrPathT] = None,
+                 log_dir: StrPathT | None = None,
                  from_checkpoint: bool = False,
                  verbose: str = VerbosityLevel.TEXT.value,
-                 seed: Optional[int] = None) -> None:
+                 seed: int | None = None) -> None:
         """Initialise a lambeq trainer.
 
         Parameters
@@ -155,8 +156,8 @@ class Trainer(ABC):
             self.model.initialise_weights()
 
     def _generate_stat_report(self,
-                              train_loss: Optional[float] = None,
-                              val_loss: Optional[float] = None) -> str:
+                              train_loss: float | None = None,
+                              val_loss: float | None = None) -> str:
         """Generate the text to display with the progress bar.
 
         Parameters
@@ -190,7 +191,7 @@ class Trainer(ABC):
                 report.append(f'valid/{name}: {str_value}')
         return '   '.join(report)
 
-    def load_training_checkpoint(self, log_dir: _StrPathT) -> Checkpoint:
+    def load_training_checkpoint(self, log_dir: StrPathT) -> Checkpoint:
         """Load model from a checkpoint.
 
         Parameters
@@ -233,7 +234,7 @@ class Trainer(ABC):
 
     def save_checkpoint(self,
                         save_dict: Mapping[str, Any],
-                        log_dir: _StrPathT) -> None:
+                        log_dir: StrPathT) -> None:
         """Save checkpoint.
 
         Parameters
@@ -314,7 +315,7 @@ class Trainer(ABC):
 
     def fit(self,
             train_dataset: Dataset,
-            val_dataset: Optional[Dataset] = None,
+            val_dataset: Dataset | None = None,
             evaluation_step: int = 1,
             logging_step: int = 1) -> None:
         """Fit the model on the training data and, optionally,

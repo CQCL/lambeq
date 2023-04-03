@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ __all__ = ['CCGParser']
 from abc import abstractmethod
 from collections.abc import Iterable
 import sys
-from typing import Optional
 
 from discopy import Diagram
 from tqdm.auto import tqdm
@@ -38,17 +37,16 @@ class CCGParser(Reader):
 
     @abstractmethod
     def __init__(self,
-                 root_cats: Optional[Iterable[str]] = None,
+                 root_cats: Iterable[str] | None = None,
                  verbose: str = VerbosityLevel.SUPPRESS.value) -> None:
         """Initialise the CCG parser."""
 
     @abstractmethod
-    def sentences2trees(
-            self,
-            sentences: SentenceBatchType,
-            tokenised: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None) -> list[Optional[CCGTree]]:
+    def sentences2trees(self,
+                        sentences: SentenceBatchType,
+                        tokenised: bool = False,
+                        suppress_exceptions: bool = False,
+                        verbose: str | None = None) -> list[CCGTree | None]:
         """Parse multiple sentences into a list of :py:class:`.CCGTree` s.
 
         Parameters
@@ -80,7 +78,7 @@ class CCGParser(Reader):
     def sentence2tree(self,
                       sentence: SentenceType,
                       tokenised: bool = False,
-                      suppress_exceptions: bool = False) -> Optional[CCGTree]:
+                      suppress_exceptions: bool = False) -> CCGTree | None:
         """Parse a sentence into a :py:class:`.CCGTree`.
 
         Parameters
@@ -122,13 +120,12 @@ class CCGParser(Reader):
                             tokenised=tokenised,
                             verbose=VerbosityLevel.SUPPRESS.value)[0]
 
-    def sentences2diagrams(
-            self,
-            sentences: SentenceBatchType,
-            tokenised: bool = False,
-            planar: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None) -> list[Optional[Diagram]]:
+    def sentences2diagrams(self,
+                           sentences: SentenceBatchType,
+                           tokenised: bool = False,
+                           planar: bool = False,
+                           suppress_exceptions: bool = False,
+                           verbose: str | None = None) -> list[Diagram | None]:
         """Parse multiple sentences into a list of discopy diagrams.
 
         Parameters
@@ -184,12 +181,11 @@ class CCGParser(Reader):
                 diagrams.append(None)
         return diagrams
 
-    def sentence2diagram(
-            self,
-            sentence: SentenceType,
-            tokenised: bool = False,
-            planar: bool = False,
-            suppress_exceptions: bool = False) -> Optional[Diagram]:
+    def sentence2diagram(self,
+                         sentence: SentenceType,
+                         tokenised: bool = False,
+                         planar: bool = False,
+                         suppress_exceptions: bool = False) -> Diagram | None:
         """Parse a sentence into a DisCoPy diagram.
 
         Parameters

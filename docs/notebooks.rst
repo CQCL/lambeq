@@ -5,6 +5,7 @@ Examples
 
 .. toctree::
 
+    ../examples/tokenisation.ipynb
     ../examples/parser.ipynb
     ../examples/reader.ipynb
     ../examples/tree_reader.ipynb
@@ -14,4 +15,5 @@ Examples
     ../examples/classical_pipeline.ipynb
     ../examples/quantum_pipeline.ipynb
     ../examples/quantum_pipeline_jax.ipynb
+    ../examples/pennylane.ipynb
 

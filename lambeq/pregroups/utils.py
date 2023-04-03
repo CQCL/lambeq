@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -378,8 +378,8 @@ def remove_swaps(diagram: Diagram) -> Diagram:
     if not is_pregroup_diagram(diagram):
         try:
             diagram = grammar.normal_form(diagram)
-        except ValueError:
-            raise ValueError('Not a valid pregroup diagram.')
+        except ValueError as e:
+            raise ValueError('Not a valid pregroup diagram.') from e
 
     atomic_types = [ob for b in diagram.boxes
                     for ob in b.cod if isinstance(b, Word)]

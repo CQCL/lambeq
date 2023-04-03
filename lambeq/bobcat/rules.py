@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass
-from typing import Dict, List, Optional, TypeVar
+from typing import Dict, List, TypeVar
 
 from lambeq.bobcat.fast_int_enum import FastIntEnum
 from lambeq.bobcat.grammar import Grammar
@@ -247,7 +247,7 @@ class Rules:
 
     def backward_application(self,
                              left: ParseTree,
-                             right: ParseTree) -> Optional[ParseTree]:
+                             right: ParseTree) -> ParseTree | None:
         if (right.cat.bwd
                 and not left.coordinated_or_type_raised
                 and not (self.eisner_normal_form and right.bwd_comp)):
@@ -257,7 +257,7 @@ class Rules:
 
     def forward_application(self,
                             left: ParseTree,
-                            right: ParseTree) -> Optional[ParseTree]:
+                            right: ParseTree) -> ParseTree | None:
         if (left.cat.fwd
                 and not right.coordinated_or_type_raised
                 and not (self.eisner_normal_form and left.fwd_comp)):
@@ -267,7 +267,7 @@ class Rules:
 
     def backward_composition(self,
                              left: ParseTree,
-                             right: ParseTree) -> Optional[ParseTree]:
+                             right: ParseTree) -> ParseTree | None:
         if (left.cat.bwd
                 and right.cat.bwd
                 and not left.coordinated
@@ -279,7 +279,7 @@ class Rules:
 
     def forward_composition(self,
                             left: ParseTree,
-                            right: ParseTree) -> Optional[ParseTree]:
+                            right: ParseTree) -> ParseTree | None:
         if (left.cat.fwd
                 and right.cat.fwd
                 and not (self.eisner_normal_form and left.fwd_comp)):
@@ -289,7 +289,7 @@ class Rules:
 
     def backward_cross_composition(self,
                                    left: ParseTree,
-                                   right: ParseTree) -> Optional[ParseTree]:
+                                   right: ParseTree) -> ParseTree | None:
         if (left.cat.fwd
                 and right.cat.bwd
                 and not right.coordinated
@@ -300,7 +300,7 @@ class Rules:
 
     def coordination(self,
                      left: ParseTree,
-                     right: ParseTree) -> Optional[ParseTree]:
+                     right: ParseTree) -> ParseTree | None:
         if left.cat.atom == Atom.CONJ and not right.coordinated_or_type_raised:
             cat = right.cat.slash('\\', right.cat)
             return Coordination(cat, left, right)
@@ -309,7 +309,7 @@ class Rules:
 
     def adjectival_conj(self,
                         left: ParseTree,
-                        right: ParseTree) -> Optional[ParseTree]:
+                        right: ParseTree) -> ParseTree | None:
         if left.cat.atom == Atom.CONJ and right.cat.atom == Atom.N:
             return AdjectivalConj(left, right)
         else:
@@ -318,7 +318,7 @@ class Rules:
     def application(self,
                     left: ParseTree,
                     right: ParseTree,
-                    fwd: bool) -> Optional[ParseTree]:
+                    fwd: bool) -> ParseTree | None:
         unification = Unify(left, right, fwd)
         if unification.unify(unification.arg, unification.res.argument):
             result = unification.translate_res(unification.res.result)
@@ -330,7 +330,7 @@ class Rules:
     def composition(self,
                     left: ParseTree,
                     right: ParseTree,
-                    comp: str) -> Optional[ParseTree]:
+                    comp: str) -> ParseTree | None:
         assert comp in ('bc', 'bx', 'fc')
 
         unification = Unify(left, right, comp == 'fc')
@@ -362,7 +362,7 @@ class Rules:
     def gc2(self,
             left: ParseTree,
             right: ParseTree,
-            comp: str) -> Optional[ParseTree]:
+            comp: str) -> ParseTree | None:
         assert comp in ('bx', 'fc')
 
         unification = Unify(left, right, comp == 'fc')
@@ -391,7 +391,7 @@ class Rules:
     def gc3(self,
             left: ParseTree,
             right: ParseTree,
-            comp: str) -> Optional[ParseTree]:
+            comp: str) -> ParseTree | None:
         assert comp in ('bx', 'fc')
 
         unification = Unify(left, right, comp == 'fc')
@@ -425,9 +425,10 @@ class Rules:
         return BinaryCombinator(rule, new_cat, left, right, unification)
 
     def generalised_forward_composition(
-            self,
-            left: ParseTree,
-            right: ParseTree) -> Optional[ParseTree]:
+        self,
+        left: ParseTree,
+        right: ParseTree
+    ) -> ParseTree | None:
         try:
             if (Category.parse(r'S\NP').matches(left.cat.argument)
                     and right.cat.result.fwd
@@ -444,9 +445,10 @@ class Rules:
         return None
 
     def generalised_backward_composition(
-            self,
-            left: ParseTree,
-            right: ParseTree) -> Optional[ParseTree]:
+        self,
+        left: ParseTree,
+        right: ParseTree
+    ) -> ParseTree:
         if not Category.parse(r'S[dcl]\S[dcl]').matches(left.cat.result):
             return None
 
@@ -463,9 +465,10 @@ class Rules:
         return BinaryCombinator(Rule.GBC, left.cat, left, right, unification)
 
     def generalised_backward_cross_composition(
-            self,
-            left: ParseTree,
-            right: ParseTree) -> Optional[ParseTree]:
+        self,
+        left: ParseTree,
+        right: ParseTree
+    ) -> ParseTree | None:
         try:
             if (Category.parse(r'S\NP').matches(right.cat.argument)
                     and left.cat.result.fwd

@@ -133,8 +133,5 @@ def test_diagram_with_just_identities_2():
 
 
 def test_diagram_no_pregroup(diagram1):
-    try:
+    with pytest.raises(ValueError):
         diagram2str(diagram1.normal_form())
-        assert False
-    except ValueError:
-        assert True

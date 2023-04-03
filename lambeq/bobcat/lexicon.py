@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ __all__ = ['Atom', 'Feature', 'Relation', 'Category']
 from collections.abc import Mapping
 from dataclasses import dataclass
 import re
-from typing import Any, ClassVar, Optional, TYPE_CHECKING
+from typing import Any, ClassVar, TYPE_CHECKING
 
 from lambeq.bobcat.fast_int_enum import FastIntEnum
 
@@ -83,12 +83,12 @@ class Category:
 
     # shared arguments
     var: int = 0
-    relation: Optional[Relation] = None
+    relation: Relation | None = None
 
     # complex arguments
     dir: str = '\0'
-    result: Optional[Category] = None
-    argument: Optional[Category] = None
+    result: Category | None = None
+    argument: Category | None = None
 
     # in type raised categories only
     type_raising_dep_var: int = 0
@@ -109,7 +109,7 @@ class Category:
               dir: str,
               argument: Category,
               var: int = 0,
-              relation: Optional[Relation] = None,
+              relation: Relation | None = None,
               type_raising_dep_var: int = 0) -> Category:
         """Create a complex category."""
         return Category(Atom.NONE,

@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,16 +22,14 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Collection
-import os
-from typing import Any, Union
+from typing import Any
 
 from discopy.tensor import Diagram
 from sympy import default_sort_key, Symbol as SymPySymbol
 
 from lambeq.ansatz.base import Symbol
 from lambeq.training.checkpoint import Checkpoint
-
-_StrPathT = Union[str, 'os.PathLike[str]']
+from lambeq.typing import StrPathT
 
 
 class Model(ABC):
@@ -50,7 +48,7 @@ class Model(ABC):
 
     def __init__(self) -> None:
         """Initialise an instance of :py:class:`Model` base class."""
-        self.symbols: list[Union[Symbol, SymPySymbol]] = []
+        self.symbols: list[Symbol | SymPySymbol] = []
         self.weights: Collection = []
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
@@ -62,7 +60,7 @@ class Model(ABC):
 
     @classmethod
     def from_checkpoint(cls,
-                        checkpoint_path: _StrPathT,
+                        checkpoint_path: StrPathT,
                         **kwargs: Any) -> Model:
         """Load the weights and symbols from a training checkpoint.
 
@@ -110,7 +108,7 @@ class Model(ABC):
 
         """
 
-    def save(self, checkpoint_path: _StrPathT) -> None:
+    def save(self, checkpoint_path: StrPathT) -> None:
         """Create a lambeq :py:class:`.Checkpoint` and save to a path.
 
         Example:
@@ -127,7 +125,7 @@ class Model(ABC):
         checkpoint = self._make_checkpoint()
         checkpoint.to_file(checkpoint_path)
 
-    def load(self, checkpoint_path: _StrPathT) -> None:
+    def load(self, checkpoint_path: StrPathT) -> None:
         """Load model data from a path pointing to a lambeq checkpoint.
 
         Checkpoints that are created by a lambeq :py:class:`Trainer`

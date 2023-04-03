@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -78,7 +78,6 @@ __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
 
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
-from typing import Optional, Union
 
 from discopy import Word
 from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
@@ -101,7 +100,7 @@ class RewriteRule(ABC):
     def rewrite(self, box: Box) -> Diagram:
         """Rewrite the given box."""
 
-    def __call__(self, box: Box) -> Optional[Diagram]:
+    def __call__(self, box: Box) -> Diagram | None:
         """Apply the rewrite rule to a box.
 
         Parameters
@@ -140,7 +139,7 @@ class SimpleRewriteRule(RewriteRule):
     def __init__(self,
                  cod: Ty,
                  template: Diagram,
-                 words: Optional[Container[str]] = None,
+                 words: Container[str] | None = None,
                  case_sensitive: bool = False) -> None:
         """Instantiate a simple rewrite rule.
 
@@ -254,7 +253,7 @@ class CoordinationRewriteRule(RewriteRule):
     the word, based on [Kar2016]_, with a layer of interleaving spiders.
 
     """
-    def __init__(self, words: Optional[Container[str]] = None) -> None:
+    def __init__(self, words: Container[str] | None = None) -> None:
         """Instantiate a CoordinationRewriteRule.
 
         Parameters
@@ -342,9 +341,8 @@ class Rewriter:
         'subject_rel_pronoun': subject_rel_pronoun_rule
     }
 
-    def __init__(
-            self,
-            rules: Optional[Iterable[Union[str, RewriteRule]]] = None) -> None:
+    def __init__(self,
+                 rules: Iterable[RewriteRule | str] | None = None) -> None:
         """Initialise a rewriter.
 
         Parameters
@@ -369,7 +367,7 @@ class Rewriter:
         """The list of default rule names."""
         return [*cls._available_rules.keys()]
 
-    def add_rules(self, *rules: Union[str, RewriteRule]) -> None:
+    def add_rules(self, *rules: RewriteRule | str) -> None:
         """Add rules to this rewriter."""
         for rule in rules:
             if isinstance(rule, RewriteRule):
@@ -377,8 +375,10 @@ class Rewriter:
             else:
                 try:
                     self.rules.append(self._available_rules[rule])
-                except KeyError:
-                    raise ValueError(f'`{rule}` is not a valid rewrite rule.')
+                except KeyError as e:
+                    raise ValueError(
+                        f'`{rule}` is not a valid rewrite rule.'
+                    ) from e
 
     def __call__(self, diagram: Diagram) -> Diagram:
         """Apply the rewrite rules to the given diagram."""

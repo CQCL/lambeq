@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Iterable, Mapping
-from typing import Any, Optional
+from typing import Any
 
 import numpy as np
 from numpy.typing import ArrayLike
@@ -37,7 +37,7 @@ class Optimizer(ABC):
                  model: Model,
                  hyperparams: dict[Any, Any],
                  loss_fn: Callable[[Any, Any], float],
-                 bounds: Optional[ArrayLike] = None) -> None:
+                 bounds: ArrayLike | None = None) -> None:
         """Initialise the optimizer base class.
 
         Parameters

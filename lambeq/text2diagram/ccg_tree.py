@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,10 +16,10 @@ from __future__ import annotations
 
 __all__ = ['CCGTree']
 
-from collections.abc import Sequence
+from collections.abc import Iterable
 from copy import deepcopy
 import json
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict
 from typing import overload
 
 from discopy import rigid, Word
@@ -127,11 +127,11 @@ class CCGTree:
     """
 
     def __init__(self,
-                 text: Optional[str] = None,
+                 text: str | None = None,
                  *,
-                 rule: Union[str, CCGRule] = CCGRule.UNKNOWN,
+                 rule: CCGRule | str = CCGRule.UNKNOWN,
                  biclosed_type: Ty,
-                 children: Optional[Sequence[CCGTree]] = None) -> None:
+                 children: Iterable[CCGTree] | None = None) -> None:
         """Initialise a CCG tree.
 
         Parameters
@@ -152,17 +152,18 @@ class CCGTree:
         self._text = text
         self.rule = CCGRule(rule)
         self.biclosed_type = biclosed_type
-        self.children = children if children is not None else []
+        self.children = list(children) if children is not None else []
 
         n_children = len(self.children)
         child_requirements = {CCGRule.LEXICAL: 0,
                               CCGRule.UNARY: 1,
                               CCGRule.FORWARD_TYPE_RAISING: 1,
                               CCGRule.BACKWARD_TYPE_RAISING: 1}
-        if (self.rule != CCGRule.UNKNOWN
-                and child_requirements.get(self.rule, 2) != n_children):
-            raise ValueError(f'Invalid number of children ({n_children}) for '
-                             f'rule "{self.rule}"')
+        required_children = child_requirements.get(self.rule, 2)
+        if self.rule != CCGRule.UNKNOWN and n_children != required_children:
+            raise ValueError('Invalid number of children for rule '
+                             f'`{self.rule}`: expected {required_children}, '
+                             f'got {n_children}.')
 
         if text and not children:
             self.rule = CCGRule.LEXICAL
@@ -206,11 +207,11 @@ class CCGTree:
 
     @overload
     @classmethod
-    def from_json(cls, data: Union[str, _JSONDictT]) -> CCGTree: ...
+    def from_json(cls, data: _JSONDictT | str) -> CCGTree: ...
 
     @classmethod
     def from_json(cls,
-                  data: Union[None, str, _JSONDictT]) -> Optional[CCGTree]:
+                  data: _JSONDictT | str | None) -> CCGTree | None:
         """Create a :py:class:`CCGTree` from a JSON representation.
 
         A JSON representation of a derivation contains the following
@@ -296,9 +297,10 @@ class CCGTree:
         """Create a vertical string representation of the CCG tree."""
         output_type = biclosed2str(self.biclosed_type, not use_slashes)
         if self.rule == CCGRule.LEXICAL:
-            deriv = f' {output_type} {chr_set["SUCH_THAT"]} "{self.text}"'
+            deriv = f' {output_type} {chr_set["SUCH_THAT"]} {repr(self.text)}'
         else:
-            deriv = (f'{self.rule}: {output_type} {chr_set["LEFT_ARROW"]} '
+            deriv = (f'{self.rule.value}: {output_type} '
+                     f'{chr_set["LEFT_ARROW"]} '
                      + ' + '.join(biclosed2str(child.biclosed_type,
                                                not use_slashes)
                                   for child in self.children))
@@ -432,7 +434,7 @@ class CCGTree:
     def _to_biclosed_diagram(
             self,
             planar: bool = False,
-            resolved_output: Optional[Ty] = None) -> tuple[Diagram, Diagram]:
+            resolved_output: Ty | None = None) -> tuple[Diagram, Diagram]:
         biclosed_type = resolved_output or self.biclosed_type
 
         if self.rule == CCGRule.LEXICAL:

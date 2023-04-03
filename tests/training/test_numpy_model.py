@@ -76,7 +76,15 @@ def test_jax_usage():
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
-    assert type(lam).__name__ == 'CompiledFunction'
+
+    expected_lambda_name = 'CompiledFunction'
+
+    from jax import config as jax_cfg
+    if hasattr(jax_cfg, 'jax_jit_pjit_api_merge') and jax_cfg.jax_jit_pjit_api_merge:
+        expected_lambda_name = 'PjitFunction'
+
+    assert type(lam).__name__ == expected_lambda_name
+    assert model.lambdas[diagram] == model._get_lambda(diagram)
 
 def test_checkpoint_loading():
     N = AtomicType.NOUN
@@ -145,13 +153,3 @@ def test_fast_subs_error():
         diag = Ket(0, 0) >> CRz(Symbol('phi', size=123)) >> H @ H >> CX >> SWAP >> Measure(2)
         model = NumpyModel()
         model._fast_subs([diag], [])
-
-def test_get_lambda():
-    N = AtomicType.NOUN
-    S = AtomicType.SENTENCE
-    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
-    model = NumpyModel.from_diagrams([diagram], use_jit=True)
-    lam = model._get_lambda(diagram)
-    assert type(lam).__name__ == 'CompiledFunction'
-    assert model.lambdas[diagram] == model._get_lambda(diagram)
