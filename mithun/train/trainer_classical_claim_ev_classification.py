@@ -75,7 +75,6 @@ train_labels[:5]
 # In[5]:
 
 if(config['TYPE_OF_MODEL']=='discocat'):
-
     parser = BobcatParser(verbose='text')
     tokeniser = SpacyTokeniser()
     train_diagrams_claim = parser.sentences2diagrams(tokeniser.tokenise_sentences(train_data_claim),verbose='text',tokenised=True)
@@ -186,18 +185,18 @@ trainer = PytorchTrainerCosineSim(
 
 logging.debug("before calling dataset")
 
-input_data=(train_circuits_claim, train_circuits_evidence)
-logging.debug("length of data[0]=%s",len(input_data[0]))
+train_data=(train_circuits_claim, train_circuits_evidence)
+logging.debug("length of data[0]=%s", len(train_data[0]))
 logging.debug("length of targets=%s",len(train_labels))
 train_dataset = Dataset(
-            input_data,
+            train_data,
             train_labels,
             batch_size=config['BATCH_SIZE'])
 
 
 
-logging.debug("after calling trainer before dataset")
-#val_dataset = Dataset(val_circuits, val_labels, shuffle=False)
+val_data=(val_circuits_claim, val_circuits_evidence)
+val_dataset = Dataset(val_data, val_labels, shuffle=False)
 
 
 # ### Train
@@ -205,7 +204,7 @@ logging.debug("after calling trainer before dataset")
 # In[11]:
 logging.debug("after loading datasets . before trainer.fit")
 
-trainer.fit(train_dataset, train_dataset, evaluation_step=1, logging_step=5)
+trainer.fit(train_dataset, val_data, evaluation_step=1, logging_step=5)
 logging.debug("after e trainer.fit")
 
 # ## Results
