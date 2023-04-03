@@ -69,7 +69,7 @@ def read_claims_with_offsets(filename):
             labels.append([t, 1-t])
             schema_name_current=line[1:].strip()
             if schema_name_current!=schema_name:
-                list_schema_offsets.append(index+1)
+                list_schema_offsets.append(index)
                 schema_name=schema_name_current
             sentences.append(schema_name_current.strip())
     return labels, sentences, list_schema_offsets
