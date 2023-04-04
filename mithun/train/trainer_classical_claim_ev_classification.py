@@ -44,8 +44,8 @@ class MyCustomModel(PytorchModel):
 
 
 
-train_labels, train_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
-train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
+train_labels, train_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_MICRO']))
+train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_MICRO']))
 
 assert len(train_labels)== len(train_data_evidence) == len(train_data_claim)
 
@@ -230,7 +230,7 @@ val_dataset = Dataset(val_data, val_labels, shuffle=False, batch_size=config['BA
 # In[11]:
 logging.debug("after loading datasets . before trainer.fit")
 
-trainer.fit(train_dataset, val_dataset, evaluation_step=1, logging_step=5)
+preds_val=trainer.fit(train_dataset, val_dataset, evaluation_step=1, logging_step=5)
 logging.debug("after e trainer.fit")
 
 # ## Results

@@ -320,7 +320,7 @@ class LestatTrainer(ABC):
             train_dataset: Dataset,
             val_dataset: Optional[Dataset] = None,
             evaluation_step: int = 1,
-            logging_step: int = 1) -> None:
+            logging_step: int = 1) :
         """Fit the model on the training data and, optionally,
         evaluate it on the validation data.
 
@@ -338,7 +338,7 @@ class LestatTrainer(ABC):
             printed if `verbose = 'text'` (otherwise ignored).
 
         """
-
+        y_hat_val_total=[]
         logging.debug("inside fit of lestattrainer1")
         if self.from_checkpoint:
             self._load_extra_checkpoint_info(self.checkpoint)
@@ -369,6 +369,7 @@ class LestatTrainer(ABC):
                                 self.verbose != VerbosityLevel.PROGRESS.value),
                             leave=False,
                             position=1):
+            y_hat_val_epoch=[]
             train_loss = 0.0
             with Tensor.backend(self.backend):
                 for batch in tqdm(train_dataset,
@@ -420,6 +421,7 @@ class LestatTrainer(ABC):
 
             # evaluate metrics on validation data
             if(config['EVALUATE_ON_DEV']):
+
                 if val_dataset is not None:
                     if epoch % evaluation_step == 0:
                         val_loss = 0.0
@@ -439,6 +441,7 @@ class LestatTrainer(ABC):
                                 y_hat_val, cur_loss = self.validation_step(v_batch)
                                 if(config['USE_RANKER_FOR_PRED']==True):
                                     y_hat_val=self.ranker(config['TOP_N_AS_HIGH'],y_hat_val)
+                                    y_hat_val_epoch.append(y_hat_val)
 
                                 #extract data here if you want just the plain classifier output without ranking.
                                 # import torch
@@ -503,9 +506,11 @@ class LestatTrainer(ABC):
                             val_loss=(self.val_costs[-1] if self.val_costs
                                       else None)),
                           file=sys.stderr)
+        y_hat_val_total=y_hat_val_epoch
         status_bar.close()
         if self.verbose == VerbosityLevel.TEXT.value:
             print('\nTraining completed!', file=sys.stderr)  # pragma: no cover
+        return y_hat_val_total
 
     def accuracy_given_pred_classes(self,y_hat, y):
         assert y_hat.shape==y.shape
