@@ -1,17 +1,17 @@
 
-BATCH_SIZE : !!int 3
-EPOCHS : !!int  30
+BATCH_SIZE : !!int 10
+EPOCHS : !!int  1
 LEARNING_RATE : !!float 3e-2
 SEED : !!int 0
 EVALUATE_ON_DEV: True
 EVALUATE_ON_TEST: False
-TYPE_OF_PARSER: 'spider'  #['bobcat','spider','depccg']
+TYPE_OF_PARSER: 'bobcat'  #['bobcat','spider','depccg']
 DRAW : False
 LAST_LAYER_NEURON_COUNT : !!int  1
 USE_RANKER_FOR_PRED:  True #do you want to use plain 2-class classification or rank by score plus pick top N
 TOP_N_AS_HIGH:  3 #from the ranked list of prediction the top N you want to be marked as high likelihood class
-
 BASE_PATH_DATA : "mithun/data/"
+PREDS_OUT_FILE : "preds_out.tsv"
 
 
 LAMBEQ_TRAIN_LAMBEQ_FORMAT_CLAIM: "mc_train_data.txt"

@@ -44,19 +44,20 @@ class MyCustomModel(PytorchModel):
 
 
 
-train_labels, train_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_MICRO']))
-train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_MICRO']))
+train_labels, train_data_claim = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
+train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 assert len(train_labels)== len(train_data_evidence) == len(train_data_claim)
 
 #validation data wont be shuffled/have batches. instead the data will predicted/evaluated be per schema
-val_labels, val_data_claim, val_data_offsets= read_claims_with_offsets(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_DEV_LAMBEQ_FORMAT_CLAIM_GOLD']))
-val_labels, val_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_DEV_LAMBEQ_FORMAT_EVIDENCE_GOLD']))
+val_labels, val_data_claim, val_data_offsets= read_claims_with_offsets(get_full_path(config['BASE_PATH_DATA'], config['LESTAT_DEV_LAMBEQ_FORMAT_CLAIM_SMALL']))
+val_labels, val_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_DEV_LAMBEQ_FORMAT_EVIDENCE_SMALL']))
 
 assert len(val_labels)== len(val_data_claim) == len(val_data_evidence)
 
 #test_labels, test_data = read_data_float_label(get_full_path(config['BASE_PATH_DATA'],config['SNLI_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL']))
 logging.debug("after reading data")
+
 
 # In[3]:
 
@@ -231,6 +232,7 @@ val_dataset = Dataset(val_data, val_labels, shuffle=False, batch_size=config['BA
 logging.debug("after loading datasets . before trainer.fit")
 
 preds_val=trainer.fit(train_dataset, val_dataset, evaluation_step=1, logging_step=5)
+write_preds_to_disk(val_data_claim,val_data_evidence,preds_val)
 logging.debug("after e trainer.fit")
 
 # ## Results

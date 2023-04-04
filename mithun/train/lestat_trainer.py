@@ -441,7 +441,7 @@ class LestatTrainer(ABC):
                                 y_hat_val, cur_loss = self.validation_step(v_batch)
                                 if(config['USE_RANKER_FOR_PRED']==True):
                                     y_hat_val=self.ranker(config['TOP_N_AS_HIGH'],y_hat_val)
-                                    y_hat_val_epoch.append(y_hat_val)
+                                y_hat_val_epoch.extend(y_hat_val)
 
                                 #extract data here if you want just the plain classifier output without ranking.
                                 # import torch
