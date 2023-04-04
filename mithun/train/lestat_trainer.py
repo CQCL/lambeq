@@ -436,6 +436,9 @@ class LestatTrainer(ABC):
                                                 position=2):
                                 x_val, y_label_val = v_batch
                                 y_hat_val, cur_loss = self.validation_step(v_batch)
+                                import torch
+                                print(torch.round(torch.sigmoid(y_hat_val)))
+                                print(len(y_hat_val))
                                 val_loss += cur_loss * len(x_val)
                                 seen_so_far += len(x_val)
                                 if self.evaluate_functions is not None:
