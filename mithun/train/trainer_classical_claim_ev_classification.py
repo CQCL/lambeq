@@ -178,6 +178,10 @@ sig = torch.sigmoid
 def accuracy(y_hat, y):
     return torch.sum(torch.eq(torch.round(sig(y_hat)), y))/len(y)/2  # half due to double-counting
 
+
+#given prediction of classes, calculate accuracy
+
+
 eval_metrics = {"acc": accuracy}
 
 
