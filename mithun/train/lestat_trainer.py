@@ -441,26 +441,19 @@ class LestatTrainer(ABC):
                                 y_hat_val, cur_loss = self.validation_step(v_batch)
                                 if(config['USE_RANKER_FOR_PRED']==True):
                                     y_hat_val=self.ranker(config['TOP_N_AS_HIGH'],y_hat_val)
+                                else:
+                                    sig = torch.sigmoid
+                                    y_hat_val=torch.round(sig(y_hat_val))
                                 y_hat_val_epoch.extend(y_hat_val)
 
-                                #extract data here if you want just the plain classifier output without ranking.
-                                # import torch
-                                # print(torch.round(torch.sigmoid(y_hat_val)))
-                                # print(len(y_hat_val))
+
                                 val_loss += cur_loss * len(x_val)
                                 seen_so_far += len(x_val)
-                                if (config['USE_RANKER_FOR_PRED'] == True):
-                                    res = self.accuracy_given_pred_classes(y_hat_val, y_label_val)
-                                    self._val_results_epoch['acc'].append(
-                                        len(x_val) * res)
-                                else:
-                                    if self.evaluate_functions is not None:
-                                        for metr, func in (
-                                                self.evaluate_functions.items()):
-                                            res = func(y_hat_val, y_label_val)
-
-
-                                            self._val_results_epoch[metr].append(
+                                if self.evaluate_functions is not None:
+                                    for metr, func in (
+                                            self.evaluate_functions.items()):
+                                        res = func(y_hat_val, y_label_val)
+                                        self._val_results_epoch[metr].append(
                                                 len(x_val)*res)
                                 status_bar.set_description(
                                         self._generate_stat_report(

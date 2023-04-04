@@ -177,7 +177,12 @@ logging.debug("after loading model")
 sig = torch.sigmoid
 
 def accuracy(y_hat, y):
-    return torch.sum(torch.eq(torch.round(sig(y_hat)), y))/len(y)/2  # half due to double-counting
+    #return torch.sum(torch.eq(torch.round(sig(y_hat)), y))/len(y)/2  # half due to double-counting
+    return torch.sum(torch.eq(y_hat, y)) / len(y) / 2  # half due to double-counting
+
+def accuracy_given_pred_classes(self,y_hat, y):
+        assert y_hat.shape==y.shape
+        return torch.sum(torch.eq(y_hat, y)) / len(y) / 2  # half due to double-counting
 
 
 #given prediction of classes, calculate accuracy
