@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Introduction to symbols &mdash; lambeq 0.2.8 documentation</title>
+  <title>Introduction to symbols &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,15 +32,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> lambeq
-            <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -57,6 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
@@ -112,9 +123,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../manual_training.html">Advanced: Manual training</a> &raquo;</li>
-      <li>Introduction to symbols</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../manual_training.html">Advanced: Manual training</a></li>
+      <li class="breadcrumb-item active">Introduction to symbols</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/training-symbols.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -234,10 +245,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -339,6 +351,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -347,10 +360,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -362,12 +379,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -395,7 +415,7 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Introduction-to-symbols">
-<h1>Introduction to symbols<a class="headerlink" href="#Introduction-to-symbols" title="Permalink to this headline"></a></h1>
+<h1>Introduction to symbols<a class="headerlink" href="#Introduction-to-symbols" title="Permalink to this heading"></a></h1>
 <p>The parameterisable parts of a diagram are represented by <a class="reference internal" href="../glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a>; these are instances of the <a class="reference internal" href="../root-api.html#lambeq.Symbol" title="lambeq.Symbol"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.Symbol</span></code></a> class. Let’s create a tensor diagram for a sentence:</p>
 <p><a class="reference download internal" download="" href="../_downloads/3fa960b5b23b550a75dc0be1c8cd18a4/training-symbols.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
 <div class="nbinput docutils container">
@@ -476,7 +496,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>For example, you see that preposition “in” has been assigned 256 dimensions, which is derived by multiplying the dimensions of each individual wire (<span class="math notranslate nohighlight">\(2 \cdot 4 \cdot 4 \cdot 2 \cdot 4\)</span>), nouns are assigned 4 dimensions, and the determiner 16 dimensions.</p>
 <section id="Circuit-symbols">
-<h2>Circuit symbols<a class="headerlink" href="#Circuit-symbols" title="Permalink to this headline"></a></h2>
+<h2>Circuit symbols<a class="headerlink" href="#Circuit-symbols" title="Permalink to this heading"></a></h2>
 <p>We will now convert the original diagram into a <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a> and examine its parameters:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -529,7 +549,7 @@ div.rendered_html tbody tr:hover {
 <p>Note that all sizes are equal to 1; this is because the parameters of the <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuit</span></a> are numbers, defining rotation angles on <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a>.</p>
 </section>
 <section id="From-symbols-to-tensors">
-<h2>From symbols to tensors<a class="headerlink" href="#From-symbols-to-tensors" title="Permalink to this headline"></a></h2>
+<h2>From symbols to tensors<a class="headerlink" href="#From-symbols-to-tensors" title="Permalink to this heading"></a></h2>
 <p>In this section we will create actual tensors and associate them with the <a class="reference internal" href="../glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> of the diagram. In order to do this, we first need to fix the order of the symbols, since they are represented as a set. We can use <code class="docutils literal notranslate"><span class="pre">sympy</span></code>’s <code class="docutils literal notranslate"><span class="pre">default_sort_key</span></code> for this purpose.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
@@ -561,7 +581,7 @@ div.rendered_html tbody tr:hover {
 [0.69545749 0.70027778 0.79763124 0.40774577]
 </pre></div></div>
 </div>
-<p>Associating the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays with the <a class="reference internal" href="../glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> in the diagram can be done by using the <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor.lambdify" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lambdify()</span></code></a> method:</p>
+<p>Associating the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays with the <a class="reference internal" href="../glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> in the diagram can be done by using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">lambdify()</span></code> method:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -581,7 +601,7 @@ Before lambdify: John__n
 After lambdify: [0.69545749 0.70027778 0.79763124 0.40774577]
 </pre></div></div>
 </div>
-<p>To contract the <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> and compute a representation for the sentence, we will use <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram.eval" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a>.</p>
+<p>To contract the <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> and compute a representation for the sentence, we will use <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.tensor.Diagram.html#discopy.tensor.Diagram.eval" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -603,7 +623,7 @@ Tensor(dom=Dim(1), cod=Dim(2), array=[13.4525461 , 12.83309003])
 <p class="admonition-title">Note</p>
 <p>The result is a 2-dimensional array, based on the fact that we have assigned a dimension of 2 to the sentence space when applying the <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a>.</p>
 </div>
-<p>The result is an instance of the <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.tensor.Tensor</span></code></a> class, and the array can be accessed via the <code class="docutils literal notranslate"><span class="pre">array</span></code> attribute.</p>
+<p>The result is an instance of the <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.tensor.Tensor</span></code></a> class, and the array can be accessed via the <code class="docutils literal notranslate"><span class="pre">array</span></code> attribute.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -635,7 +655,7 @@ array([13.4525461 , 12.83309003])
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

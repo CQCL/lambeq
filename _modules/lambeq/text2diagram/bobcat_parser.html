@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.2.8 documentation</title>
+  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -14,9 +14,8 @@
   <![endif]-->
   
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -28,15 +27,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> lambeq
-            <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            lambeq
+              <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,6 +55,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -99,9 +110,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>lambeq.text2diagram.bobcat_parser</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lambeq.text2diagram.bobcat_parser</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -111,7 +122,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.bobcat_parser</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2023 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -138,17 +149,12 @@
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">tarfile</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Ty</span>
 <span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">TqdmWarning</span>
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span>
 
@@ -164,106 +170,10 @@
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CCGAtomicType</span>
-
-<span class="n">StrPathT</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;os.PathLike[str]&#39;</span><span class="p">]</span>
-
-<span class="n">MODELS_URL</span> <span class="o">=</span> <span class="s1">&#39;https://qnlp.cambridgequantum.com/models&#39;</span>
-<span class="n">MODELS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;bert&#39;</span><span class="p">}</span>
-<span class="n">VERSION_FNAME</span> <span class="o">=</span> <span class="s1">&#39;version.txt&#39;</span>
-
-
-<span class="k">def</span> <span class="nf">get_model_url</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">model</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid model name: </span><span class="si">{</span><span class="n">model</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">MODELS_URL</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">model</span><span class="si">}</span><span class="s1">/latest&#39;</span>
-
-
-<span class="k">def</span> <span class="nf">get_model_dir</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                  <span class="n">cache_dir</span><span class="p">:</span> <span class="n">StrPathT</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-    <span class="k">if</span> <span class="n">cache_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s1">&#39;XDG_CACHE_HOME&#39;</span><span class="p">))</span>
-        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-            <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span> <span class="o">/</span> <span class="s1">&#39;.cache&#39;</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">cache_dir</span><span class="p">)</span>
-    <span class="n">models_dir</span> <span class="o">=</span> <span class="n">cache_dir</span> <span class="o">/</span> <span class="s1">&#39;lambeq&#39;</span> <span class="o">/</span> <span class="s1">&#39;bobcat&#39;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">models_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cache directory location (`</span><span class="si">{</span><span class="n">models_dir</span><span class="si">}</span><span class="s1">`) &#39;</span>
-                              <span class="s1">&#39;already exists and is not a directory.&#39;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">models_dir</span> <span class="o">/</span> <span class="n">model</span>
-
-
-<span class="k">def</span> <span class="nf">model_is_stale</span><span class="p">(</span><span class="n">model</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-    <span class="kn">import</span> <span class="nn">requests</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">VERSION_FNAME</span>
-    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">remote_version</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">model_dir</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">VERSION_FNAME</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">local_version</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-        <span class="n">local_version</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="n">remote_version</span> <span class="o">!=</span> <span class="n">local_version</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">download_model</span><span class="p">(</span>
-        <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-        <span class="n">model_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPathT</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span>
-        <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-    <span class="kn">import</span> <span class="nn">requests</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/model.tar.gz&#39;</span>
-
-    <span class="k">if</span> <span class="n">model_dir</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">model_dir</span> <span class="o">=</span> <span class="n">get_model_dir</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Downloading model...&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="n">size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content-length&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-        <span class="n">block_size</span> <span class="o">=</span> <span class="mi">1024</span>
-
-        <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">TqdmWarning</span><span class="p">)</span>
-        <span class="n">progress_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span>
-            <span class="n">bar_format</span><span class="o">=</span><span class="s1">&#39;Downloading model: </span><span class="si">{percentage:3.1f}</span><span class="s1">%|&#39;</span>
-                       <span class="s1">&#39;</span><span class="si">{bar}</span><span class="s1">|</span><span class="si">{n:.3f}</span><span class="s1">/</span><span class="si">{total:.3f}</span><span class="s1">GB &#39;</span>
-                       <span class="s1">&#39;[</span><span class="si">{elapsed}</span><span class="s1">&lt;</span><span class="si">{remaining}</span><span class="s1">]&#39;</span><span class="p">,</span>
-            <span class="n">total</span><span class="o">=</span><span class="n">size</span><span class="o">/</span><span class="mf">1e9</span><span class="p">)</span>
-
-        <span class="n">model_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">iter_content</span><span class="p">(</span><span class="n">block_size</span><span class="p">):</span>
-            <span class="n">progress_bar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">/</span><span class="mf">1e9</span><span class="p">)</span>
-            <span class="n">model_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
-        <span class="n">model_file</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">()</span>
-        <span class="n">model_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
-
-    <span class="c1"># Extract model</span>
-    <span class="n">model_file</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Extracting model...&#39;</span><span class="p">)</span>
-    <span class="n">tar</span> <span class="o">=</span> <span class="n">tarfile</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fileobj</span><span class="o">=</span><span class="n">model_file</span><span class="p">)</span>
-    <span class="n">tar</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="n">model_dir</span><span class="p">)</span>
-    <span class="n">model_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-    <span class="c1"># Download version</span>
-    <span class="n">ver_url</span> <span class="o">=</span> <span class="n">get_model_url</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="n">VERSION_FNAME</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">model_dir</span><span class="p">,</span> <span class="n">VERSION_FNAME</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">w</span><span class="p">:</span>
-        <span class="n">w</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ver_url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.model_downloader</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ModelDownloader</span><span class="p">,</span>
+                                                  <span class="n">ModelDownloaderError</span><span class="p">,</span>
+                                                  <span class="n">MODELS</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.typing</span> <span class="kn">import</span> <span class="n">StrPathT</span>
 
 
 <div class="viewcode-block" id="BobcatParseError"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParseError">[docs]</a><span class="k">class</span> <span class="nc">BobcatParseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -279,9 +189,9 @@
 
 <div class="viewcode-block" id="BobcatParser.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">model_name_or_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;bert&#39;</span><span class="p">,</span>
-                 <span class="n">root_cats</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">root_cats</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">device</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
-                 <span class="n">cache_dir</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StrPathT</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">cache_dir</span><span class="p">:</span> <span class="n">StrPathT</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">force_download</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                  <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -369,15 +279,28 @@
                              <span class="s1">&#39;BobcatParser.&#39;</span><span class="p">)</span>
         <span class="n">model_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">model_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="n">model_dir</span> <span class="o">=</span> <span class="n">get_model_dir</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">)</span>
+            <span class="c1"># Check for updates only if a local model path is not</span>
+            <span class="c1">#  specified in `model_name_or_path`</span>
 
+            <span class="n">downloader</span> <span class="o">=</span> <span class="n">ModelDownloader</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">cache_dir</span><span class="p">)</span>
+            <span class="n">model_dir</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="n">model_dir</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">force_download</span>
                     <span class="ow">or</span> <span class="ow">not</span> <span class="n">model_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
-                    <span class="ow">or</span> <span class="n">model_is_stale</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">model_dir</span><span class="p">))):</span>
-                <span class="k">if</span> <span class="n">model_name_or_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MODELS</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid model name or path: &#39;</span>
-                                     <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">model_name_or_path</span><span class="si">!r}</span><span class="s1">&#39;</span><span class="p">)</span>
-                <span class="n">download_model</span><span class="p">(</span><span class="n">model_name_or_path</span><span class="p">,</span> <span class="n">model_dir</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="n">downloader</span><span class="o">.</span><span class="n">model_is_stale</span><span class="p">()):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">downloader</span><span class="o">.</span><span class="n">download_model</span><span class="p">(</span><span class="n">verbose</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">ModelDownloaderError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">local_model_version</span> <span class="o">=</span> <span class="n">downloader</span><span class="o">.</span><span class="n">get_local_model_version</span><span class="p">()</span>
+
+                    <span class="k">if</span> <span class="p">(</span><span class="n">model_dir</span><span class="o">.</span><span class="n">is_dir</span><span class="p">()</span>
+                            <span class="ow">and</span> <span class="n">local_model_version</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Failed to update model with &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;exception: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Attempting to continue with version &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">local_model_version</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="c1"># No local version to fall back to</span>
+                        <span class="k">raise</span> <span class="n">e</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">model_dir</span> <span class="o">/</span> <span class="s1">&#39;pipeline_config.json&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -416,12 +339,12 @@
         <span class="k">return</span> <span class="n">Sentence</span><span class="p">(</span><span class="n">sent</span><span class="o">.</span><span class="n">words</span><span class="p">,</span> <span class="n">sent_tags</span><span class="p">,</span> <span class="n">spans</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BobcatParser.sentences2trees"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.BobcatParser.sentences2trees">[docs]</a>    <span class="k">def</span> <span class="nf">sentences2trees</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">sentences</span><span class="p">:</span> <span class="n">SentenceBatchType</span><span class="p">,</span>
-            <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">verbose</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]]:</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">sentences</span><span class="p">:</span> <span class="n">SentenceBatchType</span><span class="p">,</span>
+        <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of :py:class:`.CCGTree` s.</span>
 
 <span class="sd">        Parameters</span>
@@ -493,11 +416,11 @@
                     <span class="n">sentence_input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_sentence</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">tags</span><span class="p">)</span>
                     <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="p">(</span><span class="n">sentence_input</span><span class="p">)</span>
                     <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
                         <span class="n">trees</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="n">BobcatParseError</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sent</span><span class="o">.</span><span class="n">words</span><span class="p">))</span>
+                        <span class="k">raise</span> <span class="n">BobcatParseError</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sent</span><span class="o">.</span><span class="n">words</span><span class="p">))</span> <span class="kn">from</span> <span class="nn">e</span>
 
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">empty_indices</span><span class="p">:</span>
             <span class="n">trees</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -533,7 +456,7 @@
 
         <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">BobcatParser</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">tree</span><span class="o">.</span><span class="n">right</span><span class="p">))]</span>
-        <span class="k">return</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">tree</span><span class="o">.</span><span class="n">word</span><span class="p">,</span>
+        <span class="k">return</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">tree</span><span class="o">.</span><span class="n">word</span> <span class="k">if</span> <span class="n">tree</span><span class="o">.</span><span class="n">is_leaf</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
                        <span class="n">rule</span><span class="o">=</span><span class="n">CCGRule</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
                        <span class="n">biclosed_type</span><span class="o">=</span><span class="n">BobcatParser</span><span class="o">.</span><span class="n">_to_biclosed</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">cat</span><span class="p">),</span>
                        <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">)</span>
@@ -551,7 +474,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

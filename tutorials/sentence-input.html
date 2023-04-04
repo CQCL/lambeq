@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 1. Sentence input &mdash; lambeq 0.2.8 documentation</title>
+  <title>Step 1. Sentence input &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -25,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Step 2. Diagram rewriting" href="rewrite.html" />
-    <link rel="prev" title="Contributing to lambeq" href="../CONTRIBUTING.html" /> 
+    <link rel="prev" title="References for further study" href="../nlp-refs.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -33,15 +32,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> lambeq
-            <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -58,9 +61,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Step 1. Sentence input</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Pre-processing-and-tokenisation">Pre-processing and tokenisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Syntax-based-model:-DisCoCat">Syntax-based model: DisCoCat</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Bag-of-words:-Spiders-reader">Bag-of-words: Spiders reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#Word-sequence-models:-Cups-and-stairs-readers">Word-sequence models: Cups and stairs readers</a></li>
@@ -110,8 +122,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Step 1. Sentence input</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Step 1. Sentence input</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/sentence-input.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -231,10 +243,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -336,6 +349,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -344,10 +358,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -359,12 +377,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -392,18 +413,144 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Step-1.-Sentence-input">
-<h1>Step 1. Sentence input<a class="headerlink" href="#Step-1.-Sentence-input" title="Permalink to this headline"></a></h1>
+<h1>Step 1. Sentence input<a class="headerlink" href="#Step-1.-Sentence-input" title="Permalink to this heading"></a></h1>
 <p>The first part of the process in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> given a sentence, is to convert it into a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>, according to a given <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional scheme</span></a>. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can accommodate any <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> that can encode sentences as <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>, its native data structure. The toolkit currently includes a number of <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional models</span></a>, using various degrees of syntactic information: <a class="reference internal" href="../glossary.html#term-bag-of-words"><span class="xref std std-term">bag-of-words</span></a> models do not use any syntactic information, <a class="reference internal" href="../glossary.html#term-word-sequence-model"><span class="xref std std-term">word-sequence models</span></a> respect the order of words, while fully syntax-based models are based on grammatical derivations provided by a parser.</p>
 <p><a class="reference download internal" download="" href="../_downloads/5654da6976a7b7b8e5bbe958b8a05822/sentence-input.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
+<section id="Pre-processing-and-tokenisation">
+<h2>Pre-processing and tokenisation<a class="headerlink" href="#Pre-processing-and-tokenisation" title="Permalink to this heading"></a></h2>
+<p>Depending on the form of your data, some preprocessing steps may be required to make it appropriate for <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> use. Section <a class="reference internal" href="../nlp-data.html#sec-preprocessing"><span class="std std-ref">Text pre-processing</span></a> in the <a class="reference internal" href="../nlp-intro.html#sec-nlp-intro"><span class="std std-ref">NLP-101 tutorial</span></a> provides more information about this. Here we will mainly talk about <a class="reference internal" href="../nlp-data.html#sec-tokenization"><span class="std std-ref">tokenisation</span></a>, which is crucial in getting correct derivations from the <a class="reference internal" href="../glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser.</p>
+<p>The term <cite>tokenisation</cite> refers to the process of breaking down a text or sentence into smaller units called <cite>tokens</cite>. In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> these tokens correspond to words, since the parser needs to know exactly what kind of words or symbols and punctuation marks are included in the sentence in order to provide an accurate grammatical analysis.</p>
+<p>By default, Bobcat parser assumes that every sentence is delimited by a whitespace, as below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;John gave Mary a flower&quot;</span>
+</pre></div>
+</div>
+<p>Note however that when working with raw text, this is rarely the case. Consider for example the sentence:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;This sentence isn&#39;t worth £100 (or is it?).&quot;</span>
+</pre></div>
+</div>
+<p>A naïve tokenisation based on white spaces would result in the following list of tokens:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[&quot;This&quot;, &quot;sentence&quot;, &quot;isn&#39;t&quot;, &quot;worth&quot;, &quot;£100&quot;, &quot;(or&quot;, &quot;is&quot;, &quot;it?).&quot;]</span>
+</pre></div>
+</div>
+<p>missing, for example, that “isn’t” represents actually two words and “(or” is not a proper word.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, tokenisation is provided through the <a class="reference internal" href="../lambeq.tokeniser.html#lambeq.tokeniser.Tokeniser" title="lambeq.tokeniser.Tokeniser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tokeniser</span></code></a> class hierarcy, and specifically by using the <a class="reference internal" href="../lambeq.tokeniser.html#lambeq.tokeniser.SpacyTokeniser" title="lambeq.tokeniser.SpacyTokeniser"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpacyTokeniser</span></code></a> class, based on the popular NLP package <a class="reference external" href="https://spacy.io">SpaCy</a>. Here is an example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">SpacyTokeniser</span>
+
+<span class="n">tokeniser</span> <span class="o">=</span> <span class="n">SpacyTokeniser</span><span class="p">()</span>
+<span class="n">sentence</span> <span class="o">=</span> <span class="s2">&quot;This sentence isn&#39;t worth £100 (or is it?).&quot;</span>
+<span class="n">tokens</span> <span class="o">=</span> <span class="n">tokeniser</span><span class="o">.</span><span class="n">tokenise_sentence</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span>
+<span class="n">tokens</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;This&#39;,
+ &#39;sentence&#39;,
+ &#39;is&#39;,
+ &#34;n&#39;t&#34;,
+ &#39;worth&#39;,
+ &#39;£&#39;,
+ &#39;100&#39;,
+ &#39;(&#39;,
+ &#39;or&#39;,
+ &#39;is&#39;,
+ &#39;it&#39;,
+ &#39;?&#39;,
+ &#39;)&#39;,
+ &#39;.&#39;]
+</pre></div></div>
+</div>
+<p>We can then pass the list of the tokens to the parser, setting the <code class="docutils literal notranslate"><span class="pre">tokenised</span></code> argument of the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.BobcatParser.sentence2diagram" title="lambeq.text2diagram.BobcatParser.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sentence2diagram()</span></code></a> method to True.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">grammar</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;suppress&#39;</span><span class="p">)</span>
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">tokenised</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">grammar</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_sentence-input_6_0.png" src="../_images/tutorials_sentence-input_6_0.png" />
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More details about <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> and syntax-based models will follow below.</p>
+</div>
+<p>To tokenise many sentences at once, use the <a class="reference internal" href="../lambeq.tokeniser.html#lambeq.tokeniser.SpacyTokeniser.tokenise_sentences" title="lambeq.tokeniser.SpacyTokeniser.tokenise_sentences"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tokenise_sentences()</span></code></a> method:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;This is a sentence.&quot;</span><span class="p">,</span> <span class="s2">&quot;This is (another) sentence!&quot;</span><span class="p">]</span>
+
+<span class="n">tok_sentences</span> <span class="o">=</span> <span class="n">tokeniser</span><span class="o">.</span><span class="n">tokenise_sentences</span><span class="p">(</span><span class="n">sentences</span><span class="p">)</span>
+<span class="n">tok_sentences</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[&#39;This&#39;, &#39;is&#39;, &#39;a&#39;, &#39;sentence&#39;, &#39;.&#39;],
+ [&#39;This&#39;, &#39;is&#39;, &#39;(&#39;, &#39;another&#39;, &#39;)&#39;, &#39;sentence&#39;, &#39;!&#39;]]
+</pre></div></div>
+</div>
+<p>Finally, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides tokenisation at the sentence-level:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;I love pizza. It is my favorite food. I could eat it every day!&quot;</span>
+<span class="n">sentences</span> <span class="o">=</span> <span class="n">tokeniser</span><span class="o">.</span><span class="n">split_sentences</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="n">sentences</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;I love pizza.&#39;, &#39;It is my favorite food.&#39;, &#39;I could eat it every day!&#39;]
+</pre></div></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To simplify the rest of this tutorial, all sentences in the following sections will be delimited by white spaces, so that the parser can tokenise them properly without extra handling.</p>
+</div>
+</section>
 <section id="Syntax-based-model:-DisCoCat">
-<h2>Syntax-based model: DisCoCat<a class="headerlink" href="#Syntax-based-model:-DisCoCat" title="Permalink to this headline"></a></h2>
+<h2>Syntax-based model: DisCoCat<a class="headerlink" href="#Syntax-based-model:-DisCoCat" title="Permalink to this heading"></a></h2>
 <p>In order to obtain a <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a>-like output, we first use the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.BobcatParser" title="lambeq.text2diagram.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a> class from <a class="reference internal" href="../lambeq.text2diagram.html#module-lambeq.text2diagram" title="lambeq.text2diagram"><code class="xref py py-mod docutils literal notranslate"><span class="pre">text2diagram</span></code></a> package, which, in turn,  calls the <a class="reference internal" href="../glossary.html#term-parser"><span class="xref std std-term">parser</span></a>, obtains a <a class="reference internal" href="../glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> derivation for the sentence, and converts it into a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>. The code below uses the default <a class="reference internal" href="../glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser in order to produce a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> for the sentence “John walks in the park”.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s string diagrams are objects of the class <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s string diagrams are objects of the class <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>.</p>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
@@ -423,20 +570,24 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_4_0.png" src="../_images/tutorials_sentence-input_4_0.png" />
+<img alt="../_images/tutorials_sentence-input_14_0.png" src="../_images/tutorials_sentence-input_14_0.png" />
 </div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Drawing a pregroup diagram in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> like the one above can be done using the <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.grammar.pregroup.draw.html#discopy.grammar.pregroup.draw" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.draw()</span></code></a> method.</p>
+<p>Recall from previous section that when the input to <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.BobcatParser.sentence2diagram" title="lambeq.text2diagram.BobcatParser.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">sentence2diagram()</span></code></a> method is a list of tokens, you should also set <code class="docutils literal notranslate"><span class="pre">tokenised</span></code> argument to True (by default is set to False).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Drawing a pregroup diagram in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> like the one above can be done using the <code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.draw()</span></code> method.</p>
 </div>
 <p>Another case of syntax-based models in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is <a class="reference internal" href="#sec-tree-readers"><span class="std std-ref">tree readers</span></a>, which will be presented later in this tutorial.</p>
 </section>
 <section id="Bag-of-words:-Spiders-reader">
-<h2>Bag-of-words: Spiders reader<a class="headerlink" href="#Bag-of-words:-Spiders-reader" title="Permalink to this headline"></a></h2>
+<h2>Bag-of-words: Spiders reader<a class="headerlink" href="#Bag-of-words:-Spiders-reader" title="Permalink to this heading"></a></h2>
 <p><a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> is not the only <a class="reference internal" href="../glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> that <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> supports. In fact, any compositional scheme that manifests sentences as <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>/<a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a> can be added to the toolkit via the readers of the <a class="reference internal" href="../lambeq.text2diagram.html#module-lambeq.text2diagram" title="lambeq.text2diagram"><code class="xref py py-mod docutils literal notranslate"><span class="pre">text2diagram</span></code></a> package. For example, the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.spiders_reader" title="lambeq.text2diagram.spiders_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spiders_reader</span></code></a> object of the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.LinearReader" title="lambeq.text2diagram.LinearReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearReader</span></code></a> class represents a sentence as a “<a class="reference internal" href="../glossary.html#term-bag-of-words"><span class="xref std std-term">bag-of-words</span></a>”, composing the words using a <a class="reference internal" href="../glossary.html#term-spider"><span class="xref std std-term">spider</span></a> (a commutative operation).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">spiders_reader</span>
@@ -453,19 +604,19 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_8_0.png" src="../_images/tutorials_sentence-input_8_0.png" />
+<img alt="../_images/tutorials_sentence-input_18_0.png" src="../_images/tutorials_sentence-input_18_0.png" />
 </div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note that this time the drawing is performed with diagram’s own method <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">monoidal.Diagram.draw()</span></code></a>, which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.grammar.pregroup.draw.html#discopy.grammar.pregroup.draw" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.draw()</span></code></a> in the previous section, which can only be used in pregroup diagrams.</p>
+<p>Note that this time the drawing is performed with diagram’s own method <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">monoidal.Diagram.draw()</span></code></a>, which renders simple monoidal structures consisting of boxes and wires, instead of the pregroup-specific form we obtained by using <code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.draw()</span></code> in the previous section, which can only be used in pregroup diagrams.</p>
 </div>
 </section>
 <section id="Word-sequence-models:-Cups-and-stairs-readers">
-<h2>Word-sequence models: Cups and stairs readers<a class="headerlink" href="#Word-sequence-models:-Cups-and-stairs-readers" title="Permalink to this headline"></a></h2>
+<h2>Word-sequence models: Cups and stairs readers<a class="headerlink" href="#Word-sequence-models:-Cups-and-stairs-readers" title="Permalink to this heading"></a></h2>
 <p>The <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.LinearReader" title="lambeq.text2diagram.LinearReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">LinearReader</span></code></a> class can be used to create any kind of model where words are composed in sequence, from left to right. For example, the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.cups_reader" title="lambeq.text2diagram.cups_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cups_reader</span></code></a> instance of this class generates a “<a class="reference internal" href="../glossary.html#term-tensor-train"><span class="xref std std-term">tensor train</span></a>”.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">cups_reader</span>
@@ -481,13 +632,13 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_12_0.png" src="../_images/tutorials_sentence-input_12_0.png" />
+<img alt="../_images/tutorials_sentence-input_22_0.png" src="../_images/tutorials_sentence-input_22_0.png" />
 </div>
 </div>
 <p>Note the use of a <code class="docutils literal notranslate"><span class="pre">START</span></code> symbol in the beginning of the sentence, represented as an order-1 tensor (a vector). This ensures that the final result of the computation (that is, the representation of the sentence) will be again a tensor of order 1.</p>
 <p>Another pre-made word-sequence model is provided by the <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.stairs_reader" title="lambeq.text2diagram.stairs_reader"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stairs_reader</span></code></a> instance. This model combines consecutive words using a box (“cell”) in a recurrent fashion, similarly to a recurrent neural network.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">stairs_reader</span>
@@ -501,17 +652,17 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_15_0.png" src="../_images/tutorials_sentence-input_15_0.png" />
+<img alt="../_images/tutorials_sentence-input_25_0.png" src="../_images/tutorials_sentence-input_25_0.png" />
 </div>
 </div>
 <span class="target" id="sec-tree-readers"></span></section>
 <section id="Tree-readers">
-<h2>Tree readers<a class="headerlink" href="#Tree-readers" title="Permalink to this headline"></a></h2>
+<h2>Tree readers<a class="headerlink" href="#Tree-readers" title="Permalink to this heading"></a></h2>
 <p>A <a class="reference internal" href="../glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> derivation follows a biclosed form <a class="reference internal" href="../bibliography.html#yk2021" id="id1"><span>[YK2021]</span></a> , which can be directly interpreted as a series of compositions without any explicit conversion into a <a class="reference internal" href="../glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> form. Class <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a> implements a number of compositional models by taking advantage of this fact. In order to demonstrate the way they work, it would be useful to first examine how a CCG diagram looks like:</p>
-<center><p><img alt="a55bcaed6522411b8f4409ec33f2f4e6" class="no-scaled-link" src="../_images/ccg-diagram.png" style="width: 350px;" /></p>
+<center><p><img alt="d952555f2ee34eb0980798b3a58503d3" class="no-scaled-link" src="../_images/ccg-diagram.png" style="width: 350px;" /></p>
 </center><p>Even without knowing the specifics of CCG syntax, it is not difficult to see that the verb “gave” is first composed with the indirect object “Mary”, then the result is composed with the noun phrase “a flower” which correspond to the direct object, and finally the entire verb phrase “gave Mary a flower” is further composed with the subject “John” to return a sentence. A <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a> follows this order of composition, as demonstrated below.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">TreeReader</span>
@@ -528,7 +679,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_21_0.png" src="../_images/tutorials_sentence-input_21_0.png" />
+<img alt="../_images/tutorials_sentence-input_31_0.png" src="../_images/tutorials_sentence-input_31_0.png" />
 </div>
 </div>
 <p>Note that in this default call, composition is handled by a single “cell” named <code class="docutils literal notranslate"><span class="pre">UNIBOX</span></code>. This can be changed by passing an explicit argument of type <a class="reference internal" href="../lambeq.text2diagram.html#lambeq.text2diagram.TreeReaderMode" title="lambeq.text2diagram.TreeReaderMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReaderMode</span></code></a> to the reader’s constructor. There are three possible choices:</p>
@@ -539,7 +690,7 @@ div.rendered_html tbody tr:hover {
 </ul>
 <p>For example:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">TreeReader</span><span class="p">,</span> <span class="n">TreeReaderMode</span>
@@ -556,12 +707,13 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_sentence-input_23_0.png" src="../_images/tutorials_sentence-input_23_0.png" />
+<img alt="../_images/tutorials_sentence-input_33_0.png" src="../_images/tutorials_sentence-input_33_0.png" />
 </div>
 </div>
 <p>In the above, each unique CCG rule gets its own box: FA boxes correspond to forward application, and BA boxes to backward application. For certain tasks, making the composition box rule-specific might lead to better generalisation and overall performance.</p>
 <p class="rubric">See also:</p>
 <ul class="simple">
+<li><p><a class="reference internal" href="../nlp-data.html#sec-preprocessing"><span class="std std-ref">Text pre-processing</span></a></p></li>
 <li><p><a class="reference internal" href="../package-api.html#api-text2diagram"><span class="std std-ref">lambeq.text2diagram package</span></a></p></li>
 <li><p><a class="reference internal" href="../examples/parser.html"><span class="doc">Example notebook parser.ipynb</span></a></p></li>
 <li><p><a class="reference internal" href="../examples/reader.html"><span class="doc">Example notebook reader.ipynb</span></a></p></li>
@@ -576,14 +728,14 @@ div.rendered_html tbody tr:hover {
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../CONTRIBUTING.html" class="btn btn-neutral float-left" title="Contributing to lambeq" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../nlp-refs.html" class="btn btn-neutral float-left" title="References for further study" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="rewrite.html" class="btn btn-neutral float-right" title="Step 2. Diagram rewriting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

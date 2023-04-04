@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.tokeniser &mdash; lambeq 0.2.8 documentation</title>
+  <title>lambeq.tokeniser &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -29,15 +28,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> lambeq
-            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -53,6 +56,14 @@
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -100,8 +111,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>lambeq.tokeniser</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lambeq.tokeniser</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/lambeq.tokeniser.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -136,11 +147,11 @@
 }
 </style>
 <section id="module-lambeq.tokeniser">
-<span id="lambeq-tokeniser"></span><h1>lambeq.tokeniser<a class="headerlink" href="#module-lambeq.tokeniser" title="Permalink to this headline"></a></h1>
+<span id="lambeq-tokeniser"></span><h1>lambeq.tokeniser<a class="headerlink" href="#module-lambeq.tokeniser" title="Permalink to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="lambeq.tokeniser.SpacyTokeniser">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.tokeniser.</span></span><span class="sig-name descname"><span class="pre">SpacyTokeniser</span></span><a class="reference internal" href="_modules/lambeq/tokeniser/spacy_tokeniser.html#SpacyTokeniser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.tokeniser.SpacyTokeniser" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.Tokeniser" title="lambeq.tokeniser.base.Tokeniser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.tokeniser.base.Tokeniser</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.Tokeniser" title="lambeq.tokeniser.base.Tokeniser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tokeniser</span></code></a></p>
 <p>Tokeniser class based on SpaCy.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.tokeniser.SpacyTokeniser.__init__">
@@ -152,13 +163,13 @@
 <span class="sig-name descname"><span class="pre">split_sentences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/tokeniser/spacy_tokeniser.html#SpacyTokeniser.split_sentences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.tokeniser.SpacyTokeniser.split_sentences" title="Permalink to this definition"></a></dt>
 <dd><p>Split input text into a list of sentences.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>text</strong><span class="classifier">str</span></dt><dd><p>A single string that contains one or multiple sentences.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of str</dt><dd><p>List of sentences, one sentence in each string.</p>
 </dd>
@@ -172,13 +183,13 @@
 <span class="sig-name descname"><span class="pre">tokenise_sentence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#lambeq.tokeniser.SpacyTokeniser.tokenise_sentence" title="Permalink to this definition"></a></dt>
 <dd><p>Tokenise a sentence.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>An untokenised sentence.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of str</dt><dd><p>A tokenised sentence given as a list of tokens - strings.</p>
 </dd>
@@ -192,13 +203,13 @@
 <span class="sig-name descname"><span class="pre">tokenise_sentences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentences</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/tokeniser/spacy_tokeniser.html#SpacyTokeniser.tokenise_sentences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.tokeniser.SpacyTokeniser.tokenise_sentences" title="Permalink to this definition"></a></dt>
 <dd><p>Tokenise a list of sentences.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sentences</strong><span class="classifier">list of str</span></dt><dd><p>A list of untokenised sentences.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of list of str</dt><dd><p>A list of tokenised sentences, where each sentence is a list
 of tokens.</p>
@@ -213,20 +224,20 @@ of tokens.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="lambeq.tokeniser.Tokeniser">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.tokeniser.</span></span><span class="sig-name descname"><span class="pre">Tokeniser</span></span><a class="reference internal" href="_modules/lambeq/tokeniser/base.html#Tokeniser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.tokeniser.Tokeniser" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Base Class for all tokenisers</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.tokeniser.Tokeniser.split_sentences">
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">split_sentences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/tokeniser/base.html#Tokeniser.split_sentences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.tokeniser.Tokeniser.split_sentences" title="Permalink to this definition"></a></dt>
 <dd><p>Split input text into a list of sentences.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>text</strong><span class="classifier">str</span></dt><dd><p>A single string that contains one or multiple sentences.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of str</dt><dd><p>List of sentences, one sentence in each string.</p>
 </dd>
@@ -240,13 +251,13 @@ of tokens.</p>
 <span class="sig-name descname"><span class="pre">tokenise_sentence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/tokeniser/base.html#Tokeniser.tokenise_sentence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.tokeniser.Tokeniser.tokenise_sentence" title="Permalink to this definition"></a></dt>
 <dd><p>Tokenise a sentence.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sentence</strong><span class="classifier">str</span></dt><dd><p>An untokenised sentence.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of str</dt><dd><p>A tokenised sentence given as a list of tokens - strings.</p>
 </dd>
@@ -260,13 +271,13 @@ of tokens.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tokenise_sentences</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentences</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/tokeniser/base.html#Tokeniser.tokenise_sentences"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.tokeniser.Tokeniser.tokenise_sentences" title="Permalink to this definition"></a></dt>
 <dd><p>Tokenise a list of sentences.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sentences</strong><span class="classifier">list of str</span></dt><dd><p>A list of untokenised sentences.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of list of str</dt><dd><p>A list of tokenised sentences, where each sentence is a list
 of tokens - strings</p>
@@ -288,7 +299,7 @@ of tokens - strings</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

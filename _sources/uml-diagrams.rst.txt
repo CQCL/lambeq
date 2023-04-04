@@ -67,5 +67,5 @@ lambeq.training
 ---------------
 
 .. image:: ./puml/img/training.png
-    :scale: 70%
+    :scale: 58%
 

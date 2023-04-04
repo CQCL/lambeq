@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.ansatz.tensor &mdash; lambeq 0.2.8 documentation</title>
+  <title>lambeq.ansatz.tensor &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -14,9 +14,8 @@
   <![endif]-->
   
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
         <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -28,15 +27,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> lambeq
-            <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            lambeq
+              <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -52,6 +55,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -99,9 +110,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>lambeq.ansatz.tensor</li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lambeq.ansatz.tensor</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -111,7 +122,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.ansatz.tensor</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021-2022 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2023 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -165,11 +176,59 @@
 
     <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+
+        <span class="n">directed_dom</span><span class="p">,</span> <span class="n">directed_cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_directed_dom_cod</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+        <span class="n">syms</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
+                      <span class="n">directed_dom</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">directed_dom</span><span class="p">),</span>
+                      <span class="n">directed_cod</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">directed_cod</span><span class="p">))</span>
+
+        <span class="c1"># Box domain and codomain are unchanged</span>
         <span class="n">dom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
         <span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-        <span class="n">n_params</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span>
-        <span class="n">syms</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_params</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="n">syms</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_generate_directed_dom_cod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Dim</span><span class="p">,</span> <span class="n">Dim</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the &quot;flow&quot; domain and codomain for a box.</span>
+
+<span class="sd">        To initialise normalised tensors in expectation, it is necessary</span>
+<span class="sd">        to assign a &quot;flow&quot; to a tensor network, giving a direction to</span>
+<span class="sd">        each edge. The directed domain and codomain for a box may differ</span>
+<span class="sd">        from its original domain and codomain.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        box : rigid.Box</span>
+<span class="sd">            Box for which directed dom and cod should be generated.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dim</span>
+<span class="sd">            Dimension of directed domain.</span>
+<span class="sd">        Dim</span>
+<span class="sd">            Dimension of directed codomain.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">(),</span> <span class="n">Ty</span><span class="p">()</span>
+
+        <span class="c1"># Types in the box-cod are assigned to the flow-cod if they have</span>
+        <span class="c1"># even winding numbers. Else, they are assigned to the flow-dom.</span>
+        <span class="k">for</span> <span class="n">ty</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ty</span><span class="o">.</span><span class="n">z</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">dom</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cod</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+
+        <span class="c1"># Types in the box-dom are assigned to the flow-dom if they have</span>
+        <span class="c1"># even winding numbers. Else, they are assigned to the flow-cod.</span>
+        <span class="k">for</span> <span class="n">ty</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ty</span><span class="o">.</span><span class="n">z</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">cod</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">dom</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">dom</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span>
 
 <div class="viewcode-block" id="TensorAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.TensorAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy tensor.&quot;&quot;&quot;</span>
@@ -284,7 +343,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

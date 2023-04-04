@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training: Classical case &mdash; lambeq 0.2.8 documentation</title>
+  <title>Training: Classical case &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,15 +32,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> lambeq
-            <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -57,6 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
@@ -83,6 +94,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="trainer_quantum.html">Training: Quantum case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trainer_hybrid.html">Training: Hybrid case</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
@@ -125,9 +137,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../training.html">Step 4: Training</a> &raquo;</li>
-      <li>Training: Classical case</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../training.html">Step 4: Training</a></li>
+      <li class="breadcrumb-item active">Training: Classical case</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/trainer_classical.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -247,10 +259,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -352,6 +365,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -360,10 +374,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -375,12 +393,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -408,12 +429,12 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Training:-Classical-case">
-<h1>Training: Classical case<a class="headerlink" href="#Training:-Classical-case" title="Permalink to this headline"></a></h1>
+<h1>Training: Classical case<a class="headerlink" href="#Training:-Classical-case" title="Permalink to this heading"></a></h1>
 <p>In this section, we present a complete use case of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="../lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> module, implementing a classical pipeline on the meaning classification dataset introduced in <a class="reference internal" href="../bibliography.html#lea2021" id="id1"><span>[Lea2021]</span></a>. The goal is to classify simple sentences (such as “skillful programmer creates software” and “chef prepares delicious meal”) into two categories, food or IT. The dataset consists of 130 sentences created using a simple context-free grammar.</p>
 <p>We will use a <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.SpiderAnsatz" title="lambeq.ansatz.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a> to split large tensors into chains of smaller ones. The pipeline uses PyTorch as a backend.</p>
 <p><a class="reference download internal" download="" href="../_downloads/6570e05f5911692da1c745a24958f79d/trainer_classical.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
 <section id="Preparation">
-<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this headline"></a></h2>
+<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this heading"></a></h2>
 <p>We start with importing PyTorch and specifying some training hyperparameters.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -429,7 +450,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Input-data">
-<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h3>
+<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this heading"></a></h3>
 <p>Let’s read the data and print some example sentences.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -492,7 +513,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Creating-and-parameterising-diagrams">
-<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this headline"></a></h3>
+<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this heading"></a></h3>
 <p>The first step is to convert sentences into <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -554,9 +575,9 @@ Turning parse trees to diagrams.
 </section>
 </section>
 <section id="Training">
-<h2>Training<a class="headerlink" href="#Training" title="Permalink to this headline"></a></h2>
+<h2>Training<a class="headerlink" href="#Training" title="Permalink to this heading"></a></h2>
 <section id="Instantiate-model">
-<h3>Instantiate model<a class="headerlink" href="#Instantiate-model" title="Permalink to this headline"></a></h3>
+<h3>Instantiate model<a class="headerlink" href="#Instantiate-model" title="Permalink to this heading"></a></h3>
 <p>We can now initialise the model by importing the <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> class, and passing all diagrams to the class method <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel.from_diagrams" title="lambeq.training.PytorchModel.from_diagrams"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PytorchModel.from_diagrams()</span></code></a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -572,10 +593,14 @@ Turning parse trees to diagrams.
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The model can also be instantiated by using the <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel.from_checkpoint" title="lambeq.training.PytorchModel.from_checkpoint"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PytorchModel.from_checkpoint()</span></code></a> method, if an existing checkpoint is available.</p>
+<p>Additionally, the parameters can be initialised by invoking the <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel.initialise_weights" title="lambeq.training.PytorchModel.initialise_weights"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PytorchModel.initialise_weights()</span></code></a> method. Since Release <a class="reference internal" href="../release_notes.html#rel-0-3-0"><span class="std std-ref">0.3.0</span></a>, we initialise the parameters using a symmetric uniform distribution where the range is determined by the output dimension (<cite>flow codomain</cite>) of a box:</p>
+<div class="math notranslate nohighlight">
+\[U\left(-\sqrt{3/\operatorname{dim}_{\text{flow_cod}}}, \sqrt{3/\operatorname{dim}_{\text{flow_cod}}}\right)\]</div>
+<p>This ensures that the expected value of the L2 norm of the output of a box is approximately 1.</p>
 </div>
 </section>
 <section id="Define-evaluation-metric">
-<h3>Define evaluation metric<a class="headerlink" href="#Define-evaluation-metric" title="Permalink to this headline"></a></h3>
+<h3>Define evaluation metric<a class="headerlink" href="#Define-evaluation-metric" title="Permalink to this heading"></a></h3>
 <p>Optionally, we can provide a dictionary of callable evaluation metrics with the signature <code class="docutils literal notranslate"><span class="pre">metric(y_hat,</span> <span class="pre">y)</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -592,8 +617,12 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Initialise-trainer">
-<h3>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this headline"></a></h3>
+<h3>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this heading"></a></h3>
 <p>Next step is to initialise a <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> object. Because this is a binary classification task, we will use binary cross-entropy as the loss. As an optimizer, we choose Adam with weight decay.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> uses <a class="reference internal" href="../glossary.html#term-PyTorch"><span class="xref std std-term">PyTorch</span></a>’s  native classes for optimisers and losses, instead of the <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> equivalents.</p>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -615,7 +644,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Create-datasets">
-<h3>Create datasets<a class="headerlink" href="#Create-datasets" title="Permalink to this headline"></a></h3>
+<h3>Create datasets<a class="headerlink" href="#Create-datasets" title="Permalink to this heading"></a></h3>
 <p>To facilitate batching and data shuffling, lambeq provides a <a class="reference internal" href="../lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> interface. Shuffling is enabled by default, and if not specified, the batch size is set to the length of the dataset. In our example we will use the <code class="xref py py-attr docutils literal notranslate"><span class="pre">BATCH_SIZE</span></code> we have set above.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -634,7 +663,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Train">
-<h3>Train<a class="headerlink" href="#Train" title="Permalink to this headline"></a></h3>
+<h3>Train<a class="headerlink" href="#Train" title="Permalink to this heading"></a></h3>
 <p>Now we can pass the datasets to the <a class="reference internal" href="../root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the <a class="reference internal" href="../glossary.html#term-trainer"><span class="xref std std-term">trainer</span></a> to start the training.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -649,13 +678,13 @@ Turning parse trees to diagrams.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:   train/loss: 0.7098   valid/loss: 0.6910   train/acc: 0.5000   valid/acc: 0.5000
-Epoch 5:   train/loss: 0.6114   valid/loss: 0.6300   train/acc: 0.6714   valid/acc: 0.6500
-Epoch 10:  train/loss: 0.4002   valid/loss: 0.5396   train/acc: 0.8286   valid/acc: 0.7833
-Epoch 15:  train/loss: 0.2053   valid/loss: 0.3814   train/acc: 0.8786   valid/acc: 0.7833
-Epoch 20:  train/loss: 0.1330   valid/loss: 0.3323   train/acc: 0.9071   valid/acc: 0.8167
-Epoch 25:  train/loss: 0.0926   valid/loss: 0.2886   train/acc: 0.9571   valid/acc: 0.8833
-Epoch 30:  train/loss: 0.0354   valid/loss: 0.0874   train/acc: 0.9929   valid/acc: 0.9500
+Epoch 1:   train/loss: 0.7014   valid/loss: 0.7045   train/acc: 0.5143   valid/acc: 0.5333
+Epoch 5:   train/loss: 0.6489   valid/loss: 0.6879   train/acc: 0.5929   valid/acc: 0.5167
+Epoch 10:  train/loss: 0.4586   valid/loss: 0.5155   train/acc: 0.8214   valid/acc: 0.7000
+Epoch 15:  train/loss: 0.1634   valid/loss: 0.2993   train/acc: 0.9286   valid/acc: 0.8000
+Epoch 20:  train/loss: 0.0465   valid/loss: 0.0868   train/acc: 0.9929   valid/acc: 0.9667
+Epoch 25:  train/loss: 0.0218   valid/loss: 0.0588   train/acc: 0.9929   valid/acc: 0.9667
+Epoch 30:  train/loss: 0.0171   valid/loss: 0.0497   train/acc: 0.9929   valid/acc: 0.9833
 
 Training completed!
 </pre></div></div>
@@ -667,7 +696,7 @@ Training completed!
 </section>
 </section>
 <section id="Results">
-<h2>Results<a class="headerlink" href="#Results" title="Permalink to this headline"></a></h2>
+<h2>Results<a class="headerlink" href="#Results" title="Permalink to this heading"></a></h2>
 <p>Finally, we visualise the results and evaluate the model on the test data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
@@ -713,7 +742,7 @@ Test accuracy: 0.9833333492279053
 </div>
 </section>
 <section id="Adding-custom-layers-to-the-model">
-<h2>Adding custom layers to the model<a class="headerlink" href="#Adding-custom-layers-to-the-model" title="Permalink to this headline"></a></h2>
+<h2>Adding custom layers to the model<a class="headerlink" href="#Adding-custom-layers-to-the-model" title="Permalink to this heading"></a></h2>
 <p>In the default setting, the forward pass of a <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> performs a simple tensor contraction of the tensorised diagrams. However, if one likes to add additional custom layers, one can create a custom model that inherits from <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> and overwrite the <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchModel.forward" title="lambeq.training.PytorchModel.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PytorchModel.forward()</span></code></a> method.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
@@ -757,13 +786,13 @@ Test accuracy: 0.9833333492279053
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:   train/loss: 0.7148   valid/loss: 0.6871   train/acc: 0.4143   valid/acc: 0.5833
-Epoch 5:   train/loss: 0.4211   valid/loss: 0.5144   train/acc: 0.8714   valid/acc: 0.8167
-Epoch 10:  train/loss: 0.2201   valid/loss: 0.3550   train/acc: 0.9714   valid/acc: 0.9000
-Epoch 15:  train/loss: 0.1201   valid/loss: 0.3603   train/acc: 1.0000   valid/acc: 0.9667
-Epoch 20:  train/loss: 0.0426   valid/loss: 0.4961   train/acc: 1.0000   valid/acc: 0.9500
-Epoch 25:  train/loss: 0.0073   valid/loss: 0.6688   train/acc: 1.0000   valid/acc: 0.9000
-Epoch 30:  train/loss: 0.0018   valid/loss: 0.8141   train/acc: 1.0000   valid/acc: 0.9000
+Epoch 1:   train/loss: 0.7115   valid/loss: 0.6841   train/acc: 0.4357   valid/acc: 0.6000
+Epoch 5:   train/loss: 0.6478   valid/loss: 0.7444   train/acc: 0.7071   valid/acc: 0.3333
+Epoch 10:  train/loss: 0.4621   valid/loss: 0.8823   train/acc: 0.7643   valid/acc: 0.5167
+Epoch 15:  train/loss: 0.2854   valid/loss: 0.7487   train/acc: 0.8500   valid/acc: 0.6000
+Epoch 20:  train/loss: 0.1396   valid/loss: 0.8462   train/acc: 0.9286   valid/acc: 0.7667
+Epoch 25:  train/loss: 0.1069   valid/loss: 1.1114   train/acc: 0.9429   valid/acc: 0.7667
+Epoch 30:  train/loss: 0.0663   valid/loss: 0.9043   train/acc: 0.9571   valid/acc: 0.7333
 
 Training completed!
 </pre></div></div>
@@ -812,7 +841,7 @@ Test accuracy: 0.9833333492279053
 </div>
 <p class="rubric">See also:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="./trainer_hybrid.ipynb">Training: Hybrid case</a></p></li>
+<li><p><a class="reference internal" href="trainer_hybrid.html"><span class="doc">Training: Hybrid case</span></a></p></li>
 <li><p><a class="reference internal" href="trainer_quantum.html"><span class="doc">Training: Quantum case</span></a></p></li>
 <li><p><a class="reference internal" href="../manual_training.html"><span class="doc">Advanced: Manual training</span></a></p></li>
 </ul>
@@ -830,7 +859,7 @@ Test accuracy: 0.9833333492279053
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

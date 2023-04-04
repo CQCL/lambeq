@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training: Quantum case &mdash; lambeq 0.2.8 documentation</title>
+  <title>Training: Quantum case &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -15,16 +15,15 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Choosing a model" href="../models.html" />
+    <link rel="next" title="Training: Hybrid case" href="trainer_hybrid.html" />
     <link rel="prev" title="Training: Classical case" href="trainer_classical.html" /> 
 </head>
 
@@ -33,15 +32,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> lambeq
-            <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -57,6 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
@@ -84,6 +95,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Results">Results</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="trainer_hybrid.html">Training: Hybrid case</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
@@ -126,9 +138,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../training.html">Step 4: Training</a> &raquo;</li>
-      <li>Training: Quantum case</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../training.html">Step 4: Training</a></li>
+      <li class="breadcrumb-item active">Training: Quantum case</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/trainer_quantum.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -248,10 +260,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -353,6 +366,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -361,10 +375,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -376,12 +394,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -409,13 +430,13 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Training:-Quantum-case">
-<h1>Training: Quantum case<a class="headerlink" href="#Training:-Quantum-case" title="Permalink to this headline"></a></h1>
+<h1>Training: Quantum case<a class="headerlink" href="#Training:-Quantum-case" title="Permalink to this heading"></a></h1>
 <p>In this tutorial we will train a <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> <a class="reference internal" href="../glossary.html#term-model"><span class="xref std std-term">model</span></a> to solve the relative pronoun classification task presented in <a class="reference internal" href="../bibliography.html#lea2021" id="id1"><span>[Lea2021]</span></a>. The goal is to predict whether a noun phrase contains a subject-based or an object-based relative clause. The entries of this dataset are extracted from the <cite>RelPron</cite> dataset <a class="reference internal" href="../bibliography.html#rea2016" id="id2"><span>[Rea2016]</span></a>.</p>
 <p>We will use an <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a> to convert <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a> into <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a>. The pipeline uses <a class="reference internal" href="../glossary.html#term-tket"><span class="xref std std-term">tket</span></a> as a backend.</p>
 <p>If you have already gone through the <a class="reference internal" href="trainer_classical.html"><span class="doc">classical training tutorial</span></a>, you will see that there are only minor differences for the quantum case.</p>
 <p><a class="reference download internal" download="" href="../_downloads/b2c102ef1511971cdf1847d46b5ea9d6/trainer_quantum.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
 <section id="Preparation">
-<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this headline"></a></h2>
+<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this heading"></a></h2>
 <p>We start with importing NumPy and specifying some training hyperparameters.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -446,7 +467,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <section id="Input-data">
-<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h3>
+<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this heading"></a></h3>
 <p>Let’s read the data and print some example sentences.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -508,7 +529,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Creating-and-parameterising-diagrams">
-<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this headline"></a></h3>
+<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this heading"></a></h3>
 <p>The first step is to convert sentences into <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -542,8 +563,8 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Filter-and-simplify-diagrams">
-<h3>Filter and simplify diagrams<a class="headerlink" href="#Filter-and-simplify-diagrams" title="Permalink to this headline"></a></h3>
-<p>We simplify the diagrams by calling <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.normal_form" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a> and filter out any diagrams that could not be parsed.</p>
+<h3>Filter and simplify diagrams<a class="headerlink" href="#Filter-and-simplify-diagrams" title="Permalink to this heading"></a></h3>
+<p>We simplify the diagrams by calling <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.normal_form" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a> and filter out any diagrams that could not be parsed.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -603,7 +624,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Create-circuits">
-<h3>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this headline"></a></h3>
+<h3>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this heading"></a></h3>
 <p>In order to run the experiments on a quantum computer, we need to apply to string diagrams a quantum <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a>. For this experiment, we will use an <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a>, where noun wires (<code class="docutils literal notranslate"><span class="pre">n</span></code>) are represented by a one-qubit system, and sentence wires (<code class="docutils literal notranslate"><span class="pre">s</span></code>) are discarded (since we deal with noun phrases).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -652,9 +673,9 @@ Turning parse trees to diagrams.
 </section>
 </section>
 <section id="Training">
-<h2>Training<a class="headerlink" href="#Training" title="Permalink to this headline"></a></h2>
+<h2>Training<a class="headerlink" href="#Training" title="Permalink to this heading"></a></h2>
 <section id="Instantiate-the-model">
-<h3>Instantiate the model<a class="headerlink" href="#Instantiate-the-model" title="Permalink to this headline"></a></h3>
+<h3>Instantiate the model<a class="headerlink" href="#Instantiate-the-model" title="Permalink to this heading"></a></h3>
 <p>We will use a <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a>, which we initialise by passing all diagrams to the class method
 <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel.from_diagrams" title="lambeq.training.TketModel.from_diagrams"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TketModel.from_diagrams()</span></code></a>. The <a class="reference internal" href="../lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> needs a backend configuration dictionary passed as a keyword argument to the initialisation method. This dictionary must contain entries for <code class="docutils literal notranslate"><span class="pre">backend</span></code>, <code class="docutils literal notranslate"><span class="pre">compilation</span></code> and <code class="docutils literal notranslate"><span class="pre">shots</span></code>. The backend is provided by <a class="reference external" href="https://github.com/CQCL/pytket-extensions">pytket-extensions</a>. In this example, we use <a class="reference internal" href="../glossary.html#term-Qiskit"><span class="xref std std-term">Qiskit</span></a>‘s AerBackend with 8192 <a class="reference internal" href="../glossary.html#term-shots"><span class="xref std std-term">shots</span></a>.</p>
 <div class="nbinput nblast docutils container">
@@ -683,13 +704,16 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Define-loss-and-evaluation-metric">
-<h3>Define loss and evaluation metric<a class="headerlink" href="#Define-loss-and-evaluation-metric" title="Permalink to this headline"></a></h3>
+<h3>Define loss and evaluation metric<a class="headerlink" href="#Define-loss-and-evaluation-metric" title="Permalink to this heading"></a></h3>
 <p>We use standard binary cross-entropy as the loss. Optionally, we can provide a dictionary of callable evaluation metrics with the signature <code class="docutils literal notranslate"><span class="pre">metric(y_hat,</span> <span class="pre">y)</span></code>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">loss</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_hat</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>  <span class="c1"># binary cross-entropy loss</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BinaryCrossEntropyLoss</span>
+
+<span class="c1"># Using the builtin binary cross-entropy error from lambeq</span>
+<span class="n">bce</span> <span class="o">=</span> <span class="n">BinaryCrossEntropyLoss</span><span class="p">()</span>
 
 <span class="n">acc</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_hat</span><span class="p">)</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>  <span class="c1"># half due to double-counting</span>
 <span class="n">eval_metrics</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;acc&quot;</span><span class="p">:</span> <span class="n">acc</span><span class="p">}</span>
@@ -698,7 +722,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Initialise-trainer">
-<h3>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this headline"></a></h3>
+<h3>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this heading"></a></h3>
 <p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, quantum pipelines are based on the <a class="reference internal" href="../lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a> class. Furthermore, we will use the standard <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> SPSA optimizer, implemented in the <a class="reference internal" href="../lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a> class. This needs three hyperameters:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">a</span></code>: The initial learning rate (decays over time),</p></li>
@@ -713,7 +737,7 @@ Turning parse trees to diagrams.
 
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">QuantumTrainer</span><span class="p">(</span>
     <span class="n">model</span><span class="p">,</span>
-    <span class="n">loss_function</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+    <span class="n">loss_function</span><span class="o">=</span><span class="n">bce</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="o">=</span><span class="n">SPSAOptimizer</span><span class="p">,</span>
     <span class="n">optim_hyperparams</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span><span class="mf">0.01</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">},</span>
@@ -727,7 +751,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Create-datasets">
-<h3>Create datasets<a class="headerlink" href="#Create-datasets" title="Permalink to this headline"></a></h3>
+<h3>Create datasets<a class="headerlink" href="#Create-datasets" title="Permalink to this heading"></a></h3>
 <p>To facilitate data shuffling and batching, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a native <a class="reference internal" href="../lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> class. Shuffling is enabled by default, and if not specified, the batch size is set to the length of the dataset.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
@@ -746,7 +770,7 @@ Turning parse trees to diagrams.
 </div>
 </section>
 <section id="Train">
-<h3>Train<a class="headerlink" href="#Train" title="Permalink to this headline"></a></h3>
+<h3>Train<a class="headerlink" href="#Train" title="Permalink to this heading"></a></h3>
 <p>We can now pass the datasets to the <a class="reference internal" href="../root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the trainer to start the training.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -761,17 +785,17 @@ Turning parse trees to diagrams.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:     train/loss: 1.4088   valid/loss: 0.7565   train/acc: 0.6029   valid/acc: 0.7419
-Epoch 100:   train/loss: 0.1892   valid/loss: 1.6061   train/acc: 0.9412   valid/acc: 0.6774
-Epoch 200:   train/loss: 0.1210   valid/loss: 1.1567   train/acc: 0.9706   valid/acc: 0.7742
-Epoch 300:   train/loss: 0.1091   valid/loss: 1.0711   train/acc: 1.0000   valid/acc: 0.7581
-Epoch 400:   train/loss: 0.0938   valid/loss: 0.6084   train/acc: 1.0000   valid/acc: 0.7742
-Epoch 500:   train/loss: 0.0830   valid/loss: 1.0892   train/acc: 0.9853   valid/acc: 0.7581
-Epoch 600:   train/loss: 0.0793   valid/loss: 1.5707   train/acc: 0.9853   valid/acc: 0.7742
-Epoch 700:   train/loss: 0.0719   valid/loss: 1.0649   train/acc: 0.9853   valid/acc: 0.8065
-Epoch 800:   train/loss: 0.0752   valid/loss: 0.5992   train/acc: 0.9853   valid/acc: 0.7742
-Epoch 900:   train/loss: 0.0612   valid/loss: 0.6363   train/acc: 0.9853   valid/acc: 0.7742
-Epoch 1000:  train/loss: 0.0649   valid/loss: 0.9800   train/acc: 1.0000   valid/acc: 0.8065
+Epoch 1:     train/loss: 0.8875   valid/loss: 1.5880   train/acc: 0.6286   valid/acc: 0.5000
+Epoch 100:   train/loss: 0.2760   valid/loss: 1.1021   train/acc: 0.8929   valid/acc: 0.7258
+Epoch 200:   train/loss: 0.1741   valid/loss: 0.4057   train/acc: 0.9500   valid/acc: 0.7419
+Epoch 300:   train/loss: 0.1405   valid/loss: 1.0325   train/acc: 0.9643   valid/acc: 0.7419
+Epoch 400:   train/loss: 0.1108   valid/loss: 1.0666   train/acc: 0.9643   valid/acc: 0.7742
+Epoch 500:   train/loss: 0.0975   valid/loss: 1.6569   train/acc: 1.0000   valid/acc: 0.7419
+Epoch 600:   train/loss: 0.0921   valid/loss: 0.3631   train/acc: 0.9857   valid/acc: 0.7903
+Epoch 700:   train/loss: 0.0820   valid/loss: 1.0184   train/acc: 0.9786   valid/acc: 0.7581
+Epoch 800:   train/loss: 0.0858   valid/loss: 1.6595   train/acc: 0.9714   valid/acc: 0.8065
+Epoch 900:   train/loss: 0.0738   valid/loss: 1.0420   train/acc: 0.9857   valid/acc: 0.7903
+Epoch 1000:  train/loss: 0.0677   valid/loss: 1.6735   train/acc: 0.9857   valid/acc: 0.7742
 
 Training completed!
 </pre></div></div>
@@ -779,7 +803,7 @@ Training completed!
 </section>
 </section>
 <section id="Results">
-<h2>Results<a class="headerlink" href="#Results" title="Permalink to this headline"></a></h2>
+<h2>Results<a class="headerlink" href="#Results" title="Permalink to this heading"></a></h2>
 <p>Finally, we visualise the results and evaluate the model on the test data.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -812,7 +836,7 @@ Training completed!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Validation accuracy: 0.7419354838709677
+Validation accuracy: 0.8064516129032258
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -825,7 +849,7 @@ Validation accuracy: 0.7419354838709677
 <p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="trainer_classical.html"><span class="doc">Training: Classical case</span></a></p></li>
-<li><p><a class="reference external" href="./trainer_hybrid.ipynb">Training: Hybrid case</a></p></li>
+<li><p><a class="reference internal" href="trainer_hybrid.html"><span class="doc">Training: Hybrid case</span></a></p></li>
 <li><p><a class="reference internal" href="../manual_training.html"><span class="doc">Advanced: Manual training</span></a></p></li>
 </ul>
 </section>
@@ -836,13 +860,13 @@ Validation accuracy: 0.7419354838709677
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="trainer_classical.html" class="btn btn-neutral float-left" title="Training: Classical case" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../models.html" class="btn btn-neutral float-right" title="Choosing a model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="trainer_hybrid.html" class="btn btn-neutral float-right" title="Training: Hybrid case" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

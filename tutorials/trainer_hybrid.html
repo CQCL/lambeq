@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Training: Hybrid case &mdash; lambeq 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Choosing a model" href="../models.html" />
+    <link rel="prev" title="Training: Quantum case" href="trainer_quantum.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../training.html">Step 4: Training</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="trainer_classical.html">Training: Classical case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trainer_quantum.html">Training: Quantum case</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Training: Hybrid case</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Preparation">Preparation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Input-data">Input data</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Simplify-diagrams">Simplify diagrams</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Create-circuits">Create circuits</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Training">Training</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Instantiate-model">Instantiate model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Running-on-a-real-quantum-computer">Running on a real quantum computer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Create-datasets">Create datasets</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Define-loss-and-evaluation-metric">Define loss and evaluation metric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Initialise-trainer">Initialise trainer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Train">Train</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Results">Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Using-standard-PyTorch">Using standard PyTorch</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Evaluate-test-accuracy">Evaluate test accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Hybrid-models">Hybrid models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Make-paired-dataset">Make paired dataset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Initialise-model">Initialise model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Train-and-log-accuracies">Train and log accuracies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Analysing-the-internal-representations-of-the-model">Analysing the internal representations of the model</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../training.html">Step 4: Training</a></li>
+      <li class="breadcrumb-item active">Training: Hybrid case</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/trainer_hybrid.ipynb" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Training:-Hybrid-case">
+<h1>Training: Hybrid case<a class="headerlink" href="#Training:-Hybrid-case" title="Permalink to this heading"></a></h1>
+<p>In this tutorial we train a pure quantum <a class="reference internal" href="../glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> <a class="reference internal" href="../glossary.html#term-model"><span class="xref std std-term">model</span></a> to solve a toy problem: classifying whether a given sentence is about cooking or computing. We also train a hybrid model that determines whether a given pair of sentences are talking about different topics.</p>
+<p>We use an <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a> to convert <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a> into <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a>. When passing these circuits to the <code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code>, they are automatically converted into <a class="reference internal" href="../glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> circuits.</p>
+<p><a class="reference download internal" download="" href="../_downloads/c5c93ef7791c8e0b4cfbfea60c263164/trainer_hybrid.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
+<section id="Preparation">
+<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this heading"></a></h2>
+<p>We start by specifying some training hyperparameters and importing NumPy and PyTorch.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">42</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Input-data">
+<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this heading"></a></h3>
+<p>Let’s read the data and print some example sentences.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">read_data</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="n">labels</span><span class="p">,</span> <span class="n">sentences</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">])</span>
+            <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">labels</span><span class="p">,</span> <span class="n">sentences</span>
+
+
+<span class="n">train_labels</span><span class="p">,</span> <span class="n">train_data</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">&#39;../examples/datasets/mc_train_data.txt&#39;</span><span class="p">)</span>
+<span class="n">dev_labels</span><span class="p">,</span> <span class="n">dev_data</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">&#39;../examples/datasets/mc_dev_data.txt&#39;</span><span class="p">)</span>
+<span class="n">test_labels</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">&#39;../examples/datasets/mc_test_data.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;skillful man prepares sauce .&#39;,
+ &#39;skillful man bakes dinner .&#39;,
+ &#39;woman cooks tasty meal .&#39;,
+ &#39;man prepares meal .&#39;,
+ &#39;skillful woman debugs program .&#39;]
+</pre></div></div>
+</div>
+<p>Targets are represented as 2-dimensional arrays:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_labels</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[1.0, 0.0], [1.0, 0.0], [1.0, 0.0], [1.0, 0.0], [0.0, 1.0]]
+</pre></div></div>
+</div>
+</section>
+<section id="Creating-and-parameterising-diagrams">
+<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this heading"></a></h3>
+<p>The first step is to convert the sentences into <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
+
+<span class="n">reader</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">)</span>
+
+<span class="n">raw_train_diagrams</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+<span class="n">raw_dev_diagrams</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">dev_data</span><span class="p">)</span>
+<span class="n">raw_test_diagrams</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Tagging sentences.
+Parsing tagged sentences.
+Turning parse trees to diagrams.
+Tagging sentences.
+Parsing tagged sentences.
+Turning parse trees to diagrams.
+Tagging sentences.
+Parsing tagged sentences.
+Turning parse trees to diagrams.
+</pre></div></div>
+</div>
+</section>
+<section id="Simplify-diagrams">
+<h3>Simplify diagrams<a class="headerlink" href="#Simplify-diagrams" title="Permalink to this heading"></a></h3>
+<p>We simplify the diagrams by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_cups()</span></code>; this reduces the number of <a class="reference internal" href="../glossary.html#term-post-selection"><span class="xref std std-term">post-selections</span></a> in a diagram, allowing them to be evaluated more efficiently.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">remove_cups</span>
+
+<span class="n">train_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">raw_train_diagrams</span><span class="p">]</span>
+<span class="n">dev_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">raw_dev_diagrams</span><span class="p">]</span>
+<span class="n">test_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">raw_test_diagrams</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>We can visualise these diagrams using <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">draw()</span></code></a>.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_diagrams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_trainer_hybrid_17_0.png" src="../_images/tutorials_trainer_hybrid_17_0.png" />
+</div>
+</div>
+</section>
+<section id="Create-circuits">
+<h3>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this heading"></a></h3>
+<p>In order to run the experiments on a quantum computer, we apply a quantum <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> to the string diagrams. For this experiment, we will use an <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a>, where noun wires (<code class="docutils literal notranslate"><span class="pre">n</span></code>) and sentence wires (<code class="docutils literal notranslate"><span class="pre">s</span></code>) are represented by one-qubit systems.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span><span class="p">,</span> <span class="n">IQPAnsatz</span>
+
+<span class="n">ansatz</span> <span class="o">=</span> <span class="n">IQPAnsatz</span><span class="p">({</span><span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+                   <span class="n">n_layers</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_single_qubit_params</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">train_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">train_diagrams</span><span class="p">]</span>
+<span class="n">dev_circuits</span> <span class="o">=</span>  <span class="p">[</span><span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">dev_diagrams</span><span class="p">]</span>
+<span class="n">test_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">test_diagrams</span><span class="p">]</span>
+
+<span class="n">train_circuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_trainer_hybrid_20_0.png" src="../_images/tutorials_trainer_hybrid_20_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Training">
+<h2>Training<a class="headerlink" href="#Training" title="Permalink to this heading"></a></h2>
+<section id="Instantiate-model">
+<h3>Instantiate model<a class="headerlink" href="#Instantiate-model" title="Permalink to this heading"></a></h3>
+<p>We instantiate a <a class="reference internal" href="../lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a>, by passing all diagrams to the class method <a class="reference internal" href="../lambeq.training.html#lambeq.training.PennyLaneModel.from_diagrams" title="lambeq.training.PennyLaneModel.from_diagrams"><code class="xref py py-meth docutils literal notranslate"><span class="pre">PennyLaneModel.from_diagrams()</span></code></a>.</p>
+<p>We also set <cite>probabilities=True</cite> so that the model outputs probabilities, rather than quantum states, which follows the behaviour of real quantum computers.</p>
+<p>Furthermore, we set <cite>normalize=True</cite> so that the output probabilities sum to one. This helps to prevent passing very small values to any following layers in a hybrid model.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">PennyLaneModel</span>
+
+<span class="n">all_circuits</span> <span class="o">=</span> <span class="n">train_circuits</span> <span class="o">+</span> <span class="n">dev_circuits</span> <span class="o">+</span> <span class="n">test_circuits</span>
+
+<span class="c1"># if no backend_config is provided, the default is used, which is the same as below</span>
+<span class="n">backend_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;backend&#39;</span><span class="p">:</span> <span class="s1">&#39;default.qubit&#39;</span><span class="p">,</span>  <span class="c1"># this is the default PennyLane simulator</span>
+                  <span class="s1">&#39;probabilities&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="s1">&#39;normalize&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">,</span>
+                                     <span class="n">backend_config</span><span class="o">=</span><span class="n">backend_config</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Running-on-a-real-quantum-computer">
+<h3>Running on a real quantum computer<a class="headerlink" href="#Running-on-a-real-quantum-computer" title="Permalink to this heading"></a></h3>
+<p>We can choose to run the model on a real quantum computer, using <a class="reference internal" href="../glossary.html#term-Qiskit"><span class="xref std std-term">Qiskit</span></a> with IBMQ, or the Honeywell QAPI.</p>
+<p>To use IBM devices we have to save our IBMQ API token to the <a class="reference internal" href="../glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> configuration file, as in the cell below.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pennylane</span> <span class="k">as</span> <span class="nn">qml</span>
+
+<span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="p">[</span><span class="s1">&#39;qiskit.ibmq.ibmqx_token&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;my_API_token&#39;</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backend_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;backend&#39;</span><span class="p">:</span> <span class="s1">&#39;qiskit.ibmq&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;ibmq_manila&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;probabilities&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="s1">&#39;normalize&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="s1">&#39;shots&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">q_model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">,</span>
+                                       <span class="n">backend_config</span><span class="o">=</span><span class="n">backend_config</span><span class="p">)</span>
+<span class="n">q_model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>To use Honeywell/Quantinuum devices we have to pass the email address of an account with access to the Honeywell/Quantinuum QAPI to the <a class="reference internal" href="../glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> configuration file.</p>
+<p>The first time you run a circuit on a Honeywell device, you will be prompted to enter your password.</p>
+<p>You can then run circuits without entering your password again for 30 days.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="p">[</span><span class="s1">&#39;honeywell.global.user_email&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;my_Honeywell/Quantinuum_&#39;</span>
+                                                     <span class="s1">&#39;account_email&#39;</span><span class="p">)</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">backend_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;backend&#39;</span><span class="p">:</span> <span class="s1">&#39;honeywell.hqs&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;H1-1E&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;probabilities&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="s1">&#39;normalize&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="s1">&#39;shots&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+
+<span class="n">h_model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">,</span>
+                                       <span class="n">backend_config</span><span class="o">=</span><span class="n">backend_config</span><span class="p">)</span>
+<span class="n">h_model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>Running these models on a real quantum computer takes a significant amount of time as the circuits must be sent to the backend and queued, so in the remainder of this tutorial we will use <cite>model</cite>, which uses the default <a class="reference internal" href="../glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> simulator, ‘default.qubit’.</p>
+</section>
+<section id="Create-datasets">
+<h3>Create datasets<a class="headerlink" href="#Create-datasets" title="Permalink to this heading"></a></h3>
+<p>To facilitate data shuffling and batching, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a native <a class="reference internal" href="../lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> class. Shuffling is enabled by default, and if not specified, the batch size is set to the length of the dataset.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">Dataset</span>
+
+<span class="n">train_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_circuits</span><span class="p">,</span>
+                        <span class="n">train_labels</span><span class="p">,</span>
+                        <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+
+<span class="n">val_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">dev_circuits</span><span class="p">,</span> <span class="n">dev_labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Training can either by done using the <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>, or by using native PyTorch. We give examples of both in the following section.</p>
+</section>
+<section id="Define-loss-and-evaluation-metric">
+<h3>Define loss and evaluation metric<a class="headerlink" href="#Define-loss-and-evaluation-metric" title="Permalink to this heading"></a></h3>
+<p>When using <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> we first define our evaluation metrics and loss function, which in this case will be the accuracy and the mean-squared error, respectively.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">acc</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">double</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Initialise-trainer">
+<h3>Initialise trainer<a class="headerlink" href="#Initialise-trainer" title="Permalink to this heading"></a></h3>
+<p>As <a class="reference internal" href="../glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> is compatible with PyTorch autograd, <a class="reference internal" href="../lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> can automatically use many of the PyTorch optimizers, such as Adam to train our model.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">PytorchTrainer</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">PytorchTrainer</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">loss_function</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+    <span class="n">optimizer</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">,</span>
+    <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
+    <span class="n">evaluate_functions</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;acc&#39;</span><span class="p">:</span> <span class="n">acc</span><span class="p">},</span>
+    <span class="n">evaluate_on_train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">use_tensorboard</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">,</span>
+    <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Train">
+<h3>Train<a class="headerlink" href="#Train" title="Permalink to this heading"></a></h3>
+<p>We can now pass the datasets to the <a class="reference internal" href="../root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the trainer to start the training.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+Epoch 1:   train/loss: 0.2597   valid/loss: 0.2860   train/acc: 0.5429   valid/acc: 0.5000
+Epoch 2:   train/loss: 0.1886   valid/loss: 0.0731   train/acc: 0.7714   valid/acc: 0.8667
+Epoch 3:   train/loss: 0.0756   valid/loss: 0.0897   train/acc: 0.9429   valid/acc: 0.8667
+Epoch 4:   train/loss: 0.0516   valid/loss: 0.0375   train/acc: 0.9714   valid/acc: 1.0000
+Epoch 5:   train/loss: 0.0244   valid/loss: 0.0216   train/acc: 0.9857   valid/acc: 1.0000
+Epoch 6:   train/loss: 0.0362   valid/loss: 0.0183   train/acc: 0.9571   valid/acc: 0.9667
+Epoch 7:   train/loss: 0.0153   valid/loss: 0.0363   train/acc: 0.9857   valid/acc: 0.9667
+Epoch 8:   train/loss: 0.0204   valid/loss: 0.0495   train/acc: 0.9857   valid/acc: 0.9333
+Epoch 9:   train/loss: 0.0314   valid/loss: 0.0312   train/acc: 0.9714   valid/acc: 0.9667
+Epoch 10:  train/loss: 0.0382   valid/loss: 0.0707   train/acc: 0.9429   valid/acc: 0.9333
+Epoch 11:  train/loss: 0.0364   valid/loss: 0.1207   train/acc: 0.9571   valid/acc: 0.8333
+Epoch 12:  train/loss: 0.0451   valid/loss: 0.1437   train/acc: 0.9429   valid/acc: 0.7667
+Epoch 13:  train/loss: 0.0646   valid/loss: 0.0522   train/acc: 0.9143   valid/acc: 0.9333
+Epoch 14:  train/loss: 0.0398   valid/loss: 0.0710   train/acc: 0.9571   valid/acc: 0.9333
+Epoch 15:  train/loss: 0.0376   valid/loss: 0.0496   train/acc: 0.9714   valid/acc: 0.9333
+
+Training completed!
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Results">
+<h2>Results<a class="headerlink" href="#Results" title="Permalink to this heading"></a></h2>
+<p>Finally, we visualise the results and evaluate the model on the test data.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">((</span><span class="n">ax_tl</span><span class="p">,</span> <span class="n">ax_tr</span><span class="p">),</span> <span class="p">(</span><span class="n">ax_bl</span><span class="p">,</span> <span class="n">ax_br</span><span class="p">))</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
+                                                     <span class="n">sharex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                     <span class="n">sharey</span><span class="o">=</span><span class="s1">&#39;row&#39;</span><span class="p">,</span>
+                                                     <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">ax_tl</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Training set&#39;</span><span class="p">)</span>
+<span class="n">ax_tr</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Development set&#39;</span><span class="p">)</span>
+<span class="n">ax_bl</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iterations&#39;</span><span class="p">)</span>
+<span class="n">ax_br</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iterations&#39;</span><span class="p">)</span>
+<span class="n">ax_bl</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Accuracy&#39;</span><span class="p">)</span>
+<span class="n">ax_tl</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
+
+<span class="n">colours</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
+<span class="n">ax_tl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_bl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_tr</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">val_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_br</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+
+<span class="c1"># print test accuracy</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">test_circuits</span><span class="p">)</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">test_labels</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final test accuracy: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">acc</span><span class="p">(</span><span class="n">pred</span><span class="p">,</span> <span class="n">labels</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Final test accuracy: 0.9333333333333333
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_trainer_hybrid_46_1.png" src="../_images/tutorials_trainer_hybrid_46_1.png" />
+</div>
+</div>
+</section>
+<section id="Using-standard-PyTorch">
+<h2>Using standard PyTorch<a class="headerlink" href="#Using-standard-PyTorch" title="Permalink to this heading"></a></h2>
+<p>As we have a small dataset, we can use early stopping to prevent overfitting to the training data. In this case, we evaluate the performance of the model on the validation dataset every 5 epochs, and save a checkpoint if the validation accuracy has improved. If it does not improve for 10 epochs, we end the training, and load the model with the best validation accuracy.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">circs</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">circs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">circs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Training is the same as standard PyTorch. We initialize an optimizer, pass it the model parameters, and then run a training loop in which we compute the loss, run a backwards pass to compute the gradients, and then take an optimizer step.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span>
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="n">best</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;acc&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="n">epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">circuits</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">circuits</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span>
+                                            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">double</span><span class="p">())</span>
+        <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">dev_acc</span> <span class="o">=</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">dev_circuits</span><span class="p">,</span> <span class="n">dev_labels</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train loss: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch_loss</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dev acc: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dev_acc</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">dev_acc</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]:</span>
+            <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dev_acc</span>
+            <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">make_checkpoint</span><span class="p">(</span><span class="s1">&#39;model.lt&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">-</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Early stopping&#39;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+<span class="k">if</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">dev_circuits</span><span class="p">,</span> <span class="n">dev_labels</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">(</span><span class="s1">&#39;model.lt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch: 0
+Train loss: 1.3878655338080799
+Dev acc: 0.6333333333333333
+Epoch: 5
+Train loss: 0.08868915156910184
+Dev acc: 0.9333333333333333
+Epoch: 10
+Train loss: 0.024855887882005913
+Dev acc: 1.0
+</pre></div></div>
+</div>
+<section id="Evaluate-test-accuracy">
+<h3>Evaluate test accuracy<a class="headerlink" href="#Evaluate-test-accuracy" title="Permalink to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final test accuracy: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span><span class="p">(</span><span class="n">test_circuits</span><span class="p">,</span> <span class="n">test_labels</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Final test accuracy: 1.0
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="Hybrid-models">
+<h2>Hybrid models<a class="headerlink" href="#Hybrid-models" title="Permalink to this heading"></a></h2>
+<p>This model determines whether a pair of diagrams are about the same or different topics.</p>
+<p>It does this by first running the pair circuits to get a probability output for each, and then concatenating them together and passing them to a simple neural network.</p>
+<p>We expect the circuits to learn to output [0, 1] or [1, 0] depending on the topic they are referring to (cooking or computing), and the neural network to learn the XOR function to determine whether the topics are the same (output 0) or different (output 1).</p>
+<p>:term:<code class="docutils literal notranslate"><span class="pre">PennyLane</span></code> allows us to train both the circuits and the NN simultaneously using PyTorch autograd.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">SEED</span> <span class="o">=</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<p>As the probability outputs from our circuits are guaranteed to be positive, we transform these outputs <code class="docutils literal notranslate"><span class="pre">x</span></code> by <code class="docutils literal notranslate"><span class="pre">2</span> <span class="pre">*</span> <span class="pre">(x</span> <span class="pre">-</span> <span class="pre">0.5)</span></code>, giving inputs to the neural network in the range [-1, 1].</p>
+<p>This helps us to avoid “dying ReLUs”, which could otherwise occur if all the input weights to a given hidden neuron were negative; in this case, the overall input to the neuron would be negative, and ReLU would set the output of it to 0, leading to the gradient of all these weights being 0 for all samples, causing the neuron to never learn.</p>
+<p>(A couple of alternative approaches could also involve initialising all the neural network weights to be positive, or using <code class="docutils literal notranslate"><span class="pre">LeakyReLU</span></code> as the activation function).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
+
+<span class="k">class</span> <span class="nc">XORSentenceModel</span><span class="p">(</span><span class="n">PennyLaneModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">probabilities</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">PennyLaneModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">probabilities</span><span class="p">,</span> <span class="n">normalize</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">xor_net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+                                     <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+                                     <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                                     <span class="n">nn</span><span class="o">.</span><span class="n">Sigmoid</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram_pairs</span><span class="p">):</span>
+        <span class="n">first_d</span><span class="p">,</span> <span class="n">second_d</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">diagram_pairs</span><span class="p">)</span>
+        <span class="n">evaluated_pairs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">get_diagram_output</span><span class="p">(</span><span class="n">first_d</span><span class="p">),</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">get_diagram_output</span><span class="p">(</span><span class="n">second_d</span><span class="p">)),</span>
+                                    <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">evaluated_pairs</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">evaluated_pairs</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">xor_net</span><span class="p">(</span><span class="n">evaluated_pairs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<section id="Make-paired-dataset">
+<h3>Make paired dataset<a class="headerlink" href="#Make-paired-dataset" title="Permalink to this heading"></a></h3>
+<p>Our model is going to determine whether a given pair of sentences are talking about different topics, so we need to construct a dataset of pairs of diagrams for the train, dev, and test data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">combinations</span>
+
+<span class="k">def</span> <span class="nf">make_pair_data</span><span class="p">(</span><span class="n">diagrams</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">pair_diags</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">combinations</span><span class="p">(</span><span class="n">diagrams</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="n">pair_labels</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">combinations</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">pair_diags</span><span class="p">,</span> <span class="n">pair_labels</span>
+
+<span class="n">train_pair_circuits</span><span class="p">,</span> <span class="n">train_pair_labels</span> <span class="o">=</span> <span class="n">make_pair_data</span><span class="p">(</span><span class="n">train_circuits</span><span class="p">,</span>
+                                                        <span class="n">train_labels</span><span class="p">)</span>
+<span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span> <span class="o">=</span> <span class="n">make_pair_data</span><span class="p">(</span><span class="n">dev_circuits</span><span class="p">,</span>
+                                                    <span class="n">dev_labels</span><span class="p">)</span>
+<span class="n">test_pair_circuits</span><span class="p">,</span> <span class="n">test_pair_labels</span> <span class="o">=</span> <span class="n">make_pair_data</span><span class="p">(</span><span class="n">test_circuits</span><span class="p">,</span>
+                                                      <span class="n">test_labels</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>There are lots of pairs (2415 train pairs), so we’ll sample a subset to make this example train more quickly.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_pair_circuits</span><span class="p">,</span> <span class="n">train_pair_labels</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">train_pair_circuits</span><span class="p">,</span> <span class="n">train_pair_labels</span><span class="p">)),</span>
+                       <span class="mi">300</span><span class="p">)))</span>
+<span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span><span class="p">)),</span> <span class="mi">200</span><span class="p">)))</span>
+<span class="n">test_pair_circuits</span><span class="p">,</span> <span class="n">test_pair_labels</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">test_pair_circuits</span><span class="p">,</span> <span class="n">test_pair_labels</span><span class="p">)),</span> <span class="mi">200</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Initialise-model">
+<h3>Initialise model<a class="headerlink" href="#Initialise-model" title="Permalink to this heading"></a></h3>
+<p>As <code class="xref py py-class docutils literal notranslate"><span class="pre">XORSentenceModel</span></code> inherits from <a class="reference internal" href="../lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a>, we can again pass in <cite>probabilities=True</cite> and <cite>normalize=True</cite> to <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_diagrams()</span></code>.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">all_pair_circuits</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_pair_circuits</span> <span class="o">+</span>
+                     <span class="n">dev_pair_circuits</span> <span class="o">+</span>
+                     <span class="n">test_pair_circuits</span><span class="p">)</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">all_pair_circuits</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">XORSentenceModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
+
+<span class="n">train_pair_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_pair_circuits</span><span class="p">,</span>
+                             <span class="n">train_pair_labels</span><span class="p">,</span>
+                             <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Train-and-log-accuracies">
+<h3>Train and log accuracies<a class="headerlink" href="#Train-and-log-accuracies" title="Permalink to this heading"></a></h3>
+<p>We train the model using pure PyTorch in the exact same way as above.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">circs</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">circs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">predicted</span><span class="p">))</span> <span class="o">==</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">DoubleTensor</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">circs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">best</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;acc&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">EPOCHS</span><span class="p">):</span>
+    <span class="n">epoch_loss</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">circuits</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_pair_dataset</span><span class="p">:</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+        <span class="n">predicted</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">circuits</span><span class="p">)</span>
+        <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">binary_cross_entropy</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">predicted</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">DoubleTensor</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+        <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+        <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">dev_acc</span> <span class="o">=</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Epoch: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Train loss: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">epoch_loss</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Dev acc: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dev_acc</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">dev_acc</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]:</span>
+            <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dev_acc</span>
+            <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">make_checkpoint</span><span class="p">(</span><span class="s1">&#39;xor_model.lt&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">-</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Early stopping&#39;</span><span class="p">)</span>
+            <span class="k">break</span>
+
+<span class="k">if</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">accuracy</span><span class="p">(</span><span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">XORSentenceModel</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">(</span><span class="s1">&#39;xor_model.lt&#39;</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Epoch: 0
+Train loss: 4.272213361858267
+Dev acc: 0.45
+Epoch: 5
+Train loss: 4.10759657209212
+Dev acc: 0.52
+Epoch: 10
+Train loss: 3.952059008977611
+Dev acc: 0.655
+Epoch: 15
+Train loss: 0.5362579409411792
+Dev acc: 0.975
+Epoch: 20
+Train loss: 1.2632150297657396
+Dev acc: 0.945
+Epoch: 25
+Train loss: 0.9304246438466377
+Dev acc: 0.95
+Early stopping
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Final test accuracy: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">accuracy</span><span class="p">(</span><span class="n">test_pair_circuits</span><span class="p">,</span>
+                                                <span class="n">test_pair_labels</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Final test accuracy: 0.915
+</pre></div></div>
+</div>
+</section>
+<section id="Analysing-the-internal-representations-of-the-model">
+<h3>Analysing the internal representations of the model<a class="headerlink" href="#Analysing-the-internal-representations-of-the-model" title="Permalink to this heading"></a></h3>
+<p>We hypothesised that the quantum circuits would be able to separate the representations of sentences about food and cooking, and that the classical NN would learn to XOR these representations to give the model output. Here we can look at parts of the model separately to determine whether this hypothesis was accurate.</p>
+<p>First, we can look at the output of the NN when given the 4 possible binary inputs to XOR.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">xor_labels</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+<span class="c1"># the first two entries correspond to the same label for both sentences, the last two to different labels</span>
+<span class="n">xor_tensors</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">xor_labels</span><span class="p">)</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">xor_net</span><span class="p">(</span><span class="n">xor_tensors</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[0.91843098],
+       [0.91843098],
+       [0.20070643],
+       [0.10345918]])
+</pre></div></div>
+</div>
+<p>We can see that in the case that the labels are the same, the outputs are significantly greater than 0.5, and in the case that the labels are different, the outputs are significantly less than 0.5, and so the NN seems to have learned the XOR function.</p>
+<p>We can also look at the outputs of some of the test circuits to determine whether they have been able to seperate the two classes of sentences.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="n">p_circ</span> <span class="o">=</span> <span class="n">test_circuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to_pennylane</span><span class="p">(</span><span class="n">probabilities</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">unnorm</span> <span class="o">=</span> <span class="n">p_circ</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">unnorm</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">unnorm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+woman prepares tasty dinner .
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.00709793, 0.99290207])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">test_data</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span>
+
+<span class="n">p_circ</span> <span class="o">=</span> <span class="n">test_circuits</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">to_pennylane</span><span class="p">(</span><span class="n">probabilities</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">unnorm</span> <span class="o">=</span> <span class="n">p_circ</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+<span class="n">unnorm</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">unnorm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+skillful person runs software .
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0.93675346, 0.06324654])
+</pre></div></div>
+</div>
+<p>From these examples, it seems that the circuits are able to strongly differentiate between the two topics, assigning approximately [0, 1] to the sentence about food, and [1, 0] to the sentence about computing.</p>
+<p class="rubric">See also:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="trainer_classical.html"><span class="doc">Training: Classical case</span></a></p></li>
+<li><p><a class="reference internal" href="trainer_quantum.html"><span class="doc">Training: Quantum case</span></a></p></li>
+<li><p><a class="reference internal" href="../manual_training.html"><span class="doc">Advanced: Manual training</span></a></p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="trainer_quantum.html" class="btn btn-neutral float-left" title="Training: Quantum case" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../models.html" class="btn btn-neutral float-right" title="Choosing a model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

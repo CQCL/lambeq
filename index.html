@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq &mdash; lambeq 0.2.8 documentation</title>
+  <title>lambeq &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,15 +29,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="#" class="icon icon-home"> lambeq
-            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="#" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -54,6 +57,14 @@
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -101,8 +112,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
-      <li>lambeq</li>
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lambeq</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/index.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -137,7 +148,7 @@
 }
 </style>
 <section id="lambeq">
-<h1>lambeq<a class="headerlink" href="#lambeq" title="Permalink to this headline"></a></h1>
+<h1>lambeq<a class="headerlink" href="#lambeq" title="Permalink to this heading"></a></h1>
 <a class="reference internal image-reference" href="_images/CQ-logo.png"><img alt="_images/CQ-logo.png" class="align-right" src="_images/CQ-logo.png" style="width: 120px;" /></a>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is an open-source, modular, extensible high-level Python library for experimental <a class="reference internal" href="glossary.html#term-quantum-NLP-QNLP"><span class="xref std std-term">Quantum Natural Language Processing</span></a> (QNLP), created by <a class="reference external" href="https://cambridgequantum.com">Cambridge Quantum</a>’s QNLP team. At a high level, the library allows the conversion of any sentence to a <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a>, based on a given <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> and certain parameterisation and choices of <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a>, and facilitates <a class="reference internal" href="training.html#sec-training"><span class="std std-ref">training</span></a> for both quantum and classical NLP experiments. The notes for the latest release can be found <a class="reference internal" href="release_notes.html#sec-release-notes"><span class="std std-ref">here</span></a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is available for Python 3.8 and higher, on Linux, macOS and Windows. To install, type:</p>
@@ -150,15 +161,16 @@
 <p>Please do not try to read this documentation directly from the preview provided in the <a class="reference external" href="https://github.com/CQCL/lambeq/tree/main/docs">GitHub repository</a>, since some of the pages will not be rendered properly.</p>
 </div>
 <section id="user-support">
-<h2>User support<a class="headerlink" href="#user-support" title="Permalink to this headline"></a></h2>
+<h2>User support<a class="headerlink" href="#user-support" title="Permalink to this heading"></a></h2>
 <p>If you need help with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> or you think you have found a bug, please send an email to <a class="reference external" href="mailto:lambeq-support&#37;&#52;&#48;cambridgequantum&#46;com">lambeq-support<span>&#64;</span>cambridgequantum<span>&#46;</span>com</a>. You can also open an issue at <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference external" href="https://github.com/CQCL/lambeq">GitHub repository</a>. Someone from the development team will respond to you as soon as possible. Furthermore, if you want to subscribe to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s mailing list (<a class="reference external" href="mailto:lambeq-users&#37;&#52;&#48;cambridgequantum&#46;com">lambeq-users<span>&#64;</span>cambridgequantum<span>&#46;</span>com</a>), send an email to <a class="reference external" href="mailto:lambeq-support&#37;&#52;&#48;cambridgequantum&#46;com">lambeq-support<span>&#64;</span>cambridgequantum<span>&#46;</span>com</a> to let us know.</p>
+<p>Note that the best way to get in touch with the QNLP community and learn about <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is to join our <a class="reference external" href="https://discord.gg/TA63zghMrC">QNLP discord server</a>, where you can ask questions, get notified about important announcements and news, and chat with other QNLP researchers.</p>
 </section>
 <section id="licence">
-<h2>Licence<a class="headerlink" href="#licence" title="Permalink to this headline"></a></h2>
+<h2>Licence<a class="headerlink" href="#licence" title="Permalink to this heading"></a></h2>
 <p>Licensed under the <a class="reference external" href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0 License</a>.</p>
 </section>
 <section id="how-to-cite">
-<h2>How to cite<a class="headerlink" href="#how-to-cite" title="Permalink to this headline"></a></h2>
+<h2>How to cite<a class="headerlink" href="#how-to-cite" title="Permalink to this heading"></a></h2>
 <p>If you use <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> for your research, please cite the accompanying paper <a class="reference internal" href="bibliography.html#kea2021" id="id2"><span>[Kea2021]</span></a>:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>@article<span class="o">{</span>kartsaklis2021lambeq,
 <span class="w">   </span><span class="nv">title</span><span class="o">={</span>lambeq:<span class="w"> </span><span class="o">{</span>A<span class="o">}</span>n<span class="w"> </span><span class="o">{</span>E<span class="o">}</span>fficient<span class="w"> </span><span class="o">{</span>H<span class="o">}</span>igh-<span class="o">{</span>L<span class="o">}</span>evel<span class="w"> </span><span class="o">{</span>P<span class="o">}</span>ython<span class="w"> </span><span class="o">{</span>L<span class="o">}</span>ibrary<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="o">{</span>Q<span class="o">}</span>uantum<span class="w"> </span><span class="o">{</span>NLP<span class="o">}}</span>,
@@ -182,9 +194,45 @@
 </ul>
 </div>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp-intro.html#nlp-qnlp-and-computational-lingustics">NLP, QNLP and Computational Lingustics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-intro.html#tasks-and-applications">Tasks and applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-intro.html#typical-nlp-workflow">Typical NLP workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp-data.html#datasets-and-corpora">Datasets and corpora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-data.html#text-pre-processing">Text pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-data.html#tokenization">Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-data.html#handling-unknown-words">Handling unknown words</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp-class.html#binary-vs-multi-class-classification">Binary vs multi-class classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-class.html#loss-functions">Loss functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-class.html#evaluation-metrics">Evaluation metrics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp-ml.html#cross-validation">Cross-validation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nlp-refs.html#reading">Reading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-refs.html#online-courses">Online courses</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-refs.html#organisations">Organisations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nlp-refs.html#software-tools">Software tools</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/sentence-input.html#Pre-processing-and-tokenisation">Pre-processing and tokenisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/sentence-input.html#Syntax-based-model:-DisCoCat">Syntax-based model: DisCoCat</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/sentence-input.html#Bag-of-words:-Spiders-reader">Bag-of-words: Spiders reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/sentence-input.html#Word-sequence-models:-Cups-and-stairs-readers">Word-sequence models: Cups and stairs readers</a></li>
@@ -200,10 +248,12 @@
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html">Training: Classical case</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html">Training: Quantum case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html">Training: Hybrid case</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="models.html#numpymodel">NumpyModel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models.html#pennylanemodel">PennyLaneModel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html#pytorchmodel">PytorchModel</a></li>
 <li class="toctree-l2"><a class="reference internal" href="models.html#tketmodel">TketModel</a></li>
 </ul>
@@ -226,6 +276,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/tokenisation.html">Tokenisation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/reader.html">Reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/tree_reader.html">Tree reader</a></li>
@@ -235,6 +286,7 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/classical_pipeline.html">Classical pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/quantum_pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/quantum_pipeline_jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pennylane.html">Training hybrid models using the Pennylane backend</a></li>
 </ul>
 </li>
 </ul>
@@ -242,7 +294,406 @@
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.AtomicType"><code class="docutils literal notranslate"><span class="pre">AtomicType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.CONJUNCTION"><code class="docutils literal notranslate"><span class="pre">AtomicType.CONJUNCTION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.NOUN"><code class="docutils literal notranslate"><span class="pre">AtomicType.NOUN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.NOUN_PHRASE"><code class="docutils literal notranslate"><span class="pre">AtomicType.NOUN_PHRASE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.PREPOSITIONAL_PHRASE"><code class="docutils literal notranslate"><span class="pre">AtomicType.PREPOSITIONAL_PHRASE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.PUNCTUATION"><code class="docutils literal notranslate"><span class="pre">AtomicType.PUNCTUATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.SENTENCE"><code class="docutils literal notranslate"><span class="pre">AtomicType.SENTENCE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.BaseAnsatz"><code class="docutils literal notranslate"><span class="pre">BaseAnsatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BaseAnsatz.__call__"><code class="docutils literal notranslate"><span class="pre">BaseAnsatz.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BaseAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">BaseAnsatz.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.BinaryCrossEntropyLoss"><code class="docutils literal notranslate"><span class="pre">BinaryCrossEntropyLoss</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BinaryCrossEntropyLoss.__init__"><code class="docutils literal notranslate"><span class="pre">BinaryCrossEntropyLoss.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BinaryCrossEntropyLoss.calculate_loss"><code class="docutils literal notranslate"><span class="pre">BinaryCrossEntropyLoss.calculate_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.BobcatParseError"><code class="docutils literal notranslate"><span class="pre">BobcatParseError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BobcatParseError.__init__"><code class="docutils literal notranslate"><span class="pre">BobcatParseError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.BobcatParser"><code class="docutils literal notranslate"><span class="pre">BobcatParser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BobcatParser.__init__"><code class="docutils literal notranslate"><span class="pre">BobcatParser.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BobcatParser.available_models"><code class="docutils literal notranslate"><span class="pre">BobcatParser.available_models()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.BobcatParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">BobcatParser.sentences2trees()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CCGAtomicType"><code class="docutils literal notranslate"><span class="pre">CCGAtomicType</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGAtomicType.CONJUNCTION"><code class="docutils literal notranslate"><span class="pre">CCGAtomicType.CONJUNCTION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGAtomicType.NOUN"><code class="docutils literal notranslate"><span class="pre">CCGAtomicType.NOUN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGAtomicType.NOUN_PHRASE"><code class="docutils literal notranslate"><span class="pre">CCGAtomicType.NOUN_PHRASE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGAtomicType.PREPOSITIONAL_PHRASE"><code class="docutils literal notranslate"><span class="pre">CCGAtomicType.PREPOSITIONAL_PHRASE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGAtomicType.PUNCTUATION"><code class="docutils literal notranslate"><span class="pre">CCGAtomicType.PUNCTUATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGAtomicType.SENTENCE"><code class="docutils literal notranslate"><span class="pre">CCGAtomicType.SENTENCE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CCGBankParseError"><code class="docutils literal notranslate"><span class="pre">CCGBankParseError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGBankParseError.__init__"><code class="docutils literal notranslate"><span class="pre">CCGBankParseError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CCGBankParser"><code class="docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGBankParser.__init__"><code class="docutils literal notranslate"><span class="pre">CCGBankParser.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGBankParser.section2diagrams"><code class="docutils literal notranslate"><span class="pre">CCGBankParser.section2diagrams()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGBankParser.section2diagrams_gen"><code class="docutils literal notranslate"><span class="pre">CCGBankParser.section2diagrams_gen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGBankParser.section2trees"><code class="docutils literal notranslate"><span class="pre">CCGBankParser.section2trees()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGBankParser.section2trees_gen"><code class="docutils literal notranslate"><span class="pre">CCGBankParser.section2trees_gen()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGBankParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">CCGBankParser.sentences2trees()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CCGParser"><code class="docutils literal notranslate"><span class="pre">CCGParser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGParser.__init__"><code class="docutils literal notranslate"><span class="pre">CCGParser.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGParser.sentence2diagram"><code class="docutils literal notranslate"><span class="pre">CCGParser.sentence2diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGParser.sentence2tree"><code class="docutils literal notranslate"><span class="pre">CCGParser.sentence2tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGParser.sentences2diagrams"><code class="docutils literal notranslate"><span class="pre">CCGParser.sentences2diagrams()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">CCGParser.sentences2trees()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CCGRule"><code class="docutils literal notranslate"><span class="pre">CCGRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.BACKWARD_APPLICATION"><code class="docutils literal notranslate"><span class="pre">CCGRule.BACKWARD_APPLICATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.BACKWARD_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.BACKWARD_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.BACKWARD_CROSSED_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.BACKWARD_CROSSED_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.BACKWARD_TYPE_RAISING"><code class="docutils literal notranslate"><span class="pre">CCGRule.BACKWARD_TYPE_RAISING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.CONJUNCTION"><code class="docutils literal notranslate"><span class="pre">CCGRule.CONJUNCTION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.FORWARD_APPLICATION"><code class="docutils literal notranslate"><span class="pre">CCGRule.FORWARD_APPLICATION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.FORWARD_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.FORWARD_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.FORWARD_CROSSED_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.FORWARD_CROSSED_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.FORWARD_TYPE_RAISING"><code class="docutils literal notranslate"><span class="pre">CCGRule.FORWARD_TYPE_RAISING</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.GENERALIZED_BACKWARD_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.GENERALIZED_BACKWARD_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.GENERALIZED_FORWARD_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.GENERALIZED_FORWARD_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION"><code class="docutils literal notranslate"><span class="pre">CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.LEXICAL"><code class="docutils literal notranslate"><span class="pre">CCGRule.LEXICAL</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.REMOVE_PUNCTUATION_LEFT"><code class="docutils literal notranslate"><span class="pre">CCGRule.REMOVE_PUNCTUATION_LEFT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.REMOVE_PUNCTUATION_RIGHT"><code class="docutils literal notranslate"><span class="pre">CCGRule.REMOVE_PUNCTUATION_RIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.UNARY"><code class="docutils literal notranslate"><span class="pre">CCGRule.UNARY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.UNKNOWN"><code class="docutils literal notranslate"><span class="pre">CCGRule.UNKNOWN</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.__call__"><code class="docutils literal notranslate"><span class="pre">CCGRule.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.check_match"><code class="docutils literal notranslate"><span class="pre">CCGRule.check_match()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.infer_rule"><code class="docutils literal notranslate"><span class="pre">CCGRule.infer_rule()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.symbol"><code class="docutils literal notranslate"><span class="pre">CCGRule.symbol</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CCGRuleUseError"><code class="docutils literal notranslate"><span class="pre">CCGRuleUseError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRuleUseError.__init__"><code class="docutils literal notranslate"><span class="pre">CCGRuleUseError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CCGTree"><code class="docutils literal notranslate"><span class="pre">CCGTree</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.__init__"><code class="docutils literal notranslate"><span class="pre">CCGTree.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.child"><code class="docutils literal notranslate"><span class="pre">CCGTree.child</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.deriv"><code class="docutils literal notranslate"><span class="pre">CCGTree.deriv()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.from_json"><code class="docutils literal notranslate"><span class="pre">CCGTree.from_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.left"><code class="docutils literal notranslate"><span class="pre">CCGTree.left</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.right"><code class="docutils literal notranslate"><span class="pre">CCGTree.right</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.text"><code class="docutils literal notranslate"><span class="pre">CCGTree.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.to_biclosed_diagram"><code class="docutils literal notranslate"><span class="pre">CCGTree.to_biclosed_diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.to_diagram"><code class="docutils literal notranslate"><span class="pre">CCGTree.to_diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.to_json"><code class="docutils literal notranslate"><span class="pre">CCGTree.to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.without_trivial_unary_rules"><code class="docutils literal notranslate"><span class="pre">CCGTree.without_trivial_unary_rules()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Checkpoint"><code class="docutils literal notranslate"><span class="pre">Checkpoint</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Checkpoint.__init__"><code class="docutils literal notranslate"><span class="pre">Checkpoint.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Checkpoint.add_many"><code class="docutils literal notranslate"><span class="pre">Checkpoint.add_many()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Checkpoint.from_file"><code class="docutils literal notranslate"><span class="pre">Checkpoint.from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Checkpoint.to_file"><code class="docutils literal notranslate"><span class="pre">Checkpoint.to_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CircuitAnsatz"><code class="docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CircuitAnsatz.__call__"><code class="docutils literal notranslate"><span class="pre">CircuitAnsatz.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CircuitAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">CircuitAnsatz.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CircuitAnsatz.ob_size"><code class="docutils literal notranslate"><span class="pre">CircuitAnsatz.ob_size()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CircuitAnsatz.params_shape"><code class="docutils literal notranslate"><span class="pre">CircuitAnsatz.params_shape()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CoordinationRewriteRule"><code class="docutils literal notranslate"><span class="pre">CoordinationRewriteRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CoordinationRewriteRule.__init__"><code class="docutils literal notranslate"><span class="pre">CoordinationRewriteRule.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CoordinationRewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">CoordinationRewriteRule.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CoordinationRewriteRule.rewrite"><code class="docutils literal notranslate"><span class="pre">CoordinationRewriteRule.rewrite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CrossEntropyLoss"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CrossEntropyLoss.__init__"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CrossEntropyLoss.calculate_loss"><code class="docutils literal notranslate"><span class="pre">CrossEntropyLoss.calculate_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.CurryRewriteRule"><code class="docutils literal notranslate"><span class="pre">CurryRewriteRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CurryRewriteRule.__init__"><code class="docutils literal notranslate"><span class="pre">CurryRewriteRule.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CurryRewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">CurryRewriteRule.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CurryRewriteRule.rewrite"><code class="docutils literal notranslate"><span class="pre">CurryRewriteRule.rewrite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Dataset"><code class="docutils literal notranslate"><span class="pre">Dataset</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Dataset.__init__"><code class="docutils literal notranslate"><span class="pre">Dataset.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Dataset.shuffle_data"><code class="docutils literal notranslate"><span class="pre">Dataset.shuffle_data()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.DepCCGParseError"><code class="docutils literal notranslate"><span class="pre">DepCCGParseError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DepCCGParseError.__init__"><code class="docutils literal notranslate"><span class="pre">DepCCGParseError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.DepCCGParser"><code class="docutils literal notranslate"><span class="pre">DepCCGParser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DepCCGParser.__init__"><code class="docutils literal notranslate"><span class="pre">DepCCGParser.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DepCCGParser.sentence2diagram"><code class="docutils literal notranslate"><span class="pre">DepCCGParser.sentence2diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DepCCGParser.sentence2tree"><code class="docutils literal notranslate"><span class="pre">DepCCGParser.sentence2tree()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DepCCGParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">DepCCGParser.sentences2trees()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.IQPAnsatz"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.IQPAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.IQPAnsatz.params_shape"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz.params_shape()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.LinearReader"><code class="docutils literal notranslate"><span class="pre">LinearReader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.LinearReader.__init__"><code class="docutils literal notranslate"><span class="pre">LinearReader.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.LinearReader.sentence2diagram"><code class="docutils literal notranslate"><span class="pre">LinearReader.sentence2diagram()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.LossFunction"><code class="docutils literal notranslate"><span class="pre">LossFunction</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.LossFunction.__call__"><code class="docutils literal notranslate"><span class="pre">LossFunction.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.LossFunction.__init__"><code class="docutils literal notranslate"><span class="pre">LossFunction.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.LossFunction.calculate_loss"><code class="docutils literal notranslate"><span class="pre">LossFunction.calculate_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.MPSAnsatz"><code class="docutils literal notranslate"><span class="pre">MPSAnsatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.MPSAnsatz.BOND_TYPE"><code class="docutils literal notranslate"><span class="pre">MPSAnsatz.BOND_TYPE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.MPSAnsatz.__call__"><code class="docutils literal notranslate"><span class="pre">MPSAnsatz.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.MPSAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">MPSAnsatz.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.MSELoss"><code class="docutils literal notranslate"><span class="pre">MSELoss</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.MSELoss.calculate_loss"><code class="docutils literal notranslate"><span class="pre">MSELoss.calculate_loss()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.__call__"><code class="docutils literal notranslate"><span class="pre">Model.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.__init__"><code class="docutils literal notranslate"><span class="pre">Model.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.forward"><code class="docutils literal notranslate"><span class="pre">Model.forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.from_checkpoint"><code class="docutils literal notranslate"><span class="pre">Model.from_checkpoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.from_diagrams"><code class="docutils literal notranslate"><span class="pre">Model.from_diagrams()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">Model.get_diagram_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.initialise_weights"><code class="docutils literal notranslate"><span class="pre">Model.initialise_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.load"><code class="docutils literal notranslate"><span class="pre">Model.load()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.save"><code class="docutils literal notranslate"><span class="pre">Model.save()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.NumpyModel"><code class="docutils literal notranslate"><span class="pre">NumpyModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.__init__"><code class="docutils literal notranslate"><span class="pre">NumpyModel.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.forward"><code class="docutils literal notranslate"><span class="pre">NumpyModel.forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">NumpyModel.get_diagram_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.lambdas"><code class="docutils literal notranslate"><span class="pre">NumpyModel.lambdas</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.symbols"><code class="docutils literal notranslate"><span class="pre">NumpyModel.symbols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.weights"><code class="docutils literal notranslate"><span class="pre">NumpyModel.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Optimizer"><code class="docutils literal notranslate"><span class="pre">Optimizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Optimizer.__init__"><code class="docutils literal notranslate"><span class="pre">Optimizer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Optimizer.backward"><code class="docutils literal notranslate"><span class="pre">Optimizer.backward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Optimizer.load_state_dict"><code class="docutils literal notranslate"><span class="pre">Optimizer.load_state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Optimizer.state_dict"><code class="docutils literal notranslate"><span class="pre">Optimizer.state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Optimizer.step"><code class="docutils literal notranslate"><span class="pre">Optimizer.step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Optimizer.zero_grad"><code class="docutils literal notranslate"><span class="pre">Optimizer.zero_grad()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.__init__"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.circuit_map"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.circuit_map</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.forward"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.from_diagrams"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.from_diagrams()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.get_diagram_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.initialise_weights"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.initialise_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.symbols"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.symbols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.training"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.training</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.weights"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.PytorchModel"><code class="docutils literal notranslate"><span class="pre">PytorchModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchModel.__init__"><code class="docutils literal notranslate"><span class="pre">PytorchModel.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchModel.forward"><code class="docutils literal notranslate"><span class="pre">PytorchModel.forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchModel.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">PytorchModel.get_diagram_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchModel.initialise_weights"><code class="docutils literal notranslate"><span class="pre">PytorchModel.initialise_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchModel.symbols"><code class="docutils literal notranslate"><span class="pre">PytorchModel.symbols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchModel.training"><code class="docutils literal notranslate"><span class="pre">PytorchModel.training</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchModel.weights"><code class="docutils literal notranslate"><span class="pre">PytorchModel.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.__init__"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.model"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.train_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_costs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.train_epoch_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_epoch_costs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.train_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.training_step"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.training_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.val_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_costs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.val_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.validation_step"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.validation_step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.QuantumModel"><code class="docutils literal notranslate"><span class="pre">QuantumModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumModel.__call__"><code class="docutils literal notranslate"><span class="pre">QuantumModel.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumModel.__init__"><code class="docutils literal notranslate"><span class="pre">QuantumModel.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumModel.forward"><code class="docutils literal notranslate"><span class="pre">QuantumModel.forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumModel.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">QuantumModel.get_diagram_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumModel.initialise_weights"><code class="docutils literal notranslate"><span class="pre">QuantumModel.initialise_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumModel.symbols"><code class="docutils literal notranslate"><span class="pre">QuantumModel.symbols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumModel.weights"><code class="docutils literal notranslate"><span class="pre">QuantumModel.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.__init__"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.fit"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.model"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.train_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_costs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.train_epoch_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_epoch_costs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.train_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.training_step"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.training_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.val_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_costs</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.val_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.validation_step"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.validation_step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Reader"><code class="docutils literal notranslate"><span class="pre">Reader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Reader.sentence2diagram"><code class="docutils literal notranslate"><span class="pre">Reader.sentence2diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Reader.sentences2diagrams"><code class="docutils literal notranslate"><span class="pre">Reader.sentences2diagrams()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.RewriteRule"><code class="docutils literal notranslate"><span class="pre">RewriteRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RewriteRule.__call__"><code class="docutils literal notranslate"><span class="pre">RewriteRule.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">RewriteRule.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RewriteRule.rewrite"><code class="docutils literal notranslate"><span class="pre">RewriteRule.rewrite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Rewriter"><code class="docutils literal notranslate"><span class="pre">Rewriter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Rewriter.__call__"><code class="docutils literal notranslate"><span class="pre">Rewriter.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Rewriter.__init__"><code class="docutils literal notranslate"><span class="pre">Rewriter.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Rewriter.add_rules"><code class="docutils literal notranslate"><span class="pre">Rewriter.add_rules()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Rewriter.available_rules"><code class="docutils literal notranslate"><span class="pre">Rewriter.available_rules()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.__init__"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.backward"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.backward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.load_state_dict"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.load_state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.model"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.project"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.project</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.state_dict"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.step"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer.update_hyper_params"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer.update_hyper_params()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Sim14Ansatz"><code class="docutils literal notranslate"><span class="pre">Sim14Ansatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Sim14Ansatz.__init__"><code class="docutils literal notranslate"><span class="pre">Sim14Ansatz.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Sim14Ansatz.params_shape"><code class="docutils literal notranslate"><span class="pre">Sim14Ansatz.params_shape()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Sim15Ansatz"><code class="docutils literal notranslate"><span class="pre">Sim15Ansatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Sim15Ansatz.__init__"><code class="docutils literal notranslate"><span class="pre">Sim15Ansatz.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Sim15Ansatz.params_shape"><code class="docutils literal notranslate"><span class="pre">Sim15Ansatz.params_shape()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.SimpleRewriteRule"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SimpleRewriteRule.__init__"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SimpleRewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SimpleRewriteRule.placeholder"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule.placeholder()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SimpleRewriteRule.rewrite"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule.rewrite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.SpacyTokeniser"><code class="docutils literal notranslate"><span class="pre">SpacyTokeniser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SpacyTokeniser.__init__"><code class="docutils literal notranslate"><span class="pre">SpacyTokeniser.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SpacyTokeniser.split_sentences"><code class="docutils literal notranslate"><span class="pre">SpacyTokeniser.split_sentences()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SpacyTokeniser.tokenise_sentences"><code class="docutils literal notranslate"><span class="pre">SpacyTokeniser.tokenise_sentences()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.SpiderAnsatz"><code class="docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SpiderAnsatz.__call__"><code class="docutils literal notranslate"><span class="pre">SpiderAnsatz.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.SpiderAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">SpiderAnsatz.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.StronglyEntanglingAnsatz"><code class="docutils literal notranslate"><span class="pre">StronglyEntanglingAnsatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.StronglyEntanglingAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">StronglyEntanglingAnsatz.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.StronglyEntanglingAnsatz.circuit"><code class="docutils literal notranslate"><span class="pre">StronglyEntanglingAnsatz.circuit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.StronglyEntanglingAnsatz.params_shape"><code class="docutils literal notranslate"><span class="pre">StronglyEntanglingAnsatz.params_shape()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Symbol"><code class="docutils literal notranslate"><span class="pre">Symbol</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Symbol.default_assumptions"><code class="docutils literal notranslate"><span class="pre">Symbol.default_assumptions</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Symbol.directed_cod"><code class="docutils literal notranslate"><span class="pre">Symbol.directed_cod</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Symbol.directed_dom"><code class="docutils literal notranslate"><span class="pre">Symbol.directed_dom</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Symbol.name"><code class="docutils literal notranslate"><span class="pre">Symbol.name</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Symbol.size"><code class="docutils literal notranslate"><span class="pre">Symbol.size</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Symbol.sort_key"><code class="docutils literal notranslate"><span class="pre">Symbol.sort_key()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.TensorAnsatz"><code class="docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TensorAnsatz.__call__"><code class="docutils literal notranslate"><span class="pre">TensorAnsatz.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TensorAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">TensorAnsatz.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.TketModel"><code class="docutils literal notranslate"><span class="pre">TketModel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TketModel.__init__"><code class="docutils literal notranslate"><span class="pre">TketModel.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TketModel.forward"><code class="docutils literal notranslate"><span class="pre">TketModel.forward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TketModel.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">TketModel.get_diagram_output()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TketModel.symbols"><code class="docutils literal notranslate"><span class="pre">TketModel.symbols</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TketModel.weights"><code class="docutils literal notranslate"><span class="pre">TketModel.weights</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Tokeniser"><code class="docutils literal notranslate"><span class="pre">Tokeniser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Tokeniser.split_sentences"><code class="docutils literal notranslate"><span class="pre">Tokeniser.split_sentences()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Tokeniser.tokenise_sentence"><code class="docutils literal notranslate"><span class="pre">Tokeniser.tokenise_sentence()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Tokeniser.tokenise_sentences"><code class="docutils literal notranslate"><span class="pre">Tokeniser.tokenise_sentences()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.Trainer"><code class="docutils literal notranslate"><span class="pre">Trainer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Trainer.__init__"><code class="docutils literal notranslate"><span class="pre">Trainer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Trainer.fit"><code class="docutils literal notranslate"><span class="pre">Trainer.fit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Trainer.load_training_checkpoint"><code class="docutils literal notranslate"><span class="pre">Trainer.load_training_checkpoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Trainer.save_checkpoint"><code class="docutils literal notranslate"><span class="pre">Trainer.save_checkpoint()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Trainer.training_step"><code class="docutils literal notranslate"><span class="pre">Trainer.training_step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Trainer.validation_step"><code class="docutils literal notranslate"><span class="pre">Trainer.validation_step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.TreeReader"><code class="docutils literal notranslate"><span class="pre">TreeReader</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReader.__init__"><code class="docutils literal notranslate"><span class="pre">TreeReader.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReader.available_modes"><code class="docutils literal notranslate"><span class="pre">TreeReader.available_modes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReader.sentence2diagram"><code class="docutils literal notranslate"><span class="pre">TreeReader.sentence2diagram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReader.tree2diagram"><code class="docutils literal notranslate"><span class="pre">TreeReader.tree2diagram()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode.HEIGHT"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.HEIGHT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode.NO_TYPE"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.NO_TYPE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode.RULE_ONLY"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.RULE_ONLY</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode.RULE_TYPE"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.RULE_TYPE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.VerbosityLevel"><code class="docutils literal notranslate"><span class="pre">VerbosityLevel</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.VerbosityLevel.PROGRESS"><code class="docutils literal notranslate"><span class="pre">VerbosityLevel.PROGRESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.VerbosityLevel.SUPPRESS"><code class="docutils literal notranslate"><span class="pre">VerbosityLevel.SUPPRESS</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.VerbosityLevel.TEXT"><code class="docutils literal notranslate"><span class="pre">VerbosityLevel.TEXT</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.VerbosityLevel.has_value"><code class="docutils literal notranslate"><span class="pre">VerbosityLevel.has_value()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.WebParseError"><code class="docutils literal notranslate"><span class="pre">WebParseError</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.WebParseError.__init__"><code class="docutils literal notranslate"><span class="pre">WebParseError.__init__()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.WebParser"><code class="docutils literal notranslate"><span class="pre">WebParser</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.WebParser.__init__"><code class="docutils literal notranslate"><span class="pre">WebParser.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.WebParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">WebParser.sentences2trees()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.create_pregroup_diagram"><code class="docutils literal notranslate"><span class="pre">create_pregroup_diagram()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.diagram2str"><code class="docutils literal notranslate"><span class="pre">diagram2str()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.is_pregroup_diagram"><code class="docutils literal notranslate"><span class="pre">is_pregroup_diagram()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.remove_cups"><code class="docutils literal notranslate"><span class="pre">remove_cups()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.remove_swaps"><code class="docutils literal notranslate"><span class="pre">remove_swaps()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-ansatz">lambeq.ansatz</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-bobcat">lambeq.bobcat</a></li>
@@ -270,13 +721,13 @@
 <li class="toctree-l2"><a class="reference internal" href="cli.html#rewrite-rules-and-ansatze">Rewrite rules and ansätze</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#other-options">Other options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#detailed-options">Detailed options</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#Positional Arguments">Positional Arguments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#Named Arguments">Named Arguments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#Output">Output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#Parser">Parser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#Rewriter">Rewriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#Ansätze">Ansätze</a></li>
-<li class="toctree-l3"><a class="reference internal" href="cli.html#Configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#positional-arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#named-arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#output">Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#parser">Parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#rewriter">Rewriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#ansätze">Ansätze</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cli.html#configuration">Configuration</a></li>
 </ul>
 </li>
 </ul>
@@ -313,7 +764,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

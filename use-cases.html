@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq use cases &mdash; lambeq 0.2.8 documentation</title>
+  <title>lambeq use cases &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -31,15 +30,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> lambeq
-            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -58,9 +61,18 @@
 <li class="toctree-l2"><a class="reference internal" href="#shot-based-simulation-of-quantum-circuits-on-classical-hardware"><span class="xref std std-term">Shot-based</span> simulation of quantum circuits on classical hardware</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#evaluation-of-quantum-circuits-on-a-quantum-computer">Evaluation of quantum circuits on a quantum computer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#evaluation-of-classical-tensor-based-models">Evaluation of classical tensor-based models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hybrid-classical-quantum-simulations-on-classical-hardware">Hybrid classical/quantum simulations on classical hardware</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -108,8 +120,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>lambeq use cases</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">lambeq use cases</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/use-cases.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -144,7 +156,7 @@
 }
 </style>
 <section id="lambeq-use-cases">
-<span id="sec-usecases"></span><h1>lambeq use cases<a class="headerlink" href="#lambeq-use-cases" title="Permalink to this headline"></a></h1>
+<span id="sec-usecases"></span><h1>lambeq use cases<a class="headerlink" href="#lambeq-use-cases" title="Permalink to this heading"></a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> covers a wide range of experiment use cases (<a class="reference internal" href="#fig-usecases"><span class="std std-numref">Fig. 4</span></a>) in three broad categories:</p>
 <ul class="simple">
 <li><p>quantum simulations on classical hardware;</p></li>
@@ -163,7 +175,7 @@
 <li><p><strong>noisy simulation</strong>: A noisy simulation uses a noise model that tries to approximate the negative effect of noise, errors, and environmental interference that are inherent in current <a class="reference internal" href="glossary.html#term-NISQ"><span class="xref std std-term">NISQ</span></a> devices. It is the closest you can get to an actual quantum run from a simulation running on classical hardware.</p></li>
 </ul>
 <p><a class="reference internal" href="#tbl-usecases"><span class="std std-numref">Table 1</span></a> provides a concise reference for the most common scenarios, together with the recommended <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> models and trainers to use for each of them, while the following subsections present each case in more detail.</p>
-<span id="tbl-usecases"></span><table class="colwidths-given docutils align-default" id="id3">
+<span id="tbl-usecases"></span><table class="docutils align-default" id="id3">
 <caption><span class="caption-number">Table 1 </span><span class="caption-text">Common training use cases.</span><a class="headerlink" href="#id3" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 50%" />
@@ -180,13 +192,15 @@
 <tr class="row-even"><td><p>Exact non-shot based simulation of quantum circuits on classical hardware</p></td>
 <td><div class="line-block">
 <div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a></div>
+<div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a></div>
 </div>
 </td>
 <td><p><a class="reference internal" href="#uc1"><span class="std std-ref">details</span></a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Noiseless shot-based simulation of quantum circuits on classical hardware</p></td>
 <td><div class="line-block">
-<div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a></div>
+<div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a>,</div>
+<div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a></div>
 </div>
 </td>
 <td><p><a class="reference internal" href="#uc2"><span class="std std-ref">details</span></a></p></td>
@@ -194,6 +208,7 @@
 <tr class="row-even"><td><p>Noisy shot-based simulation of quantum circuits on classical hardware</p></td>
 <td><div class="line-block">
 <div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a></div>
+<div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a></div>
 </div>
 </td>
 <td><p><a class="reference internal" href="#uc2"><span class="std std-ref">details</span></a></p></td>
@@ -201,6 +216,7 @@
 <tr class="row-odd"><td><p>Evaluation of quantum circuits on a quantum computer</p></td>
 <td><div class="line-block">
 <div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a></div>
+<div class="line"><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a></div>
 </div>
 </td>
 <td><p><a class="reference internal" href="#uc3"><span class="std std-ref">details</span></a></p></td>
@@ -209,20 +225,25 @@
 <td><p><a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a></p></td>
 <td><p><a class="reference internal" href="#uc4"><span class="std std-ref">details</span></a></p></td>
 </tr>
+<tr class="row-odd"><td><p>Hybrid classical/quantum simulation of quantum circuits on classical hardware</p></td>
+<td><p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a></p></td>
+<td><p><a class="reference internal" href="#uc5"><span class="std std-ref">details</span></a></p></td>
+</tr>
 </tbody>
 </table>
 <section id="exact-non-shot-based-simulation-of-quantum-circuits-on-classical-hardware">
-<span id="uc1"></span><h2>Exact (non <a class="reference internal" href="glossary.html#term-shots"><span class="xref std std-term">shot-based</span></a>) simulation of quantum circuits on classical hardware<a class="headerlink" href="#exact-non-shot-based-simulation-of-quantum-circuits-on-classical-hardware" title="Permalink to this headline"></a></h2>
+<span id="uc1"></span><h2>Exact (non <a class="reference internal" href="glossary.html#term-shots"><span class="xref std std-term">shot-based</span></a>) simulation of quantum circuits on classical hardware<a class="headerlink" href="#exact-non-shot-based-simulation-of-quantum-circuits-on-classical-hardware" title="Permalink to this heading"></a></h2>
 <dl class="field-list simple">
-<dt class="field-odd">Description</dt>
+<dt class="field-odd">Description<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Perform a simple, noiseless, non-shot-based simulation of a quantum run on classical hardware.</p>
 </dd>
-<dt class="field-even">Configuration</dt>
+<dt class="field-even">Configuration<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">When to use</dt>
+<dt class="field-odd">When to use<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>As a first proof-of-concept for a quantum model configuration</p></li>
 <li><p>As a simple baseline for comparing with quantum runs</p></li>
@@ -230,24 +251,26 @@
 </ul>
 </dd>
 </dl>
-<p>Computation with <a class="reference internal" href="glossary.html#term-NISQ"><span class="xref std std-term">NISQ</span></a> devices is slow, noisy and limited, so it is still not practical to do extensive training and comparative analyses on them. For this reason, and especially at the early stages of modelling, proofs-of-concept are usually obtained by running simulations on classical hardware. The simplest possible way to simulate a quantum computation on a classical computer is by using linear algebra; since quantum gates correspond to complex-valued tensors, each circuit can be represented as a tensor network where computation takes the form of tensor contraction. The output of the tensor network gives the ideal probability distribution of the measurement outcomes on a noise-free quantum computer and is only a rough approximation of the sampled probability distribution obtained from a <a class="reference internal" href="glossary.html#term-NISQ"><span class="xref std std-term">NISQ</span></a> device. An “exact simulation” of this form usually serves as a simple baseline or the first proof of concept for testing a quantum configuration, and in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is implemented by the <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> class.</p>
+<p>Computation with <a class="reference internal" href="glossary.html#term-NISQ"><span class="xref std std-term">NISQ</span></a> devices is slow, noisy and limited, so it is still not practical to do extensive training and comparative analyses on them. For this reason, and especially at the early stages of modelling, proofs-of-concept are usually obtained by running simulations on classical hardware. The simplest possible way to simulate a quantum computation on a classical computer is by using linear algebra; since quantum gates correspond to complex-valued tensors, each circuit can be represented as a tensor network where computation takes the form of tensor contraction. The output of the tensor network gives the ideal probability distribution of the measurement outcomes on a noise-free quantum computer and is only a rough approximation of the sampled probability distribution obtained from a <a class="reference internal" href="glossary.html#term-NISQ"><span class="xref std std-term">NISQ</span></a> device. An “exact simulation” of this form usually serves as a simple baseline or the first proof of concept for testing a quantum configuration, and in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is implemented by the <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> class, and by the <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with the attribute <code class="docutils literal notranslate"><span class="pre">backend_config={'backend'='default.qubit',</span> <span class="pre">'shots'=None}</span></code>.</p>
 <p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="models.html#sec-numpymodel"><span class="std std-ref">NumpyModel</span></a></p></li>
+<li><p><a class="reference internal" href="models.html#sec-pennylanemodel"><span class="std std-ref">PennyLaneModel</span></a></p></li>
 </ul>
 </section>
 <section id="shot-based-simulation-of-quantum-circuits-on-classical-hardware">
-<span id="uc2"></span><h2><a class="reference internal" href="glossary.html#term-shots"><span class="xref std std-term">Shot-based</span></a> simulation of quantum circuits on classical hardware<a class="headerlink" href="#shot-based-simulation-of-quantum-circuits-on-classical-hardware" title="Permalink to this headline"></a></h2>
+<span id="uc2"></span><h2><a class="reference internal" href="glossary.html#term-shots"><span class="xref std std-term">Shot-based</span></a> simulation of quantum circuits on classical hardware<a class="headerlink" href="#shot-based-simulation-of-quantum-circuits-on-classical-hardware" title="Permalink to this heading"></a></h2>
 <dl class="field-list simple">
-<dt class="field-odd">Description</dt>
-<dd class="field-odd"><p>Noisy or noiseless shot-based simulations on classical hardware using <a class="reference internal" href="glossary.html#term-tket"><span class="xref std std-term">tket</span></a> backend.</p>
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Noisy or noiseless shot-based simulations on classical hardware using <a class="reference internal" href="glossary.html#term-tket"><span class="xref std std-term">tket</span></a> or <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> backends.</p>
 </dd>
-<dt class="field-even">Configuration</dt>
+<dt class="field-even">Configuration<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">When to use</dt>
+<dt class="field-odd">When to use<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>As a faithful approximation of an actual quantum run</p></li>
 <li><p>When the available actual quantum machines are still small for the kind of experiment you have in mind</p></li>
@@ -270,23 +293,54 @@
 <span class="n">model</span> <span class="o">=</span> <span class="n">TketModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">,</span> <span class="n">backend_config</span><span class="o">=</span><span class="n">backend_config</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>As another example, simulating a noisy run on a Honeywell machine with a <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> would require the following initialisation:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">PennyLaneModel</span>
+
+<span class="n">all_circuits</span> <span class="o">=</span> <span class="n">train_circuits</span> <span class="o">+</span> <span class="n">dev_circuits</span> <span class="o">+</span> <span class="n">test_circuits</span>
+
+<span class="n">backend_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;backend&#39;</span><span class="p">:</span> <span class="s1">&#39;honeywell.hqs&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;device&#39;</span><span class="p">:</span> <span class="s1">&#39;H1&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;shots&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+                  <span class="s1">&#39;probabilities&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="s1">&#39;normalize&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">,</span>
+                                     <span class="n">backend_config</span><span class="o">=</span><span class="n">backend_config</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you have not previously done so, it will be necessary to save your Honeywell account email address to the PennyLane configuration file in order to use the ‘honeywell.hqs’ backend:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pennylane</span> <span class="k">as</span> <span class="nn">qml</span>
+
+<span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="p">[</span><span class="s2">&quot;honeywell.global.user_email&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;my_Honeywell/Quantinuum_account_email&quot;</span>
+<span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">qml</span><span class="o">.</span><span class="n">default_config</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Using a noise model in our simulations is not always necessary, especially in the early stages of modelling when it is often useful to assess the expected performance of the model in ideal conditions, ignoring the effects of noise and environmental interference. By default <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> uses a noiseless simulation, and a shot-based simulation can be initialised as below:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">PennyLaneModel</span>
+
+<span class="n">backend_config</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;shots&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">}</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">,</span>
+                                     <span class="n">backend_config</span><span class="o">=</span><span class="n">backend_config</span><span class="p">)</span>
+</pre></div>
+</div>
 <p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="models.html#sec-tketmodel"><span class="std std-ref">TketModel</span></a></p></li>
+<li><p><a class="reference internal" href="models.html#sec-pennylanemodel"><span class="std std-ref">PennyLaneModel</span></a></p></li>
 </ul>
 </section>
 <section id="evaluation-of-quantum-circuits-on-a-quantum-computer">
-<span id="uc3"></span><h2>Evaluation of quantum circuits on a quantum computer<a class="headerlink" href="#evaluation-of-quantum-circuits-on-a-quantum-computer" title="Permalink to this headline"></a></h2>
+<span id="uc3"></span><h2>Evaluation of quantum circuits on a quantum computer<a class="headerlink" href="#evaluation-of-quantum-circuits-on-a-quantum-computer" title="Permalink to this heading"></a></h2>
 <dl class="field-list simple">
-<dt class="field-odd">Description</dt>
-<dd class="field-odd"><p>Perform actual quantum runs using <a class="reference internal" href="glossary.html#term-tket"><span class="xref std std-term">tket</span></a> backend.</p>
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Perform actual quantum runs using <a class="reference internal" href="glossary.html#term-tket"><span class="xref std std-term">tket</span></a> or <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> backends.</p>
 </dd>
-<dt class="field-even">Configuration</dt>
+<dt class="field-even">Configuration<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>.</p></li>
 </ul>
 </dd>
-<dt class="field-odd">When to use</dt>
+<dt class="field-odd">When to use<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The real thing, use it whenever possible!</p>
 </dd>
 </dl>
@@ -295,7 +349,7 @@
 <p class="admonition-title">Note</p>
 <p>While providers usually offer free plans which allow some limited access to their resources, depending on your experimental needs a paid subscription might be required. <a class="reference internal" href="#tbl-quantumservices"><span class="std std-numref">Table 2</span></a> summarises some popular quantum platforms that are currently available to the public.</p>
 </div>
-<span id="tbl-quantumservices"></span><table class="colwidths-given docutils align-center" id="id4">
+<span id="tbl-quantumservices"></span><table class="docutils align-center" id="id4">
 <caption><span class="caption-number">Table 2 </span><span class="caption-text">Quantum platforms.</span><a class="headerlink" href="#id4" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 33%" />
@@ -339,18 +393,19 @@
 <p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="models.html#sec-tketmodel"><span class="std std-ref">TketModel</span></a></p></li>
+<li><p><a class="reference internal" href="models.html#sec-pennylanemodel"><span class="std std-ref">PennyLaneModel</span></a></p></li>
 </ul>
 </section>
 <section id="evaluation-of-classical-tensor-based-models">
-<span id="uc4"></span><h2>Evaluation of classical tensor-based models<a class="headerlink" href="#evaluation-of-classical-tensor-based-models" title="Permalink to this headline"></a></h2>
+<span id="uc4"></span><h2>Evaluation of classical tensor-based models<a class="headerlink" href="#evaluation-of-classical-tensor-based-models" title="Permalink to this heading"></a></h2>
 <dl class="field-list simple">
-<dt class="field-odd">Description</dt>
+<dt class="field-odd">Description<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Perform tensor-based experiments on classical hardware using <a class="reference internal" href="glossary.html#term-PyTorch"><span class="xref std std-term">PyTorch</span></a>.</p>
 </dd>
-<dt class="field-even">Configuration</dt>
+<dt class="field-even">Configuration<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>.</p>
 </dd>
-<dt class="field-odd">When to use</dt>
+<dt class="field-odd">When to use<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p>As a proof-of-concept for validating sentence modelling at a high level</p></li>
 <li><p>As a classical baseline to compare with similarly structured quantum models</p></li>
@@ -363,6 +418,28 @@
 <p class="rubric">See also:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="models.html#sec-pytorchmodel"><span class="std std-ref">PytorchModel</span></a></p></li>
+</ul>
+</section>
+<section id="hybrid-classical-quantum-simulations-on-classical-hardware">
+<span id="uc5"></span><h2>Hybrid classical/quantum simulations on classical hardware<a class="headerlink" href="#hybrid-classical-quantum-simulations-on-classical-hardware" title="Permalink to this heading"></a></h2>
+<dl class="field-list simple">
+<dt class="field-odd">Description<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Hybrid neural/classical/quantum configurations based on <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> and <a class="reference internal" href="glossary.html#term-PyTorch"><span class="xref std std-term">PyTorch</span></a>.</p>
+</dd>
+<dt class="field-even">Configuration<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>.</p>
+</dd>
+<dt class="field-odd">When to use<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p>To mix neural nets (or other classical models) and quantum circuits into hybrid models</p></li>
+<li><p>To exploit the rich functionality and options provided by the <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> toolkit</p></li>
+</ul>
+</dd>
+</dl>
+<p><a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> is currently one of the most complete quantum ML toolkits available, covering almost every possible training use case. One of its big strengths is allowing the combination of quantum and classical parts in models, in what is usually referred to as <cite>hybrid</cite> QML. PennyLane integrates smoothly with PyTorch; for example in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> it is possible to use a <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> in conjunction with a <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> to perform a wide range of experiments.</p>
+<p class="rubric">See also:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="models.html#sec-pennylanemodel"><span class="std std-ref">PennyLaneModel</span></a></p></li>
 </ul>
 </section>
 </section>
@@ -378,7 +455,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

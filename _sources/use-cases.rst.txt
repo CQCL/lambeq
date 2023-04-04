@@ -28,11 +28,16 @@ The above figure introduces a couple of concepts that might need further explana
    :header: "Use case", "Configurations", ""
    :widths: 45, 40, 5
 
-   "Exact non-shot based simulation of quantum circuits on classical hardware", "| :py:class:`.NumpyModel` with :py:class:`.QuantumTrainer`", ":ref:`details <uc1>`"
-   "Noiseless shot-based simulation of quantum circuits on classical hardware", "| :py:class:`.TketModel` with :py:class:`.QuantumTrainer`", ":ref:`details <uc2>`"
-   "Noisy shot-based simulation of quantum circuits on classical hardware", "| :py:class:`.TketModel` with :py:class:`.QuantumTrainer`", ":ref:`details <uc2>`"
-   "Evaluation of quantum circuits on a quantum computer", "| :py:class:`.TketModel` with :py:class:`.QuantumTrainer`", ":ref:`details <uc3>`"
+   "Exact non-shot based simulation of quantum circuits on classical hardware", "| :py:class:`.NumpyModel` with :py:class:`.QuantumTrainer`
+   | :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`", ":ref:`details <uc1>`"
+   "Noiseless shot-based simulation of quantum circuits on classical hardware", "| :py:class:`.TketModel` with :py:class:`.QuantumTrainer`,
+   | :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`", ":ref:`details <uc2>`"
+   "Noisy shot-based simulation of quantum circuits on classical hardware", "| :py:class:`.TketModel` with :py:class:`.QuantumTrainer`
+   | :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`", ":ref:`details <uc2>`"
+   "Evaluation of quantum circuits on a quantum computer", "| :py:class:`.TketModel` with :py:class:`.QuantumTrainer`
+   | :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`", ":ref:`details <uc3>`"
    "Evaluation of classical, tensor-based models", ":py:class:`.PytorchModel` with :py:class:`.PytorchTrainer`", ":ref:`details <uc4>`"
+   "Hybrid classical/quantum simulation of quantum circuits on classical hardware", ":py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`", ":ref:`details <uc5>`"
 
 .. _uc1:
 
@@ -42,16 +47,18 @@ Exact (non :term:`shot-based <shots>`) simulation of quantum circuits on classic
    Perform a simple, noiseless, non-shot-based simulation of a quantum run on classical hardware.
 :Configuration:
    - :py:class:`.NumpyModel` with :py:class:`.QuantumTrainer`.
+   - :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`.
 :When to use:
    - As a first proof-of-concept for a quantum model configuration
    - As a simple baseline for comparing with quantum runs
    - When fast training speeds are required
 
-Computation with :term:`NISQ` devices is slow, noisy and limited, so it is still not practical to do extensive training and comparative analyses on them. For this reason, and especially at the early stages of modelling, proofs-of-concept are usually obtained by running simulations on classical hardware. The simplest possible way to simulate a quantum computation on a classical computer is by using linear algebra; since quantum gates correspond to complex-valued tensors, each circuit can be represented as a tensor network where computation takes the form of tensor contraction. The output of the tensor network gives the ideal probability distribution of the measurement outcomes on a noise-free quantum computer and is only a rough approximation of the sampled probability distribution obtained from a :term:`NISQ` device. An "exact simulation" of this form usually serves as a simple baseline or the first proof of concept for testing a quantum configuration, and in ``lambeq`` is implemented by the :py:class:`.NumpyModel` class.
+Computation with :term:`NISQ` devices is slow, noisy and limited, so it is still not practical to do extensive training and comparative analyses on them. For this reason, and especially at the early stages of modelling, proofs-of-concept are usually obtained by running simulations on classical hardware. The simplest possible way to simulate a quantum computation on a classical computer is by using linear algebra; since quantum gates correspond to complex-valued tensors, each circuit can be represented as a tensor network where computation takes the form of tensor contraction. The output of the tensor network gives the ideal probability distribution of the measurement outcomes on a noise-free quantum computer and is only a rough approximation of the sampled probability distribution obtained from a :term:`NISQ` device. An "exact simulation" of this form usually serves as a simple baseline or the first proof of concept for testing a quantum configuration, and in ``lambeq`` is implemented by the :py:class:`.NumpyModel` class, and by the :py:class:`.PennyLaneModel` with the attribute ``backend_config={'backend'='default.qubit', 'shots'=None}``.
 
 .. rubric:: See also:
 
 - :ref:`sec-numpymodel`
+- :ref:`sec-pennylanemodel`
 
 .. _uc2:
 
@@ -59,9 +66,10 @@ Computation with :term:`NISQ` devices is slow, noisy and limited, so it is still
 -------------------------------------------------------------------------------
 
 :Description:
-   Noisy or noiseless shot-based simulations on classical hardware using :term:`tket` backend.
+   Noisy or noiseless shot-based simulations on classical hardware using :term:`tket` or :term:`PennyLane` backends.
 :Configuration:
    - :py:class:`.TketModel` with :py:class:`.QuantumTrainer`.
+   - :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`.
 :When to use:
    - As a faithful approximation of an actual quantum run
    - When the available actual quantum machines are still small for the kind of experiment you have in mind
@@ -84,9 +92,46 @@ When a faithful approximation of a quantum run is needed, one should use a prope
    }
    model = TketModel.from_diagrams(all_circuits, backend_config=backend_config)
 
+As another example, simulating a noisy run on a Honeywell machine with a :py:class:`.PennyLaneModel` would require the following initialisation:
+
+.. code-block:: python
+
+   from lambeq import PennyLaneModel
+
+   all_circuits = train_circuits + dev_circuits + test_circuits
+
+   backend_config = {'backend': 'honeywell.hqs',
+                     'device': 'H1',
+                     'shots': 1000,
+                     'probabilities': True,
+                     'normalize': True}
+   model = PennyLaneModel.from_diagrams(all_circuits,
+                                        backend_config=backend_config)
+
+If you have not previously done so, it will be necessary to save your Honeywell account email address to the PennyLane configuration file in order to use the 'honeywell.hqs' backend:
+
+.. code-block:: python
+
+   import pennylane as qml
+
+   qml.default_config["honeywell.global.user_email"] = "my_Honeywell/Quantinuum_account_email"
+   qml.default_config.save(qml.default_config.path)
+
+
+Using a noise model in our simulations is not always necessary, especially in the early stages of modelling when it is often useful to assess the expected performance of the model in ideal conditions, ignoring the effects of noise and environmental interference. By default :py:class:`.PennyLaneModel` uses a noiseless simulation, and a shot-based simulation can be initialised as below:
+
+.. code-block:: python
+
+   from lambeq import PennyLaneModel
+
+   backend_config = {'shots': 1000}
+   model = PennyLaneModel.from_diagrams(all_circuits,
+                                        backend_config=backend_config)
+
 .. rubric:: See also:
 
 - :ref:`sec-tketmodel`
+- :ref:`sec-pennylanemodel`
 
 .. _uc3:
 
@@ -94,9 +139,10 @@ Evaluation of quantum circuits on a quantum computer
 ----------------------------------------------------
 
 :Description:
-   Perform actual quantum runs using :term:`tket` backend.
+   Perform actual quantum runs using :term:`tket` or :term:`PennyLane` backends.
 :Configuration:
    - :py:class:`.TketModel` with :py:class:`.QuantumTrainer`.
+   - :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`.
 :When to use:
    The real thing, use it whenever possible!
 
@@ -125,6 +171,7 @@ As soon as you are satisfied with the results of the simulations, it's time for 
 .. rubric:: See also:
 
 - :ref:`sec-tketmodel`
+- :ref:`sec-pennylanemodel`
 
 .. _uc4:
 
@@ -147,3 +194,22 @@ Furthermore, using the PyTorch backend via :py:class:`.PytorchModel` provides ac
 .. rubric:: See also:
 
 - :ref:`sec-pytorchmodel`
+
+.. _uc5:
+
+Hybrid classical/quantum simulations on classical hardware
+----------------------------------------------------------
+
+:Description:
+   Hybrid neural/classical/quantum configurations based on :term:`PennyLane` and :term:`PyTorch`.
+:Configuration:
+   :py:class:`.PennyLaneModel` with :py:class:`.PytorchTrainer`.
+:When to use:
+   - To mix neural nets (or other classical models) and quantum circuits into hybrid models
+   - To exploit the rich functionality and options provided by the :term:`PennyLane` toolkit
+
+:term:`PennyLane` is currently one of the most complete quantum ML toolkits available, covering almost every possible training use case. One of its big strengths is allowing the combination of quantum and classical parts in models, in what is usually referred to as `hybrid` QML. PennyLane integrates smoothly with PyTorch; for example in ``lambeq`` it is possible to use a :py:class:`.PennyLaneModel` in conjunction with a :py:class:`.PytorchTrainer` to perform a wide range of experiments.
+
+.. rubric:: See also:
+
+- :ref:`sec-pennylanemodel`

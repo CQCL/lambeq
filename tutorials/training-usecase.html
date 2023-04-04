@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A complete use case &mdash; lambeq 0.2.8 documentation</title>
+  <title>A complete use case &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,15 +32,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> lambeq
-            <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -57,6 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
@@ -123,9 +134,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../manual_training.html">Advanced: Manual training</a> &raquo;</li>
-      <li>A complete use case</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../manual_training.html">Advanced: Manual training</a></li>
+      <li class="breadcrumb-item active">A complete use case</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/training-usecase.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -245,10 +256,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -350,6 +362,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -358,10 +371,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -373,12 +390,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -406,12 +426,12 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="A-complete-use-case">
-<h1>A complete use case<a class="headerlink" href="#A-complete-use-case" title="Permalink to this headline"></a></h1>
+<h1>A complete use case<a class="headerlink" href="#A-complete-use-case" title="Permalink to this heading"></a></h1>
 <p>In this section we present a complete use case of manual training (without using the <a class="reference internal" href="../lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package), based on the meaning classification dataset introduced in <a class="reference internal" href="../bibliography.html#lea2021" id="id1"><span>[Lea2021]</span></a>. The goal is to classify simple sentences (such as “skillful programmer creates software” and “chef prepares delicious meal”) into two categories, food or IT. The dataset consists of 130 sentences created using a simple context-free grammar.</p>
 <p>We will use a <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.SpiderAnsatz" title="lambeq.ansatz.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a> to split large tensors into chains of smaller ones. For differentiation we will use JAX, and we will apply simple gradient-descent optimisation to train the tensors.</p>
 <p><a class="reference download internal" download="" href="../_downloads/0fc45addc2a2b89eab3641d203f565b7/training-usecase.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
 <section id="Preparation">
-<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this headline"></a></h2>
+<h2>Preparation<a class="headerlink" href="#Preparation" title="Permalink to this heading"></a></h2>
 <p>We start with a few essential imports.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -437,7 +457,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Let’s read the datasets:</p>
 <section id="Input-data">
-<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this headline"></a></h3>
+<h3>Input data<a class="headerlink" href="#Input-data" title="Permalink to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -519,7 +539,7 @@ DeviceArray([[1., 0.],
 </div>
 </section>
 <section id="Creating-and-parameterising-diagrams">
-<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this headline"></a></h3>
+<h3>Creating and parameterising diagrams<a class="headerlink" href="#Creating-and-parameterising-diagrams" title="Permalink to this heading"></a></h3>
 <p>First step is to convert sentences into <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a>:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -580,7 +600,7 @@ DeviceArray([[1., 0.],
 </section>
 </section>
 <section id="Creating-a-vocabulary">
-<h2>Creating a vocabulary<a class="headerlink" href="#Creating-a-vocabulary" title="Permalink to this headline"></a></h2>
+<h2>Creating a vocabulary<a class="headerlink" href="#Creating-a-vocabulary" title="Permalink to this heading"></a></h2>
 <p>We are now ready to create a vocabulary.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
@@ -611,9 +631,9 @@ array([0.17825215, 0.02690565])
 </div>
 </section>
 <section id="Training">
-<h2>Training<a class="headerlink" href="#Training" title="Permalink to this headline"></a></h2>
+<h2>Training<a class="headerlink" href="#Training" title="Permalink to this heading"></a></h2>
 <section id="Define-loss-function">
-<h3>Define loss function<a class="headerlink" href="#Define-loss-function" title="Permalink to this headline"></a></h3>
+<h3>Define loss function<a class="headerlink" href="#Define-loss-function" title="Permalink to this heading"></a></h3>
 <p>This is a binary classification task, so we will use binary cross entropy as the loss.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -654,7 +674,7 @@ array([0.17825215, 0.02690565])
 </div>
 </section>
 <section id="Train">
-<h3>Train<a class="headerlink" href="#Train" title="Permalink to this headline"></a></h3>
+<h3>Train<a class="headerlink" href="#Train" title="Permalink to this heading"></a></h3>
 <p>We are now ready to start training. The following loop computes gradients and  uses them to update the tensors associated with the <a class="reference internal" href="../glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
@@ -696,7 +716,7 @@ Epoch 90 - loss 0.0027179380413144827
 </section>
 </section>
 <section id="Evaluate">
-<h2>Evaluate<a class="headerlink" href="#Evaluate" title="Permalink to this headline"></a></h2>
+<h2>Evaluate<a class="headerlink" href="#Evaluate" title="Permalink to this heading"></a></h2>
 <p>Finally, we use the trained model on the test dataset:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -728,7 +748,7 @@ Accuracy on test set: 0.9
 </div>
 </section>
 <section id="Working-with-quantum-circuits">
-<h2>Working with quantum circuits<a class="headerlink" href="#Working-with-quantum-circuits" title="Permalink to this headline"></a></h2>
+<h2>Working with quantum circuits<a class="headerlink" href="#Working-with-quantum-circuits" title="Permalink to this heading"></a></h2>
 <p>The process when working with <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a> is very similar, with two important differences:</p>
 <ol class="arabic simple">
 <li><p>The parameterisable part of the circuit is an array of parameters, as described in Section <a class="reference internal" href="training-symbols.html#Circuit-symbols"><span class="std std-ref">Circuit Symbols</span></a>, instead of tensors associated to words.</p></li>
@@ -755,7 +775,7 @@ Accuracy on test set: 0.9
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

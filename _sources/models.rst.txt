@@ -47,6 +47,62 @@ To use the :py:class:`.NumpyModel` with ``jit`` mode, you need to install ``lamb
 
 - :ref:`uc1`
 
+.. _sec-pennylanemodel:
+
+PennyLaneModel
+--------------
+
+:py:class:`.PennyLaneModel` uses :term:`PennyLane` and :term:`PyTorch` to allow classical-quantum machine learning experiments. With ``probabilities=False``, :py:class:`.PennyLaneModel` performs a state vector simulation, while with ``probabilties=True`` it performs a probability simulation. The state vector and probability simulations correspond to DisCoPy's unitary and density matrix simulations.
+
+To run the model on real quantum hardware, ``probabilities=True`` must be used, so that the ``lambeq`` circuits are optimized using the parameter-shift rule to calculate the gradients.
+
+:py:class:`.PennyLaneModel` can be used to optimize simulated circuits using exact backpropagation with PyTorch, which may give improved results over using :py:class:`.NumpyModel` with :py:class:`.SPSAOptimizer`. However, this optimization process is not possible on real quantum hardware, so for more realistic results the parameter-shift rule should be preferred.
+
+To construct a hybrid model that passes the output of a circuit through a classical neural network, it is only necessary to subclass :py:class:`.PennyLaneModel` and modify the :py:meth:`~.PennyLaneModel.__init__` method to store the classical PyTorch parameters, and the :py:meth:`~.PennyLaneModel.forward` method to pass the result of :py:meth:`~.PennyLaneModel.get_diagram_output` to the neural network. For example:
+
+.. code-block:: python
+
+   import torch
+   from lambeq import PennyLaneModel
+
+   class MyCustomModel(PennyLaneModel):
+      def __init__(self, **kwargs):
+         super().__init__(**kwargs)
+         self.net = torch.nn.Linear(2, 2)
+
+      def forward(self, input):
+         preds = self.get_diagram_output(input)
+         return self.net(preds)
+
+This neural net can be real- or complex-valued, though this affects the non-linearities that can be used.
+
+:py:class:`.PennyLaneModel` can be used with the :py:class:`.PytorchTrainer`, or a standard PyTorch training loop.
+
+By using different backend configurations, :py:class:`.PennyLaneModel` can be used for several different use-cases, listed below:
+
+.. _tbl-plane-usecases:
+.. csv-table:: Backend configurations for different use cases.
+   :header: "Use case", "Configurations"
+   :widths: 25, 50
+
+   "Exact non :term:`shot-based <shots>` simulation with state outputs", "``{'backend': 'default.qubit', 'probabilities'=False}``"
+   "Exact non shot-based simulation with probability outputs", "``{'backend': 'default.qubit', 'probabilities'=True}``"
+   "Noiseless shot-based simulation", "``{'backend': 'default.qubit', 'shots'=1000, 'probabilities'=True}``"
+   "Noisy shot-based simulation on local hardware", "``{'backend': 'qiskit.aer', noise_model=my_noise_model, 'shots'=1000, 'probabilities'=True}``, where ``my_noise_model`` is an AER :py:class:`NoiseModel`."
+   "Noisy shot-based simulation on cloud-based emulators", "| ``{'backend': 'qiskit.ibmq', 'device'='ibmq_qasm_simulator', 'shots'=1000, 'probabilities'=True}``
+   | ``{'backend': 'honeywell.hqs', device=('H1-1E' or 'H1-2E'), 'shots'=1000, 'probabilities'=True}``"
+   "Evaluation of quantum circuits on a quantum computer", "| ``{'backend': 'qiskit.ibmq', 'device'='ibmq_hardware_device', 'shots'=1000, 'probabilities'=True}``, where ``ibmq_hardware_device`` is one that you have access to via your IBMQ account.
+   | ``{'backend': 'honeywell.hqs', device=('H1' or 'H1-1' or 'H1-2'), 'shots'=1000, 'probabilities'=True}``"
+
+All of these backends are compatible with hybrid quantum-classical models. Note that using quantum hardware or cloud-based emulators are much slower than local simulations.
+
+.. rubric:: See also the following use cases:
+
+- :ref:`uc1`
+- :ref:`uc2`
+- :ref:`uc3`
+- :ref:`uc5`
+
 .. _sec-pytorchmodel:
 
 PytorchModel

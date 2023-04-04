@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Release notes &mdash; lambeq 0.2.8 documentation</title>
+  <title>Release notes &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,15 +29,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> lambeq
-            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -54,6 +57,14 @@
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -80,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#rel-0-3-0">0.3.0</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rel-0-2-8">0.2.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rel-0-2-7">0.2.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#rel-0-2-6">0.2.6</a></li>
@@ -115,8 +127,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Release notes</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Release notes</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/release_notes.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -151,9 +163,39 @@
 }
 </style>
 <section id="release-notes">
-<span id="sec-release-notes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this headline"></a></h1>
+<span id="sec-release-notes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this heading"></a></h1>
+<section id="rel-0-3-0">
+<span id="id2"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.0">0.3.0</a><a class="headerlink" href="#rel-0-3-0" title="Permalink to this heading"></a></h2>
+<p>Added:</p>
+<ul class="simple">
+<li><p>Support for hybrid quantum-classical models using the <a class="reference internal" href="root-api.html#lambeq.PennyLaneModel" title="lambeq.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a>. <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> is a powerful QML library that allows the development of hybrid ML models by hooking numerically determined gradients of parametrised quantum circuits (PQCs) to the autograd modules of ML libraries like PyTorch or TensorFlow.</p></li>
+<li><p>Add lambeq-native loss functions <a class="reference internal" href="root-api.html#lambeq.LossFunction" title="lambeq.LossFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">LossFunction</span></code></a> to be used in conjunction with the <a class="reference internal" href="root-api.html#lambeq.QuantumTrainer" title="lambeq.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a>. Currently, we support the <a class="reference internal" href="root-api.html#lambeq.CrossEntropyLoss" title="lambeq.CrossEntropyLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossEntropyLoss</span></code></a>, <a class="reference internal" href="root-api.html#lambeq.BinaryCrossEntropyLoss" title="lambeq.BinaryCrossEntropyLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryCrossEntropyLoss</span></code></a>, and the <a class="reference internal" href="root-api.html#lambeq.MSELoss" title="lambeq.MSELoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">MSELoss</span></code></a> loss functions.</p></li>
+<li><p>Python 3.11 support.</p></li>
+<li><p>An extensive <a class="reference internal" href="nlp-intro.html#sec-nlp-intro"><span class="std std-ref">NLP-101 tutorial</span></a>, covering basic definitions, text preprocessing, tokenisation, handling of unknown words, machine learning best practices, text classification, and other concepts.</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>Improve tensor initialisation in the <a class="reference internal" href="root-api.html#lambeq.PytorchModel" title="lambeq.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a>. This enables the training of larger models as all parameters are initialised such that the expected L2 norm of all output vectors is approximately 1. We use a symmetric uniform distribution where the range depends on the output dimension (flow) of each box.</p></li>
+<li><p>Improve the fail-safety of the <a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a> model download method by adding hash checks and atomic transactions.</p></li>
+<li><p>Use type union expression <code class="docutils literal notranslate"><span class="pre">|</span></code> instead of <code class="docutils literal notranslate"><span class="pre">Union</span></code> in type hints.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">raise</span> <span class="pre">from</span></code> syntax for better exception handling.</p></li>
+<li><p>Update the requirements for the documentation.</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Fixed bug in <a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer" title="lambeq.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a> triggered by the usage of masked arrays.</p></li>
+<li><p>Fixed test for <a class="reference internal" href="root-api.html#lambeq.NumpyModel" title="lambeq.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> that was failing due to a change in the behaviour of Jax.</p></li>
+<li><p>Fixed brittle quote-wrapped strings in error messages.</p></li>
+<li><p>Fixed 400 response code during Bobcat model download.</p></li>
+<li><p>Fixed bug where <a class="reference internal" href="root-api.html#lambeq.CircuitAnsatz" title="lambeq.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> would add empty discards and postselections to the circuit.</p></li>
+</ul>
+<p>Removed:</p>
+<ul class="simple">
+<li><p>Removed install script due to deprecation.</p></li>
+</ul>
+</section>
 <section id="rel-0-2-8">
-<span id="id2"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.8">0.2.8</a><a class="headerlink" href="#rel-0-2-8" title="Permalink to this headline"></a></h2>
+<span id="id4"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.8">0.2.8</a><a class="headerlink" href="#rel-0-2-8" title="Permalink to this heading"></a></h2>
 <p>Changed:</p>
 <ul class="simple">
 <li><p>Improved the performance of <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> when using Jax JIT-compilation.</p></li>
@@ -166,7 +208,7 @@
 </ul>
 </section>
 <section id="rel-0-2-7">
-<span id="id4"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.7">0.2.7</a><a class="headerlink" href="#rel-0-2-7" title="Permalink to this headline"></a></h2>
+<span id="id6"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.7">0.2.7</a><a class="headerlink" href="#rel-0-2-7" title="Permalink to this heading"></a></h2>
 <p>Added:</p>
 <ul class="simple">
 <li><p>Added support for Japanese to <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.DepCCGParser" title="lambeq.text2diagram.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">DepCCGParser</span></code></a> (credit: <a class="reference external" href="https://github.com/CQCL/lambeq/pull/24">KentaroAOKI</a>).</p></li>
@@ -203,15 +245,15 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-6">
-<span id="id6"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.6">0.2.6</a><a class="headerlink" href="#rel-0-2-6" title="Permalink to this headline"></a></h2>
+<span id="id8"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.6">0.2.6</a><a class="headerlink" href="#rel-0-2-6" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>Added a strict pregroups mode to the CLI. With this mode enabled, all swaps are removed from the output string diagrams by changing the ordering of the atomic types, converting them into a valid <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> form as given in <a class="reference internal" href="bibliography.html#lam1999" id="id7"><span>[Lam1999]</span></a>.</p></li>
+<li><p>Added a strict pregroups mode to the CLI. With this mode enabled, all swaps are removed from the output string diagrams by changing the ordering of the atomic types, converting them into a valid <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> form as given in <a class="reference internal" href="bibliography.html#lam1999" id="id9"><span>[Lam1999]</span></a>.</p></li>
 <li><p>Adjusted the behaviour of output normalisation in quantum models. Now, <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> always returns probabilities instead of amplitudes.</p></li>
 <li><p>Removed the prediction from the output of the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a>, which now returns just the loss.</p></li>
 </ul>
 </section>
 <section id="rel-0-2-5">
-<span id="id9"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.5">0.2.5</a><a class="headerlink" href="#rel-0-2-5" title="Permalink to this headline"></a></h2>
+<span id="id11"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.5">0.2.5</a><a class="headerlink" href="#rel-0-2-5" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Added a “swapping” unary rule box to handle unary rules that change the direction of composition, improving the coverage of the <a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a>.</p></li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">--version</span></code> flag to the CLI.</p></li>
@@ -223,7 +265,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-4">
-<span id="id11"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.4">0.2.4</a><a class="headerlink" href="#rel-0-2-4" title="Permalink to this headline"></a></h2>
+<span id="id13"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.4">0.2.4</a><a class="headerlink" href="#rel-0-2-4" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Fix a bug that caused the <a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a> and the <a class="reference internal" href="root-api.html#lambeq.WebParser" title="lambeq.WebParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebParser</span></code></a> to trigger an SSL certificate error using Windows.</p></li>
 <li><p>Fix false positives in assigning conjunction rule using the <a class="reference internal" href="root-api.html#lambeq.CCGBankParser" title="lambeq.CCGBankParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a>. The rule <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">+</span> <span class="pre">X[conj]</span> <span class="pre">-&gt;</span> <span class="pre">X[conj]</span></code> is a case of removing left punctuation, but was being assigned conjunction erroneously.</p></li>
@@ -231,7 +273,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-3">
-<span id="id13"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.3">0.2.3</a><a class="headerlink" href="#rel-0-2-3" title="Permalink to this headline"></a></h2>
+<span id="id15"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.3">0.2.3</a><a class="headerlink" href="#rel-0-2-3" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Fix a bug that raised a <code class="docutils literal notranslate"><span class="pre">dtype</span></code> error when using the <a class="reference internal" href="root-api.html#lambeq.TketModel" title="lambeq.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> on Windows.</p></li>
 <li><p>Fix a bug that caused the normalisation of scalar outputs of circuits without open wires using a <a class="reference internal" href="root-api.html#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a>.</p></li>
@@ -244,18 +286,18 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-2">
-<span id="id15"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.2">0.2.2</a><a class="headerlink" href="#rel-0-2-2" title="Permalink to this headline"></a></h2>
+<span id="id17"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.2">0.2.2</a><a class="headerlink" href="#rel-0-2-2" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Add support for Python 3.10.</p></li>
 <li><p>Unify class hierarchies for parsers and readers: <a class="reference internal" href="root-api.html#lambeq.CCGParser" title="lambeq.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGParser</span></code></a> is now a subclass of <a class="reference internal" href="root-api.html#lambeq.Reader" title="lambeq.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> and placed in the common package <a class="reference internal" href="lambeq.text2diagram.html#module-lambeq.text2diagram" title="lambeq.text2diagram"><code class="xref py py-mod docutils literal notranslate"><span class="pre">text2diagram</span></code></a>. The old packages <code class="xref py py-mod docutils literal notranslate"><span class="pre">reader</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code> are no longer available. Compatibility problems with previous versions should be minimal, since from Release <a class="reference internal" href="#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> and onwards all <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> classes can be imported from the global namespace.</p></li>
-<li><p>Add <a class="reference internal" href="lambeq.rewrite.html#lambeq.rewrite.CurryRewriteRule" title="lambeq.rewrite.CurryRewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CurryRewriteRule</span></code></a>, which uses map-state duality in order to remove adjoint types from the boxes of a diagram. When used in conjunction with <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram.normal_form" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a>, this removes cups from the diagram, eliminating post-selection.</p></li>
+<li><p>Add <a class="reference internal" href="lambeq.rewrite.html#lambeq.rewrite.CurryRewriteRule" title="lambeq.rewrite.CurryRewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">CurryRewriteRule</span></code></a>, which uses map-state duality in order to remove adjoint types from the boxes of a diagram. When used in conjunction with <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.rigid.Diagram.html#discopy.rigid.Diagram.normal_form" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a>, this removes cups from the diagram, eliminating post-selection.</p></li>
 <li><p>The <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser now updates automatically when new versions are made available online.</p></li>
 <li><p>Update grammar file of <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser to avoid problems with conflicting unary rules.</p></li>
 <li><p>Allow customising available root categories for the parser when using the command-line interface.</p></li>
 </ul>
 </section>
 <section id="rel-0-2-1">
-<span id="id17"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.1">0.2.1</a><a class="headerlink" href="#rel-0-2-1" title="Permalink to this headline"></a></h2>
+<span id="id19"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.1">0.2.1</a><a class="headerlink" href="#rel-0-2-1" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>A new <a class="reference internal" href="lambeq.training.html#lambeq.training.Checkpoint" title="lambeq.training.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpoint</span></code></a> class that implements pickling and file operations from the <a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a> and <a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>.</p></li>
 <li><p>Improvements to the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> module, allowing multiple diagrams to be accepted as input to the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a>.</p></li>
@@ -263,16 +305,16 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-0">
-<span id="id19"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.0">0.2.0</a><a class="headerlink" href="#rel-0-2-0" title="Permalink to this headline"></a></h2>
+<span id="id21"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.0">0.2.0</a><a class="headerlink" href="#rel-0-2-0" title="Permalink to this heading"></a></h2>
 <ul class="simple">
-<li><p>A new state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id20"><span>[SC2021]</span></a>, fully integrated with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, which replaces depccg as the default parser of the toolkit. The new <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser has better performance, simplifies installation, and provides compatibility with Windows (which was not supported due to a depccg conflict). depccg is still supported as an alternative external dependency.</p></li>
+<li><p>A new state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id22"><span>[SC2021]</span></a>, fully integrated with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, which replaces depccg as the default parser of the toolkit. The new <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser has better performance, simplifies installation, and provides compatibility with Windows (which was not supported due to a depccg conflict). depccg is still supported as an alternative external dependency.</p></li>
 <li><p>A <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package, providing a selection of trainers, models, and optimizers that greatly simplify supervised training for most of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s use cases, classical and quantum. The new package adds several new features to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, such as the ability to save to and restore models from checkpoints.</p></li>
 <li><p>Furthermore, the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package uses <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>’s tensor network capability to contract tensor diagrams efficiently. In particular, <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy 0.4.1</span></a>’s new unitary and density matrix simulators result in substantially faster training speeds compared to the previous version.</p></li>
 <li><p>A command-line interface, which provides most of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s functionality from the command line. For example, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can now be used as a standard command-line pregroup parser.</p></li>
 <li><p>A web parser class that can send parsing queries to an online API, so that local installation of a parser is not strictly necessary anymore. The web parser is particularly helpful for testing purposes, interactive usage or when a local parser is unavailable, but should not be used for serious experiments.</p></li>
 <li><p>A new <a class="reference internal" href="lambeq.pregroups.html#module-lambeq.pregroups" title="lambeq.pregroups"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pregroups</span></code></a> package that provides methods for easy creation of pregroup diagrams, removal of cups, and printing of diagrams in text form (i.e. in a terminal).</p></li>
 <li><p>A new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a> class that exploits the biclosed structure of CCG grammatical derivations.</p></li>
-<li><p>Three new rewrite rules for relative pronouns <a class="reference internal" href="bibliography.html#scc2014a" id="id21"><span>[SCC2014a]</span></a> <a class="reference internal" href="bibliography.html#scc2014b" id="id22"><span>[SCC2014b]</span></a> and coordination <a class="reference internal" href="bibliography.html#kar2016" id="id23"><span>[Kar2016]</span></a>.</p></li>
+<li><p>Three new rewrite rules for relative pronouns <a class="reference internal" href="bibliography.html#scc2014a" id="id23"><span>[SCC2014a]</span></a> <a class="reference internal" href="bibliography.html#scc2014b" id="id24"><span>[SCC2014b]</span></a> and coordination <a class="reference internal" href="bibliography.html#kar2016" id="id25"><span>[Kar2016]</span></a>.</p></li>
 <li><p>Tokenisation features have been added in all parsers and readers.</p></li>
 <li><p>Additional generator methods and minor improvements for the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGBankParser" title="lambeq.text2diagram.CCGBankParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a> class.</p></li>
 <li><p>Improved and more detailed package structure.</p></li>
@@ -282,7 +324,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-1-2">
-<span id="id25"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.2">0.1.2</a><a class="headerlink" href="#rel-0-1-2" title="Permalink to this headline"></a></h2>
+<span id="id27"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.2">0.1.2</a><a class="headerlink" href="#rel-0-1-2" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Add URLs to the setup file.</p></li>
 <li><p>Fix logo link in README.</p></li>
@@ -291,7 +333,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-1-1">
-<span id="id27"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.1">0.1.1</a><a class="headerlink" href="#rel-0-1-1" title="Permalink to this headline"></a></h2>
+<span id="id29"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.1">0.1.1</a><a class="headerlink" href="#rel-0-1-1" title="Permalink to this heading"></a></h2>
 <ul class="simple">
 <li><p>Update install script to use PyPI package.</p></li>
 <li><p>Add badges and documentation link to the README file.</p></li>
@@ -303,7 +345,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-1-0">
-<span id="id29"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.0">0.1.0</a><a class="headerlink" href="#rel-0-1-0" title="Permalink to this headline"></a></h2>
+<span id="id31"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.0">0.1.0</a><a class="headerlink" href="#rel-0-1-0" title="Permalink to this heading"></a></h2>
 <p>The initial release of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, containing a lot of core material. Main features:</p>
 <ul class="simple">
 <li><p>Converting sentences to string diagrams.</p></li>
@@ -329,7 +371,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

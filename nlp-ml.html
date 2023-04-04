@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine learning best practices &mdash; lambeq 0.3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="References for further study" href="nlp-refs.html" />
+    <link rel="prev" title="Text classification" href="nlp-class.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Machine learning best practices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cross-validation">Cross-validation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Machine learning best practices</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/nlp-ml.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="machine-learning-best-practices">
+<span id="sec-ml"></span><h1>Machine learning best practices<a class="headerlink" href="#machine-learning-best-practices" title="Permalink to this heading"></a></h1>
+<p>In NLP and machine learning, following careful evaluation methods is crucial to ensure that the model is performing well on unseen data and to avoid overfitting. One important step in evaluation is to split the dataset into training, validation, and test sets. The training set is used to train the model, the validation set is used to tune the model’s hyperparameters, and the test set is used to evaluate the final performance of the model. More specifically:</p>
+<ul class="simple">
+<li><p><strong>Training set:</strong> This is the largest portion of your data, and it is used to train your model. Your model will learn from the patterns in this data.</p></li>
+<li><p><strong>Development set:</strong> This set is also known as a <cite>validation set</cite>. It is used to tune your model’s hyperparameters and ensure that your model is not overfitting to the training data. You will use this set to evaluate your model’s performance during training and make adjustments as needed.</p></li>
+<li><p><strong>Test set:</strong> This set is used to evaluate your model’s performance after training is complete. You should never use this data during training or hyperparameter tuning, as doing so could cause overfitting.</p></li>
+</ul>
+<p>The typical split for these sets is 60% training, 20% development, and 20% testing, but the exact split can depend on the size of your dataset and the complexity of your model.</p>
+<p>Additionally, it is important to choose the right <a class="reference internal" href="nlp-class.html#sec-evaluation"><span class="std std-ref">evaluation metric</span></a> for your model. Different models may require different metrics to evaluate their performance, so it is important to understand the strengths and weaknesses of each metric and choose the one that is most appropriate for your use case.</p>
+<section id="cross-validation">
+<h2>Cross-validation<a class="headerlink" href="#cross-validation" title="Permalink to this heading"></a></h2>
+<p><cite>Cross-validation</cite> is a technique used to evaluate the performance of a machine learning model by partitioning the data into multiple subsets, or <cite>folds</cite>, and training the model on different subsets while using the remaining fold(s) for validation.</p>
+<p>The basic idea behind cross-validation is to use multiple samples of the data for training and validation to get a more accurate estimate of the model’s performance on new, unseen data. By using multiple folds, the model can be evaluated on a variety of data samples, which can help to identify any potential issues with overfitting or bias.</p>
+<p>There are several different types of cross-validation techniques, including:</p>
+<ul class="simple">
+<li><p><strong>k-fold cross-validation:</strong> In this approach, the data is partitioned into <cite>k</cite> equally-sized folds. The model is trained on <span class="math notranslate nohighlight">\(k-1\)</span> folds and the remaining fold is used for validation. This process is repeated <cite>k</cite> times, with each fold used for validation exactly once.</p></li>
+<li><p><strong>Stratified k-fold cross-validation:</strong> This technique is similar to <cite>k</cite>-fold cross-validation, but it ensures that the distribution of classes in each fold is similar to the overall distribution in the full dataset. This can be useful for datasets with imbalanced classes.</p></li>
+<li><p><strong>Leave-one-out cross-validation:</strong> In this technique, the data is partitioned into <cite>n</cite> folds, where <cite>n</cite> is the number of samples in the dataset. The model is trained on all but one sample, which is used for validation. This process is repeated <cite>n</cite> times, with each sample used for validation exactly once.</p></li>
+</ul>
+<p>Cross-validation can help to ensure that a model is not overfitting to the training data and can provide a more accurate estimate of the model’s performance on new, unseen data. It can also be used to compare the performance of different models or hyperparameters. However, it can be computationally expensive and may not be necessary for smaller datasets or less complex models.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Training in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is handled by the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package, which provides a detailed hierarchy of classes aimed at supervised learning, as well as the means for collaboration with popular ML and QML libraries such as PyTorch and PennyLane.</p>
+</div>
+<p class="rubric">See also:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="training.html#sec-training"><span class="std std-ref">Training tutorial</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="nlp-class.html" class="btn btn-neutral float-left" title="Text classification" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nlp-refs.html" class="btn btn-neutral float-right" title="References for further study" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

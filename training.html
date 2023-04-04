@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 4: Training &mdash; lambeq 0.2.8 documentation</title>
+  <title>Step 4: Training &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -31,15 +30,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> lambeq
-            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -56,6 +59,14 @@
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
+</ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
@@ -64,6 +75,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Step 4: Training</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html">Training: Classical case</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html">Training: Quantum case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html">Training: Hybrid case</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
@@ -106,8 +118,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Step 4: Training</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Step 4: Training</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/training.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -142,18 +154,19 @@
 }
 </style>
 <section id="step-4-training">
-<span id="sec-training"></span><h1>Step 4: Training<a class="headerlink" href="#step-4-training" title="Permalink to this headline"></a></h1>
+<span id="sec-training"></span><h1>Step 4: Training<a class="headerlink" href="#step-4-training" title="Permalink to this heading"></a></h1>
 <p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, all low-level processing that takes place in training is hidden in the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package, which provides convenient high-level abstractions for all important supervised learning scenarios with the toolkit, classical and quantum. More specifically, the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package contains the following high-level/abstract classes and several concrete implementations for them:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>: A class that provides functionality for easy management and manipulation of datasets, including batching, shuffling, and preparation based on the selected backend (tket, NumPy, PyTorch).</p></li>
-<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>: The abstract interface for <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">models</span></a>. A <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> bundles the basic attributes and methods used for training, given a specific backend. It stores the <a class="reference internal" href="glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> and the corresponding weights, and implements the forward pass of the model. Concrete implementations are the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a>, <a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a>, and <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> classes (for more details see Section <a class="reference internal" href="models.html#sec-models"><span class="std std-ref">Choosing a model</span></a> below).</p></li>
-<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Optimizer" title="lambeq.training.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a>: a <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> optimizer calculates the gradient of a given loss function with respect to the parameters of a model. It contains a <a class="reference internal" href="root-api.html#lambeq.Optimizer.step" title="lambeq.Optimizer.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> method to modify the model parameters according to the optimizer’s update rule. Currently, we support the SPSA algorithm by <a class="reference internal" href="bibliography.html#spa1998" id="id1"><span>[Spa1998]</span></a>, implemented in the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a> class.</p></li>
-<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a>: The main interface for supervised learning in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>. A <a class="reference internal" href="glossary.html#term-trainer"><span class="xref std std-term">trainer</span></a> implements the (quantum) machine learning routine given a specific backend, using a loss function and an optimizer. Concrete implementations are the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> and <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a> classes.</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>: The abstract interface for <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">models</span></a>. A <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> bundles the basic attributes and methods used for training, given a specific backend. It stores the <a class="reference internal" href="glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> and the corresponding weights, and implements the forward pass of the model. Concrete implementations are the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a>, <a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a>, <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a>, and <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> classes (for more details see Section <a class="reference internal" href="models.html#sec-models"><span class="std std-ref">Choosing a model</span></a> below).</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.LossFunction" title="lambeq.training.LossFunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">LossFunction</span></code></a>: Implementations of this class compute the distance between the predicted values of the <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> and the true values in the dataset. This is used to adjust the model weights so that the average loss accross all data instances can be minimised. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> supports a number of loss functions, such as <a class="reference internal" href="lambeq.training.html#lambeq.training.CrossEntropyLoss" title="lambeq.training.CrossEntropyLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">CrossEntropyLoss</span></code></a>, <a class="reference internal" href="lambeq.training.html#lambeq.training.BinaryCrossEntropyLoss" title="lambeq.training.BinaryCrossEntropyLoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">BinaryCrossEntropyLoss</span></code></a>, and <a class="reference internal" href="lambeq.training.html#lambeq.training.MSELoss" title="lambeq.training.MSELoss"><code class="xref py py-class docutils literal notranslate"><span class="pre">MSELoss</span></code></a>.</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Optimizer" title="lambeq.training.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a>: a <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> optimizer calculates the gradient of a given <a class="reference internal" href="glossary.html#term-loss-function"><span class="xref std std-term">loss function</span></a> with respect to the parameters of a model. It contains a <a class="reference internal" href="root-api.html#lambeq.Optimizer.step" title="lambeq.Optimizer.step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">step()</span></code></a> method to modify the model parameters according to the optimizer’s update rule. Currently, we support the SPSA algorithm by <a class="reference internal" href="bibliography.html#spa1998" id="id1"><span>[Spa1998]</span></a>, implemented in the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a> class for the quantum case, and PyTorch optimizers for the classical and hybrid cases.</p></li>
+<li><p><a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a>: The main interface for supervised learning in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>. A <a class="reference internal" href="glossary.html#term-trainer"><span class="xref std std-term">trainer</span></a> implements the (quantum) machine learning routine given a specific backend, using a <a class="reference internal" href="glossary.html#term-loss-function"><span class="xref std std-term">loss function</span></a> and an optimizer. Concrete implementations are the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a> and <a class="reference internal" href="lambeq.training.html#lambeq.training.QuantumTrainer" title="lambeq.training.QuantumTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumTrainer</span></code></a> classes.</p></li>
 </ul>
 <p>The process of training a <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> involves the following steps:</p>
 <ol class="arabic simple">
 <li><p>Instantiate the <a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>.</p></li>
-<li><p>Instantiate a <a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a>, passing to it a <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a>, a loss function, and an optimizer.</p></li>
+<li><p>Instantiate a <a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a>, passing to it a <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a>, a <a class="reference internal" href="glossary.html#term-loss-function"><span class="xref std std-term">loss function</span></a>, and an optimizer.</p></li>
 <li><p>Create a <a class="reference internal" href="lambeq.training.html#lambeq.training.Dataset" title="lambeq.training.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> for training, and optionally, one for evaluation.</p></li>
 <li><p>Train the <a class="reference internal" href="glossary.html#term-model"><span class="xref std std-term">model</span></a> by handing the dataset to the <a class="reference internal" href="root-api.html#lambeq.Trainer.fit" title="lambeq.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> method of the <a class="reference internal" href="glossary.html#term-trainer"><span class="xref std std-term">trainer</span></a>.</p></li>
 </ol>
@@ -201,6 +214,37 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html#Results">Results</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/trainer_hybrid.html">Training: Hybrid case</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html#Preparation">Preparation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Input-data">Input data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Creating-and-parameterising-diagrams">Creating and parameterising diagrams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Simplify-diagrams">Simplify diagrams</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Create-circuits">Create circuits</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html#Training">Training</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Instantiate-model">Instantiate model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Running-on-a-real-quantum-computer">Running on a real quantum computer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Create-datasets">Create datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Define-loss-and-evaluation-metric">Define loss and evaluation metric</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Initialise-trainer">Initialise trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Train">Train</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html#Results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html#Using-standard-PyTorch">Using standard PyTorch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Evaluate-test-accuracy">Evaluate test accuracy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html#Hybrid-models">Hybrid models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Make-paired-dataset">Make paired dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Initialise-model">Initialise model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Train-and-log-accuracies">Train and log accuracies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorials/trainer_hybrid.html#Analysing-the-internal-representations-of-the-model">Analysing the internal representations of the model</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </div>
 <p class="rubric">See also:</p>
@@ -221,7 +265,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

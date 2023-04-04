@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Step 3. Parameterisation &mdash; lambeq 0.2.8 documentation</title>
+  <title>Step 3. Parameterisation &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,15 +32,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> lambeq
-            <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -57,6 +60,14 @@
 <li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul class="current">
@@ -111,8 +122,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Step 3. Parameterisation</li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Step 3. Parameterisation</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/parameterise.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -232,10 +243,11 @@ div.nboutput.container div.prompt > div {
     }
 }
 
-/* disable scrollbars on prompts */
+/* disable scrollbars and line breaks on prompts */
 div.nbinput.container div.prompt pre,
 div.nboutput.container div.prompt pre {
     overflow: hidden;
+    white-space: pre;
 }
 
 /* input/output area */
@@ -337,6 +349,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -345,10 +358,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -360,12 +377,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -393,11 +413,11 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Step-3.-Parameterisation">
-<h1>Step 3. Parameterisation<a class="headerlink" href="#Step-3.-Parameterisation" title="Permalink to this headline"></a></h1>
+<h1>Step 3. Parameterisation<a class="headerlink" href="#Step-3.-Parameterisation" title="Permalink to this heading"></a></h1>
 <p>Up to this point of the pipeline, a sentence is still represented as a <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a>, independent of any low-level decisions such as tensor dimensions or specific <a class="reference internal" href="../glossary.html#term-quantum-gate"><span class="xref std std-term">quantum gate</span></a> choices. This abstract form can be turned into a concrete <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a> or <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> by applying ansätze. An <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> can be seen as a map that determines choices such as the number of <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> that every wire of the <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> is associated with and the concrete parameterised quantum states that correspond to each word. In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> can be added by extending one of the classes <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> or <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz" title="lambeq.ansatz.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> depending on the type of the experiment.</p>
 <p><a class="reference download internal" download="" href="../_downloads/ee016236bfa5b6c7f3dbc71f73c98bb0/parameterise.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
 <section id="Quantum-case">
-<h2>Quantum case<a class="headerlink" href="#Quantum-case" title="Permalink to this headline"></a></h2>
+<h2>Quantum case<a class="headerlink" href="#Quantum-case" title="Permalink to this heading"></a></h2>
 <p>For the quantum case, the library comes equipped with the class <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.IQPAnsatz" title="lambeq.ansatz.IQPAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a>, which turns the <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> into a standard <a class="reference internal" href="../glossary.html#term-IQP-circuit"><span class="xref std std-term">IQP circuit</span></a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -513,7 +533,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Classical-case">
-<h2>Classical case<a class="headerlink" href="#Classical-case" title="Permalink to this headline"></a></h2>
+<h2>Classical case<a class="headerlink" href="#Classical-case" title="Permalink to this heading"></a></h2>
 <p>In the case of a classical experiment, instantiating one of the tensor <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> requires the user to assign dimensions to each one of the atomic types occurring in the diagram. In the following code, we parameterise a <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> instance with <span class="math notranslate nohighlight">\(d_n=4\)</span> for the base dimension of the noun space, and <span class="math notranslate nohighlight">\(d_s=2\)</span> as the dimension of the sentence space:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -538,7 +558,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>Note that the wires of the diagram are now annotated with the dimensions corresponding to each type, indicating that the result is a concrete <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a>.</p>
 <section id="Matrix-product-states">
-<h3>Matrix product states<a class="headerlink" href="#Matrix-product-states" title="Permalink to this headline"></a></h3>
+<h3>Matrix product states<a class="headerlink" href="#Matrix-product-states" title="Permalink to this heading"></a></h3>
 <p>In classical experiments of this kind, the tensors associated with certain words, such as conjunctions, can become extremely large. In some cases, the order of these tensors can be 12 or even higher (<span class="math notranslate nohighlight">\(d^{12}\)</span> elements, where <span class="math notranslate nohighlight">\(d\)</span> is the base dimension), which makes efficient execution of the experiment impossible. In order to address this problem, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> includes <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> for converting tensors into various forms of <a class="reference internal" href="../glossary.html#term-matrix-product-state-MPS"><span class="xref std std-term">matrix product states</span></a> (MPSs).</p>
 <p>The following code applies the <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.SpiderAnsatz" title="lambeq.ansatz.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a>, which splits tensors with order greater than 2 to sequences of order-2 tensors (i.e. matrices), connected with <a class="reference internal" href="../glossary.html#term-spider"><span class="xref std std-term">spiders</span></a>.</p>
 <div class="nbinput docutils container">
@@ -606,7 +626,7 @@ div.rendered_html tbody tr:hover {
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Working with text data &mdash; lambeq 0.3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Text classification" href="nlp-class.html" />
+    <link rel="prev" title="Introduction" href="nlp-intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Working with text data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#datasets-and-corpora">Datasets and corpora</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#text-pre-processing">Text pre-processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tokenization">Tokenization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-unknown-words">Handling unknown words</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Working with text data</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/nlp-data.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="working-with-text-data">
+<span id="sec-nlp-data"></span><h1>Working with text data<a class="headerlink" href="#working-with-text-data" title="Permalink to this heading"></a></h1>
+<section id="datasets-and-corpora">
+<h2>Datasets and corpora<a class="headerlink" href="#datasets-and-corpora" title="Permalink to this heading"></a></h2>
+<p>NLP work is heavily data-driven, and text data is organised into collections such as <cite>datasets</cite> and <cite>corpora</cite>. While sometimes these terms are (wrongly) used interchangeably, they differ in their purpose and structure.</p>
+<p>A <cite>dataset</cite> is a structured collection of data that is designed for a specific task. In NLP, a dataset may consist of a set of labeled text documents that are used for training and evaluating a machine learning model. Each document in the dataset is labeled with a class or category that the model is trying to predict. For example, a dataset of movie reviews may be labeled with “positive” or “negative” sentiment, and a model can be trained to predict the sentiment of new, unlabeled reviews. Examples of datasets can be found in the folder <a class="reference external" href="https://github.com/CQCL/lambeq/tree/main/docs/examples/datasets">docs/examples/datasets</a> of the <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> Github repository.</p>
+<p>On the other hand, a <cite>corpus</cite> is an unstructured collection of text data that is designed for linguistic analysis. A corpus may consist of a large collection of text documents from a variety of sources, such as newspapers, books, and websites. The purpose of a corpus is to provide a representative sample of language use, which can be analysed to understand patterns in language structure and usage. An example of a corpus is the <a class="reference external" href="http://www.natcorp.ox.ac.uk">British National Corpus (BNC)</a>, a 100-million word collection of samples of written and spoken language from a wide range of sources.</p>
+</section>
+<section id="text-pre-processing">
+<span id="sec-preprocessing"></span><h2>Text pre-processing<a class="headerlink" href="#text-pre-processing" title="Permalink to this heading"></a></h2>
+<p>In order to prepare text data for analysis, NLP researchers use various pre-processing techniques. These are designed to convert raw text into a format that can be easily understood by machines. Some common pre-processing techniques include:</p>
+<ul class="simple">
+<li><p><strong>Tokenization</strong>: This involves breaking down a text document into individual words or phrases, called tokens. This is typically the first step in text analysis. Tokenization is further discussed in <a class="reference internal" href="#sec-tokenization"><span class="std std-ref">following section</span></a>.</p></li>
+<li><p><strong>Stemming</strong>: The process of reducing words to their root or stem form. This is done to reduce the number of unique words in a text document and to improve the efficiency of subsequent processing. For example, the words “programming”, “programmer”, and “programs” can all be reduced down to the common word stem “program”.</p></li>
+<li><p><strong>Lemmatization</strong>: Similar to stemming, but instead of reducing words to their root form, it reduces them to their base form or lemma (dictionary form). This can result in more accurate analysis, as it takes into account the context in which the word is used. For example, “run”, “ran”, and “runs” will be all mapped to the lemma “run”, removing any inflections but respecting the part-of-speech of the word.</p></li>
+<li><p><strong>Stop-word removal</strong>: Stop words are common words that are sometimes removed from text documents as they do not carry much meaning. Examples of stop words include determiners (e.g. “a”, “the”), auxiliary verbs (e.g. “am”, “was”), prepositions (e.g. “in”, “at”), and conjunctions (e.g. “and”, “but”, “or”).</p></li>
+<li><p><strong>Part-of-Speech (POS) tagging</strong>: This involves labeling each word in a text document with its corresponding part of speech, such as noun, verb, or adjective. This can be useful for identifying the role of each word in a sentence and for extracting meaningful information from a text document. For example, the words in the sentence “John gave Mary a flower” would be labeled as “John_N gave_VB Mary_N a_DET flower_N”.</p></li>
+</ul>
+<p>It is important to note that with the advent of deep learning and the increase of computational power, some of these pre-processing steps have become less useful in practice. For example, deep learning models are capable of automatically learning and identifying the important features and patterns within the raw text data, making the need for certain pre-processing steps such as stemming and stop-word removal redundant. It is important, however, to note that these pre-processing steps may still be useful in certain specific scenarios, such as when dealing with limited training data or when working with domain-specific languages.</p>
+</section>
+<section id="tokenization">
+<span id="sec-tokenization"></span><h2>Tokenization<a class="headerlink" href="#tokenization" title="Permalink to this heading"></a></h2>
+<p>Tokenization is the process of breaking down a text or sentence into smaller units called tokens. Tokens are the building blocks of natural language processing, and they are typically words, punctuation marks, or other meaningful elements of a sentence. The purpose of tokenization is to make it easier for computers to process human language, by providing a structured representation of text data that can be analysed, searched, and manipulated.</p>
+<p>Tokenization comes in many different forms. Some examples are the following:</p>
+<ul id="wordtok">
+<li><p><strong>Word tokenization:</strong> In this very common form of tokenization, a sentence is split into individual words or tokens. For example, the sentence “The quick brown fox jumps over the lazy dog” would be tokenized into the following list of words:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[&quot;The&quot;, &quot;quick&quot;, &quot;brown&quot;, &quot;fox&quot;, &quot;jumps&quot;, &quot;over&quot;, &quot;the&quot;, &quot;lazy&quot;, &quot;dog&quot;]</span>
+</pre></div>
+</div>
+<p>In a more complete example, consider a sentence that includes various punctuation marks and contractions, such as “This sentence isn’t worth £100 (or is it?).”. The proper way to tokenize this sentence is the following, clearly separating every individual word and symbol:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[&quot;This&quot;, &quot;sentence&quot;, &quot;is&quot;, &quot;n&#39;t&quot;, &quot;worth&quot;, &quot;£&quot;, &quot;100&quot;,</span>
+
+<span class="go"> &quot;(&quot;, &quot;or&quot;, &quot;is&quot;, &quot;it&quot;, &quot;?&quot;, &quot;)&quot;, &quot;.&quot;]</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Sentence tokenization:</strong> When working with paragraphs or documents, usually the first step is to split them into individual sentences. For example, the paragraph “I love pizza. It is my favorite food. I could eat it every day!” would be tokenized into the following list of sentences:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[&quot;I love pizza.&quot;, &quot;It is my favorite food.&quot;, &quot;I could eat it every day!&quot;]</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Phrase tokenization:</strong> In this type of tokenization, a sentence is split into meaningful phrases or chunks. For example, the sentence “I want to book a flight to Paris” might be tokenized into the following phrases:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[&quot;I&quot;, &quot;want to&quot;, &quot;book&quot;, &quot;a flight&quot;, &quot;to&quot;, &quot;Paris&quot;]</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<ul id="wordpiece">
+<li><p><strong>Word-piece tokenization:</strong>  A type of tokenization that breaks down words into their constituent morphemes, which are the smallest meaningful units of a word. Morphemes can be either words themselves or smaller units that carry meaning, such as prefixes, suffixes, and roots. Consider for example the sentence, “Unbelievable, I can’t believe how amazing this is.”. Word-piece tokenization would produce the following list of tokens:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[&quot;Un##believ##able&quot;, &quot;,&quot;, &quot;I&quot;, &quot;can&#39;&quot;, &quot;t&quot;, &quot;believe&quot;, &quot;how&quot;, &quot;amaz##ing&quot;, &quot;this&quot; &quot;is.&quot;]</span>
+</pre></div>
+</div>
+<p>In the example, the “##” symbols indicate that the subword is part of a larger word.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> supports word and sentence tokenization through the <a class="reference internal" href="lambeq.tokeniser.html#lambeq.tokeniser.Tokeniser" title="lambeq.tokeniser.Tokeniser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tokeniser</span></code></a> class hierarchy and specifically the <a class="reference internal" href="lambeq.tokeniser.html#lambeq.tokeniser.SpacyTokeniser" title="lambeq.tokeniser.SpacyTokeniser"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpacyTokeniser</span></code></a> class, based on the SpaCy package. For more information see <a class="reference internal" href="tutorials/sentence-input.html#Pre-processing-and-tokenisation"><span class="std std-ref">this detailed tutorial</span></a>.</p>
+</div>
+</section>
+<section id="handling-unknown-words">
+<h2>Handling unknown words<a class="headerlink" href="#handling-unknown-words" title="Permalink to this heading"></a></h2>
+<p>One of the most common challenges in NLP is the handling of unknown words, or <cite>out-of-vocabulary</cite> (OOV) words. The term refers to words that may appear during evaluation and testing, but they were not present in the training data of the model. One way to handle unknown words is to use <a class="reference internal" href="#wordpiece"><span class="std std-ref">word-piece tokenization</span></a>, which splits words into smaller subword units. This allows the model to learn representations for unseen words based on their subword units. For example, assume that word “unbelievable” does not appear in the training data, but the words “un##settl##ing”, “believ##er”, and “do##able” are present; the unknown word would still be able to be represented as a combination of individual word pieces, i.e. “un##believ##able”.</p>
+<p>When using <a class="reference internal" href="#wordtok"><span class="std std-ref">word tokenisation</span></a> (like in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>), a common technique to handle unknown word is to introduce a special token <code class="docutils literal notranslate"><span class="pre">UNK</span></code>. The method is based on the following steps:</p>
+<ol class="arabic simple">
+<li><p>Replace every rare word in the training data (e.g. every word that occurs less than a specified threshold, for example 3 times) with a special token <code class="docutils literal notranslate"><span class="pre">UNK</span></code>.</p></li>
+<li><p>During training, learn a representation for <code class="docutils literal notranslate"><span class="pre">UNK</span></code> as if there was any other token.</p></li>
+<li><p>During evaluation, when you meet an unknown word, use the representation of <code class="docutils literal notranslate"><span class="pre">UNK</span></code> instead.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note that in syntax-based models, such as <a class="reference internal" href="glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a>, handling unknown words with the above method becomes more complicated, since the type of each word needs to also be taken into account. In other words, you need to have a different <code class="docutils literal notranslate"><span class="pre">UNK</span></code> token for each grammatical type.</p>
+</div>
+<p class="rubric">See also:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="tutorials/sentence-input.html#Pre-processing-and-tokenisation"><span class="std std-ref">Pre-processing and tokenisation tutorial</span></a></p></li>
+<li><p><a class="reference internal" href="examples/tokenisation.html"><span class="std std-ref">Tokenisation example notebook</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="nlp-intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nlp-class.html" class="btn btn-neutral float-right" title="Text classification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Introduction &mdash; lambeq 0.3.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Working with text data" href="nlp-data.html" />
+    <link rel="prev" title="Contributing to lambeq" href="CONTRIBUTING.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#nlp-qnlp-and-computational-lingustics">NLP, QNLP and Computational Lingustics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tasks-and-applications">Tasks and applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#typical-nlp-workflow">Typical NLP workflow</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Introduction</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/nlp-intro.rst" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="introduction">
+<span id="sec-nlp-intro"></span><h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading"></a></h1>
+<p>In this section we will briefly explore the field of Natural Language Processing and see how it is used for solving real-world problems related to human language. <a class="footnote-reference brackets" href="#f1" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> Let’s get started with some definitions.</p>
+<section id="nlp-qnlp-and-computational-lingustics">
+<h2>NLP, QNLP and Computational Lingustics<a class="headerlink" href="#nlp-qnlp-and-computational-lingustics" title="Permalink to this heading"></a></h2>
+<p><a class="reference internal" href="glossary.html#term-natural-language-processing-NLP"><span class="xref std std-term">Natural Language Processing</span></a> (NLP) is a field of AI that focuses on the interaction between computers and human language. NLP deals with the problems of generating and understanding natural language text and speech, in a way that is both effective and accurate. It involves a range of methods and techniques, including statistical and rule-based approaches, machine learning, and deep learning. These methods are used to develop NLP models and systems that can perform various language-related tasks, such as text classification, sentiment analysis, speech recognition, machine translation, and many others.</p>
+<p><cite>Computational linguistics</cite>, on the other hand, is a broader field that encompasses NLP, and in principle deals with the study of human language and its structure from a computational perspective. It uses algorithms, models, and mathematical theories to analyze and understand human language, and to develop natural language processing systems. While NLP focuses more on the practical application of computational linguistics techniques to solve real-world problems related to human language, computational linguistics is more concerned with the theoretical study of language and its formal properties.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is a language modelling tool capable of representing language in many different levels of abstraction, such as syntax trees, pregroup diagrams, string/monoidal diagrams, tensor networks and quantum circuits, and for this reason, it is conceptually closer to (quantum) computational linguistics than merely to practical NLP.</p>
+</div>
+<p>NLP is one of the most important fields of AI, since the ability to understand and use language is one of the defining features of human intelligence; thus, being able to teach machines this skill is a significant step towards developing AI. In fact, the famous <a class="reference external" href="https://en.wikipedia.org/wiki/Turing_test">Turing test</a> for AI involves determining whether a machine can exhibit intelligent behaviour that is indistinguishable from that of a human, solely based on the effective use of language.</p>
+<p>Having defined the purpose and scope of NLP as above, <cite>Quantum NLP</cite> (QNLP) is simply NLP on quantum computers. More specifically, QNLP is aimed at the design and implementation of NLP models that exploit certain quantum phenomena such as superposition, entanglement, and interference to perform language-related tasks on quantum hardware. By applying quantum principles to language processing, QNLP seeks to provide a more holistic and accurate model of communication that can capture the nuances and complexities of human language better than traditional “classical” models.</p>
+</section>
+<section id="tasks-and-applications">
+<span id="sec-nlp-tasks"></span><h2>Tasks and applications<a class="headerlink" href="#tasks-and-applications" title="Permalink to this heading"></a></h2>
+<p>There are numerous important applications of NLP across various industries and domains. Some of the most prominent ones include:</p>
+<ul class="simple">
+<li><p><strong>Chatbots and virtual assistants</strong>: NLP is widely used in chatbots and virtual assistants, enabling them to understand natural language queries and respond accordingly.</p></li>
+<li><p><strong>Sentiment analysis</strong>: The task of analyzing social media data, customer feedback, and product reviews to determine sentiment and gain insights into customer preferences.</p></li>
+<li><p><strong>Machine translation</strong>: NLP can be used to enable accurate and efficient translation of text between different languages.</p></li>
+<li><p><strong>Speech recognition</strong>: Speech recognition systems can transcribe spoken language into text, enabling voice-controlled applications.</p></li>
+<li><p><strong>Named Entity Recognition</strong>: Techniques used to identify and extract entities such as people, organizations, and locations from text.</p></li>
+<li><p><strong>Text summarization</strong>: The task of summarizing large volumes of text, making it easier to process and understand.</p></li>
+<li><p><strong>Information retrieval</strong>: NLP is used in search engines and recommendation systems to enable relevant and accurate results based on natural language queries.</p></li>
+</ul>
+</section>
+<section id="typical-nlp-workflow">
+<h2>Typical NLP workflow<a class="headerlink" href="#typical-nlp-workflow" title="Permalink to this heading"></a></h2>
+<p>In this section, we examine the sequence of steps involved in processing and analyzing natural language data. While the exact workflow may vary depending on the specific task and dataset, there are several common steps that are typically involved.</p>
+<ol class="arabic simple">
+<li><p><strong>Data collection:</strong> The first step in any NLP project is to collect the relevant data. This may involve web scraping, accessing APIs, or using pre-existing datasets. It is important to ensure that the data is of high quality and properly formatted.</p></li>
+<li><p><strong>Text preprocessing:</strong> Once the data has been collected, the next step is to preprocess the text. This involves several steps such as tokenization, stopword removal, stemming or lemmatization, and part-of-speech tagging. The goal of preprocessing is to convert raw text into a structured format that can be used for analysis. More information can be found <a class="reference internal" href="nlp-data.html#sec-preprocessing"><span class="std std-ref">here</span></a>.</p></li>
+<li><p><strong>Text representation:</strong> After preprocessing, the text data needs to be represented in a format that can be used for analysis. This typically involves using word embeddings, pre-trained language models such as BERT or GPT-3, or <a class="reference internal" href="glossary.html#term-bag-of-words"><span class="xref std std-term">bag-of-words</span></a> models.</p></li>
+<li><p><strong>Model training:</strong> With the text data represented in a suitable format, the next step is to train a model. Depending on the task, this may involve using machine learning algorithms such as logistic regression or neural networks. The model is trained on a labeled dataset and validated on a held-out dataset to ensure that it generalizes well (see <a class="reference internal" href="nlp-ml.html#sec-ml"><span class="std std-ref">Machine learning best practices</span></a>).</p></li>
+<li><p><strong>Model evaluation:</strong> Once the model is trained, it needs to be evaluated to determine how well it performs on unseen data. This involves using <a class="reference internal" href="nlp-class.html#sec-evaluation"><span class="std std-ref">evaluation metrics</span></a> such as accuracy, precision, recall, and F1 score. It is important to ensure that the model performs well on both the training and validation data, as well as on a test dataset (see <a class="reference internal" href="nlp-ml.html#sec-ml"><span class="std std-ref">Machine learning best practices</span></a>).</p></li>
+</ol>
+<p>In the following sections, we will focus on some important text pre-processing concepts and techniques.</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="f1" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>This tutorial has been created with the help of <a class="reference external" href="https://openai.com/blog/chatgpt">ChatGPT</a>.</p>
+</aside>
+</aside>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="CONTRIBUTING.html" class="btn btn-neutral float-left" title="Contributing to lambeq" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="nlp-data.html" class="btn btn-neutral float-right" title="Working with text data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command-line interface &mdash; lambeq 0.2.8 documentation</title>
+  <title>Command-line interface &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -31,15 +30,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> lambeq
-            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -55,6 +58,14 @@
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -80,13 +91,13 @@
 <li class="toctree-l2"><a class="reference internal" href="#rewrite-rules-and-ansatze">Rewrite rules and ansätze</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#other-options">Other options</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#detailed-options">Detailed options</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Output">Output</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Parser">Parser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Rewriter">Rewriter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Ansätze">Ansätze</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Configuration">Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#positional-arguments">Positional Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#named-arguments">Named Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#output">Output</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parser">Parser</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rewriter">Rewriter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ansätze">Ansätze</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">Configuration</a></li>
 </ul>
 </li>
 </ul>
@@ -119,8 +130,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Command-line interface</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Command-line interface</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/cli.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -155,7 +166,7 @@
 }
 </style>
 <section id="command-line-interface">
-<span id="sec-cli"></span><h1>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this headline"></a></h1>
+<span id="sec-cli"></span><h1>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this heading"></a></h1>
 <p>While <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is primarily aimed for programmatic use, since Release <a class="reference internal" href="release_notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> it is also equipped with a command-line interface that provides immediate and easy access to most of the toolkit’s functionality. For example, this addition allows <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to be used as a dual <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>, capable of providing syntactic derivations in both <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> and <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> form.</p>
 <p>A summary of the available options is given below.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lambeq<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-v<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span><span class="o">{</span>string-diagram,pregroups,ccg<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-i<span class="w"> </span>INPUT_FILE<span class="o">]</span>
@@ -175,7 +186,7 @@
 </div>
 <p>The following sections provide an introduction to the command-line interface usage via specific examples, while all available options are described in depth in Section <a class="reference internal" href="#sec-detailed-options"><span class="std std-ref">Detailed Options</span></a>.</p>
 <section id="basic-usage">
-<span id="sec-basic-usage"></span><h2>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline"></a></h2>
+<span id="sec-basic-usage"></span><h2>Basic usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading"></a></h2>
 <p>The most straightforward use of the command-line interface of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is to use it as a <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> or <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>. The output formalism is controlled by the <code class="docutils literal notranslate"><span class="pre">--mode</span></code> option, which can be set to <code class="docutils literal notranslate"><span class="pre">string-diagram</span></code>, <code class="docutils literal notranslate"><span class="pre">pregroups</span></code>, or <code class="docutils literal notranslate"><span class="pre">ccg</span></code>.</p>
 <ul class="simple">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">string-diagram</span></code> mode is the default, producing a string diagram that faithfully follows the CCG derivation returned by the parser; this may include <a class="reference internal" href="glossary.html#term-swap"><span class="xref std std-term">swaps</span></a> introduced by certain CCG features such as cross-composition and “unary” type-changing rules.</p></li>
@@ -234,7 +245,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </div>
 </section>
 <section id="strict-pregroups-mode">
-<span id="sec-pregroups-mode"></span><span id="sec-advanced-options"></span><h2>Strict pregroups mode<a class="headerlink" href="#strict-pregroups-mode" title="Permalink to this headline"></a></h2>
+<span id="sec-pregroups-mode"></span><span id="sec-advanced-options"></span><h2>Strict pregroups mode<a class="headerlink" href="#strict-pregroups-mode" title="Permalink to this heading"></a></h2>
 <p>We already discussed that <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can provide its outputs as string diagrams or CCG trees. There is also a third mode available (<code class="docutils literal notranslate"><span class="pre">pregroups</span></code>), which removes any swaps from the string diagram and converts it into a strict pregroup form, conforming to the definition of a formal <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup grammar</span></a>. Swaps can be introduced by cross-composition and unary rules in the original CCG derivation. For example, consider the following CCG tree:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-t<span class="w"> </span>-m<span class="w"> </span>ccg<span class="w"> </span><span class="s2">&quot;The best movie I&#39;ve ever seen&quot;</span>
 
@@ -296,7 +307,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </div>
 </section>
 <section id="using-a-reader">
-<h2>Using a reader<a class="headerlink" href="#using-a-reader" title="Permalink to this headline"></a></h2>
+<h2>Using a reader<a class="headerlink" href="#using-a-reader" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Option only applicable to string and pregroup diagrams.</p>
@@ -320,7 +331,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </div>
 </section>
 <section id="rewrite-rules-and-ansatze">
-<h2>Rewrite rules and ansätze<a class="headerlink" href="#rewrite-rules-and-ansatze" title="Permalink to this headline"></a></h2>
+<h2>Rewrite rules and ansätze<a class="headerlink" href="#rewrite-rules-and-ansatze" title="Permalink to this heading"></a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Option only applicable to string and pregroup diagrams.</p>
@@ -345,7 +356,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </div>
 </section>
 <section id="other-options">
-<h2>Other options<a class="headerlink" href="#other-options" title="Permalink to this headline"></a></h2>
+<h2>Other options<a class="headerlink" href="#other-options" title="Permalink to this heading"></a></h2>
 <p>To store the <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> (for string diagrams) or the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> objects (for the CCG trees) in <code class="docutils literal notranslate"><span class="pre">json</span></code> or <code class="docutils literal notranslate"><span class="pre">pickle</span></code> format, type:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-f<span class="w"> </span>pickle<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-o<span class="w"> </span>diagrams.pickle
 </pre></div>
@@ -368,7 +379,7 @@ In case your input file does not contain one sentence per line, you can add the 
 To load the configuration from this file next time, <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">conf.yaml</span></code> can be added. Any arguments that were not provided in the command line will be taken from that file. If an argument is specified both in the command line and in the configuration file, the command-line argument takes priority.</p>
 </section>
 <section id="detailed-options">
-<span id="sec-detailed-options"></span><h2>Detailed options<a class="headerlink" href="#detailed-options" title="Permalink to this headline"></a></h2>
+<span id="sec-detailed-options"></span><h2>Detailed options<a class="headerlink" href="#detailed-options" title="Permalink to this heading"></a></h2>
 <p><p>Command-line interface for lambeq.</p>
 </p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>lambeq<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-v<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span><span class="o">{</span>string-diagram,pregroups,ccg<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-i<span class="w"> </span>INPUT_FILE<span class="o">]</span>
@@ -383,8 +394,8 @@ To load the configuration from this file next time, <code class="docutils litera
 <span class="w">              </span><span class="o">[</span>input_sentence<span class="o">]</span>
 </pre></div>
 </div>
-<section id="Positional Arguments">
-<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline"></a></h3>
+<section id="positional-arguments">
+<h3>Positional Arguments<a class="headerlink" href="#positional-arguments" title="Permalink to this heading"></a></h3>
 <dl class="option-list">
 <dt><kbd>input_sentence</kbd></dt>
 <dd><p>Sentence to parse.</p>
@@ -392,8 +403,8 @@ To load the configuration from this file next time, <code class="docutils litera
 </dd>
 </dl>
 </section>
-<section id="Named Arguments">
-<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline"></a></h3>
+<section id="named-arguments">
+<h3>Named Arguments<a class="headerlink" href="#named-arguments" title="Permalink to this heading"></a></h3>
 <dl class="option-list">
 <dt><kbd>-v, --version</kbd></dt>
 <dd><p>show program’s version number and exit</p>
@@ -408,8 +419,8 @@ To load the configuration from this file next time, <code class="docutils litera
 </dd>
 </dl>
 </section>
-<section id="Output">
-<h3>Output<a class="headerlink" href="#Output" title="Permalink to this headline"></a></h3>
+<section id="output">
+<h3>Output<a class="headerlink" href="#output" title="Permalink to this heading"></a></h3>
 <p>Options related to output format.</p>
 <dl class="option-list">
 <dt><kbd>-f, --output_format</kbd></dt>
@@ -433,8 +444,8 @@ To load the configuration from this file next time, <code class="docutils litera
 </dd>
 </dl>
 </section>
-<section id="Parser">
-<h3>Parser<a class="headerlink" href="#Parser" title="Permalink to this headline"></a></h3>
+<section id="parser">
+<h3>Parser<a class="headerlink" href="#parser" title="Permalink to this heading"></a></h3>
 <p>Options related to parser.</p>
 <dl class="option-list">
 <dt><kbd>-p, --parser</kbd></dt>
@@ -458,8 +469,8 @@ To load the configuration from this file next time, <code class="docutils litera
 </dd>
 </dl>
 </section>
-<section id="Rewriter">
-<h3>Rewriter<a class="headerlink" href="#Rewriter" title="Permalink to this headline"></a></h3>
+<section id="rewriter">
+<h3>Rewriter<a class="headerlink" href="#rewriter" title="Permalink to this heading"></a></h3>
 <p>Rewrite options.</p>
 <dl class="option-list">
 <dt><kbd>-w, --rewrite_rules</kbd></dt>
@@ -468,8 +479,8 @@ To load the configuration from this file next time, <code class="docutils litera
 </dd>
 </dl>
 </section>
-<section id="Ansätze">
-<h3>Ansätze<a class="headerlink" href="#Ansätze" title="Permalink to this headline"></a></h3>
+<section id="ansätze">
+<h3>Ansätze<a class="headerlink" href="#ansätze" title="Permalink to this heading"></a></h3>
 <p>Options related to ansatz choices.</p>
 <dl class="option-list">
 <dt><kbd>-a, --ansatz</kbd></dt>
@@ -483,8 +494,8 @@ To load the configuration from this file next time, <code class="docutils litera
 </dd>
 </dl>
 </section>
-<section id="Configuration">
-<h3>Configuration<a class="headerlink" href="#Configuration" title="Permalink to this headline"></a></h3>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this heading"></a></h3>
 <p>Options for storing and loading the command-line arguments to/from files.</p>
 <dl class="option-list">
 <dt><kbd>-y, --store_args</kbd></dt>
@@ -509,7 +520,7 @@ To load the configuration from this file next time, <code class="docutils litera
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

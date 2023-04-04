@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>String diagrams &mdash; lambeq 0.2.8 documentation</title>
+  <title>String diagrams &mdash; lambeq 0.3.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -15,9 +15,8 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -33,15 +32,19 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> lambeq
-            <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            lambeq
+              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.8
+                0.3.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -61,6 +64,14 @@
 <li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nlp-refs.html">References for further study</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
 <ul>
@@ -108,8 +119,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>String diagrams</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">String diagrams</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/string_diagrams.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -144,9 +155,9 @@
 }
 </style>
 <section id="string-diagrams">
-<span id="sec-string-diagrams"></span><h1>String diagrams<a class="headerlink" href="#string-diagrams" title="Permalink to this headline"></a></h1>
+<span id="sec-string-diagrams"></span><h1>String diagrams<a class="headerlink" href="#string-diagrams" title="Permalink to this heading"></a></h1>
 <section id="motivation-and-connection-to-tensor-networks">
-<h2>Motivation and connection to tensor networks<a class="headerlink" href="#motivation-and-connection-to-tensor-networks" title="Permalink to this headline"></a></h2>
+<h2>Motivation and connection to tensor networks<a class="headerlink" href="#motivation-and-connection-to-tensor-networks" title="Permalink to this heading"></a></h2>
 <p>“Programming” a quantum computer requires from developers the ability to manipulate <a class="reference internal" href="glossary.html#term-quantum-gate"><span class="xref std std-term">quantum gates</span></a> (which can be seen as the “atomic” units of computation in this paradigm) in order to create <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a>, which can be further grouped into higher-order constructions. Working at such a low level compares to writing assembly in a classical computer, and is extremely hard for humans – especially on <a class="reference internal" href="glossary.html#term-natural-language-processing-NLP"><span class="xref std std-term">NLP</span></a> tasks which contain many levels of abstractions.</p>
 <p>In order to simplify <a class="reference internal" href="glossary.html#term-natural-language-processing-NLP"><span class="xref std std-term">NLP</span></a> design on quantum hardware, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> represents sentences as <a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a> (<a class="reference internal" href="#fig-stringdiagram"><span class="std std-numref">Fig. 3</span></a>). This choice stems from the fact that a <a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> expresses computations in a <a class="reference internal" href="tutorials/monoidal.html#Monoidal-categories"><span class="std std-ref">monoidal category</span></a>, an abstraction well-suited to model the way a quantum computer works and processes data.</p>
 <p>From a more practical point of view, a <a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> can be seen as an enriched <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a>, a mathematical structure with many applications in quantum physics. Compared to tensor networks, string diagrams have some additional convenient properties, for example, they respect the order of words, and allow easy rewriting/modification of their structure.</p>
@@ -159,7 +170,7 @@
 <p><a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">String diagrams</span></a> and <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a> constitute an ideal abstract representation of the compositional relations between the words in a sentence, in the sense that they remain close to <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a>, yet are independent of any low-level decisions (such as choice of <a class="reference internal" href="glossary.html#term-quantum-gate"><span class="xref std std-term">quantum gates</span></a> and construction of circuits representing words and sentences) that might vary depending on design choices and the type of quantum hardware that the experiment is running on.</p>
 </section>
 <section id="pregroup-grammars">
-<span id="sec-pregroup-grammars"></span><h2>Pregroup grammars<a class="headerlink" href="#pregroup-grammars" title="Permalink to this headline"></a></h2>
+<span id="sec-pregroup-grammars"></span><h2>Pregroup grammars<a class="headerlink" href="#pregroup-grammars" title="Permalink to this heading"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s string diagrams are equipped with types, which show the interactions between the words in a sentence according to the <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup grammar</span></a> formalism <a class="reference internal" href="bibliography.html#lam1999" id="id1"><span>[Lam1999]</span></a>. In a pregroup grammar, each type <span class="math notranslate nohighlight">\(p\)</span> has a left (<span class="math notranslate nohighlight">\(p^l\)</span>) and a right (<span class="math notranslate nohighlight">\(p^r\)</span>) <a class="reference internal" href="glossary.html#term-adjoint"><span class="xref std std-term">adjoint</span></a>, for which the following hold:</p>
 <div class="math notranslate nohighlight">
 \[p^l \cdot p \to 1 \to p \cdot p^l~~~~~~~~~~~~~
@@ -174,7 +185,7 @@ p \cdot p^r \to 1 \to p^r \cdot p\]</div>
 <p>The transition from pregroups to vector space semantics is achieved by a mapping that sends atomic types to vector spaces (<span class="math notranslate nohighlight">\(n\)</span> to <span class="math notranslate nohighlight">\(N\)</span> and <span class="math notranslate nohighlight">\(s\)</span> to <span class="math notranslate nohighlight">\(S\)</span>) and composite types to tensor product spaces (e.g. <span class="math notranslate nohighlight">\(n^r \cdot s \cdot n^l \cdot n^l\)</span> to <span class="math notranslate nohighlight">\(N \otimes S \otimes N \otimes N\)</span>). Therefore, each word can be seen as a specific state in the corresponding space defined by its grammatical type, i.e. a tensor, the order of which is determined by the number of wires emanating from the corresponding box. The <a class="reference internal" href="glossary.html#term-cup"><span class="xref std std-term">cups</span></a> denote tensor contractions. A concrete instantiation of the diagram requires the assignment of dimensions (which in the quantum case amounts to fixing the number of <a class="reference internal" href="glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a>) for each vector space corresponding to an atomic type.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s string diagrams are objects of the class <a class="reference external" href="https://docs.discopy.org/en/0.5/_autosummary/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s string diagrams are objects of the class <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.rigid.Diagram</span></code></a>.</p>
 </div>
 <p class="rubric">See also:</p>
 <ul class="simple">
@@ -194,7 +205,7 @@ p \cdot p^r \to 1 \to p^r \cdot p\]</div>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
