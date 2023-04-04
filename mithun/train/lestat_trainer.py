@@ -421,7 +421,6 @@ class LestatTrainer(ABC):
 
             # evaluate metrics on validation data
             if(config['EVALUATE_ON_DEV']):
-
                 if val_dataset is not None:
                     if epoch % evaluation_step == 0:
                         val_loss = 0.0
@@ -459,8 +458,6 @@ class LestatTrainer(ABC):
                                         for metr, func in (
                                                 self.evaluate_functions.items()):
                                             res = func(y_hat_val, y_label_val)
-
-
                                             self._val_results_epoch[metr].append(
                                                 len(x_val)*res)
                                 status_bar.set_description(
