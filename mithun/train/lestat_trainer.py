@@ -443,7 +443,7 @@ class LestatTrainer(ABC):
                                     y_hat_val_classes=y_hat_val
                                 else:
                                     sig = torch.sigmoid
-                                    y_hat_val_classes=torch.round(sig(y_hat))
+                                    y_hat_val_classes=torch.round(sig(y_hat_val))
                                 y_hat_val_epoch.extend(y_hat_val_classes)
 
 

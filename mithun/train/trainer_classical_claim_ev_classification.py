@@ -50,8 +50,8 @@ train_labels, train_data_evidence = read_data(get_full_path(config['BASE_PATH_DA
 assert len(train_labels)== len(train_data_evidence) == len(train_data_claim)
 
 #validation data wont be shuffled/have batches. instead the data will predicted/evaluated be per schema
-val_labels, val_data_claim, val_data_offsets= read_claims_with_offsets(get_full_path(config['BASE_PATH_DATA'], config['LESTAT_DEV_LAMBEQ_FORMAT_CLAIM_MICRO']))
-val_labels, val_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_DEV_LAMBEQ_FORMAT_EVIDENCE_MICRO']))
+val_labels, val_data_claim, val_data_offsets= read_claims_with_offsets(get_full_path(config['BASE_PATH_DATA'], config['LESTAT_DEV_LAMBEQ_FORMAT_CLAIM_GOLD']))
+val_labels, val_data_evidence = read_data(get_full_path(config['BASE_PATH_DATA'],config['LESTAT_DEV_LAMBEQ_FORMAT_EVIDENCE_GOLD']))
 
 assert len(val_labels)== len(val_data_claim) == len(val_data_evidence)
 
