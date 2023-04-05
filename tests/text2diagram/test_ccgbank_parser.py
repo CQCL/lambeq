@@ -106,8 +106,8 @@ def test_text_progress(minimal_ccgbank):
     ccgbank_parser = CCGBankParser(minimal_ccgbank)
     with patch('sys.stderr', new=StringIO()) as fake_out:
         _=ccgbank_parser.section2diagrams(0, verbose=VerbosityLevel.TEXT.value)
-        assert fake_out.getvalue().rstrip()[:9] == 'Parsing "'
-        assert fake_out.getvalue().rstrip()[-28:] == '/data/AUTO/00/wsj_0001.auto"'
+        assert fake_out.getvalue().rstrip()[:9] == 'Parsing `'
+        assert fake_out.getvalue().rstrip()[-28:] == '/data/AUTO/00/wsj_0001.auto`'
 
 
 def test_tqdm_progress(minimal_ccgbank):

@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ from __future__ import annotations
 __all__ = ['WebParser', 'WebParseError']
 
 import sys
-from typing import Optional
 
 from tqdm.auto import tqdm
 
@@ -73,12 +72,11 @@ class WebParser(CCGParser):
                              'WebParser.')
         self.verbose = verbose
 
-    def sentences2trees(
-            self,
-            sentences: SentenceBatchType,
-            tokenised: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None) -> list[Optional[CCGTree]]:
+    def sentences2trees(self,
+                        sentences: SentenceBatchType,
+                        tokenised: bool = False,
+                        suppress_exceptions: bool = False,
+                        verbose: str | None = None) -> list[CCGTree | None]:
         """Parse multiple sentences into a list of :py:class:`.CCGTree` s.
 
         Parameters
@@ -142,7 +140,7 @@ class WebParser(CCGParser):
         for i in reversed(empty_indices):
             del sentences[i]
 
-        trees: list[Optional[CCGTree]] = []
+        trees: list[CCGTree | None] = []
         if verbose == VerbosityLevel.TEXT.value:
             print('Parsing sentences.', file=sys.stderr)
         for sentence in tqdm(
@@ -158,7 +156,7 @@ class WebParser(CCGParser):
                 if suppress_exceptions:
                     tree = None
                 elif type(e) == requests.JSONDecodeError:
-                    raise WebParseError(str(sentence))
+                    raise WebParseError(str(sentence)) from e
                 else:
                     raise e
             else:

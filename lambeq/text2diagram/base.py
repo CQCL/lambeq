@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -47,7 +47,6 @@ from __future__ import annotations
 __all__ = ['Reader']
 
 from abc import ABC, abstractmethod
-from typing import Optional
 
 from discopy.rigid import Diagram
 
@@ -60,13 +59,12 @@ class Reader(ABC):
     @abstractmethod
     def sentence2diagram(self,
                          sentence: SentenceType,
-                         tokenised: bool = False) -> Optional[Diagram]:
+                         tokenised: bool = False) -> Diagram | None:
         """Parse a sentence into a DisCoPy diagram."""
 
-    def sentences2diagrams(
-                    self,
-                    sentences: SentenceBatchType,
-                    tokenised: bool = False) -> list[Optional[Diagram]]:
+    def sentences2diagrams(self,
+                           sentences: SentenceBatchType,
+                           tokenised: bool = False) -> list[Diagram | None]:
         """Parse multiple sentences into a list of DisCoPy diagrams."""
         return [self.sentence2diagram(sentence, tokenised=tokenised)
                 for sentence in sentences]

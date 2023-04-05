@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,17 +25,12 @@ __all__ = ['BobcatParser', 'BobcatParseError']
 
 from collections.abc import Iterable
 import json
-import os
 from pathlib import Path
 import sys
-import tarfile
-import tempfile
-from typing import Any, Optional, Union
-import warnings
+from typing import Any
 
 from discopy.biclosed import Ty
 import torch
-from tqdm import TqdmWarning
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer
 
@@ -51,106 +46,10 @@ from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
 from lambeq.text2diagram.ccg_types import CCGAtomicType
-
-StrPathT = Union[str, 'os.PathLike[str]']
-
-MODELS_URL = 'https://qnlp.cambridgequantum.com/models'
-MODELS = {'bert'}
-VERSION_FNAME = 'version.txt'
-
-
-def get_model_url(model: str) -> str:
-    if model not in MODELS:
-        raise ValueError(f'Invalid model name: {model!r}')
-    return f'{MODELS_URL}/{model}/latest'
-
-
-def get_model_dir(model: str,
-                  cache_dir: StrPathT = None) -> Path:  # pragma: no cover
-    if cache_dir is None:
-        try:
-            cache_dir = Path(os.getenv('XDG_CACHE_HOME'))
-        except TypeError:
-            cache_dir = Path.home() / '.cache'
-    else:
-        cache_dir = Path(cache_dir)
-    models_dir = cache_dir / 'lambeq' / 'bobcat'
-    try:
-        models_dir.mkdir(parents=True, exist_ok=True)
-    except FileExistsError:
-        raise FileExistsError(f'Cache directory location (`{models_dir}`) '
-                              'already exists and is not a directory.')
-    return models_dir / model
-
-
-def model_is_stale(model: str, model_dir: str) -> bool:
-    import requests
-    try:
-        url = get_model_url(model) + '/' + VERSION_FNAME
-    except ValueError:
-        return False
-
-    try:
-        remote_version = requests.get(url).text.strip()
-    except Exception:
-        return False
-
-    try:
-        with open(model_dir + '/' + VERSION_FNAME) as f:
-            local_version = f.read().strip()
-    except Exception:
-        local_version = None
-
-    return bool(remote_version != local_version)
-
-
-def download_model(
-        model_name: str,
-        model_dir: Optional[StrPathT] = None,
-        verbose: str = VerbosityLevel.PROGRESS.value
-        ) -> None:  # pragma: no cover
-    import requests
-    url = get_model_url(model_name) + '/model.tar.gz'
-
-    if model_dir is None:
-        model_dir = get_model_dir(model_name)
-
-    if verbose == VerbosityLevel.TEXT.value:
-        print('Downloading model...', file=sys.stderr)
-    if verbose == VerbosityLevel.PROGRESS.value:
-        response = requests.get(url, stream=True)
-        size = int(response.headers.get('content-length', 0))
-        block_size = 1024
-
-        warnings.filterwarnings('ignore', category=TqdmWarning)
-        progress_bar = tqdm(
-            bar_format='Downloading model: {percentage:3.1f}%|'
-                       '{bar}|{n:.3f}/{total:.3f}GB '
-                       '[{elapsed}<{remaining}]',
-            total=size/1e9)
-
-        model_file = tempfile.NamedTemporaryFile()
-        for data in response.iter_content(block_size):
-            progress_bar.update(len(data)/1e9)
-            model_file.write(data)
-
-    else:
-        content = requests.get(url).content
-        model_file = tempfile.NamedTemporaryFile()
-        model_file.write(content)
-
-    # Extract model
-    model_file.seek(0)
-    if verbose != VerbosityLevel.SUPPRESS.value:
-        print('Extracting model...')
-    tar = tarfile.open(fileobj=model_file)
-    tar.extractall(model_dir)
-    model_file.close()
-
-    # Download version
-    ver_url = get_model_url(model_name) + '/' + VERSION_FNAME
-    with open(os.path.join(model_dir, VERSION_FNAME), 'wb') as w:
-        w.write(requests.get(ver_url).content)
+from lambeq.text2diagram.model_downloader import (ModelDownloader,
+                                                  ModelDownloaderError,
+                                                  MODELS)
+from lambeq.typing import StrPathT
 
 
 class BobcatParseError(Exception):
@@ -166,9 +65,9 @@ class BobcatParser(CCGParser):
 
     def __init__(self,
                  model_name_or_path: str = 'bert',
-                 root_cats: Optional[Iterable[str]] = None,
+                 root_cats: Iterable[str] | None = None,
                  device: int = -1,
-                 cache_dir: Optional[StrPathT] = None,
+                 cache_dir: StrPathT | None = None,
                  force_download: bool = False,
                  verbose: str = VerbosityLevel.PROGRESS.value,
                  **kwargs: Any) -> None:
@@ -256,15 +155,28 @@ class BobcatParser(CCGParser):
                              'BobcatParser.')
         model_dir = Path(model_name_or_path)
         if not model_dir.is_dir():
-            model_dir = get_model_dir(model_name_or_path, cache_dir)
+            # Check for updates only if a local model path is not
+            #  specified in `model_name_or_path`
 
+            downloader = ModelDownloader(model_name_or_path, cache_dir)
+            model_dir = downloader.model_dir
             if (force_download
                     or not model_dir.is_dir()
-                    or model_is_stale(model_name_or_path, str(model_dir))):
-                if model_name_or_path not in MODELS:
-                    raise ValueError('Invalid model name or path: '
-                                     f'{model_name_or_path!r}')
-                download_model(model_name_or_path, model_dir, verbose)
+                    or downloader.model_is_stale()):
+                try:
+                    downloader.download_model(verbose)
+                except ModelDownloaderError as e:
+                    local_model_version = downloader.get_local_model_version()
+
+                    if (model_dir.is_dir()
+                            and local_model_version is not None):
+                        print('Failed to update model with '
+                              f'exception: {e}')
+                        print('Attempting to continue with version '
+                              f'{local_model_version}')
+                    else:
+                        # No local version to fall back to
+                        raise e
 
         with open(model_dir / 'pipeline_config.json') as f:
             config = json.load(f)
@@ -303,12 +215,12 @@ class BobcatParser(CCGParser):
         return Sentence(sent.words, sent_tags, spans)
 
     def sentences2trees(
-            self,
-            sentences: SentenceBatchType,
-            tokenised: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None
-            ) -> list[Optional[CCGTree]]:
+        self,
+        sentences: SentenceBatchType,
+        tokenised: bool = False,
+        suppress_exceptions: bool = False,
+        verbose: str | None = None
+    ) -> list[CCGTree] | None:
         """Parse multiple sentences into a list of :py:class:`.CCGTree` s.
 
         Parameters
@@ -381,12 +293,12 @@ class BobcatParser(CCGParser):
                     sentence_input = self._prepare_sentence(sent, tags)
                     result = self.parser(sentence_input)
                     trees.append(self._build_ccgtree(result[0]))
-                except Exception:
+                except Exception as e:
                     if suppress_exceptions:
                         print(f"key error at index {counter} with the sentence {sentence_input.words}")
                         trees.append(None)
                     else:
-                        raise BobcatParseError(' '.join(sent.words))
+                        raise BobcatParseError(' '.join(sent.words)) from e
 
         for i in empty_indices:
             trees.insert(i, None)
@@ -422,7 +334,7 @@ class BobcatParser(CCGParser):
 
         children = [BobcatParser._build_ccgtree(child)
                     for child in filter(None, (tree.left, tree.right))]
-        return CCGTree(text=tree.word,
+        return CCGTree(text=tree.word if tree.is_leaf else None,
                        rule=CCGRule(tree.rule.name),
                        biclosed_type=BobcatParser._to_biclosed(tree.cat),
                        children=children)

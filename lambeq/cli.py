@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import json
 import os
 from pathlib import Path
 import pickle
-from typing import Any, Optional, Union
+from typing import Any
 
 import discopy
 import yaml
@@ -54,7 +54,7 @@ from lambeq.version import version
 AVAILABLE_PARSERS: dict[str, type[CCGParser]] = {'bobcat': BobcatParser,
                                                  'depccg': DepCCGParser}
 
-AVAILABLE_READERS: dict[str, Union[Reader, type[Reader]]] = {
+AVAILABLE_READERS: dict[str, Reader | type[Reader]] = {
         'spiders': spiders_reader,
         'stairs': stairs_reader,
         'cups': cups_reader,
@@ -134,8 +134,8 @@ class ArgumentListValidator(argparse.Action):
     def __call__(self,
                  parser: argparse.ArgumentParser,
                  namespace: argparse.Namespace,
-                 values: Union[str, Sequence[Any], None],
-                 option_string: Optional[str] = None) -> None:
+                 values: str | Sequence[Any] | None,
+                 option_string: str | None = None) -> None:
         if values is None:  # pragma: no cover
             values = []
         elif isinstance(values, str):  # pragma: no cover
@@ -415,11 +415,10 @@ class ParserModule(CLIModule):
 
     def __call__(self,
                  cl_args: argparse.Namespace,
-                 module_input: str) -> Union[list[discopy.Diagram],
-                                             list[CCGTree]]:
+                 module_input: str) -> list[discopy.Diagram] | list[CCGTree]:
         if cl_args.split_sentences or cl_args.tokenise:
             tokeniser = SpacyTokeniser()
-        sentences: Union[list[str], list[list[str]]]
+        sentences: list[str] | list[list[str]]
         if cl_args.split_sentences:
             sentences = tokeniser.split_sentences(module_input)
         else:

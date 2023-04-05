@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,9 +23,8 @@ from __future__ import annotations
 __all__ = ['CircuitAnsatz', 'IQPAnsatz']
 
 from abc import abstractmethod
-from collections.abc import Mapping
+from collections.abc import Callable, Mapping
 from itertools import cycle
-from typing import Callable, Optional
 
 from discopy.quantum.circuit import (Circuit, Discard, Functor, Id,
                                      IQPansatz as IQP, qubit,
@@ -50,7 +49,7 @@ class CircuitAnsatz(BaseAnsatz):
                  n_single_qubit_params: int,
                  circuit: Callable[[int, np.ndarray], Circuit],
                  discard: bool = False,
-                 single_qubit_rotations: Optional[list[Circuit]] = None,
+                 single_qubit_rotations: list[Circuit] | None = None,
                  postselection_basis: Circuit = computational_basis) -> None:
         """Instantiate a circuit ansatz.
 
@@ -122,11 +121,13 @@ class CircuitAnsatz(BaseAnsatz):
 
         if cod > dom:
             circuit <<= Id(dom) @ Ket(*[0]*(cod - dom))
-        elif self.discard:
-            circuit >>= Id(cod) @ Discard(dom - cod)
-        else:
-            circuit >>= Id(cod).tensor(*[self.postselection_basis] * (dom-cod))
-            circuit >>= Id(cod) @ Bra(*[0]*(dom - cod))
+        elif cod < dom:
+            if self.discard:
+                circuit >>= Id(cod) @ Discard(dom - cod)
+            else:
+                circuit >>= Id(cod).tensor(
+                    *[self.postselection_basis] * (dom-cod))
+                circuit >>= Id(cod) @ Bra(*[0]*(dom - cod))
         return circuit
 
 
@@ -272,7 +273,7 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
                  ob_map: Mapping[Ty, int],
                  n_layers: int,
                  n_single_qubit_params: int = 3,
-                 ranges: Optional[list[int]] = None,
+                 ranges: list[int] | None = None,
                  discard: bool = False) -> None:
         """Instantiate a strongly entangling ansatz.
 

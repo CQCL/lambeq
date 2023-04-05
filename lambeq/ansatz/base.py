@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,29 +35,50 @@ class Symbol(sympy.Symbol):
 
     Attributes
     ----------
+    directed_dom : int
+        The size of the domain of the tensor-box that this symbol
+        represents.
+    directed_cod : int
+        The size of the codomain of the tensor-box that this symbol
+        represents.
     size : int
-        The size of the tensor that this symbol represents.
+        The total size of the tensor that this symbol represents
+        (directed_dom * directed_cod).
 
     """
-    size: int
+    directed_dom: int
+    directed_cod: int
 
-    def __new__(cls, name: str, size: int = 1, **assumptions: bool) -> Symbol:
+    def __new__(cls,
+                name: str,
+                directed_dom: int = 1,
+                directed_cod: int = 1,
+                **assumptions: bool) -> Symbol:
         """Initialise a symbol.
 
         Parameters
         ----------
-        size : int, default: 1
-            The size of the tensor that this symbol represents.
+        directed_dom : int, default: 1
+            The size of the domain of the tensor-box that this symbol
+            represents.
+        directed_cod : int, default: 1
+            The size of the codomain of the tensor-box that this symbol
+            represents.
 
         """
         cls._sanitize(assumptions, cls)
 
         obj: Symbol = sympy.Symbol.__xnew__(cls, name, **assumptions)
-        obj.size = size
+        obj.directed_dom = directed_dom
+        obj.directed_cod = directed_cod
         return obj
 
     def __getnewargs_ex__(self) -> tuple[tuple[str, int], dict[str, bool]]:
         return (self.name, self.size), self.assumptions0
+
+    @property
+    def size(self) -> int:
+        return self.directed_dom * self.directed_cod
 
     @sympy.cacheit
     def sort_key(self, order: Literal[None] = None) -> tuple[Any, ...]:

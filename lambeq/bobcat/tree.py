@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any
 
 from lambeq.bobcat.lexicon import Atom, Category, Feature, Relation
 
@@ -37,11 +37,11 @@ class Dependency:
     head: IndexedWord
     var: int
     unary_rule_id: int
-    filler: Optional[IndexedWord] = None
+    filler: IndexedWord | None = None
 
     def replace(self,
                 var: int,
-                unary_rule_id: Optional[int] = None) -> Dependency:
+                unary_rule_id: int | None = None) -> Dependency:
         if unary_rule_id is None:
             unary_rule_id = self.unary_rule_id
         return replace(self, var=var, unary_rule_id=unary_rule_id)
@@ -50,7 +50,7 @@ class Dependency:
     def generate(cls,
                  cat: Category,
                  unary_rule_id: int,
-                 head: Union[IndexedWord, Variable]) -> list[Dependency]:
+                 head: IndexedWord | Variable) -> list[Dependency]:
         if cat.relation:
             if isinstance(head, IndexedWord):
                 deps = [cls(cat.relation, head, cat.var, unary_rule_id)]
@@ -83,7 +83,7 @@ class Variable:
     fillers: list[IndexedWord]
     filled: bool
 
-    def __init__(self, word: Optional[IndexedWord] = None) -> None:
+    def __init__(self, word: IndexedWord | None = None) -> None:
         if word is not None:
             self.fillers = [word]
         else:
@@ -236,15 +236,22 @@ class ParseTree:
     score: float = 0
 
     @property
-    def word(self) -> Optional[str]:
-        return self.variable.filler.word if self.rule == Rule.L else None
+    def word(self) -> str:
+        if self.is_leaf:
+            return self.variable.filler.word
+        else:
+            raise AttributeError('only leaves have words')
 
     @property
     def variable(self) -> Variable:
         try:
             return self.var_map[self.cat.var]
-        except KeyError:
-            raise AttributeError('variable is not in map')
+        except KeyError as e:
+            raise AttributeError('variable is not in map') from e
+
+    @property
+    def is_leaf(self) -> bool:
+        return self.rule == Rule.L
 
     @property
     def coordinated_or_type_raised(self) -> bool:

@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ __all__ = ['DepCCGParser', 'DepCCGParseError']
 from collections.abc import Iterable
 import functools
 import logging
-from typing import Any, Optional, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 from discopy import Diagram
 from discopy.biclosed import Ty
@@ -87,12 +87,12 @@ class DepCCGParser(CCGParser):
     def __init__(self,
                  *,
                  lang: str = 'en',
-                 model: Optional[str] = None,
+                 model: str | None = None,
                  use_model_unary_rules: bool = False,
                  annotator: str = 'janome',
-                 tokenize: Optional[bool] = None,
+                 tokenize: bool | None = None,
                  device: int = -1,
-                 root_cats: Optional[Iterable[str]] = None,
+                 root_cats: Iterable[str] | None = None,
                  verbose: str = VerbosityLevel.PROGRESS.value,
                  **kwargs: Any) -> None:
         """Instantiate a parser based on `depccg`.
@@ -205,18 +205,16 @@ class DepCCGParser(CCGParser):
             )
 
         self.root_categories = [*map(Category.parse, root_cats)]
-        self.categories: Optional[list[Category]] = None
+        self.categories: list[Category] | None = None
         self.kwargs = kwargs
 
-        self._last_trees: list[Optional[CCGTree]] = []
+        self._last_trees: list[CCGTree | None] = []
 
-    def sentences2trees(
-            self,
-            sentences: SentenceBatchType,
-            tokenised: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None
-            ) -> list[Optional[CCGTree]]:
+    def sentences2trees(self,
+                        sentences: SentenceBatchType,
+                        tokenised: bool = False,
+                        suppress_exceptions: bool = False,
+                        verbose: str | None = None) -> list[CCGTree | None]:
         """Parse multiple sentences into a list of :py:class:`.CCGTree` s.
 
         Parameters
@@ -299,7 +297,7 @@ class DepCCGParser(CCGParser):
     def sentence2tree(self,
                       sentence: SentenceType,
                       tokenised: bool = False,
-                      suppress_exceptions: bool = False) -> Optional[CCGTree]:
+                      suppress_exceptions: bool = False) -> CCGTree | None:
         """Parse a sentence into a :py:class:`.CCGTree`.
 
         Parameters
@@ -346,12 +344,11 @@ class DepCCGParser(CCGParser):
                             tokenised=tokenised,
                             verbose=VerbosityLevel.PROGRESS.value)[0]
 
-    def sentence2diagram(
-            self,
-            sentence: SentenceType,
-            tokenised: bool = False,
-            planar: bool = False,
-            suppress_exceptions: bool = False) -> Optional[Diagram]:
+    def sentence2diagram(self,
+                         sentence: SentenceType,
+                         tokenised: bool = False,
+                         planar: bool = False,
+                         suppress_exceptions: bool = False) -> Diagram | None:
         """Parse a sentence into a DisCoPy diagram.
 
         Parameters

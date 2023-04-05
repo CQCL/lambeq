@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,10 @@
 
 from __future__ import annotations
 
+from collections.abc import Sequence
 from dataclasses import asdict, dataclass
 import math
-from typing import Any, List, Optional, Sequence, Tuple, Union
+from typing import Any, List, Tuple
 
 import torch
 from torch import nn
@@ -65,16 +66,16 @@ def span2idx(x: int, y: int) -> int:
 
 @dataclass
 class ChartClassifierOutput(ModelOutput):
-    loss: Optional[torch.FloatTensor] = None
-    tag_logits: Optional[torch.FloatTensor] = None
-    span_logits: Optional[torch.FloatTensor] = None
-    hidden_states: Optional[tuple[torch.FloatTensor]] = None
-    attentions: Optional[tuple[torch.FloatTensor]] = None
+    loss: torch.FloatTensor | None = None
+    tag_logits: torch.FloatTensor | None = None
+    span_logits: torch.FloatTensor | None = None
+    hidden_states: tuple[torch.FloatTensor] | None = None
+    attentions: tuple[torch.FloatTensor] | None = None
 
 
 class ChartClassifierConfig(BertConfig):
     def __init__(self,
-                 empty_span_weight: Optional[float] = None,
+                 empty_span_weight: float | None = None,
                  tags: Sequence[str] = (),
                  cats: Sequence[str] = (),
                  **kwargs: Any) -> None:
@@ -111,20 +112,20 @@ class BertForChartClassification(BertPreTrainedModel):
         self.init_weights()
 
     def forward(
-            self,
-            input_ids: Optional[torch.LongTensor] = None,
-            attention_mask: Optional[torch.FloatTensor] = None,
-            token_type_ids: Optional[torch.LongTensor] = None,
-            position_ids: Optional[torch.LongTensor] = None,
-            head_mask: Optional[torch.FloatTensor] = None,
-            inputs_embeds: Optional[torch.FloatTensor] = None,
-            tag_labels: Optional[torch.LongTensor] = None,
-            span_labels: Optional[torch.LongTensor] = None,
-            word_mask: Optional[torch.BoolTensor] = None,
-            output_attentions: Optional[bool] = None,
-            output_hidden_states: Optional[bool] = None,
-            return_dict: Optional[bool] = None
-    ) -> Union[ChartClassifierOutput, tuple[Any, ...]]:
+        self,
+        input_ids: torch.LongTensor | None = None,
+        attention_mask: torch.FloatTensor | None = None,
+        token_type_ids: torch.LongTensor | None = None,
+        position_ids: torch.LongTensor | None = None,
+        head_mask: torch.FloatTensor | None = None,
+        inputs_embeds: torch.FloatTensor | None = None,
+        tag_labels: torch.LongTensor | None = None,
+        span_labels: torch.LongTensor | None = None,
+        word_mask: torch.BoolTensor | None = None,
+        output_attentions: bool | None = None,
+        output_hidden_states: bool | None = None,
+        return_dict: bool | None = None
+    ) -> ChartClassifierOutput | tuple[Any, ...]:
         return_dict = (return_dict if return_dict is not None
                        else self.config.use_return_dict)
 
@@ -384,9 +385,8 @@ class Tagger:
 
     def __call__(self,
                  inputs: Sequence[Sequence[str]],
-                 batch_size: Optional[int] = None,
-                 verbose: str = VerbosityLevel.PROGRESS.value
-                 ) -> TaggerOutput:
+                 batch_size: int | None = None,
+                 verbose: str = VerbosityLevel.PROGRESS.value) -> TaggerOutput:
         """Parse a list of sentences."""
         if batch_size is None:
             batch_size = self.batch_size

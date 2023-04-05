@@ -3,10 +3,44 @@
 Release notes
 =============
 
+
+.. _rel-0.3.0:
+
+`0.3.0 <https://github.com/CQCL/lambeq/releases/tag/0.3.0>`_
+------------------------------------------------------------
+
+Added:
+
+- Support for hybrid quantum-classical models using the :py:class:`~lambeq.PennyLaneModel`. :term:`PennyLane` is a powerful QML library that allows the development of hybrid ML models by hooking numerically determined gradients of parametrised quantum circuits (PQCs) to the autograd modules of ML libraries like PyTorch or TensorFlow.
+- Add lambeq-native loss functions :py:class:`~lambeq.LossFunction` to be used in conjunction with the :py:class:`~lambeq.QuantumTrainer`. Currently, we support the :py:class:`~lambeq.CrossEntropyLoss`, :py:class:`~lambeq.BinaryCrossEntropyLoss`, and the :py:class:`~lambeq.MSELoss` loss functions.
+- Python 3.11 support.
+- An extensive :ref:`NLP-101 tutorial <sec-nlp-intro>`, covering basic definitions, text preprocessing, tokenisation, handling of unknown words, machine learning best practices, text classification, and other concepts.
+
+Changed:
+
+- Improve tensor initialisation in the :py:class:`~lambeq.PytorchModel`. This enables the training of larger models as all parameters are initialised such that the expected L2 norm of all output vectors is approximately 1. We use a symmetric uniform distribution where the range depends on the output dimension (flow) of each box.
+- Improve the fail-safety of the :py:class:`~lambeq.BobcatParser` model download method by adding hash checks and atomic transactions.
+- Use type union expression ``|`` instead of ``Union`` in type hints.
+- Use ``raise from`` syntax for better exception handling.
+- Update the requirements for the documentation.
+
+Fixed:
+
+- Fixed bug in :py:class:`~lambeq.SPSAOptimizer` triggered by the usage of masked arrays.
+- Fixed test for :py:class:`~lambeq.NumpyModel` that was failing due to a change in the behaviour of Jax.
+- Fixed brittle quote-wrapped strings in error messages.
+- Fixed 400 response code during Bobcat model download.
+- Fixed bug where :py:class:`~lambeq.CircuitAnsatz` would add empty discards and postselections to the circuit.
+
+Removed:
+
+- Removed install script due to deprecation.
+
 .. _rel-0.2.8:
 
 `0.2.8 <https://github.com/CQCL/lambeq/releases/tag/0.2.8>`_
 ------------------------------------------------------------
+
 Changed:
 
 - Improved the performance of :py:class:`.NumpyModel` when using Jax JIT-compilation.

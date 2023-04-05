@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,9 +23,9 @@ from __future__ import annotations
 from collections.abc import Iterator, Mapping
 import os
 import pickle
-from typing import Any, Union
+from typing import Any
 
-_StrPathT = Union[str, 'os.PathLike[str]']
+from lambeq.typing import StrPathT
 
 
 class Checkpoint(Mapping):
@@ -93,7 +93,7 @@ class Checkpoint(Mapping):
             self.entries[key] = values[key]
 
     @classmethod
-    def from_file(cls, path: _StrPathT) -> Checkpoint:
+    def from_file(cls, path: StrPathT) -> Checkpoint:
         """Load the checkpoint contents from the file.
 
         Parameters
@@ -116,7 +116,7 @@ class Checkpoint(Mapping):
                                     f'{path}')
         return checkpoint
 
-    def to_file(self, path: _StrPathT) -> None:
+    def to_file(self, path: StrPathT) -> None:
         """Save entries to a file and deletes the in-memory copy.
 
         Parameters
@@ -128,7 +128,8 @@ class Checkpoint(Mapping):
         try:
             with open(path, 'wb+') as ckp:
                 pickle.dump(self.entries, ckp)
-        except FileNotFoundError:
-            raise FileNotFoundError('The directory does not exist. Check path '
-                                    f'{path}')
+        except FileNotFoundError as e:
+            raise FileNotFoundError(
+                'The directory does not exist. Check path `{path}`'
+            ) from e
         self.entries = {}

@@ -11,6 +11,7 @@ skinparam class {
 
 package pytorch #DDDDDD {}
 package tket #DDDDDD {}
+package pennylane #DDDDDD {}
 
 abstract class Model {
     symbols
@@ -57,6 +58,7 @@ class CheckPoint {
 }
 
 class PytorchModel {}
+class PennyLaneModel {}
 class NumpyModel {
     use_jit
     lambdas
@@ -80,7 +82,25 @@ class SPSAOptimizer {
     bounds
 }
 
+class BinaryCrossEntropyLoss {
+  calculate_loss()
+}
+
+class CrossEntropyLoss {
+  calculate_loss()
+}
+
+class LossFunction {
+  backend : module
+  {abstract}calculate_loss()
+}
+
+class MSELoss {
+  calculate_loss()
+}
+
 Model <|-- PytorchModel
+Model <|-- PennyLaneModel
 Model <|-- QuantumModel
 QuantumModel <|-- TketModel
 QuantumModel <|-- NumpyModel
@@ -89,6 +109,8 @@ Trainer <|-- QuantumTrainer
 
 Optimizer <|-- SPSAOptimizer
 
+PennyLaneModel -- pennylane
+PennyLaneModel -- pytorch
 PytorchModel -- pytorch
 PytorchTrainer -- pytorch
 TketModel -- tket
@@ -101,8 +123,14 @@ Trainer *-u- Dataset
 Model -* Optimizer::model
 Optimizer -* QuantumTrainer::optimizer
 
+PennyLaneModel -- PytorchTrainer: usedWith
 PytorchModel -- PytorchTrainer: usedWith
 NumpyModel -- QuantumTrainer: usedWith
 TketModel -- QuantumTrainer: usedWith
+QuantumModel -- LossFunction: uses
+
+CrossEntropyLoss <|-- BinaryCrossEntropyLoss
+LossFunction <|-- CrossEntropyLoss
+LossFunction <|-- MSELoss
 
 @enduml

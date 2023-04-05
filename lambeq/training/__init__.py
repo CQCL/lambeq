@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ __all__ = ['Checkpoint',
 
            'Model',
            'NumpyModel',
+           'PennyLaneModel',
            'PytorchModel',
            'QuantumModel',
            'TketModel',
@@ -26,8 +27,14 @@ __all__ = ['Checkpoint',
 
            'Trainer',
            'PytorchTrainer',
-            'PytorchTrainerCosineSim',
-           'QuantumTrainer']
+
+           'QuantumTrainer',
+
+           'BinaryCrossEntropyLoss',
+           'CrossEntropyLoss',
+           'LossFunction',
+           'MSELoss', ]
+
 
 from lambeq.training.checkpoint import Checkpoint
 
@@ -35,6 +42,7 @@ from lambeq.training.dataset import Dataset
 
 from lambeq.training.model import Model
 from lambeq.training.numpy_model import NumpyModel
+from lambeq.training.pennylane_model import PennyLaneModel
 from lambeq.training.pytorch_model import PytorchModel
 from lambeq.training.quantum_model import QuantumModel
 from lambeq.training.tket_model import TketModel
@@ -45,3 +53,8 @@ from lambeq.training.spsa_optimizer import SPSAOptimizer
 from lambeq.training.trainer import Trainer
 from lambeq.training.pytorch_trainer import PytorchTrainer
 from lambeq.training.quantum_trainer import QuantumTrainer
+
+from lambeq.training.loss import (BinaryCrossEntropyLoss,
+                                  CrossEntropyLoss,
+                                  LossFunction,
+                                  MSELoss)

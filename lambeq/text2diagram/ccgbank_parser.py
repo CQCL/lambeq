@@ -1,4 +1,4 @@
-# Copyright 2021-2022 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -29,11 +29,9 @@ from __future__ import annotations
 __all__ = ['CCGBankParseError', 'CCGBankParser']
 
 from collections.abc import Iterator
-import os
 from pathlib import Path
 import re
 import sys
-from typing import Optional, Union
 
 from discopy.biclosed import Ty
 from discopy.rigid import Diagram
@@ -45,12 +43,13 @@ from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
 from lambeq.text2diagram.ccg_types import CCGAtomicType, str2biclosed
+from lambeq.typing import StrPathT
 
 
 class CCGBankParseError(Exception):
     """Error raised if parsing fails in CCGBank."""
 
-    def __init__(self, sentence: str = '', message: str = ''):
+    def __init__(self, sentence: str = '', message: str = '') -> None:
         if message:
             self.sentence = sentence
             self.message = message
@@ -60,7 +59,7 @@ class CCGBankParseError(Exception):
 
     def __str__(self) -> str:
         if self.sentence:
-            return f'Failed to parse "{self.sentence}": {self.message}.'
+            return f'Failed to parse {repr(self.sentence)}: {self.message}.'
         return self.message
 
 
@@ -95,8 +94,8 @@ class CCGBankParser(CCGParser):
     escaped_words = {'-LCB-': '{', '-RCB-': '}', '-LRB-': '(', '-RRB-': ')'}
 
     def __init__(self,
-                 root: Union[str, os.PathLike[str]],
-                 verbose: str = VerbosityLevel.SUPPRESS.value):
+                 root: StrPathT,
+                 verbose: str = VerbosityLevel.SUPPRESS.value) -> None:
         """Initialise a CCGBank parser.
 
         Parameters
@@ -114,12 +113,10 @@ class CCGBankParser(CCGParser):
         self.root = Path(root)
         self.verbose = verbose
 
-    def section2trees(
-            self,
-            section_id: int,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None
-            ) -> dict[str, Optional[CCGTree]]:
+    def section2trees(self,
+                      section_id: int,
+                      suppress_exceptions: bool = False,
+                      verbose: str | None = None) -> dict[str, CCGTree | None]:
         """Parse a CCGBank section into trees.
 
         Parameters
@@ -153,11 +150,11 @@ class CCGBankParser(CCGParser):
             verbose=verbose)}
 
     def section2trees_gen(
-            self,
-            section_id: int,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None) -> Iterator[
-                                        tuple[str, Optional[CCGTree]]]:
+        self,
+        section_id: int,
+        suppress_exceptions: bool = False,
+        verbose: str | None = None
+    ) -> Iterator[tuple[str, CCGTree | None]]:
         """Parse a CCGBank section into trees, given as a generator.
 
         The generator only reads data when it is accessed, providing the
@@ -197,11 +194,11 @@ class CCGBankParser(CCGParser):
         for file in sorted(path.iterdir()):
             with open(file) as f:
                 if verbose == VerbosityLevel.TEXT.value:
-                    print(f'Parsing "{file}"', file=sys.stderr)
+                    print(f'Parsing `{file}`', file=sys.stderr)
                 line_no = 0
                 for line in tqdm(
                         f,
-                        desc=f'Parsing "{file}"',
+                        desc=f'Parsing `{file}`',
                         leave=False,
                         disable=verbose != VerbosityLevel.PROGRESS.value):
                     line_no += 1
@@ -214,20 +211,21 @@ class CCGBankParser(CCGParser):
                         except CCGBankParseError as e:
                             if not suppress_exceptions:
                                 raise CCGBankParseError(
-                                        f'Failed to parse tree in "{file}" '
-                                        f'line {line_no}: {e.message}')
+                                    f'Failed to parse tree in `{file}` '
+                                    f'line {line_no}: {e.message}'
+                                ) from e
                         yield match['id'], tree
                     elif not suppress_exceptions:
                         raise CCGBankParseError('Failed to parse ID in '
-                                                f'"{file}" line {line_no}')
+                                                f'`{file}` line {line_no}')
 
     def section2diagrams(
-            self,
-            section_id: int,
-            planar: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None
-            ) -> dict[str, Optional[Diagram]]:
+        self,
+        section_id: int,
+        planar: bool = False,
+        suppress_exceptions: bool = False,
+        verbose: str | None = None
+    ) -> dict[str, Diagram | None]:
         """Parse a CCGBank section into diagrams.
 
         Parameters
@@ -264,12 +262,12 @@ class CCGBankParser(CCGParser):
             verbose=verbose)}
 
     def section2diagrams_gen(
-            self,
-            section_id: int,
-            planar: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None) -> Iterator[
-                                        tuple[str, Optional[Diagram]]]:
+        self,
+        section_id: int,
+        planar: bool = False,
+        suppress_exceptions: bool = False,
+        verbose: str | None = None
+    ) -> Iterator[tuple[str, Diagram | None]]:
         """Parse a CCGBank section into diagrams, given as a generator.
 
         The generator only reads data when it is accessed, providing the
@@ -324,12 +322,11 @@ class CCGBankParser(CCGParser):
                 diagram = None
             yield k, diagram
 
-    def sentences2trees(
-            self,
-            sentences: SentenceBatchType,
-            tokenised: bool = False,
-            suppress_exceptions: bool = False,
-            verbose: Optional[str] = None) -> list[Optional[CCGTree]]:
+    def sentences2trees(self,
+                        sentences: SentenceBatchType,
+                        tokenised: bool = False,
+                        suppress_exceptions: bool = False,
+                        verbose: str | None = None) -> list[CCGTree | None]:
         """Parse a CCGBank sentence derivation into a CCGTree.
 
         The sentence must be in the format outlined in the CCGBank
@@ -379,11 +376,11 @@ class CCGBankParser(CCGParser):
             try:
                 tree, pos = CCGBankParser._build_ccgtree(sentence, 0)
                 if pos < len(sentence):
-                    raise CCGBankParseError('extra text starting at character '
-                                            f'{pos+1} - "{sentence[pos:]}"')
+                    raise CCGBankParseError(f'extra text from index {pos+1} - '
+                                            f'{repr(sentence[pos:])}')
             except Exception as e:
                 if not suppress_exceptions:
-                    raise CCGBankParseError(sentence, str(e))
+                    raise CCGBankParseError(sentence, str(e)) from e
             trees.append(tree)
         return trees
 
@@ -391,8 +388,8 @@ class CCGBankParser(CCGParser):
     def _build_ccgtree(sentence: str, start: int) -> tuple[CCGTree, int]:
         tree_match = CCGBankParser.tree_regex.match(sentence, pos=start)
         if not tree_match:
-            raise CCGBankParseError('malformed tree starting from character '
-                                    f'{start+1} - "{sentence[start:]}"')
+            raise CCGBankParseError(f'malformed tree from index {start+1} - '
+                                    f'{repr(sentence[start:])}')
 
         ccg_str = tree_match['ccg_str']
         if ccg_str == r'((S[b]\NP)/NP)/':  # fix mistake in CCGBank
@@ -426,7 +423,7 @@ class CCGBankParser(CCGParser):
     def _parse_atomic_type(cat: str) -> Ty:
         match = CCGBankParser.ccg_type_regex.fullmatch(cat)
         if not match:
-            raise CCGBankParseError(f'failed to parse atomic type "{cat}"')
+            raise CCGBankParseError(f'failed to parse atomic type {repr(cat)}')
         cat = match['bare_cat'] or cat
         if cat in ('N', 'NP'):
             return CCGAtomicType.NOUN
