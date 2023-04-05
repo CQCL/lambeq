@@ -45,7 +45,8 @@ class Dataset:
                  data: list[Any],
                  targets: list[Any],
                  batch_size: int = 0,
-                 shuffle: bool = True) -> None:
+                 shuffle: bool = True,
+                 offsets: list[Any]=[]) -> None:
         """Initialise a Dataset for lambeq training.
 
         Parameters
@@ -75,6 +76,8 @@ class Dataset:
         self.targets = targets
         self.batch_size = batch_size
         self.shuffle = shuffle
+
+        self.offsets=offsets
 
         if self.batch_size == 0:
             self.batch_size = len(self.data1)
@@ -107,20 +110,32 @@ class Dataset:
 
         if self.shuffle:
             new_data, new_targets = self.shuffle_data(new_data, new_targets)
+        else:
+            #mithun:make it a list without shuffling. todo: make this a function that works for both shuffle and non shuffle
+            new_data, new_targets = list(new_data), list(new_targets)
 
         backend = Tensor.get_backend()
-        for start_idx in range(0, len(self.data1), self.batch_size):
-            yield (new_data[start_idx: start_idx + self.batch_size],
-                   backend.array(
-                       new_targets[start_idx: start_idx + self.batch_size],
-                       dtype=backend.float32))
-        # t = Tensor(Dim(1), Dim(1), [0])
-        # backend = t.get_backend()
-        # for start_idx in range(0, len(self.data1), self.batch_size):
-        #     a=new_data[start_idx: start_idx+self.batch_size]
-        #     b=backend.array(
-        #                new_targets[start_idx: start_idx+self.batch_size],dtype=backend.float32)
-        #     yield (a,b)
+        #if offsets[] is passed, use that else, use batches
+        if len(self.offsets)>0:
+            for idx,val in enumerate(self.offsets):
+                start_idx=val
+                if idx+1< len(self.offsets):
+                    end_idx=self.offsets[idx+1]
+                else:
+                    end_idx = len(new_data) #last schema
+                assert end_idx>0
+                yield (new_data[start_idx: end_idx],
+                       backend.array(
+                           new_targets[start_idx: end_idx],
+                           dtype=backend.float32))
+
+        else:
+            for start_idx in range(0, len(self.data1), self.batch_size):
+                yield (new_data[start_idx: start_idx + self.batch_size],
+                       backend.array(
+                           new_targets[start_idx: start_idx + self.batch_size],
+                           dtype=backend.float32))
+
 
     @staticmethod
     def shuffle_data(data: list[Any],

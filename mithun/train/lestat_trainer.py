@@ -23,11 +23,12 @@ Subclass :py:class:`Lambeq` to define a custom trainer.
 """
 from __future__ import annotations
 
+import copy
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from datetime import datetime
 from math import ceil
-import os
+import torch
 import random
 import socket
 import sys
@@ -319,7 +320,7 @@ class LestatTrainer(ABC):
             train_dataset: Dataset,
             val_dataset: Optional[Dataset] = None,
             evaluation_step: int = 1,
-            logging_step: int = 1) -> None:
+            logging_step: int = 1) :
         """Fit the model on the training data and, optionally,
         evaluate it on the validation data.
 
@@ -337,7 +338,7 @@ class LestatTrainer(ABC):
             printed if `verbose = 'text'` (otherwise ignored).
 
         """
-
+        y_hat_val_total=[]
         logging.debug("inside fit of lestattrainer1")
         if self.from_checkpoint:
             self._load_extra_checkpoint_info(self.checkpoint)
@@ -368,6 +369,7 @@ class LestatTrainer(ABC):
                                 self.verbose != VerbosityLevel.PROGRESS.value),
                             leave=False,
                             position=1):
+            y_hat_val_epoch=[]
             train_loss = 0.0
             with Tensor.backend(self.backend):
                 for batch in tqdm(train_dataset,
@@ -436,14 +438,28 @@ class LestatTrainer(ABC):
                                                 position=2):
                                 x_val, y_label_val = v_batch
                                 y_hat_val, cur_loss = self.validation_step(v_batch)
+                                if(config['USE_RANKER_FOR_PRED']==True):
+                                    y_hat_val=self.ranker(config['TOP_N_AS_HIGH'],y_hat_val)
+                                    y_hat_val_classes=y_hat_val
+                                else:
+                                    sig = torch.sigmoid
+                                    y_hat_val_classes=torch.round(sig(y_hat_val))
+                                y_hat_val_epoch.extend(y_hat_val_classes)
+
+
                                 val_loss += cur_loss * len(x_val)
                                 seen_so_far += len(x_val)
-                                if self.evaluate_functions is not None:
-                                    for metr, func in (
-                                            self.evaluate_functions.items()):
-                                        res = func(y_hat_val, y_label_val)
-                                        self._val_results_epoch[metr].append(
-                                            len(x_val)*res)
+                                if (config['USE_RANKER_FOR_PRED'] == True):
+                                    res = self.accuracy_given_pred_classes(y_hat_val, y_label_val)
+                                    self._val_results_epoch['acc'].append(
+                                        len(x_val) * res)
+                                else:
+                                    if self.evaluate_functions is not None:
+                                        for metr, func in (
+                                                self.evaluate_functions.items()):
+                                            res = func(y_hat_val, y_label_val)
+                                            self._val_results_epoch[metr].append(
+                                                len(x_val)*res)
                                 status_bar.set_description(
                                         self._generate_stat_report(
                                             train_loss=train_loss,
@@ -488,6 +504,30 @@ class LestatTrainer(ABC):
                             val_loss=(self.val_costs[-1] if self.val_costs
                                       else None)),
                           file=sys.stderr)
+        y_hat_val_total=y_hat_val_epoch
         status_bar.close()
         if self.verbose == VerbosityLevel.TEXT.value:
             print('\nTraining completed!', file=sys.stderr)  # pragma: no cover
+        return y_hat_val_total
+
+    def accuracy_given_pred_classes(self,y_hat, y):
+        assert y_hat.shape==y.shape
+        return torch.sum(torch.eq(y_hat, y)) / len(y) / 2  # half due to double-counting
+
+    #sort by score, pick top n
+    def ranker(self,N,scores):
+        events_name=["e"+str(x) for x in range(len(scores))]
+        high_likelihood_scores=[x[0] for x in scores]
+        events_name_original=copy.deepcopy(events_name)
+        events_name_sorted_all=sorted([x for x in zip(events_name,high_likelihood_scores)],key=lambda x: x[1],reverse=True)
+        events_name_sorted=[x[0] for x in events_name_sorted_all]
+        events_high=events_name_sorted[:N]
+        y_hat=[]
+        for event in events_name_original:
+            if event in events_high:
+                per_event_class_bool=[1,0]
+            else:
+                per_event_class_bool=[0,1]
+            y_hat.append(per_event_class_bool)
+        return torch.tensor(y_hat)
+

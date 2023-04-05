@@ -1,17 +1,17 @@
 
-BATCH_SIZE : !!int 30
+BATCH_SIZE : !!int 10
 EPOCHS : !!int  30
 LEARNING_RATE : !!float 3e-2
 SEED : !!int 0
 EVALUATE_ON_DEV: True
 EVALUATE_ON_TEST: False
-TYPE_OF_MODEL: 'discocat'
+TYPE_OF_PARSER: 'bobcat'  #['bobcat','spider','depccg']
 DRAW : False
 LAST_LAYER_NEURON_COUNT : !!int  1
-
-
-
+USE_RANKER_FOR_PRED:  False #do you want to use plain 2-class classification or rank by score plus pick top N
+TOP_N_AS_HIGH:  5 #from the ranked list of prediction the top N you want to be marked as high likelihood class
 BASE_PATH_DATA : "mithun/data/"
+PREDS_OUT_FILE : "preds_out.tsv"
 
 
 LAMBEQ_TRAIN_LAMBEQ_FORMAT_CLAIM: "mc_train_data.txt"
@@ -45,3 +45,13 @@ LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_SMALL: "lestat_train_claim_small.tsv"
 LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_SMALL: "lestat_train_evidence_small.tsv"
 LESTAT_DEV_LAMBEQ_FORMAT_CLAIM_SMALL: "lestat_dev_claim_small.tsv"
 LESTAT_DEV_LAMBEQ_FORMAT_EVIDENCE_SMALL: "lestat_dev_evidence_small.tsv"
+
+LESTAT_TRAIN_LAMBEQ_FORMAT_CLAIM_MICRO: "lestat_train_claim_micro.tsv"
+LESTAT_TRAIN_LAMBEQ_FORMAT_EVIDENCE_MICRO: "lestat_train_evidence_micro.tsv"
+LESTAT_DEV_LAMBEQ_FORMAT_CLAIM_MICRO: "lestat_dev_claim_micro.tsv"
+LESTAT_DEV_LAMBEQ_FORMAT_EVIDENCE_MICRO: "lestat_dev_evidence_micro.tsv"
+
+
+
+LESTAT_DEV_LAMBEQ_FORMAT_CLAIM_GOLD: "lestat_dev_claim_gold.tsv"
+LESTAT_DEV_LAMBEQ_FORMAT_EVIDENCE_GOLD: "lestat_dev_evidence_gold.tsv"

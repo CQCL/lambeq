@@ -174,6 +174,7 @@ class CCGParser(Reader):
                 disable=verbose != VerbosityLevel.PROGRESS.value):
             if tree is not None:
                 try:
+                    print(str(tree))
                     diagrams.append(tree.to_diagram(planar=planar))
                 except Exception as e:
                     if suppress_exceptions:

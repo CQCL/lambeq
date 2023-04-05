@@ -1,13 +1,14 @@
 import os
 import yaml
 import pandas as pd
-from mithun.utils import *
 
 def read_config():
     filename = os.path.join(os.getcwd(), "mithun/utils/config.yml")
     with open(filename) as f :
         return yaml.safe_load(f)
 
+
+config = read_config()
 def read_data_pandas(path,type_of_data="gold"):
     """Reads data from a csv file as a pandas dataframe:Schema, Event, Label
                     Args:
@@ -58,7 +59,6 @@ def read_data(filename):
             sentences.append(line[1:].strip())
     return labels, sentences
 
-#keep track of schemas
 def read_claims_with_offsets(filename):
     labels, sentences = [], []
     schema_name=""
@@ -68,12 +68,11 @@ def read_claims_with_offsets(filename):
             t = float(line[0])
             labels.append([t, 1-t])
             schema_name_current=line[1:].strip()
-            if schema_name_current!=schema_name:
-                list_schema_offsets.append(index+1)
+            if schema_name_current!=schema_name: #when the schema name changes is the end of one schema events and start of next
+                list_schema_offsets.append(index)
                 schema_name=schema_name_current
             sentences.append(schema_name_current.strip())
     return labels, sentences, list_schema_offsets
-
 
 def read_data_string_label(filename):
     labels, sentences = [], []
@@ -87,3 +86,12 @@ def read_data_string_label(filename):
 
 def get_full_path(dir, filename):
     return os.path.join(os.getcwd(),dir, filename)
+
+
+def write_preds_to_disk(claims, evidence, preds):
+    path=get_full_path(config['BASE_PATH_DATA'], config['PREDS_OUT_FILE'])
+    with open(path, 'w') as f:
+        f.write("")
+    with open(path, 'a') as f:
+        for schema,event,classification in zip(claims,evidence,preds):
+                    f.write(f"{(schema)}\t{event}\t{int(classification[0])}\n")
