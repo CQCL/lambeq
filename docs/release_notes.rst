@@ -4,6 +4,22 @@ Release notes
 =============
 
 
+.. _rel-0.3.1:
+
+`0.3.1 <https://github.com/CQCL/lambeq/releases/tag/0.3.1>`_
+------------------------------------------------------------
+
+Changed:
+
+- Added example and tutorial notebooks to tests.
+- Dependencies: pinned the maximum version of Jax and Jaxlib to 0.4.6 to avoid a JIT-compilation error when using the :py:class:`~lambeq.NumpyModel`.
+
+Fixed:
+
+- Documentation: fixed broken DisCoPy links.
+- Fixed PyTorch datatype errors in example and tutorial notebooks.
+- Updated custom :term:`ansätze <ansatz (plural: ansätze)>` in tutorial notebook to match new structure of :py:class:`~lambeq.CircuitAnsatz` and :py:class:`~lambeq.TensorAnsatz`.
+
 .. _rel-0.3.0:
 
 `0.3.0 <https://github.com/CQCL/lambeq/releases/tag/0.3.0>`_
