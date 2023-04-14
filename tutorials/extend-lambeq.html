@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced: Extending lambeq &mdash; lambeq 0.3.0 documentation</title>
+  <title>Advanced: Extending lambeq &mdash; lambeq 0.3.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -455,14 +455,23 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/miniconda3/envs/lambeq/lib/python3.10/site-packages/tqdm/auto.py:22: TqdmWarning: IProgress not found. Please update jupyter and ipywidgets. See https://ipywidgets.readthedocs.io/en/stable/user_install.html
+  from .autonotebook import tqdm as notebook_tqdm
+</pre></div></div>
+</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_extend-lambeq_5_0.png" src="../_images/tutorials_extend-lambeq_5_0.png" />
+<img alt="../_images/tutorials_extend-lambeq_5_1.png" src="../_images/tutorials_extend-lambeq_5_1.png" />
 </div>
 </div>
-<p>Note that, in the above code, the method <a class="reference external" href="https://docs.discopy.org/en/0.5/_api/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.tensor" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tensor()</span></code></a> refers to the monoidal product and not to a physical tensor object. What the specific line does, using the monoidal identity <code class="xref py py-obj docutils literal notranslate"><span class="pre">Id()</span></code> as a starting point, is to tensor one-by-one the boxes of the words in the sentence accumulatively, from left to right, into a single diagram, as in a standard fold operation.</p>
+<p>Note that, in the above code, the method <a class="reference external" href="https://docs.discopy.org/en/0.5.1.1/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.tensor" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tensor()</span></code></a> refers to the monoidal product and not to a physical tensor object. What the specific line does, using the monoidal identity <code class="xref py py-obj docutils literal notranslate"><span class="pre">Id()</span></code> as a starting point, is to tensor one-by-one the boxes of the words in the sentence accumulatively, from left to right, into a single diagram, as in a standard fold operation.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -603,64 +612,55 @@ div.rendered_html tbody tr:hover {
 </div>
 <p><a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">Ansätze</span></a> for the quantum pipeline are implemented by extending the <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz" title="lambeq.ansatz.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> class, while ansätze for the classical pipeline need to extend the <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> class. Both classes extend <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.BaseAnsatz" title="lambeq.ansatz.BaseAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseAnsatz</span></code></a>, sharing a common interface. Once an <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> is instantiated, it can be used as a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to convert diagrams to either a <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuit</span></a> or a tensor diagram.</p>
 <p>An <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> should be initialised with an <code class="docutils literal notranslate"><span class="pre">ob_map</span></code> argument, a dictionary which maps a rigid type to the number of <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> in the quantum case, or to a dimension size (e.g. <code class="docutils literal notranslate"><span class="pre">Dim(2,</span> <span class="pre">2)</span></code>) for the classical case. Some <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a> may require additional arguments (see the <a class="reference internal" href="../root-api.html"><span class="doc">API documentation</span></a> for more details).</p>
-<p>In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is defined by specifying the mappings for objects <code class="docutils literal notranslate"><span class="pre">ob</span></code> and arrows <code class="docutils literal notranslate"><span class="pre">ar</span></code>. The <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz" title="lambeq.ansatz.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> and <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> classes already implement the <code class="docutils literal notranslate"><span class="pre">_ob</span></code> method, which extends <code class="docutils literal notranslate"><span class="pre">ob_map</span></code> to map not just base (atomic) types, but also compound types, into <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> and dimensions respectively. Therefore, to complete a new <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> class, you only need to implement the <code class="docutils literal notranslate"><span class="pre">_ar</span></code> method, i.e. the mapping from rigid boxes to diagrams. This typically involves the following steps:</p>
+<p>In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is defined by specifying the mappings for objects <code class="docutils literal notranslate"><span class="pre">ob</span></code> and arrows <code class="docutils literal notranslate"><span class="pre">ar</span></code>. The <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz" title="lambeq.ansatz.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> and <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> classes already implement methods which extend <code class="docutils literal notranslate"><span class="pre">ob_map</span></code> to map not just base (atomic) types, but also compound types, into <a class="reference internal" href="../glossary.html#term-qubit"><span class="xref std std-term">qubits</span></a> and dimensions respectively. Therefore, to complete a new <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> class, you only need to provide the mapping from rigid boxes to diagrams. This typically involves the following steps:</p>
 <ol class="arabic simple">
 <li><p>Obtain the label of the box using the <code class="docutils literal notranslate"><span class="pre">_summarise_box</span></code> method. This provides a unique token which can be used to parameterise the box.</p></li>
-<li><p>Apply the <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to the domain and the codomain of the box using the <code class="docutils literal notranslate"><span class="pre">_ob</span></code> method.</p></li>
+<li><p>Apply the <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to the domain and the codomain of the box.</p></li>
 <li><p>Construct and return an <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> with new domain and codomain – see how to construct diagrams using <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> <a class="reference external" href="https://discopy.readthedocs.io/en/main/notebooks.html">here</a>.</p></li>
 </ol>
 <section id="CircuitAnsatz-example:-“Real-valued”-ansatz">
 <h3>CircuitAnsatz example: “Real-valued” ansatz<a class="headerlink" href="#CircuitAnsatz-example:-“Real-valued”-ansatz" title="Permalink to this heading"></a></h3>
-<p>This <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> always returns a tensor with real-valued entries, since the ansatz is constructed using only the CNOT and Y rotation gates, which both implement real-valued unitaries.</p>
+<p>This <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a> always returns a tensor with real-valued entries, since the ansatz is constructed using only the CNOT and Y rotation gates, which both implement real-valued unitaries.
+The <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz" title="lambeq.ansatz.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> provides functionality to add postselections or discards to ensure that domains and codomains for the boxes match. To extend the <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz" title="lambeq.ansatz.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> to create a new ansatz thus only involves providing a function to generate the circuit within a box.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">Bra</span><span class="p">,</span> <span class="n">CX</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Ry</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="n">Id</span>
+<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">CX</span><span class="p">,</span> <span class="n">Ry</span>
 <span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">CircuitAnsatz</span>
-<span class="kn">from</span> <span class="nn">lambeq.ansatz</span> <span class="kn">import</span> <span class="n">Symbol</span>
+
+<span class="k">def</span> <span class="nf">real_ansatz_circuit</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+
+    <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+    <span class="n">n_layers</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">):</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">n_qubits</span>
+        <span class="n">syms</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+        <span class="c1"># adds a ladder of CNOTs</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># adds a layer of Y rotations</span>
+        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">Ry</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span> <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">syms</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">circuit</span>
+
 
 <span class="k">class</span> <span class="nc">RealAnsatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob_map</span><span class="p">,</span> <span class="n">n_layers</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob_map</span><span class="o">=</span><span class="n">ob_map</span><span class="p">,</span> <span class="n">n_layers</span><span class="o">=</span><span class="n">n_layers</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ob_map</span><span class="p">,</span> <span class="n">n_layers</span><span class="p">,</span> <span class="n">n_single_qubit_params</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">discard</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span> <span class="o">=</span> <span class="n">n_layers</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ob_map</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob_map</span><span class="p">,</span>
+                         <span class="n">n_layers</span><span class="p">,</span>
+                         <span class="n">n_single_qubit_params</span><span class="p">,</span>
+                         <span class="n">real_ansatz_circuit</span><span class="p">,</span>
+                         <span class="n">discard</span><span class="p">,</span>
+                         <span class="p">[</span><span class="n">Ry</span><span class="p">,</span> <span class="p">])</span>
 
-
-    <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
-        <span class="c1"># step 1: obtain label</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
-
-        <span class="c1"># step 2: map domain and codomain</span>
-        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-
-        <span class="n">n_qubits</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
-        <span class="n">n_layers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span>
-
-        <span class="c1"># step 3: construct and return ansatz</span>
-        <span class="k">if</span> <span class="n">n_qubits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Ry</span><span class="p">(</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">_0&#39;</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># this also deals with the n_qubits == 0 case correctly</span>
-            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_layers</span><span class="p">):</span>
-                <span class="n">offset</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">n_qubits</span>
-                <span class="n">syms</span> <span class="o">=</span> <span class="p">[</span><span class="n">Symbol</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">j</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)]</span>
-
-                <span class="c1"># adds a ladder of CNOTs</span>
-                <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-                    <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">-</span> <span class="n">j</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
-
-                <span class="c1"># adds a layer of Y rotations</span>
-                <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">Ry</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span> <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">syms</span><span class="p">])</span>
-
-        <span class="k">if</span> <span class="n">cod</span> <span class="o">&lt;=</span> <span class="n">dom</span><span class="p">:</span>
-            <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="n">Bra</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="n">cod</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">circuit</span> <span class="o">&lt;&lt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">@</span> <span class="n">Ket</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cod</span> <span class="o">-</span> <span class="n">dom</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">circuit</span>
+    <span class="k">def</span> <span class="nf">params_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -688,22 +688,25 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">TensorAnsatz</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">TensorAnsatz</span><span class="p">,</span> <span class="n">Symbol</span>
 <span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">rigid</span><span class="p">,</span> <span class="n">tensor</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">import</span> <span class="nn">math</span>
 
 <span class="k">class</span> <span class="nc">PositiveAnsatz</span><span class="p">(</span><span class="n">TensorAnsatz</span><span class="p">):</span>
+
     <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
         <span class="c1"># step 1: obtain label</span>
         <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
 
         <span class="c1"># step 2: map domain and codomain</span>
-        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
 
         <span class="c1"># step 3: construct and return ansatz</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
-        <span class="n">n_params</span> <span class="o">=</span> <span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">dom</span> <span class="o">@</span> <span class="n">cod</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="n">syms</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">n_params</span><span class="p">)</span>
+
+        <span class="n">syms</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">dom</span><span class="p">),</span> <span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">cod</span><span class="p">))</span>
+
         <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="n">syms</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -733,6 +736,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">default_sort_key</span>
+
 
 <span class="n">syms</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">positive_d</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">default_sort_key</span><span class="p">)</span>
 <span class="n">sym_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">k</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">syms</span><span class="p">}</span>

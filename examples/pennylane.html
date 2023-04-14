@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training hybrid models using the Pennylane backend &mdash; lambeq 0.3.0 documentation</title>
+  <title>Training hybrid models using the Pennylane backend &mdash; lambeq 0.3.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -537,7 +537,7 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_pennylane_7_0.png" src="../_images/examples_pennylane_7_0.png" />
+<img alt="../_images/examples_pennylane_8_0.png" src="../_images/examples_pennylane_8_0.png" />
 </div>
 </div>
 </section>
@@ -564,7 +564,7 @@ Turning parse trees to diagrams.
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/examples_pennylane_9_0.png" src="../_images/examples_pennylane_9_0.png" />
+<img alt="../_images/examples_pennylane_10_0.png" src="../_images/examples_pennylane_10_0.png" />
 </div>
 </div>
 </section>
@@ -580,7 +580,6 @@ Turning parse trees to diagrams.
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -615,7 +614,7 @@ Turning parse trees to diagrams.
             <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">double</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -647,21 +646,21 @@ Turning parse trees to diagrams.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:   train/loss: 0.2386   valid/loss: 0.1175   train/acc: 0.6429   valid/acc: 0.9000
-Epoch 2:   train/loss: 0.0845   valid/loss: 0.0676   train/acc: 0.8857   valid/acc: 0.9333
-Epoch 3:   train/loss: 0.0357   valid/loss: 0.0626   train/acc: 0.9857   valid/acc: 0.9667
-Epoch 4:   train/loss: 0.0328   valid/loss: 0.0299   train/acc: 0.9714   valid/acc: 0.9667
-Epoch 5:   train/loss: 0.0144   valid/loss: 0.0213   train/acc: 0.9857   valid/acc: 1.0000
-Epoch 6:   train/loss: 0.0092   valid/loss: 0.0181   train/acc: 1.0000   valid/acc: 1.0000
-Epoch 7:   train/loss: 0.0062   valid/loss: 0.0173   train/acc: 1.0000   valid/acc: 0.9667
-Epoch 8:   train/loss: 0.0083   valid/loss: 0.0215   train/acc: 1.0000   valid/acc: 1.0000
-Epoch 9:   train/loss: 0.0113   valid/loss: 0.0323   train/acc: 1.0000   valid/acc: 0.9667
-Epoch 10:  train/loss: 0.0100   valid/loss: 0.0237   train/acc: 1.0000   valid/acc: 0.9667
-Epoch 11:  train/loss: 0.0071   valid/loss: 0.0194   train/acc: 1.0000   valid/acc: 0.9667
-Epoch 12:  train/loss: 0.0076   valid/loss: 0.0196   train/acc: 1.0000   valid/acc: 0.9667
-Epoch 13:  train/loss: 0.0060   valid/loss: 0.0182   train/acc: 1.0000   valid/acc: 1.0000
-Epoch 14:  train/loss: 0.0085   valid/loss: 0.0216   train/acc: 1.0000   valid/acc: 0.9667
-Epoch 15:  train/loss: 0.0084   valid/loss: 0.0250   train/acc: 1.0000   valid/acc: 0.9667
+Epoch 1:   train/loss: 0.1778   valid/loss: 0.1430   train/acc: 0.7286   valid/acc: 0.8000
+Epoch 2:   train/loss: 0.1054   valid/loss: 0.1081   train/acc: 0.8857   valid/acc: 0.9000
+Epoch 3:   train/loss: 0.0716   valid/loss: 0.0658   train/acc: 0.9286   valid/acc: 0.9000
+Epoch 4:   train/loss: 0.0618   valid/loss: 0.0262   train/acc: 0.9429   valid/acc: 0.9667
+Epoch 5:   train/loss: 0.0427   valid/loss: 0.0468   train/acc: 0.9714   valid/acc: 0.9333
+Epoch 6:   train/loss: 0.0159   valid/loss: 0.0261   train/acc: 0.9714   valid/acc: 0.9667
+Epoch 7:   train/loss: 0.0212   valid/loss: 0.0130   train/acc: 0.9857   valid/acc: 1.0000
+Epoch 8:   train/loss: 0.0192   valid/loss: 0.0246   train/acc: 0.9714   valid/acc: 1.0000
+Epoch 9:   train/loss: 0.0804   valid/loss: 0.1782   train/acc: 0.9143   valid/acc: 0.6667
+Epoch 10:  train/loss: 0.0386   valid/loss: 0.1091   train/acc: 0.9286   valid/acc: 0.8667
+Epoch 11:  train/loss: 0.0384   valid/loss: 0.0877   train/acc: 0.9571   valid/acc: 0.8667
+Epoch 12:  train/loss: 0.0226   valid/loss: 0.0855   train/acc: 0.9857   valid/acc: 0.8667
+Epoch 13:  train/loss: 0.0211   valid/loss: 0.0244   train/acc: 0.9714   valid/acc: 0.9333
+Epoch 14:  train/loss: 0.0121   valid/loss: 0.0616   train/acc: 1.0000   valid/acc: 0.9333
+Epoch 15:  train/loss: 0.0456   valid/loss: 0.0387   train/acc: 0.9571   valid/acc: 1.0000
 
 Training completed!
 </pre></div></div>
@@ -688,7 +687,7 @@ Training completed!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.0
+0.9
 </pre></div></div>
 </div>
 </section>
@@ -710,7 +709,9 @@ Training completed!
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">)</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pickle</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span><span class="n">all_circuits</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span>
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 
@@ -721,8 +722,10 @@ Training completed!
     <span class="k">for</span> <span class="n">circuits</span><span class="p">,</span> <span class="n">labels</span> <span class="ow">in</span> <span class="n">train_dataset</span><span class="p">:</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
         <span class="n">probs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">circuits</span><span class="p">)</span>
+        <span class="n">d_type</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">probs</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">d_type</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">probs</span><span class="p">,</span>
-                                            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span><span class="o">.</span><span class="n">double</span><span class="p">())</span>
+                                            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
         <span class="n">epoch_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
         <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
         <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
@@ -737,10 +740,14 @@ Training completed!
         <span class="k">if</span> <span class="n">dev_acc</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]:</span>
             <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dev_acc</span>
             <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
-            <span class="n">model</span><span class="o">.</span><span class="n">make_checkpoint</span><span class="p">(</span><span class="s2">&quot;model.lt&quot;</span><span class="p">)</span>
+            <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">_make_checkpoint</span><span class="p">()</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;model.lt&quot;</span><span class="p">,</span> <span class="s2">&quot;wb+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">i</span> <span class="o">-</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Early stopping&quot;</span><span class="p">)</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">(</span><span class="s2">&quot;model.lt&quot;</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;model.lt&quot;</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">model</span> <span class="o">=</span> <span class="n">PennyLaneModel</span><span class="o">.</span><span class="n">_load_checkpoint</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
             <span class="k">break</span>
 </pre></div>
 </div>
@@ -751,14 +758,14 @@ Training completed!
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch: 0
-Train loss: 1.40214268863387
-Dev acc: 0.6666666666666666
+Train loss: 1.61824881285429
+Dev acc: 0.6333333333333333
 Epoch: 5
-Train loss: 0.09461445044355091
-Dev acc: 1.0
+Train loss: 0.4483018293976784
+Dev acc: 0.8666666666666667
 Epoch: 10
-Train loss: 0.03627023935725044
-Dev acc: 1.0
+Train loss: 0.07727803220041096
+Dev acc: 0.9333333333333333
 </pre></div></div>
 </div>
 </section>
@@ -779,7 +786,7 @@ Dev acc: 1.0
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-1.0
+0.9666666666666667
 </pre></div></div>
 </div>
 </section>
@@ -806,8 +813,8 @@ Dev acc: 1.0
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">nn</span>
 
 <span class="k">class</span> <span class="nc">XORSentenceModel</span><span class="p">(</span><span class="n">PennyLaneModel</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">PennyLaneModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">PennyLaneModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">xor_net</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
             <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
@@ -855,13 +862,21 @@ Dev acc: 1.0
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TRAIN_SAMPLES</span><span class="p">,</span> <span class="n">DEV_SAMPLES</span><span class="p">,</span> <span class="n">TEST_SAMPLES</span> <span class="o">=</span> <span class="mi">300</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">200</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_pair_circuits</span><span class="p">,</span> <span class="n">train_pair_labels</span> <span class="o">=</span> <span class="p">(</span>
     <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">train_pair_circuits</span><span class="p">,</span> <span class="n">train_pair_labels</span><span class="p">)),</span>
-                       <span class="mi">300</span><span class="p">)))</span>
+                       <span class="n">TRAIN_SAMPLES</span><span class="p">)))</span>
 <span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span><span class="p">)),</span> <span class="mi">200</span><span class="p">)))</span>
+    <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">dev_pair_circuits</span><span class="p">,</span> <span class="n">dev_pair_labels</span><span class="p">)),</span> <span class="n">DEV_SAMPLES</span><span class="p">)))</span>
 <span class="n">test_pair_circuits</span><span class="p">,</span> <span class="n">test_pair_labels</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">test_pair_circuits</span><span class="p">,</span> <span class="n">test_pair_labels</span><span class="p">)),</span> <span class="mi">200</span><span class="p">)))</span>
+    <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">test_pair_circuits</span><span class="p">,</span> <span class="n">test_pair_labels</span><span class="p">)),</span> <span class="n">TEST_SAMPLES</span><span class="p">)))</span>
 </pre></div>
 </div>
 </div>
@@ -869,7 +884,7 @@ Dev acc: 1.0
 <section id="Initialise-the-model">
 <h2>Initialise the model<a class="headerlink" href="#Initialise-the-model" title="Permalink to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">all_pair_circuits</span> <span class="o">=</span> <span class="p">(</span><span class="n">train_pair_circuits</span> <span class="o">+</span>
@@ -882,8 +897,8 @@ Dev acc: 1.0
 <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
 
 <span class="n">train_pair_dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">train_pair_circuits</span><span class="p">,</span>
-                        <span class="n">train_pair_labels</span><span class="p">,</span>
-                        <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
+                             <span class="n">train_pair_labels</span><span class="p">,</span>
+                             <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">)</span>
 
 <span class="n">optimizer</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
 </pre></div>
@@ -894,7 +909,7 @@ Dev acc: 1.0
 <h2>Train the model and log accuracies<a class="headerlink" href="#Train-the-model-and-log-accuracies" title="Permalink to this heading"></a></h2>
 <p>Only log every five epochs as evaluating is expensive.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">circs</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
@@ -905,7 +920,7 @@ Dev acc: 1.0
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">best</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;acc&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
@@ -931,10 +946,10 @@ Dev acc: 1.0
         <span class="k">if</span> <span class="n">dev_acc</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]:</span>
             <span class="n">best</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dev_acc</span>
             <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>
-            <span class="n">model</span><span class="o">.</span><span class="n">make_checkpoint</span><span class="p">(</span><span class="s2">&quot;xor_model.lt&quot;</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;xor_model.lt&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">i</span> <span class="o">-</span> <span class="n">best</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">10</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Early stopping&quot;</span><span class="p">)</span>
-            <span class="n">model</span> <span class="o">=</span> <span class="n">XORSentenceModel</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">(</span><span class="s2">&quot;xor_model.lt&quot;</span><span class="p">)</span>
+            <span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s2">&quot;xor_model.lt&quot;</span><span class="p">)</span>
             <span class="n">model</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">double</span><span class="p">()</span>
             <span class="k">break</span>
 </pre></div>
@@ -946,22 +961,40 @@ Dev acc: 1.0
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch: 0
-Train loss: 4.216500047571801
-Dev acc: 0.475
+Train loss: 4.202134637529463
+Dev acc: 0.445
 Epoch: 5
-Train loss: 0.16129305933880816
-Dev acc: 1.0
+Train loss: 4.152931421145276
+Dev acc: 0.54
 Epoch: 10
-Train loss: 0.0008051177015249586
-Dev acc: 1.0
+Train loss: 3.9137668866046615
+Dev acc: 0.62
 Epoch: 15
-Train loss: 0.00016974739709550384
+Train loss: 3.4010897127113733
+Dev acc: 0.655
+Epoch: 20
+Train loss: 2.41645528073079
+Dev acc: 0.825
+Epoch: 25
+Train loss: 2.5319179155031915
+Dev acc: 0.885
+Epoch: 30
+Train loss: 0.2144302081166329
+Dev acc: 0.995
+Epoch: 35
+Train loss: 0.07569202568470873
+Dev acc: 1.0
+Epoch: 40
+Train loss: 0.04757411482113485
+Dev acc: 1.0
+Epoch: 45
+Train loss: 0.033591968613830424
 Dev acc: 1.0
 Early stopping
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy</span><span class="p">(</span><span class="n">test_pair_circuits</span><span class="p">,</span> <span class="n">test_pair_labels</span><span class="p">)</span>
@@ -969,7 +1002,7 @@ Early stopping
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
 <div class="output_area docutils container">

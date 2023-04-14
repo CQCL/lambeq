@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; lambeq 0.3.0 documentation</title>
+  <title>&lt;no title&gt; &mdash; lambeq 0.3.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -38,7 +38,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.0
+                0.3.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -823,7 +823,7 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <span class="n">circuit1</span> <span class="o">&gt;&gt;=</span> <span class="n">SWAP</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># or you can do</span>
-<span class="n">perm</span> <span class="o">=</span> <span class="n">Circuit</span><span class="o">.</span><span class="n">permutation</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">perm</span> <span class="o">=</span> <span class="n">Circuit</span><span class="o">.</span><span class="n">permutation</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">circuit2</span> <span class="o">=</span> <span class="n">perm</span> <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">&gt;&gt;</span> <span class="n">perm</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
 <span class="k">assert</span> <span class="n">circuit1</span> <span class="o">==</span> <span class="n">circuit2</span>

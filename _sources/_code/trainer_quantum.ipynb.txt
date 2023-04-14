@@ -48,6 +48,24 @@
   },
   {
    "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "nbsphinx": "hidden"
+   },
+   "outputs": [],
+   "source": [
+    "import os\n",
+    "\n",
+    "TESTING = int(os.environ.get('TEST_NOTEBOOKS', '0'))\n",
+    "\n",
+    "if TESTING:\n",
+    "    train_labels, train_data = train_labels[:2], train_data[:2]\n",
+    "    val_labels, val_data = val_labels[:2], val_data[:2]\n",
+    "    EPOCHS = 1"
+   ]
+  },
+  {
+   "cell_type": "code",
    "execution_count": 4,
    "metadata": {},
    "outputs": [
@@ -392,5 +410,5 @@
   }
  },
  "nbformat": 4,
- "nbformat_minor": 2
+ "nbformat_minor": 4
 }
