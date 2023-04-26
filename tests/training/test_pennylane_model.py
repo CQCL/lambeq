@@ -9,8 +9,8 @@ import torch
 from torch import Size
 from torch.nn import Parameter
 
-from discopy import Cup, Diagram, Ob, Ty, Word
-from discopy.quantum.circuit import Id, Measure
+from discopy.grammar.pregroup import Cup, Diagram, Ob, Ty, Word
+from discopy.quantum import Id, Measure
 from lambeq import (AtomicType, Dataset, IQPAnsatz, PennyLaneModel,
                     PytorchTrainer)
 

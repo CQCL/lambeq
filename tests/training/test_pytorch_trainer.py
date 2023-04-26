@@ -5,7 +5,6 @@ import numpy as np
 
 from discopy.tensor import Dim, Tensor
 from discopy.grammar.pregroup import Cup, Word
-from discopy.quantum.circuit import Id
 
 from lambeq import (AtomicType, Dataset, PytorchModel, PytorchTrainer,
                     SpiderAnsatz)
@@ -31,7 +30,7 @@ dev_diagrams = [
     (Word("Bob", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ S),
 ]
 dev_targets = [[0, 1], [1, 0]]
-ansatz = SpiderAnsatz({N: 2, S: 2})
+ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
 train_circuits = [ansatz(d) for d in train_diagrams]
 dev_circuits = [ansatz(d) for d in dev_diagrams]
 

@@ -236,9 +236,9 @@ def test_strongly_entangling_ansatz_ranges():
                                       Controlled(X, distance=2),
                                       Controlled(X, distance=-1),
                                       Controlled(X, distance=-1)],
-                               offsets=[0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0,
-                                        0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0, 0,
-                                        0, 1, 1, 1, 2, 2, 2, 0, 0, 1]))
+                                     [0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0,
+                                     0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0, 0,
+                                     0, 1, 1, 1, 2, 2, 2, 0, 0, 1]))
     assert ansatz(box) == expected_circuit
 
 def test_strongly_entangling_ansatz_ranges_error():

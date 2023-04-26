@@ -1,6 +1,6 @@
 import pytest
 
-from discopy import rigid
+from discopy.grammar import pregroup
 from discopy.grammar.pregroup import Word, Id, Ty, Cup, Swap
 from lambeq import AtomicType, diagram2str, cups_reader
 
@@ -135,4 +135,4 @@ def test_diagram_with_just_identities_2():
 
 def test_diagram_no_pregroup(diagram1):
     with pytest.raises(ValueError):
-        diagram2str(rigid.Diagram.normal_form(diagram1))
+        diagram2str(pregroup.Diagram.normal_form(diagram1))
