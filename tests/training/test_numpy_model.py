@@ -74,7 +74,7 @@ def test_jax_usage():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
 

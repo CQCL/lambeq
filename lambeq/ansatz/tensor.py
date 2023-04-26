@@ -57,8 +57,8 @@ class TensorAnsatz(BaseAnsatz):
 
         directed_dom, directed_cod = self._generate_directed_dom_cod(box)
         syms = Symbol(name,
-                      directed_dom=math.prod(directed_dom),
-                      directed_cod=math.prod(directed_cod))
+                      directed_dom=math.prod(directed_dom.inside),
+                      directed_cod=math.prod(directed_cod.inside))
 
         # Box domain and codomain are unchanged
         dom = self.functor(box.dom)
@@ -93,17 +93,17 @@ class TensorAnsatz(BaseAnsatz):
         # even winding numbers. Else, they are assigned to the flow-dom.
         for ty in box.cod:
             if ty.z % 2:
-                dom @= Ty(ty)
+                dom @= ty
             else:
-                cod @= Ty(ty)
+                cod @= ty
 
         # Types in the box-dom are assigned to the flow-dom if they have
         # even winding numbers. Else, they are assigned to the flow-cod.
         for ty in box.dom:
             if ty.z % 2:
-                cod @= Ty(ty)
+                cod @= ty
             else:
-                dom @= Ty(ty)
+                dom @= ty
 
         return self.functor(dom), self.functor(cod)
 
