@@ -23,8 +23,7 @@ from __future__ import annotations
 from math import sqrt
 import pickle
 
-from discopy import Tensor
-from discopy.tensor import Diagram
+from discopy.tensor import backend, Diagram
 import torch
 
 from lambeq.ansatz.base import Symbol
@@ -134,19 +133,18 @@ class PytorchModel(Model, torch.nn.Module):
         parameters = {k: v for k, v in zip(self.symbols, self.weights)}
         diagrams = pickle.loads(pickle.dumps(diagrams))  # deepcopy, but faster
         for diagram in diagrams:
-            for b in diagram._boxes:
-                if isinstance(b._data, Symbol):
+            for b in diagram.boxes:
+                if isinstance(b.data, Symbol):
                     try:
-                        b._data = parameters[b._data]
-                        b._free_symbols = {}
+                        b.data = parameters[b.data]
                     except KeyError as e:
                         raise KeyError(
-                            f'Unknown symbol: {repr(b._data)}'
+                            f'Unknown symbol: {repr(b.data)}'
                         ) from e
 
-        with Tensor.backend('pytorch'), tn.DefaultBackend('pytorch'):
-            return torch.stack(
-                [tn.contractors.auto(*d.to_tn()).tensor for d in diagrams])
+        with backend('pytorch'), tn.DefaultBackend('pytorch'):
+            return torch.stack([tn.contractors.auto(
+                *d.to_tn(dtype=torch.float)).tensor for d in diagrams])
 
     def forward(self, x: list[Diagram]) -> torch.Tensor:
         """Perform default forward pass by contracting tensors.

@@ -3,8 +3,7 @@ from shutil import ExecError
 import pytest
 from unittest.mock import patch
 
-from discopy import Word
-from discopy.rigid import Cup, Diagram, Ty
+from discopy.grammar.pregroup import Word, Cup, Diagram, Ty
 
 from lambeq import AtomicType, VerbosityLevel, WebParser, WebParseError
 
@@ -26,7 +25,7 @@ def test_sentence2diagram(web_parser):
     sentence = 'he does not sleep'
 
     n, s = AtomicType.NOUN, AtomicType.SENTENCE
-    expected_diagram = Diagram(
+    expected_diagram = Diagram.decode(
         dom=Ty(), cod=Ty('s'),
         boxes=[
             Word('he', n),

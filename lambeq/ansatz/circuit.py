@@ -26,12 +26,12 @@ from abc import abstractmethod
 from collections.abc import Callable, Mapping
 from itertools import cycle
 
-from discopy.quantum.circuit import (Circuit, Discard, Functor, Id,
-                                     IQPansatz as IQP, qubit,
-                                     Sim14ansatz as Sim14,
-                                     Sim15ansatz as Sim15)
-from discopy.quantum.gates import Bra, H, Ket, Rx, Ry, Rz
-from discopy.rigid import Box, Diagram, Ty
+from discopy.grammar.pregroup import Box, Category, Diagram, Ty
+from discopy.quantum import (
+    Bra, Circuit, Discard, H, Id, Ket, qubit, Rx, Ry, Rz)
+from discopy.quantum import (
+    IQPansatz as IQP, Sim14ansatz as Sim14, Sim15ansatz as Sim15)
+from discopy.quantum.circuit import Functor
 import numpy as np
 from sympy import Symbol, symbols
 
@@ -86,7 +86,8 @@ class CircuitAnsatz(BaseAnsatz):
         self.postselection_basis = postselection_basis
         self.single_qubit_rotations = single_qubit_rotations or []
 
-        self.functor = Functor(ob=ob_map, ar=self._ar)
+        self.functor = Functor(
+            ob=ob_map, ar=self._ar, dom=Category())
 
     def __call__(self, diagram: Diagram) -> Circuit:
         """Convert a DisCoPy diagram into a DisCoPy circuit."""
@@ -94,7 +95,7 @@ class CircuitAnsatz(BaseAnsatz):
 
     def ob_size(self, pg_type: Ty) -> int:
         """Calculate the number of qubits used for a given type."""
-        return sum(self.ob_map[Ty(factor.name)] for factor in pg_type)
+        return sum(map(len, map(self.functor, pg_type)))
 
     @abstractmethod
     def params_shape(self, n_qubits: int) -> tuple[int, ...]:

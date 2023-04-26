@@ -26,7 +26,8 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import Any, Literal
 
-from discopy import monoidal, rigid
+from discopy import monoidal
+from discopy.grammar import pregroup
 import sympy
 
 
@@ -95,13 +96,13 @@ class BaseAnsatz(ABC):
     """Base class for ansatz."""
 
     @abstractmethod
-    def __init__(self, ob_map: Mapping[rigid.Ty, monoidal.Ty]) -> None:
+    def __init__(self, ob_map: Mapping[pregroup.Ty, monoidal.Ty]) -> None:
         """Instantiate an ansatz.
 
         Parameters
         ----------
         ob_map : dict
-            A mapping from `discopy.rigid.Ty` to a type in the target
+            A mapping from `discopy.pregroup.Ty` to a type in the target
             category. In the category of quantum circuits, this type is
             the number of qubits; in the category of vector spaces, this
             type is a vector space.
@@ -109,11 +110,11 @@ class BaseAnsatz(ABC):
         """
 
     @abstractmethod
-    def __call__(self, diagram: rigid.Diagram) -> monoidal.Diagram:
+    def __call__(self, diagram: pregroup.Diagram) -> monoidal.Diagram:
         """Convert a DisCoPy diagram into a DisCoPy circuit or tensor."""
 
     @staticmethod
-    def _summarise_box(box: rigid.Box) -> str:
+    def _summarise_box(box: pregroup.Box) -> str:
         """Summarise the given DisCoPy box."""
 
         dom = str(box.dom).replace(' @ ', '@') if box.dom else ''

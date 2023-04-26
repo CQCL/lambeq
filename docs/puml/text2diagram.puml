@@ -91,8 +91,8 @@ class discopy.rigid.Ob #back:lightblue;line:black {}
 class discopy.monoidal.Ty #back:lightblue;line:black {}
 class discopy.monoidal.Diagram #back:lightblue;line:black {}
 class discopy.rigid.Diagram #back:lightblue;line:black {}
-class discopy.biclosed.Diagram #back:lightblue;line:black {}
-class discopy.biclosed.Box #back:lightblue;line:black {}
+class discopy.grammar.categorial.Diagram #back:lightblue;line:black {}
+class discopy.grammar.categorial.Box #back:lightblue;line:black {}
 
 object cups_reader
 object spiders_reader
@@ -119,8 +119,8 @@ discopy.monoidal.Ty <|-- discopy.rigid.Ty
 discopy.rigid.Ob <|-- discopy.rigid.Ty
 discopy.rigid.Diagram --|> discopy.monoidal.Diagram
 
-discopy.monoidal.Diagram <|-r- discopy.biclosed.Diagram
-discopy.biclosed.Diagram <|-- discopy.biclosed.Box
+discopy.monoidal.Diagram <|-r- discopy.grammar.categorial.Diagram
+discopy.grammar.categorial.Diagram <|-- discopy.grammar.categorial.Box
 
 TreeReader::ccg_parser o-- CCGParser
 TreeReader::mode *-l- TreeReaderMode
@@ -142,11 +142,11 @@ discopy.rigid.Diagram -- CCGTree : < isConvertedTo
 
 Reader -- discopy.rigid.Diagram : generates >
 
-discopy.biclosed.Box <|-- ccg_rule.GBC
-discopy.biclosed.Box <|-- ccg_rule.GFX
-discopy.biclosed.Box <|-- ccg_rule.GFC
-discopy.biclosed.Box <|-- ccg_rule.GBX
-discopy.biclosed.Box <|-- ccg_rule.RPL
-discopy.biclosed.Box <|-- ccg_rule.RPR
+discopy.grammar.categorial.Box <|-- ccg_rule.GBC
+discopy.grammar.categorial.Box <|-- ccg_rule.GFX
+discopy.grammar.categorial.Box <|-- ccg_rule.GFC
+discopy.grammar.categorial.Box <|-- ccg_rule.GBX
+discopy.grammar.categorial.Box <|-- ccg_rule.RPL
+discopy.grammar.categorial.Box <|-- ccg_rule.RPR
 
 @enduml

@@ -9,8 +9,8 @@ import torch
 from torch import Size
 from torch.nn import Parameter
 
-from discopy import Cup, Diagram, Ob, Ty, Word
-from discopy.quantum.circuit import Id, Measure
+from discopy.grammar.pregroup import Cup, Diagram, Ob, Ty, Word
+from discopy.quantum import Id, Measure
 from lambeq import (AtomicType, Dataset, IQPAnsatz, PennyLaneModel,
                     PytorchTrainer)
 
@@ -23,7 +23,7 @@ def test_init():
                        n_layers=1, n_single_qubit_params=1)
     diagrams = [
         ansatz((Word("Alice", N) @ Word("runs", N >> S)
-                >> Cup(N, N.r) @ Id(S)))
+                >> Cup(N, N.r) @ S))
     ]
 
     model = PennyLaneModel.from_diagrams(diagrams)
@@ -38,7 +38,7 @@ def test_forward():
                        n_layers=1, n_single_qubit_params=3)
     diagrams = [
         ansatz((Word("Alice", N) @ Word("runs", N >> S)
-                >> Cup(N, N.r) @ Id(S)))
+                >> Cup(N, N.r) @ S))
     ]
     instance = PennyLaneModel.from_diagrams(diagrams)
     instance.initialise_weights()
@@ -51,8 +51,9 @@ def test_normalize():
                        n_layers=1, n_single_qubit_params=3)
     diagrams = [
         ansatz((Word("Alice", N) @ Word("runs", N >> S)
-                >> Cup(N, N.r) @ Id(S))),
-        ansatz(Diagram(dom=Ty(), cod=Ty('s'),
+                >> Cup(N, N.r) @ S)),
+        ansatz(Diagram.decode(
+                       dom=Ty(), cod=Ty('s'),
                        boxes=[Word('Alice', Ty('n')),
                               Word('cooks', Ty(Ob('n', z=1), 's',
                                                Ob('n', z=-1))),
@@ -91,7 +92,7 @@ def test_initialise_errors():
         model = PennyLaneModel()
         model.initialise_weights()
 
-    diag = Word("Alice", N) @ Word("runs", N.r @ S) >> Cup(N, N.r) @ Id(S)
+    diag = Word("Alice", N) @ Word("runs", N.r @ S) >> Cup(N, N.r) @ S
     with pytest.raises(ValueError):
         model = PennyLaneModel.from_diagrams([diag])
 
@@ -102,7 +103,7 @@ def test_get_diagram_output_error():
     ansatz = IQPAnsatz({AtomicType.NOUN: 1, AtomicType.SENTENCE: 1},
                        n_layers=1, n_single_qubit_params=3)
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S)
-                      >> Cup(N, N.r) @ Id(S)))
+                      >> Cup(N, N.r) @ S))
     with pytest.raises(KeyError):
         model = PennyLaneModel()
         model.get_diagram_output([diagram])
@@ -114,7 +115,7 @@ def test_checkpoint_loading():
     ansatz = IQPAnsatz({AtomicType.NOUN: 1, AtomicType.SENTENCE: 1},
                        n_layers=1, n_single_qubit_params=3)
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S)
-                      >> Cup(N, N.r) @ Id(S)))
+                      >> Cup(N, N.r) @ S))
     model = PennyLaneModel.from_diagrams([diagram])
     model.initialise_weights()
 
@@ -151,16 +152,16 @@ def test_with_pytorch_trainer(tmp_path):
     acc = lambda y_hat, y: torch.sum(torch.eq(torch.round(sig(y_hat)), y))/len(y)/2
 
     train_diagrams = [
-        (Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)),
-        (Word("Alice", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ Id(S)),
-        (Word("Bob", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)),
-        (Word("Bob", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ Id(S)),
+        (Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S),
+        (Word("Alice", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ S),
+        (Word("Bob", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S),
+        (Word("Bob", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ S),
     ]
     train_targets = [[1, 0], [0, 1], [0, 1], [1, 0]]
 
     dev_diagrams = [
-        (Word("Alice", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ Id(S)),
-        (Word("Bob", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ Id(S)),
+        (Word("Alice", N) @ Word("eats", N >> S) >> Cup(N, N.r) @ S),
+        (Word("Bob", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ S),
     ]
     dev_targets = [[0, 1], [1, 0]]
 
@@ -205,7 +206,7 @@ def test_backends():
     ansatz = IQPAnsatz({AtomicType.NOUN: 1, AtomicType.SENTENCE: 1},
                        n_layers=1, n_single_qubit_params=3)
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S)
-                      >> Cup(N, N.r) @ Id(S)))
+                      >> Cup(N, N.r) @ S))
     diagrams = [diagram]
 
     from qiskit.providers.aer.noise import NoiseModel
@@ -239,7 +240,7 @@ def test_initialisation_error():
     ansatz = IQPAnsatz({AtomicType.NOUN: 1, AtomicType.SENTENCE: 1},
                        n_layers=1, n_single_qubit_params=3)
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S)
-                      >> Cup(N, N.r) @ Id(S)))
+                      >> Cup(N, N.r) @ S))
     diagrams = [diagram]
 
     backend_config = {'backend': 'honeywell.hqs'}

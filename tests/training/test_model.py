@@ -1,7 +1,8 @@
 import os
 from unittest.mock import patch
 
-from discopy import Cup, Dim, Word
+from discopy.tensor import Dim
+from discopy.grammar.pregroup import Cup, Word
 from discopy.quantum.circuit import Id
 
 from lambeq import AtomicType, Symbol, SpiderAnsatz, Model, Checkpoint
@@ -30,7 +31,7 @@ class ConcreteModel(Model):
 def test_extract_symbols():
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
     circuits = [
-        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     ]
     instance = Model.from_diagrams(circuits)
     assert len(instance.symbols) == 2

@@ -4,7 +4,8 @@ from copy import deepcopy
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from discopy import Cup, Word, Tensor
+from discopy.tensor import Tensor
+from discopy.grammar.pregroup import Cup, Word
 from discopy.quantum import CRz, CX, H, Id, Ket, Measure, SWAP
 
 from lambeq import AtomicType, IQPAnsatz, NumpyModel, Symbol
@@ -14,7 +15,7 @@ def test_init():
     S = AtomicType.SENTENCE
 
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))]
+    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))]
     model = NumpyModel.from_diagrams(diagrams)
     model.initialise_weights()
     assert len(model.weights) == 4
@@ -26,7 +27,7 @@ def test_forward():
 
     s_dim = 2
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))]
+    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))]
     model = NumpyModel.from_diagrams(diagrams)
     model.initialise_weights()
     pred = model.forward(diagrams)
@@ -39,7 +40,7 @@ def test_jax_forward():
 
     s_dim = 2
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))]
+    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))]
     model = NumpyModel.from_diagrams(diagrams, use_jit=True)
     model.initialise_weights()
     pred = model.forward(diagrams)
@@ -50,7 +51,7 @@ def test_lambda_error():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     with pytest.raises(ValueError):
         model = NumpyModel()
         model._get_lambda(diagram)
@@ -64,7 +65,7 @@ def test_get_diagram_output_error():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     with pytest.raises(ValueError):
         model = NumpyModel()
         model.get_diagram_output([diagram])
@@ -73,7 +74,7 @@ def test_jax_usage():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
 
@@ -90,7 +91,7 @@ def test_checkpoint_loading():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
     model = NumpyModel.from_diagrams([diagram])
     model.initialise_weights()
 
@@ -130,10 +131,10 @@ def test_pickling():
     deepcopied_diagram = deepcopy(diagram)
     pickled_diagram = pickle.loads(pickle.dumps(diagram))
     assert pickled_diagram == diagram
-    pickled_diagram._data = 'new data'
+    pickled_diagram.data = 'new data'
     for box in pickled_diagram.boxes:
-        box._name = 'Jim'
-        box._data = ['random', 'data']
+        box.name = 'Jim'
+        box.data = ['random', 'data']
     assert diagram == deepcopied_diagram
     assert diagram != pickled_diagram
     assert deepcopied_diagram != pickled_diagram

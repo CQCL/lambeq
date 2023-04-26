@@ -2,10 +2,9 @@ import pytest
 
 from unittest.mock import Mock
 
-from discopy import Word
-from discopy.rigid import Cup, Diagram, Id, Swap, Ty
+from discopy.grammar.pregroup import Word, Cup, Diagram, Id, Swap, Ty
 
-from lambeq import AtomicType, DepCCGParser, DepCCGParseError, VerbosityLevel
+from lambeq import AtomicType, CCGAtomicType, DepCCGParser, DepCCGParseError, VerbosityLevel
 
 
 @pytest.fixture(scope='module')
@@ -20,13 +19,13 @@ def sentence():
 def tokenised_sentence():
     return ['What', 'Alice', 'is', 'and', 'is', 'not', '.']
 
-def test_to_biclosed(depccg_parser):
+def test_to_categorial(depccg_parser):
     mock_type = Mock(is_functor=False, is_NorNP=False, base='PP')
-    assert depccg_parser._to_biclosed(mock_type) == AtomicType.PREPOSITIONAL_PHRASE
+    assert depccg_parser._to_categorial(mock_type) == CCGAtomicType.PREPOSITIONAL_PHRASE
 
     mock_type.base = 'UNK'
     with pytest.raises(Exception):
-        depccg_parser._to_biclosed(mock_type)
+        depccg_parser._to_categorial(mock_type)
 
 
 def test_sentence2diagram(depccg_parser, sentence, tokenised_sentence):

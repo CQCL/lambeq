@@ -1,14 +1,14 @@
 import pytest
 
-from discopy.biclosed import Ty
+from discopy.grammar.categorial import Ty
 
-from lambeq.text2diagram.ccg_types import CCGParseError, replace_cat_result, str2biclosed
+from lambeq.text2diagram.ccg_types import CCGParseError, replace_cat_result, str2categorial
 
 
-def test_str2biclosed():
+def test_str2categorial():
     for cat in ('', ')', '(a', 'a(', 'a)'):
         with pytest.raises(CCGParseError):
-            str2biclosed(cat)
+            str2categorial(cat)
 
 
 def test_replace_cat_result():

@@ -79,9 +79,8 @@ __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
 
-from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
-from discopy.rigid import caps, spiders
+from discopy.grammar.pregroup import (
+    Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty, Word)
 
 from lambeq.core.types import AtomicType
 
@@ -134,7 +133,7 @@ class SimpleRewriteRule(RewriteRule):
     into a set template.
     """
 
-    PLACEHOLDER_WORD = object()
+    PLACEHOLDER_WORD = str()
 
     def __init__(self,
                  cod: Ty,
@@ -278,8 +277,8 @@ class CoordinationRewriteRule(RewriteRule):
         n = len(box.cod) // 3
         left, mid, right = box.cod[:n], box.cod[n:2*n], box.cod[2*n:]
         assert right.r == mid == left.l
-        return (caps(left, mid) @ caps(mid, right)
-                >> Id(left) @ spiders(2, 1, mid) @ Id(right))
+        return (Diagram.caps(left, mid) @ Diagram.caps(mid, right)
+                >> Id(left) @ Diagram.spiders(2, 1, mid) @ Id(right))
 
 
 class CurryRewriteRule(RewriteRule):
@@ -311,9 +310,9 @@ class CurryRewriteRule(RewriteRule):
         dom = left.l @ box.dom @ right.r
         new_box = Box(box.name, dom, cod[i:j+1])
         if left:
-            new_box = Diagram.curry(new_box, n_wires=len(left), left=True)
+            new_box = Diagram.curry(new_box, n=len(left), left=False)
         if right:
-            new_box = Diagram.curry(new_box, n_wires=len(right), left=False)
+            new_box = Diagram.curry(new_box, n=len(right), left=True)
 
         return new_box
 

@@ -1,9 +1,9 @@
 import pytest
 
-from discopy import biclosed, Word
+from discopy.grammar import categorial
 from discopy.cat import AxiomError
-from discopy.biclosed import Box
-from discopy.rigid import Cap, Cup, Diagram, Id, Swap, caps, cups
+from discopy.grammar.categorial import Box
+from discopy.grammar.pregroup import Cap, Cup, Diagram, Id, Swap, Word
 
 from lambeq import AtomicType, CCGAtomicType, CCGTree, CCGRule, CCGRuleUseError
 from lambeq.text2diagram.ccg_rule import GBC, GBX, GFC, GFX, RPL, RPR
@@ -15,65 +15,65 @@ N = AtomicType.NOUN
 P = AtomicType.PREPOSITIONAL_PHRASE
 S = AtomicType.SENTENCE
 
-i = biclosed.Ty()
+i = categorial.Ty()
 conj = CCGAtomicType.CONJUNCTION
 n = CCGAtomicType.NOUN
 p = CCGAtomicType.PREPOSITIONAL_PHRASE
 punc = CCGAtomicType.PUNCTUATION
 s = CCGAtomicType.SENTENCE
 
-comma = CCGTree(',', biclosed_type=punc)
-and_ = CCGTree('and', biclosed_type=CCGAtomicType.CONJUNCTION)
-be = CCGTree('be', biclosed_type=s << n)
-do = CCGTree('do', biclosed_type=s << s)
-is_ = CCGTree('is', biclosed_type=n >> s)
-it = CCGTree('it', biclosed_type=n)
-not_ = CCGTree('not', biclosed_type=s >> s)
-the = CCGTree('the', biclosed_type=n << n)
+comma = CCGTree(',', categorial_type=punc)
+and_ = CCGTree('and', categorial_type=CCGAtomicType.CONJUNCTION)
+be = CCGTree('be', categorial_type=s << n)
+do = CCGTree('do', categorial_type=s << s)
+is_ = CCGTree('is', categorial_type=n >> s)
+it = CCGTree('it', categorial_type=n)
+not_ = CCGTree('not', categorial_type=s >> s)
+the = CCGTree('the', categorial_type=n << n)
 
 
 class CCGRuleTester:
     tree = None
-    biclosed_diagram = None
+    categorial_diagram = None
     diagram = None
-    planar_biclosed_diagram = None
+    planar_categorial_diagram = None
     planar_diagram = None
 
-    def test_biclosed_diagram(self):
-        assert self.tree.to_biclosed_diagram() == self.biclosed_diagram
+    def test_categorial_diagram(self):
+        assert self.tree.to_categorial_diagram() == self.categorial_diagram
 
     def test_diagram(self):
         assert self.tree.to_diagram() == self.diagram
 
-    def test_planar_biclosed_diagram(self):
-        diagram = self.planar_biclosed_diagram or self.biclosed_diagram
-        assert self.tree.to_biclosed_diagram(planar=True) == diagram
+    def test_planar_categorial_diagram(self):
+        diagram = self.planar_categorial_diagram or self.categorial_diagram
+        assert self.tree.to_categorial_diagram(planar=True) == diagram
 
     def test_planar_diagram(self):
         diagram = self.planar_diagram or self.diagram
         assert self.tree.to_diagram(planar=True) == diagram
 
     def test_infer_rule(self):
-        input_type = i.tensor(*[child.biclosed_type for child in self.tree.children])
-        assert CCGRule.infer_rule(input_type, self.tree.biclosed_type) == self.tree.rule
+        input_type = i.tensor(*[child.categorial_type for child in self.tree.children])
+        assert CCGRule.infer_rule(input_type, self.tree.categorial_type) == self.tree.rule
 
 
 class TestBackwardApplication(CCGRuleTester):
-    tree = CCGTree(rule='BA', biclosed_type=s, children=(it, is_))
+    tree = CCGTree(rule='BA', categorial_type=s, children=(it, is_))
 
-    biclosed_words = Box('it', i, n) @ Box('is', i, n >> s)
-    biclosed_diagram = biclosed_words >> biclosed.BA(n >> s)
+    categorial_words = Box('it', i, n) @ Box('is', i, n >> s)
+    categorial_diagram = categorial_words >> categorial.BA(n >> s)
 
     words = Word('it', N) @ Word('is', N >> S)
     diagram = words >> (Cup(N, N.r) @ Id(S))
 
 
 class TestBackwardComposition(CCGRuleTester):
-    tree = CCGTree(rule='BC', biclosed_type=n >> s, children=(is_, not_))
+    tree = CCGTree(rule='BC', categorial_type=n >> s, children=(is_, not_))
 
-    # biclosed diagram
-    biclosed_words = Box('is', i, n >> s) @ Box('not', i, s >> s)
-    biclosed_diagram = biclosed_words >> biclosed.BC(n >> s, s >> s)
+    # categorial diagram
+    categorial_words = Box('is', i, n >> s) @ Box('not', i, s >> s)
+    categorial_diagram = categorial_words >> categorial.BC(n >> s, s >> s)
 
     # rigid diagram
     words = Word('is', N >> S) @ Word('not', S >> S)
@@ -81,18 +81,18 @@ class TestBackwardComposition(CCGRuleTester):
 
 
 class TestBackwardCrossedComposition(CCGRuleTester):
-    tree = CCGTree(rule='BX', biclosed_type=s << n, children=(be, not_))
+    tree = CCGTree(rule='BX', categorial_type=s << n, children=(be, not_))
 
-    biclosed_words = Box('be', i, s << n) @ Box('not', i, s >> s)
-    biclosed_diagram = biclosed_words >> biclosed.BX(s << n, s >> s)
+    categorial_words = Box('be', i, s << n) @ Box('not', i, s >> s)
+    categorial_diagram = categorial_words >> categorial.BX(s << n, s >> s)
 
     words = Word('be', S << N) @ Word('not', S >> S)
     diagram = (words >>
                Id(S) @ Swap(N.l, S.r) @ Id(S) >>
                Cup(S, S.r) @ Swap(N.l, S))
 
-    be_box, not_box = biclosed_words.boxes
-    planar_biclosed_diagram = be_box >> PlanarBX(s << n, not_box)
+    be_box, not_box = categorial_words.boxes
+    planar_categorial_diagram = be_box >> PlanarBX(s << n, not_box)
 
     be_word, not_word = words.boxes
     planar_diagram = (be_word >>
@@ -101,10 +101,10 @@ class TestBackwardCrossedComposition(CCGRuleTester):
 
 
 class TestBackwardTypeRaising(CCGRuleTester):
-    tree = CCGTree(rule='BTR', biclosed_type=(s << n) >> s, children=(it,))
+    tree = CCGTree(rule='BTR', categorial_type=(s << n) >> s, children=(it,))
 
-    biclosed_diagram = (Box('it', i, n) >>
-                        biclosed.Curry(biclosed.FA(s << n), left=True))
+    categorial_diagram = (Box('it', i, n) >>
+                        categorial.Curry(categorial.FA(s << n), left=False))
 
     diagram = (Word('it', N) >>
                Cap(N, N.l) @ Id(N) >>
@@ -112,84 +112,84 @@ class TestBackwardTypeRaising(CCGRuleTester):
 
 
 class TestConjunctionLeft(CCGRuleTester):
-    tree = CCGTree(rule='CONJ', biclosed_type=n >> n, children=(and_, it))
+    tree = CCGTree(rule='CONJ', categorial_type=n >> n, children=(and_, it))
 
-    biclosed_words = Box('and', i, (n >> n) << n) @ Box('it', i, n)
-    biclosed_diagram = biclosed_words >> biclosed.FA((n >> n) << n)
+    categorial_words = Box('and', i, (n >> n) << n) @ Box('it', i, n)
+    categorial_diagram = categorial_words >> categorial.FA((n >> n) << n)
 
     words = Word('and', N >> N << N) @ Word('it', N)
     diagram = words >> (Id(N >> N) @ Cup(N.l, N))
 
 
 class TestConjunctionRight(CCGRuleTester):
-    tree = CCGTree(rule='CONJ', biclosed_type=n << n, children=(it, and_))
+    tree = CCGTree(rule='CONJ', categorial_type=n << n, children=(it, and_))
 
-    biclosed_words = Box('it', i, n) @ Box('and', i, n >> (n << n))
-    biclosed_diagram = biclosed_words >> biclosed.BA(n >> (n << n))
+    categorial_words = Box('it', i, n) @ Box('and', i, n >> (n << n))
+    categorial_diagram = categorial_words >> categorial.BA(n >> (n << n))
 
     words = Word('it', N) @ Word('and', N >> N << N)
     diagram = words >> (Cup(N, N.r) @ Id(N << N))
 
 
 class TestConjunctionPunctuationLeft(CCGRuleTester):
-    tree = CCGTree(rule='CONJ', biclosed_type=n >> n, children=(comma, it))
+    tree = CCGTree(rule='CONJ', categorial_type=n >> n, children=(comma, it))
 
-    biclosed_words = Box(',', i, (n >> n) << n) @ Box('it', i, n)
-    biclosed_diagram = biclosed_words >> biclosed.FA((n >> n) << n)
+    categorial_words = Box(',', i, (n >> n) << n) @ Box('it', i, n)
+    categorial_diagram = categorial_words >> categorial.FA((n >> n) << n)
 
     words = Word(',', N >> N << N) @ Word('it', N)
     diagram = words >> (Id(N >> N) @ Cup(N.l, N))
 
 
 class TestConjunctionPunctuationRight(CCGRuleTester):
-    tree = CCGTree(rule='CONJ', biclosed_type=n << n, children=(it, comma))
+    tree = CCGTree(rule='CONJ', categorial_type=n << n, children=(it, comma))
 
-    biclosed_words = Box('it', i, n) @ Box(',', i, n >> (n << n))
-    biclosed_diagram = biclosed_words >> biclosed.BA(n >> (n << n))
+    categorial_words = Box('it', i, n) @ Box(',', i, n >> (n << n))
+    categorial_diagram = categorial_words >> categorial.BA(n >> (n << n))
 
     words = Word('it', N) @ Word(',', N >> N << N)
     diagram = words >> (Cup(N, N.r) @ Id(N << N))
 
 
 def test_conjunction_error():
-    tree = CCGTree(rule='CONJ', biclosed_type=n, children=(it, it))
+    tree = CCGTree(rule='CONJ', categorial_type=n, children=(it, it))
     with pytest.raises(CCGRuleUseError):
-        tree.to_biclosed_diagram()
+        tree.to_categorial_diagram()
 
 
 class TestForwardApplication(CCGRuleTester):
-    tree = CCGTree(rule='FA', biclosed_type=s, children=(be, it))
+    tree = CCGTree(rule='FA', categorial_type=s, children=(be, it))
 
-    biclosed_words = Box('be', i, s << n) @ Box('it', i, n)
-    biclosed_diagram = biclosed_words >> biclosed.FA(s << n)
+    categorial_words = Box('be', i, s << n) @ Box('it', i, n)
+    categorial_diagram = categorial_words >> categorial.FA(s << n)
 
     words = Word('be', S << N) @ Word('it', N)
     diagram = words >> (Id(S) @ Cup(N.l, N))
 
 
 class TestForwardComposition(CCGRuleTester):
-    tree = CCGTree(rule='FC', biclosed_type=s << n, children=(be, the))
+    tree = CCGTree(rule='FC', categorial_type=s << n, children=(be, the))
 
-    biclosed_words = Box('be', i, s << n) @ Box('the', i, n << n)
-    biclosed_diagram = biclosed_words >> biclosed.FC(s << n, n << n)
+    categorial_words = Box('be', i, s << n) @ Box('the', i, n << n)
+    categorial_diagram = categorial_words >> categorial.FC(s << n, n << n)
 
     words = Word('be', S << N) @ Word('the', N << N)
     diagram = words >> (Id(S) @ Cup(N.l, N) @ Id(N.l))
 
 
 class TestForwardCrossedComposition(CCGRuleTester):
-    tree = CCGTree(rule='FX', biclosed_type=s >> s, children=(do, not_))
+    tree = CCGTree(rule='FX', categorial_type=s >> s, children=(do, not_))
 
-    biclosed_words = Box('do', i, s << s) @ Box('not', i, s >> s)
-    biclosed_diagram = biclosed_words >> biclosed.FX(s << s, s >> s)
+    categorial_words = Box('do', i, s << s) @ Box('not', i, s >> s)
+    categorial_diagram = categorial_words >> categorial.FX(s << s, s >> s)
 
     words = Word('do', S << S) @ Word('not', S >> S)
     diagram = (words >>
                Id(S) @ Swap(S.l, S.r) @ Id(S) >>
                Swap(S, S.r) @ Cup(S.l, S))
 
-    do_box, not_box = biclosed_words.boxes
-    planar_biclosed_diagram = not_box >> PlanarFX(s >> s, do_box)
+    do_box, not_box = categorial_words.boxes
+    planar_categorial_diagram = not_box >> PlanarFX(s >> s, do_box)
 
     do_word, not_word = words.boxes
     planar_diagram = (not_word >>
@@ -198,40 +198,40 @@ class TestForwardCrossedComposition(CCGRuleTester):
 
 
 class TestForwardTypeRaising(CCGRuleTester):
-    tree = CCGTree(rule='FTR', biclosed_type=s << (n >> s), children=(it,))
+    tree = CCGTree(rule='FTR', categorial_type=s << (n >> s), children=(it,))
 
-    biclosed_diagram = Box('it', i, n) >> biclosed.Curry(biclosed.BA(n >> s))
+    categorial_diagram = Box('it', i, n) >> categorial.Curry(categorial.BA(n >> s))
 
     diagram = (Word('it', N) >>
-               Id(N) @ caps(N >> S, (N >> S).l) >>
+               Id(N) @ Diagram.caps(N >> S, (N >> S).l) >>
                Cup(N, N.r) @ Id((S << S) @ N))
 
 
 class TestGeneralizedBackwardComposition(CCGRuleTester):
-    word = CCGTree('word', biclosed_type=n >> (s >> n))
-    tree = CCGTree(rule='GBC', biclosed_type=n >> (s >> s), children=(word, is_))
+    word = CCGTree('word', categorial_type=n >> (s >> n))
+    tree = CCGTree(rule='GBC', categorial_type=n >> (s >> s), children=(word, is_))
 
-    biclosed_words = Box('word', i, n >> (s >> n)) @ Box('is', i, n >> s)
-    biclosed_diagram = biclosed_words >> GBC(n >> (s >> n), n >> s)
+    categorial_words = Box('word', i, n >> (s >> n)) @ Box('is', i, n >> s)
+    categorial_diagram = categorial_words >> GBC(n >> (s >> n), n >> s)
 
     words = Word('word', N >> (S >> N)) @ Word('is', N >> S)
     diagram = words >> (Id(N.r @ S.r) @ Cup(N, N.r) @ Id(S))
 
 
 class TestGeneralizedBackwardCrossedComposition(CCGRuleTester):
-    have = CCGTree('have', biclosed_type=n >> (s << n))
-    tree = CCGTree(rule='GBX', biclosed_type=n >> (s << n), children=(have, not_))
+    have = CCGTree('have', categorial_type=n >> (s << n))
+    tree = CCGTree(rule='GBX', categorial_type=n >> (s << n), children=(have, not_))
 
-    biclosed_words = Box('have', i, n >> (s << n)) @ Box('not', i, s >> s)
-    biclosed_diagram = biclosed_words >> GBX(n >> (s << n), s >> s)
+    categorial_words = Box('have', i, n >> (s << n)) @ Box('not', i, s >> s)
+    categorial_diagram = categorial_words >> GBX(n >> (s << n), s >> s)
 
     words = Word('have', N >> S << N) @ Word('not', S >> S)
     diagram = (words >>
                Id(N >> S) @ Diagram.swap(N.l, S >> S) >>
                Id(N.r) @ Cup(S, S.r) @ Id(S << N))
 
-    have_box, not_box = biclosed_words.boxes
-    planar_biclosed_diagram = have_box >> PlanarGBX(n >> (s << n), not_box)
+    have_box, not_box = categorial_words.boxes
+    planar_categorial_diagram = have_box >> PlanarGBX(n >> (s << n), not_box)
 
     have_word, not_word = words.boxes
     planar_diagram = (have_word >>
@@ -240,30 +240,30 @@ class TestGeneralizedBackwardCrossedComposition(CCGRuleTester):
 
 
 class TestGeneralizedForwardComposition(CCGRuleTester):
-    word = CCGTree('word', biclosed_type=(n << s) << n)
-    tree = CCGTree(rule='GFC', biclosed_type=(s << s) << n, children=(be, word))
+    word = CCGTree('word', categorial_type=(n << s) << n)
+    tree = CCGTree(rule='GFC', categorial_type=(s << s) << n, children=(be, word))
 
-    biclosed_words = Box('be', i, s << n) @ Box('word', i, (n << s) << n)
-    biclosed_diagram = biclosed_words >> GFC(s << n, (n << s) << n)
+    categorial_words = Box('be', i, s << n) @ Box('word', i, (n << s) << n)
+    categorial_diagram = categorial_words >> GFC(s << n, (n << s) << n)
 
     words = Word('be', S << N) @ Word('word', (N << S) << N)
     diagram = words >> (Id(S) @ Cup(N.l, N) @ Id(S.l @ N.l))
 
 
 class TestGeneralizedForwardCrossedComposition(CCGRuleTester):
-    have = CCGTree('have', biclosed_type=(n >> s) << n)
-    tree = CCGTree(rule='GFX', biclosed_type=(n >> s) << n, children=(do, have))
+    have = CCGTree('have', categorial_type=(n >> s) << n)
+    tree = CCGTree(rule='GFX', categorial_type=(n >> s) << n, children=(do, have))
 
-    biclosed_words = Box('do', i, s << s) @ Box('have', i, (n >> s) << n)
-    biclosed_diagram = biclosed_words >> GFX(s << s, (n >> s) << n)
+    categorial_words = Box('do', i, s << s) @ Box('have', i, (n >> s) << n)
+    categorial_diagram = categorial_words >> GFX(s << s, (n >> s) << n)
 
     words = Word('do', S << S) @ Word('have', N >> S << N)
     diagram = (words >>
                Diagram.swap(S << S, N.r) @ Id(S << N) >>
                Id(N >> S) @ Cup(S.l, S) @ Id(N.l))
 
-    do_box, have_box = biclosed_words.boxes
-    planar_biclosed_diagram = have_box >> PlanarGFX((n >> s) << n, do_box)
+    do_box, have_box = categorial_words.boxes
+    planar_categorial_diagram = have_box >> PlanarGFX((n >> s) << n, do_box)
 
     do_word, have_word = words.boxes
     planar_diagram = (have_word >>
@@ -274,7 +274,7 @@ class TestGeneralizedForwardCrossedComposition(CCGRuleTester):
 class TestLexical(CCGRuleTester):
     tree = it
 
-    biclosed_diagram = Box('it', i, n)
+    categorial_diagram = Box('it', i, n)
 
     diagram = Word('it', N)
 
@@ -284,45 +284,45 @@ class TestLexical(CCGRuleTester):
 
 
 class TestRemovePunctuationLeft(CCGRuleTester):
-    tree = CCGTree(rule='LP', biclosed_type=n, children=(comma, it))
+    tree = CCGTree(rule='LP', categorial_type=n, children=(comma, it))
 
-    biclosed_words = Box(',', i, punc) @ Box('it', i, n)
-    biclosed_diagram = biclosed_words >> RPL(punc, n)
+    categorial_words = Box(',', i, punc) @ Box('it', i, n)
+    categorial_diagram = categorial_words >> RPL(punc, n)
 
     diagram = Word('it', N)
 
 
 class TestRemovePunctuationRight(CCGRuleTester):
-    tree = CCGTree(rule='RP', biclosed_type=n, children=(it, comma))
+    tree = CCGTree(rule='RP', categorial_type=n, children=(it, comma))
 
-    biclosed_words = Box('it', i, n) @ Box(',', i, punc)
-    biclosed_diagram = biclosed_words >> RPR(n, punc)
+    categorial_words = Box('it', i, n) @ Box(',', i, punc)
+    categorial_diagram = categorial_words >> RPR(n, punc)
 
     diagram = Word('it', N)
 
 
 class TestRemovePunctuationRightWithConjunction(CCGRuleTester):
-    tree = CCGTree(rule='LP', biclosed_type=conj, children=(comma, and_))
+    tree = CCGTree(rule='LP', categorial_type=conj, children=(comma, and_))
 
-    biclosed_words = Box(',', i, punc) @ Box('and', i, conj)
-    biclosed_diagram = biclosed_words >> RPL(punc, conj)
+    categorial_words = Box(',', i, punc) @ Box('and', i, conj)
+    categorial_diagram = categorial_words >> RPL(punc, conj)
 
     diagram = Word('and', CONJ)
 
 
 class TestRemovePunctuationLeftWithConjunction(CCGRuleTester):
-    tree = CCGTree(rule='RP', biclosed_type=conj, children=(and_, comma))
+    tree = CCGTree(rule='RP', categorial_type=conj, children=(and_, comma))
 
-    biclosed_words = Box('and', i, conj) @ Box(',', i, punc)
-    biclosed_diagram = biclosed_words >> RPR(conj, punc)
+    categorial_words = Box('and', i, conj) @ Box(',', i, punc)
+    categorial_diagram = categorial_words >> RPR(conj, punc)
 
     diagram = Word('and', CONJ)
 
 
 class TestUnary(CCGRuleTester):
-    tree = CCGTree(rule='U', biclosed_type=s, children=(be,))
+    tree = CCGTree(rule='U', categorial_type=s, children=(be,))
 
-    biclosed_diagram = Box('be', i, s)
+    categorial_diagram = Box('be', i, s)
 
     diagram = Word('be', S)
 
@@ -330,58 +330,58 @@ class TestUnary(CCGRuleTester):
 class TestUnarySwap(CCGRuleTester):
     tree = CCGTree(
         rule='FA',
-        biclosed_type=s,
+        categorial_type=s,
         children=[
             CCGTree(
                 rule='U',
-                biclosed_type=s << s,
-                children=[CCGTree('put simply', biclosed_type=n >> s)]),
+                categorial_type=s << s,
+                children=[CCGTree('put simply', categorial_type=n >> s)]),
             CCGTree(
                 rule='BA',
-                biclosed_type=s,
+                categorial_type=s,
                 children=[
                     CCGTree(rule='BA',
-                        biclosed_type=n,
+                        categorial_type=n,
                         children=[
-                            CCGTree('all', biclosed_type=n),
+                            CCGTree('all', categorial_type=n),
                             CCGTree(
                                 rule='U',
-                                biclosed_type=n >> n,
+                                categorial_type=n >> n,
                                 children=[
                                     CCGTree(
                                         rule='FC',
-                                        biclosed_type=s << n,
+                                        categorial_type=s << n,
                                         children=[
                                             CCGTree(
                                                 rule='FTR',
-                                                biclosed_type=s << (n >> s),
-                                                children=[CCGTree('you', biclosed_type=n)]
+                                                categorial_type=s << (n >> s),
+                                                children=[CCGTree('you', categorial_type=n)]
                                             ),
-                                            CCGTree('need', biclosed_type=(n >> s) << n)
+                                            CCGTree('need', categorial_type=(n >> s) << n)
                                         ]
                                     )
                                 ]
                             )
                         ]
                     ),
-                    CCGTree('is love', biclosed_type=n >> s)
+                    CCGTree('is love', categorial_type=n >> s)
                 ]
             )
         ]
     )
 
-    biclosed_diagram = (
+    categorial_diagram = (
         (Box('put simply', i, (i << (i << s)) >> s)
          @ Box('all', i, n)
          @ Box('you', i, n)
          @ Box('need', i, (n >> n) << ((n >> i) >> i))
          @ Box('is love', i, n >> s))
-        >> UnarySwap(s << s) @ biclosed.Id(n) @ biclosed.Curry(biclosed.BA(n >> n)) @ biclosed.Id(((n >> n) << ((n >> i) >> i)) @ (n >> s))
-        >> biclosed.Id((s << s) @ n) @ biclosed.FC(n << (n >> n), (n >> n) << ((n >> i) >> i)) @ biclosed.Id(n >> s)
-        >> biclosed.Id((s << s) @ n) @ UnarySwap(n >> n) @ biclosed.Id(n >> s)
-        >> biclosed.Id(s << s) @ biclosed.BA(n >> n) @ biclosed.Id(n >> s)
-        >> biclosed.Id(s << s) @ biclosed.BA(n >> s)
-        >> biclosed.FA(s << s)
+        >> UnarySwap(s << s) @ categorial.Id(n) @ categorial.Curry(categorial.BA(n >> n)) @ categorial.Id(((n >> n) << ((n >> i) >> i)) @ (n >> s))
+        >> categorial.Id((s << s) @ n) @ categorial.FC(n << (n >> n), (n >> n) << ((n >> i) >> i)) @ categorial.Id(n >> s)
+        >> categorial.Id((s << s) @ n) @ UnarySwap(n >> n) @ categorial.Id(n >> s)
+        >> categorial.Id(s << s) @ categorial.BA(n >> n) @ categorial.Id(n >> s)
+        >> categorial.Id(s << s) @ categorial.BA(n >> s)
+        >> categorial.FA(s << s)
     )
 
     diagram = (
@@ -390,16 +390,16 @@ class TestUnarySwap(CCGRuleTester):
          @ Word('you', N)
          @ Word('need', (N >> N) @ N.r)
          @ Word('is love', N >> S))
-        >> Swap(S.l, S) @ Id(N @ N) @ caps(N >> N, (N >> N).l) @ Id((N >> N) @ N.r @ (N >> S))
-        >> Id((S << S) @ N) @ Cup(N, N.r) @ Id(N) @ cups((N >> N).l, N >> N) @ Id(N.r @ (N >> S))
+        >> Swap(S.l, S) @ Id(N @ N) @ Diagram.caps(N >> N, (N >> N).l) @ Id((N >> N) @ N.r @ (N >> S))
+        >> Id((S << S) @ N) @ Cup(N, N.r) @ Id(N) @ Diagram.cups((N >> N).l, N >> N) @ Id(N.r @ (N >> S))
         >> Id((S << S) @ N) @ Swap(N, N.r) @ Id(N >> S)
         >> Id(S << S) @ Cup(N, N.r) @ Cup(N, N.r) @ Id(S)
         >> Id(S) @ Cup(S.l, S)
     )
 
-    def test_planar_biclosed_diagram(self):
+    def test_planar_categorial_diagram(self):
         with pytest.raises(AxiomError):
-            self.tree.to_biclosed_diagram(planar=True)
+            self.tree.to_categorial_diagram(planar=True)
 
     def test_planar_diagram(self):
         with pytest.raises(AxiomError):
@@ -413,19 +413,19 @@ class TestUnarySwap(CCGRuleTester):
 
 
 class TestUnknown(CCGRuleTester):
-    tree = CCGTree(rule='UNK', biclosed_type=n, children=[it, it, it])
+    tree = CCGTree(rule='UNK', categorial_type=n, children=[it, it, it])
 
-    def test_biclosed_diagram(self):
+    def test_categorial_diagram(self):
         with pytest.raises(CCGRuleUseError):
-            self.tree.to_biclosed_diagram()
+            self.tree.to_categorial_diagram()
 
     def test_diagram(self):
         with pytest.raises(CCGRuleUseError):
             self.tree.to_diagram()
 
-    def test_planar_biclosed_diagram(self):
+    def test_planar_categorial_diagram(self):
         with pytest.raises(CCGRuleUseError):
-            self.tree.to_biclosed_diagram(planar=True)
+            self.tree.to_categorial_diagram(planar=True)
 
     def test_planar_diagram(self):
         with pytest.raises(CCGRuleUseError):
