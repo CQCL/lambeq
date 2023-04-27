@@ -1,7 +1,7 @@
 from discopy.utils import draw_and_compare, tikz_and_compare
 from discopy.grammar.pregroup import Ty, Diagram, Word, Cup, Id
 
-from lambeq.pregroups.drawing import draw
+from lambeq.pregroups import draw
 
 SRC, TOL = 'tests/src/', 10
 
