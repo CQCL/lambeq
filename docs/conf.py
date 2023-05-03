@@ -43,6 +43,7 @@ extensions = [
     'sphinx.ext.inheritance_diagram',
     'sphinx.ext.intersphinx',
     'sphinxarg.ext',
+    'sphinxcontrib.jquery'
 ]
 
 intersphinx_mapping = {
