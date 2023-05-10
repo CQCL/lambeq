@@ -4,7 +4,7 @@ from copy import deepcopy
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from qiskit.providers.ibmq.exceptions import IBMQAccountError
+from qiskit_ibm_provider.exceptions import IBMAccountError
 import torch
 from torch import Size
 from torch.nn import Parameter
@@ -223,7 +223,7 @@ def test_backends():
 
     backend_config = {'backend': 'qiskit.ibmq',
                       'device': 'ibmq_manila'}
-    with pytest.raises(IBMQAccountError):
+    with pytest.raises(IBMAccountError):
         m = PennyLaneModel.from_diagrams(diagrams,
                                          backend_config=backend_config)
 
