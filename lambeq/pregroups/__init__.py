@@ -15,7 +15,8 @@
 __all__ = ['draw',
            'TextDiagramPrinter', 'diagram2str',
            'create_pregroup_diagram', 'is_pregroup_diagram', 'remove_cups',
-           'remove_swaps']
+           'remove_swaps', 'draw']
+
 
 from lambeq.pregroups.drawing import draw
 from lambeq.pregroups.text_printer import TextDiagramPrinter, diagram2str
