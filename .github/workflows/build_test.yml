@@ -56,7 +56,7 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install DisCoPy 1.0.1 from GitHub
-      if: github.ref_name != 'release' && github.ref_name != 'beta'
+      # if: github.ref_name != 'release' && github.ref_name != 'beta'
       run: pip install https://api.github.com/repos/discopy/discopy/zipball/pull/148/head
     - name: Install base package
       run: pip install .
