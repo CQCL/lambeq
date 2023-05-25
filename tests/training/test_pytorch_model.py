@@ -6,8 +6,7 @@ from unittest.mock import mock_open, patch
 
 from discopy import tensor
 from discopy.tensor import Dim
-from discopy.grammar.pregroup import Box, Cap, Cup, Swap, Word, Spider
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Box, Cap, Cup, Id, Spider, Swap, Word
 
 import numpy as np
 import torch
@@ -33,7 +32,7 @@ class CustomPytorchModel(PytorchModel):
 def test_init():
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
     diagrams = [
-        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
+        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
     ]
 
     model = PytorchModel.from_diagrams(diagrams)
@@ -45,7 +44,7 @@ def test_forward():
     s_dim = 2
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(s_dim)})
     diagrams = [
-        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
+        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
     ]
     instance = PytorchModel.from_diagrams(diagrams)
     instance.initialise_weights()
@@ -90,7 +89,7 @@ def test_get_diagram_output_error():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
     with pytest.raises(KeyError):
         model = PytorchModel()
         model.get_diagram_output([diagram])
@@ -99,7 +98,7 @@ def test_checkpoint_loading():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
-    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ S))
+    diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
     model = PytorchModel.from_diagrams([diagram])
     model.initialise_weights()
 
