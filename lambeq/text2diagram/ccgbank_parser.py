@@ -42,7 +42,7 @@ from lambeq.core.utils import SentenceBatchType
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
-from lambeq.text2diagram.ccg_types import CCGAtomicType, str2categorial
+from lambeq.text2diagram.ccg_types import CCGAtomicType, str2biclosed
 from lambeq.typing import StrPathT
 
 
@@ -394,7 +394,7 @@ class CCGBankParser(CCGParser):
         ccg_str = tree_match['ccg_str']
         if ccg_str == r'((S[b]\NP)/NP)/':  # fix mistake in CCGBank
             ccg_str = r'(S[b]\NP)/NP'
-        categorial_type = str2categorial(
+        biclosed_type = str2biclosed(
             ccg_str, str2type=CCGBankParser._parse_atomic_type)
         pos = tree_match.end()
         if tree_match['is_leaf']:
@@ -403,18 +403,18 @@ class CCGBankParser(CCGParser):
                 word = CCGBankParser.escaped_words[word]
             except KeyError:
                 pass
-            ccg_tree = CCGTree(text=word, categorial_type=categorial_type)
+            ccg_tree = CCGTree(text=word, biclosed_type=biclosed_type)
         else:
             children = []
             while not sentence[pos] == ')':
                 child, pos = CCGBankParser._build_ccgtree(sentence, pos)
                 children.append(child)
 
-            rule = CCGRule.infer_rule(Ty().tensor(*(child.categorial_type
+            rule = CCGRule.infer_rule(Ty().tensor(*(child.biclosed_type
                                                     for child in children)),
-                                      categorial_type)
+                                      biclosed_type)
             ccg_tree = CCGTree(rule=rule,
-                               categorial_type=categorial_type,
+                               biclosed_type=biclosed_type,
                                children=children)
             pos += 2
         return ccg_tree, pos

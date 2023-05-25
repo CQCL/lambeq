@@ -2,13 +2,13 @@ import pytest
 
 from discopy.grammar.categorial import Ty
 
-from lambeq.text2diagram.ccg_types import CCGParseError, replace_cat_result, str2categorial
+from lambeq.text2diagram.ccg_types import CCGParseError, replace_cat_result, str2biclosed
 
 
-def test_str2categorial():
+def test_str2biclosed():
     for cat in ('', ')', '(a', 'a(', 'a)'):
         with pytest.raises(CCGParseError):
-            str2categorial(cat)
+            str2biclosed(cat)
 
 
 def test_replace_cat_result():

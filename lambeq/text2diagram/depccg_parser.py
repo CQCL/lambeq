@@ -421,7 +421,7 @@ class DepCCGParser(CCGParser):
         return ret
 
     @staticmethod
-    def _to_categorial(cat: Category) -> Ty:
+    def _to_biclosed(cat: Category) -> Ty:
         """Transform a depccg category into a categorial type."""
 
         if not cat.is_functor:
@@ -437,17 +437,17 @@ class DepCCGParser(CCGParser):
                 return CCGAtomicType.PUNCTUATION
         else:
             if cat.slash == '/':
-                return (DepCCGParser._to_categorial(cat.left)
-                        << DepCCGParser._to_categorial(cat.right))
+                return (DepCCGParser._to_biclosed(cat.left)
+                        << DepCCGParser._to_biclosed(cat.right))
             if cat.slash == '\\':
-                return (DepCCGParser._to_categorial(cat.right)
-                        >> DepCCGParser._to_categorial(cat.left))
+                return (DepCCGParser._to_biclosed(cat.right)
+                        >> DepCCGParser._to_biclosed(cat.left))
         raise Exception(f'Invalid CCG type: {cat.base}')
 
     @staticmethod
     def _build_ccgtree(tree: depccg.tree.Tree) -> CCGTree:
         """Transform a depccg derivation tree into a `CCGTree`."""
-        categorial_type = DepCCGParser._to_categorial(tree.cat)
+        biclosed_type = DepCCGParser._to_biclosed(tree.cat)
         if tree.is_leaf:
             children = []
             rule = 'L'
@@ -455,18 +455,18 @@ class DepCCGParser(CCGParser):
             children = [*map(DepCCGParser._build_ccgtree, tree.children)]
             if tree.op_string == 'tr':
                 rule = (
-                    'BTR' if categorial_type.left.left == categorial_type.right
+                    'BTR' if biclosed_type.left.left == biclosed_type.right
                     else 'FTR')
             elif tree.op_symbol == '<un>':
                 rule = 'U'
             elif tree.op_string in ('gbx', 'gfc'):
                 rule = CCGRule.infer_rule(
-                    Ty.tensor(*(child.categorial_type for child in children)),
-                    categorial_type)
+                    Ty.tensor(*(child.biclosed_type for child in children)),
+                    biclosed_type)
             else:
                 rule = tree.op_string.upper()
         return CCGTree(
                 text=tree.word,
                 rule=rule,
-                categorial_type=categorial_type,
+                biclosed_type=biclosed_type,
                 children=children)

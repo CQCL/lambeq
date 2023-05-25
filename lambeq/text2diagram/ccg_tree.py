@@ -28,7 +28,7 @@ from discopy.grammar.categorial import (
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (categorial2str, replace_cat_result,
-                                           str2categorial)
+                                           str2biclosed)
 from lambeq.text2diagram.ccg_types import CCGAtomicType
 
 # Types
@@ -130,7 +130,7 @@ class CCGTree:
                  text: str | None = None,
                  *,
                  rule: CCGRule | str = CCGRule.UNKNOWN,
-                 categorial_type: Ty,
+                 biclosed_type: Ty,
                  children: Iterable[CCGTree] | None = None) -> None:
         """Initialise a CCG tree.
 
@@ -141,7 +141,7 @@ class CCGTree:
             :py:obj:`None`, it is inferred from its children.
         rule : CCGRule, default: CCGRule.UNKNOWN
             The final :py:class:`.CCGRule` used in the derivation.
-        categorial_type : discopy.grammar.categorial.Ty
+        biclosed_type : discopy.grammar.categorial.Ty
             The type associated to the derived phrase.
         children : list of CCGTree, optional
             A list of JSON subtrees. The types of these subtrees can be
@@ -151,7 +151,7 @@ class CCGTree:
         """
         self._text = text
         self.rule = CCGRule(rule)
-        self.categorial_type = categorial_type
+        self.biclosed_type = biclosed_type
         self.children = list(children) if children is not None else []
 
         n_children = len(self.children)
@@ -237,7 +237,7 @@ class CCGTree:
         data_dict = json.loads(data) if isinstance(data, str) else data
         return cls(text=data_dict.get('text'),
                    rule=data_dict.get('rule', CCGRule.UNKNOWN),
-                   categorial_type=str2categorial(data_dict['type']),
+                   biclosed_type=str2biclosed(data_dict['type']),
                    children=[cls.from_json(child)
                              for child in data_dict.get('children', [])])
 
@@ -257,8 +257,8 @@ class CCGTree:
         """
         new_tree = deepcopy(self)
         while (new_tree.rule == CCGRule.UNARY
-               and (new_tree.categorial_type
-                    == new_tree.children[0].categorial_type)):
+               and (new_tree.biclosed_type
+                    == new_tree.children[0].biclosed_type)):
             new_tree = new_tree.children[0]
         new_tree.children = [child.without_trivial_unary_rules() for child
                              in new_tree.children]
@@ -269,7 +269,7 @@ class CCGTree:
         if self is None:  # Allows doing CCGTree.to_json(X) for optional X
             return None  # type: ignore[unreachable]
 
-        data: _JSONDictT = {'type': categorial2str(self.categorial_type)}
+        data: _JSONDictT = {'type': categorial2str(self.biclosed_type)}
         if self.rule != CCGRule.UNKNOWN:
             data['rule'] = self.rule.value
         if self.text != ' '.join(child.text for child in self.children):
@@ -282,7 +282,7 @@ class CCGTree:
         return (isinstance(other, CCGTree)
                 and self.text == other.text
                 and self.rule == other.rule
-                and self.categorial_type == other.categorial_type
+                and self.biclosed_type == other.biclosed_type
                 and len(self.children) == len(other.children)
                 and all(c1 == c2
                         for c1, c2 in zip(self.children, other.children)))
@@ -295,13 +295,13 @@ class CCGTree:
                     use_slashes: bool,
                     _prefix: str = '') -> str:  # pragma: no cover
         """Create a vertical string representation of the CCG tree."""
-        output_type = categorial2str(self.categorial_type, not use_slashes)
+        output_type = categorial2str(self.biclosed_type, not use_slashes)
         if self.rule == CCGRule.LEXICAL:
             deriv = f' {output_type} {chr_set["SUCH_THAT"]} {repr(self.text)}'
         else:
             deriv = (f'{self.rule.value}: {output_type} '
                      f'{chr_set["LEFT_ARROW"]} '
-                     + ' + '.join(categorial2str(child.categorial_type,
+                     + ' + '.join(categorial2str(child.biclosed_type,
                                                  not use_slashes)
                                   for child in self.children))
         deriv = f'{_prefix}{deriv}'
@@ -324,7 +324,7 @@ class CCGTree:
                      use_slashes: bool) -> str:  # pragma: no cover
         """Create a standard CCG diagram for the tree with the
         words arranged horizontally."""
-        output_type = categorial2str(self.categorial_type, not use_slashes)
+        output_type = categorial2str(self.biclosed_type, not use_slashes)
         if output_type.startswith('('):
             output_type = output_type[1:-1]
         if self.rule == CCGRule.LEXICAL:
@@ -418,7 +418,7 @@ class CCGTree:
             deriv = self._vert_deriv(chr_set, use_slashes, '')
         return deriv
 
-    def to_categorial_diagram(self, planar: bool = False) -> Diagram:
+    def to_biclosed_diagram(self, planar: bool = False) -> Diagram:
         """Convert tree to a derivation in DisCoPy form.
 
         Parameters
@@ -428,38 +428,38 @@ class CCGTree:
             using cross composition.
 
         """
-        words, grammar = self._to_categorial_diagram(planar)
+        words, grammar = self._to_biclosed_diagram(planar)
         return words >> grammar
 
-    def _to_categorial_diagram(
+    def _to_biclosed_diagram(
             self,
             planar: bool = False,
             resolved_output: Ty | None = None) -> tuple[Diagram, Diagram]:
-        categorial_type = resolved_output or self.categorial_type
+        biclosed_type = resolved_output or self.biclosed_type
 
         if self.rule == CCGRule.LEXICAL:
-            word = Box(self.text, Ty(), categorial_type)
-            return word, Id(categorial_type)
+            word = Box(self.text, Ty(), biclosed_type)
+            return word, Id(biclosed_type)
 
         if (self.rule == CCGRule.UNARY
                 and not planar
-                and (categorial_type.is_over
-                     and self.children[0].categorial_type.is_under
-                     or categorial_type.is_under
-                     and self.children[0].categorial_type.is_over)):
-            this_layer = UnarySwap(categorial_type)
+                and (biclosed_type.is_over
+                     and self.children[0].biclosed_type.is_under
+                     or biclosed_type.is_under
+                     and self.children[0].biclosed_type.is_over)):
+            this_layer = UnarySwap(biclosed_type)
         elif (self.rule == CCGRule.FORWARD_COMPOSITION
                 and self.children[0].rule == CCGRule.FORWARD_TYPE_RAISING):
-            left = categorial_type.left
-            right = categorial_type.right
-            mid = (self.children[0].categorial_type.right.left) >> left
+            left = biclosed_type.left
+            right = biclosed_type.right
+            mid = (self.children[0].biclosed_type.right.left) >> left
             this_layer = self.rule((left << mid) @ (mid << right),
-                                   categorial_type)
+                                   biclosed_type)
         else:
-            child_types = [child.categorial_type for child in self.children]
-            this_layer = self.rule(Ty.tensor(*child_types), categorial_type)
+            child_types = [child.biclosed_type for child in self.children]
+            this_layer = self.rule(Ty.tensor(*child_types), biclosed_type)
 
-        children = [child._to_categorial_diagram(planar,
+        children = [child._to_biclosed_diagram(planar,
                                                  this_layer.dom[i:i+1])
                     for i, child in enumerate(self.children)]
 
@@ -587,4 +587,4 @@ class CCGTree:
         to_pregroup_diagram = Functor(ob=ob_func,
                                       ar=ar_func,
                                       cod=pregroup.Category())
-        return to_pregroup_diagram(self.to_categorial_diagram(planar=planar))
+        return to_pregroup_diagram(self.to_biclosed_diagram(planar=planar))

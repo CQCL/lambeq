@@ -137,12 +137,12 @@ def test_root_filtering(bobcat_parser):
 
     sentence1 = 'do'
     sentence2 = 'I do'
-    assert bobcat_parser.sentence2tree(sentence1).categorial_type == N >> S
-    assert bobcat_parser.sentence2tree(sentence2).categorial_type == S
+    assert bobcat_parser.sentence2tree(sentence1).biclosed_type == N >> S
+    assert bobcat_parser.sentence2tree(sentence2).biclosed_type == S
 
     bobcat_parser.parser.set_root_cats(['NP'])
     try:
-        assert bobcat_parser.sentence2tree(sentence1).categorial_type == N
-        assert bobcat_parser.sentence2tree(sentence2).categorial_type == N
+        assert bobcat_parser.sentence2tree(sentence1).biclosed_type == N
+        assert bobcat_parser.sentence2tree(sentence2).biclosed_type == N
     finally:
         bobcat_parser.parser.set_root_cats(None)

@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 __all__ = ['CCGAtomicType', 'CCGParseError', 'replace_cat_result',
-           'str2categorial', 'categorial2str']
+           'str2biclosed', 'categorial2str']
 
 from collections.abc import Callable
 from enum import Enum
@@ -60,7 +60,7 @@ CCGAtomicType.__doc__ = (
         """Standard CCG atomic types mapping to their categorial type.""")
 
 
-def str2categorial(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
+def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
     r"""Parse a CCG category string into a categorial type.
 
     The string should follow the following grammar:
@@ -112,13 +112,13 @@ def str2categorial(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
     clean_cat = cat[:-len(CONJ_TAG)] if is_conj else cat
 
     try:
-        categorial_type, end = _compound_str2categorial(clean_cat, str2type, 0)
+        biclosed_type, end = _compound_str2biclosed(clean_cat, str2type, 0)
     except CCGParseError as e:
         # reraise with original cat string
         raise CCGParseError(cat, e.message) from e
 
     if is_conj:
-        categorial_type = categorial_type >> categorial_type
+        biclosed_type = biclosed_type >> biclosed_type
 
     extra = clean_cat[end:]
     if extra:
@@ -126,15 +126,15 @@ def str2categorial(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
             cat,
             f'extra text from index {end} - {repr(extra)}'
         )
-    return categorial_type
+    return biclosed_type
 
 
-def categorial2str(categorial_type: Ty, pretty: bool = False) -> str:
+def categorial2str(biclosed_type: Ty, pretty: bool = False) -> str:
     """Prepare a string representation of a categorial type.
 
     Parameters
     ----------
-    categorial_type: :py:class:`discopy.grammar.categorial.Ty`
+    biclosed_type: :py:class:`discopy.grammar.categorial.Ty`
         The categorial type to be represented by a string.
     pretty: bool, default: False
         Whether to use arrows instead of slashes in the type.
@@ -145,33 +145,33 @@ def categorial2str(categorial_type: Ty, pretty: bool = False) -> str:
         The string representation of the type.
 
     """
-    if categorial_type.is_over:
+    if biclosed_type.is_over:
         template = '({0}↢{1})' if pretty else '({0}/{1})'
-    elif categorial_type.is_under:
+    elif biclosed_type.is_under:
         template = '({0}↣{1})' if pretty else r'({1}\{0})'
     else:
-        return str(categorial_type)
-    return template.format(categorial2str(categorial_type.left, pretty),
-                           categorial2str(categorial_type.right, pretty))
+        return str(biclosed_type)
+    return template.format(categorial2str(biclosed_type.left, pretty),
+                           categorial2str(biclosed_type.right, pretty))
 
 
-def _compound_str2categorial(cat: str,
+def _compound_str2biclosed(cat: str,
                              str2type: Callable[[str], Ty],
                              start: int) -> tuple[Ty, int]:
-    categorial_type, end = _clean_str2categorial(cat, str2type, start)
+    biclosed_type, end = _clean_str2biclosed(cat, str2type, start)
     try:
         op = cat[end]
     except IndexError:
         pass
     else:
         if op in r'\/':
-            right, end = _clean_str2categorial(cat, str2type, end + 1)
-            categorial_type = (categorial_type << right if op == '/' else
-                               right >> categorial_type)
-    return categorial_type, end
+            right, end = _clean_str2biclosed(cat, str2type, end + 1)
+            biclosed_type = (biclosed_type << right if op == '/' else
+                               right >> biclosed_type)
+    return biclosed_type, end
 
 
-def _clean_str2categorial(cat: str,
+def _clean_str2biclosed(cat: str,
                           str2type: Callable[[str], Ty],
                           start: int) -> tuple[Ty, int]:
     if not cat[start:]:
@@ -188,16 +188,16 @@ def _clean_str2categorial(cat: str,
             if cat[end] == '(':
                 raise CCGParseError(cat, f'unexpected "(" at index {end}')
             end += 1
-        categorial_type = str2type(cat[start:end])
+        biclosed_type = str2type(cat[start:end])
     else:
-        categorial_type, end = _compound_str2categorial(cat, str2type, start+1)
+        biclosed_type, end = _compound_str2biclosed(cat, str2type, start+1)
         if end >= len(cat):
             raise CCGParseError(
                     cat, f'input ended with unmatched "(" at index {start}')
         assert cat[end] == ')'
         end += 1
 
-    return categorial_type, end
+    return biclosed_type, end
 
 
 def replace_cat_result(cat: Ty,
