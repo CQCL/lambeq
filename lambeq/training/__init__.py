@@ -24,6 +24,7 @@ __all__ = ['Checkpoint',
 
            'Optimizer',
            'SPSAOptimizer',
+           'RotosolveOptimizer',
 
            'Trainer',
            'PytorchTrainer',
@@ -47,6 +48,7 @@ from lambeq.training.tket_model import TketModel
 
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.spsa_optimizer import SPSAOptimizer
+from lambeq.training.rotosolve_optimizer import RotosolveOptimizer
 
 from lambeq.training.trainer import Trainer
 from lambeq.training.pytorch_trainer import PytorchTrainer
