@@ -28,9 +28,18 @@ from itertools import cycle
 
 from discopy.grammar.pregroup import Box, Category, Diagram, Ty
 from discopy.quantum import (
-    Bra, Circuit, Discard, H, Id, Ket, qubit, Rx, Ry, Rz)
-from discopy.quantum import (
-    IQPansatz as IQP, Sim14ansatz as Sim14, Sim15ansatz as Sim15)
+    Bra,
+    Circuit,
+    Discard,
+    H,
+    Id,
+    IQPansatz as IQP,
+    Ket,
+    qubit,
+    Rx, Ry, Rz,
+    Sim14ansatz as Sim14,
+    Sim15ansatz as Sim15
+)
 from discopy.quantum.circuit import Functor
 import numpy as np
 from sympy import Symbol, symbols
@@ -86,8 +95,7 @@ class CircuitAnsatz(BaseAnsatz):
         self.postselection_basis = postselection_basis
         self.single_qubit_rotations = single_qubit_rotations or []
 
-        self.functor = Functor(
-            ob=ob_map, ar=self._ar, dom=Category())
+        self.functor = Functor(ob=ob_map, ar=self._ar, dom=Category())
 
     def __call__(self, diagram: Diagram) -> Circuit:
         """Convert a DisCoPy diagram into a DisCoPy circuit."""

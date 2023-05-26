@@ -291,9 +291,10 @@ def _remove_detached_cups(diagram: Diagram) -> Diagram:
                         and morphisms[j].start > morphisms[m_idx].start):
                     mor_offsets[j] -= 2
 
-    return Diagram.decode(
-        dom=diagram.dom, cod=diagram.cod,
-        boxes=new_words+new_morphisms, offsets=wrd_offsets+mor_offsets)
+    return Diagram.decode(dom=diagram.dom,
+                          cod=diagram.cod,
+                          boxes=new_words+new_morphisms,
+                          offsets=wrd_offsets+mor_offsets)
 
 
 def remove_swaps(diagram: Diagram) -> Diagram:

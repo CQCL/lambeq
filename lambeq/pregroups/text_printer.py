@@ -29,9 +29,6 @@ from discopy.grammar.pregroup import Cup, Diagram, Word
 from lambeq.pregroups.utils import is_pregroup_diagram
 
 
-NOT_PREGROUP_ERROR = ValueError('The input is not a pregroup diagram.')
-
-
 def diagram2str(diagram: Diagram,
                 word_spacing: int = 2,
                 discopy_types: bool = False,
@@ -140,7 +137,7 @@ class TextDiagramPrinter:
         """
 
         if not (isinstance(diagram, Diagram) and is_pregroup_diagram(diagram)):
-            raise NOT_PREGROUP_ERROR
+            raise ValueError('The input is not a pregroup diagram.')
 
         # create headers
         word_sep = ' ' * self.word_spacing

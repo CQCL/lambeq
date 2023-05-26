@@ -47,10 +47,9 @@ class TensorAnsatz(BaseAnsatz):
 
         """
         self.ob_map = ob_map
-        self.functor = pregroup.Functor(
-            ob=ob_map,
-            ar=self._ar,
-            cod=Category(Dim, tensor.Diagram))
+        self.functor = pregroup.Functor(ob=ob_map,
+                                        ar=self._ar,
+                                        cod=Category(Dim, tensor.Diagram))
 
     def _ar(self, box: pregroup.Box) -> tensor.Diagram:
         name = self._summarise_box(box)
@@ -146,8 +145,8 @@ class MPSAnsatz(TensorAnsatz):
 
         self.bond_dim = bond_dim
         self.max_order = max_order
-        self.split_functor = pregroup.Functor(
-            ob=lambda ob: ob, ar=self._split_ar)
+        self.split_functor = pregroup.Functor(ob=lambda ob: ob,
+                                              ar=self._split_ar)
 
     def _split_ar(self, ar: Word) -> pregroup.Diagram:
         bond = self.BOND_TYPE
@@ -194,8 +193,8 @@ class SpiderAnsatz(TensorAnsatz):
         super().__init__(ob_map)
 
         self.max_order = max_order
-        self.split_functor = pregroup.Functor(
-            ob=lambda ob: ob, ar=self._split_ar)
+        self.split_functor = pregroup.Functor(ob=lambda ob: ob,
+                                              ar=self._split_ar)
 
     def _split_ar(self, ar: Word) -> pregroup.Diagram:
         if len(ar.cod) <= self.max_order:

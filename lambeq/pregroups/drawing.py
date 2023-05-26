@@ -23,13 +23,11 @@ from discopy.drawing.legacy import MatBackend, TikzBackend
 from discopy.grammar.pregroup import Cup, Diagram, Swap, Word
 from discopy.utils import assert_isinstance
 
-from lambeq.pregroups.text_printer import NOT_PREGROUP_ERROR
 from lambeq.pregroups.utils import is_pregroup_diagram
 
 
 def draw(diagram, **params):
-    """
-    Draws a pregroup diagram of shape ``word @ ... @ word >> cups``.
+    """Draw a pregroup diagram of shape ``word @ ... @ word >> cups``.
 
     Parameters
     ----------
@@ -65,7 +63,7 @@ def draw(diagram, **params):
     """
     assert_isinstance(diagram, Diagram)
     if not is_pregroup_diagram(diagram):
-        raise ValueError(NOT_PREGROUP_ERROR)
+        raise ValueError('The input is not a pregroup diagram.')
 
     n_words = len([box for box in diagram.boxes if isinstance(box, Word)])
     words, layers = diagram[:n_words], []

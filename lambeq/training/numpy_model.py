@@ -30,7 +30,8 @@ from collections.abc import Callable, Iterable
 import pickle
 from typing import Any, TYPE_CHECKING
 
-from discopy.tensor import backend, Diagram, get_backend
+import discopy
+from discopy.tensor import Diagram
 import numpy
 from numpy.typing import ArrayLike
 from sympy import lambdify
@@ -79,12 +80,12 @@ class NumpyModel(QuantumModel):
             return self.lambdas[diagram]
 
         def diagram_output(x: Iterable[ArrayLike]) -> ArrayLike:
-            with backend('jax'), tn.DefaultBackend('jax'):
+            with discopy.tensor.backend('jax') as backend, tn.DefaultBackend('jax'):
                 sub_circuit = self._fast_subs([diagram], x)[0]
                 result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
                 # square amplitudes to get probabilties for pure circuits
                 if not sub_circuit.is_mixed:
-                    result = get_backend().abs(result) ** 2
+                    result = backend.abs(result) ** 2
                 return self._normalise_vector(result)
 
         self.lambdas[diagram] = jit(diagram_output)
@@ -151,15 +152,17 @@ class NumpyModel(QuantumModel):
             from jax import numpy as jnp
 
             lambdified_diagrams = [self._get_lambda(d) for d in diagrams]
-            if hasattr(self.weights, 'filled'):
+            try:
                 self.weights = self.weights.filled()
+            except AttributeError:
+                pass
             res: jnp.ndarray = jnp.array([diag_f(self.weights)
                                           for diag_f in lambdified_diagrams])
 
             return res
 
         diagrams = self._fast_subs(diagrams, self.weights)
-        with backend('numpy'):
+        with discopy.tensor.backend('numpy'):
             results = []
             for d in diagrams:
                 result = tn.contractors.auto(*d.to_tn()).tensor

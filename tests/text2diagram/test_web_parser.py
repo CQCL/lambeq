@@ -3,7 +3,7 @@ from shutil import ExecError
 import pytest
 from unittest.mock import patch
 
-from discopy.grammar.pregroup import Word, Cup, Diagram, Ty
+from discopy.grammar.pregroup import Cup, Diagram, Ty, Word
 
 from lambeq import AtomicType, VerbosityLevel, WebParser, WebParseError
 

@@ -57,11 +57,11 @@ class _CCGAtomicTypeMeta(Ty, Enum):
 CCGAtomicType = _CCGAtomicTypeMeta('CCGAtomicType',  # type: ignore[call-arg]
                                    [*AtomicType.__members__])
 CCGAtomicType.__doc__ = (
-        """Standard CCG atomic types mapping to their categorial type.""")
+        """Standard CCG atomic types mapping to their biclosed type.""")
 
 
 def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
-    r"""Parse a CCG category string into a categorial type.
+    r"""Parse a CCG category string into a biclosed type.
 
     The string should follow the following grammar:
 
@@ -79,8 +79,8 @@ def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
         The string to be parsed.
     str2type: callable, default: discopy.biclosed.Ty
         A function that parses an atomic category into a biclosed type.
-        The default uses :py:class:`discopy.biclosed.Ty` to
-        produce a type with the same name as the atomic category.
+        The default uses :py:class:`discopy.biclosed.Ty` to produce a
+        type with the same name as the atomic category.
 
     Returns
     -------

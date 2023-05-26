@@ -181,9 +181,10 @@ class TreeReader(Reader):
             for i, layer in enumerate(foliation):
                 new_layer = diagram.ty_factory()
                 for j, box_or_typ in enumerate(layer.boxes_or_types):
-                    new_layer = new_layer @ (
+                    new_layer @= (
                         Box(f'layer_{i}', box_or_typ.dom, box_or_typ.cod)
-                        if i > 0 and j % 2 else box_or_typ)
+                        if i > 0 and j % 2 else box_or_typ
+                    )
                 diagram >>= new_layer
         return diagram
 

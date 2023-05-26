@@ -1,7 +1,7 @@
 import pytest
 
-from discopy.tensor import Dim
 from discopy.grammar.pregroup import Diagram, Id, Ty, Word
+from discopy.tensor import Dim
 import numpy as np
 from sympy.core.compatibility import default_sort_key
 import tensornetwork as tn

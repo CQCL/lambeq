@@ -79,8 +79,8 @@ __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
 
-from discopy.grammar.pregroup import (
-    Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty, Word)
+from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Functor, Id,
+                                      Spider, Swap, Ty, Word)
 
 from lambeq.core.types import AtomicType
 
@@ -133,7 +133,7 @@ class SimpleRewriteRule(RewriteRule):
     into a set template.
     """
 
-    PLACEHOLDER_WORD = str()
+    PLACEHOLDER_WORD = '<PLACEHOLDER>'
 
     def __init__(self,
                  cod: Ty,

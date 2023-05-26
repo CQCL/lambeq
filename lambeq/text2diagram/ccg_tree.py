@@ -23,8 +23,8 @@ from typing import Any, Dict
 from typing import overload
 
 from discopy.grammar import pregroup
-from discopy.grammar.categorial import (
-    Box, Diagram, Functor, Id, Ty, unaryBoxConstructor)
+from discopy.grammar.categorial import (Box, Diagram, Functor, Id, Ty,
+                                        unaryBoxConstructor)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (biclosed2str, replace_cat_result,
@@ -141,7 +141,7 @@ class CCGTree:
             :py:obj:`None`, it is inferred from its children.
         rule : CCGRule, default: CCGRule.UNKNOWN
             The final :py:class:`.CCGRule` used in the derivation.
-        biclosed_type : discopy.grammar.categorial.Ty
+        biclosed_type : discopy.biclosed.Ty
             The type associated to the derived phrase.
         children : list of CCGTree, optional
             A list of JSON subtrees. The types of these subtrees can be
@@ -222,7 +222,7 @@ class CCGTree:
                 :py:obj:`None`, it is inferred from its children.
             `rule` : :py:class:`.CCGRule`
                 The final :py:class:`.CCGRule` used in the derivation.
-            `type` : :py:class:`discopy.grammar.categorial.Ty`
+            `type` : :py:class:`discopy.biclosed.Ty`
                 The type associated to the derived phrase.
             `children` : :py:class:`list` or :py:class:`None`
                 A list of JSON subtrees. The types of these subtrees can
@@ -302,7 +302,7 @@ class CCGTree:
             deriv = (f'{self.rule.value}: {output_type} '
                      f'{chr_set["LEFT_ARROW"]} '
                      + ' + '.join(biclosed2str(child.biclosed_type,
-                                                 not use_slashes)
+                                               not use_slashes)
                                   for child in self.children))
         deriv = f'{_prefix}{deriv}'
 
@@ -443,10 +443,10 @@ class CCGTree:
 
         if (self.rule == CCGRule.UNARY
                 and not planar
-                and (biclosed_type.is_over
-                     and self.children[0].biclosed_type.is_under
-                     or biclosed_type.is_under
-                     and self.children[0].biclosed_type.is_over)):
+                and ((biclosed_type.is_over
+                      and self.children[0].biclosed_type.is_under)
+                     or (biclosed_type.is_under
+                         and self.children[0].biclosed_type.is_over))):
             this_layer = UnarySwap(biclosed_type)
         elif (self.rule == CCGRule.FORWARD_COMPOSITION
                 and self.children[0].rule == CCGRule.FORWARD_TYPE_RAISING):
@@ -507,8 +507,9 @@ class CCGTree:
             #           punctuation -> empty diagram
             #              word box -> Word
 
-            def split(cat: Ty, base: Ty) -> tuple[
-                    pregroup.Ty, pregroup.Ty, pregroup.Ty]:
+            def split(cat: Ty, base: Ty) -> tuple[pregroup.Ty,
+                                                  pregroup.Ty,
+                                                  pregroup.Ty]:
                 left = right = pregroup.Ty()
                 while cat != base:
                     if cat.is_over:

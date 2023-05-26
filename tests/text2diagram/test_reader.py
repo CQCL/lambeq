@@ -1,7 +1,7 @@
 import pytest
 from requests.exceptions import MissingSchema
 
-from discopy.grammar.pregroup import Word, Box, Diagram, Id, Spider
+from discopy.grammar.pregroup import Box, Diagram, Id, Spider, Word
 from discopy.quantum.circuit import Circuit, Ty as QTy, qubit
 from discopy.quantum.gates import Ket, Bra, CX
 
@@ -53,9 +53,11 @@ def test_spiders_reader_circuit(sentence, words):
     circuit = ansatz(spiders_reader.sentence2diagram(sentence))
 
     expected_circuit = Circuit.decode(
-        dom=QTy(), cod=qubit,
+        dom=QTy(),
+        cod=qubit,
         boxes=[Ket(0), Ket(0), Ket(0), Ket(0), CX, Bra(0), CX, Bra(0), CX, Bra(0)],
-        offsets=[0, 1, 2, 3, 0, 1, 1, 2, 0, 1])
+        offsets=[0, 1, 2, 3, 0, 1, 1, 2, 0, 1]
+    )
 
     assert circuit == expected_circuit
 

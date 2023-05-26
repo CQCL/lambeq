@@ -305,7 +305,7 @@ class BobcatParser(CCGParser):
 
     @staticmethod
     def _to_biclosed(cat: Category) -> Ty:
-        """Transform a Bobcat category into a categorial type."""
+        """Transform a Bobcat category into a biclosed type."""
 
         if cat.atomic:
             if cat.atom.is_punct:

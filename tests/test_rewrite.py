@@ -1,7 +1,7 @@
 import pytest
 
-from discopy.grammar.pregroup import (
-    Word, Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty)
+from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Id, Spider, Swap,
+                                      Ty, Word)
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, SimpleRewriteRule)
@@ -123,9 +123,8 @@ def test_rel_pronoun():
 
     rewriter = Rewriter(['subject_rel_pronoun', 'object_rel_pronoun'])
 
-    diagram_subj = (
-        Id().tensor(cows, that_subj, eat, grass)
-        >> Cup(N, N.r) @ N @ Diagram.cups(S.l @ N, N.r @ S) @ Cup(N.l, N))
+    diagram_subj = Id().tensor(cows, that_subj, eat, grass)
+    diagram_subj >>= Cup(N, N.r) @ N @ Diagram.cups(S.l @ N, N.r @ S) @ Cup(N.l, N)
 
     expected_diagram_subj = Diagram.decode(
             dom=Ty(), cod=N,
