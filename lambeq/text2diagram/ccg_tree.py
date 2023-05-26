@@ -460,7 +460,7 @@ class CCGTree:
             this_layer = self.rule(Ty.tensor(*child_types), biclosed_type)
 
         children = [child._to_biclosed_diagram(planar,
-                                                 this_layer.dom[i:i+1])
+                                               this_layer.dom[i:i+1])
                     for i, child in enumerate(self.children)]
 
         if planar and self.rule == CCGRule.BACKWARD_CROSSED_COMPOSITION:

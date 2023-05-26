@@ -156,8 +156,8 @@ def categorial2str(biclosed_type: Ty, pretty: bool = False) -> str:
 
 
 def _compound_str2biclosed(cat: str,
-                             str2type: Callable[[str], Ty],
-                             start: int) -> tuple[Ty, int]:
+                           str2type: Callable[[str], Ty],
+                           start: int) -> tuple[Ty, int]:
     biclosed_type, end = _clean_str2biclosed(cat, str2type, start)
     try:
         op = cat[end]
@@ -167,13 +167,13 @@ def _compound_str2biclosed(cat: str,
         if op in r'\/':
             right, end = _clean_str2biclosed(cat, str2type, end + 1)
             biclosed_type = (biclosed_type << right if op == '/' else
-                               right >> biclosed_type)
+                             right >> biclosed_type)
     return biclosed_type, end
 
 
 def _clean_str2biclosed(cat: str,
-                          str2type: Callable[[str], Ty],
-                          start: int) -> tuple[Ty, int]:
+                        str2type: Callable[[str], Ty],
+                        start: int) -> tuple[Ty, int]:
     if not cat[start:]:
         raise CCGParseError(cat, 'unexpected end of input')
     if cat[start] != '(':
