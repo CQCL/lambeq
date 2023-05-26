@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 __all__ = ['CCGAtomicType', 'CCGParseError', 'replace_cat_result',
-           'str2biclosed', 'categorial2str']
+           'str2biclosed', 'biclosed2str']
 
 from collections.abc import Callable
 from enum import Enum
@@ -77,15 +77,15 @@ def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
     ----------
     cat : str
         The string to be parsed.
-    str2type: callable, default: discopy.grammar.categorial.Ty
-        A function that parses an atomic category into a categorial type.
-        The default uses :py:class:`discopy.grammar.categorial.Ty` to
+    str2type: callable, default: discopy.biclosed.Ty
+        A function that parses an atomic category into a biclosed type.
+        The default uses :py:class:`discopy.biclosed.Ty` to
         produce a type with the same name as the atomic category.
 
     Returns
     -------
-    discopy.grammar.categorial.Ty
-        The parsed category as a categorial type.
+    discopy.biclosed.Ty
+        The parsed category as a biclosed type.
 
     Raises
     ------
@@ -129,13 +129,13 @@ def str2biclosed(cat: str, str2type: Callable[[str], Ty] = Ty) -> Ty:
     return biclosed_type
 
 
-def categorial2str(biclosed_type: Ty, pretty: bool = False) -> str:
-    """Prepare a string representation of a categorial type.
+def biclosed2str(biclosed_type: Ty, pretty: bool = False) -> str:
+    """Prepare a string representation of a biclosed type.
 
     Parameters
     ----------
-    biclosed_type: :py:class:`discopy.grammar.categorial.Ty`
-        The categorial type to be represented by a string.
+    biclosed_type: :py:class:`discopy.biclosed.Ty`
+        The biclosed type to be represented by a string.
     pretty: bool, default: False
         Whether to use arrows instead of slashes in the type.
 
@@ -151,8 +151,8 @@ def categorial2str(biclosed_type: Ty, pretty: bool = False) -> str:
         template = '({0}↣{1})' if pretty else r'({1}\{0})'
     else:
         return str(biclosed_type)
-    return template.format(categorial2str(biclosed_type.left, pretty),
-                           categorial2str(biclosed_type.right, pretty))
+    return template.format(biclosed2str(biclosed_type.left, pretty),
+                           biclosed2str(biclosed_type.right, pretty))
 
 
 def _compound_str2biclosed(cat: str,
@@ -213,11 +213,11 @@ def replace_cat_result(cat: Ty,
 
     Parameters
     ----------
-    cat : discopy.grammar.categorial.Ty
+    cat : discopy.biclosed.Ty
         The category whose result is replaced.
-    original : discopy.grammar.categorial.Ty
+    original : discopy.biclosed.Ty
         The category that should be replaced.
-    replacement : discopy.grammar.categorial.Ty
+    replacement : discopy.biclosed.Ty
         The replacement for the new category.
     direction : str
         Used to check the operations in the category. Consists of either
@@ -228,9 +228,9 @@ def replace_cat_result(cat: Ty,
 
     Returns
     -------
-    discopy.grammar.categorial.Ty
+    discopy.biclosed.Ty
         The new category.
-    discopy.grammar.categorial.Ty
+    discopy.biclosed.Ty
         The replaced result category.
 
     Notes

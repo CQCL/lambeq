@@ -422,7 +422,7 @@ class DepCCGParser(CCGParser):
 
     @staticmethod
     def _to_biclosed(cat: Category) -> Ty:
-        """Transform a depccg category into a categorial type."""
+        """Transform a depccg category into a biclosed type."""
 
         if not cat.is_functor:
             if cat.base in ('N', 'NP'):
@@ -454,9 +454,8 @@ class DepCCGParser(CCGParser):
         else:
             children = [*map(DepCCGParser._build_ccgtree, tree.children)]
             if tree.op_string == 'tr':
-                rule = (
-                    'BTR' if biclosed_type.left.left == biclosed_type.right
-                    else 'FTR')
+                rule = ('BTR' if biclosed_type.left.left == biclosed_type.right
+                        else 'FTR')
             elif tree.op_symbol == '<un>':
                 rule = 'U'
             elif tree.op_string in ('gbx', 'gfc'):

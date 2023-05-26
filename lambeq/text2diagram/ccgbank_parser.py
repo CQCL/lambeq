@@ -394,8 +394,8 @@ class CCGBankParser(CCGParser):
         ccg_str = tree_match['ccg_str']
         if ccg_str == r'((S[b]\NP)/NP)/':  # fix mistake in CCGBank
             ccg_str = r'(S[b]\NP)/NP'
-        biclosed_type = str2biclosed(
-            ccg_str, str2type=CCGBankParser._parse_atomic_type)
+        biclosed_type = str2biclosed(ccg_str,
+                                     str2type=CCGBankParser._parse_atomic_type)
         pos = tree_match.end()
         if tree_match['is_leaf']:
             word = tree_match['word']

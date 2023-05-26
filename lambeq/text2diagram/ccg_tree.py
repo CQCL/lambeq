@@ -27,7 +27,7 @@ from discopy.grammar.categorial import (
     Box, Diagram, Functor, Id, Ty, unaryBoxConstructor)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
-from lambeq.text2diagram.ccg_types import (categorial2str, replace_cat_result,
+from lambeq.text2diagram.ccg_types import (biclosed2str, replace_cat_result,
                                            str2biclosed)
 from lambeq.text2diagram.ccg_types import CCGAtomicType
 
@@ -269,7 +269,7 @@ class CCGTree:
         if self is None:  # Allows doing CCGTree.to_json(X) for optional X
             return None  # type: ignore[unreachable]
 
-        data: _JSONDictT = {'type': categorial2str(self.biclosed_type)}
+        data: _JSONDictT = {'type': biclosed2str(self.biclosed_type)}
         if self.rule != CCGRule.UNKNOWN:
             data['rule'] = self.rule.value
         if self.text != ' '.join(child.text for child in self.children):
@@ -295,13 +295,13 @@ class CCGTree:
                     use_slashes: bool,
                     _prefix: str = '') -> str:  # pragma: no cover
         """Create a vertical string representation of the CCG tree."""
-        output_type = categorial2str(self.biclosed_type, not use_slashes)
+        output_type = biclosed2str(self.biclosed_type, not use_slashes)
         if self.rule == CCGRule.LEXICAL:
             deriv = f' {output_type} {chr_set["SUCH_THAT"]} {repr(self.text)}'
         else:
             deriv = (f'{self.rule.value}: {output_type} '
                      f'{chr_set["LEFT_ARROW"]} '
-                     + ' + '.join(categorial2str(child.biclosed_type,
+                     + ' + '.join(biclosed2str(child.biclosed_type,
                                                  not use_slashes)
                                   for child in self.children))
         deriv = f'{_prefix}{deriv}'
@@ -324,7 +324,7 @@ class CCGTree:
                      use_slashes: bool) -> str:  # pragma: no cover
         """Create a standard CCG diagram for the tree with the
         words arranged horizontally."""
-        output_type = categorial2str(self.biclosed_type, not use_slashes)
+        output_type = biclosed2str(self.biclosed_type, not use_slashes)
         if output_type.startswith('('):
             output_type = output_type[1:-1]
         if self.rule == CCGRule.LEXICAL:
