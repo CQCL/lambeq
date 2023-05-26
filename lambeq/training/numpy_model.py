@@ -80,7 +80,8 @@ class NumpyModel(QuantumModel):
             return self.lambdas[diagram]
 
         def diagram_output(x: Iterable[ArrayLike]) -> ArrayLike:
-            with discopy.tensor.backend('jax') as backend, tn.DefaultBackend('jax'):
+            with discopy.tensor.backend('jax') as backend, \
+                    tn.DefaultBackend('jax'):  # noqa: N400
                 sub_circuit = self._fast_subs([diagram], x)[0]
                 result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
                 # square amplitudes to get probabilties for pure circuits
