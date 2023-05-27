@@ -393,3 +393,38 @@ class Rewriter:
 
     def _ob(self, ob: Ty) -> Ty:
         return ob
+
+class UnknownWordsRewriteRule(RewriteRule):
+    """A rewrite rule for unknown words.
+
+    This rule matches the word in the given list of words of and replaces with UNK and 
+    when passed a diagram, replaces all the boxes containing an unknown word with an UNK 
+    box corresponding to the same pregroup type.
+
+    """
+    def __init__(self, template, words: Container[str] | None = None) -> None:
+        """Instantiate a UnknownWordsRewriteRule.
+
+        Parameters
+        ----------
+        template : :py:class:`discopy.rigid.Diagram`
+            The diagram that a matching box is replaced with.
+        words : container of str, optional
+            A list of words to be rewritten by this rule. If a box does
+            not have one of these words, it will not be rewritten with UNK.
+        """
+        self.template = template
+        self.words = [] if words is None else words
+
+    def matches(self, box: Box) -> bool:
+        if box.name in self.words:
+            return True
+        return False
+
+    def rewrite(self, box: Box) -> Diagram:
+        def replace_placeholder(ar: Box) -> Box:
+            if ar.name in self.words:
+                return Word("UNK", ar.cod, data=ar.data)
+            return ar
+
+        return Functor(ob=lambda ob: ob, ar=replace_placeholder)(self.template)
