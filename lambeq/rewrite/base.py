@@ -317,6 +317,32 @@ class CurryRewriteRule(RewriteRule):
 
         return new_box
 
+# Function for replacing low occuring or replacing the unknown word(s) with <unk> token
+def UNKRewriter(vocab, threshold, status):
+    """
+    parameters :
+        vocab : Container of str
+            This is all the words present in the dataset
+        threshold : int
+            This is the threshold of occurrences 
+        status : bool
+            This is whether you want to have a threshold as UNK or want to have any unseen before word as UNK
+            
+    Returns : Functor
+    """
+    if status:
+        def replace(box):
+            if isinstance(box, Word) and vocab.count(box.name) < threshold:
+                return Word('unk', box.cod, box.dom)
+            return box
+    
+    else:
+        def replace(box):
+            if box.name not in vocab:
+                return Word('unk', box.cod, box.dom)
+            return box
+
+    return Functor(ob=lambda x: x, ar=replace)
 
 class Rewriter:
     """Class that rewrites diagrams.
