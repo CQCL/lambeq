@@ -1,10 +1,10 @@
 import pytest
 
 from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups
+from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups, Ob
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
-                    CurryRewriteRule, SimpleRewriteRule)
+                    CurryRewriteRule, SimpleRewriteRule, UnknownWordsRewriteRule, BobcatParser)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -172,3 +172,28 @@ def test_curry_functor():
 
     rewriter = Rewriter([CurryRewriteRule()])
     assert rewriter(diagram).normal_form() == expected
+
+
+def test_unknown_words_rewrite_rule():
+    sentence = 'I see the unknown'
+    parser = BobcatParser()
+    diagram = parser.sentence2diagram(sentence).normal_form()
+
+    unknown_words = ['unknown']
+    rule = UnknownWordsRewriteRule(
+        template=diagram,
+        unknown_words= unknown_words)
+
+    rewriter = Rewriter([rule])
+    rewritten_diagram = rewriter(diagram)
+
+    expected_diagram = Diagram(dom=Ty(), cod=Ty('s'),
+            boxes=[Word('I', Ty('n')),
+                   Word('see', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+                   Cup(Ty('n'), Ty(Ob('n', z=1))),
+                   Word('the', Ty('n', Ob('n', z=-1))),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')), Word('UNK', Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n'))],
+            offsets=[0, 1, 0, 2, 1, 2, 1])
+
+    assert rewritten_diagram == expected_diagram
