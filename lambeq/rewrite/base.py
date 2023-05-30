@@ -317,6 +317,31 @@ class CurryRewriteRule(RewriteRule):
 
         return new_box
 
+class UNKRewriteRule(RewriteRule):
+    """A rewrite rule for unknown words.
+    This rule matches the word in the given list of words and replaces them with UNK and 
+    when passed a diagram, replaces all the boxes containing an unknown word with an UNK 
+    box corresponding to the same pregroup type.
+    """
+    def __init__(self, words: Container[str] | None = None) -> None:
+        """Instantiate a UnknownWordsRewriteRule.
+        Parameters
+        ----------
+        words : container of str, optional
+            A list of words to be rewritten by this rule. If a box does
+            not have one of these words, it will not be rewritten with UNK.
+        """
+        self.words = if words is None else words
+
+    def matches(self, box: Box) -> bool:
+        if box.name in self.words:
+            return True
+        return False
+
+    def rewrite(self, ar) -> Diagram:
+        if ar.name in self.words:
+            return Word("UNK", ar.cod, data=ar.data)
+        return ar
 
 class Rewriter:
     """Class that rewrites diagrams.
@@ -338,7 +363,8 @@ class Rewriter:
         'coordination': CoordinationRewriteRule(),
         'curry': CurryRewriteRule(),
         'object_rel_pronoun': object_rel_pronoun_rule,
-        'subject_rel_pronoun': subject_rel_pronoun_rule
+        'subject_rel_pronoun': subject_rel_pronoun_rule,
+        'unknown': UNKRewriteRule()
     }
 
     def __init__(self,
