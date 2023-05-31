@@ -441,12 +441,12 @@ def HandleUnknownWords(diagrams: Container[Diagram], training_data: Container[st
     """
     if train_status:
         words = [i for i in training_data if training_data.count(i) < min_freq]
-        rewriter = Rewriter([UnknownWordsRewriteRule(words = words)])
+        rewriter = Rewriter([UNKRewriteRule(words = words)])
         diagrams = [rewriter(i) for i in diagrams]
     
     else:
         words = [i for i in test_data if i not in training_data]
-        rewriter = Rewriter([UnknownWordsRewriteRule(words = words)])
+        rewriter = Rewriter([UNKRewriteRule(words = words)])
         diagrams = [rewriter(i) for i in diagrams]
         
     return diagrams    
