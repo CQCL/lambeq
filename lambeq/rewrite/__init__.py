@@ -13,7 +13,7 @@
 # limitations under the License.
 
 __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'CurryRewriteRule',
-           'SimpleRewriteRule', 'Rewriter']
+           'SimpleRewriteRule', 'Rewriter', 'UNKRewriteRule']
 
 from lambeq.rewrite.base import (RewriteRule, CoordinationRewriteRule,
-                                 CurryRewriteRule, SimpleRewriteRule, Rewriter)
+                                 CurryRewriteRule, SimpleRewriteRule, Rewriter, UNKRewriteRule)
