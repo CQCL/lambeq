@@ -419,3 +419,34 @@ class Rewriter:
 
     def _ob(self, ob: Ty) -> Ty:
         return ob
+
+def HandleUnknownWords(diagrams: Container[Diagram], training_data: Container[str] | None = None, test_data: Container[str] | None = None, train_status: bool | None = True, min_freq: int | None = 0) -> Container[Diagram]:
+    """ Function to automate the process of using the UNKRewriteRule
+    This function takes the list of untokenized diagrams, the training and test (or dev) dataset, the status of whether we are using this for training or test (or dev) 
+     
+     Parameters
+     ----------
+     diagrams : Container[Diagram]
+         This is the list of the parsed sentences that we want to tokenize.
+     training_data : Container(str)
+         This is the list of training data words (sentences split into words). This is used to find the low frequency and never seen before words for the UNKRewriteRule.
+     test_data : Container(str)
+         This is the list of the test data words (sentences split into words). This is used to find the never seen before words for the UNKRewriteRule.
+     train_status : bool
+         This is a flag used to state whether the diagrams are being used for training or evaluation. This states which words to use, whether low frequency or never seen before.
+     min_freq : int
+         This is the frequency threshold for stating what words should be tokenized as UNK. This is used to find the low frequency words for the UNKRewriteRule.
+         
+     Returns : Container[Diagram]
+    """
+    if train_status:
+        words = [i for i in training_data if training_data.count(i) < min_freq]
+        rewriter = Rewriter([UnknownWordsRewriteRule(words = words)])
+        diagrams = [rewriter(i) for i in diagrams]
+    
+    else:
+        words = [i for i in test_data if i not in training_data]
+        rewriter = Rewriter([UnknownWordsRewriteRule(words = words)])
+        diagrams = [rewriter(i) for i in diagrams]
+        
+    return diagrams    
