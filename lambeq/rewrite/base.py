@@ -331,17 +331,15 @@ class UNKRewriteRule(RewriteRule):
             A list of words to be rewritten by this rule. If a box does
             not have one of these words, it will not be rewritten with UNK.
         """
-        self.words = if words is None else words
+        self.words = [] if words is None else words
 
     def matches(self, box: Box) -> bool:
         if box.name in self.words:
             return True
         return False
 
-    def rewrite(self, ar) -> Diagram:
-        if ar.name in self.words:
-            return Word("UNK", ar.cod, data=ar.data)
-        return ar
+    def rewrite(self, box) -> Diagram:
+        return Word("UNK", dom=box.dom, cod=box.cod, data=box.data)
 
 class Rewriter:
     """Class that rewrites diagrams.
