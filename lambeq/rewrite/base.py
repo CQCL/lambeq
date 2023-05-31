@@ -67,6 +67,11 @@ of provided rules can be retrieved using
     subject_rel_pronoun
         The subject relative pronoun rule simplifies subject relative
         pronouns based on [SCC2014a]_ using cups and spiders.
+        
+    unknown
+        The unknown words depending on whether this is for training or evaluation
+        are defined, and when matched in a diagram's box, the box value will be set
+        to UNK.
 
 See `examples/rewrite.ipynb` for illustrative usage.
 
@@ -80,7 +85,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
 
 from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
+from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty, Ob
 from discopy.rigid import caps, spiders
 
 from lambeq.core.types import AtomicType
