@@ -74,7 +74,7 @@ See `examples/rewrite.ipynb` for illustrative usage.
 from __future__ import annotations
 
 __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter']
+           'Rewriter', 'UNKRewriteRule']
 
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
