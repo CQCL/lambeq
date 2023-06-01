@@ -116,7 +116,7 @@ class TreeReader(Reader):
                      word_type: Ty = S,
                      suppress_exceptions: bool = False) -> Diagram | None:
         """Convert a :py:class:`~.CCGTree` into a
-        :py:class:`~discopy.rigid.Diagram` .
+        :py:class:`~discopy.grammar.pregroup.Diagram` .
 
         This produces a tree-shaped diagram based on the output of the
         CCG parser.
@@ -138,7 +138,7 @@ class TreeReader(Reader):
 
         Returns
         -------
-        :py:class:`discopy.rigid.Diagram` or None
+        :py:class:`discopy.grammar.pregroup.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         """
@@ -192,7 +192,7 @@ class TreeReader(Reader):
                          sentence: SentenceType,
                          tokenised: bool = False,
                          suppress_exceptions: bool = False) -> Diagram | None:
-        """Parse a sentence into a :py:class:`~discopy.rigid.Diagram` .
+        """Parse a sentence into a DisCoPy diagram.
 
         This produces a tree-shaped diagram based on the output of the
         CCG parser.
@@ -210,7 +210,7 @@ class TreeReader(Reader):
 
         Returns
         -------
-        :py:class:`discopy.rigid.Diagram` or None
+        :py:class:`discopy.grammar.pregroup.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         """

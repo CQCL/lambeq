@@ -30,7 +30,7 @@ def is_pregroup_diagram(diagram: Diagram) -> bool:
 
     Parameters
     ----------
-    diagram : :py:class:`discopy.rigid.Diagram`
+    diagram : :py:class:`discopy.grammar.pregroup.Diagram`
         The diagram to be checked.
 
     Returns
@@ -56,7 +56,9 @@ def create_pregroup_diagram(
     cod: Ty,
     morphisms: list[tuple[type, int, int]]
 ) -> Diagram:
-    r"""Create a :py:class:`discopy.rigid.Diagram` from cups and swaps.
+    r"""Create a :py:class:`discopy.grammar.pregroup.Diagram`
+
+    The input is cups and swaps.
 
         >>> n, s = Ty('n'), Ty('s')
         >>> words = [Word('she', n), Word('goes', n.r @ s @ n.l),
@@ -69,18 +71,19 @@ def create_pregroup_diagram(
     words : list of :py:class:`discopy.grammar.pregroup.Word`
         A list of :py:class:`~discopy.grammar.pregroup.Word` s
         corresponding to the words of the sentence.
-    cod : :py:class:`discopy.rigid.Ty`
+    cod : :py:class:`discopy.grammar.pregroup.Ty`
         The output type of the diagram.
     morphisms: list of tuple[type, int, int]
         A list of tuples of the form:
             (morphism, start_wire_idx, end_wire_idx).
-        Morphisms can be :py:class:`~discopy.rigid.Cup` s or
-        :py:class:`~discopy.rigid.Swap` s, while the two numbers define
-        the indices of the wires on which the morphism is applied.
+        Morphisms can be :py:class:`~discopy.grammar.pregroup.Cup` s or
+        :py:class:`~discopy.grammar.pregroup.Swap` s, while the two
+        numbers define the indices of the wires on which the morphism is
+        applied.
 
     Returns
     -------
-    :py:class:`discopy.rigid.Diagram`
+    :py:class:`discopy.grammar.pregroup.Diagram`
         The generated pregroup diagram.
 
     Raises
@@ -180,19 +183,19 @@ def _remove_cups(diagram: Diagram) -> Diagram:
 
 
 def remove_cups(diagram: Diagram) -> Diagram:
-    """Remove cups from a :py:class:`discopy.rigid.Diagram`.
+    """Remove cups from a :py:class:`discopy.grammar.pregroup.Diagram`.
 
     Diagrams with less cups become circuits with less post-selection,
     which results in faster QML experiments.
 
     Parameters
     ----------
-    diagram : :py:class:`discopy.rigid.Diagram`
+    diagram : :py:class:`discopy.grammar.pregroup.Diagram`
         The diagram from which cups will be removed.
 
     Returns
     -------
-    :py:class:`discopy.rigid.Diagram`
+    :py:class:`discopy.grammar.pregroup.Diagram`
         Diagram with some cups removed.
 
     """
@@ -314,12 +317,12 @@ def remove_swaps(diagram: Diagram) -> Diagram:
 
     Parameters
     ----------
-    diagram : :py:class:`discopy.rigid.Diagram`
+    diagram : :py:class:`discopy.grammar.pregroup.Diagram`
         The input diagram.
 
     Returns
     -------
-    :py:class:`discopy.rigid.Diagram`
+    :py:class:`discopy.grammar.pregroup.Diagram`
         A copy of the input diagram without swaps.
 
     Raises

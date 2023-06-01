@@ -44,8 +44,8 @@ of provided rules can be retrieved using
     curry
         The curry rewrite rule uses map-state duality to remove adjoint
         types from the boxes. When used in conjunction with
-        :py:meth:`~discopy.rigid.Diagram.normal_form`, this removes cups
-        from the diagram.
+        :py:meth:`~discopy.grammar.pregroup.Diagram.normal_form`, this
+        removes cups from the diagram.
 
     determiner
         The determiner rule removes determiners (such as "the") by
@@ -104,12 +104,12 @@ class RewriteRule(ABC):
 
         Parameters
         ----------
-        box : :py:class:`discopy.rigid.Box`
+        box : :py:class:`discopy.grammar.pregroup.Box`
             The candidate box to be tested against this rewrite rule.
 
         Returns
         -------
-        :py:class:`discopy.rigid.Diagram`, optional
+        :py:class:`discopy.grammar.pregroup.Diagram`, optional
             The rewritten diagram, or :py:obj:`None` if rule
             does not apply.
 
@@ -144,9 +144,9 @@ class SimpleRewriteRule(RewriteRule):
 
         Parameters
         ----------
-        cod : :py:class:`discopy.rigid.Ty`
+        cod : :py:class:`discopy.grammar.pregroup.Ty`
             The type that the codomain of each box is matched against.
-        template : :py:class:`discopy.rigid.Diagram`
+        template : :py:class:`discopy.grammar.pregroup.Diagram`
             The diagram that a matching box is replaced with. A special
             placeholder box is replaced by the word in the matched box,
             and can be created using
@@ -186,13 +186,13 @@ class SimpleRewriteRule(RewriteRule):
 
         Parameters
         ----------
-        cod : :py:class:`discopy.rigid.Ty`
+        cod : :py:class:`discopy.grammar.pregroup.Ty`
             The codomain of the placeholder, and hence the word in the
             resulting rewritten diagram.
 
         Returns
         -------
-        :py:class:`discopy.rigid.Box`
+        :py:class:`discopy.grammar.pregroup.Box`
             A placeholder box with the given codomain.
 
         """
@@ -288,10 +288,10 @@ class CurryRewriteRule(RewriteRule):
 
         This rule uses the map-state duality by iteratively
         uncurrying on both sides of each box. When used in conjunction
-        with :py:meth:`~discopy.rigid.Diagram.normal_form`, this
-        removes cups from the diagram in exchange for depth. Diagrams
-        with less cups become circuits with less post-selection,
-        which results in faster QML experiments.
+        with :py:meth:`~discopy.grammar.pregroup.Diagram.normal_form`,
+        this removes cups from the diagram in exchange for depth.
+        Diagrams with fewer cups become circuits with fewer
+        post-selection, which results in faster QML experiments.
 
         """
 

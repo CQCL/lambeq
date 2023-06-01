@@ -34,7 +34,7 @@ import re
 import sys
 
 from discopy.grammar.categorial import Ty
-from discopy.rigid import Diagram
+from discopy.grammar.pregroup import Diagram
 from tqdm.auto import tqdm
 
 from lambeq.core.globals import VerbosityLevel

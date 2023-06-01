@@ -464,7 +464,7 @@ class RewriterModule(CLIModule):
         if cl_args.rewrite_rules is None:
             return module_input
         rewriter = lambeq.rewrite.Rewriter(cl_args.rewrite_rules)
-        return [discopy.rigid.Diagram.normal_form(rewriter(diagram))
+        return [discopy.grammar.pregroup.Diagram.normal_form(rewriter(diagram))
                 for diagram in module_input]
 
 

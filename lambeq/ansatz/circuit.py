@@ -65,8 +65,8 @@ class CircuitAnsatz(BaseAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the number of
-            qubits it uses in a circuit.
+            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
         n_single_qubit_params : int
@@ -159,8 +159,8 @@ class IQPAnsatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the number of
-            qubits it uses in a circuit.
+            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
         n_single_qubit_params : int, default: 3
@@ -201,8 +201,8 @@ class Sim14Ansatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the number of
-            qubits it uses in a circuit.
+            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
         n_single_qubit_params : int, default: 3
@@ -242,8 +242,8 @@ class Sim15Ansatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the number of
-            qubits it uses in a circuit.
+            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
         n_single_qubit_params : int, default: 3
@@ -289,8 +289,8 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the number of
-            qubits it uses in a circuit.
+            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            the number of qubits it uses in a circuit.
         n_layers : int
             The number of circuit layers used by the ansatz.
         n_single_qubit_params : int, default: 3

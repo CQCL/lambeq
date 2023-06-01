@@ -120,7 +120,7 @@ class TextDiagramPrinter:
 
         Parameters
         ----------
-        diagram: :py:class:`discopy.rigid.Diagram`
+        diagram: :py:class:`discopy.grammar.pregroup.Diagram`
             The diagram to be printed.
 
         Returns
