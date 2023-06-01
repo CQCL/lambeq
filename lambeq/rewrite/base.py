@@ -344,7 +344,7 @@ class UNKRewriteRule(RewriteRule):
         return False
 
     def rewrite(self, box) -> Diagram:
-        return Word("UNK", dom=box.dom, cod=box.cod, data=box.data)
+        return type(box)("UNK", dom=box.dom, cod=box.cod, data=box.data)
 
 class Rewriter:
     """Class that rewrites diagrams.
