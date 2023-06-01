@@ -446,9 +446,10 @@ class ParserModule(CLIModule):
         elif cl_args.mode == 'pregroups':
             diagrams = parser.sentences2diagrams(sentences,
                                                  tokenised=cl_args.tokenise)
-            return [remove_swaps(
-                discopy.grammar.pregroup.Diagram.normal_form(d))
-                    for d in diagrams]
+            return [
+                remove_swaps(discopy.grammar.pregroup.Diagram.normal_form(d))
+                for d in diagrams
+            ]
         else:
             return parser.sentences2diagrams(sentences,
                                              tokenised=cl_args.tokenise)
