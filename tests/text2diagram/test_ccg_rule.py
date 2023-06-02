@@ -1,7 +1,7 @@
 import pytest
 
 from discopy.grammar import categorial as biclosed
-from discopy.cat import AxiomError
+from discopy.utils import AxiomError
 from discopy.grammar.categorial import Box
 from discopy.grammar.pregroup import Cap, Cup, Diagram, Id, Swap, Word
 
