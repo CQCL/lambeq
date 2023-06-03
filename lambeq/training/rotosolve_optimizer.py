@@ -14,7 +14,7 @@
 
 """
 RotosolveOptimizer
-=============
+==================
 Module implementing the Rotosolve optimizer.
 
 """
@@ -33,8 +33,8 @@ from lambeq.training.quantum_model import QuantumModel
 class RotosolveOptimizer(Optimizer):
     """An Optimizer using the Rotosolve algorithm.
 
-    See https://quantum-journal.org/papers/q-2021-01-28-391/pdf/ for details.
-
+    For detauls, check out:
+    https://quantum-journal.org/papers/q-2021-01-28-391/pdf/
     """
 
     model : QuantumModel
@@ -73,7 +73,7 @@ class RotosolveOptimizer(Optimizer):
         bds = np.asarray(bounds)
         if len(bds) != len(self.model.weights):
             raise ValueError('Length of `bounds` must be the same as the '
-                                'number of the model parameters')
+                             'number of the model parameters')
         self.project = lambda x: x.clip(bds[:, 0], bds[:, 1])
 
     def backward(
@@ -123,9 +123,9 @@ class RotosolveOptimizer(Optimizer):
 
             # Update weight
             self.gradient[i] = -(np.pi / 2) - np.arctan2(
-                2*m_phi - m_phi_plus - m_phi_minus,
+                  2*m_phi - m_phi_plus - m_phi_minus,
                   m_phi_plus - m_phi_minus
-                  )
+                )
 
         # Calculate loss
         self.model.weights = self.gradient
@@ -140,13 +140,8 @@ class RotosolveOptimizer(Optimizer):
         """Perform optimisation step."""
         self.model.weights = self.gradient
         self.model.weights = self.project(self.model.weights)
-        
-        self.update_hyper_params()
-        self.zero_grad()
 
-    def update_hyper_params(self) -> None:
-        """Update the hyperparameters of the Rotosolve algorithm."""
-        return
+        self.zero_grad()
 
     def state_dict(self) -> dict[str, Any]:
         """Return optimizer states as dictionary.
@@ -157,7 +152,7 @@ class RotosolveOptimizer(Optimizer):
             A dictionary containing the current state of the optimizer.
 
         """
-        raise NotImplementedError
+        raise {}
 
     def load_state_dict(self, state_dict: Mapping[str, Any]) -> None:
         """Load state of the optimizer from the state dictionary.
@@ -168,4 +163,4 @@ class RotosolveOptimizer(Optimizer):
             A dictionary containing a snapshot of the optimizer state.
 
         """
-        raise NotImplementedError
+        pass

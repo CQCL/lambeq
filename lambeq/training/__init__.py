@@ -23,8 +23,8 @@ __all__ = ['Checkpoint',
            'TketModel',
 
            'Optimizer',
-           'SPSAOptimizer',
            'RotosolveOptimizer',
+           'SPSAOptimizer',
 
            'Trainer',
            'PytorchTrainer',
