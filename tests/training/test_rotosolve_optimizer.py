@@ -130,8 +130,7 @@ def test_load_state_dict():
                                hyperparams={},
                                loss_fn=loss)
 
-    with pytest.raises(NotImplementedError):
-        optim.load_state_dict({})
+    assert optim.load_state_dict({}) is None
 
 
 def test_state_dict():

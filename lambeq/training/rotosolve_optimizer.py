@@ -152,7 +152,7 @@ class RotosolveOptimizer(Optimizer):
             A dictionary containing the current state of the optimizer.
 
         """
-        raise {}
+        return {}
 
     def load_state_dict(self, state_dict: Mapping[str, Any]) -> None:
         """Load state of the optimizer from the state dictionary.
