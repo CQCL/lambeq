@@ -21,7 +21,7 @@ A trainer that wraps the training loop of a :py:class:`ClassicalModel`.
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, Callable
+from typing import Any, Callable, Type
 
 import torch
 
@@ -30,6 +30,8 @@ from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.pytorch_model import PytorchModel
 from lambeq.training.trainer import EvalFuncT, Trainer
 from lambeq.typing import StrPathT
+from lambeq.ansatz import BaseAnsatz
+from discopy import rigid, monoidal
 
 
 class PytorchTrainer(Trainer):
@@ -39,9 +41,12 @@ class PytorchTrainer(Trainer):
 
     def __init__(self,
                  model: PytorchModel,
+                 ansatz_cls: Type[BaseAnsatz],
+                 ansatz_ob_map: Mapping[rigid.Ty, monoidal.Ty],
                  loss_function: Callable[..., torch.Tensor],
                  epochs: int,
-                 optimizer: type[torch.optim.Optimizer] = torch.optim.AdamW,
+                 ansatz_kwargs: Mapping[str, Any] = {},
+                 optimizer: Type[torch.optim.Optimizer] = torch.optim.AdamW,
                  learning_rate: float = 1e-3,
                  device: int = -1,
                  *,
@@ -60,10 +65,19 @@ class PytorchTrainer(Trainer):
         ----------
         model : :py:class:`.PytorchModel`
             A lambeq Model using PyTorch for tensor computation.
+        ansatz_cls : :py:class:`.BaseAnsatz`
+            A lambeq Ansatz.
+        ansatz_ob_map: dict
+            A mapping from `discopy.rigid.Ty` to a type in the target
+            category. In the category of quantum circuits, this type is
+            the number of qubits; in the category of vector spaces, this
+            type is a vector space.
         loss_function : callable
             A PyTorch loss function from `torch.nn`.
         epochs : int
             Number of training epochs.
+        ansatz_kwargs : mapping of str to any, default: {}
+            Additional arguments for initializing the passed ansatz class.
         optimizer : torch.optim.Optimizer, default: torch.optim.AdamW
             A PyTorch optimizer from `torch.optim`.
         learning_rate : float, default: 1e-3
@@ -98,8 +112,11 @@ class PytorchTrainer(Trainer):
             torch.manual_seed(seed)
             torch.cuda.manual_seed_all(seed)
         super().__init__(model,
+                         ansatz_cls,
+                         ansatz_ob_map,
                          loss_function,
                          epochs,
+                         ansatz_kwargs,
                          evaluate_functions,
                          evaluate_on_train,
                          use_tensorboard,
@@ -113,11 +130,19 @@ class PytorchTrainer(Trainer):
         if device >= 0:
             torch.set_default_tensor_type(  # pragma: no cover
                     'torch.cuda.FloatTensor')
-
+            
         optimizer_args = dict(optimizer_args or {})
         if learning_rate is not None:
             optimizer_args['lr'] = learning_rate
-        self.optimizer = optimizer(self.model.parameters(), **optimizer_args)
+
+        # Defer optimizer init since the model symbols
+        # needs to have been initialized before it.
+        self.optimizer_cls = optimizer
+        self.optimizer = None
+        self.optimizer_args = optimizer_args
+
+    def _pre_training_loop(self) -> None:
+        self.optimizer = self.optimizer_cls(self.model.parameters(), **self.optimizer_args)
         self.model.to(self.device)
 
     def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
@@ -171,6 +196,7 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
+        x = [self.ansatz(x_item) for x_item in x]
         with torch.no_grad():
             y_hat = self.model(x)
             loss = self.loss_function(y_hat, y.to(self.device))
@@ -194,6 +220,7 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
+        x = [self.ansatz(x_item) for x_item in x]
         y_hat = self.model(x)
         loss = self.loss_function(y_hat, y.to(self.device))
         self.train_costs.append(loss.item())

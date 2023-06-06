@@ -31,9 +31,9 @@ import os
 import random
 import socket
 import sys
-from typing import Any, Callable, TYPE_CHECKING
+from typing import Any, Callable, Type, TYPE_CHECKING
 
-from discopy import Tensor
+from discopy import Tensor, rigid, monoidal
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:
@@ -45,6 +45,7 @@ from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.model import Model
 from lambeq.typing import StrPathT
+from lambeq.ansatz import BaseAnsatz
 
 
 def _import_tensorboard_writer() -> None:
@@ -66,8 +67,11 @@ class Trainer(ABC):
 
     def __init__(self,
                  model: Model,
+                 ansatz_cls: Type[BaseAnsatz],
+                 ansatz_ob_map: Mapping[rigid.Ty, monoidal.Ty],
                  loss_function: Callable[..., Any],
                  epochs: int,
+                 ansatz_kwargs: Mapping[str, Any] = {},
                  evaluate_functions: Mapping[str, EvalFuncT] | None = None,
                  evaluate_on_train: bool = True,
                  use_tensorboard: bool = False,
@@ -81,10 +85,19 @@ class Trainer(ABC):
         ----------
         model : :py:class:`.Model`
             A lambeq Model.
+        ansatz_cls : :py:class:`.BaseAnsatz`
+            A lambeq Ansatz class.
+        ansatz_ob_map: dict
+            A mapping from `discopy.rigid.Ty` to a type in the target
+            category. In the category of quantum circuits, this type is
+            the number of qubits; in the category of vector spaces, this
+            type is a vector space.
         loss_function : callable
             A loss function to compare the prediction to the true label.
         epochs : int
             Number of training epochs.
+        ansatz_kwargs : mapping of str to any, default: {}
+            Additional arguments for initializing the passed ansatz class.
         evaluate_functions : mapping of str to callable, optional
             Mapping of evaluation metric functions from their names.
         evaluate_on_train : bool, default: True
@@ -111,6 +124,9 @@ class Trainer(ABC):
 
         self.backend = 'numpy'
         self.model = model
+        self.ansatz_cls = ansatz_cls
+        self.ansatz_ob_map = ansatz_ob_map
+        self.ansatz_kwargs = ansatz_kwargs
         self.loss_function = loss_function
         self.epochs = epochs
         self.evaluate_functions = evaluate_functions
@@ -128,6 +144,10 @@ class Trainer(ABC):
         self.val_costs: list[float] = []
         self.val_results: dict[str, list[Any]] = {}
         self._val_results_epoch: dict[str, list[Any]] = {}
+
+        self.ansatz = self.ansatz_cls(
+            self.ansatz_ob_map, **self.ansatz_kwargs
+        )
 
         if self.evaluate_functions is not None:
             for name in self.evaluate_functions:
@@ -152,8 +172,8 @@ class Trainer(ABC):
         self.start_step = 0
         if self.from_checkpoint:
             self.checkpoint = self.load_training_checkpoint(self.log_dir)
-        else:
-            self.model.initialise_weights()
+        # else:
+        #     self.model.initialise_weights()
 
     def _generate_stat_report(self,
                               train_loss: float | None = None,
@@ -313,6 +333,35 @@ class Trainer(ABC):
 
         """
 
+    @abstractmethod
+    def _pre_training_loop(self) -> None:
+        """Perform miscellaneous operations necessary
+        before training can be done.
+
+        """
+
+    def _init_model_from_datasets(self,
+                                  train_dataset: Dataset,
+                                  val_dataset: Dataset | None = None) -> None:
+        """Create model from passed dataset by first converting
+        the diagrams into circuits using the ansatz.
+        
+        Parameters
+        ----------
+        train_dataset : :py:class:`Dataset`
+            Dataset used for training.
+        val_dataset : :py:class:`Dataset`, optional
+            Validation dataset.
+        """
+        train_diagrams = train_dataset.data
+        val_diagrams = val_dataset.data if val_dataset is not None else []
+
+        diagrams = train_diagrams + val_diagrams
+        circs = [self.ansatz(diagram) for diagram in diagrams]
+        self.model.symbols = type(self.model)._get_symbols(circs)
+        self.model.initialise_weights()
+        print(self.model.symbols)
+
     def fit(self,
             train_dataset: Dataset,
             val_dataset: Dataset | None = None,
@@ -337,6 +386,11 @@ class Trainer(ABC):
         """
         if self.from_checkpoint:
             self._load_extra_checkpoint_info(self.checkpoint)
+        else:
+            self._init_model_from_datasets(
+                train_dataset,
+                val_dataset,
+            )
 
         def writer_helper(*args: Any) -> None:
             if self.use_tensorboard:
@@ -352,6 +406,9 @@ class Trainer(ABC):
                                 self.verbose != VerbosityLevel.PROGRESS.value),
                           leave=True,
                           position=0)
+        
+        # Run necessary preparatinos before training
+        self._pre_training_loop()
 
         # start training loop
         for epoch in trange(self.start_epoch,

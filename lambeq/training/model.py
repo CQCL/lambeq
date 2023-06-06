@@ -158,11 +158,11 @@ class Model(ABC):
     @classmethod
     def from_diagrams(cls, diagrams: list[Diagram], **kwargs: Any) -> Model:
         """Build model from a list of
-        :py:class:`Diagrams <discopy.tensor.Diagram>`.
+        :py:class:`Diagrams <discopy.rigid.Diagram>`.
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
+        diagrams : list of :py:class:`~discopy.rigid.Diagram`
             The tensor or circuit diagrams to be evaluated.
 
         Other Parameters
@@ -177,7 +177,11 @@ class Model(ABC):
 
         """
         model = cls(**kwargs)
-        model.symbols = sorted(
+        model.symbols = cls._get_symbols(diagrams)
+        return model
+
+    @classmethod
+    def _get_symbols(cls, diagrams: list[Diagram]) -> list[Symbol | SymPySymbol]:
+        return sorted(
             {sym for circ in diagrams for sym in circ.free_symbols},
             key=default_sort_key)
-        return model
