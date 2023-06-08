@@ -245,6 +245,15 @@ class Trainer(ABC):
         self.val_results = checkpoint['val_results']
         self.start_epoch = checkpoint['epoch']
         self.start_step = checkpoint['step']
+        
+        # Rebuild ansatz from components
+        self.ansatz = checkpoint['ansatz']
+        self.ansatz_cls = self.ansatz['cls']
+        self.ansatz_ob_map = self.ansatz['ob_map']
+        self.ansatz_kwargs = self.ansatz['kwargs']
+        self.ansatz = self.ansatz_cls(
+            self.ansatz_ob_map, **self.ansatz_kwargs
+        )
         if self.seed is not None:
             random.setstate(checkpoint['random_state'])
         if self.verbose == VerbosityLevel.TEXT.value:
@@ -523,7 +532,12 @@ class Trainer(ABC):
                              'val_costs': self.val_costs,
                              'val_results': self.val_results,
                              'random_state': random.getstate(),
-                             'step': step}
+                             'step': step,
+                             'ansatz': {
+                                 'cls': self.ansatz_cls,
+                                 'ob_map': self.ansatz_ob_map,
+                                 'kwargs': self.ansatz_kwargs,
+                             }}
             self.save_checkpoint(trainer_stats, self.log_dir)
             if self.verbose == VerbosityLevel.TEXT.value:  # pragma: no cover
                 if epoch == 0 or (epoch+1) % logging_step == 0:

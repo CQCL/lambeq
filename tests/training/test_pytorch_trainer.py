@@ -30,7 +30,7 @@ dev_diagrams = [
     (Word("Bob", N) @ Word("waits", N >> S) >> Cup(N, N.r) @ Id(S)),
 ]
 dev_targets = [[0, 1], [1, 0]]
-ansatz = SpiderAnsatz({N: Dim(2), S: Dim(2)})
+ob_map = {N: Dim(2), S: Dim(2)}
 
 
 def test_trainer(tmp_path):
@@ -41,7 +41,7 @@ def test_trainer(tmp_path):
     trainer = PytorchTrainer(
         model=model,
         ansatz_cls=SpiderAnsatz,
-        ansatz_ob_map={N: Dim(2), S: Dim(2)},
+        ansatz_ob_map=ob_map,
         loss_function=torch.nn.BCEWithLogitsLoss(),
         optimizer=torch.optim.AdamW,
         learning_rate=3e-3,
@@ -58,9 +58,13 @@ def test_trainer(tmp_path):
     val_dataset = Dataset(dev_diagrams, dev_targets)
 
     trainer.fit(train_dataset, val_dataset)
+    checkpoint = trainer.load_training_checkpoint(log_dir)
 
     assert len(trainer.train_costs) == EPOCHS
     assert len(trainer.val_results["acc"]) == EPOCHS
+    assert checkpoint["ansatz"]["cls"] == SpiderAnsatz
+    assert checkpoint["ansatz"]["ob_map"] == ob_map
+    assert checkpoint["ansatz"]["kwargs"] == {}
 
 def test_restart_training(tmp_path):
     model = PytorchModel()
