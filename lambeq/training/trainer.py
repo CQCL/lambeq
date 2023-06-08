@@ -333,12 +333,13 @@ class Trainer(ABC):
 
         """
 
-    @abstractmethod
     def _pre_training_loop(self) -> None:
         """Perform miscellaneous operations necessary
         before training can be done.
 
         """
+        if self.from_checkpoint:
+            self._load_extra_checkpoint_info(self.checkpoint)
 
     def _init_model_from_datasets(self,
                                   train_dataset: Dataset,
@@ -384,9 +385,7 @@ class Trainer(ABC):
             printed if `verbose = 'text'` (otherwise ignored).
 
         """
-        if self.from_checkpoint:
-            self._load_extra_checkpoint_info(self.checkpoint)
-        else:
+        if not self.from_checkpoint:
             self._init_model_from_datasets(
                 train_dataset,
                 val_dataset,
@@ -407,7 +406,7 @@ class Trainer(ABC):
                           leave=True,
                           position=0)
         
-        # Run necessary preparatinos before training
+        # Run necessary preparations before training
         self._pre_training_loop()
 
         # start training loop

@@ -144,6 +144,7 @@ class PytorchTrainer(Trainer):
     def _pre_training_loop(self) -> None:
         self.optimizer = self.optimizer_cls(self.model.parameters(), **self.optimizer_args)
         self.model.to(self.device)
+        super()._pre_training_loop()
 
     def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
         """Add any additional information to the training checkpoint.
