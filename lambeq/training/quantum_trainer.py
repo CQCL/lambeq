@@ -21,10 +21,12 @@ A trainer that wraps the training loop of a :py:class:`QuantumModel`
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
-from typing import Any
+from typing import Any, Type
 
 import numpy as np
 
+from discopy import rigid, monoidal
+from lambeq.ansatz import BaseAnsatz
 from lambeq.core.globals import VerbosityLevel
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
@@ -41,11 +43,14 @@ class QuantumTrainer(Trainer):
 
     def __init__(self,
                  model: QuantumModel,
+                 ansatz_cls: Type[BaseAnsatz],
+                 ansatz_ob_map: Mapping[rigid.Ty, monoidal.Ty],
                  loss_function: Callable[..., float],
                  epochs: int,
                  optimizer: type[Optimizer],
                  optim_hyperparams: dict[str, float],
                  *,
+                 ansatz_kwargs: Mapping[str, Any] = {},
                  optimizer_args: dict[str, Any] | None = None,
                  evaluate_functions: Mapping[str, EvalFuncT] | None = None,
                  evaluate_on_train: bool = True,
@@ -95,8 +100,11 @@ class QuantumTrainer(Trainer):
             np.random.seed(seed)
 
         super().__init__(model,
+                         ansatz_cls,
+                         ansatz_ob_map,
                          loss_function,
                          epochs,
+                         ansatz_kwargs,
                          evaluate_functions,
                          evaluate_on_train,
                          use_tensorboard,
@@ -105,10 +113,19 @@ class QuantumTrainer(Trainer):
                          verbose,
                          seed)
 
-        self.optimizer = optimizer(self.model,
-                                   optim_hyperparams,
-                                   self.loss_function,
-                                   **(optimizer_args or {}))
+        # Defer optimizer init since the model symbols
+        # needs to have been initialized before it.
+        self.optimizer_cls = optimizer
+        self.optimizer = None
+        self.optimizer_args = optimizer_args
+        self.optimizer_hps = optim_hyperparams
+
+    def _pre_training_loop(self) -> None:
+        self.optimizer = self.optimizer_cls(self.model,
+                                            self.optimizer_hps,
+                                            self.loss_function,
+                                            **(self.optimizer_args or {}))
+        super()._pre_training_loop()
 
     def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
         """Add any additional information to the training checkpoint.
@@ -160,7 +177,9 @@ class QuantumTrainer(Trainer):
 
         """
         self.model._clear_predictions()
-        loss = self.optimizer.backward(batch)
+        x, y = batch
+        x = [self.ansatz(xi) for xi in x]
+        loss = self.optimizer.backward((x, y))
         y_hat = self.model._train_predictions[-1]
         self.train_costs.append(loss)
         self.optimizer.step()
@@ -184,6 +203,7 @@ class QuantumTrainer(Trainer):
 
         """
         x, y = batch
+        x = [self.ansatz(xi) for xi in x]
         y_hat = self.model(x)
         loss = self.loss_function(y_hat, y)
         return y_hat, loss

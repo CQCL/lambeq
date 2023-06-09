@@ -58,10 +58,10 @@ def test_trainer(tmp_path):
     val_dataset = Dataset(dev_diagrams, dev_targets)
 
     trainer.fit(train_dataset, val_dataset)
-    checkpoint = trainer.load_training_checkpoint(log_dir)
-
     assert len(trainer.train_costs) == EPOCHS
     assert len(trainer.val_results["acc"]) == EPOCHS
+
+    checkpoint = trainer.load_training_checkpoint(log_dir)
     assert checkpoint["ansatz"]["cls"] == SpiderAnsatz
     assert checkpoint["ansatz"]["ob_map"] == ob_map
     assert checkpoint["ansatz"]["kwargs"] == {}
