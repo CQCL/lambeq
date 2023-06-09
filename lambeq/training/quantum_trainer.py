@@ -65,10 +65,19 @@ class QuantumTrainer(Trainer):
         ----------
         model : :py:class:`.QuantumModel`
             A lambeq Model.
+        ansatz_cls : :py:class:`.BaseAnsatz`
+            A lambeq Ansatz.
+        ansatz_ob_map: dict
+            A mapping from `discopy.rigid.Ty` to a type in the target
+            category. In the category of quantum circuits, this type is
+            the number of qubits; in the category of vector spaces, this
+            type is a vector space.
         loss_function : callable
             A loss function.
         epochs : int
-            Number of training epochs
+            Number of training epochs.
+        ansatz_kwargs : mapping of str to any, default: {}
+            Additional arguments for initializing the passed ansatz class.
         optimizer : Optimizer
             An optimizer of type :py:class:`lambeq.training.Optimizer`.
         optim_hyperparams : dict of str to float
@@ -114,13 +123,17 @@ class QuantumTrainer(Trainer):
                          seed)
 
         # Defer optimizer init since the model symbols
-        # needs to have been initialized before it.
+        # need to have been initialized before it.
         self.optimizer_cls = optimizer
         self.optimizer = None
         self.optimizer_args = optimizer_args
         self.optimizer_hps = optim_hyperparams
 
     def _pre_training_loop(self) -> None:
+        """Perform miscellaneous operations necessary
+        before training can be done.
+
+        """
         self.optimizer = self.optimizer_cls(self.model,
                                             self.optimizer_hps,
                                             self.loss_function,

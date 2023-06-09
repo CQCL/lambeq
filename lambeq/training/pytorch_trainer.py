@@ -136,12 +136,16 @@ class PytorchTrainer(Trainer):
             optimizer_args['lr'] = learning_rate
 
         # Defer optimizer init since the model symbols
-        # needs to have been initialized before it.
+        # need to have been initialized before it.
         self.optimizer_cls = optimizer
         self.optimizer = None
         self.optimizer_args = optimizer_args
 
     def _pre_training_loop(self) -> None:
+        """Perform miscellaneous operations necessary
+        before training can be done.
+
+        """
         self.optimizer = self.optimizer_cls(self.model.parameters(), **self.optimizer_args)
         self.model.to(self.device)
         super()._pre_training_loop()

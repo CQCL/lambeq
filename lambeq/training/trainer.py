@@ -370,7 +370,6 @@ class Trainer(ABC):
         circs = [self.ansatz(diagram) for diagram in diagrams]
         self.model.symbols = type(self.model)._get_symbols(circs)
         self.model.initialise_weights()
-        print(self.model.symbols)
 
     def fit(self,
             train_dataset: Dataset,
