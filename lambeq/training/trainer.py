@@ -368,7 +368,7 @@ class Trainer(ABC):
 
         diagrams = train_diagrams + val_diagrams
         circs = [self.ansatz(diagram) for diagram in diagrams]
-        self.model.symbols = type(self.model)._get_symbols(circs)
+        self.model.prepare_for_weight_init(circs)
         self.model.initialise_weights()
 
     def fit(self,

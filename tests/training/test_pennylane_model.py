@@ -164,21 +164,26 @@ def test_with_pytorch_trainer(tmp_path):
     ]
     dev_targets = [[0, 1], [1, 0]]
 
-    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1, n_single_qubit_params=3)
-    train_circuits = [ansatz(d) for d in train_diagrams]
-    dev_circuits = [ansatz(d) for d in dev_diagrams]
+    ob_map = {N: 1, S: 1}
+    ansatz_kwargs = {
+        "n_layers": 1,
+        "n_single_qubit_params": 3,
+    }
 
-    model = PennyLaneModel.from_diagrams(train_circuits + dev_circuits)
+    model = PennyLaneModel()
 
     log_dir = tmp_path / 'test_runs'
     log_dir.mkdir()
 
     trainer = PytorchTrainer(
         model=model,
+        ansatz_cls=IQPAnsatz,
+        ansatz_ob_map=ob_map,
         loss_function=torch.nn.BCEWithLogitsLoss(),
         optimizer=torch.optim.AdamW,
         learning_rate=3e-3,
         epochs=EPOCHS,
+        ansatz_kwargs=ansatz_kwargs,
         evaluate_functions={"acc": acc},
         evaluate_on_train=True,
         use_tensorboard=True,
@@ -187,8 +192,8 @@ def test_with_pytorch_trainer(tmp_path):
         seed=0
     )
 
-    train_dataset = Dataset(train_circuits, train_targets)
-    val_dataset = Dataset(dev_circuits, dev_targets)
+    train_dataset = Dataset(train_diagrams, train_targets)
+    val_dataset = Dataset(dev_diagrams, dev_targets)
 
     trainer.fit(train_dataset, val_dataset)
 

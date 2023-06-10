@@ -25,7 +25,8 @@ import copy
 from typing import Any, TYPE_CHECKING
 
 from discopy import Circuit, Diagram
-from sympy import default_sort_key, Symbol
+from discopy.tensor import Diagram
+from sympy import Symbol
 import torch
 
 from lambeq.training.checkpoint import Checkpoint
@@ -240,15 +241,18 @@ class PennyLaneModel(Model, torch.nn.Module):
         model = cls(probabilities=probabilities, normalize=normalize,
                     diff_method=diff_method, backend_config=backend_config,
                     **kwargs)
-
-        model.symbols = sorted(
-            {sym for circ in diagrams for sym in circ.free_symbols},
-            key=default_sort_key)
-        for circ in diagrams:
-            p_circ = circ.to_pennylane(probabilities=model._probabilities,
-                                       diff_method=model._diff_method,
-                                       backend_config=model._backend_config)
-
-            model.circuit_map[circ] = p_circ
+        model.prepare_for_weight_init(diagrams)
 
         return model
+
+    def prepare_for_weight_init(self, diagrams: list[Diagram]) -> None:
+        super().prepare_for_weight_init(diagrams)
+        self._set_circuit_map_from_diagrams(diagrams)
+
+    def _set_circuit_map_from_diagrams(self, diagrams: list[Diagram]) -> None:
+        for circ in diagrams:
+            p_circ = circ.to_pennylane(probabilities=self._probabilities,
+                                       diff_method=self._diff_method,
+                                       backend_config=self._backend_config)
+
+            self.circuit_map[circ] = p_circ

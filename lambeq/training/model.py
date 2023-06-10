@@ -177,11 +177,14 @@ class Model(ABC):
 
         """
         model = cls(**kwargs)
-        model.symbols = cls._get_symbols(diagrams)
+        model.prepare_for_weight_init(diagrams)
+
         return model
 
-    @classmethod
-    def _get_symbols(cls, diagrams: list[Diagram]) -> list[Symbol | SymPySymbol]:
-        return sorted(
+    def prepare_for_weight_init(self, diagrams: list[Diagram]) -> None:
+        self._set_symbols_from_diagrams(diagrams)
+
+    def _set_symbols_from_diagrams(self, diagrams: list[Diagram]) -> None:
+        self.symbols = sorted(
             {sym for circ in diagrams for sym in circ.free_symbols},
             key=default_sort_key)
