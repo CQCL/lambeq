@@ -423,33 +423,95 @@ class Rewriter:
     def _ob(self, ob: Ty) -> Ty:
         return ob
 
-def HandleUnknownWords(diagrams: Container[Diagram], training_data: Container[str] | None = None, test_data: Container[str] | None = None, train_status: bool | None = True, min_freq: int | None = 0) -> Container[Diagram]:
-    """ Function to automate the process of using the UNKRewriteRule
-    This function takes the list of untokenized diagrams, the training and test (or dev) dataset, the status of whether we are using this for training or test (or dev) 
-     
-     Parameters
-     ----------
-     diagrams : Container[Diagram]
-         This is the list of the parsed sentences that we want to tokenize.
-     training_data : Container(str)
-         This is the list of training data words (sentences split into words). This is used to find the low frequency and never seen before words for the UNKRewriteRule.
-     test_data : Container(str)
-         This is the list of the test data words (sentences split into words). This is used to find the never seen before words for the UNKRewriteRule.
-     train_status : bool
-         This is a flag used to state whether the diagrams are being used for training or evaluation. This states which words to use, whether low frequency or never seen before.
-     min_freq : int
-         This is the frequency threshold for stating what words should be tokenized as UNK. This is used to find the low frequency words for the UNKRewriteRule.
-         
-     Returns : Container[Diagram]
-    """
-    if train_status:
-        words = [i for i in training_data if training_data.count(i) < min_freq]
-        rewriter = Rewriter([UNKRewriteRule(words = words)])
-        diagrams = [rewriter(i) for i in diagrams]
+def dataset_to_words(dataset: Container[str]) -> Container[str]:
+    """ Extracts words from a dataset of sentences.
     
-    else:
-        words = [i for i in test_data if i not in training_data]
+    Parameters
+    -----------
+    dataset: Container[str]
+        A list of sentences.
+        
+    Returns
+    -------
+    words: Container[str]
+        A list of words.
+    """
+    dataset_string = ' '.join(dataset)
+    words = dataset_string.split()
+    return words
+    
+class HandleUnknownWords():
+    
+    def __init__(self, training_data: Container[str], test_data: Container[str]):
+        """ Instantiate a handler for unknown words.
+        
+        Parameters
+        ----------
+        training_data: Container[str]
+            List of training dataset sentences
+        test_data: Constainer[str]
+            List of test dataset sentences
+        train_unknown_words: Container[str]
+            List of training dataset words
+        test_unknown_words: Container[str]
+            List of test dataset words
+        train_check: bool
+            Flag for making sure handle_train is run before handle_test
+        """
+        self.training_data = dataset_to_words(training_data)
+        self.test_data = dataset_to_words(test_data)
+        self.train_unknown_words = []
+        self.test_unknown_words = []
+        self.train_check = False
+        
+    def handle_train(self, min_freq: int, diagrams: Container[Diagram]) -> Container[Diagram]:
+        """ Handles training dataset unknown words, and tokenizes the training diagrams.
+        
+        Parameters
+        ----------
+        min_freq: int
+            The minimum frequency threshold for indicating unknown words
+        diagrams: Container[Diagram]
+            The list of training dataset parsed diagrams to be tokenized
+            
+        Returns
+        -------
+        diagrams: Container[Diagram] 
+        """
+        self.train_check = True
+        words = [i for i in self.training_data if self.training_data.count(i) < min_freq]
+        self.train_unknown_words = words
+        
         rewriter = Rewriter([UNKRewriteRule(words = words)])
         diagrams = [rewriter(i) for i in diagrams]
         
-    return diagrams    
+        return diagrams
+    
+    def handle_test(self) -> Container[Diagram]:
+        """ Handles test dataset unknown words, and tokenizes the test diagrams.
+        
+        Returns
+        -------
+        diagrams: Container[Diagram]
+        """
+        if self.train_check:
+            words = [i for i in self.test_data if i not in self.training_data]
+            self.test_unknown_words = words
+            
+            rewriter = Rewriter([UNKRewriteRule(words = words)])
+            diagrams = [rewriter(i) for i in diagrams]
+            
+            return diagrams
+        
+        else:
+            raise ValueError("VocabError: handle_test run before handle_train. Please run handle_train first.")
+    
+    def replace_test_data(self, new_test_data: Container[str]):
+        """ Replaces the test dataset.
+        
+        Parameters
+        ----------
+        new_test_data: Container[str]
+            The new test dataset.
+        """
+        self.test_data = dataset_to_words(new_test_data)
