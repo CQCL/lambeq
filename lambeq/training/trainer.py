@@ -172,8 +172,6 @@ class Trainer(ABC):
         self.start_step = 0
         if self.from_checkpoint:
             self.checkpoint = self.load_training_checkpoint(self.log_dir)
-        # else:
-        #     self.model.initialise_weights()
 
     def _generate_stat_report(self,
                               train_loss: float | None = None,

@@ -246,10 +246,26 @@ class PennyLaneModel(Model, torch.nn.Module):
         return model
 
     def prepare_for_weight_init(self, diagrams: list[Diagram]) -> None:
+        """Perform necessary steps before
+        model weights can be initialized.
+
+        Parameters
+        ----------
+        diagrams : list of :py:class:`~discopy.rigid.Diagram`
+            The tensor or circuit diagrams to be evaluated.
+        """
         super().prepare_for_weight_init(diagrams)
         self._set_circuit_map_from_diagrams(diagrams)
 
     def _set_circuit_map_from_diagrams(self, diagrams: list[Diagram]) -> None:
+        """Populate `circuit_map` dictionary attribute
+        from diagrams.
+
+        Parameters
+        ----------
+        diagrams : list of :py:class:`~discopy.rigid.Diagram`
+            The tensor or circuit diagrams to be evaluated.
+        """
         for circ in diagrams:
             p_circ = circ.to_pennylane(probabilities=self._probabilities,
                                        diff_method=self._diff_method,

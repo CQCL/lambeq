@@ -182,9 +182,25 @@ class Model(ABC):
         return model
 
     def prepare_for_weight_init(self, diagrams: list[Diagram]) -> None:
+        """Perform necessary steps before
+        model weights can be initialized.
+
+        Parameters
+        ----------
+        diagrams : list of :py:class:`~discopy.rigid.Diagram`
+            The tensor or circuit diagrams to be evaluated.
+        """
         self._set_symbols_from_diagrams(diagrams)
 
     def _set_symbols_from_diagrams(self, diagrams: list[Diagram]) -> None:
+        """Populate `symbols` list attribute
+        from diagrams.
+
+        Parameters
+        ----------
+        diagrams : list of :py:class:`~discopy.rigid.Diagram`
+            The tensor or circuit diagrams to be evaluated.
+        """
         self.symbols = sorted(
             {sym for circ in diagrams for sym in circ.free_symbols},
             key=default_sort_key)
