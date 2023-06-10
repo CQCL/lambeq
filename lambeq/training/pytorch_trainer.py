@@ -32,6 +32,7 @@ from lambeq.training.trainer import EvalFuncT, Trainer
 from lambeq.typing import StrPathT
 from lambeq.ansatz import BaseAnsatz
 from discopy import rigid, monoidal
+from discopy.tensor import Tensor
 
 
 class PytorchTrainer(Trainer):
@@ -201,7 +202,8 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
-        x = [self.ansatz(x_item) for x_item in x]
+        with Tensor.backend("numpy"):
+            x = [self.ansatz(x_item) for x_item in x]
         with torch.no_grad():
             y_hat = self.model(x)
             loss = self.loss_function(y_hat, y.to(self.device))
@@ -225,7 +227,8 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
-        x = [self.ansatz(x_item) for x_item in x]
+        with Tensor.backend("numpy"):
+            x = [self.ansatz(x_item) for x_item in x]
         y_hat = self.model(x)
         loss = self.loss_function(y_hat, y.to(self.device))
         self.train_costs.append(loss.item())
