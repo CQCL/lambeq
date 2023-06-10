@@ -172,3 +172,27 @@ def test_curry_functor():
 
     rewriter = Rewriter([CurryRewriteRule()])
     assert rewriter(diagram).normal_form() == expected
+    
+    
+def test_unk_rewrite_rule():
+    sentence = 'I see the photo .'
+    parser = BobcatParser()
+    diagram = parser.sentence2diagram(sentence).normal_form()
+
+    unknown_words = ["photo"]
+    rule = UNKRewriteRule(words = unknown_words)
+
+    rewriter = Rewriter([rule])
+    rewritten_diagram = rewriter(diagram)
+
+    rewritten_diagram.draw()
+    expected_diagram = Diagram(dom=Ty(), cod=Ty('s'),
+            boxes=[Word('I', Ty('n')),
+                   Word('see', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+                   Cup(Ty('n'), Ty(Ob('n', z=1))),
+                   Word('the', Ty('n', Ob('n', z=-1))),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')), Word('UNK', Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n'))],
+            offsets=[0, 1, 0, 2, 1, 2, 1])
+
+    assert rewritten_diagram == expected_diagram    
