@@ -13,8 +13,8 @@ S = AtomicType.SENTENCE
 ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1, n_single_qubit_params=1)
 
 diagrams = [
-    ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S))),
-    ansatz((Word("Alice", N) @ Word("walks", N >> S) >> Cup(N, N.r) @ Id(S)))
+    ansatz((Word('Alice', N) @ Word('runs', N >> S) >> Cup(N, N.r) @ Id(S))),
+    ansatz((Word('Alice', N) @ Word('walks', N >> S) >> Cup(N, N.r) @ Id(S))),
 ]
 
 from lambeq.training.model import Model
@@ -24,33 +24,42 @@ class ModelDummy(Model):
     def __init__(self) -> None:
         super().__init__()
         self.initialise_weights()
+
     def from_checkpoint():
         pass
+
     def _make_lambda(self, diagram):
         return diagram.lambdify(*self.symbols)
+
     def initialise_weights(self):
-        self.weights = np.array([1.,2.,3.])
+        self.weights = np.array([1.0, 2.0, 3.0])
+
     def _clear_predictions(self):
         pass
+
     def _log_prediction(self, y):
         pass
+
     def get_diagram_output(self):
         pass
+
     def _make_checkpoint(self):
         pass
+
     def _load_checkpoint(self):
         pass
+
     def forward(self, x):
         return self.weights.sum()
 
-loss = lambda yhat, y: np.abs(yhat-y).sum()**2
+
+loss = lambda yhat, y: np.abs(yhat - y).sum() ** 2
+
 
 def test_init_without_adpative():
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = NelderMeadOptimizer(model,
-                          hyperparams={},
-                          loss_fn= loss)
+    optim = NelderMeadOptimizer(model, hyperparams={}, loss_fn=loss)
     assert optim.func
     assert optim.current_sweep
     assert optim.adaptive == False
@@ -69,13 +78,14 @@ def test_init_without_adpative():
     assert optim.fsim.any()
     assert optim.N
     assert optim.first_iter == True
-    
+
+
 def test_init_with_adpative():
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = NelderMeadOptimizer(model,
-                          hyperparams={'adaptive': True},
-                          loss_fn= loss)
+    optim = NelderMeadOptimizer(
+        model, hyperparams={'adaptive': True}, loss_fn=loss
+    )
     assert optim.func
     assert optim.current_sweep
     assert optim.adaptive == True
@@ -95,79 +105,87 @@ def test_init_with_adpative():
     assert optim.N
     assert optim.first_iter == True
 
+
 def test_backward():
     np.random.seed(3)
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = NelderMeadOptimizer(model,
-                          hyperparams={},
-                          loss_fn= loss)
+    optim = NelderMeadOptimizer(model, hyperparams={}, loss_fn=loss)
     optim.backward(([diagrams[0]], np.array([0])))
     mask = np.array([True, True, False])
 
     assert np.array_equal(model.weights.round(5), np.array([1.05, 2.1, 2.7]))
-    assert np.array_equal(optim.gradient.round(5), np.array([1.05, 2.1, 2.7])*mask)
-    
+    assert np.array_equal(
+        optim.gradient.round(5), np.array([1.05, 2.1, 2.7]) * mask
+    )
+
 
 def test_step():
     np.random.seed(3)
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = NelderMeadOptimizer(model,
-                          hyperparams={},
-                          loss_fn= loss)
+    optim = NelderMeadOptimizer(model, hyperparams={}, loss_fn=loss)
     step_counter = optim.current_sweep
     optim.backward(([diagrams[0]], np.array([0])))
     optim.step()
     mask = np.array([True, True, False])
 
-    assert np.array_equal(model.weights.round(4), np.array([1.05, 2.1, 2.7])*mask)
-    assert optim.current_sweep == step_counter+1
-    
+    assert np.array_equal(
+        model.weights.round(4), np.array([1.05, 2.1, 2.7]) * mask
+    )
+    assert optim.current_sweep == step_counter + 1
+
+
 def test_bound_error():
     model = ModelDummy()
     model.initialise_weights()
     with pytest.raises(ValueError):
-        _ = NelderMeadOptimizer(model=model,
-                                hyperparams={},
-                                loss_fn=loss,
-                                bounds=[[0, 10]]*(len(model.weights)-1))
+        _ = NelderMeadOptimizer(
+            model=model,
+            hyperparams={},
+            loss_fn=loss,
+            bounds=[[0, 10]] * (len(model.weights) - 1),
+        )
+
 
 def test_lb_ub_error():
     model = ModelDummy()
     model.initialise_weights()
     with pytest.raises(ValueError):
-        bounds = [[0, 10]]*(len(model.weights))
+        bounds = [[0, 10]] * (len(model.weights))
         bounds[0] = [11, 10]
-        _ = NelderMeadOptimizer(model=model,
-                                hyperparams={},
-                                loss_fn=loss,
-                                bounds=bounds)
-        
+        _ = NelderMeadOptimizer(
+            model=model, hyperparams={}, loss_fn=loss, bounds=bounds
+        )
+
+
 def test_weights_bound_warning():
     model = ModelDummy()
     model.initialise_weights()
-    with pytest.warns(UserWarning, match="Initial value of model weights is not within the bounds."):
-        _ = NelderMeadOptimizer(model=model,
-                                hyperparams={},
-                                loss_fn=loss,
-                                bounds=[[0, 2]]*(len(model.weights)))
+    with pytest.warns(
+        UserWarning,
+        match='Initial value of model weights is not within the bounds.',
+    ):
+        _ = NelderMeadOptimizer(
+            model=model,
+            hyperparams={},
+            loss_fn=loss,
+            bounds=[[0, 2]] * (len(model.weights)),
+        )
 
 
 def test_load_state_dict():
     state_dict = {
-            'adaptive': True,
-            'initial_simplex': None,
-            'xatol': 1e-7,
-            'fatol': 1e-7,
-            'current_sweep': 10
-        }
+        'adaptive': True,
+        'initial_simplex': None,
+        'xatol': 1e-7,
+        'fatol': 1e-7,
+        'current_sweep': 10,
+    }
     model = ModelDummy()
     model.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = NelderMeadOptimizer(model,
-                          hyperparams={},
-                          loss_fn= loss)
+    optim = NelderMeadOptimizer(model, hyperparams={}, loss_fn=loss)
     optim.load_state_dict(state_dict)
 
     assert optim.adaptive == state_dict['adaptive']
