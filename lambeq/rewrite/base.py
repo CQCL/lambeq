@@ -487,7 +487,7 @@ class HandleUnknownWords():
         
         return diagrams
     
-    def handle_test(self) -> Container[Diagram]:
+    def handle_test(self, diagrams: Container[Diagram]) -> Container[Diagram]:
         """ Handles test dataset unknown words, and tokenizes the test diagrams.
         
         Returns
