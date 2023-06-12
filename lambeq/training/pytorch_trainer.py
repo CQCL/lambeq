@@ -39,6 +39,7 @@ class PytorchTrainer(Trainer):
     """A PyTorch trainer for the classical pipeline."""
 
     model: PytorchModel
+    optimizer: torch.optim.Optimizer    # type: ignore[assignment]
 
     def __init__(self,
                  model: PytorchModel,
@@ -139,7 +140,6 @@ class PytorchTrainer(Trainer):
         # Defer optimizer init since the model symbols
         # need to have been initialized before it.
         self.optimizer_cls = optimizer
-        self.optimizer = None
         self.optimizer_args = optimizer_args
 
     def _pre_training_loop(self) -> None:

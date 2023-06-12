@@ -244,10 +244,10 @@ class Trainer(ABC):
         self.start_step = checkpoint['step']
 
         # Rebuild ansatz from components
-        self.ansatz = checkpoint['ansatz']
-        self.ansatz_cls = self.ansatz['cls']
-        self.ansatz_ob_map = self.ansatz['ob_map']
-        self.ansatz_kwargs = self.ansatz['kwargs']
+        ansatz_state = checkpoint['ansatz']
+        self.ansatz_cls = ansatz_state['cls']
+        self.ansatz_ob_map = ansatz_state['ob_map']
+        self.ansatz_kwargs = ansatz_state['kwargs']
         self.ansatz = self.ansatz_cls(
             self.ansatz_ob_map, **self.ansatz_kwargs
         )

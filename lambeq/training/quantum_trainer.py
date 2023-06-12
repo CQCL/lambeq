@@ -40,6 +40,7 @@ class QuantumTrainer(Trainer):
     """A Trainer for the quantum pipeline."""
 
     model: QuantumModel
+    optimizer: Optimizer    # type: ignore[assignment]
 
     def __init__(self,
                  model: QuantumModel,
@@ -125,7 +126,6 @@ class QuantumTrainer(Trainer):
         # Defer optimizer init since the model symbols
         # need to have been initialized before it.
         self.optimizer_cls = optimizer
-        self.optimizer = None
         self.optimizer_args = optimizer_args
         self.optimizer_hps = optim_hyperparams
 
