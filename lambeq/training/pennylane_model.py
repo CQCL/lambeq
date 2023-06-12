@@ -25,7 +25,6 @@ import copy
 from typing import Any, TYPE_CHECKING
 
 from discopy import Circuit, Diagram
-from discopy.tensor import Diagram
 from sympy import Symbol
 import torch
 

@@ -33,19 +33,18 @@ import socket
 import sys
 from typing import Any, Callable, Type, TYPE_CHECKING
 
-from discopy import Tensor, rigid, monoidal
+from discopy import monoidal, rigid, Tensor
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:
     from torch.utils.tensorboard.writer import SummaryWriter
 
-
+from lambeq.ansatz import BaseAnsatz
 from lambeq.core.globals import VerbosityLevel
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.model import Model
 from lambeq.typing import StrPathT
-from lambeq.ansatz import BaseAnsatz
 
 
 def _import_tensorboard_writer() -> None:
@@ -71,7 +70,7 @@ class Trainer(ABC):
                  ansatz_ob_map: Mapping[rigid.Ty, monoidal.Ty],
                  loss_function: Callable[..., Any],
                  epochs: int,
-                 ansatz_kwargs: Mapping[str, Any] = {},
+                 ansatz_kwargs: Mapping[str, Any] | None = None,
                  evaluate_functions: Mapping[str, EvalFuncT] | None = None,
                  evaluate_on_train: bool = True,
                  use_tensorboard: bool = False,
@@ -96,8 +95,8 @@ class Trainer(ABC):
             A loss function to compare the prediction to the true label.
         epochs : int
             Number of training epochs.
-        ansatz_kwargs : mapping of str to any, default: {}
-            Additional arguments for initializing the passed ansatz class.
+        ansatz_kwargs : mapping of str to any, optional.
+            Additional arguments to initializes the passed ansatz class.
         evaluate_functions : mapping of str to callable, optional
             Mapping of evaluation metric functions from their names.
         evaluate_on_train : bool, default: True
@@ -126,7 +125,7 @@ class Trainer(ABC):
         self.model = model
         self.ansatz_cls = ansatz_cls
         self.ansatz_ob_map = ansatz_ob_map
-        self.ansatz_kwargs = ansatz_kwargs
+        self.ansatz_kwargs = ansatz_kwargs or {}
         self.loss_function = loss_function
         self.epochs = epochs
         self.evaluate_functions = evaluate_functions
@@ -243,7 +242,7 @@ class Trainer(ABC):
         self.val_results = checkpoint['val_results']
         self.start_epoch = checkpoint['epoch']
         self.start_step = checkpoint['step']
-        
+
         # Rebuild ansatz from components
         self.ansatz = checkpoint['ansatz']
         self.ansatz_cls = self.ansatz['cls']
@@ -353,7 +352,7 @@ class Trainer(ABC):
                                   val_dataset: Dataset | None = None) -> None:
         """Create model from passed dataset by first converting
         the diagrams into circuits using the ansatz.
-        
+
         Parameters
         ----------
         train_dataset : :py:class:`Dataset`
@@ -411,7 +410,7 @@ class Trainer(ABC):
                                 self.verbose != VerbosityLevel.PROGRESS.value),
                           leave=True,
                           position=0)
-        
+
         # Run necessary preparations before training
         self._pre_training_loop()
 

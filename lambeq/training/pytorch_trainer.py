@@ -23,16 +23,16 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, Callable, Type
 
+from discopy import monoidal, rigid
+from discopy.tensor import Tensor
 import torch
 
+from lambeq.ansatz import BaseAnsatz
 from lambeq.core.globals import VerbosityLevel
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.pytorch_model import PytorchModel
 from lambeq.training.trainer import EvalFuncT, Trainer
 from lambeq.typing import StrPathT
-from lambeq.ansatz import BaseAnsatz
-from discopy import rigid, monoidal
-from discopy.tensor import Tensor
 
 
 class PytorchTrainer(Trainer):
@@ -46,7 +46,7 @@ class PytorchTrainer(Trainer):
                  ansatz_ob_map: Mapping[rigid.Ty, monoidal.Ty],
                  loss_function: Callable[..., torch.Tensor],
                  epochs: int,
-                 ansatz_kwargs: Mapping[str, Any] = {},
+                 ansatz_kwargs: Mapping[str, Any] | None = None,
                  optimizer: Type[torch.optim.Optimizer] = torch.optim.AdamW,
                  learning_rate: float = 1e-3,
                  device: int = -1,
@@ -77,8 +77,8 @@ class PytorchTrainer(Trainer):
             A PyTorch loss function from `torch.nn`.
         epochs : int
             Number of training epochs.
-        ansatz_kwargs : mapping of str to any, default: {}
-            Additional arguments for initializing the passed ansatz class.
+        ansatz_kwargs : mapping of str to any, optional.
+            Additional arguments to initialize the passed ansatz class.
         optimizer : torch.optim.Optimizer, default: torch.optim.AdamW
             A PyTorch optimizer from `torch.optim`.
         learning_rate : float, default: 1e-3
@@ -131,7 +131,7 @@ class PytorchTrainer(Trainer):
         if device >= 0:
             torch.set_default_tensor_type(  # pragma: no cover
                     'torch.cuda.FloatTensor')
-            
+
         optimizer_args = dict(optimizer_args or {})
         if learning_rate is not None:
             optimizer_args['lr'] = learning_rate
@@ -147,7 +147,10 @@ class PytorchTrainer(Trainer):
         before training can be done.
 
         """
-        self.optimizer = self.optimizer_cls(self.model.parameters(), **self.optimizer_args)
+        self.optimizer = self.optimizer_cls(
+            self.model.parameters(),
+            **self.optimizer_args
+        )
         self.model.to(self.device)
         super()._pre_training_loop()
 
@@ -202,7 +205,7 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
-        with Tensor.backend("numpy"):
+        with Tensor.backend('numpy'):
             x = [self.ansatz(x_item) for x_item in x]
         with torch.no_grad():
             y_hat = self.model(x)
@@ -227,7 +230,7 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
-        with Tensor.backend("numpy"):
+        with Tensor.backend('numpy'):
             x = [self.ansatz(x_item) for x_item in x]
         y_hat = self.model(x)
         loss = self.loss_function(y_hat, y.to(self.device))

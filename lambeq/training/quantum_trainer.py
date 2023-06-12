@@ -23,9 +23,9 @@ from __future__ import annotations
 from collections.abc import Callable, Mapping
 from typing import Any, Type
 
+from discopy import monoidal, rigid
 import numpy as np
 
-from discopy import rigid, monoidal
 from lambeq.ansatz import BaseAnsatz
 from lambeq.core.globals import VerbosityLevel
 from lambeq.training.checkpoint import Checkpoint
@@ -50,7 +50,7 @@ class QuantumTrainer(Trainer):
                  optimizer: type[Optimizer],
                  optim_hyperparams: dict[str, float],
                  *,
-                 ansatz_kwargs: Mapping[str, Any] = {},
+                 ansatz_kwargs: Mapping[str, Any] | None = None,
                  optimizer_args: dict[str, Any] | None = None,
                  evaluate_functions: Mapping[str, EvalFuncT] | None = None,
                  evaluate_on_train: bool = True,
@@ -76,8 +76,8 @@ class QuantumTrainer(Trainer):
             A loss function.
         epochs : int
             Number of training epochs.
-        ansatz_kwargs : mapping of str to any, default: {}
-            Additional arguments for initializing the passed ansatz class.
+        ansatz_kwargs : mapping of str to any, optional.
+            Additional arguments to initialize the passed ansatz class.
         optimizer : Optimizer
             An optimizer of type :py:class:`lambeq.training.Optimizer`.
         optim_hyperparams : dict of str to float
