@@ -66,7 +66,7 @@ class NelderMeadOptimizer(Optimizer):
         loss_fn: Callable[[Any, Any], float],
         bounds: ArrayLike | None = None,
     ) -> None:
-        """Initialise the COBYLA optimizer.
+        """Initialise the Nelder-Mead optimizer.
 
         The hyperparameters may contain the following key value pairs::
 
