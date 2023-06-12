@@ -346,7 +346,7 @@ class NelderMeadOptimizer(Optimizer):
             self.sim = np.take(self.sim, self.ind, 0)
             self.fsim = np.take(self.fsim, self.ind, 0)
 
-        loss = np.min(self.fsim)
+        loss = float(np.min(self.fsim))
         self.gradient = self.sim[0] * mask
         return loss
 
