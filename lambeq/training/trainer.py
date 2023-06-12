@@ -349,7 +349,8 @@ class Trainer(ABC):
 
     def _init_model_from_datasets(self,
                                   train_dataset: Dataset,
-                                  val_dataset: Dataset | None = None) -> None:
+                                  val_dataset: Dataset | None = None,
+                                  test_dataset: Dataset | None = None) -> None:
         """Create model from passed dataset by first converting
         the diagrams into circuits using the ansatz.
 
@@ -359,11 +360,15 @@ class Trainer(ABC):
             Dataset used for training.
         val_dataset : :py:class:`Dataset`, optional
             Validation dataset.
+        test_dataset : :py:class:`Dataset`, optional
+            Testing dataset. This is not used in any way during
+            training but is necessary for model initialization.
         """
         train_diagrams = train_dataset.data
         val_diagrams = val_dataset.data if val_dataset is not None else []
+        test_diagrams = test_dataset.data if test_dataset is not None else []
 
-        diagrams = train_diagrams + val_diagrams
+        diagrams = train_diagrams + val_diagrams + test_diagrams
         circs = [self.ansatz(diagram) for diagram in diagrams]
         self.model.prepare_for_weight_init(circs)
         self.model.initialise_weights()
@@ -371,6 +376,7 @@ class Trainer(ABC):
     def fit(self,
             train_dataset: Dataset,
             val_dataset: Dataset | None = None,
+            test_dataset: Dataset | None = None,
             evaluation_step: int = 1,
             logging_step: int = 1) -> None:
         """Fit the model on the training data and, optionally,
@@ -382,6 +388,9 @@ class Trainer(ABC):
             Dataset used for training.
         val_dataset : :py:class:`Dataset`, optional
             Validation dataset.
+        test_dataset : :py:class:`Dataset`, optional
+            Testing dataset. This is not used in any way during
+            training but is necessary for model initialization.
         evaluation_step : int, default: 1
             Sets the intervals at which the metrics are evaluated on the
             validation dataset.
@@ -394,6 +403,7 @@ class Trainer(ABC):
             self._init_model_from_datasets(
                 train_dataset,
                 val_dataset,
+                test_dataset,
             )
 
         def writer_helper(*args: Any) -> None:
