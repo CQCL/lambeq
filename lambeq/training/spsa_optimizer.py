@@ -13,7 +13,7 @@
 # limitations under the License.
 
 """
-SPASOptimizer
+SPSAOptimizer
 =============
 Module implementing the Simultaneous Perturbation Stochastic
 Approximation optimizer.
