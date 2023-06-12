@@ -84,6 +84,7 @@ __all__ = [
         'Dataset',
 
         'Optimizer',
+        'NelderMeadOptimizer',
         'SPSAOptimizer',
 
         'Model',
@@ -125,10 +126,10 @@ from lambeq.text2diagram import (
         bag_of_words_reader, cups_reader, spiders_reader,
         stairs_reader, word_sequence_reader)
 from lambeq.tokeniser import Tokeniser, SpacyTokeniser
-from lambeq.training import (Checkpoint, Dataset, Optimizer, SPSAOptimizer,
-                             Model, NumpyModel, PennyLaneModel, PytorchModel,
-                             QuantumModel, TketModel, Trainer, PytorchTrainer,
-                             QuantumTrainer, BinaryCrossEntropyLoss,
+from lambeq.training import (Checkpoint, Dataset, Optimizer, NelderMeadOptimizer,
+                             SPSAOptimizer, Model, NumpyModel, PennyLaneModel, 
+                             PytorchModel, QuantumModel, TketModel, Trainer, 
+                             PytorchTrainer, QuantumTrainer, BinaryCrossEntropyLoss,
                              CrossEntropyLoss, LossFunction, MSELoss)
 from lambeq.version import (version as __version__,
                             version_tuple as __version_info__)
