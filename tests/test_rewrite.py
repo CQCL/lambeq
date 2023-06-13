@@ -205,8 +205,6 @@ def test_unk_rewrite_rule():
 
 
 def test_HandleUnknownWords():
-    """ Test HandleUnknownWords class.
-    """
 
     # Train data sentences
     train_data = ['she was happy to take a photo .',
