@@ -4,7 +4,8 @@ from discopy import Word
 from discopy.rigid import Box, Cap, Cup, Diagram, Id, Ob, Spider, Swap, Ty, cups
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
-                    CurryRewriteRule, SimpleRewriteRule)
+                    CurryRewriteRule, SimpleRewriteRule,
+                    UNKRewriteRule)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
