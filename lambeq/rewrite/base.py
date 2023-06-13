@@ -473,7 +473,7 @@ class HandleUnknownWords():
 
     def handle_train(self, min_freq: int,
                      diagrams: Container[Diagram]
-                    ) -> Container[Diagram]:
+                     ) -> Container[Diagram]:
         """ Handles training dataset unknown words,
         and tokenizes the training diagrams.
 
@@ -517,7 +517,7 @@ class HandleUnknownWords():
             return diagrams
 
         else:
-            raise ValueError('ValueError: handle_test run before handle_train.')
+            raise ValueError('Error: run handle_test before handle_train.')
 
     def replace_test_data(self, new_test_data: Container[str]):
         """ Replaces the test dataset.
