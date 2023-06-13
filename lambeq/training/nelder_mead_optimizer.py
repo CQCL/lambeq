@@ -96,9 +96,7 @@ class NelderMeadOptimizer(Optimizer):
         model : :py:class:`.QuantumModel`
             A lambeq quantum model.
         hyperparams : dict of str to float.
-            A dictionary containing the models hyperparameters
-            with the following keys:
-
+            A dictionary containing the models hyperparameters.
         loss_fn : Callable
             A loss function of form `loss(prediction, labels)`.
         bounds : ArrayLike, optional
