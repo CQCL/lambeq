@@ -191,7 +191,6 @@ class QuantumTrainer(Trainer):
         """
         self.model._clear_predictions()
         x, y = batch
-        x = [self.ansatz(xi) for xi in x]
         loss = self.optimizer.backward((x, y))
         y_hat = self.model._train_predictions[-1]
         self.train_costs.append(loss)
@@ -216,7 +215,6 @@ class QuantumTrainer(Trainer):
 
         """
         x, y = batch
-        x = [self.ansatz(xi) for xi in x]
         y_hat = self.model(x)
         loss = self.loss_function(y_hat, y)
         return y_hat, loss

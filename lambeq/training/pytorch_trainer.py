@@ -24,7 +24,6 @@ from collections.abc import Mapping
 from typing import Any, Callable, Type
 
 from discopy import monoidal, rigid
-from discopy.tensor import Tensor
 import torch
 
 from lambeq.ansatz import BaseAnsatz
@@ -205,8 +204,6 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
-        with Tensor.backend('numpy'):
-            x = [self.ansatz(x_item) for x_item in x]
         with torch.no_grad():
             y_hat = self.model(x)
             loss = self.loss_function(y_hat, y.to(self.device))
@@ -230,8 +227,6 @@ class PytorchTrainer(Trainer):
 
         """
         x, y = batch
-        with Tensor.backend('numpy'):
-            x = [self.ansatz(x_item) for x_item in x]
         y_hat = self.model(x)
         loss = self.loss_function(y_hat, y.to(self.device))
         self.train_costs.append(loss.item())

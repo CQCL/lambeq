@@ -31,9 +31,10 @@ import os
 import random
 import socket
 import sys
-from typing import Any, Callable, Type, TYPE_CHECKING
+from typing import Any, Callable, Tuple, Type, TYPE_CHECKING
 
 from discopy import monoidal, rigid, Tensor
+from discopy.tensor import Diagram
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:
@@ -135,14 +136,21 @@ class Trainer(ABC):
         self.verbose = verbose
         self.seed = seed
 
+        self.train_circuits: list[Diagram] = []
         self.train_costs: list[float] = []
         self.train_epoch_costs: list[float] = []
         self.train_results: dict[str, list[Any]] = {}
         self._train_results_epoch: dict[str, list[Any]] = {}
 
+        self.val_circuits: list[Diagram] = []
         self.val_costs: list[float] = []
         self.val_results: dict[str, list[Any]] = {}
         self._val_results_epoch: dict[str, list[Any]] = {}
+
+        # NOTE: Saving this for the meantime but this
+        # will probably be removed once the test dataset has
+        # been decoupled from the trainer.
+        self.test_circuits: list[Diagram] = []
 
         self.ansatz = self.ansatz_cls(
             self.ansatz_ob_map, **self.ansatz_kwargs
@@ -238,8 +246,11 @@ class Trainer(ABC):
         self.train_costs = checkpoint['train_costs']
         self.train_epoch_costs = checkpoint['train_epoch_costs']
         self.train_results = checkpoint['train_results']
+        self.train_circuits = checkpoint['train_circuits']
         self.val_costs = checkpoint['val_costs']
         self.val_results = checkpoint['val_results']
+        self.val_circuits = checkpoint['val_circuits']
+        self.test_circuits = checkpoint['test_circuits']
         self.start_epoch = checkpoint['epoch']
         self.start_step = checkpoint['step']
 
@@ -347,12 +358,23 @@ class Trainer(ABC):
         if self.from_checkpoint:
             self._load_extra_checkpoint_info(self.checkpoint)
 
-    def _init_model_from_datasets(self,
-                                  train_dataset: Dataset,
-                                  val_dataset: Dataset | None = None,
-                                  test_dataset: Dataset | None = None) -> None:
-        """Create model from passed dataset by first converting
-        the diagrams into circuits using the ansatz.
+    def _init_model_from_datasets(self) -> None:
+        """Initialise model from circuits obtained from
+        the diagrams using the ansatz.
+
+        """
+        circs = self.train_circuits + self.val_circuits + self.test_circuits
+        self.model.prepare_for_weight_init(circs)
+        self.model.initialise_weights()
+
+    def _convert_diagrams_to_circuits(
+        self,
+        train_dataset: Dataset,
+        val_dataset: Dataset | None = None,
+        test_dataset: Dataset | None = None
+    ) -> Tuple[Dataset, Dataset | None, Dataset | None]:
+        """Convert the diagrams from the passed datasets
+        into circuits using the trainer ansatz.
 
         Parameters
         ----------
@@ -368,10 +390,40 @@ class Trainer(ABC):
         val_diagrams = val_dataset.data if val_dataset is not None else []
         test_diagrams = test_dataset.data if test_dataset is not None else []
 
-        diagrams = train_diagrams + val_diagrams + test_diagrams
-        circs = [self.ansatz(diagram) for diagram in diagrams]
-        self.model.prepare_for_weight_init(circs)
-        self.model.initialise_weights()
+        self.train_circuits = [
+            self.ansatz(diagram) for diagram in train_diagrams
+        ]
+        self.val_circuits = [
+            self.ansatz(diagram) for diagram in val_diagrams
+        ]
+        self.test_circuits = [
+            self.ansatz(diagram) for diagram in test_diagrams
+        ]
+
+        train_dataset_circ = Dataset(self.train_circuits,
+                                     train_dataset.targets,
+                                     batch_size=train_dataset.batch_size,
+                                     shuffle=train_dataset.shuffle)
+        val_dataset_circ = None
+        test_dataset_circ = None
+
+        if val_dataset is not None:
+            val_dataset_circ = Dataset(self.val_circuits,
+                                       val_dataset.targets,
+                                       batch_size=val_dataset.batch_size,
+                                       shuffle=val_dataset.shuffle)
+
+        if test_dataset is not None:
+            test_dataset_circ = Dataset(self.test_circuits,
+                                        test_dataset.targets,
+                                        batch_size=test_dataset.batch_size,
+                                        shuffle=test_dataset.shuffle)
+
+        return (
+            train_dataset_circ,
+            val_dataset_circ,
+            test_dataset_circ,
+        )
 
     def fit(self,
             train_dataset: Dataset,
@@ -399,12 +451,16 @@ class Trainer(ABC):
             printed if `verbose = 'text'` (otherwise ignored).
 
         """
+        (train_dataset_circ,
+         val_dataset_circ,
+         _) = self._convert_diagrams_to_circuits(
+            train_dataset,
+            val_dataset,
+            test_dataset,
+        )
+
         if not self.from_checkpoint:
-            self._init_model_from_datasets(
-                train_dataset,
-                val_dataset,
-                test_dataset,
-            )
+            self._init_model_from_datasets()
 
         def writer_helper(*args: Any) -> None:
             if self.use_tensorboard:
@@ -412,7 +468,9 @@ class Trainer(ABC):
 
         # initialise progress bar
         step = self.start_step
-        batches_per_epoch = ceil(len(train_dataset)/train_dataset.batch_size)
+        batches_per_epoch = ceil(
+            len(train_dataset_circ) / train_dataset_circ.batch_size
+        )
         status_bar = tqdm(total=float('inf'),
                           bar_format='{desc}',
                           desc=self._generate_stat_report(),
@@ -434,7 +492,7 @@ class Trainer(ABC):
                             position=1):
             train_loss = 0.0
             with Tensor.backend(self.backend):
-                for batch in tqdm(train_dataset,
+                for batch in tqdm(train_dataset_circ,
                                   desc='Batch',
                                   total=batches_per_epoch,
                                   disable=(self.verbose
@@ -457,7 +515,7 @@ class Trainer(ABC):
                                 train_loss=loss,
                                 val_loss=(self.val_costs[-1] if self.val_costs
                                           else None)))
-            train_loss /= len(train_dataset)
+            train_loss /= len(train_dataset_circ)
             self.train_epoch_costs.append(train_loss)
             writer_helper('train/epoch_loss', train_loss, epoch + 1)
 
@@ -466,7 +524,8 @@ class Trainer(ABC):
                     and self.evaluate_functions is not None):
                 for name in self._train_results_epoch:
                     self.train_results[name].append(
-                        sum(self._train_results_epoch[name])/len(train_dataset)
+                        sum(self._train_results_epoch[name])
+                        / len(train_dataset_circ)
                     )
                     self._train_results_epoch[name] = []  # reset
                     writer_helper(
@@ -480,16 +539,17 @@ class Trainer(ABC):
                                               if self.val_costs else None)))
 
             # evaluate metrics on validation data
-            if val_dataset is not None:
+            if val_dataset_circ is not None:
                 if epoch % evaluation_step == 0:
                     val_loss = 0.0
                     seen_so_far = 0
-                    batches_per_validation = ceil(len(val_dataset)
-                                                  / val_dataset.batch_size)
+                    batches_per_validation = ceil(
+                        len(val_dataset_circ) / val_dataset_circ.batch_size
+                    )
                     with Tensor.backend(self.backend):
                         disable_tqdm = (self.verbose
                                         != VerbosityLevel.PROGRESS.value)
-                        for v_batch in tqdm(val_dataset,
+                        for v_batch in tqdm(val_dataset_circ,
                                             desc='Validation batch',
                                             total=batches_per_validation,
                                             disable=disable_tqdm,
@@ -509,7 +569,7 @@ class Trainer(ABC):
                                     self._generate_stat_report(
                                         train_loss=train_loss,
                                         val_loss=val_loss/seen_so_far))
-                        val_loss /= len(val_dataset)
+                        val_loss /= len(val_dataset_circ)
                         self.val_costs.append(val_loss)
                         status_bar.set_description(
                                 self._generate_stat_report(
@@ -521,7 +581,7 @@ class Trainer(ABC):
                         for name in self._val_results_epoch:
                             self.val_results[name].append(
                                 sum(self._val_results_epoch[name])
-                                / len(val_dataset))
+                                / len(val_dataset_circ))
                             self._val_results_epoch[name] = []  # reset
                             writer_helper(
                                 f'val/{name}', self.val_results[name][-1],
@@ -543,7 +603,10 @@ class Trainer(ABC):
                                  'cls': self.ansatz_cls,
                                  'ob_map': self.ansatz_ob_map,
                                  'kwargs': self.ansatz_kwargs,
-                             }}
+                             },
+                             'train_circuits': self.train_circuits,
+                             'val_circuits': self.val_circuits,
+                             'test_circuits': self.test_circuits}
             self.save_checkpoint(trainer_stats, self.log_dir)
             if self.verbose == VerbosityLevel.TEXT.value:  # pragma: no cover
                 if epoch == 0 or (epoch+1) % logging_step == 0:
