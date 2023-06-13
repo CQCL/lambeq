@@ -114,7 +114,7 @@ from lambeq.core.types import AtomicType
 from lambeq.pregroups import (create_pregroup_diagram, diagram2str,
                               is_pregroup_diagram, remove_cups, remove_swaps)
 from lambeq.rewrite import (RewriteRule, CoordinationRewriteRule,
-                            CurryRewriteRule, SimpleRewriteRule, Rewriter, 
+                            CurryRewriteRule, SimpleRewriteRule, Rewriter,
                             UNKRewriteRule)
 from lambeq.text2diagram import (
         CCGAtomicType, CCGRule, CCGRuleUseError, CCGTree,
