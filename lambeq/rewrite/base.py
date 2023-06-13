@@ -428,17 +428,17 @@ class Rewriter:
         return ob
 
 
-def dataset_to_words(dataset: Iterable[str]) -> Iterable[str]:
+def dataset_to_words(dataset: list[str]) -> list[str]:
     """ Extracts words from a dataset of sentences.
 
     Parameters
     -----------
-    dataset: Iterable[str]
+    dataset: list[str]
         A list of sentences.
 
     Returns
     -------
-    words: Iterable[str]
+    words: list[str]
         A list of words.
     """
     dataset_string = ' '.join(dataset)
@@ -448,22 +448,22 @@ def dataset_to_words(dataset: Iterable[str]) -> Iterable[str]:
 
 class HandleUnknownWords():
 
-    def __init__(self, training_data: Iterable[str],
-                 test_data: Iterable[str],
-                 train_unknown_words: Iterable[str] | None = None,
-                 test_unknown_words: Iterable[str] | None = None,
+    def __init__(self, training_data: list[str],
+                 test_data: list[str],
+                 train_unknown_words: list[str] | None = None,
+                 test_unknown_words: list[str] | None = None,
                  train_check: bool = False):
         """ Instantiate a handler for unknown words.
 
         Parameters
         ----------
-        training_data: Iterable[str]
+        training_data: list[str]
             List of training dataset sentences
-        test_data: Iterable[str]
+        test_data: list[str]
             List of test dataset sentences
-        train_unknown_words: Iterable[str]
+        train_unknown_words: list[str]
             List of training dataset words
-        test_unknown_words: Iterable[str]
+        test_unknown_words: list[str]
             List of test dataset words
         train_check: bool
             Flag for making sure handle_train is run before handle_test
@@ -475,8 +475,8 @@ class HandleUnknownWords():
         self.train_check = train_check
 
     def handle_train(self, min_freq: int,
-                     diagrams: Container[Diagram]
-                     ) -> Container[Diagram]:
+                     diagrams: list[Diagram]
+                     ) -> list[Diagram]:
         """ Handles training dataset unknown words,
         and tokenizes the training diagrams.
 
@@ -484,12 +484,12 @@ class HandleUnknownWords():
         ----------
         min_freq: int
             The minimum frequency threshold for indicating unknown words
-        diagrams: Container[Diagram]
+        diagrams: list[Diagram]
             The list of training dataset parsed diagrams to be tokenized
 
         Returns
         -------
-        diagrams: Container[Diagram]
+        diagrams: list[Diagram]
         """
         self.train_check = True
         words = [i for i in self.training_data if self.training_data.count(i)
@@ -502,13 +502,13 @@ class HandleUnknownWords():
 
         return diagrams
 
-    def handle_test(self, diagrams: Container[Diagram]) -> Container[Diagram]:
+    def handle_test(self, diagrams: list[Diagram]) -> list[Diagram]:
         """ Handles test dataset unknown words,
         and tokenizes the test diagrams.
 
         Returns
         -------
-        diagrams: Container[Diagram]
+        diagrams: list[Diagram]
         """
         if self.train_check:
             words = [i for i in self.test_data if i not in self.training_data]
@@ -522,12 +522,12 @@ class HandleUnknownWords():
         else:
             raise ValueError('Error: run handle_test before handle_train.')
 
-    def replace_test_data(self, new_test_data: Iterable[str]):
+    def replace_test_data(self, new_test_data: list[str]):
         """ Replaces the test dataset.
 
         Parameters
         ----------
-        new_test_data: Iterable[str]
+        new_test_data: list[str]
             The new test dataset.
         """
         self.test_data = dataset_to_words(new_test_data)
