@@ -428,17 +428,17 @@ class Rewriter:
         return ob
 
 
-def dataset_to_words(dataset: Container[str]) -> Container[str]:
+def dataset_to_words(dataset: Iterable[str]) -> Iterable[str]:
     """ Extracts words from a dataset of sentences.
 
     Parameters
     -----------
-    dataset: Container[str]
+    dataset: Iterable[str]
         A list of sentences.
 
     Returns
     -------
-    words: Container[str]
+    words: Iterable[str]
         A list of words.
     """
     dataset_string = ' '.join(dataset)
@@ -448,28 +448,31 @@ def dataset_to_words(dataset: Container[str]) -> Container[str]:
 
 class HandleUnknownWords():
 
-    def __init__(self, training_data: Container[str],
-                 test_data: Container[str]):
+    def __init__(self, training_data: Iterable[str],
+                 test_data: Iterable[str],
+                 train_unknown_words: Iterable[str] | None = None,
+                 test_unknown_words: Iterable[str] | None = None,
+                 train_check: bool = False):
         """ Instantiate a handler for unknown words.
 
         Parameters
         ----------
-        training_data: Container[str]
+        training_data: Iterable[str]
             List of training dataset sentences
-        test_data: Constainer[str]
+        test_data: Iterable[str]
             List of test dataset sentences
-        train_unknown_words: Container[str]
+        train_unknown_words: Iterable[str]
             List of training dataset words
-        test_unknown_words: Container[str]
+        test_unknown_words: Iterable[str]
             List of test dataset words
         train_check: bool
             Flag for making sure handle_train is run before handle_test
         """
         self.training_data = dataset_to_words(training_data)
         self.test_data = dataset_to_words(test_data)
-        self.train_unknown_words = []
-        self.test_unknown_words = []
-        self.train_check = False
+        self.train_unknown_words = train_unknown_words
+        self.test_unknown_words = test_unknown_words
+        self.train_check = train_check
 
     def handle_train(self, min_freq: int,
                      diagrams: Container[Diagram]
@@ -519,12 +522,12 @@ class HandleUnknownWords():
         else:
             raise ValueError('Error: run handle_test before handle_train.')
 
-    def replace_test_data(self, new_test_data: Container[str]):
+    def replace_test_data(self, new_test_data: Iterable[str]):
         """ Replaces the test dataset.
 
         Parameters
         ----------
-        new_test_data: Container[str]
+        new_test_data: Iterable[str]
             The new test dataset.
         """
         self.test_data = dataset_to_words(new_test_data)
