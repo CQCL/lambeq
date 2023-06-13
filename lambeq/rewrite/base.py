@@ -446,6 +446,28 @@ def dataset_to_words(dataset: list[str]) -> list[str]:
     return words
 
 
+def remove_words(source_list, words_to_remove):
+    """ Remove words from the source list.
+    
+    Parameters
+    ----------
+    source_list: list[str]
+        A list of words.
+    words_to_remove: list[str]
+        A list of words to be removed.
+        
+    Returns
+    -------
+    source_list: list[str]
+        The updated source_list
+    """
+    for word in words_to_remove:
+        if word in source_list:
+            source_list.remove(word)
+
+    return source_list
+
+
 class HandleUnknownWords():
 
     def __init__(self, training_data: list[str],
@@ -498,7 +520,12 @@ class HandleUnknownWords():
         self.train_unknown_words = words
 
         rewriter = Rewriter([UNKRewriteRule(words=words)])
-        diagrams = [rewriter(i) for i in diagrams]
+
+        if type(diagrams) is not list:
+            diagrams = rewriter(diagrams)
+
+        else:
+            diagrams = [rewriter(i) for i in diagrams]
 
         return diagrams
 
@@ -515,7 +542,12 @@ class HandleUnknownWords():
             self.test_unknown_words = words
 
             rewriter = Rewriter([UNKRewriteRule(words=words)])
-            diagrams = [rewriter(i) for i in diagrams]
+
+            if type(diagrams) is not list:
+                diagrams = rewriter(diagrams)
+
+            else:
+                diagrams = [rewriter(i) for i in diagrams]
 
             return diagrams
 
