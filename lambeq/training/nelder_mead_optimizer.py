@@ -70,26 +70,25 @@ class NelderMeadOptimizer(Optimizer):
 
         The hyperparameters may contain the following key value pairs::
 
-        hyperparams = {
-            'adpative': Adjust the algorithm's parameters based on the
-            dimensionality of the problem. This adaptation is
-            particularly helpful when minimizing functions in
-            high-dimensional spaces, bool.
+        - `adaptive`: Adjust the algorithm's parameters based on the
+                dimensionality of the problem. This adaptation is
+                particularly helpful when minimizing functions in
+                high-dimensional spaces, bool.
 
-            'initial_simplex': If provided, the `initial simplex`
-            replaces the initial model weights. Each row
-            initial_simplex[i, :] should contain the coordinates
-            of the ith vertex among the N+1 vertices in the
-            simplex, where N represents the dimension,
-            ArrayLike (N+1, N), float.
+        - `initial_simplex`: If provided, the `initial simplex`
+                replaces the initial model weights. Each row
+                initial_simplex[i, :] should contain the coordinates
+                of the ith vertex among the N+1 vertices in the
+                simplex, where N represents the dimension,
+                ArrayLike (N+1, N), float.
 
-            'xatol': The acceptable level of absolute error in the
-            optimal model weights (optimal solution) between
-            iterations that indicates convergence, float.
+        - `xatol`: The acceptable level of absolute error in the
+                optimal model weights (optimal solution) between
+                iterations that indicates convergence, float.
 
-            'fatol': The acceptable level of absolute error in the
-            loss value between iterations that indicates convergence,
-            float.
+        - `fatol`: The acceptable level of absolute error in the
+                loss value between iterations that indicates convergence,
+                float.
         }
 
         Parameters
@@ -97,7 +96,9 @@ class NelderMeadOptimizer(Optimizer):
         model : :py:class:`.QuantumModel`
             A lambeq quantum model.
         hyperparams : dict of str to float.
-            A dictionary containing the models hyperparameters.
+            A dictionary containing the models hyperparameters
+            with the following keys:
+
         loss_fn : Callable
             A loss function of form `loss(prediction, labels)`.
         bounds : ArrayLike, optional
@@ -339,7 +340,7 @@ class NelderMeadOptimizer(Optimizer):
                             self.fsim[j] = self.func(
                                 diagrams, targets, self.sim[j]
                             )
-        except BaseException:
+        except Exception:
             pass
         finally:
             self.ind = np.argsort(self.fsim)
@@ -358,7 +359,7 @@ class NelderMeadOptimizer(Optimizer):
         self.zero_grad()
 
     def update_hyper_params(self) -> None:
-        """Update the hyperparameters of the SPSA algorithm."""
+        """Update the hyperparameters of the Nelder-Mead algorithm."""
         self.current_sweep += 1
 
     def state_dict(self) -> dict[str, Any]:
