@@ -448,14 +448,14 @@ def dataset_to_words(dataset: list[str]) -> list[str]:
 
 def remove_words(source_list, words_to_remove):
     """ Remove words from the source list.
-    
+
     Parameters
     ----------
     source_list: list[str]
         A list of words.
     words_to_remove: list[str]
         A list of words to be removed.
-        
+
     Returns
     -------
     source_list: list[str]
