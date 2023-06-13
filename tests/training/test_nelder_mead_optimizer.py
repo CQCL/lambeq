@@ -64,6 +64,7 @@ def test_init_without_adpative():
     assert optim.current_sweep
     assert optim.adaptive == False
     assert optim.initial_simplex is None
+    assert optim.maxfev
     assert optim.xatol
     assert optim.fatol
     assert optim.rho
@@ -90,6 +91,7 @@ def test_init_with_adpative():
     assert optim.current_sweep
     assert optim.adaptive == True
     assert optim.initial_simplex is None
+    assert optim.maxfev
     assert optim.xatol
     assert optim.fatol
     assert optim.rho
@@ -180,6 +182,10 @@ def test_load_state_dict():
         'initial_simplex': None,
         'xatol': 1e-7,
         'fatol': 1e-7,
+        'sim': np.random.rand(4, 3),
+        'fsim': np.random.rand(4),
+        'ncalls': 50,
+        'first_iter': False,
         'current_sweep': 10,
     }
     model = ModelDummy()
@@ -192,4 +198,8 @@ def test_load_state_dict():
     assert optim.initial_simplex == state_dict['initial_simplex']
     assert optim.xatol == state_dict['xatol']
     assert optim.fatol == state_dict['fatol']
+    assert np.allclose(optim.sim, state_dict['sim'])
+    assert np.allclose(optim.fsim, state_dict['fsim'])
+    assert optim.ncalls == state_dict['ncalls']
+    assert optim.first_iter == state_dict['first_iter']
     assert optim.current_sweep == state_dict['current_sweep']
