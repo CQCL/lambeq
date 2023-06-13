@@ -40,7 +40,7 @@ class QuantumTrainer(Trainer):
     """A Trainer for the quantum pipeline."""
 
     model: QuantumModel
-    optimizer: Optimizer    # type: ignore[assignment]
+    optimizer: Optimizer
 
     def __init__(self,
                  model: QuantumModel,

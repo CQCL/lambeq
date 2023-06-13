@@ -39,7 +39,7 @@ class PytorchTrainer(Trainer):
     """A PyTorch trainer for the classical pipeline."""
 
     model: PytorchModel
-    optimizer: torch.optim.Optimizer    # type: ignore[assignment]
+    optimizer: torch.optim.Optimizer
 
     def __init__(self,
                  model: PytorchModel,
