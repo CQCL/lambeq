@@ -78,8 +78,8 @@ __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
 
 from abc import ABC, abstractmethod
 from collections import Counter
-from typing import List, Tuple, Optional, Union
 from collections.abc import Container, Iterable
+from typing import List, Optional
 
 from discopy import Word
 from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
@@ -445,7 +445,8 @@ class HandleUnknownWords:
         self.min_freq = min_freq
         self.unknown_words = set()
 
-    def train(self, diagrams: List[Diagram], strings: Optional[List[str]] = None) -> None:
+    def train(self, diagrams: List[Diagram],
+              strings: Optional[List[str]] = None):
         word_counts = Counter()
         if strings is not None:
             for string in strings:
@@ -454,16 +455,20 @@ class HandleUnknownWords:
             for box in diagram.boxes:
                 if isinstance(box, Word):
                     word_counts[box.name] += 1
-        self.unknown_words = set(word for word, count in word_counts.items() if count < self.min_freq)
+        self.unknown_words = set(word
+                                 for word, count in word_counts.items()
+                                 if count < self.min_freq)
 
-
-    def test(self, diagrams: List[Diagram], unknown_words: List[str]) -> List[Diagram]:
+    def test(self, diagrams: List[Diagram],
+             unknown_words: List[str]) -> List[Diagram]:
         rule = UnknownWordsRewriteRule(unknown_words=unknown_words)
         rewriter = Rewriter([rule])
         rewritten_diagram = rewriter(diagrams)
         return rewritten_diagram
 
-    def __call__(self, diagrams: List[Diagram], train: bool = True, strings: Optional[List[str]] = None) -> List[Diagram]:
+    def __call__(self, diagrams: List[Diagram],
+                 train: bool = True,
+                 strings: Optional[List[str]] = None) -> List[Diagram]:
         if train:
             self.train(diagrams, strings)
             return self.test(diagrams, self.unknown_words)
