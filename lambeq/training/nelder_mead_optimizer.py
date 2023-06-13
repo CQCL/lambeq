@@ -134,7 +134,7 @@ class NelderMeadOptimizer(Optimizer):
             self.model.weights = np.copy(w)
             return self.loss_fn(self.model(x), y)
 
-        self.func = objective
+        self.objective_func = objective
         self.current_sweep = 1
         self.adaptive = hyperparams.get('adaptive', False)
         self.initial_simplex = hyperparams.get('initial_simplex', None)
@@ -256,8 +256,10 @@ class NelderMeadOptimizer(Optimizer):
         if self.first_iter:
             try:
                 for k in range(self.N + 1):
-                    self.fsim[k] = self.func(diagrams, targets, self.sim[k])
-            except BaseException:
+                    self.fsim[k] = self.objective_func(diagrams,
+                                                       targets,
+                                                       self.sim[k])
+            except RuntimeError:
                 pass
             finally:
                 self.ind = np.argsort(self.fsim)
@@ -284,7 +286,7 @@ class NelderMeadOptimizer(Optimizer):
             xbar = np.add.reduce(self.sim[:-1], 0) / self.N
             xr = (1 + self.rho) * xbar - self.rho * self.sim[-1]
             xr = self.project(xr)
-            fxr = self.func(diagrams, targets, xr)
+            fxr = self.objective_func(diagrams, targets, xr)
             doshrink = 0
 
             if fxr < self.fsim[0]:
@@ -292,7 +294,7 @@ class NelderMeadOptimizer(Optimizer):
                     1 + self.rho * self.chi
                 ) * xbar - self.rho * self.chi * self.sim[-1]
                 xe = self.project(xe)
-                fxe = self.func(diagrams, targets, xe)
+                fxe = self.objective_func(diagrams, targets, xe)
                 if fxe < fxr:
                     self.sim[-1] = xe
                     self.fsim[-1] = fxe
@@ -310,7 +312,7 @@ class NelderMeadOptimizer(Optimizer):
                             1 + self.psi * self.rho
                         ) * xbar - self.psi * self.rho * self.sim[-1]
                         xc = self.project(xc)
-                        fxc = self.func(diagrams, targets, xc)
+                        fxc = self.objective_func(diagrams, targets, xc)
 
                         if fxc <= fxr:
                             self.sim[-1] = xc
@@ -321,7 +323,7 @@ class NelderMeadOptimizer(Optimizer):
                         # Perform an inside contraction
                         xcc = (1 - self.psi) * xbar + self.psi * self.sim[-1]
                         xcc = self.project(xcc)
-                        fxcc = self.func(diagrams, targets, xcc)
+                        fxcc = self.objective_func(diagrams, targets, xcc)
 
                         if fxcc < self.fsim[-1]:
                             self.sim[-1] = xcc
@@ -335,10 +337,10 @@ class NelderMeadOptimizer(Optimizer):
                                 self.sim[j] - self.sim[0]
                             )
                             self.sim[j] = self.project(self.sim[j])
-                            self.fsim[j] = self.func(
+                            self.fsim[j] = self.objective_func(
                                 diagrams, targets, self.sim[j]
                             )
-        except Exception:
+        except RuntimeError:
             pass
         finally:
             self.ind = np.argsort(self.fsim)

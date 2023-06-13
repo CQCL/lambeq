@@ -60,7 +60,7 @@ def test_init_without_adpative():
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
     optim = NelderMeadOptimizer(model, hyperparams={}, loss_fn=loss)
-    assert optim.func
+    assert optim.objective_func
     assert optim.current_sweep
     assert optim.adaptive == False
     assert optim.initial_simplex is None
@@ -86,7 +86,7 @@ def test_init_with_adpative():
     optim = NelderMeadOptimizer(
         model, hyperparams={'adaptive': True}, loss_fn=loss
     )
-    assert optim.func
+    assert optim.objective_func
     assert optim.current_sweep
     assert optim.adaptive == True
     assert optim.initial_simplex is None
