@@ -68,12 +68,15 @@ class NelderMeadOptimizer(Optimizer):
     ) -> None:
         """Initialise the Nelder-Mead optimizer.
 
-        The hyperparameters may contain the following key value pairs::
+        The hyperparameters may contain the following key value pairs:
 
         - `adaptive`: Adjust the algorithm's parameters based on the
                 dimensionality of the problem. This adaptation is
                 particularly helpful when minimizing functions in
                 high-dimensional spaces, bool.
+
+        - `maxfev`: Maximum number of function evaluations allowed.
+                Default is 1000. int.
 
         - `initial_simplex`: If provided, the `initial simplex`
                 replaces the initial model weights. Each row
@@ -119,6 +122,8 @@ class NelderMeadOptimizer(Optimizer):
         """
         super().__init__(model, hyperparams, loss_fn, bounds)
 
+        self.ncalls = 0
+
         def objective(x, y, w):
             """The objective function to be minimized.
 
@@ -131,12 +136,24 @@ class NelderMeadOptimizer(Optimizer):
             w : ArrayLike
                 The model parameters.
             """
+            self.ncalls += 1
             self.model.weights = np.copy(w)
-            return self.loss_fn(self.model(x), y)
+            result = self.loss_fn(self.model(x), y)
+
+            # `result` must be a scalar
+            if not np.isscalar(result):
+                try:
+                    result = np.asarray(result).item()
+                except (TypeError, ValueError) as e:
+                    raise ValueError(
+                        'Objective function must return a scalar'
+                    ) from e
+            return result
 
         self.objective_func = objective
         self.current_sweep = 1
         self.adaptive = hyperparams.get('adaptive', False)
+        self.maxfev = hyperparams.get('maxfev', 1000)
         self.initial_simplex = hyperparams.get('initial_simplex', None)
         self.xatol = hyperparams.get('xatol', 1e-4)
         self.fatol = hyperparams.get('fatol', 1e-4)
@@ -265,12 +282,6 @@ class NelderMeadOptimizer(Optimizer):
                 self.ind = np.argsort(self.fsim)
                 self.sim = np.take(self.sim, self.ind, 0)
                 self.fsim = np.take(self.fsim, self.ind, 0)
-
-                self.nd = np.argsort(self.fsim)
-                self.fsim = np.take(self.fsim, self.ind, 0)
-
-                # sort so sim[0,:] has the lowest function value
-                self.sim = np.take(self.sim, self.ind, 0)
                 self.first_iter = False  # set flag to false
 
         try:
@@ -279,15 +290,15 @@ class NelderMeadOptimizer(Optimizer):
                 <= self.xatol
                 and np.max(np.abs(self.fsim[0] - self.fsim[1:])) <= self.fatol
             ):
-                raise ValueError(
-                    'xtol and ftol termination conditions are satisfied.'
+                raise RuntimeError(
+                    'xatol and fatol termination conditions are satisfied.'
                 )
 
             xbar = np.add.reduce(self.sim[:-1], 0) / self.N
             xr = (1 + self.rho) * xbar - self.rho * self.sim[-1]
             xr = self.project(xr)
             fxr = self.objective_func(diagrams, targets, xr)
-            doshrink = 0
+            shrink = False
 
             if fxr < self.fsim[0]:
                 xe = (
@@ -306,8 +317,7 @@ class NelderMeadOptimizer(Optimizer):
                     self.sim[-1] = xr
                     self.fsim[-1] = fxr
                 else:  # fxr >= fsim[-2]
-                    # Perform contraction
-                    if fxr < self.fsim[-1]:
+                    if fxr < self.fsim[-1]:  # Perform contraction
                         xc = (
                             1 + self.psi * self.rho
                         ) * xbar - self.psi * self.rho * self.sim[-1]
@@ -318,9 +328,8 @@ class NelderMeadOptimizer(Optimizer):
                             self.sim[-1] = xc
                             self.fsim[-1] = fxc
                         else:
-                            doshrink = 1
-                    else:
-                        # Perform an inside contraction
+                            shrink = True
+                    else:  # Perform an inside contraction
                         xcc = (1 - self.psi) * xbar + self.psi * self.sim[-1]
                         xcc = self.project(xcc)
                         fxcc = self.objective_func(diagrams, targets, xcc)
@@ -329,9 +338,9 @@ class NelderMeadOptimizer(Optimizer):
                             self.sim[-1] = xcc
                             self.fsim[-1] = fxcc
                         else:
-                            doshrink = 1
+                            shrink = True
 
-                    if doshrink:
+                    if shrink:
                         for j in self.one2np1:
                             self.sim[j] = self.sim[0] + self.sigma * (
                                 self.sim[j] - self.sim[0]
@@ -349,11 +358,19 @@ class NelderMeadOptimizer(Optimizer):
 
         loss = float(np.min(self.fsim))
         self.gradient = self.sim[0] * mask
+
+        if self.ncalls >= self.maxfev:
+            warnings.warn(
+                'Maximum number of function evaluations exceeded.',
+                stacklevel=3
+            )
+
         return loss
 
     def step(self) -> None:
         """Perform optimisation step."""
-        self.model.weights = np.copy(self.gradient)
+        weights = np.copy(self.gradient)
+        self.model.weights = weights
         self.model.weights = self.project(self.model.weights)
         self.update_hyper_params()
         self.zero_grad()
@@ -376,6 +393,10 @@ class NelderMeadOptimizer(Optimizer):
             'initial_simplex': self.initial_simplex,
             'xatol': self.xatol,
             'fatol': self.fatol,
+            'sim': self.sim,
+            'fsim': self.fsim,
+            'ncalls': self.ncalls,
+            'first_iter': self.first_iter,
             'current_sweep': self.current_sweep,
         }
 
@@ -392,4 +413,8 @@ class NelderMeadOptimizer(Optimizer):
         self.initial_simplex = state_dict['initial_simplex']
         self.xatol = state_dict['xatol']
         self.fatol = state_dict['fatol']
+        self.sim = state_dict['sim']
+        self.fsim = state_dict['fsim']
+        self.ncalls = state_dict['ncalls']
+        self.first_iter = state_dict['first_iter']
         self.current_sweep = state_dict['current_sweep']
