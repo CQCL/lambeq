@@ -7,7 +7,7 @@ from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, SimpleRewriteRule,
                     UNKRewriteRule)
 
-from lambeq.rewrite.base import HandleUnknownWords
+from lambeq.rewrite.base import HandleUnknownWords, dataset_to_words, remove_words
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
