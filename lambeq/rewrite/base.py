@@ -518,7 +518,8 @@ class HandleUnknownWords():
                  < min_freq]
 
         self.train_unknown_words = words
-        self.training_data = remove_words(self.training_data, self.train_unknown_words)
+        self.training_data = remove_words(self.training_data,
+                                          self.train_unknown_words)
         rewriter = Rewriter([UNKRewriteRule(words=words)])
 
         if type(diagrams) is not list:
