@@ -16,4 +16,5 @@ __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'CurryRewriteRule',
            'SimpleRewriteRule', 'Rewriter', 'UNKRewriteRule']
 
 from lambeq.rewrite.base import (RewriteRule, CoordinationRewriteRule,
-                                 CurryRewriteRule, SimpleRewriteRule, Rewriter, UNKRewriteRule)
+                                 CurryRewriteRule, SimpleRewriteRule, Rewriter,
+                                 UNKRewriteRule)
