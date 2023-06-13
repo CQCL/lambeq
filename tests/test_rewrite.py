@@ -1,7 +1,7 @@
 import pytest
 
 from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups
+from discopy.rigid import Box, Cap, Cup, Diagram, Id, Ob, Spider, Swap, Ty, cups
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, SimpleRewriteRule)
