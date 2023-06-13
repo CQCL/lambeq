@@ -180,9 +180,7 @@ def test_unknown_words_rewrite_rule():
     diagram = parser.sentence2diagram(sentence).normal_form()
 
     unknown_words = ['unknown']
-    rule = UnknownWordsRewriteRule(
-        template=diagram,
-        unknown_words= unknown_words)
+    rule = UnknownWordsRewriteRule(unknown_words=unknown_words)
 
     rewriter = Rewriter([rule])
     rewritten_diagram = rewriter(diagram)

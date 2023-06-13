@@ -404,20 +404,16 @@ class UnknownWordsRewriteRule(RewriteRule):
     pregroup type.
     """
     def __init__(self,
-                 template,
                  unknown_words: Container[str] | None = None) -> None:
         """Instantiate a UnknownWordsRewriteRule.
 
         Parameters
         ----------
-        template : :py:class:`discopy.rigid.Diagram`
-            The diagram that a matching box is replaced with.
         words : container of str, optional
             A list of words to be rewritten by this rule. If a box does
             not have one of these words, it will not be rewritten with
             UNK.
         """
-        self.template = template
         self.unknown_words = [] if unknown_words is None else unknown_words
 
     def matches(self, box: Box) -> bool:
