@@ -74,9 +74,11 @@ See `examples/rewrite.ipynb` for illustrative usage.
 from __future__ import annotations
 
 __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter', 'UnknownWordsRewriteRule']
+           'Rewriter', 'UnknownWordsRewriteRule', 'HandleUnknownWords']
 
 from abc import ABC, abstractmethod
+from collections import Counter
+from typing import List, Tuple, Optional, Union
 from collections.abc import Container, Iterable
 
 from discopy import Word
@@ -423,3 +425,47 @@ class UnknownWordsRewriteRule(RewriteRule):
 
     def rewrite(self, box: Box) -> Diagram:
         return type(box)('UNK',  dom=box.dom, cod=box.cod)
+
+
+class HandleUnknownWords:
+    """Handle unknown words in diagrams using a minimum frequency. Words
+    that appear less than `min_freq` times in the training data are
+    replaced with UNK boxes. This rule is used in conjunction with
+    :py:class:`UnknownWordsRewriteRule` to replace unknown words in
+    diagrams.
+    """
+    def __init__(self, min_freq: int = 1) -> None:
+        """Instantiate a HandleUnknownWords rule.
+
+        Parameters
+        ----------
+        min_freq : int, optional
+            The minimum frequency of a word to be considered known.
+        """
+        self.min_freq = min_freq
+        self.unknown_words = set()
+
+    def train(self, diagrams: List[Diagram], strings: Optional[List[str]] = None) -> None:
+        word_counts = Counter()
+        if strings is not None:
+            for string in strings:
+                word_counts.update(string.split())
+        for diagram in diagrams:
+            for box in diagram.boxes:
+                if isinstance(box, Word):
+                    word_counts[box.name] += 1
+        self.unknown_words = set(word for word, count in word_counts.items() if count < self.min_freq)
+
+
+    def test(self, diagrams: List[Diagram], unknown_words: List[str]) -> List[Diagram]:
+        rule = UnknownWordsRewriteRule(unknown_words=unknown_words)
+        rewriter = Rewriter([rule])
+        rewritten_diagram = rewriter(diagrams)
+        return rewritten_diagram
+
+    def __call__(self, diagrams: List[Diagram], train: bool = True, strings: Optional[List[str]] = None) -> List[Diagram]:
+        if train:
+            self.train(diagrams, strings)
+            return self.test(diagrams, self.unknown_words)
+        else:
+            return self.test(diagrams, self.unknown_words)

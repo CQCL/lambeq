@@ -4,7 +4,8 @@ from discopy import Word
 from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups, Ob
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
-                    CurryRewriteRule, SimpleRewriteRule, UnknownWordsRewriteRule, BobcatParser)
+                    CurryRewriteRule, SimpleRewriteRule, UnknownWordsRewriteRule, 
+                    HandleUnknownWords, BobcatParser)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -195,3 +196,18 @@ def test_unknown_words_rewrite_rule():
             offsets=[0, 1, 0, 2, 1, 2, 1])
 
     assert rewritten_diagram == expected_diagram
+
+def test_handle_unknown_words():
+    train_sentence = 'I love unknown unknown'
+    test_sentence = 'love unknown is what I love'
+    parser = BobcatParser()
+    train_diagrams = parser.sentence2diagram(train_sentence).normal_form()
+    test_diagrams = parser.sentence2diagram(test_sentence).normal_form()
+
+    handle_unknown_words = HandleUnknownWords(min_freq=2)
+    processed_train_diagrams = handle_unknown_words(train_diagrams, train=True, strings=None)
+    processed_test_diagrams = handle_unknown_words(test_diagrams, train=False, strings=None)
+    
+    assert handle_unknown_words.unknown_words == set(['I', 'love'])
+    assert processed_train_diagrams.boxes[0].name == 'UNK' and processed_train_diagrams.boxes[1].name == 'UNK'
+    assert processed_test_diagrams.boxes[0].name == 'UNK' and processed_test_diagrams.boxes[10].name == 'unknown'
