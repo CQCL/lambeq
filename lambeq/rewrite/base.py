@@ -67,11 +67,11 @@ of provided rules can be retrieved using
     subject_rel_pronoun
         The subject relative pronoun rule simplifies subject relative
         pronouns based on [SCC2014a]_ using cups and spiders.
-        
+
     unknown
-        The unknown words depending on whether this is for training or evaluation
-        are defined, and when matched in a diagram's box, the box value will be set
-        to UNK.
+        The unknown words depending on whether this is for training
+        or evaluation are defined, and when matched in a diagram's
+        box, the box value will be set to UNK.
 
 See `examples/rewrite.ipynb` for illustrative usage.
 
@@ -85,7 +85,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
 
 from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty, Ob
+from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
 from discopy.rigid import caps, spiders
 
 from lambeq.core.types import AtomicType
@@ -322,19 +322,22 @@ class CurryRewriteRule(RewriteRule):
 
         return new_box
 
+
 class UNKRewriteRule(RewriteRule):
     """A rewrite rule for unknown words.
-    This rule matches the word in the given list of words and replaces them with UNK and 
-    when passed a diagram, replaces all the boxes containing an unknown word with an UNK 
-    box corresponding to the same pregroup type.
+    This rule matches the word in the given list of words
+    and replaces them with UNK and when passed a diagram,
+    replaces all the boxes containing an unknown word
+    with an UNK box corresponding to the same pregroup type.
     """
     def __init__(self, words: Container[str] | None = None) -> None:
         """Instantiate a UnknownWordsRewriteRule.
         Parameters
         ----------
         words : container of str, optional
-            A list of words to be rewritten by this rule. If a box does
-            not have one of these words, it will not be rewritten with UNK.
+            A list of words to be rewritten by this rule.
+            If a box does not have one of these words, it
+            will not be rewritten with UNK.
         """
         self.words = [] if words is None else words
 
@@ -344,7 +347,8 @@ class UNKRewriteRule(RewriteRule):
         return False
 
     def rewrite(self, box) -> Diagram:
-        return type(box)("UNK", dom=box.dom, cod=box.cod, data=box.data)
+        return type(box)('UNK', dom=box.dom, cod=box.cod, data=box.data)
+
 
 class Rewriter:
     """Class that rewrites diagrams.
@@ -423,14 +427,15 @@ class Rewriter:
     def _ob(self, ob: Ty) -> Ty:
         return ob
 
+
 def dataset_to_words(dataset: Container[str]) -> Container[str]:
     """ Extracts words from a dataset of sentences.
-    
+
     Parameters
     -----------
     dataset: Container[str]
         A list of sentences.
-        
+
     Returns
     -------
     words: Container[str]
@@ -439,7 +444,8 @@ def dataset_to_words(dataset: Container[str]) -> Container[str]:
     dataset_string = ' '.join(dataset)
     words = dataset_string.split()
     return words
-    
+
+
 class HandleUnknownWords():
     
     def __init__(self, training_data: Container[str], test_data: Container[str]):
