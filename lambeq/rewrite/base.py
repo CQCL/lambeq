@@ -419,9 +419,7 @@ class UnknownWordsRewriteRule(RewriteRule):
         self.unknown_words = [] if unknown_words is None else unknown_words
 
     def matches(self, box: Box) -> bool:
-        if box.name in self.unknown_words:
-            return True
-        return False
+        return box.name in self.unknown_words
 
     def rewrite(self, box: Box) -> Diagram:
         return type(box)('UNK',  dom=box.dom, cod=box.cod)
