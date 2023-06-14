@@ -460,8 +460,8 @@ class HandleUnknownWords:
         if input_strings is not None:
             for string in input_strings:
                 word_counts.update(string.split())
-        for diagram in input_diagrams:
-            for box in diagram.boxes:
+        for input_diagram in input_diagrams:
+            for box in input_diagram.boxes:
                 if isinstance(box, Word):
                     word_counts[box.name] += 1
         self.unknown_words = set(word
@@ -483,8 +483,11 @@ class HandleUnknownWords:
         """
         rule = UnknownWordsRewriteRule(unknown_words=unknown_words)
         rewriter = Rewriter([rule])
-        rewritten_diagram = rewriter(diagrams)
-        return rewritten_diagram
+        rewritten_diagrams: List[Diagram] = []
+        for diagram in diagrams:
+            rewritten_diagram = rewriter(diagram)
+            rewritten_diagrams.append(rewritten_diagram)
+        return rewritten_diagrams
 
     def __call__(self, input_diagrams: List[Diagram],
                  training_for_unknown_words: bool = True,
