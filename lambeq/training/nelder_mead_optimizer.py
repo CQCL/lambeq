@@ -119,6 +119,13 @@ class NelderMeadOptimizer(Optimizer):
         Warning
             - If the initial model weights are not within the bounds.
 
+        References
+        ----------
+        Gao, Fuchang & Han, Lixing. (2012). Implementing the Nelder-Mead
+        simplex algorithm with adaptive parameters.
+        Computational Optimization and Applications. 51. 259-277.
+        10.1007/s10589-010-9329-3.
+
         """
         super().__init__(model, hyperparams, loss_fn, bounds)
 
