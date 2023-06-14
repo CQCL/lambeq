@@ -1,4 +1,5 @@
 import pytest
+import dill as pickle
 from discopy import Box, Cup, Ty, Word
 from discopy import Discard
 from discopy.quantum import (Bra, CRz, CRx, CX, X, H, Ket,
@@ -33,6 +34,33 @@ def test_iqp_ansatz():
     assert ansatz(diagram) == expected_circuit
 
 
+def test_iqp_ansatz_serialization():
+    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
+               Cup(N, N.r) @ Id(S))
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    serde_ansatz = pickle.loads(pickle.dumps(ansatz))
+    assert serde_ansatz.ob_map == ansatz.ob_map
+    assert serde_ansatz.n_layers == ansatz.n_layers
+    assert serde_ansatz.n_single_qubit_params == ansatz.n_single_qubit_params
+    assert serde_ansatz.circuit == ansatz.circuit
+    assert serde_ansatz.discard == ansatz.discard
+    assert serde_ansatz.postselection_basis == ansatz.postselection_basis
+    assert serde_ansatz.single_qubit_rotations == ansatz.single_qubit_rotations
+
+    expected_circuit = (Ket(0) >>
+                        Rx(sym('Alice__n_0')) >>
+                        Rz(sym('Alice__n_1')) >>
+                        Rx(sym('Alice__n_2')) >>
+                        Id(1) @ Ket(0, 0) >> Id(1) @ H @ Id(1) >>
+                        Id(2) @ H >>
+                        Id(1) @ CRz(sym('runs__n.r@s_0')) >>
+                        CX @ Id(1) >>
+                        H @ Id(2) >>
+                        Id(1) @ sqrt(2) @ Id(2) >>
+                        Bra(0, 0) @ Id(1))
+    assert serde_ansatz(diagram) == expected_circuit
+
+
 def test_sim14_ansatz():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ Id(S))
@@ -57,6 +85,39 @@ def test_sim14_ansatz():
     assert ansatz(diagram) == expected_circuit
 
 
+def test_sim14_ansatz_serialization():
+    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
+               Cup(N, N.r) @ Id(S))
+
+    ansatz = Sim14Ansatz({N: 1, S: 1}, n_layers=1)
+    serde_ansatz = pickle.loads(pickle.dumps(ansatz))
+    assert serde_ansatz.ob_map == ansatz.ob_map
+    assert serde_ansatz.n_layers == ansatz.n_layers
+    assert serde_ansatz.n_single_qubit_params == ansatz.n_single_qubit_params
+    assert serde_ansatz.circuit == ansatz.circuit
+    assert serde_ansatz.discard == ansatz.discard
+    assert serde_ansatz.postselection_basis == ansatz.postselection_basis
+    assert serde_ansatz.single_qubit_rotations == ansatz.single_qubit_rotations
+
+    expected_circuit = (Ket(0) >>
+                        Rx(sym('Alice__n_0')) >>
+                        Rz(sym('Alice__n_1')) >>
+                        Rx(sym('Alice__n_2')) >>
+                        Id(1) @ Ket(0, 0) >>
+                        Id(1) @ Ry(sym('runs__n.r@s_0')) @ Id(1) >>
+                        Id(2) @ Ry(sym('runs__n.r@s_1')) >>
+                        Id(1) @ CRx(sym('runs__n.r@s_2')) >>
+                        Id(1) @ Controlled(Rx(sym('runs__n.r@s_3')), distance=-1) >>
+                        Id(1) @ Ry(sym('runs__n.r@s_4')) @ Id(1) >>
+                        Id(2) @ Ry(sym('runs__n.r@s_5')) >>
+                        Id(1) @ CRx(sym('runs__n.r@s_6')) >>
+                        Id(1) @ Controlled(Rx(sym('runs__n.r@s_7')), distance=-1) >>
+                        CX @ Id(1) >> H @ Id(2) >>
+                        Id(1) @ sqrt(2) @ Id(2) >> Bra(0, 0) @ Id(1))
+
+    assert serde_ansatz(diagram) == expected_circuit
+
+
 def test_sim15_ansatz():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ Id(S))
@@ -78,6 +139,38 @@ def test_sim15_ansatz():
                         >> Bra(0, 0) @ Id(1))
 
     assert ansatz(diagram) == expected_circuit
+
+
+def test_sim15_ansatz_serialization():
+    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
+               Cup(N, N.r) @ Id(S))
+
+    ansatz = Sim15Ansatz({N: 1, S: 1}, n_layers=1)
+    serde_ansatz = pickle.loads(pickle.dumps(ansatz))
+    assert serde_ansatz.ob_map == ansatz.ob_map
+    assert serde_ansatz.n_layers == ansatz.n_layers
+    assert serde_ansatz.n_single_qubit_params == ansatz.n_single_qubit_params
+    assert serde_ansatz.circuit == ansatz.circuit
+    assert serde_ansatz.discard == ansatz.discard
+    assert serde_ansatz.postselection_basis == ansatz.postselection_basis
+    assert serde_ansatz.single_qubit_rotations == ansatz.single_qubit_rotations
+
+    expected_circuit = (Ket(0) >>
+                        Rx(sym('Alice__n_0')) >>
+                        Rz(sym('Alice__n_1')) >>
+                        Rx(sym('Alice__n_2')) >>
+                        Id(1) @ Ket(0, 0) >>
+                        Id(1) @ Ry(sym('runs__n.r@s_0')) @ Id(1) >>
+                        Id(2) @ Ry(sym('runs__n.r@s_1')) >>
+                        Id(1) @ CX >> Id(1) @ Controlled(X, distance=-1) >>
+                        Id(1) @ Ry(sym('runs__n.r@s_2')) @ Id(1) >>
+                        Id(2) @ Ry(sym('runs__n.r@s_3')) >>
+                        Id(1) @ CX >> Id(1) @ Controlled(X, distance=-1) >>
+                        CX @ Id(1) >> H @ Id(2) >>
+                        Id(1) @ sqrt(2) @ Id(2)
+                        >> Bra(0, 0) @ Id(1))
+
+    assert serde_ansatz(diagram) == expected_circuit
 
 
 def test_iqp_ansatz_inverted():
@@ -142,6 +235,7 @@ def test_postselection():
     assert ansatz_iqp(b)
     assert ansatz_s15(b)
 
+
 def test_strongly_entangling_ansatz():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ Id(S))
@@ -170,10 +264,49 @@ def test_strongly_entangling_ansatz():
                                         2, 2, 1, 1, 0, 0, 1, 0])
     assert ansatz(diagram) == expected_circuit
 
+
+def test_strongly_entangling_ansatz_serialization():
+    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
+               Cup(N, N.r) @ Id(S))
+    ansatz = StronglyEntanglingAnsatz({N: 1, S: 1}, n_layers=1)
+    serde_ansatz = pickle.loads(pickle.dumps(ansatz))
+    assert serde_ansatz.ob_map == ansatz.ob_map
+    assert serde_ansatz.n_layers == ansatz.n_layers
+    assert serde_ansatz.n_single_qubit_params == ansatz.n_single_qubit_params
+    assert serde_ansatz.discard == ansatz.discard
+    assert serde_ansatz.postselection_basis == ansatz.postselection_basis
+    assert serde_ansatz.single_qubit_rotations == ansatz.single_qubit_rotations
+    assert serde_ansatz.ranges == ansatz.ranges
+
+    expected_circuit = Circuit(dom=Ty(),
+                               cod=qubit,
+                               boxes=[Ket(0),
+                               Rz(sym('Alice__n_0')),
+                               Ry(sym('Alice__n_1')),
+                               Rz(sym('Alice__n_2')),
+                               Ket(0, 0),
+                               Rz(sym('runs__n.r@s_0')),
+                               Ry(sym('runs__n.r@s_1')),
+                               Rz(sym('runs__n.r@s_2')),
+                               Rz(sym('runs__n.r@s_3')),
+                               Ry(sym('runs__n.r@s_4')),
+                               Rz(sym('runs__n.r@s_5')),
+                               CX,
+                               Controlled(X, distance=-1),
+                               CX,
+                               H,
+                               sqrt(2),
+                               Bra(0, 0)],
+                               offsets=[0, 0, 0, 0, 1, 1, 1, 1, 2,
+                                        2, 2, 1, 1, 0, 0, 1, 0])
+    assert serde_ansatz(diagram) == expected_circuit
+
+
 def test_strongly_entangling_ansatz_inverted():
     d = Box("inverted", S, Ty())
     ansatz = StronglyEntanglingAnsatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(d) == Id()
+
 
 def test_strongly_entangling_ansatz_empty():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
@@ -181,9 +314,11 @@ def test_strongly_entangling_ansatz_empty():
     ansatz = StronglyEntanglingAnsatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(diagram) == Id()
 
+
 def test_strongly_entangling_ansatz_discard():
     ansatz = StronglyEntanglingAnsatz({S: 2}, n_layers=0, discard=True)
     assert ansatz(Box('DISCARD', S, Ty())) == Discard(qubit ** 2)
+
 
 def test_strongly_entangling_ansatz_one_qubit():
     q = Ty('q')
@@ -194,6 +329,7 @@ def test_strongly_entangling_ansatz_one_qubit():
                                                     Ry(sym('X_q_q_1')),
                                                     Rz(sym('X_q_q_2'))],
                                              offsets=[0, 0, 0])
+
 
 def test_strongly_entangling_ansatz_ranges():
     q = Ty('q')
@@ -243,10 +379,12 @@ def test_strongly_entangling_ansatz_ranges():
                                         0, 1, 1, 1, 2, 2, 2, 0, 0, 1])
     assert ansatz(box) == expected_circuit
 
+
 def test_strongly_entangling_ansatz_ranges_error():
     q = Ty('q')
     with pytest.raises(ValueError):
         ansatz = StronglyEntanglingAnsatz({q: 3}, 3, ranges=[1,1,2,2])
+
 
 def test_strongly_entangling_ansatz_ranges_error2():
     q = Ty('q')
@@ -254,6 +392,7 @@ def test_strongly_entangling_ansatz_ranges_error2():
     with pytest.raises(ValueError):
         ansatz = StronglyEntanglingAnsatz({q: 2}, 3, ranges=[1, 1, 2])
         ansatz(box)
+
 
 def test_discopy_tket_conversion():
     word1, word2 = Word('Alice', N), Word('Bob', N.r)

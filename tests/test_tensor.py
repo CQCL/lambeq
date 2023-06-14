@@ -1,3 +1,4 @@
+import dill as pickle
 import pytest
 
 from discopy import Dim, Word
@@ -20,6 +21,20 @@ def test_tensor_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(2) for t in 'abcd'}
     ansatz = TensorAnsatz(ob_map)
     tensor = ansatz(diagram)
+    syms = sorted(tensor.free_symbols, key=default_sort_key)
+    values = [np.ones(k.size) for k in syms]
+    subbed_diagram = tensor.lambdify(*syms)(*values)
+    result = subbed_diagram.eval(contractor=tn.contractors.auto).array
+    assert np.all(result == np.array([16, 16]))
+
+
+def test_tensor_ansatz_serialization(diagram):
+    ob_map = {Ty(t): Dim(2) for t in 'abcd'}
+    ansatz = TensorAnsatz(ob_map)
+    serde_ansatz = pickle.loads(pickle.dumps(ansatz))
+    assert serde_ansatz.ob_map == ansatz.ob_map
+
+    tensor = serde_ansatz(diagram)
     syms = sorted(tensor.free_symbols, key=default_sort_key)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)
@@ -54,6 +69,20 @@ def test_mps_ansatz_eval(diagram):
     assert np.all(result == np.array([256] * 4))
 
 
+def test_mps_ansatz_serialization(diagram):
+    ob_map = {Ty(t): Dim(4) for t in 'abcd'}
+    ansatz = MPSAnsatz(ob_map, bond_dim=1)
+    serde_ansatz = pickle.loads(pickle.dumps(ansatz))
+    assert serde_ansatz.ob_map == ansatz.ob_map
+
+    tensor = serde_ansatz(diagram)
+    syms = sorted(tensor.free_symbols, key=default_sort_key)
+    values = [np.ones(k.size) for k in syms]
+    subbed_diagram = tensor.lambdify(*syms)(*values)
+    result = subbed_diagram.eval(contractor=tn.contractors.auto).array
+    assert np.all(result == np.array([256] * 4))
+
+
 def test_spider_splitter(diagram):
     ob_map = {Ty(t): Dim(4) for t in 'abcd'}
 
@@ -71,6 +100,20 @@ def test_spider_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(4) for t in 'abcd'}
     ansatz = SpiderAnsatz(ob_map)
     tensor = ansatz(diagram)
+    syms = sorted(tensor.free_symbols, key=default_sort_key)
+    values = [np.ones(k.size) for k in syms]
+    subbed_diagram = tensor.lambdify(*syms)(*values)
+    result = subbed_diagram.eval(contractor=tn.contractors.auto).array
+    assert np.all(result == np.array([256] * 4))
+
+
+def test_spider_ansatz_serialization(diagram):
+    ob_map = {Ty(t): Dim(4) for t in 'abcd'}
+    ansatz = SpiderAnsatz(ob_map)
+    serde_ansatz = pickle.loads(pickle.dumps(ansatz))
+    assert serde_ansatz.ob_map == ansatz.ob_map
+
+    tensor = serde_ansatz(diagram)
     syms = sorted(tensor.free_symbols, key=default_sort_key)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)

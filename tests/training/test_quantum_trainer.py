@@ -1,3 +1,5 @@
+from collections import OrderedDict
+import dill as pickle
 import numpy as np
 import tensornetwork as tn
 from discopy import Cup, Word
@@ -23,7 +25,7 @@ dev_diagrams = [
 ]
 dev_targets = [[0, 1], [1, 0]]
 
-ob_map = {N: 1, S: 1}
+ob_map = OrderedDict({N: 1, S: 1})
 ansatz_kwargs = {"n_layers": 1}
 
 loss = lambda y_hat, y: -np.sum(y * np.log(y_hat)) / len(y)
@@ -62,9 +64,7 @@ def test_trainer(tmp_path):
     assert len(trainer.val_results["acc"]) == EPOCHS
 
     checkpoint = trainer.load_training_checkpoint(log_dir)
-    assert checkpoint["ansatz"]["cls"] == IQPAnsatz
-    assert checkpoint["ansatz"]["ob_map"] == ob_map
-    assert checkpoint["ansatz"]["kwargs"] == ansatz_kwargs
+    assert type(checkpoint["ansatz"]) == IQPAnsatz
 
 def test_restart_training(tmp_path):
     log_dir = tmp_path / 'test_runs'

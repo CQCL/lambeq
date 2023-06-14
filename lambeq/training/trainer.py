@@ -253,15 +253,8 @@ class Trainer(ABC):
         self.test_circuits = checkpoint['test_circuits']
         self.start_epoch = checkpoint['epoch']
         self.start_step = checkpoint['step']
+        self.ansatz = checkpoint['ansatz']
 
-        # Rebuild ansatz from components
-        ansatz_state = checkpoint['ansatz']
-        self.ansatz_cls = ansatz_state['cls']
-        self.ansatz_ob_map = ansatz_state['ob_map']
-        self.ansatz_kwargs = ansatz_state['kwargs']
-        self.ansatz = self.ansatz_cls(
-            self.ansatz_ob_map, **self.ansatz_kwargs
-        )
         if self.seed is not None:
             random.setstate(checkpoint['random_state'])
         if self.verbose == VerbosityLevel.TEXT.value:
@@ -599,11 +592,7 @@ class Trainer(ABC):
                              'val_results': self.val_results,
                              'random_state': random.getstate(),
                              'step': step,
-                             'ansatz': {
-                                 'cls': self.ansatz_cls,
-                                 'ob_map': self.ansatz_ob_map,
-                                 'kwargs': self.ansatz_kwargs,
-                             },
+                             'ansatz': self.ansatz,
                              'train_circuits': self.train_circuits,
                              'val_circuits': self.val_circuits,
                              'test_circuits': self.test_circuits}

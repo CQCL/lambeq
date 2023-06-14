@@ -1,5 +1,6 @@
 from math import ceil
 
+import dill as pickle
 import torch
 import numpy as np
 
@@ -62,9 +63,7 @@ def test_trainer(tmp_path):
     assert len(trainer.val_results["acc"]) == EPOCHS
 
     checkpoint = trainer.load_training_checkpoint(log_dir)
-    assert checkpoint["ansatz"]["cls"] == SpiderAnsatz
-    assert checkpoint["ansatz"]["ob_map"] == ob_map
-    assert checkpoint["ansatz"]["kwargs"] == {}
+    assert type(checkpoint["ansatz"]) == SpiderAnsatz
 
 def test_restart_training(tmp_path):
     model = PytorchModel()

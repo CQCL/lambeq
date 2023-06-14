@@ -22,8 +22,9 @@ from __future__ import annotations
 
 from collections.abc import Iterator, Mapping
 import os
-import pickle
 from typing import Any
+
+import dill as pickle
 
 from lambeq.typing import StrPathT
 
