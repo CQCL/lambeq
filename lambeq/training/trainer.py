@@ -246,11 +246,8 @@ class Trainer(ABC):
         self.train_costs = checkpoint['train_costs']
         self.train_epoch_costs = checkpoint['train_epoch_costs']
         self.train_results = checkpoint['train_results']
-        self.train_circuits = checkpoint['train_circuits']
         self.val_costs = checkpoint['val_costs']
         self.val_results = checkpoint['val_results']
-        self.val_circuits = checkpoint['val_circuits']
-        self.test_circuits = checkpoint['test_circuits']
         self.start_epoch = checkpoint['epoch']
         self.start_step = checkpoint['step']
         self.ansatz = checkpoint['ansatz']
@@ -592,10 +589,7 @@ class Trainer(ABC):
                              'val_results': self.val_results,
                              'random_state': random.getstate(),
                              'step': step,
-                             'ansatz': self.ansatz,
-                             'train_circuits': self.train_circuits,
-                             'val_circuits': self.val_circuits,
-                             'test_circuits': self.test_circuits}
+                             'ansatz': self.ansatz}
             self.save_checkpoint(trainer_stats, self.log_dir)
             if self.verbose == VerbosityLevel.TEXT.value:  # pragma: no cover
                 if epoch == 0 or (epoch+1) % logging_step == 0:
