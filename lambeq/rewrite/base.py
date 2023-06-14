@@ -73,7 +73,7 @@ See `examples/rewrite.ipynb` for illustrative usage.
 """
 from __future__ import annotations
 
-__all__ = ['CoordinationRewriteRule', 'HandleUnknownWords', 'Rewriter', 
+__all__ = ['CoordinationRewriteRule', 'HandleUnknownWords', 'Rewriter',
            'RewriteRule', 'SimpleRewriteRule', 'UnknownWordsRewriteRule']
 
 from abc import ABC, abstractmethod
@@ -444,10 +444,10 @@ class HandleUnknownWords:
         self.unknown_words: Set[str] = set()
 
     def train_for_unknown_words(self, input_diagrams: List[Diagram],
-              input_strings: Optional[List[str]] = None):
+                                input_strings: Optional[List[str]] = None):
         """
         Train the rule on a list of diagrams or list of strings.
-        
+
         Parameters
         ----------
         diagrams : list of Diagram
@@ -469,15 +469,15 @@ class HandleUnknownWords:
                                  if count < self.min_freq)
 
     def test_for_unknown_words(self, diagrams: List[Diagram],
-             unknown_words: Set[str]) -> List[Diagram]:
+                               unknown_words: Set[str]) -> List[Diagram]:
         """
         Rewrite the given diagrams using the given list of unknown words.
-        
+
         Parameters
         ----------
         diagrams : list of Diagram
             Diagrams from which the unknown words are replaced with UNK.
-        
+
         unknown_words : list of str
             Words to be replaced with UNK.
         """
@@ -493,11 +493,12 @@ class HandleUnknownWords:
                  training_for_unknown_words: bool = True,
                  input_strings: Optional[List[str]] = None) -> List[Diagram]:
         """
-        Rewrite the given diagrams after finding the list of unknown words.
-        If `training_for_unknown_words` is True, the rule is trained on
-        the given diagrams and strings using the threshold. Otherwise, the
-        rule is used to rewrite the given diagrams using the list of unknown
-        words found during training for unknown words.
+        Rewrite the given diagrams after finding the list of unknown
+        words. If `training_for_unknown_words` is True, the rule is
+        trained on the given diagrams and strings using the threshold.
+        Otherwise, the rule is used to rewrite the given diagrams using
+        the list of unknown words found during training for unknown
+        words.
 
         Parameters
         ----------
@@ -507,12 +508,14 @@ class HandleUnknownWords:
         training_for_unknown_words : bool, default: True
             Whether to train the rule on the given diagrams and strings
             or not.
-        
+
         strings : list of str, optional
             Sentences from which the unknown words are determined.
         """
         if training_for_unknown_words:
             self.train_for_unknown_words(input_diagrams, input_strings)
-            return self.test_for_unknown_words(input_diagrams, self.unknown_words)
+            return self.test_for_unknown_words(input_diagrams,
+                                               self.unknown_words)
         else:
-            return self.test_for_unknown_words(input_diagrams, self.unknown_words)
+            return self.test_for_unknown_words(input_diagrams,
+                                               self.unknown_words)
