@@ -32,14 +32,14 @@ from lambeq.training.quantum_model import QuantumModel
 
 
 class NelderMeadOptimizer(Optimizer):
-    """Nelder Mead Optimizer
+    """Nelder Mead Optimizer.
 
     The Nelder-Mead optimizer is an algorithm used for unconstrained
     optimization in multidimensional spaces. Unlike some other
     optimization methods, it does not take into account any bounds or
     constraints on the variables. The algorithm is based on the Simplex
     method and is particularly useful when the derivatives
-    (first and second)  of the objective function are unknown or
+    (first and second) of the objective function are unknown or
     unreliable.
 
     Although the Nelder-Mead algorithm is generally robust and widely
@@ -52,7 +52,7 @@ class NelderMeadOptimizer(Optimizer):
     heuristic search approach, which means that it can sometimes
     converge to non-stationary points or suboptimal solutions.
 
-    This implementation is based heavily scipy's optimize.minimize. See
+    This implementation is based heavily scipy's `optimize.minimize`. See
     https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html
 
     """
@@ -68,39 +68,39 @@ class NelderMeadOptimizer(Optimizer):
     ) -> None:
         """Initialise the Nelder-Mead optimizer.
 
-        The hyperparameters may contain the following key value pairs:
+        The hyperparameters may contain the following key-value pairs:
 
-        - `adaptive`: Adjust the algorithm's parameters based on the
-                dimensionality of the problem. This adaptation is
-                particularly helpful when minimizing functions in
-                high-dimensional spaces, bool.
+        - `adaptive`: bool, optional, default: False
+            Adjust the algorithm's parameters based on the dimensionality
+            of the problem. This adaptation is particularly helpful when
+            minimizing functions in high-dimensional spaces.
 
-        - `maxfev`: Maximum number of function evaluations allowed.
-                Default is 1000. int.
+        - `maxfev`: int, optional, default: 1000
+            Maximum number of function evaluations allowed.
 
-        - `initial_simplex`: If provided, the `initial simplex`
-                replaces the initial model weights. Each row
-                initial_simplex[i, :] should contain the coordinates
-                of the ith vertex among the N+1 vertices in the
-                simplex, where N represents the dimension,
-                ArrayLike (N+1, N), float.
+        - `initial_simplex`: ArrayLike (N+1, N), optional, default: None
+            If provided, the `initial simplex` replaces the initial model
+            weights. Each row initial_simplex[i, :] should contain the
+            coordinates of the ith vertex among the N+1 vertices in the
+            simplex, where N represents the dimension.
 
-        - `xatol`: The acceptable level of absolute error in the
-                optimal model weights (optimal solution) between
-                iterations that indicates convergence, float.
+        - `xatol`: float, optional, default: 1e-4
+            The acceptable level of absolute error in the optimal model
+            weights (optimal solution) between iterations that indicates
+            convergence.
 
-        - `fatol`: The acceptable level of absolute error in the
-                loss value between iterations that indicates convergence,
-                float.
+        - `fatol`: float, optional, default: 1e-4
+            The acceptable level of absolute error in the loss value
+            between iterations that indicates convergence.
         }
 
         Parameters
         ----------
         model : :py:class:`.QuantumModel`
             A lambeq quantum model.
-        hyperparams : dict of str to float.
+        hyperparams : dict of str to float
             A dictionary containing the models hyperparameters.
-        loss_fn : Callable
+        loss_fn : Callable[[ArrayLike, ArrayLike], float]]
             A loss function of form `loss(prediction, labels)`.
         bounds : ArrayLike, optional
             The range of each of the model parameters.
@@ -116,7 +116,8 @@ class NelderMeadOptimizer(Optimizer):
             - If the initial simplex does not have N+1 rows, where N is
             the number of model parameters.
 
-        Warning
+        Warnings
+        --------
             - If the initial model weights are not within the bounds.
 
         References
@@ -131,7 +132,7 @@ class NelderMeadOptimizer(Optimizer):
 
         self.ncalls = 0
 
-        def objective(x, y, w):
+        def objective(x, y, w) -> float:
             """The objective function to be minimized.
 
             Parameters
@@ -142,6 +143,16 @@ class NelderMeadOptimizer(Optimizer):
                 The labels.
             w : ArrayLike
                 The model parameters.
+
+            Returns
+            -------
+            result: float
+                The result of the objective function.
+
+            Raises
+            ------
+            ValueError
+                If the objective function does not return a scalar value.
             """
             self.ncalls += 1
             self.model.weights = np.copy(w)
@@ -204,7 +215,7 @@ class NelderMeadOptimizer(Optimizer):
             ):
                 warnings.warn(
                     'Initial value of model weights is not within the bounds.',
-                    stacklevel=2
+                    stacklevel=2,
                 )
 
             self.project = lambda x: x.clip(bds[:, 0], bds[:, 1])
@@ -280,16 +291,16 @@ class NelderMeadOptimizer(Optimizer):
         if self.first_iter:
             try:
                 for k in range(self.N + 1):
-                    self.fsim[k] = self.objective_func(diagrams,
-                                                       targets,
-                                                       self.sim[k])
+                    self.fsim[k] = self.objective_func(
+                        diagrams, targets, self.sim[k]
+                    )
             except RuntimeError:
                 pass
-            finally:
-                self.ind = np.argsort(self.fsim)
-                self.sim = np.take(self.sim, self.ind, 0)
-                self.fsim = np.take(self.fsim, self.ind, 0)
-                self.first_iter = False  # set flag to false
+
+            self.ind = np.argsort(self.fsim)
+            self.sim = np.take(self.sim, self.ind, 0)
+            self.fsim = np.take(self.fsim, self.ind, 0)
+            self.first_iter = False
 
         try:
             if (
@@ -308,9 +319,7 @@ class NelderMeadOptimizer(Optimizer):
             shrink = False
 
             if fxr < self.fsim[0]:
-                xe = (
-                    1 + self.rho * self.chi
-                ) * xbar - self.rho * self.chi * self.sim[-1]
+                xe = xbar + self.rho * self.chi * (xbar - self.sim[-1])
                 xe = self.project(xe)
                 fxe = self.objective_func(diagrams, targets, xe)
                 if fxe < fxr:
@@ -325,9 +334,9 @@ class NelderMeadOptimizer(Optimizer):
                     self.fsim[-1] = fxr
                 else:  # fxr >= fsim[-2]
                     if fxr < self.fsim[-1]:  # Perform contraction
-                        xc = (
-                            1 + self.psi * self.rho
-                        ) * xbar - self.psi * self.rho * self.sim[-1]
+                        xc = xbar + self.psi * self.rho * (
+                            xbar - self.sim[-1]
+                        )
                         xc = self.project(xc)
                         fxc = self.objective_func(diagrams, targets, xc)
 
@@ -337,8 +346,9 @@ class NelderMeadOptimizer(Optimizer):
                         else:
                             shrink = True
                     else:  # Perform an inside contraction
-                        xcc = (1 - self.psi) * xbar + self.psi * self.sim[-1]
-                        xcc = self.project(xcc)
+                        xcc = self.project(
+                            (1 - self.psi) * xbar + self.psi * self.sim[-1]
+                        )
                         fxcc = self.objective_func(diagrams, targets, xcc)
 
                         if fxcc < self.fsim[-1]:
@@ -358,10 +368,10 @@ class NelderMeadOptimizer(Optimizer):
                             )
         except RuntimeError:
             pass
-        finally:
-            self.ind = np.argsort(self.fsim)
-            self.sim = np.take(self.sim, self.ind, 0)
-            self.fsim = np.take(self.fsim, self.ind, 0)
+
+        self.ind = np.argsort(self.fsim)
+        self.sim = np.take(self.sim, self.ind, 0)
+        self.fsim = np.take(self.fsim, self.ind, 0)
 
         loss = float(np.min(self.fsim))
         self.gradient = self.sim[0] * mask
@@ -369,15 +379,14 @@ class NelderMeadOptimizer(Optimizer):
         if self.ncalls >= self.maxfev:
             warnings.warn(
                 'Maximum number of function evaluations exceeded.',
-                stacklevel=3
+                stacklevel=3,
             )
 
         return loss
 
     def step(self) -> None:
         """Perform optimisation step."""
-        weights = np.copy(self.gradient)
-        self.model.weights = weights
+        self.model.weights = np.copy(self.gradient)
         self.model.weights = self.project(self.model.weights)
         self.update_hyper_params()
         self.zero_grad()
