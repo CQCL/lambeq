@@ -201,13 +201,18 @@ def test_handle_unknown_words():
     train_sentence = 'I love unknown unknown'
     test_sentence = 'love unknown is what I love'
     parser = BobcatParser()
-    train_diagrams = parser.sentence2diagram(train_sentence).normal_form()
-    test_diagrams = parser.sentence2diagram(test_sentence).normal_form()
-
+    train_diagrams = [parser.sentence2diagram(train_sentence).normal_form()]
+    test_diagrams = [parser.sentence2diagram(test_sentence).normal_form()]
+    expected_train_diagram = Diagram(dom=Ty(), cod=Ty('s'), boxes=[Word('UNK', Ty('n')), Word('UNK', Ty(Ob('n', z=1), 's', Ob('n', z=-1))), Cup(Ty('n'), Ty(Ob('n', z=1))), Word('unknown', Ty('n', Ob('n', z=-1))), Cup(Ty(Ob('n', z=-1)), Ty('n')), Word('unknown', Ty('n')), Cup(Ty(Ob('n', z=-1)), Ty('n'))], offsets=[0, 1, 0, 2, 1, 2, 1])
+    expected_test_diagram = Diagram(dom=Ty(), cod=Ty('s'), boxes=[Word('UNK', Ty('n', Ob('n', z=-1))), Word('is', Ty(Ob('n', z=1), 's', Ob('n', z=-1))), Cup(Ty('n'), Ty(Ob('n', z=1))), Word('what', Ty('n', Ob('n', z=-2), Ob('s', z=-1))), Cup(Ty(Ob('n', z=-1)), Ty('n')), Word('UNK', Ty('n')), Word('UNK', Ty(Ob('n', z=1), 's', Ob('n', z=-1))), Cup(Ty('n'), Ty(Ob('n', z=1))), Cup(Ty(Ob('s', z=-1)), Ty('s')), Cup(Ty(Ob('n', z=-2)), Ty(Ob('n', z=-1))), Word('unknown', Ty('n')), Cup(Ty(Ob('n', z=-1)), Ty('n'))], offsets=[0, 1, 0, 2, 1, 3, 4, 3, 2, 1, 2, 1])
     handle_unknown_words = HandleUnknownWords(min_freq=2)
-    processed_train_diagrams = handle_unknown_words(train_diagrams, train=True, strings=None)
-    processed_test_diagrams = handle_unknown_words(test_diagrams, train=False, strings=None)
+    processed_train_diagrams = handle_unknown_words(train_diagrams,
+                                                    training_for_unknown_words=True,
+                                                    input_strings=None)
+    processed_test_diagrams = handle_unknown_words(test_diagrams,
+                                                   training_for_unknown_words=False,
+                                                   input_strings=None)
     
     assert handle_unknown_words.unknown_words == set(['I', 'love'])
-    assert processed_train_diagrams.boxes[0].name == 'UNK' and processed_train_diagrams.boxes[1].name == 'UNK'
-    assert processed_test_diagrams.boxes[0].name == 'UNK' and processed_test_diagrams.boxes[10].name == 'unknown'
+    assert processed_train_diagrams[0] == expected_train_diagram
+    assert processed_test_diagrams[0] == expected_test_diagram
