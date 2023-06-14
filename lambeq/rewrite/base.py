@@ -441,7 +441,7 @@ class HandleUnknownWords:
             The minimum frequency of a word to be considered known.
         """
         self.min_freq = min_freq
-        self.unknown_words = set()
+        self.unknown_words: Set[str] = set()
 
     def train_for_unknown_words(self, input_diagrams: List[Diagram],
               input_strings: Optional[List[str]] = None):
@@ -456,7 +456,7 @@ class HandleUnknownWords:
         strings : list of str, optional
             Sentences from which the unknown words are determined.
         """
-        word_counts = Counter()
+        word_counts: Counter[str] = Counter()
         if input_strings is not None:
             for string in input_strings:
                 word_counts.update(string.split())
@@ -469,7 +469,7 @@ class HandleUnknownWords:
                                  if count < self.min_freq)
 
     def test_for_unknown_words(self, diagrams: List[Diagram],
-             unknown_words: List[str]) -> List[Diagram]:
+             unknown_words: Set[str]) -> List[Diagram]:
         """
         Rewrite the given diagrams using the given list of unknown words.
         
