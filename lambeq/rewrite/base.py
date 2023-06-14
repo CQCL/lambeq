@@ -79,7 +79,7 @@ __all__ = ['CoordinationRewriteRule', 'HandleUnknownWords', 'Rewriter',
 from abc import ABC, abstractmethod
 from collections import Counter
 from collections.abc import Container, Iterable
-from typing import List, Optional
+from typing import List, Optional, Set
 
 from discopy import Word
 from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
