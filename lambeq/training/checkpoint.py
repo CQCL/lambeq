@@ -24,7 +24,7 @@ from collections.abc import Iterator, Mapping
 import os
 from typing import Any
 
-import dill as pickle
+import dill as pickle       # type: ignore
 
 from lambeq.typing import StrPathT
 
