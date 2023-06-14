@@ -73,8 +73,8 @@ See `examples/rewrite.ipynb` for illustrative usage.
 """
 from __future__ import annotations
 
-__all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter', 'UnknownWordsRewriteRule', 'HandleUnknownWords']
+__all__ = ['CoordinationRewriteRule', 'HandleUnknownWords', 'Rewriter', 
+           'RewriteRule', 'SimpleRewriteRule', 'UnknownWordsRewriteRule']
 
 from abc import ABC, abstractmethod
 from collections import Counter
@@ -439,19 +439,30 @@ class HandleUnknownWords:
 
         Parameters
         ----------
-        min_freq : int, optional
+        min_freq : int, default: 1
             The minimum frequency of a word to be considered known.
         """
         self.min_freq = min_freq
         self.unknown_words = set()
 
-    def train(self, diagrams: List[Diagram],
-              strings: Optional[List[str]] = None):
+    def train_for_unknown_words(self, input_diagrams: List[Diagram],
+              input_strings: Optional[List[str]] = None):
+        """
+        Train the rule on a list of diagrams or list of strings.
+        
+        Parameters
+        ----------
+        diagrams : list of Diagram
+            Diagrams from which the unknown words are determined.
+
+        strings : list of str, optional
+            Sentences from which the unknown words are determined.
+        """
         word_counts = Counter()
-        if strings is not None:
-            for string in strings:
+        if input_strings is not None:
+            for string in input_strings:
                 word_counts.update(string.split())
-        for diagram in diagrams:
+        for diagram in input_diagrams:
             for box in diagram.boxes:
                 if isinstance(box, Word):
                     word_counts[box.name] += 1
@@ -459,18 +470,48 @@ class HandleUnknownWords:
                                  for word, count in word_counts.items()
                                  if count < self.min_freq)
 
-    def test(self, diagrams: List[Diagram],
+    def test_for_unknown_words(self, diagrams: List[Diagram],
              unknown_words: List[str]) -> List[Diagram]:
+        """
+        Rewrite the given diagrams using the given list of unknown words.
+        
+        Parameters
+        ----------
+        diagrams : list of Diagram
+            Diagrams from which the unknown words are replaced with UNK.
+        
+        unknown_words : list of str
+            Words to be replaced with UNK.
+        """
         rule = UnknownWordsRewriteRule(unknown_words=unknown_words)
         rewriter = Rewriter([rule])
         rewritten_diagram = rewriter(diagrams)
         return rewritten_diagram
 
-    def __call__(self, diagrams: List[Diagram],
-                 train: bool = True,
-                 strings: Optional[List[str]] = None) -> List[Diagram]:
-        if train:
-            self.train(diagrams, strings)
-            return self.test(diagrams, self.unknown_words)
+    def __call__(self, input_diagrams: List[Diagram],
+                 training_for_unknown_words: bool = True,
+                 input_strings: Optional[List[str]] = None) -> List[Diagram]:
+        """
+        Rewrite the given diagrams after finding the list of unknown words.
+        If `training_for_unknown_words` is True, the rule is trained on
+        the given diagrams and strings using the threshold. Otherwise, the
+        rule is used to rewrite the given diagrams using the list of unknown
+        words found during training for unknown words.
+
+        Parameters
+        ----------
+        diagrams : list of Diagram
+            Diagrams from which the unknown words are replaced with UNK.
+
+        training_for_unknown_words : bool, default: True
+            Whether to train the rule on the given diagrams and strings
+            or not.
+        
+        strings : list of str, optional
+            Sentences from which the unknown words are determined.
+        """
+        if training_for_unknown_words:
+            self.train_for_unknown_words(input_diagrams, input_strings)
+            return self.test_for_unknown_words(input_diagrams, self.unknown_words)
         else:
-            return self.test(diagrams, self.unknown_words)
+            return self.test_for_unknown_words(input_diagrams, self.unknown_words)
