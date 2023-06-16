@@ -446,14 +446,16 @@ class HandleUnknownWords:
     def train_for_unknown_words(self, input_diagrams: List[Diagram],
                                 input_strings: Optional[List[str]] = None):
         """
-        Train the rule on a list of diagrams or list of strings.
+        Train the rule on a list of diagrams or list of strings. We find
+        the words that appear less than `min_freq` times in the training
+        data and store them in `unknown_words`.
 
         Parameters
         ----------
-        diagrams : list of Diagram
+        input_diagrams : list of Diagram
             Diagrams from which the unknown words are determined.
 
-        strings : list of str, optional
+        input_strings : list of str, optional
             Sentences from which the unknown words are determined.
         """
         word_counts: Counter[str] = Counter()
@@ -468,14 +470,14 @@ class HandleUnknownWords:
                                  for word, count in word_counts.items()
                                  if count < self.min_freq)
 
-    def test_for_unknown_words(self, diagrams: List[Diagram],
+    def test_for_unknown_words(self, input_diagrams: List[Diagram],
                                unknown_words: Set[str]) -> List[Diagram]:
         """
         Rewrite the given diagrams using the given list of unknown words.
 
         Parameters
         ----------
-        diagrams : list of Diagram
+        input_diagrams : list of Diagram
             Diagrams from which the unknown words are replaced with UNK.
 
         unknown_words : list of str
@@ -484,7 +486,7 @@ class HandleUnknownWords:
         rule = UnknownWordsRewriteRule(unknown_words=unknown_words)
         rewriter = Rewriter([rule])
         rewritten_diagrams: List[Diagram] = []
-        for diagram in diagrams:
+        for diagram in input_diagrams:
             rewritten_diagram = rewriter(diagram)
             rewritten_diagrams.append(rewritten_diagram)
         return rewritten_diagrams
@@ -502,14 +504,14 @@ class HandleUnknownWords:
 
         Parameters
         ----------
-        diagrams : list of Diagram
+        input_diagrams : list of Diagram
             Diagrams from which the unknown words are replaced with UNK.
 
         training_for_unknown_words : bool, default: True
             Whether to train the rule on the given diagrams and strings
             or not.
 
-        strings : list of str, optional
+        input_strings : list of str, optional
             Sentences from which the unknown words are determined.
         """
         if training_for_unknown_words:
