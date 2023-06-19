@@ -73,13 +73,19 @@ of provided rules can be retrieved using
         or evaluation are defined, and when matched in a diagram's
         box, the box value will be set to UNK.
 
+    imperative
+        The imperative rewrite rule merges diagrams with more than one
+        free wire into a single S wire. This rewrite rule is applied
+        at diagram level, in contrast to the others which are applied
+        at box level.
+
 See `examples/rewrite.ipynb` for illustrative usage.
 
 """
 from __future__ import annotations
 
 __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter', 'UNKRewriteRule']
+           'Rewriter', 'UNKRewriteRule', 'ImperativeRewriteRule']
 
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
@@ -564,3 +570,16 @@ class HandleUnknownWords():
             The new test dataset.
         """
         self.test_data = dataset_to_words(new_test_data)
+
+
+class ImperativeRewriteRule():
+    """A rewrite rule for imperative sentences.
+    """
+    def matches(self, diagram: Diagram) -> bool:
+        return diagram.cod == N.r @ S
+
+    def rewrite(self, diagram: Diagram) -> Diagram:
+        if self.matches(diagram):
+            return (Box('IMP', Ty(), N) @ diagram >> Cup(N, N.r) @ Id(S))
+        else:
+            raise ValueError(f'The diagram codomain {diagram.cod} was passed, but N.r @ S was expected.')
