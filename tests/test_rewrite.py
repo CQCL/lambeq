@@ -5,7 +5,7 @@ from discopy.rigid import Box, Cap, Cup, Diagram, Id, Ob, Spider, Swap, Ty, cups
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, SimpleRewriteRule,
-                    UNKRewriteRule)
+                    UNKRewriteRule, ImperativeRewriteRule)
 
 from lambeq.rewrite.base import HandleUnknownWords, dataset_to_words, remove_words
 
@@ -441,3 +441,27 @@ def test_HandleUnknownWords():
     assert tokenized_train_diagram == expected_train_diagram
     assert tokenized_test_diagram == expected_test_diagram
     assert dataset_to_words(new_test_data) == handler.test_data    
+
+
+def test_imperative_rewrite_rule():
+    diagram = Diagram(dom=Ty(), cod=Ty(Ob('n', z=1), 's'),
+            boxes=[Word('take', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+                   Word('the', Ty('n', Ob('n', z=-1))),
+                   Word('bus', Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n'))],
+            offsets=[0, 3, 5, 4, 2])
+
+    expected_diagram = Diagram(dom=Ty(), cod=Ty('s'),
+            boxes=[Word('IMP', Ty('n')),
+                   Word('take', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+                   Word('the', Ty('n', Ob('n', z=-1))),
+                   Word('bus', Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')),
+                   Cup(Ty('n'), Ty(Ob('n', z=1)))],
+            offsets=[0, 1, 4, 6, 5, 3, 0])
+
+    rewritten_diagram = ImperativeRewriteRule().rewrite(diagram)
+
+    assert rewritten_diagram == expected_diagram
