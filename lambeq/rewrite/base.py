@@ -573,7 +573,7 @@ class HandleUnknownWords():
 
 
 class ImperativeRewriteRule():
-    """A rewrite rule for imperative sentences.
+    """A rewrite rule for imperative sentence diagrams.
     """
     def matches(self, diagram: Diagram) -> bool:
         return diagram.cod == N.r @ S
