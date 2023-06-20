@@ -16,9 +16,16 @@
 Rewrite
 =======
 A rewrite rule is a schema for transforming/simplifying a diagram.
+A diagram rewriter is a function for transforming/simplifying a diagram at diagram level.
+
+The :py:class:`DiagramRewriter` applies the transformation based on the defined rules.
+
+Subclass :py:class:'DiagramRewriter' to define a custom rewrite rule. An
+example rewrite rule :py:class:`MergeWiresRewriter` has been provided for
+merging the free wires of a diagram with more than one free wire.
 
 The :py:class:`Rewriter` applies a set of rewrite rules functorially to
-a given diagram.
+a given diagram at box level.
 
 Subclass :py:class:`RewriteRule` to define a custom rewrite rule. An
 example rewrite rule :py:class:`SimpleRewriteRule` has been provided for
@@ -74,7 +81,7 @@ See `examples/rewrite.ipynb` for illustrative usage.
 from __future__ import annotations
 
 __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter']
+           'Rewriter', 'DiagramRewriter', 'MergeWiresRewriter']
 
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
@@ -124,6 +131,34 @@ class RewriteRule(ABC):
 
         """
         return self.rewrite(box) if self.matches(box) else None
+
+
+class DiagramRewriter(ABC):
+    """Base class for diagram level rewrite rules."""
+
+    @abstractmethod
+    def matches(self, diagram: Diagram) -> bool:
+        """Check if the given diagram should be rewritten."""
+
+    @abstractmethod
+    def rewrite_diagram(self, diagram: Diagram) -> Diagram:
+        """Rewrite the given diagram."""
+
+    def __call__(self, diagram: Diagram) -> Diagram | None:
+        """Apply the rewrite rule to a diagram.
+
+        Parameters
+        ----------
+        box : :py:class:`discopy.rigid.Diagram`
+            The candidate diagram to be tested against this rewrite rule.
+
+        Returns
+        -------
+        :py:class:`discopy.rigid.Diagram`, optional
+            The rewritten diagram, or :py:obj:`None` if rule
+            does not apply.
+        """
+        return self.rewrite_diagram(diagram) if self.matches(diagram) else diagram
 
 
 class SimpleRewriteRule(RewriteRule):
@@ -316,6 +351,16 @@ class CurryRewriteRule(RewriteRule):
             new_box = Diagram.curry(new_box, n_wires=len(right), left=False)
 
         return new_box
+
+
+class MergeWiresRewriter(DiagramRewriter):
+    """A rewrite rule for imperative sentences."""
+
+    def matches(self, diagram: Diagram) -> bool:
+        return not diagram.cod == S
+
+    def rewrite_diagram(self, diagram: Diagram) -> Diagram:
+        return (diagram >> Box('MERGE', diagram.cod, S))
 
 
 class Rewriter:

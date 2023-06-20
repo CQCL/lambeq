@@ -75,8 +75,7 @@ __all__ = [
         'CurryRewriteRule',
         'SimpleRewriteRule',
         'Rewriter',
-
-        'SimpleDiagramRewriter',
+        'DiagramRewriter',
         'MergeWiresRewriter',
 
         'Tokeniser',
@@ -116,8 +115,8 @@ from lambeq.core.types import AtomicType
 from lambeq.pregroups import (create_pregroup_diagram, diagram2str,
                               is_pregroup_diagram, remove_cups, remove_swaps)
 from lambeq.rewrite import (RewriteRule, CoordinationRewriteRule,
-                            CurryRewriteRule, SimpleRewriteRule, Rewriter)
-from lambeq.rewrite_diagram import (SimpleDiagramRewriter, MergeWiresRewriter)
+                            CurryRewriteRule, SimpleRewriteRule, Rewriter,
+                            DiagramRewriter, MergeWiresRewriter)
 from lambeq.text2diagram import (
         CCGAtomicType, CCGRule, CCGRuleUseError, CCGTree,
         CCGParser,
