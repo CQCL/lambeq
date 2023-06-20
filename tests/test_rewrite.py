@@ -4,7 +4,8 @@ from discopy import Word
 from discopy.rigid import Box, Cap, Cup, Diagram, Id, Spider, Swap, Ty, cups
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
-                    CurryRewriteRule, SimpleRewriteRule)
+                    CurryRewriteRule, SimpleRewriteRule,
+                    ImperativeRewriteRule)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -172,3 +173,27 @@ def test_curry_functor():
 
     rewriter = Rewriter([CurryRewriteRule()])
     assert rewriter(diagram).normal_form() == expected
+
+
+def test_imperative_rewrite_rule():
+    diagram = Diagram(dom=Ty(), cod=Ty(Ob('n', z=1), 's'),
+            boxes=[Word('take', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+                   Word('the', Ty('n', Ob('n', z=-1))),
+                   Word('bus', Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n'))],
+            offsets=[0, 3, 5, 4, 2])
+
+    expected_diagram = Diagram(dom=Ty(), cod=Ty('s'),
+            boxes=[Word('IMP', Ty('n')),
+                   Word('take', Ty(Ob('n', z=1), 's', Ob('n', z=-1))),
+                   Word('the', Ty('n', Ob('n', z=-1))),
+                   Word('bus', Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')),
+                   Cup(Ty(Ob('n', z=-1)), Ty('n')),
+                   Cup(Ty('n'), Ty(Ob('n', z=1)))],
+            offsets=[0, 1, 4, 6, 5, 3, 0])
+
+    rewritten_diagram = ImperativeRewriteRule().rewrite(diagram)
+
+    assert rewritten_diagram == expected_diagram
