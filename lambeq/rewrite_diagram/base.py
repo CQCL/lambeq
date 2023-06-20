@@ -1,3 +1,39 @@
+# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+"""
+Rewrite_diagram
+=======
+A diagram level rewrite rule is a schema for transforming/simplifying a diagram.
+
+The :py:class:`SimpleDiagramRewriter` applies a set of rewrite rules to
+a given diagram.
+
+Subclass :py:class:`SimpleDiagramRewriter` to define a custom rewrite rule. An
+example rewrite rule :py:class:`MergeWiresRewriter` has been provided for
+merging wires in diagrams with more than one free wire.
+
+.. glossary::
+
+    merge wires
+        The MergeWiresRewriter is applied to diagrams with more than
+        one free wire, to merge the wires into a single S wire by
+        adding a MERGE box.
+    
+See `examples/rewrite_diagram.ipynb` for illustrative usage.
+"""
+
 from __future__ import annotations
 
 __all__ = ['SimpleDiagramRewriter', 'MergeWiresRewriter']
