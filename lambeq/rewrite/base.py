@@ -68,13 +68,19 @@ of provided rules can be retrieved using
         The subject relative pronoun rule simplifies subject relative
         pronouns based on [SCC2014a]_ using cups and spiders.
 
+    imperative
+        The imperative rewrite rule merges diagrams with more than one
+        free wire into a single S wire. This rewrite rule is applied
+        at diagram level, in contrast to the others which are applied
+        at box level.
+
 See `examples/rewrite.ipynb` for illustrative usage.
 
 """
 from __future__ import annotations
 
 __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter']
+           'Rewriter', 'ImperativeRewriteRule']
 
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
@@ -393,3 +399,16 @@ class Rewriter:
 
     def _ob(self, ob: Ty) -> Ty:
         return ob
+
+
+class ImperativeRewriteRule():
+    """A rewrite rule for imperative sentence diagrams.
+    """
+    def matches(self, diagram: Diagram) -> bool:
+        return diagram.cod == N.r @ S
+
+    def rewrite(self, diagram: Diagram) -> Diagram:
+        if self.matches(diagram):
+            return (Box('IMP', Ty(), N) @ diagram >> Cup(N, N.r) @ Id(S))
+        else:
+            raise ValueError(f'The diagram codomain {diagram.cod} was passed, but N.r @ S was expected.')
