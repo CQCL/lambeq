@@ -193,6 +193,6 @@ def test_merge_wires_rewriter():
                    Box('MERGE', Ty(Ob('n', z=1), 's'), Ty('s'))],
             offsets=[0, 3, 5, 4, 2, 0])
 
-    rewritten_diagram = MergeWiresRewriter().rewrite_diagram(diagram)
+    rewritten_diagram = MergeWiresRewriter()(diagram)
 
     assert rewritten_diagram == expected_diagram

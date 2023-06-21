@@ -53,12 +53,12 @@ class DiagramRewriter(ABC):
     def rewrite_diagram(self, diagram: Diagram) -> Diagram:
         """Rewrite the given diagram."""
 
-    def __call__(self, diagram: Diagram) -> Diagram | None:
+    def __call__(self, diagram: Diagram or Iterable[Diagram]) -> Diagram or Iterable[Diagram] | None:
         """Apply the rewrite rule to a diagram.
 
         Parameters
         ----------
-        box : :py:class:`discopy.rigid.Diagram`
+        diagram : :py:class:`discopy.rigid.Diagram`
             The candidate diagram to be tested against this rewrite rule.
 
         Returns
@@ -67,6 +67,9 @@ class DiagramRewriter(ABC):
             The rewritten diagram, or :py:obj:`None` if rule
             does not apply.
         """
+        if type(diagram) is list:
+            return [self.rewrite_diagram(d) if self.matches(d) else d for d in diagram]
+ 
         return self.rewrite_diagram(diagram) if self.matches(diagram) else diagram
 
 
@@ -74,7 +77,7 @@ class MergeWiresRewriter(DiagramRewriter):
     """A rewrite rule for imperative sentences."""
 
     def matches(self, diagram: Diagram) -> bool:
-        return not diagram.cod == S
+        return len(diagram.cod) > 1
 
-    def rewrite_diagram(self, diagram: Diagram) -> Diagram:
-        return (diagram >> Box('MERGE', diagram.cod, S))
+    def rewrite_diagram(self, diagram: Diagram, output: Ty = S) -> Diagram:
+        return (diagram >> Box('MERGE', diagram.cod, output))
