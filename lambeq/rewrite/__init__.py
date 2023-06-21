@@ -17,5 +17,6 @@ __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'CurryRewriteRule',
            'MergeWiresRewriter']
 
 from lambeq.rewrite.base import (RewriteRule, CoordinationRewriteRule,
-                                 CurryRewriteRule, SimpleRewriteRule, Rewriter,
-                                 DiagramRewriter, MergeWiresRewriter)
+                                 CurryRewriteRule, SimpleRewriteRule, Rewriter)
+
+from lambeq.rewrite.rewrite_diagram import (DiagramRewriter, MergeWiresRewriter)
