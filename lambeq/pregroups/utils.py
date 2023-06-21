@@ -16,7 +16,9 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from discopy import Box, Cup, Diagram, grammar, Id, Swap, Ty, Word
+
+from discopy.grammar import pregroup
+from discopy.grammar.pregroup import Box, Cup, Diagram, Id, Swap, Ty, Word
 
 CUP_TOKEN = '**CUP**'
 
@@ -28,7 +30,7 @@ def is_pregroup_diagram(diagram: Diagram) -> bool:
 
     Parameters
     ----------
-    diagram : :py:class:`discopy.rigid.Diagram`
+    diagram : :py:class:`discopy.grammar.pregroup.Diagram`
         The diagram to be checked.
 
     Returns
@@ -37,9 +39,8 @@ def is_pregroup_diagram(diagram: Diagram) -> bool:
         Whether the diagram is a pregroup diagram.
 
     """
-
     in_words = True
-    for _, box, right in diagram.layers:
+    for _, box, right in diagram.inside:
         if in_words and isinstance(box, Word):
             if right:  # word boxes should be tensored left to right.
                 return False
@@ -55,7 +56,9 @@ def create_pregroup_diagram(
     cod: Ty,
     morphisms: list[tuple[type, int, int]]
 ) -> Diagram:
-    r"""Create a :py:class:`discopy.rigid.Diagram` from cups and swaps.
+    r"""Create a :py:class:`discopy.grammar.pregroup.Diagram`
+
+    The input is cups and swaps.
 
         >>> n, s = Ty('n'), Ty('s')
         >>> words = [Word('she', n), Word('goes', n.r @ s @ n.l),
@@ -68,18 +71,19 @@ def create_pregroup_diagram(
     words : list of :py:class:`discopy.grammar.pregroup.Word`
         A list of :py:class:`~discopy.grammar.pregroup.Word` s
         corresponding to the words of the sentence.
-    cod : :py:class:`discopy.rigid.Ty`
+    cod : :py:class:`discopy.grammar.pregroup.Ty`
         The output type of the diagram.
     morphisms: list of tuple[type, int, int]
         A list of tuples of the form:
             (morphism, start_wire_idx, end_wire_idx).
-        Morphisms can be :py:class:`~discopy.rigid.Cup` s or
-        :py:class:`~discopy.rigid.Swap` s, while the two numbers define
-        the indices of the wires on which the morphism is applied.
+        Morphisms can be :py:class:`~discopy.grammar.pregroup.Cup` s or
+        :py:class:`~discopy.grammar.pregroup.Swap` s, while the two
+        numbers define the indices of the wires on which the morphism is
+        applied.
 
     Returns
     -------
-    :py:class:`discopy.rigid.Diagram`
+    :py:class:`discopy.grammar.pregroup.Diagram`
         The generated pregroup diagram.
 
     Raises
@@ -109,7 +113,7 @@ def create_pregroup_diagram(
                 actual_idx -= 2
         offsets.append(actual_idx)
 
-    return Diagram(dom=Ty(), cod=cod, boxes=boxes, offsets=offsets)
+    return Diagram.decode(dom=Ty(), cod=cod, boxes=boxes, offsets=offsets)
 
 
 def _compress_cups(diagram: Diagram) -> Diagram:
@@ -125,7 +129,7 @@ def _compress_cups(diagram: Diagram) -> Diagram:
         else:
             layers.append((box, offset))
     boxes, offsets = zip(*layers)
-    return Diagram(
+    return Diagram.decode(
         dom=diagram.dom, cod=diagram.cod, boxes=boxes, offsets=offsets)
 
 
@@ -160,14 +164,14 @@ def _remove_cups(diagram: Diagram) -> Diagram:
                 pg_type1, pg_type2 = box.dom[:pg_len], box.dom[pg_len:]
                 if len(left.cod) == pg_len and not left.dom:
                     if pg_type1.r == pg_type2:
-                        new_diag = right >> (left.r.dagger() @ wires_r)
+                        new_diag = right >> (left.r @ wires_r)
                     else:  # illegal cup
-                        new_diag = right >> (left.l.dagger() @ wires_r)
+                        new_diag = right >> (left.l @ wires_r)
                 elif len(right.cod) == pg_len and not right.dom:
                     if pg_type1.r == pg_type2:
-                        new_diag = left >> (wires_l @ right.l.dagger())
+                        new_diag = left >> (wires_l @ right.l)
                     else:
-                        new_diag = left >> (wires_l @ right.r.dagger())
+                        new_diag = left >> (wires_l @ right.r)
                 else:
                     box = Diagram.cups(pg_type1, pg_type2)
                     new_diag = left @ right >> wires_l @ box @ wires_r
@@ -179,26 +183,23 @@ def _remove_cups(diagram: Diagram) -> Diagram:
 
 
 def remove_cups(diagram: Diagram) -> Diagram:
-    """Remove cups from a :py:class:`discopy.rigid.Diagram`.
+    """Remove cups from a :py:class:`discopy.grammar.pregroup.Diagram`.
 
     Diagrams with less cups become circuits with less post-selection,
     which results in faster QML experiments.
 
     Parameters
     ----------
-    diagram : :py:class:`discopy.rigid.Diagram`
+    diagram : :py:class:`discopy.grammar.pregroup.Diagram`
         The diagram from which cups will be removed.
 
     Returns
     -------
-    :py:class:`discopy.rigid.Diagram`
+    :py:class:`discopy.grammar.pregroup.Diagram`
         Diagram with some cups removed.
 
     """
-    try:
-        return _remove_cups(_compress_cups(_remove_cups(diagram)))
-    except Exception:  # pragma: no cover
-        return diagram  # pragma: no cover
+    return _remove_cups(_compress_cups(_remove_cups(diagram)))
 
 
 @dataclass
@@ -229,7 +230,7 @@ def _remove_detached_cups(diagram: Diagram) -> Diagram:
         raise ValueError('Not a valid pregroup diagram.')
 
     atomic_types = [ob for b in diagram.boxes
-                    for ob in b.cod if isinstance(b, Word)]
+                    for ob in b.cod.inside if isinstance(b, Word)]
     scan = list(range(len(atomic_types)))
 
     # Create lists with offset info for words and morphisms
@@ -293,9 +294,10 @@ def _remove_detached_cups(diagram: Diagram) -> Diagram:
                         and morphisms[j].start > morphisms[m_idx].start):
                     mor_offsets[j] -= 2
 
-    return Diagram(dom=diagram.dom, cod=diagram.cod,
-                   boxes=new_words+new_morphisms,
-                   offsets=wrd_offsets+mor_offsets)
+    return Diagram.decode(dom=diagram.dom,
+                          cod=diagram.cod,
+                          boxes=new_words+new_morphisms,
+                          offsets=wrd_offsets+mor_offsets)
 
 
 def remove_swaps(diagram: Diagram) -> Diagram:
@@ -315,12 +317,12 @@ def remove_swaps(diagram: Diagram) -> Diagram:
 
     Parameters
     ----------
-    diagram : :py:class:`discopy.rigid.Diagram`
+    diagram : :py:class:`discopy.grammar.pregroup.Diagram`
         The input diagram.
 
     Returns
     -------
-    :py:class:`discopy.rigid.Diagram`
+    :py:class:`discopy.grammar.pregroup.Diagram`
         A copy of the input diagram without swaps.
 
     Raises
@@ -377,12 +379,12 @@ def remove_swaps(diagram: Diagram) -> Diagram:
 
     if not is_pregroup_diagram(diagram):
         try:
-            diagram = grammar.normal_form(diagram)
+            diagram = pregroup.normal_form(diagram)
         except ValueError as e:
             raise ValueError('Not a valid pregroup diagram.') from e
 
     atomic_types = [ob for b in diagram.boxes
-                    for ob in b.cod if isinstance(b, Word)]
+                    for ob in b.cod.inside if isinstance(b, Word)]
     scan = list(range(len(atomic_types)))
 
     # Create lists with offset info for words and morphisms
@@ -418,7 +420,8 @@ def remove_swaps(diagram: Diagram) -> Diagram:
             new_boxes.append(mor)
             new_offsets.append(ofs)
 
-    new_diagr = Diagram(dom=diagram.dom, cod=diagram.cod,
-                        boxes=new_boxes, offsets=new_offsets)
+    new_diagr = Diagram.decode(
+        dom=diagram.dom, cod=diagram.cod,
+        boxes=new_boxes, offsets=new_offsets)
 
     return _remove_detached_cups(new_diagr)

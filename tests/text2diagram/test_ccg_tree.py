@@ -2,7 +2,7 @@ import pytest
 
 import json
 
-from discopy.biclosed import Ty
+from discopy.grammar.categorial import Ty
 
 from lambeq import CCGTree
 

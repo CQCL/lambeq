@@ -17,7 +17,7 @@ from __future__ import annotations
 from collections.abc import Iterable, Iterator, Mapping
 from typing import Any, List, Union
 
-from discopy import Diagram
+from discopy.monoidal import Diagram
 
 SentenceType = Union[str, List[str]]
 SentenceBatchType = Union[List[str], List[List[str]]]

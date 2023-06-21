@@ -24,7 +24,8 @@ from __future__ import annotations
 import copy
 from typing import Any, TYPE_CHECKING
 
-from discopy import Circuit, Diagram
+from discopy.quantum import Circuit
+from discopy.tensor import Diagram
 from sympy import default_sort_key, Symbol
 import torch
 

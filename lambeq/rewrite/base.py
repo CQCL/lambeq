@@ -44,8 +44,8 @@ of provided rules can be retrieved using
     curry
         The curry rewrite rule uses map-state duality to remove adjoint
         types from the boxes. When used in conjunction with
-        :py:meth:`~discopy.rigid.Diagram.normal_form`, this removes cups
-        from the diagram.
+        :py:meth:`~discopy.grammar.pregroup.Diagram.normal_form`, this
+        removes cups from the diagram.
 
     determiner
         The determiner rule removes determiners (such as "the") by
@@ -79,9 +79,8 @@ __all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
 from abc import ABC, abstractmethod
 from collections.abc import Container, Iterable
 
-from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Functor, Id, Spider, Swap, Ty
-from discopy.rigid import caps, spiders
+from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Functor, Id,
+                                      Spider, Swap, Ty, Word)
 
 from lambeq.core.types import AtomicType
 
@@ -105,12 +104,12 @@ class RewriteRule(ABC):
 
         Parameters
         ----------
-        box : :py:class:`discopy.rigid.Box`
+        box : :py:class:`discopy.grammar.pregroup.Box`
             The candidate box to be tested against this rewrite rule.
 
         Returns
         -------
-        :py:class:`discopy.rigid.Diagram`, optional
+        :py:class:`discopy.grammar.pregroup.Diagram`, optional
             The rewritten diagram, or :py:obj:`None` if rule
             does not apply.
 
@@ -134,7 +133,7 @@ class SimpleRewriteRule(RewriteRule):
     into a set template.
     """
 
-    PLACEHOLDER_WORD = object()
+    PLACEHOLDER_WORD = '<PLACEHOLDER>'
 
     def __init__(self,
                  cod: Ty,
@@ -145,9 +144,9 @@ class SimpleRewriteRule(RewriteRule):
 
         Parameters
         ----------
-        cod : :py:class:`discopy.rigid.Ty`
+        cod : :py:class:`discopy.grammar.pregroup.Ty`
             The type that the codomain of each box is matched against.
-        template : :py:class:`discopy.rigid.Diagram`
+        template : :py:class:`discopy.grammar.pregroup.Diagram`
             The diagram that a matching box is replaced with. A special
             placeholder box is replaced by the word in the matched box,
             and can be created using
@@ -187,13 +186,13 @@ class SimpleRewriteRule(RewriteRule):
 
         Parameters
         ----------
-        cod : :py:class:`discopy.rigid.Ty`
+        cod : :py:class:`discopy.grammar.pregroup.Ty`
             The codomain of the placeholder, and hence the word in the
             resulting rewritten diagram.
 
         Returns
         -------
-        :py:class:`discopy.rigid.Box`
+        :py:class:`discopy.grammar.pregroup.Box`
             A placeholder box with the given codomain.
 
         """
@@ -278,8 +277,8 @@ class CoordinationRewriteRule(RewriteRule):
         n = len(box.cod) // 3
         left, mid, right = box.cod[:n], box.cod[n:2*n], box.cod[2*n:]
         assert right.r == mid == left.l
-        return (caps(left, mid) @ caps(mid, right)
-                >> Id(left) @ spiders(2, 1, mid) @ Id(right))
+        return (Diagram.caps(left, mid) @ Diagram.caps(mid, right)
+                >> Id(left) @ Diagram.spiders(2, 1, mid) @ Id(right))
 
 
 class CurryRewriteRule(RewriteRule):
@@ -289,10 +288,10 @@ class CurryRewriteRule(RewriteRule):
 
         This rule uses the map-state duality by iteratively
         uncurrying on both sides of each box. When used in conjunction
-        with :py:meth:`~discopy.rigid.Diagram.normal_form`, this
-        removes cups from the diagram in exchange for depth. Diagrams
-        with less cups become circuits with less post-selection,
-        which results in faster QML experiments.
+        with :py:meth:`~discopy.grammar.pregroup.Diagram.normal_form`,
+        this removes cups from the diagram in exchange for depth.
+        Diagrams with fewer cups become circuits with fewer
+        post-selection, which results in faster QML experiments.
 
         """
 
@@ -311,9 +310,9 @@ class CurryRewriteRule(RewriteRule):
         dom = left.l @ box.dom @ right.r
         new_box = Box(box.name, dom, cod[i:j+1])
         if left:
-            new_box = Diagram.curry(new_box, n_wires=len(left), left=True)
+            new_box = Diagram.curry(new_box, n=len(left), left=False)
         if right:
-            new_box = Diagram.curry(new_box, n_wires=len(right), left=False)
+            new_box = Diagram.curry(new_box, n=len(right), left=True)
 
         return new_box
 

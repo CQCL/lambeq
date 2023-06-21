@@ -33,8 +33,8 @@ from pathlib import Path
 import re
 import sys
 
-from discopy.biclosed import Ty
-from discopy.rigid import Diagram
+from discopy.grammar.categorial import Ty
+from discopy.grammar.pregroup import Diagram
 from tqdm.auto import tqdm
 
 from lambeq.core.globals import VerbosityLevel

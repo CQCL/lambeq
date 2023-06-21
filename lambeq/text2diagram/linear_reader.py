@@ -15,8 +15,7 @@
 __all__ = ['LinearReader', 'cups_reader',
            'stairs_reader', 'word_sequence_reader']
 
-from discopy import Word
-from discopy.rigid import Box, Cup, Diagram, Id, Ty
+from discopy.grammar.pregroup import Box, Cup, Diagram, Id, Ty, Word
 
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType, tokenised_sentence_type_check

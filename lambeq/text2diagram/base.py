@@ -48,7 +48,7 @@ __all__ = ['Reader']
 
 from abc import ABC, abstractmethod
 
-from discopy.rigid import Diagram
+from discopy.grammar.pregroup import Diagram
 
 from lambeq.core.utils import SentenceBatchType, SentenceType
 
