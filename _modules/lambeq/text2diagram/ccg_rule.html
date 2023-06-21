@@ -145,8 +145,8 @@
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">discopy.biclosed</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Over</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Under</span>
-<span class="kn">from</span> <span class="nn">discopy.monoidal</span> <span class="kn">import</span> <span class="n">BinaryBoxConstructor</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar.categorial</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">discopy.utils</span> <span class="kn">import</span> <span class="n">BinaryBoxConstructor</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CCGAtomicType</span><span class="p">,</span> <span class="n">replace_cat_result</span>
 
@@ -275,14 +275,14 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        dom : discopy.biclosed.Ty</span>
+<span class="sd">        dom : discopy.grammar.categorial.Ty</span>
 <span class="sd">            The expected domain of the diagram.</span>
-<span class="sd">        cod : discopy.biclosed.Ty</span>
+<span class="sd">        cod : discopy.grammar.categorial.Ty</span>
 <span class="sd">            The expected codomain of the diagram.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        discopy.biclosed.Diagram</span>
+<span class="sd">        discopy.grammar.categorial.Diagram</span>
 <span class="sd">            The resulting diagram.</span>
 
 <span class="sd">        Raises</span>
@@ -337,10 +337,11 @@
         <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">REMOVE_PUNCTUATION_RIGHT</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">RPR</span><span class="p">(</span><span class="n">cod</span><span class="p">,</span> <span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
         <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_TYPE_RAISING</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="n">Diagram</span><span class="o">.</span><span class="n">ba</span><span class="p">(</span><span class="n">cod</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">cod</span><span class="o">.</span><span class="n">left</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="n">Diagram</span><span class="o">.</span><span class="n">ba</span><span class="p">(</span><span class="n">cod</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">cod</span><span class="o">.</span><span class="n">left</span><span class="p">),</span>
+                                 <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">BACKWARD_TYPE_RAISING</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">curry</span><span class="p">(</span><span class="n">Diagram</span><span class="o">.</span><span class="n">fa</span><span class="p">(</span><span class="n">cod</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">cod</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">),</span>
-                                 <span class="n">left</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                 <span class="n">left</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">CONJUNCTION</span><span class="p">:</span>
             <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">dom</span><span class="p">[:</span><span class="mi">1</span><span class="p">],</span> <span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
             <span class="k">if</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">conjoinable</span><span class="p">(</span><span class="n">left</span><span class="p">):</span>
@@ -359,9 +360,9 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        dom : discopy.biclosed.Ty</span>
+<span class="sd">        dom : discopy.grammar.categorial.Ty</span>
 <span class="sd">            The domain of the rule.</span>
-<span class="sd">        cod : discopy.biclosed.Ty</span>
+<span class="sd">        cod : discopy.grammar.categorial.Ty</span>
 <span class="sd">            The codomain of the rule.</span>
 
 <span class="sd">        Returns</span>
@@ -399,24 +400,24 @@
             <span class="k">if</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">CONJUNCTION</span> <span class="ow">in</span> <span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">CONJUNCTION</span>
 
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Over</span><span class="p">):</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Over</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">left</span><span class="o">.</span><span class="n">is_over</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">is_over</span>
                         <span class="ow">and</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span>
                         <span class="ow">and</span> <span class="n">cod</span> <span class="o">==</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_COMPOSITION</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Under</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">is_under</span>
                         <span class="ow">and</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span>
                         <span class="ow">and</span> <span class="n">cod</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_CROSSED_COMPOSITION</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">replace_cat_result</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="s1">&#39;&lt;&#39;</span><span class="p">)</span>
                         <span class="o">==</span> <span class="p">(</span><span class="n">cod</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">)):</span>
                     <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">GENERALIZED_FORWARD_COMPOSITION</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">Under</span><span class="p">):</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Under</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">right</span><span class="o">.</span><span class="n">is_under</span><span class="p">:</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">is_under</span>
                         <span class="ow">and</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span>
                         <span class="ow">and</span> <span class="n">cod</span> <span class="o">==</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">BACKWARD_COMPOSITION</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Over</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">is_over</span>
                         <span class="ow">and</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span>
                         <span class="ow">and</span> <span class="n">cod</span> <span class="o">==</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span> <span class="o">&lt;&lt;</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
                     <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">BACKWARD_CROSSED_COMPOSITION</span>
@@ -428,7 +429,7 @@
                 <span class="k">if</span> <span class="p">(</span><span class="n">replace_cat_result</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="s1">&#39;&lt;|&#39;</span><span class="p">)</span>
                         <span class="o">==</span> <span class="p">(</span><span class="n">cod</span><span class="p">,</span> <span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">)):</span>
                     <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">GENERALIZED_BACKWARD_CROSSED_COMPOSITION</span>
-            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">Over</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">is_over</span>
                     <span class="ow">and</span> <span class="p">(</span><span class="n">replace_cat_result</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="s1">&#39;&gt;|&#39;</span><span class="p">)</span>
                          <span class="o">==</span> <span class="p">(</span><span class="n">cod</span><span class="p">,</span> <span class="n">left</span><span class="o">.</span><span class="n">right</span><span class="p">))):</span>
                 <span class="k">return</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">GENERALIZED_FORWARD_CROSSED_COMPOSITION</span>

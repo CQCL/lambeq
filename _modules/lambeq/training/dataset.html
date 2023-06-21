@@ -151,7 +151,7 @@
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">tensor</span>
 
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">:</span>
@@ -162,7 +162,7 @@
 <span class="sd">    to NumPy. For example, to access the dataset as PyTorch tensors:</span>
 
 <span class="sd">        &gt;&gt;&gt; dataset = Dataset([&#39;data1&#39;], [[0, 1, 2, 3]])</span>
-<span class="sd">        &gt;&gt;&gt; with Tensor.backend(&#39;pytorch&#39;):</span>
+<span class="sd">        &gt;&gt;&gt; with tensor.backend(&#39;pytorch&#39;):</span>
 <span class="sd">        ...     print(dataset[0])  # becomes pytorch tensor</span>
 <span class="sd">        (&#39;data1&#39;, tensor([0, 1, 2, 3]))</span>
 <span class="sd">        &gt;&gt;&gt; print(dataset[0])  # numpy array again</span>
@@ -208,7 +208,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a single item or a subset from the dataset.&quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -228,7 +228,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
             <span class="n">new_data</span><span class="p">,</span> <span class="n">new_targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle_data</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">new_targets</span><span class="p">)</span>
 
-        <span class="n">backend</span> <span class="o">=</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span> <span class="n">start_idx</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">],</span>
                    <span class="n">backend</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>

@@ -552,7 +552,7 @@ Turning parse trees to diagrams.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Dim</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
 
 <span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span><span class="p">,</span> <span class="n">SpiderAnsatz</span>
 
@@ -680,13 +680,13 @@ Turning parse trees to diagrams.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:   train/loss: 0.7014   valid/loss: 0.7045   train/acc: 0.5143   valid/acc: 0.5333
-Epoch 5:   train/loss: 0.6489   valid/loss: 0.6879   train/acc: 0.5929   valid/acc: 0.5167
-Epoch 10:  train/loss: 0.4586   valid/loss: 0.5155   train/acc: 0.8214   valid/acc: 0.7000
-Epoch 15:  train/loss: 0.1634   valid/loss: 0.2993   train/acc: 0.9286   valid/acc: 0.8000
-Epoch 20:  train/loss: 0.0465   valid/loss: 0.0868   train/acc: 0.9929   valid/acc: 0.9667
-Epoch 25:  train/loss: 0.0218   valid/loss: 0.0588   train/acc: 0.9929   valid/acc: 0.9667
-Epoch 30:  train/loss: 0.0171   valid/loss: 0.0497   train/acc: 0.9929   valid/acc: 0.9833
+Epoch 1:   train/loss: 0.7287   valid/loss: 0.7285   train/acc: 0.5143   valid/acc: 0.5500
+Epoch 5:   train/loss: 0.6466   valid/loss: 0.7034   train/acc: 0.5929   valid/acc: 0.5167
+Epoch 10:  train/loss: 0.5270   valid/loss: 0.5835   train/acc: 0.6714   valid/acc: 0.6667
+Epoch 15:  train/loss: 0.2460   valid/loss: 0.4088   train/acc: 0.8929   valid/acc: 0.8167
+Epoch 20:  train/loss: 0.0995   valid/loss: 0.1597   train/acc: 0.9571   valid/acc: 0.9333
+Epoch 25:  train/loss: 0.0272   valid/loss: 0.0385   train/acc: 0.9929   valid/acc: 0.9833
+Epoch 30:  train/loss: 0.0171   valid/loss: 0.0237   train/acc: 0.9929   valid/acc: 0.9833
 
 Training completed!
 </pre></div></div>
@@ -732,7 +732,7 @@ Training completed!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.9833333492279053
+Test accuracy: 1.0
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -758,7 +758,7 @@ Test accuracy: 0.9833333492279053
     <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;define a custom forward pass here&quot;&quot;&quot;</span>
         <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_diagram_output</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span>
-        <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
+        <span class="n">preds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">preds</span><span class="o">.</span><span class="n">float</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">preds</span>
 </pre></div>
 </div>
@@ -779,6 +779,7 @@ Test accuracy: 0.9833333492279053
         <span class="n">evaluate_on_train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;text&#39;</span><span class="p">,</span>
         <span class="n">seed</span><span class="o">=</span><span class="n">SEED</span><span class="p">)</span>
+
 <span class="n">custom_model_trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">logging_step</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -788,13 +789,13 @@ Test accuracy: 0.9833333492279053
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:   train/loss: 0.7115   valid/loss: 0.6841   train/acc: 0.4357   valid/acc: 0.6000
-Epoch 5:   train/loss: 0.6478   valid/loss: 0.7444   train/acc: 0.7071   valid/acc: 0.3333
-Epoch 10:  train/loss: 0.4621   valid/loss: 0.8823   train/acc: 0.7643   valid/acc: 0.5167
-Epoch 15:  train/loss: 0.2854   valid/loss: 0.7487   train/acc: 0.8500   valid/acc: 0.6000
-Epoch 20:  train/loss: 0.1396   valid/loss: 0.8462   train/acc: 0.9286   valid/acc: 0.7667
-Epoch 25:  train/loss: 0.1069   valid/loss: 1.1114   train/acc: 0.9429   valid/acc: 0.7667
-Epoch 30:  train/loss: 0.0663   valid/loss: 0.9043   train/acc: 0.9571   valid/acc: 0.7333
+Epoch 1:   train/loss: 0.7143   valid/loss: 0.7023   train/acc: 0.4786   valid/acc: 0.4833
+Epoch 5:   train/loss: 0.6345   valid/loss: 0.7805   train/acc: 0.6500   valid/acc: 0.3833
+Epoch 10:  train/loss: 0.4672   valid/loss: 0.9723   train/acc: 0.7286   valid/acc: 0.4500
+Epoch 15:  train/loss: 0.2969   valid/loss: 0.8530   train/acc: 0.8571   valid/acc: 0.6167
+Epoch 20:  train/loss: 0.1612   valid/loss: 0.8944   train/acc: 0.9429   valid/acc: 0.7333
+Epoch 25:  train/loss: 0.1263   valid/loss: 1.1026   train/acc: 0.9286   valid/acc: 0.7667
+Epoch 30:  train/loss: 0.1078   valid/loss: 1.0687   train/acc: 0.9286   valid/acc: 0.7333
 
 Training completed!
 </pre></div></div>
@@ -831,7 +832,7 @@ Training completed!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.9833333492279053
+Test accuracy: 1.0
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">

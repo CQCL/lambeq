@@ -438,25 +438,13 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">grammar</span>
-<span class="kn">from</span> <span class="nn">discopy.rewriting</span> <span class="kn">import</span> <span class="n">InterchangerError</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">pregroups</span>
 
 <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">box</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Word</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">Word</span><span class="p">):</span>
-                    <span class="k">break</span>
-
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">diagram</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">interchange</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-                <span class="k">except</span> <span class="n">InterchangerError</span><span class="p">:</span>
-                    <span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-                    <span class="k">return</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">):</span>
-            <span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-            <span class="k">return</span>
-    <span class="n">grammar</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -464,8 +452,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">cups</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Word</span>
 
 <span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span>
 
@@ -554,9 +541,9 @@ div.rendered_html tbody tr:hover {
 
 <span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;↓ rewriting (connector rule)&#39;</span><span class="p">)</span>
-<span class="n">draw</span><span class="p">(</span><span class="n">Rewriter</span><span class="p">([</span><span class="s1">&#39;connector&#39;</span><span class="p">])(</span><span class="n">diagram</span><span class="p">))</span>
+<span class="n">Rewriter</span><span class="p">([</span><span class="s1">&#39;connector&#39;</span><span class="p">])(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;↓ normal form&#39;</span><span class="p">)</span>
-<span class="n">draw</span><span class="p">(</span><span class="n">rewriter</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">normal_form</span><span class="p">())</span>
+<span class="n">rewriter</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -834,7 +821,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">rewriter</span> <span class="o">=</span> <span class="n">Rewriter</span><span class="p">([</span><span class="s1">&#39;subject_rel_pronoun&#39;</span><span class="p">])</span>
 
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">cows</span><span class="p">,</span> <span class="n">that_subj</span><span class="p">,</span> <span class="n">eat</span><span class="p">,</span> <span class="n">grass</span><span class="p">)</span>
-<span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">cups</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">l</span> <span class="o">@</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">l</span> <span class="o">@</span> <span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
 
 <span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;↓ rewriting (subject relative pronoun rule)&#39;</span><span class="p">)</span>
@@ -870,7 +857,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">diagram</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">grass</span><span class="p">,</span> <span class="n">that_obj</span><span class="p">,</span> <span class="n">cows</span><span class="p">,</span> <span class="n">eat</span><span class="p">)</span>
 <span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">l</span> <span class="o">@</span> <span class="n">S</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cup</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">S</span> <span class="o">@</span> <span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
-<span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">cups</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">l</span> <span class="o">@</span> <span class="n">S</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">S</span> <span class="o">@</span> <span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
+<span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">@</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">l</span> <span class="o">@</span> <span class="n">S</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">S</span> <span class="o">@</span> <span class="n">N</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
 
 <span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;↓ rewriting (object relative pronoun rule)&#39;</span><span class="p">)</span>

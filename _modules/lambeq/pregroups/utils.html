@@ -142,7 +142,9 @@
 
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">grammar</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Swap</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
+
+<span class="kn">from</span> <span class="nn">discopy.grammar</span> <span class="kn">import</span> <span class="n">pregroup</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Swap</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
 
 <span class="n">CUP_TOKEN</span> <span class="o">=</span> <span class="s1">&#39;**CUP**&#39;</span>
 
@@ -154,7 +156,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    diagram : :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">    diagram : :py:class:`discopy.grammar.pregroup.Diagram`</span>
 <span class="sd">        The diagram to be checked.</span>
 
 <span class="sd">    Returns</span>
@@ -163,9 +165,8 @@
 <span class="sd">        Whether the diagram is a pregroup diagram.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
     <span class="n">in_words</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">right</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">right</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">inside</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">in_words</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Word</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">right</span><span class="p">:</span>  <span class="c1"># word boxes should be tensored left to right.</span>
                 <span class="k">return</span> <span class="kc">False</span>
@@ -181,7 +182,9 @@
     <span class="n">cod</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
     <span class="n">morphisms</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a :py:class:`discopy.rigid.Diagram` from cups and swaps.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a :py:class:`discopy.grammar.pregroup.Diagram`</span>
+
+<span class="sd">    The input is cups and swaps.</span>
 
 <span class="sd">        &gt;&gt;&gt; n, s = Ty(&#39;n&#39;), Ty(&#39;s&#39;)</span>
 <span class="sd">        &gt;&gt;&gt; words = [Word(&#39;she&#39;, n), Word(&#39;goes&#39;, n.r @ s @ n.l),</span>
@@ -194,18 +197,19 @@
 <span class="sd">    words : list of :py:class:`discopy.grammar.pregroup.Word`</span>
 <span class="sd">        A list of :py:class:`~discopy.grammar.pregroup.Word` s</span>
 <span class="sd">        corresponding to the words of the sentence.</span>
-<span class="sd">    cod : :py:class:`discopy.rigid.Ty`</span>
+<span class="sd">    cod : :py:class:`discopy.grammar.pregroup.Ty`</span>
 <span class="sd">        The output type of the diagram.</span>
 <span class="sd">    morphisms: list of tuple[type, int, int]</span>
 <span class="sd">        A list of tuples of the form:</span>
 <span class="sd">            (morphism, start_wire_idx, end_wire_idx).</span>
-<span class="sd">        Morphisms can be :py:class:`~discopy.rigid.Cup` s or</span>
-<span class="sd">        :py:class:`~discopy.rigid.Swap` s, while the two numbers define</span>
-<span class="sd">        the indices of the wires on which the morphism is applied.</span>
+<span class="sd">        Morphisms can be :py:class:`~discopy.grammar.pregroup.Cup` s or</span>
+<span class="sd">        :py:class:`~discopy.grammar.pregroup.Swap` s, while the two</span>
+<span class="sd">        numbers define the indices of the wires on which the morphism is</span>
+<span class="sd">        applied.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">    :py:class:`discopy.grammar.pregroup.Diagram`</span>
 <span class="sd">        The generated pregroup diagram.</span>
 
 <span class="sd">    Raises</span>
@@ -235,7 +239,7 @@
                 <span class="n">actual_idx</span> <span class="o">-=</span> <span class="mi">2</span>
         <span class="n">offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">actual_idx</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">Diagram</span><span class="p">(</span><span class="n">dom</span><span class="o">=</span><span class="n">Ty</span><span class="p">(),</span> <span class="n">cod</span><span class="o">=</span><span class="n">cod</span><span class="p">,</span> <span class="n">boxes</span><span class="o">=</span><span class="n">boxes</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="n">offsets</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">dom</span><span class="o">=</span><span class="n">Ty</span><span class="p">(),</span> <span class="n">cod</span><span class="o">=</span><span class="n">cod</span><span class="p">,</span> <span class="n">boxes</span><span class="o">=</span><span class="n">boxes</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="n">offsets</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">_compress_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
@@ -251,7 +255,7 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">box</span><span class="p">,</span> <span class="n">offset</span><span class="p">))</span>
     <span class="n">boxes</span><span class="p">,</span> <span class="n">offsets</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">layers</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Diagram</span><span class="p">(</span>
+    <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
         <span class="n">dom</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span> <span class="n">boxes</span><span class="o">=</span><span class="n">boxes</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="n">offsets</span><span class="p">)</span>
 
 
@@ -286,14 +290,14 @@
                 <span class="n">pg_type1</span><span class="p">,</span> <span class="n">pg_type2</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[:</span><span class="n">pg_len</span><span class="p">],</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">pg_len</span><span class="p">:]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">==</span> <span class="n">pg_len</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">left</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">pg_type1</span><span class="o">.</span><span class="n">r</span> <span class="o">==</span> <span class="n">pg_type2</span><span class="p">:</span>
-                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span> <span class="o">@</span> <span class="n">wires_r</span><span class="p">)</span>
+                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">wires_r</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>  <span class="c1"># illegal cup</span>
-                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span> <span class="o">@</span> <span class="n">wires_r</span><span class="p">)</span>
+                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">l</span> <span class="o">@</span> <span class="n">wires_r</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">right</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">==</span> <span class="n">pg_len</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">right</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">pg_type1</span><span class="o">.</span><span class="n">r</span> <span class="o">==</span> <span class="n">pg_type2</span><span class="p">:</span>
-                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">wires_l</span> <span class="o">@</span> <span class="n">right</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">dagger</span><span class="p">())</span>
+                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">wires_l</span> <span class="o">@</span> <span class="n">right</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">wires_l</span> <span class="o">@</span> <span class="n">right</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">dagger</span><span class="p">())</span>
+                        <span class="n">new_diag</span> <span class="o">=</span> <span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="p">(</span><span class="n">wires_l</span> <span class="o">@</span> <span class="n">right</span><span class="o">.</span><span class="n">r</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">box</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">pg_type1</span><span class="p">,</span> <span class="n">pg_type2</span><span class="p">)</span>
                     <span class="n">new_diag</span> <span class="o">=</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span> <span class="o">&gt;&gt;</span> <span class="n">wires_l</span> <span class="o">@</span> <span class="n">box</span> <span class="o">@</span> <span class="n">wires_r</span>
@@ -305,26 +309,23 @@
 
 
 <div class="viewcode-block" id="remove_cups"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.remove_cups">[docs]</a><span class="k">def</span> <span class="nf">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove cups from a :py:class:`discopy.rigid.Diagram`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove cups from a :py:class:`discopy.grammar.pregroup.Diagram`.</span>
 
 <span class="sd">    Diagrams with less cups become circuits with less post-selection,</span>
 <span class="sd">    which results in faster QML experiments.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    diagram : :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">    diagram : :py:class:`discopy.grammar.pregroup.Diagram`</span>
 <span class="sd">        The diagram from which cups will be removed.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">    :py:class:`discopy.grammar.pregroup.Diagram`</span>
 <span class="sd">        Diagram with some cups removed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_remove_cups</span><span class="p">(</span><span class="n">_compress_cups</span><span class="p">(</span><span class="n">_remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)))</span>
-    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-        <span class="k">return</span> <span class="n">diagram</span>  <span class="c1"># pragma: no cover</span></div>
+    <span class="k">return</span> <span class="n">_remove_cups</span><span class="p">(</span><span class="n">_compress_cups</span><span class="p">(</span><span class="n">_remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)))</span></div>
 
 
 <span class="nd">@dataclass</span>
@@ -355,7 +356,7 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a valid pregroup diagram.&#39;</span><span class="p">)</span>
 
     <span class="n">atomic_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ob</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span>
-                    <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">cod</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">Word</span><span class="p">)]</span>
+                    <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">inside</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">Word</span><span class="p">)]</span>
     <span class="n">scan</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atomic_types</span><span class="p">)))</span>
 
     <span class="c1"># Create lists with offset info for words and morphisms</span>
@@ -419,9 +420,10 @@
                         <span class="ow">and</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">start</span> <span class="o">&gt;</span> <span class="n">morphisms</span><span class="p">[</span><span class="n">m_idx</span><span class="p">]</span><span class="o">.</span><span class="n">start</span><span class="p">):</span>
                     <span class="n">mor_offsets</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">2</span>
 
-    <span class="k">return</span> <span class="n">Diagram</span><span class="p">(</span><span class="n">dom</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
-                   <span class="n">boxes</span><span class="o">=</span><span class="n">new_words</span><span class="o">+</span><span class="n">new_morphisms</span><span class="p">,</span>
-                   <span class="n">offsets</span><span class="o">=</span><span class="n">wrd_offsets</span><span class="o">+</span><span class="n">mor_offsets</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">dom</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span>
+                          <span class="n">cod</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
+                          <span class="n">boxes</span><span class="o">=</span><span class="n">new_words</span><span class="o">+</span><span class="n">new_morphisms</span><span class="p">,</span>
+                          <span class="n">offsets</span><span class="o">=</span><span class="n">wrd_offsets</span><span class="o">+</span><span class="n">mor_offsets</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="remove_swaps"><a class="viewcode-back" href="../../../root-api.html#lambeq.pregroups.remove_swaps">[docs]</a><span class="k">def</span> <span class="nf">remove_swaps</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
@@ -441,12 +443,12 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    diagram : :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">    diagram : :py:class:`discopy.grammar.pregroup.Diagram`</span>
 <span class="sd">        The input diagram.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    :py:class:`discopy.rigid.Diagram`</span>
+<span class="sd">    :py:class:`discopy.grammar.pregroup.Diagram`</span>
 <span class="sd">        A copy of the input diagram without swaps.</span>
 
 <span class="sd">    Raises</span>
@@ -503,12 +505,12 @@
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pregroup_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">diagram</span> <span class="o">=</span> <span class="n">grammar</span><span class="o">.</span><span class="n">normal_form</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+            <span class="n">diagram</span> <span class="o">=</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">normal_form</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Not a valid pregroup diagram.&#39;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
 
     <span class="n">atomic_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">ob</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span>
-                    <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">cod</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">Word</span><span class="p">)]</span>
+                    <span class="k">for</span> <span class="n">ob</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">inside</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">Word</span><span class="p">)]</span>
     <span class="n">scan</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">atomic_types</span><span class="p">)))</span>
 
     <span class="c1"># Create lists with offset info for words and morphisms</span>
@@ -544,8 +546,9 @@
             <span class="n">new_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mor</span><span class="p">)</span>
             <span class="n">new_offsets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ofs</span><span class="p">)</span>
 
-    <span class="n">new_diagr</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span><span class="n">dom</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
-                        <span class="n">boxes</span><span class="o">=</span><span class="n">new_boxes</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="n">new_offsets</span><span class="p">)</span>
+    <span class="n">new_diagr</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
+        <span class="n">dom</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
+        <span class="n">boxes</span><span class="o">=</span><span class="n">new_boxes</span><span class="p">,</span> <span class="n">offsets</span><span class="o">=</span><span class="n">new_offsets</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">_remove_detached_cups</span><span class="p">(</span><span class="n">new_diagr</span><span class="p">)</span></div>
 </pre></div>

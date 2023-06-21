@@ -151,9 +151,10 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">import</span> <span class="nn">math</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">rigid</span><span class="p">,</span> <span class="n">tensor</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Spider</span>
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
+<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">tensor</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar</span> <span class="kn">import</span> <span class="n">pregroup</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Spider</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
+<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Dim</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.ansatz</span> <span class="kn">import</span> <span class="n">BaseAnsatz</span><span class="p">,</span> <span class="n">Symbol</span>
 
@@ -167,30 +168,29 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the dimension</span>
-<span class="sd">            space it uses in a tensor network.</span>
+<span class="sd">            A mapping from :py:class:`discopy.pregroup.Ty` to the</span>
+<span class="sd">            dimension space it uses in a tensor network.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ob_map</span> <span class="o">=</span> <span class="n">ob_map</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Functor</span><span class="p">(</span>
-            <span class="n">ob</span><span class="o">=</span><span class="n">ob_map</span><span class="p">,</span>
-            <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">,</span> <span class="n">ar_factory</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">ob_factory</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">Dim</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">ob_map</span><span class="p">,</span>
+                                        <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">,</span>
+                                        <span class="n">cod</span><span class="o">=</span><span class="n">Category</span><span class="p">(</span><span class="n">Dim</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
         <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_summarise_box</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
 
         <span class="n">directed_dom</span><span class="p">,</span> <span class="n">directed_cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_directed_dom_cod</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
         <span class="n">syms</span> <span class="o">=</span> <span class="n">Symbol</span><span class="p">(</span><span class="n">name</span><span class="p">,</span>
-                      <span class="n">directed_dom</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">directed_dom</span><span class="p">),</span>
-                      <span class="n">directed_cod</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">directed_cod</span><span class="p">))</span>
+                      <span class="n">directed_dom</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">directed_dom</span><span class="o">.</span><span class="n">inside</span><span class="p">),</span>
+                      <span class="n">directed_cod</span><span class="o">=</span><span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">directed_cod</span><span class="o">.</span><span class="n">inside</span><span class="p">))</span>
 
         <span class="c1"># Box domain and codomain are unchanged</span>
         <span class="n">dom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
         <span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Box</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="n">syms</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">_generate_directed_dom_cod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Dim</span><span class="p">,</span> <span class="n">Dim</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">_generate_directed_dom_cod</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Dim</span><span class="p">,</span> <span class="n">Dim</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate the &quot;flow&quot; domain and codomain for a box.</span>
 
 <span class="sd">        To initialise normalised tensors in expectation, it is necessary</span>
@@ -200,7 +200,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        box : rigid.Box</span>
+<span class="sd">        box : pregroup.Box</span>
 <span class="sd">            Box for which directed dom and cod should be generated.</span>
 
 <span class="sd">        Returns</span>
@@ -218,21 +218,21 @@
         <span class="c1"># even winding numbers. Else, they are assigned to the flow-dom.</span>
         <span class="k">for</span> <span class="n">ty</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ty</span><span class="o">.</span><span class="n">z</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">dom</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+                <span class="n">dom</span> <span class="o">@=</span> <span class="n">ty</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">cod</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+                <span class="n">cod</span> <span class="o">@=</span> <span class="n">ty</span>
 
         <span class="c1"># Types in the box-dom are assigned to the flow-dom if they have</span>
         <span class="c1"># even winding numbers. Else, they are assigned to the flow-cod.</span>
         <span class="k">for</span> <span class="n">ty</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ty</span><span class="o">.</span><span class="n">z</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">cod</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+                <span class="n">cod</span> <span class="o">@=</span> <span class="n">ty</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">dom</span> <span class="o">@=</span> <span class="n">Ty</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
+                <span class="n">dom</span> <span class="o">@=</span> <span class="n">ty</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">dom</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span>
 
-<div class="viewcode-block" id="TensorAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.TensorAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
+<div class="viewcode-block" id="TensorAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.TensorAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy tensor.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span></div></div>
 
@@ -251,8 +251,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the dimension</span>
-<span class="sd">            space it uses in a tensor network.</span>
+<span class="sd">            A mapping from :py:class:`discopy.pregroup.Ty` to the</span>
+<span class="sd">            dimension space it uses in a tensor network.</span>
 <span class="sd">        bond_dim: int</span>
 <span class="sd">            The size of the bonding dimension.</span>
 <span class="sd">        max_order: int</span>
@@ -271,9 +271,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">bond_dim</span> <span class="o">=</span> <span class="n">bond_dim</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">max_order</span> <span class="o">=</span> <span class="n">max_order</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">split_functor</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ob</span><span class="p">:</span> <span class="n">ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_ar</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split_functor</span> <span class="o">=</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ob</span><span class="p">:</span> <span class="n">ob</span><span class="p">,</span>
+                                              <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_ar</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_split_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ar</span><span class="p">:</span> <span class="n">Word</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_split_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ar</span><span class="p">:</span> <span class="n">Word</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
         <span class="n">bond</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">BOND_TYPE</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_order</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Word</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ar</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_0&#39;</span><span class="p">,</span> <span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
@@ -284,13 +285,14 @@
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span> <span class="n">step_size</span><span class="p">)):</span>
             <span class="n">cod</span> <span class="o">=</span> <span class="n">bond</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span><span class="o">+</span><span class="n">step_size</span><span class="p">]</span> <span class="o">@</span> <span class="n">bond</span>
             <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ar</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">cod</span><span class="p">))</span>
-            <span class="n">cups</span> <span class="o">+=</span> <span class="p">[</span><span class="n">rigid</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Cup</span><span class="p">(</span><span class="n">bond</span><span class="p">,</span> <span class="n">bond</span><span class="o">.</span><span class="n">r</span><span class="p">)]</span>
+            <span class="n">cups</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pregroup</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Cup</span><span class="p">(</span><span class="n">bond</span><span class="p">,</span> <span class="n">bond</span><span class="o">.</span><span class="n">r</span><span class="p">)]</span>
         <span class="n">boxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="n">boxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">boxes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
         <span class="n">boxes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="n">boxes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">boxes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-        <span class="k">return</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Box</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">boxes</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">cups</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">boxes</span><span class="p">)</span>
+                <span class="o">&gt;&gt;</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">cups</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
-<div class="viewcode-block" id="MPSAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.MPSAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
+<div class="viewcode-block" id="MPSAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.MPSAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">split_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">))</span></div></div>
 
 
@@ -305,8 +307,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the dimension</span>
-<span class="sd">            space it uses in a tensor network.</span>
+<span class="sd">            A mapping from :py:class:`discopy.pregroup.Ty` to the</span>
+<span class="sd">            dimension space it uses in a tensor network.</span>
 <span class="sd">        max_order: int</span>
 <span class="sd">            The maximum order of each tensor, which must be at least 2.</span>
 
@@ -317,24 +319,26 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob_map</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">max_order</span> <span class="o">=</span> <span class="n">max_order</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">split_functor</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ob</span><span class="p">:</span> <span class="n">ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_ar</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">split_functor</span> <span class="o">=</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ob</span><span class="p">:</span> <span class="n">ob</span><span class="p">,</span>
+                                              <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_split_ar</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_split_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ar</span><span class="p">:</span> <span class="n">Word</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_split_ar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ar</span><span class="p">:</span> <span class="n">Word</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_order</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Word</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ar</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_0&#39;</span><span class="p">,</span> <span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
 
         <span class="n">boxes</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">spiders</span> <span class="o">=</span> <span class="p">[</span><span class="n">rigid</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="mi">1</span><span class="p">])]</span>
+        <span class="n">spiders</span> <span class="o">=</span> <span class="p">[</span><span class="n">pregroup</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="mi">1</span><span class="p">])]</span>
         <span class="n">step_size</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_order</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">step_size</span><span class="p">)):</span>
             <span class="n">cod</span> <span class="o">=</span> <span class="n">ar</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">start</span> <span class="o">+</span> <span class="n">step_size</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
             <span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Word</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">ar</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">cod</span><span class="p">))</span>
-            <span class="n">spiders</span> <span class="o">+=</span> <span class="p">[</span><span class="n">rigid</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Spider</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cod</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:])]</span>
-        <span class="n">spiders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">spiders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+            <span class="n">spiders</span> <span class="o">+=</span> <span class="p">[</span><span class="n">pregroup</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">Spider</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">cod</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:])]</span>
+        <span class="n">spiders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Id</span><span class="p">(</span><span class="n">spiders</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">boxes</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">spiders</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">boxes</span><span class="p">)</span>
+                <span class="o">&gt;&gt;</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">spiders</span><span class="p">))</span>
 
-<div class="viewcode-block" id="SpiderAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.SpiderAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">rigid</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
+<div class="viewcode-block" id="SpiderAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.SpiderAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">tensor</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">split_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">))</span></div></div>
 </pre></div>
 

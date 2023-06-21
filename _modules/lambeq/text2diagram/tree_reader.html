@@ -145,8 +145,7 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;TreeReader&#39;</span><span class="p">,</span> <span class="s1">&#39;TreeReaderMode&#39;</span><span class="p">]</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.core.types</span> <span class="kn">import</span> <span class="n">AtomicType</span>
 <span class="kn">from</span> <span class="nn">lambeq.core.utils</span> <span class="kn">import</span> <span class="n">SentenceType</span>
@@ -243,7 +242,7 @@
                      <span class="n">word_type</span><span class="p">:</span> <span class="n">Ty</span> <span class="o">=</span> <span class="n">S</span><span class="p">,</span>
                      <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a :py:class:`~.CCGTree` into a</span>
-<span class="sd">        :py:class:`~discopy.rigid.Diagram` .</span>
+<span class="sd">        :py:class:`~discopy.grammar.pregroup.Diagram` .</span>
 
 <span class="sd">        This produces a tree-shaped diagram based on the output of the</span>
 <span class="sd">        CCG parser.</span>
@@ -265,7 +264,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        :py:class:`discopy.rigid.Diagram` or None</span>
+<span class="sd">        :py:class:`discopy.grammar.pregroup.Diagram` or None</span>
 <span class="sd">            The parsed diagram, or :py:obj:`None` on failure.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -294,7 +293,7 @@
                 <span class="n">name</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span>
             <span class="n">tree_boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">))</span>
 
-        <span class="n">diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span>
+        <span class="n">diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
             <span class="n">dom</span><span class="o">=</span><span class="n">Ty</span><span class="p">(),</span>
             <span class="n">cod</span><span class="o">=</span><span class="n">word_type</span><span class="p">,</span>
             <span class="n">boxes</span><span class="o">=</span><span class="n">tree_words</span> <span class="o">+</span> <span class="n">tree_boxes</span><span class="p">,</span>
@@ -303,20 +302,23 @@
 
         <span class="c1"># augment tree diagram with height labels</span>
         <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="n">TreeReaderMode</span><span class="o">.</span><span class="n">HEIGHT</span><span class="p">:</span>
-            <span class="n">fols</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">foliation</span><span class="p">()</span><span class="o">.</span><span class="n">boxes</span>
-            <span class="n">diagram</span> <span class="o">=</span> <span class="n">fols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">fol</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fols</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
-                <span class="k">for</span> <span class="n">left</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">right</span> <span class="ow">in</span> <span class="n">fol</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
-                    <span class="n">new_box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;layer_</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-                    <span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span> <span class="o">@</span> <span class="n">new_box</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
-
+            <span class="n">foliation</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">foliation</span><span class="p">()</span>
+            <span class="n">diagram</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">foliation</span><span class="p">):</span>
+                <span class="n">new_layer</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">ty_factory</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">box_or_typ</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">boxes_or_types</span><span class="p">):</span>
+                    <span class="n">new_layer</span> <span class="o">@=</span> <span class="p">(</span>
+                        <span class="n">Box</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;layer_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">box_or_typ</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="n">box_or_typ</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">box_or_typ</span>
+                    <span class="p">)</span>
+                <span class="n">diagram</span> <span class="o">&gt;&gt;=</span> <span class="n">new_layer</span>
         <span class="k">return</span> <span class="n">diagram</span></div>
 
 <div class="viewcode-block" id="TreeReader.sentence2diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.TreeReader.sentence2diagram">[docs]</a>    <span class="k">def</span> <span class="nf">sentence2diagram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                          <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
                          <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                          <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence into a :py:class:`~discopy.rigid.Diagram` .</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence into a DisCoPy diagram.</span>
 
 <span class="sd">        This produces a tree-shaped diagram based on the output of the</span>
 <span class="sd">        CCG parser.</span>
@@ -334,7 +336,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        :py:class:`discopy.rigid.Diagram` or None</span>
+<span class="sd">        :py:class:`discopy.grammar.pregroup.Diagram` or None</span>
 <span class="sd">            The parsed diagram, or :py:obj:`None` on failure.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>

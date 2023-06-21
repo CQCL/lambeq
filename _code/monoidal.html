@@ -409,9 +409,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.cat</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Ob</span><span class="p">,</span> <span class="n">Id</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.cat</span> <span class="kn">import</span> <span class="n">Arrow</span><span class="p">,</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ob</span>
 
-<span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="n">Ob</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="n">Ob</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span> <span class="n">Ob</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">),</span> <span class="n">Ob</span><span class="p">(</span><span class="s1">&#39;D&#39;</span><span class="p">)</span>
+<span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">Ob</span><span class="p">,</span> <span class="s1">&#39;ABCD&#39;</span><span class="p">)</span>
 
 <span class="n">f</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;f&#39;</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span>
 <span class="n">g</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;g&#39;</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
@@ -430,25 +430,16 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># only arrows that &#39;type-check&#39; can be composed</span>
 <span class="n">arrow</span> <span class="o">=</span> <span class="n">h</span> <span class="o">&lt;&lt;</span> <span class="n">g</span> <span class="o">&lt;&lt;</span> <span class="n">f</span>
 <span class="k">assert</span> <span class="n">arrow</span> <span class="o">==</span> <span class="n">f</span> <span class="o">&gt;&gt;</span> <span class="n">g</span> <span class="o">&gt;&gt;</span> <span class="n">h</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">arrow</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">arrow</span> <span class="o">==</span> <span class="n">Arrow</span><span class="p">(</span><span class="n">inside</span><span class="o">=</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span> <span class="n">dom</span><span class="o">=</span><span class="n">A</span><span class="p">,</span> <span class="n">cod</span><span class="o">=</span><span class="n">D</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Arrow(dom=Ob(&#39;A&#39;), cod=Ob(&#39;D&#39;), boxes=[Box(&#39;f&#39;, Ob(&#39;A&#39;), Ob(&#39;B&#39;)), Box(&#39;g&#39;, Ob(&#39;B&#39;), Ob(&#39;C&#39;)), Box(&#39;h&#39;, Ob(&#39;C&#39;), Ob(&#39;D&#39;))])
-</pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -517,7 +508,7 @@ Reversing (dagger): h[::-1] &gt;&gt; g[::-1] &gt;&gt; f[::-1]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Diagram(dom=Ty(&#39;A&#39;, &#39;A&#39;), cod=Ty(&#39;B&#39;), boxes=[Box(&#39;x&#39;, Ty(&#39;A&#39;), Ty(&#39;A&#39;)), Box(&#39;y&#39;, Ty(&#39;A&#39;, &#39;A&#39;), Ty(&#39;B&#39;))], offsets=[0, 0])
+monoidal.Diagram(inside=(monoidal.Layer(monoidal.Ty(), monoidal.Box(&#39;x&#39;, monoidal.Ty(cat.Ob(&#39;A&#39;)), monoidal.Ty(cat.Ob(&#39;A&#39;))), monoidal.Ty(cat.Ob(&#39;A&#39;))), monoidal.Layer(monoidal.Ty(), monoidal.Box(&#39;y&#39;, monoidal.Ty(cat.Ob(&#39;A&#39;), cat.Ob(&#39;A&#39;)), monoidal.Ty(cat.Ob(&#39;B&#39;))), monoidal.Ty())), dom=monoidal.Ty(cat.Ob(&#39;A&#39;), cat.Ob(&#39;A&#39;)), cod=monoidal.Ty(cat.Ob(&#39;B&#39;)))
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -548,7 +539,7 @@ Diagram(dom=Ty(&#39;A&#39;, &#39;A&#39;), cod=Ty(&#39;B&#39;), boxes=[Box(&#39;x
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 A @ B @ C
-Ty(&#39;A&#39;, &#39;B&#39;, &#39;C&#39;)
+monoidal.Ty(cat.Ob(&#39;A&#39;), cat.Ob(&#39;B&#39;), cat.Ob(&#39;C&#39;))
 Indexing: A
 Slicing: B @ C
 Reversing: C @ B @ A
@@ -571,8 +562,8 @@ Reversing: C @ B @ A
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Indexing (Ob): Ob(&#39;A&#39;)
-Indexing (Ty): Ty(&#39;A&#39;)
+Indexing (Ob): monoidal.Ty(cat.Ob(&#39;A&#39;))
+Indexing (Ty): monoidal.Ty(cat.Ob(&#39;A&#39;))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -584,11 +575,11 @@ Indexing (Ty): Ty(&#39;A&#39;)
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Slicing:&#39;</span><span class="p">,</span> <span class="n">diagram</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Reversing (dagger):&#39;</span><span class="p">,</span> <span class="n">diagram</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">drawing</span>
+<span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">Equation</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Dagger operation:&#39;</span><span class="p">)</span>
 <span class="c1"># boxes are drawn as trapeziums to demonstrate the reflection along the horizontal axis</span>
-<span class="n">drawing</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">diagram</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">asymmetry</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">Equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">diagram</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">asymmetry</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -597,10 +588,10 @@ Indexing (Ty): Ty(&#39;A&#39;)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-x @ Id(A) &gt;&gt; y
-Indexing: x @ Id(A)
+x @ A &gt;&gt; y
+Indexing: x @ A
 Slicing: y
-Reversing (dagger): y[::-1] &gt;&gt; x[::-1] @ Id(A)
+Reversing (dagger): y[::-1] &gt;&gt; x[::-1] @ A
 
 Dagger operation:
 </pre></div></div>
@@ -618,7 +609,7 @@ Dagger operation:
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.monoidal</span> <span class="kn">import</span> <span class="n">Diagram</span>
 
-<span class="n">offset_diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="p">(</span>
+<span class="n">offset_diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span>
     <span class="n">dom</span><span class="o">=</span><span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="n">cod</span><span class="o">=</span><span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">),</span>
     <span class="n">boxes</span><span class="o">=</span><span class="p">[</span><span class="n">Box</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)),</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">),</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">))],</span>
     <span class="n">offsets</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
@@ -638,7 +629,7 @@ Dagger operation:
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.monoidal</span> <span class="kn">import</span> <span class="n">Swap</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.symmetric</span> <span class="kn">import</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Swap</span>
 
 <span class="n">Swap</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">B</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -679,8 +670,8 @@ Dagger operation:
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-A.l is represented as Ty(Ob(&#39;A&#39;, z=-1))
-A.r is represented as Ty(Ob(&#39;A&#39;, z=1))
+A.l is represented as rigid.Ty(rigid.Ob(&#39;A&#39;, z=-1))
+A.r is represented as rigid.Ty(rigid.Ob(&#39;A&#39;, z=1))
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -689,8 +680,8 @@ A.r is represented as Ty(Ob(&#39;A&#39;, z=1))
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Cup</span>
 
-<span class="n">drawing</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">Cup</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">r</span><span class="p">),</span> <span class="n">Cup</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="p">),</span> <span class="n">Cup</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
-<span class="n">drawing</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">Cap</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="n">Cap</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="n">Cap</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span>
+<span class="n">Equation</span><span class="p">(</span><span class="n">Cup</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="o">.</span><span class="n">r</span><span class="p">),</span> <span class="n">Cup</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="p">),</span> <span class="n">Cup</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">Equation</span><span class="p">(</span><span class="n">Cap</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="n">Cap</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="n">Cap</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">A</span><span class="p">),</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;...&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -717,7 +708,7 @@ A.r is represented as Ty(Ob(&#39;A&#39;, z=1))
 
 <span class="k">assert</span> <span class="n">snake1</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span> <span class="o">==</span> <span class="n">Id</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">==</span> <span class="n">snake2</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Snake Equations - For any object&#39;</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">)</span>
-<span class="n">drawing</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">snake1</span><span class="p">,</span> <span class="n">Id</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">snake2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">Equation</span><span class="p">(</span><span class="n">snake1</span><span class="p">,</span> <span class="n">Id</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">snake2</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -750,7 +741,7 @@ Snake Equations - For any object A :
 <span class="n">nested_snake</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">B</span><span class="p">)</span> <span class="o">@</span> <span class="n">nested_cap</span> <span class="o">&gt;&gt;</span> <span class="n">nested_cup</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">B</span><span class="p">)</span>
 
 <span class="k">assert</span> <span class="n">nested_snake</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span> <span class="o">==</span> <span class="n">Id</span><span class="p">(</span><span class="n">A</span> <span class="o">@</span> <span class="n">B</span><span class="p">)</span>
-<span class="n">drawing</span><span class="o">.</span><span class="n">equation</span><span class="p">(</span><span class="n">nested_snake</span><span class="p">,</span> <span class="n">nested_snake</span><span class="o">.</span><span class="n">normal_form</span><span class="p">())</span>
+<span class="n">Equation</span><span class="p">(</span><span class="n">nested_snake</span><span class="p">,</span> <span class="n">nested_snake</span><span class="o">.</span><span class="n">normal_form</span><span class="p">())</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

@@ -455,7 +455,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Can&#39;t instantiate abstract class Reader with abstract methods sentence2diagram
+Can&#39;t instantiate abstract class Reader with abstract method sentence2diagram
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -492,12 +492,12 @@ Can&#39;t instantiate abstract class Reader with abstract methods sentence2diagr
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">equation</span>
-<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Spider</span><span class="p">,</span> <span class="n">Ty</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">Equation</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Spider</span><span class="p">,</span> <span class="n">Ty</span>
 
 <span class="c1"># since spiders are associative, lambeq will automatically choose</span>
 <span class="c1"># the most efficient decomposition when converting to circuits</span>
-<span class="n">equation</span><span class="p">(</span><span class="n">Spider</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)),</span> <span class="n">Spider</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">decompose</span><span class="p">())</span>
+<span class="n">Equation</span><span class="p">(</span><span class="n">Spider</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)),</span> <span class="n">Spider</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">unfuse</span><span class="p">())</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

@@ -152,12 +152,21 @@
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">cycle</span>
 
-<span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="p">(</span><span class="n">Circuit</span><span class="p">,</span> <span class="n">Discard</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span>
-                                     <span class="n">IQPansatz</span> <span class="k">as</span> <span class="n">IQP</span><span class="p">,</span> <span class="n">qubit</span><span class="p">,</span>
-                                     <span class="n">Sim14ansatz</span> <span class="k">as</span> <span class="n">Sim14</span><span class="p">,</span>
-                                     <span class="n">Sim15ansatz</span> <span class="k">as</span> <span class="n">Sim15</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">Bra</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Rx</span><span class="p">,</span> <span class="n">Ry</span><span class="p">,</span> <span class="n">Rz</span>
-<span class="kn">from</span> <span class="nn">discopy.rigid</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Bra</span><span class="p">,</span>
+    <span class="n">Circuit</span><span class="p">,</span>
+    <span class="n">Discard</span><span class="p">,</span>
+    <span class="n">H</span><span class="p">,</span>
+    <span class="n">Id</span><span class="p">,</span>
+    <span class="n">IQPansatz</span> <span class="k">as</span> <span class="n">IQP</span><span class="p">,</span>
+    <span class="n">Ket</span><span class="p">,</span>
+    <span class="n">qubit</span><span class="p">,</span>
+    <span class="n">Rx</span><span class="p">,</span> <span class="n">Ry</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span>
+    <span class="n">Sim14ansatz</span> <span class="k">as</span> <span class="n">Sim14</span><span class="p">,</span>
+    <span class="n">Sim15ansatz</span> <span class="k">as</span> <span class="n">Sim15</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="n">Functor</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">Symbol</span><span class="p">,</span> <span class="n">symbols</span>
 
@@ -182,8 +191,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the number of</span>
-<span class="sd">            qubits it uses in a circuit.</span>
+<span class="sd">            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to</span>
+<span class="sd">            the number of qubits it uses in a circuit.</span>
 <span class="sd">        n_layers : int</span>
 <span class="sd">            The number of layers used by the ansatz.</span>
 <span class="sd">        n_single_qubit_params : int</span>
@@ -212,7 +221,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">postselection_basis</span> <span class="o">=</span> <span class="n">postselection_basis</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_rotations</span> <span class="o">=</span> <span class="n">single_qubit_rotations</span> <span class="ow">or</span> <span class="p">[]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">ob_map</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">ob_map</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ar</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="n">Category</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="CircuitAnsatz.__call__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.__call__">[docs]</a>    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a DisCoPy diagram into a DisCoPy circuit.&quot;&quot;&quot;</span>
@@ -220,7 +229,7 @@
 
 <div class="viewcode-block" id="CircuitAnsatz.ob_size"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.ob_size">[docs]</a>    <span class="k">def</span> <span class="nf">ob_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pg_type</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the number of qubits used for a given type.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ob_map</span><span class="p">[</span><span class="n">Ty</span><span class="p">(</span><span class="n">factor</span><span class="o">.</span><span class="n">name</span><span class="p">)]</span> <span class="k">for</span> <span class="n">factor</span> <span class="ow">in</span> <span class="n">pg_type</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">len</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">functor</span><span class="p">,</span> <span class="n">pg_type</span><span class="p">)))</span></div>
 
 <div class="viewcode-block" id="CircuitAnsatz.params_shape"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.CircuitAnsatz.params_shape">[docs]</a>    <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">params_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
@@ -276,8 +285,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the number of</span>
-<span class="sd">            qubits it uses in a circuit.</span>
+<span class="sd">            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to</span>
+<span class="sd">            the number of qubits it uses in a circuit.</span>
 <span class="sd">        n_layers : int</span>
 <span class="sd">            The number of layers used by the ansatz.</span>
 <span class="sd">        n_single_qubit_params : int, default: 3</span>
@@ -318,8 +327,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the number of</span>
-<span class="sd">            qubits it uses in a circuit.</span>
+<span class="sd">            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to</span>
+<span class="sd">            the number of qubits it uses in a circuit.</span>
 <span class="sd">        n_layers : int</span>
 <span class="sd">            The number of layers used by the ansatz.</span>
 <span class="sd">        n_single_qubit_params : int, default: 3</span>
@@ -359,8 +368,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the number of</span>
-<span class="sd">            qubits it uses in a circuit.</span>
+<span class="sd">            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to</span>
+<span class="sd">            the number of qubits it uses in a circuit.</span>
 <span class="sd">        n_layers : int</span>
 <span class="sd">            The number of layers used by the ansatz.</span>
 <span class="sd">        n_single_qubit_params : int, default: 3</span>
@@ -406,8 +415,8 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        ob_map : dict</span>
-<span class="sd">            A mapping from :py:class:`discopy.rigid.Ty` to the number of</span>
-<span class="sd">            qubits it uses in a circuit.</span>
+<span class="sd">            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to</span>
+<span class="sd">            the number of qubits it uses in a circuit.</span>
 <span class="sd">        n_layers : int</span>
 <span class="sd">            The number of circuit layers used by the ansatz.</span>
 <span class="sd">        n_single_qubit_params : int, default: 3</span>

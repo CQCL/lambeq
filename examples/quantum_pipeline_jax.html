@@ -473,7 +473,7 @@ div.rendered_html tbody tr:hover {
             <span class="n">t</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">t</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">])</span>
             <span class="n">sentences</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">labels</span><span class="p">,</span> <span class="n">sentences</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">labels</span><span class="p">),</span> <span class="n">sentences</span>
 
 
 <span class="n">train_labels</span><span class="p">,</span> <span class="n">train_data</span> <span class="o">=</span> <span class="n">read_data</span><span class="p">(</span><span class="s1">&#39;datasets/mc_train_data.txt&#39;</span><span class="p">)</span>
@@ -651,18 +651,17 @@ Turning parse trees to diagrams.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-WARNING:absl:No GPU/TPU found, falling back to CPU. (Set TF_CPP_MIN_LOG_LEVEL=0 and rerun for more info.)
-Epoch 1:    train/loss: 1.3372   valid/loss: 1.3578   train/acc: 0.6714   valid/acc: 0.4000
-Epoch 12:   train/loss: 0.6745   valid/loss: 0.7524   train/acc: 0.6286   valid/acc: 0.4333
-Epoch 24:   train/loss: 0.6424   valid/loss: 0.6675   train/acc: 0.6429   valid/acc: 0.6333
-Epoch 36:   train/loss: 0.4366   valid/loss: 0.3468   train/acc: 0.8571   valid/acc: 0.8000
-Epoch 48:   train/loss: 0.2365   valid/loss: 0.3327   train/acc: 0.9429   valid/acc: 0.8333
-Epoch 60:   train/loss: 0.1725   valid/loss: 0.2210   train/acc: 0.9286   valid/acc: 0.9333
-Epoch 72:   train/loss: 0.1375   valid/loss: 0.1849   train/acc: 0.9714   valid/acc: 0.9333
-Epoch 84:   train/loss: 0.1314   valid/loss: 0.1711   train/acc: 0.9429   valid/acc: 0.9000
-Epoch 96:   train/loss: 0.1028   valid/loss: 0.1141   train/acc: 1.0000   valid/acc: 1.0000
-Epoch 108:  train/loss: 0.0940   valid/loss: 0.0928   train/acc: 0.9857   valid/acc: 1.0000
-Epoch 120:  train/loss: 0.0919   valid/loss: 0.0876   train/acc: 0.9857   valid/acc: 1.0000
+Epoch 1:    train/loss: 1.4317   valid/loss: 1.2834   train/acc: 0.4429   valid/acc: 0.4000
+Epoch 12:   train/loss: 0.9717   valid/loss: 0.7342   train/acc: 0.4857   valid/acc: 0.6333
+Epoch 24:   train/loss: 0.3100   valid/loss: 0.3090   train/acc: 0.8857   valid/acc: 0.9000
+Epoch 36:   train/loss: 0.1346   valid/loss: 0.1554   train/acc: 0.9571   valid/acc: 1.0000
+Epoch 48:   train/loss: 0.1347   valid/loss: 0.1187   train/acc: 0.9857   valid/acc: 1.0000
+Epoch 60:   train/loss: 0.1118   valid/loss: 0.1305   train/acc: 0.9714   valid/acc: 1.0000
+Epoch 72:   train/loss: 0.1134   valid/loss: 0.1136   train/acc: 0.9571   valid/acc: 1.0000
+Epoch 84:   train/loss: 0.1380   valid/loss: 0.2061   train/acc: 0.9714   valid/acc: 0.9667
+Epoch 96:   train/loss: 0.1173   valid/loss: 0.1388   train/acc: 0.9714   valid/acc: 1.0000
+Epoch 108:  train/loss: 0.0916   valid/loss: 0.0975   train/acc: 0.9714   valid/acc: 0.9667
+Epoch 120:  train/loss: 0.1049   valid/loss: 0.0935   train/acc: 0.9571   valid/acc: 0.9667
 
 Training completed!
 </pre></div></div>
@@ -700,7 +699,7 @@ Training completed!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Test accuracy: 0.96666664
+Test accuracy: 1.0
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -708,14 +707,6 @@ Test accuracy: 0.96666664
 </div>
 <div class="output_area docutils container">
 <img alt="../_images/examples_quantum_pipeline_jax_22_1.png" src="../_images/examples_quantum_pipeline_jax_22_1.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
 </div>
 </div>
 </section>

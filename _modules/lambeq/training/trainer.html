@@ -159,7 +159,7 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">import</span> <span class="nn">discopy</span>
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span><span class="p">,</span> <span class="n">trange</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
@@ -488,7 +488,7 @@
                             <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                             <span class="n">position</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
             <span class="n">train_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
+            <span class="k">with</span> <span class="n">discopy</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span>
                                   <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Batch&#39;</span><span class="p">,</span>
                                   <span class="n">total</span><span class="o">=</span><span class="n">batches_per_epoch</span><span class="p">,</span>
@@ -541,7 +541,7 @@
                     <span class="n">seen_so_far</span> <span class="o">=</span> <span class="mi">0</span>
                     <span class="n">batches_per_validation</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span>
                                                   <span class="o">/</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
+                    <span class="k">with</span> <span class="n">discopy</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
                         <span class="n">disable_tqdm</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
                                         <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
                         <span class="k">for</span> <span class="n">v_batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span>

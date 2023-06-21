@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.pregroups.drawing &mdash; lambeq 0.3.1 [git latest] documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            lambeq
+              <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.3.1 [git latest]
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lambeq.pregroups.drawing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.pregroups.drawing</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021-2023 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Pregroup drawing</span>
+<span class="sd">================</span>
+<span class="sd">Module that allows drawing of DisCoPy pregroup diagrams.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">discopy.config</span> <span class="kn">import</span> <span class="n">DRAWING_DEFAULT</span> <span class="k">as</span> <span class="n">DEFAULT</span>
+<span class="kn">from</span> <span class="nn">discopy.drawing.legacy</span> <span class="kn">import</span> <span class="n">MatBackend</span><span class="p">,</span> <span class="n">TikzBackend</span>
+<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Swap</span><span class="p">,</span> <span class="n">Word</span>
+<span class="kn">from</span> <span class="nn">discopy.utils</span> <span class="kn">import</span> <span class="n">assert_isinstance</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.pregroups.utils</span> <span class="kn">import</span> <span class="n">is_pregroup_diagram</span>
+
+
+<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../../lambeq.pregroups.html#lambeq.pregroups.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a pregroup diagram of shape ``word @ ... @ word &gt;&gt; cups``.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    width : float, optional</span>
+<span class="sd">        Width of the word triangles, default is :code:`2.0`.</span>
+<span class="sd">    space : float, optional</span>
+<span class="sd">        Space between word triangles, default is :code:`0.5`.</span>
+<span class="sd">    textpad : pair of floats, optional</span>
+<span class="sd">        Padding between text and wires, default is :code:`(0.1, 0.2)`.</span>
+<span class="sd">    draw_type_labels : bool, optional</span>
+<span class="sd">        Whether to draw type labels, default is :code:`True`.</span>
+<span class="sd">    aspect : string, optional</span>
+<span class="sd">        Aspect ratio, one of :code:`[&#39;equal&#39;, &#39;auto&#39;]`.</span>
+<span class="sd">    margins : tuple, optional</span>
+<span class="sd">        Margins, default is :code:`(0.05, 0.05)`.</span>
+<span class="sd">    fontsize : int, optional</span>
+<span class="sd">        Font size for the words, default is :code:`12`.</span>
+<span class="sd">    fontsize_types : int, optional</span>
+<span class="sd">        Font size for the types, default is :code:`12`.</span>
+<span class="sd">    figsize : tuple, optional</span>
+<span class="sd">        Figure size.</span>
+<span class="sd">    path : str, optional</span>
+<span class="sd">        Where to save the image, if ``None`` we call ``plt.show()``.</span>
+<span class="sd">    pretty_types : bool, optional</span>
+<span class="sd">        Whether to draw type labels with superscript.</span>
+<span class="sd">    triangles : bool, optional</span>
+<span class="sd">        Whether to draw words as triangular states.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        Whenever the input is not a pregroup diagram.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">assert_isinstance</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">is_pregroup_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The input is not a pregroup diagram.&#39;</span><span class="p">)</span>
+
+    <span class="n">n_words</span> <span class="o">=</span> <span class="nb">len</span><span class="p">([</span><span class="n">box</span> <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Word</span><span class="p">)])</span>
+    <span class="n">words</span><span class="p">,</span> <span class="n">layers</span> <span class="o">=</span> <span class="n">diagram</span><span class="p">[:</span><span class="n">n_words</span><span class="p">],</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">diagram</span><span class="p">[</span><span class="n">n_words</span><span class="p">:]</span><span class="o">.</span><span class="n">foliation</span><span class="p">()</span><span class="o">.</span><span class="n">inside</span><span class="p">:</span>
+        <span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">id</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">box_or_typ</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">boxes_or_types</span><span class="p">:</span>
+            <span class="n">layers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">@=</span> <span class="n">box_or_typ</span>
+
+    <span class="n">textpad</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;textpad&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.2</span><span class="p">))</span>
+    <span class="n">textpad_words</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;textpad_words&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">.1</span><span class="p">))</span>
+    <span class="n">space</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;space&#39;</span><span class="p">,</span> <span class="mf">.5</span><span class="p">)</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="mf">2.</span><span class="p">)</span>
+    <span class="n">fontsize</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">backend</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">TikzBackend</span><span class="p">(</span><span class="n">use_tikzstyles</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_tikzstyles&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;to_tikz&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">MatBackend</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)))</span>
+
+    <span class="k">def</span> <span class="nf">pretty_type</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+        <span class="n">type_str</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">z</span><span class="p">:</span>
+            <span class="n">type_str</span> <span class="o">+=</span> <span class="s1">&#39;^{&#39;</span> <span class="o">+</span> <span class="s1">&#39;l&#39;</span> <span class="o">*</span> <span class="o">-</span><span class="n">t</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="s1">&#39;r&#39;</span> <span class="o">*</span> <span class="n">t</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="s1">&#39;}&#39;</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;$</span><span class="si">{</span><span class="n">type_str</span><span class="si">}</span><span class="s1">$&#39;</span>
+
+    <span class="k">def</span> <span class="nf">draw_words</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+        <span class="n">scan</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="o">.</span><span class="n">boxes</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">):</span>
+                <span class="n">x_wire</span> <span class="o">=</span> <span class="p">(</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="p">(</span>
+                    <span class="n">width</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">scan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_wire</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;draw_type_labels&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+                    <span class="n">type_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                    <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pretty_types&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                        <span class="n">type_str</span> <span class="o">=</span> <span class="n">pretty_type</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+                    <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span>
+                        <span class="n">type_str</span><span class="p">,</span> <span class="n">x_wire</span> <span class="o">+</span> <span class="n">textpad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="n">textpad</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">fontsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize_types&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">),</span>
+                        <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">x_wire</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="n">x_wire</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">textpad</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;triangles&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_polygon</span><span class="p">(</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_polygon</span><span class="p">(</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">width</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span>
+                    <span class="p">((</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
+            <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">word</span><span class="p">),</span> <span class="p">(</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">textpad_words</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="n">textpad_words</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">fontsize</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scan</span>
+
+    <span class="k">def</span> <span class="nf">draw_grammar</span><span class="p">(</span><span class="n">wires</span><span class="p">,</span> <span class="n">scan_x</span><span class="p">):</span>
+        <span class="c1"># the even indices 2*n represent the depth for wire n</span>
+        <span class="c1"># the odd incides 2*n + 1 represent the depths</span>
+        <span class="c1"># of wires that are between wires n and n+1</span>
+        <span class="n">scan_y</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">textpad</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan_x</span><span class="p">)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="mf">.5</span>
+        <span class="k">for</span> <span class="n">off</span><span class="p">,</span> <span class="n">box</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">s</span><span class="o">.</span><span class="n">offsets</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">.</span><span class="n">boxes</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                         <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">wires</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">))]:</span>
+            <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="n">scan_x</span><span class="p">[</span><span class="n">off</span><span class="p">],</span> <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">off</span><span class="p">]</span>
+            <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span> <span class="o">=</span> <span class="n">scan_x</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+            <span class="n">middle</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">off</span><span class="p">:</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">):</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">middle</span><span class="p">,</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">h</span><span class="p">),</span> <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">x2</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">middle</span><span class="p">,</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">h</span><span class="p">),</span> <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">depths_to_remove</span> <span class="o">=</span> <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">off</span><span class="p">:</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="n">new_gap_depth</span> <span class="o">=</span> <span class="mf">0.</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">depths_to_remove</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">new_gap_depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                        <span class="nb">max</span><span class="p">(</span><span class="n">depths_to_remove</span><span class="p">)</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span>
+                        <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">off</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span>
+                        <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="n">scan_x</span> <span class="o">=</span> <span class="n">scan_x</span><span class="p">[:</span><span class="n">off</span><span class="p">]</span> <span class="o">+</span> <span class="n">scan_x</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:]</span>
+                <span class="n">scan_y</span> <span class="o">=</span> <span class="n">scan_y</span><span class="p">[:</span><span class="mi">2</span> <span class="o">*</span> <span class="n">off</span><span class="p">]</span> <span class="o">+</span> <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">off</span> <span class="o">+</span> <span class="mi">2</span><span class="p">):]</span>
+                <span class="k">if</span> <span class="n">off</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">off</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_gap_depth</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Swap</span><span class="p">):</span>
+                <span class="n">midpoint</span> <span class="o">=</span> <span class="p">(</span><span class="n">middle</span><span class="p">,</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">h</span><span class="p">)</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">),</span> <span class="n">midpoint</span><span class="p">,</span> <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">x2</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">),</span> <span class="n">midpoint</span><span class="p">,</span> <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">h</span> <span class="o">-</span> <span class="n">h</span><span class="p">),</span> <span class="n">bend_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">(</span><span class="n">midpoint</span><span class="p">,</span> <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="o">-</span> <span class="n">y</span> <span class="o">-</span> <span class="n">h</span> <span class="o">-</span> <span class="n">h</span><span class="p">),</span> <span class="n">bend_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">off</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="n">h</span>
+                <span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span> <span class="o">+</span> <span class="n">h</span>
+
+            <span class="k">if</span> <span class="n">y1</span> <span class="o">!=</span> <span class="n">y</span><span class="p">:</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">x1</span><span class="p">,</span> <span class="o">-</span><span class="n">y1</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">),</span> <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">y2</span> <span class="o">!=</span> <span class="n">y</span><span class="p">:</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">x2</span><span class="p">,</span> <span class="o">-</span><span class="n">y2</span><span class="p">),</span> <span class="p">(</span><span class="n">x2</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">),</span> <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wires</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span> <span class="k">if</span> <span class="n">wires</span> <span class="k">else</span> <span class="n">words</span><span class="o">.</span><span class="n">cod</span><span class="p">):</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">if</span> <span class="n">wires</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pretty_types&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="n">pretty_type</span><span class="p">(</span><span class="n">wires</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">wires</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">scan_x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span><span class="n">scan_y</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">]),</span>
+                <span class="p">(</span><span class="n">scan_x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wires</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;draw_type_labels&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+                <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span>
+                    <span class="n">label</span><span class="p">,</span> <span class="n">scan_x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">textpad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">wires</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">space</span><span class="p">,</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize_types&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="p">),</span>
+                    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+    <span class="n">scan</span> <span class="o">=</span> <span class="n">draw_words</span><span class="p">(</span><span class="n">words</span><span class="o">.</span><span class="n">normal_form</span><span class="p">())</span>
+    <span class="n">draw_grammar</span><span class="p">(</span><span class="n">layers</span><span class="p">,</span> <span class="n">scan</span><span class="p">)</span>
+    <span class="n">edge_padding</span> <span class="o">=</span> <span class="mf">0.01</span>  <span class="c1"># to show rightmost edge</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">output</span><span class="p">(</span>
+        <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">tikz_options</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tikz_options&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">space</span> <span class="o">+</span> <span class="n">width</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="o">.</span><span class="n">boxes</span><span class="p">)</span> <span class="o">-</span> <span class="n">space</span> <span class="o">+</span> <span class="n">edge_padding</span><span class="p">),</span>
+        <span class="n">ylim</span><span class="o">=</span><span class="p">(</span><span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">layers</span><span class="p">)</span> <span class="o">-</span> <span class="n">space</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">margins</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;margins&#39;</span><span class="p">,</span> <span class="n">DEFAULT</span><span class="p">[</span><span class="s1">&#39;margins&#39;</span><span class="p">]),</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;aspect&#39;</span><span class="p">,</span> <span class="s1">&#39;equal&#39;</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

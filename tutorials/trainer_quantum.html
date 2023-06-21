@@ -566,7 +566,7 @@ Turning parse trees to diagrams.
 </section>
 <section id="Filter-and-simplify-diagrams">
 <h3>Filter and simplify diagrams<a class="headerlink" href="#Filter-and-simplify-diagrams" title="Permalink to this heading"></a></h3>
-<p>We simplify the diagrams by calling <a class="reference external" href="https://docs.discopy.org/en/0.5.1.1/_autosummary/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.normal_form" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code></a> and filter out any diagrams that could not be parsed.</p>
+<p>We simplify the diagrams by calling <code class="xref py py-meth docutils literal notranslate"><span class="pre">normal_form()</span></code> and filter out any diagrams that could not be parsed.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -656,12 +656,12 @@ Turning parse trees to diagrams.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">equation</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">Equation</span>
 
 <span class="n">original_diagram</span> <span class="o">=</span> <span class="n">train_diagrams</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">removed_cups_diagram</span> <span class="o">=</span> <span class="n">remove_cups</span><span class="p">(</span><span class="n">original_diagram</span><span class="p">)</span>
 
-<span class="n">equation</span><span class="p">(</span><span class="n">original_diagram</span><span class="p">,</span> <span class="n">removed_cups_diagram</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;--&gt;&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">asymmetry</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">Equation</span><span class="p">(</span><span class="n">original_diagram</span><span class="p">,</span> <span class="n">removed_cups_diagram</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;--&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span> <span class="n">asymmetry</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

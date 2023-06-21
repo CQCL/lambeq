@@ -428,7 +428,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span><span class="p">,</span> <span class="n">BobcatParser</span><span class="p">,</span> <span class="n">TensorAnsatz</span>
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Dim</span>
+<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
 
 <span class="c1"># Define atomic types</span>
 <span class="n">N</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span>
@@ -489,11 +489,11 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[(in__s.r@n.r.r@n.r@s@n.l, 256),
- (walks__n.r@s, 8),
+[(walks__n.r@s, 8),
+ (in__s.r@n.r.r@n.r@s@n.l, 256),
  (park__n, 4),
- (the__n@n.l, 16),
- (John__n, 4)]
+ (John__n, 4),
+ (the__n@n.l, 16)]
 </pre></div></div>
 </div>
 <p>For example, you see that preposition “in” has been assigned 256 dimensions, which is derived by multiplying the dimensions of each individual wire (<span class="math notranslate nohighlight">\(2 \cdot 4 \cdot 4 \cdot 2 \cdot 4\)</span>), nouns are assigned 4 dimensions, and the determiner 16 dimensions.</p>
@@ -580,10 +580,10 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-[0.2863774  0.61130277 0.12182877 0.11392914]
+[0.50024044 0.25483124 0.40727411 0.86071497]
 </pre></div></div>
 </div>
-<p>Associating the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays with the <a class="reference internal" href="../glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> in the diagram can be done by using the <a class="reference external" href="https://docs.discopy.org/en/0.5.1.1/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor.lambdify" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lambdify()</span></code></a> method:</p>
+<p>Associating the <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays with the <a class="reference internal" href="../glossary.html#term-symbol"><span class="xref std std-term">symbols</span></a> in the diagram can be done by using the <code class="xref py py-meth docutils literal notranslate"><span class="pre">lambdify()</span></code> method:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -600,15 +600,15 @@ div.rendered_html tbody tr:hover {
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Before lambdify: John__n
-After lambdify: [0.2863774  0.61130277 0.12182877 0.11392914]
+After lambdify: [0.50024044 0.25483124 0.40727411 0.86071497]
 </pre></div></div>
 </div>
-<p>To contract the <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> and compute a representation for the sentence, we will use <a class="reference external" href="https://docs.discopy.org/en/0.5.1.1/_autosummary/discopy.tensor.Diagram.html#discopy.tensor.Diagram.eval" title="(in discopy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a>.</p>
+<p>To contract the <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> and compute a representation for the sentence, we will use <code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">tensor_diagram_np</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">tensor_diagram_np</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -618,14 +618,14 @@ After lambdify: [0.2863774  0.61130277 0.12182877 0.11392914]
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Tensor(dom=Dim(1), cod=Dim(2), array=[8.5302217 , 8.97638124])
+Tensor[float]([27.87621804, 30.47717323], dom=Dim(1), cod=Dim(2))
 </pre></div></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The result is a 2-dimensional array, based on the fact that we have assigned a dimension of 2 to the sentence space when applying the <a class="reference internal" href="../glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansatz</span></a>.</p>
 </div>
-<p>The result is an instance of the <a class="reference external" href="https://docs.discopy.org/en/0.5.1.1/_autosummary/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in discopy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.tensor.Tensor</span></code></a> class, and the array can be accessed via the <code class="docutils literal notranslate"><span class="pre">array</span></code> attribute.</p>
+<p>The result is an instance of the <code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.tensor.Tensor</span></code> class, and the array can be accessed via the <code class="docutils literal notranslate"><span class="pre">array</span></code> attribute.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
@@ -640,7 +640,7 @@ Tensor(dom=Dim(1), cod=Dim(2), array=[8.5302217 , 8.97638124])
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-array([8.5302217 , 8.97638124])
+array([27.87621804, 30.47717323])
 </pre></div></div>
 </div>
 </section>
