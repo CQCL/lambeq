@@ -1,8 +1,8 @@
 import os
 from unittest.mock import patch
 
-from discopy import Cup, Dim, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Id, Word
+from discopy.tensor import Dim
 
 from lambeq import AtomicType, Symbol, SpiderAnsatz, Model, Checkpoint
 

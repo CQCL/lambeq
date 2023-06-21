@@ -3,8 +3,8 @@ from math import ceil
 import torch
 import numpy as np
 
-from discopy import Cup, Dim, Tensor, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Id, Word
+from discopy.tensor import Dim, Tensor
 
 from lambeq import (AtomicType, Dataset, PytorchModel, PytorchTrainer,
                     SpiderAnsatz)

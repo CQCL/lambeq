@@ -21,8 +21,8 @@ from collections.abc import Callable
 from enum import Enum
 from typing import Any
 
-from discopy import rigid
-from discopy.biclosed import Over, Ty, Under
+from discopy.grammar import pregroup
+from discopy.grammar.categorial import Ty
 
 from lambeq.core.types import AtomicType
 
@@ -41,7 +41,7 @@ class CCGParseError(Exception):
 
 
 class _CCGAtomicTypeMeta(Ty, Enum):
-    def __new__(cls, value: rigid.Ty) -> Ty:
+    def __new__(cls, value: pregroup.Ty) -> Ty:
         return object.__new__(Ty)
 
     @staticmethod
@@ -145,9 +145,9 @@ def biclosed2str(biclosed_type: Ty, pretty: bool = False) -> str:
         The string representation of the type.
 
     """
-    if isinstance(biclosed_type, Over):
+    if biclosed_type.is_over:
         template = '({0}↢{1})' if pretty else '({0}/{1})'
-    elif isinstance(biclosed_type, Under):
+    elif biclosed_type.is_under:
         template = '({0}↣{1})' if pretty else r'({1}\{0})'
     else:
         return str(biclosed_type)
@@ -281,7 +281,7 @@ def replace_cat_result(cat: Ty,
 
     if not (len(direction) in (1, 2) and set(direction).issubset('<|>')):
         raise ValueError(f'Invalid direction: `{direction}`')
-    if not cat.left:
+    if not cat.is_exp:
         return cat, None
 
     cat_dir = '<' if cat == cat.left << cat.right else '>'
