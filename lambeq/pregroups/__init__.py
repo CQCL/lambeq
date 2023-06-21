@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['TextDiagramPrinter', 'diagram2str',
+__all__ = ['draw',
+           'TextDiagramPrinter', 'diagram2str',
            'create_pregroup_diagram', 'is_pregroup_diagram', 'remove_cups',
            'remove_swaps']
 
+
+from lambeq.pregroups.drawing import draw
 from lambeq.pregroups.text_printer import TextDiagramPrinter, diagram2str
 from lambeq.pregroups.utils import (create_pregroup_diagram,
                                     is_pregroup_diagram, remove_cups,

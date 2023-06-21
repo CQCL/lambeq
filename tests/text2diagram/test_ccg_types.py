@@ -1,6 +1,6 @@
 import pytest
 
-from discopy.biclosed import Ty
+from discopy.grammar.categorial import Ty
 
 from lambeq.text2diagram.ccg_types import CCGParseError, replace_cat_result, str2biclosed
 

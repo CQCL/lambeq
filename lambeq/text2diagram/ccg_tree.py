@@ -22,9 +22,9 @@ import json
 from typing import Any, Dict
 from typing import overload
 
-from discopy import rigid, Word
-from discopy.biclosed import biclosed2rigid_ob, unaryBoxConstructor
-from discopy.biclosed import Box, Diagram, Functor, Id, Over, Ty, Under
+from discopy.grammar import pregroup
+from discopy.grammar.categorial import (Box, Diagram, Functor, Id, Ty,
+                                        unaryBoxConstructor)
 
 from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
 from lambeq.text2diagram.ccg_types import (biclosed2str, replace_cat_result,
@@ -39,20 +39,20 @@ class UnarySwap(unaryBoxConstructor('cod'), Box):  # type: ignore[misc]
     """Unary Swap box, for unary rules that change the type direction.
 
     For example, the unary rule `S/NP -> NP\\NP` is handled by
-    `UnarySwap(n >> n)`, which becomes `Swap(n @ n.r)` in a rigid
+    `UnarySwap(n >> n)`, which becomes `Swap(n @ n.r)` in a pregroup
     diagram.
 
     """
 
     def __init__(self, cod: Ty) -> None:
-        if isinstance(cod, Over):
+        if cod.is_over:
             # This defines a swap from Y.l @ X to X @ Y.l
             # since:
             #           Ty() << Y        -> Y.l
             #  Ty() << (Ty() << Y)       -> Y.l.l
             # (Ty() << (Ty() << Y)) >> X -> Y.l.l.r @ X = Y.l @ X
             dom = (Ty() << (Ty() << cod.left)) >> cod.right
-        elif isinstance(cod, Under):
+        elif cod.is_under:
             # Similarly, this defines a swap from Y @ X.r to X.r @ Y
             dom = cod.left << ((cod.right >> Ty()) >> Ty())
         else:
@@ -63,11 +63,11 @@ class UnarySwap(unaryBoxConstructor('cod'), Box):  # type: ignore[misc]
 class PlanarBX(Box):
     """Planar Backward Crossed Composition Box."""
     def __init__(self, dom: Ty, diagram: Diagram) -> None:
-        assert isinstance(dom, Over)
+        assert dom.is_over
         assert not diagram.dom
 
         right = diagram.cod
-        assert isinstance(right, Under)
+        assert right.is_under
         assert right.left == dom.left
 
         self.diagram = diagram
@@ -78,11 +78,11 @@ class PlanarBX(Box):
 class PlanarFX(Box):
     """Planar Forward Crossed Composition Box."""
     def __init__(self, dom: Ty, diagram: Diagram) -> None:
-        assert isinstance(dom, Under)
+        assert dom.is_under
         assert not diagram.dom
 
         left = diagram.cod
-        assert isinstance(left, Over)
+        assert left.is_over
         assert left.right == dom.right
 
         self.diagram = diagram
@@ -95,7 +95,7 @@ class PlanarGBX(Box):
         assert not diagram.dom
 
         right = diagram.cod
-        assert isinstance(right, Under)
+        assert right.is_under
 
         cod, original = replace_cat_result(dom, right.left, right.right, '<|')
         assert original == right.left
@@ -109,7 +109,7 @@ class PlanarGFX(Box):
         assert not diagram.dom
 
         left = diagram.cod
-        assert isinstance(left, Over)
+        assert left.is_over
 
         cod, original = replace_cat_result(dom, left.right, left.left, '>|')
         assert original == left.right
@@ -443,8 +443,10 @@ class CCGTree:
 
         if (self.rule == CCGRule.UNARY
                 and not planar
-                and {type(biclosed_type),
-                     type(self.children[0].biclosed_type)} == {Over, Under}):
+                and ((biclosed_type.is_over
+                      and self.children[0].biclosed_type.is_under)
+                     or (biclosed_type.is_under
+                         and self.children[0].biclosed_type.is_over))):
             this_layer = UnarySwap(biclosed_type)
         elif (self.rule == CCGRule.FORWARD_COMPOSITION
                 and self.children[0].rule == CCGRule.FORWARD_TYPE_RAISING):
@@ -485,7 +487,7 @@ class CCGTree:
 
         return words, diag
 
-    def to_diagram(self, planar: bool = False) -> rigid.Diagram:
+    def to_diagram(self, planar: bool = False) -> pregroup.Diagram:
         """Convert tree to a DisCoCat diagram.
 
         Parameters
@@ -495,95 +497,95 @@ class CCGTree:
             using cross composition.
 
         """
-        def ob_func(ob: Ty) -> rigid.Ty:
-            return (rigid.Ty() if ob == CCGAtomicType.PUNCTUATION
-                    else biclosed2rigid_ob(ob))
+        def ob_func(ob: Ty) -> pregroup.Ty:
+            return (pregroup.Ty() if ob == CCGAtomicType.PUNCTUATION
+                    else Diagram.to_pregroup(ob))
 
-        def ar_func(box: Box) -> rigid.Diagram:
+        def ar_func(box: Box) -> pregroup.Diagram:
             #           special box -> special diagram
             # RemovePunctuation box -> identity wire(s)
             #           punctuation -> empty diagram
             #              word box -> Word
 
-            def split(cat: Ty,
-                      base: Ty) -> tuple[rigid.Ty, rigid.Ty, rigid.Ty]:
-                left = right = rigid.Ty()
+            def split(cat: Ty, base: Ty) -> tuple[pregroup.Ty,
+                                                  pregroup.Ty,
+                                                  pregroup.Ty]:
+                left = right = pregroup.Ty()
                 while cat != base:
-                    if isinstance(cat, Over):
-                        right = to_rigid_diagram(cat.right).l @ right
+                    if cat.is_over:
+                        right = to_pregroup_diagram(cat.right).l @ right
                         cat = cat.left
-                    else:
-                        left @= to_rigid_diagram(cat.left).r
+                    elif cat.is_under:
+                        left @= to_pregroup_diagram(cat.left).r
                         cat = cat.right
-                return left, to_rigid_diagram(cat), right
+                return left, to_pregroup_diagram(cat), right
 
             if isinstance(box, UnarySwap):
                 cod = ob_func(box.cod)
-                return rigid.Swap(cod[1:], cod[:1])
+                return pregroup.Swap(cod[1:], cod[:1])
 
             if isinstance(box, PlanarBX):
-                join = to_rigid_diagram(box.dom.left)
-                right = to_rigid_diagram(box.dom)[len(join):]
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join, join.r)
-                return (Id(join) @ inner
-                        >> cups @ Id(inner.cod[len(join):])) @ Id(right)
+                join = to_pregroup_diagram(box.dom.left)
+                right = to_pregroup_diagram(box.dom)[len(join):]
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.Diagram.cups(join, join.r)
+                return (join @ inner
+                        >> cups @ inner.cod[len(join):]) @ right
 
             if isinstance(box, PlanarFX):
-                join = to_rigid_diagram(box.dom.right)
-                left = to_rigid_diagram(box.dom)[:-len(join)]
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join.l, join)
-                return Id(left) @ (inner @ Id(join)
-                                   >> Id(inner.cod[:-len(join)]) @ cups)
+                join = to_pregroup_diagram(box.dom.right)
+                left = to_pregroup_diagram(box.dom)[:-len(join)]
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.Diagram.cups(join.l, join)
+                return left @ (inner @ join >> inner.cod[:-len(join)] @ cups)
 
             if isinstance(box, PlanarGBX):
                 left, join, right = split(box.dom, box.diagram.cod.left)
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join, join.r)
-                mid = (Id(join) @ inner) >> (cups @ Id(inner.cod[len(join):]))
-                return Id(left) @ mid @ Id(right)
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.Diagram.cups(join, join.r)
+                mid = (join @ inner) >> (cups @ inner.cod[len(join):])
+                return left @ mid @ right
 
             if isinstance(box, PlanarGFX):
                 left, join, right = split(box.dom, box.diagram.cod.right)
-                inner = to_rigid_diagram(box.diagram)
-                cups = rigid.cups(join.l, join)
-                mid = (inner @ Id(join)) >> (Id(inner.cod[:-len(join)]) @ cups)
-                return Id(left) @ mid @ Id(right)
+                inner = to_pregroup_diagram(box.diagram)
+                cups = pregroup.Diagram.cups(join.l, join)
+                mid = (inner @ join) >> (inner.cod[:-len(join)] @ cups)
+                return left @ mid @ right
 
             if isinstance(box, GBC):
-                left = to_rigid_diagram(box.dom[0])
-                mid = to_rigid_diagram(box.dom[1].left)
-                right = to_rigid_diagram(box.dom[1].right)
-                return (Id(left[:-len(mid)]) @ rigid.cups(mid, mid.r) @
-                        Id(right))
+                left = to_pregroup_diagram(box.dom[0])
+                mid = to_pregroup_diagram(box.dom[1].left)
+                right = to_pregroup_diagram(box.dom[1].right)
+                cups = pregroup.Diagram.cups(mid, mid.r)
+                return left[:-len(mid)] @ cups @ right
 
             if isinstance(box, GFC):
-                left = to_rigid_diagram(box.dom[0].left)
-                mid = to_rigid_diagram(box.dom[0].right)
-                right = to_rigid_diagram(box.dom[1])
-                return Id(left) @ rigid.cups(mid.l, mid) @ Id(right[len(mid):])
+                left = to_pregroup_diagram(box.dom[0].left)
+                mid = to_pregroup_diagram(box.dom[0].right)
+                right = to_pregroup_diagram(box.dom[1])
+                cups = pregroup.Diagram.cups(mid.l, mid)
+                return left @ cups @ right[len(mid):]
 
             if isinstance(box, GBX):
-                mid = to_rigid_diagram(box.dom[1].right)
+                mid = to_pregroup_diagram(box.dom[1].right)
                 left, join, right = split(box.dom[0], box.dom[1].left)
-                swaps = rigid.Diagram.swap(right, join >> mid)
-                cups = rigid.cups(join, join.r)
-                return Id(left) @ (Id(join) @ swaps
-                                   >> cups @ Id(mid @ right))
+                swaps = pregroup.Diagram.swap(right, join >> mid)
+                cups = pregroup.Diagram.cups(join, join.r)
+                return left @ (join @ swaps >> cups @ mid @ right)
 
             if isinstance(box, GFX):
-                mid = to_rigid_diagram(box.dom[0].left)
+                mid = to_pregroup_diagram(box.dom[0].left)
                 left, join, right = split(box.dom[1], box.dom[0].right)
-                cups = rigid.cups(join.l, join)
-                return (rigid.Diagram.swap(mid << join, left) @ Id(join)
-                        >> Id(left @ mid) @ cups) @ Id(right)
+                cups = pregroup.Diagram.cups(join.l, join)
+                return (pregroup.Diagram.swap(mid << join, left) @ join
+                        >> left @ mid @ cups) @ right
 
-            cod = to_rigid_diagram(box.cod)
-            return Id(cod) if box.dom or not cod else Word(box.name, cod)
+            cod = to_pregroup_diagram(box.cod)
+            return (pregroup.Id(cod) if box.dom or not cod
+                    else pregroup.Word(box.name, cod))
 
-        to_rigid_diagram = Functor(ob=ob_func,
-                                   ar=ar_func,
-                                   ob_factory=rigid.Ty,
-                                   ar_factory=rigid.Diagram)
-        return to_rigid_diagram(self.to_biclosed_diagram(planar=planar))
+        to_pregroup_diagram = Functor(ob=ob_func,
+                                      ar=ar_func,
+                                      cod=pregroup.Category())
+        return to_pregroup_diagram(self.to_biclosed_diagram(planar=planar))

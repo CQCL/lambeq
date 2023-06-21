@@ -29,7 +29,7 @@ from pathlib import Path
 import sys
 from typing import Any
 
-from discopy.biclosed import Ty
+from discopy.grammar.categorial import Ty
 import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer

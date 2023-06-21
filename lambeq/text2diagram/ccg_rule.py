@@ -19,8 +19,8 @@ __all__ = ['CCGRule', 'CCGRuleUseError']
 from enum import Enum
 from typing import Any
 
-from discopy.biclosed import Box, Diagram, Id, Over, Ty, Under
-from discopy.monoidal import BinaryBoxConstructor
+from discopy.grammar.categorial import Box, Diagram, Id, Ty
+from discopy.utils import BinaryBoxConstructor
 
 from lambeq.text2diagram.ccg_types import CCGAtomicType, replace_cat_result
 
@@ -149,14 +149,14 @@ class CCGRule(str, Enum):
 
         Parameters
         ----------
-        dom : discopy.biclosed.Ty
+        dom : discopy.grammar.categorial.Ty
             The expected domain of the diagram.
-        cod : discopy.biclosed.Ty
+        cod : discopy.grammar.categorial.Ty
             The expected codomain of the diagram.
 
         Returns
         -------
-        discopy.biclosed.Diagram
+        discopy.grammar.categorial.Diagram
             The resulting diagram.
 
         Raises
@@ -211,10 +211,11 @@ class CCGRule(str, Enum):
         elif self == CCGRule.REMOVE_PUNCTUATION_RIGHT:
             return RPR(cod, dom[1:])
         elif self == CCGRule.FORWARD_TYPE_RAISING:
-            return Diagram.curry(Diagram.ba(cod.right.left, cod.left))
+            return Diagram.curry(Diagram.ba(cod.right.left, cod.left),
+                                 left=True)
         elif self == CCGRule.BACKWARD_TYPE_RAISING:
             return Diagram.curry(Diagram.fa(cod.right, cod.left.right),
-                                 left=True)
+                                 left=False)
         elif self == CCGRule.CONJUNCTION:
             left, right = dom[:1], dom[1:]
             if CCGAtomicType.conjoinable(left):
@@ -233,9 +234,9 @@ class CCGRule(str, Enum):
 
         Parameters
         ----------
-        dom : discopy.biclosed.Ty
+        dom : discopy.grammar.categorial.Ty
             The domain of the rule.
-        cod : discopy.biclosed.Ty
+        cod : discopy.grammar.categorial.Ty
             The codomain of the rule.
 
         Returns
@@ -273,24 +274,24 @@ class CCGRule(str, Enum):
             if CCGAtomicType.CONJUNCTION in (left, right):
                 return CCGRule.CONJUNCTION
 
-            if isinstance(left, Over):
-                if (isinstance(right, Over)
+            if left.is_over:
+                if (right.is_over
                         and left.right == right.left
                         and cod == left.left << right.right):
                     return CCGRule.FORWARD_COMPOSITION
-                if (isinstance(right, Under)
+                if (right.is_under
                         and left.right == right.right
                         and cod == right.left >> left.left):
                     return CCGRule.FORWARD_CROSSED_COMPOSITION
                 if (replace_cat_result(right, left.right, left.left, '<')
                         == (cod, left.right)):
                     return CCGRule.GENERALIZED_FORWARD_COMPOSITION
-            if isinstance(right, Under):
-                if (isinstance(left, Under)
+            if right.is_under:
+                if (left.is_under
                         and left.right == right.left
                         and cod == left.left >> right.right):
                     return CCGRule.BACKWARD_COMPOSITION
-                if (isinstance(left, Over)
+                if (left.is_over
                         and left.left == right.left
                         and cod == right.right << left.right):
                     return CCGRule.BACKWARD_CROSSED_COMPOSITION
@@ -302,7 +303,7 @@ class CCGRule(str, Enum):
                 if (replace_cat_result(left, right.left, right.right, '<|')
                         == (cod, right.left)):
                     return CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION
-            if (isinstance(left, Over)
+            if (left.is_over
                     and (replace_cat_result(right, left.right, left.left, '>|')
                          == (cod, left.right))):
                 return CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION

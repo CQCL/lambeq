@@ -26,7 +26,7 @@ lambeq is a toolkit for quantum natural language processing (QNLP).
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.9+
 
 ### Installation
 
