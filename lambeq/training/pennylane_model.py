@@ -150,9 +150,10 @@ class PennyLaneModel(Model, torch.nn.Module):
             [torch.nn.Parameter(torch.rand(1).squeeze())
              for _ in self.symbols]
         )
+        symbol_weight_map = dict(zip(self.symbols, self.weights))
 
         for p_circ in self.circuit_map.values():
-            p_circ.initialise_concrete_params(self.symbols, self.weights)
+            p_circ.initialise_concrete_params(symbol_weight_map)
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
         """Evaluate outputs of circuits using PennyLane.

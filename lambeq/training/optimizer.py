@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable, Iterable, Mapping
+import sys
 from typing import Any
 
 import numpy as np
@@ -92,3 +93,21 @@ class Optimizer(ABC):
     def zero_grad(self) -> None:
         """Reset the gradients to zero."""
         self.gradient *= 0
+
+    def _warn_if_nan_or_inf(self, loss: float) -> None:
+        """Print a warning if loss value is NaN or Inf.
+
+        Parameters
+        ----------
+        loss : float
+            Loss value to check for NaN or Inf.
+
+        """
+
+        if np.isinf(loss):
+            print('Warning: Inf value returned by loss function.',
+                  file=sys.stderr)
+
+        elif np.isnan(loss):
+            print('Warning: NaN value returned by loss function.',
+                  file=sys.stderr)

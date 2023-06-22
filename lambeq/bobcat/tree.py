@@ -16,6 +16,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, replace
 from enum import Enum
+from functools import cached_property
 from typing import Any
 
 from lambeq.bobcat.lexicon import Atom, Category, Feature, Relation
@@ -268,6 +269,27 @@ class ParseTree:
     @property
     def fwd_comp(self) -> bool:
         return self.rule in (Rule.FC, Rule.GFC)
+
+    @cached_property
+    def deps_and_tags(self) -> tuple[list[Dependency],
+                                     list[str]]:  # pragma: no cover
+        deps = self.filled_deps.copy()
+        tags = []
+        if self.left:
+            for child in (self.left, self.right):
+                if child:
+                    child_deps, child_tags = child.deps_and_tags
+                    deps += child_deps
+                    tags += child_tags
+        else:
+            tags.append(str(self.cat).replace('[X]', ''))
+
+        deps.sort(key=lambda dep: (dep.head.index, dep.filler.index))
+        return deps, tags
+
+    @property
+    def deps(self) -> list[Dependency]:
+        return self.deps_and_tags[0]
 
 
 def Lexical(cat: Category, word: str, index: int) -> ParseTree:

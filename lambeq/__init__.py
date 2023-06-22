@@ -35,7 +35,7 @@ __all__ = [
         'Symbol',
         'TensorAnsatz',
 
-        'CCGAtomicType',
+        'CCGType',
         'CCGRule',
         'CCGRuleUseError',
         'CCGTree',
@@ -115,7 +115,7 @@ from lambeq.pregroups import (create_pregroup_diagram, diagram2str,
 from lambeq.rewrite import (RewriteRule, CoordinationRewriteRule,
                             CurryRewriteRule, SimpleRewriteRule, Rewriter)
 from lambeq.text2diagram import (
-        CCGAtomicType, CCGRule, CCGRuleUseError, CCGTree,
+        CCGType, CCGRule, CCGRuleUseError, CCGTree,
         CCGParser,
         BobcatParseError, BobcatParser,
         CCGBankParseError, CCGBankParser,

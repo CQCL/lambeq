@@ -20,7 +20,11 @@ A circuit ansatz converts a DisCoCat diagram into a quantum circuit.
 """
 from __future__ import annotations
 
-__all__ = ['CircuitAnsatz', 'IQPAnsatz']
+__all__ = ['CircuitAnsatz',
+           'IQPAnsatz',
+           'Sim14Ansatz',
+           'Sim15Ansatz',
+           'StronglyEntanglingAnsatz']
 
 from abc import abstractmethod
 from collections.abc import Callable, Mapping
@@ -30,15 +34,13 @@ from discopy.grammar.pregroup import Box, Category, Diagram, Ty
 from discopy.quantum import (
     Bra,
     Circuit,
+    CRz,
     Discard,
     H,
     Id,
-    IQPansatz as IQP,
     Ket,
     qubit,
-    Rx, Ry, Rz,
-    Sim14ansatz as Sim14,
-    Sim15ansatz as Sim15
+    Rx, Ry, Rz
 )
 from discopy.quantum.circuit import Functor
 import numpy as np
@@ -147,6 +149,8 @@ class IQPAnsatz(CircuitAnsatz):
     unitaries. This class uses :py:obj:`n_layers-1` adjacent CRz gates
     to implement each diagonal unitary.
 
+    Code adapted from DisCoPy.
+
     """
 
     def __init__(self,
@@ -172,13 +176,28 @@ class IQPAnsatz(CircuitAnsatz):
         super().__init__(ob_map,
                          n_layers,
                          n_single_qubit_params,
-                         IQP,
+                         self.circuit,
                          discard,
-                         [Rx, Rz],
-                         H)
+                         [Rx, Rz])
 
     def params_shape(self, n_qubits: int) -> tuple[int, ...]:
         return (self.n_layers, n_qubits - 1)
+
+    def circuit(self, n_qubits: int, params: np.ndarray) -> Circuit:
+        if n_qubits == 1:
+            circuit = Rx(params[0]) >> Rz(params[1]) >> Rx(params[2])
+        else:
+            circuit = Id(n_qubits)
+            hadamards = Id().tensor(*(n_qubits * [H]))
+            for thetas in params:
+                rotations = Id(n_qubits).then(*(
+                    Id(i) @ CRz(thetas[i]) @ Id(n_qubits - 2 - i)
+                    for i in range(n_qubits - 1)))
+                circuit >>= hadamards >> rotations
+            if self.n_layers > 0:  # Final layer of Hadamards
+                circuit >>= hadamards
+
+        return circuit
 
 
 class Sim14Ansatz(CircuitAnsatz):
@@ -188,6 +207,8 @@ class Sim14Ansatz(CircuitAnsatz):
     opposite orientation.
 
     Paper at: https://arxiv.org/pdf/1905.10876.pdf
+
+    Code adapted from DisCoPy.
 
     """
 
@@ -214,12 +235,37 @@ class Sim14Ansatz(CircuitAnsatz):
         super().__init__(ob_map,
                          n_layers,
                          n_single_qubit_params,
-                         Sim14,
+                         self.circuit,
                          discard,
                          [Rx, Rz])
 
     def params_shape(self, n_qubits: int) -> tuple[int, ...]:
         return (self.n_layers, 4 * n_qubits)
+
+    def circuit(self, n_qubits: int, params: np.ndarray) -> Circuit:
+        if n_qubits == 1:
+            circuit = Rx(params[0]) >> Rz(params[1]) >> Rx(params[2])
+        else:
+            circuit = Id(n_qubits)
+
+            for thetas in params:
+                sublayer1 = Id().tensor(*map(Ry, thetas[:n_qubits]))
+
+                for i in range(n_qubits):
+                    tgt = (i - 1) % n_qubits
+                    sublayer1 = sublayer1.CRx(thetas[n_qubits + i], i, tgt)
+
+                sublayer2 = Id().tensor(
+                    *map(Ry, thetas[2 * n_qubits: 3 * n_qubits]))
+
+                for i in range(n_qubits, 0, -1):
+                    src = i % n_qubits
+                    tgt = (i + 1) % n_qubits
+                    sublayer2 = sublayer2.CRx(thetas[-i], src, tgt)
+
+                circuit >>= sublayer1 >> sublayer2
+
+        return circuit
 
 
 class Sim15Ansatz(CircuitAnsatz):
@@ -229,6 +275,8 @@ class Sim15Ansatz(CircuitAnsatz):
     opposite orientation.
 
     Paper at: https://arxiv.org/pdf/1905.10876.pdf
+
+    Code adapted from DisCoPy.
 
     """
 
@@ -255,12 +303,37 @@ class Sim15Ansatz(CircuitAnsatz):
         super().__init__(ob_map,
                          n_layers,
                          n_single_qubit_params,
-                         Sim15,
+                         self.circuit,
                          discard,
                          [Rx, Rz])
 
     def params_shape(self, n_qubits: int) -> tuple[int, ...]:
         return (self.n_layers, 2 * n_qubits)
+
+    def circuit(self, n_qubits: int, params: np.ndarray) -> Circuit:
+        if n_qubits == 1:
+            circuit = Rx(params[0]) >> Rz(params[1]) >> Rx(params[2])
+        else:
+
+            circuit = Id(n_qubits)
+
+            for thetas in params:
+                sublayer1 = Id().tensor(*map(Ry, thetas[:n_qubits]))
+
+                for i in range(n_qubits):
+                    tgt = (i - 1) % n_qubits
+                    sublayer1 = sublayer1.CX(i, tgt)
+
+                sublayer2 = Id().tensor(*map(Ry, thetas[n_qubits:]))
+
+                for i in range(n_qubits, 0, -1):
+                    src = i % n_qubits
+                    tgt = (i + 1) % n_qubits
+                    sublayer2 = sublayer2.CX(src, tgt)
+
+                circuit >>= sublayer1 >> sublayer2
+
+        return circuit
 
 
 class StronglyEntanglingAnsatz(CircuitAnsatz):

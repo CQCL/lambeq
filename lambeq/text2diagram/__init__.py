@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['CCGAtomicType',
+__all__ = ['CCGType',
            'CCGRule',
            'CCGRuleUseError',
            'CCGTree',
@@ -39,7 +39,7 @@ __all__ = ['CCGAtomicType',
 
 from lambeq.text2diagram.ccg_rule import CCGRule, CCGRuleUseError
 from lambeq.text2diagram.ccg_tree import CCGTree
-from lambeq.text2diagram.ccg_types import CCGAtomicType
+from lambeq.text2diagram.ccg_type import CCGType
 
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.ccg_parser import CCGParser

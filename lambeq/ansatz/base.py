@@ -119,4 +119,8 @@ class BaseAnsatz(ABC):
 
         dom = str(box.dom).replace(' @ ', '@') if box.dom else ''
         cod = str(box.cod).replace(' @ ', '@') if box.cod else ''
-        return f'{box.name}_{dom}_{cod}'
+
+        raw_summary = f'{box.name}_{dom}_{cod}'
+
+        # Escape special characters for sympy
+        return raw_summary.translate({ord(c): f'\\{c}' for c in ':, '})

@@ -29,7 +29,6 @@ from pathlib import Path
 import sys
 from typing import Any
 
-from discopy.grammar.categorial import Ty
 import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer
@@ -45,7 +44,7 @@ from lambeq.core.utils import (SentenceBatchType,
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
-from lambeq.text2diagram.ccg_types import CCGAtomicType
+from lambeq.text2diagram.ccg_type import CCGType
 from lambeq.text2diagram.model_downloader import (ModelDownloader,
                                                   ModelDownloaderError,
                                                   MODELS)
@@ -304,38 +303,38 @@ class BobcatParser(CCGParser):
         return trees
 
     @staticmethod
-    def _to_biclosed(cat: Category) -> Ty:
+    def _to_biclosed(cat: Category) -> CCGType:
         """Transform a Bobcat category into a biclosed type."""
 
         if cat.atomic:
             if cat.atom.is_punct:
-                return CCGAtomicType.PUNCTUATION
+                return CCGType.PUNCTUATION
             else:
                 atom = str(cat.atom)
                 if atom in ('N', 'NP'):
-                    return CCGAtomicType.NOUN
+                    return CCGType.NOUN
                 elif atom == 'S':
-                    return CCGAtomicType.SENTENCE
+                    return CCGType.SENTENCE
                 elif atom == 'PP':
-                    return CCGAtomicType.PREPOSITIONAL_PHRASE
+                    return CCGType.PREPOSITIONAL_PHRASE
                 elif atom == 'conj':
-                    return CCGAtomicType.CONJUNCTION
+                    return CCGType.CONJUNCTION
             raise ValueError(f'Invalid atomic type: {cat.atom!r}')
         else:
             result = BobcatParser._to_biclosed(cat.result)
             argument = BobcatParser._to_biclosed(cat.argument)
-            return result << argument if cat.fwd else argument >> result
+            return result.slash(cat.dir, argument)
 
     @staticmethod
     def _build_ccgtree(tree: ParseTree) -> CCGTree:
         """Transform a Bobcat parse tree into a `CCGTree`."""
-
         children = [BobcatParser._build_ccgtree(child)
                     for child in filter(None, (tree.left, tree.right))]
         return CCGTree(text=tree.word if tree.is_leaf else None,
                        rule=CCGRule(tree.rule.name),
                        biclosed_type=BobcatParser._to_biclosed(tree.cat),
-                       children=children)
+                       children=children,
+                       metadata={'original': tree})
 
     @staticmethod
     def available_models() -> list[str]:

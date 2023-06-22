@@ -32,9 +32,8 @@ from collections.abc import Iterator
 from pathlib import Path
 import re
 import sys
+from typing import TYPE_CHECKING
 
-from discopy.grammar.categorial import Ty
-from discopy.grammar.pregroup import Diagram
 from tqdm.auto import tqdm
 
 from lambeq.core.globals import VerbosityLevel
@@ -42,8 +41,11 @@ from lambeq.core.utils import SentenceBatchType
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
-from lambeq.text2diagram.ccg_types import CCGAtomicType, str2biclosed
+from lambeq.text2diagram.ccg_type import CCGType
 from lambeq.typing import StrPathT
+
+if TYPE_CHECKING:
+    from discopy.pregroup import Diagram
 
 
 class CCGBankParseError(Exception):
@@ -394,8 +396,10 @@ class CCGBankParser(CCGParser):
         ccg_str = tree_match['ccg_str']
         if ccg_str == r'((S[b]\NP)/NP)/':  # fix mistake in CCGBank
             ccg_str = r'(S[b]\NP)/NP'
-        biclosed_type = str2biclosed(ccg_str,
-                                     str2type=CCGBankParser._parse_atomic_type)
+        biclosed_type = CCGType.parse(
+            ccg_str,
+            map_atomic=CCGBankParser._map_atomic_type
+        )
         pos = tree_match.end()
         if tree_match['is_leaf']:
             word = tree_match['word']
@@ -403,34 +407,37 @@ class CCGBankParser(CCGParser):
                 word = CCGBankParser.escaped_words[word]
             except KeyError:
                 pass
-            ccg_tree = CCGTree(text=word, biclosed_type=biclosed_type)
+            ccg_tree = CCGTree(text=word,
+                               biclosed_type=biclosed_type,
+                               metadata={'original': tree_match})
         else:
             children = []
             while not sentence[pos] == ')':
                 child, pos = CCGBankParser._build_ccgtree(sentence, pos)
                 children.append(child)
 
-            rule = CCGRule.infer_rule(Ty().tensor(*(child.biclosed_type
-                                                    for child in children)),
+            rule = CCGRule.infer_rule([child.biclosed_type
+                                       for child in children],
                                       biclosed_type)
             ccg_tree = CCGTree(rule=rule,
                                biclosed_type=biclosed_type,
-                               children=children)
+                               children=children,
+                               metadata={'original': tree_match})
             pos += 2
         return ccg_tree, pos
 
     @staticmethod
-    def _parse_atomic_type(cat: str) -> Ty:
+    def _map_atomic_type(cat: str) -> str:
         match = CCGBankParser.ccg_type_regex.fullmatch(cat)
         if not match:
             raise CCGBankParseError(f'failed to parse atomic type {repr(cat)}')
         cat = match['bare_cat'] or cat
         if cat in ('N', 'NP'):
-            return CCGAtomicType.NOUN
+            return CCGType.NOUN.name
         elif cat == 'S':
-            return CCGAtomicType.SENTENCE
+            return CCGType.SENTENCE.name
         elif cat == 'PP':
-            return CCGAtomicType.PREPOSITIONAL_PHRASE
+            return CCGType.PREPOSITIONAL_PHRASE.name
         elif cat == 'conj':
-            return CCGAtomicType.CONJUNCTION
-        return CCGAtomicType.PUNCTUATION
+            return CCGType.CONJUNCTION.name
+        return CCGType.PUNCTUATION.name

@@ -144,7 +144,7 @@ class TreeReader(Reader):
         """
 
         try:
-            ccg_words, ccg_parse = tree._to_biclosed_diagram()
+            ccg_words, ccg_parse = tree._resolved()._to_biclosed_diagram()
         except Exception as e:
             if suppress_exceptions:
                 return None

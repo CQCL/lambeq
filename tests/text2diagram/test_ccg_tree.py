@@ -2,14 +2,12 @@ import pytest
 
 import json
 
-from discopy.grammar.categorial import Ty
-
-from lambeq import CCGTree
+from lambeq import CCGType, CCGTree
 
 
 @pytest.fixture
 def tree():
-    n, s = Ty('n'), Ty('s')
+    n, s = CCGType.NOUN, CCGType.SENTENCE
     the = CCGTree(text='the', biclosed_type=n << n)
     do = CCGTree(text='do', biclosed_type=s >> s)
     do_unary = CCGTree(text='do', rule='U', biclosed_type=n, children=(do,))
