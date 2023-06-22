@@ -123,7 +123,11 @@ class RewriteRule(ABC):
         one.
 
         """
-        return self.rewrite(box) if self.matches(box) else None
+        if type(box) is list:
+            return [self.rewrite(b) if self.matches(b) else b for b in box]
+ 
+        return self.rewrite(box) if self.matches(box) else box
+
 
 
 class SimpleRewriteRule(RewriteRule):
@@ -380,8 +384,11 @@ class Rewriter:
                         f'`{rule}` is not a valid rewrite rule.'
                     ) from e
 
-    def __call__(self, diagram: Diagram) -> Diagram:
+    def __call__(self, diagram: Diagram or Iterable[Diagram]) -> Diagram or Iterable[Diagram]:
         """Apply the rewrite rules to the given diagram."""
+        if type(diagram) is list:
+            return [self.apply_rewrites(d) for d in diagram]
+ 
         return self.apply_rewrites(diagram)
 
     def _ar(self, box: Box) -> Diagram:

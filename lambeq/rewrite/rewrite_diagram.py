@@ -13,16 +13,12 @@
 # limitations under the License.
 
 """
-Rewrite
-=======
-A rewrite rule is a schema for transforming/simplifying a diagram.
-A diagram rewriter is a function for transforming/simplifying a diagram at diagram level.
+Diagram Rewrite
+============
+Class hierarchy for allowing rewriting at the diagram level (as opposed 
+to rewrite rules that apply on the box level).
 
-The :py:class:`DiagramRewriter` applies the transformation based on the defined rules.
-
-Subclass :py:class:'DiagramRewriter' to define a custom rewrite rule. An
-example rewrite rule :py:class:`MergeWiresRewriter` has been provided for
-merging the free wires of a diagram with more than one free wire.
+Subclass :py:class:'DiagramRewriter' to define a custom diagram rewriter.
 """
 from __future__ import annotations
 
