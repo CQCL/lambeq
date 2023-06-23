@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.3.1 [git latest] documentation</title>
+  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.3.2 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.1 [git latest]
+                0.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -158,9 +158,8 @@
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">from</span> <span class="nn">discopy.grammar.categorial</span> <span class="kn">import</span> <span class="n">Ty</span>
-<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Diagram</span>
 <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.core.globals</span> <span class="kn">import</span> <span class="n">VerbosityLevel</span>
@@ -168,8 +167,11 @@
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_parser</span> <span class="kn">import</span> <span class="n">CCGParser</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span>
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_tree</span> <span class="kn">import</span> <span class="n">CCGTree</span>
-<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CCGAtomicType</span><span class="p">,</span> <span class="n">str2biclosed</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_type</span> <span class="kn">import</span> <span class="n">CCGType</span>
 <span class="kn">from</span> <span class="nn">lambeq.typing</span> <span class="kn">import</span> <span class="n">StrPathT</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">discopy.pregroup</span> <span class="kn">import</span> <span class="n">Diagram</span>
 
 
 <div class="viewcode-block" id="CCGBankParseError"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGBankParseError">[docs]</a><span class="k">class</span> <span class="nc">CCGBankParseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -520,8 +522,10 @@
         <span class="n">ccg_str</span> <span class="o">=</span> <span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;ccg_str&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">ccg_str</span> <span class="o">==</span> <span class="sa">r</span><span class="s1">&#39;((S[b]\NP)/NP)/&#39;</span><span class="p">:</span>  <span class="c1"># fix mistake in CCGBank</span>
             <span class="n">ccg_str</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;(S[b]\NP)/NP&#39;</span>
-        <span class="n">biclosed_type</span> <span class="o">=</span> <span class="n">str2biclosed</span><span class="p">(</span><span class="n">ccg_str</span><span class="p">,</span>
-                                     <span class="n">str2type</span><span class="o">=</span><span class="n">CCGBankParser</span><span class="o">.</span><span class="n">_parse_atomic_type</span><span class="p">)</span>
+        <span class="n">biclosed_type</span> <span class="o">=</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+            <span class="n">ccg_str</span><span class="p">,</span>
+            <span class="n">map_atomic</span><span class="o">=</span><span class="n">CCGBankParser</span><span class="o">.</span><span class="n">_map_atomic_type</span>
+        <span class="p">)</span>
         <span class="n">pos</span> <span class="o">=</span> <span class="n">tree_match</span><span class="o">.</span><span class="n">end</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;is_leaf&#39;</span><span class="p">]:</span>
             <span class="n">word</span> <span class="o">=</span> <span class="n">tree_match</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span>
@@ -529,37 +533,40 @@
                 <span class="n">word</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">escaped_words</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
             <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
                 <span class="k">pass</span>
-            <span class="n">ccg_tree</span> <span class="o">=</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">word</span><span class="p">,</span> <span class="n">biclosed_type</span><span class="o">=</span><span class="n">biclosed_type</span><span class="p">)</span>
+            <span class="n">ccg_tree</span> <span class="o">=</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">word</span><span class="p">,</span>
+                               <span class="n">biclosed_type</span><span class="o">=</span><span class="n">biclosed_type</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;original&#39;</span><span class="p">:</span> <span class="n">tree_match</span><span class="p">})</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">children</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="k">while</span> <span class="ow">not</span> <span class="n">sentence</span><span class="p">[</span><span class="n">pos</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
                 <span class="n">child</span><span class="p">,</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">_build_ccgtree</span><span class="p">(</span><span class="n">sentence</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
                 <span class="n">children</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 
-            <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">infer_rule</span><span class="p">(</span><span class="n">Ty</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span>
-                                                    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">)),</span>
+            <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">infer_rule</span><span class="p">([</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span>
+                                       <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">],</span>
                                       <span class="n">biclosed_type</span><span class="p">)</span>
             <span class="n">ccg_tree</span> <span class="o">=</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span>
                                <span class="n">biclosed_type</span><span class="o">=</span><span class="n">biclosed_type</span><span class="p">,</span>
-                               <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">)</span>
+                               <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">,</span>
+                               <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;original&#39;</span><span class="p">:</span> <span class="n">tree_match</span><span class="p">})</span>
             <span class="n">pos</span> <span class="o">+=</span> <span class="mi">2</span>
         <span class="k">return</span> <span class="n">ccg_tree</span><span class="p">,</span> <span class="n">pos</span>
 
     <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_parse_atomic_type</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_map_atomic_type</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">match</span> <span class="o">=</span> <span class="n">CCGBankParser</span><span class="o">.</span><span class="n">ccg_type_regex</span><span class="o">.</span><span class="n">fullmatch</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;failed to parse atomic type </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">cat</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;bare_cat&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">cat</span>
         <span class="k">if</span> <span class="n">cat</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">NOUN</span>
+            <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN</span><span class="o">.</span><span class="n">name</span>
         <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
+            <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">SENTENCE</span><span class="o">.</span><span class="n">name</span>
         <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;PP&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">PREPOSITIONAL_PHRASE</span>
+            <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">PREPOSITIONAL_PHRASE</span><span class="o">.</span><span class="n">name</span>
         <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;conj&#39;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">CONJUNCTION</span>
-        <span class="k">return</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">PUNCTUATION</span></div>
+            <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">CONJUNCTION</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">PUNCTUATION</span><span class="o">.</span><span class="n">name</span></div>
 </pre></div>
 
            </div>

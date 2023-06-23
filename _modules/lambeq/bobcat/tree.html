@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.bobcat.tree &mdash; lambeq 0.3.1 [git latest] documentation</title>
+  <title>lambeq.bobcat.tree &mdash; lambeq 0.3.2 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.1 [git latest]
+                0.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -142,6 +142,7 @@
 
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">replace</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.bobcat.lexicon</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Feature</span><span class="p">,</span> <span class="n">Relation</span>
@@ -393,7 +394,28 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">fwd_comp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Rule</span><span class="o">.</span><span class="n">FC</span><span class="p">,</span> <span class="n">Rule</span><span class="o">.</span><span class="n">GFC</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="ow">in</span> <span class="p">(</span><span class="n">Rule</span><span class="o">.</span><span class="n">FC</span><span class="p">,</span> <span class="n">Rule</span><span class="o">.</span><span class="n">GFC</span><span class="p">)</span>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">deps_and_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Dependency</span><span class="p">],</span>
+                                     <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">deps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filled_deps</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">child</span><span class="p">:</span>
+                    <span class="n">child_deps</span><span class="p">,</span> <span class="n">child_tags</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">deps_and_tags</span>
+                    <span class="n">deps</span> <span class="o">+=</span> <span class="n">child_deps</span>
+                    <span class="n">tags</span> <span class="o">+=</span> <span class="n">child_tags</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cat</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[X]&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+
+        <span class="n">deps</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">dep</span><span class="p">:</span> <span class="p">(</span><span class="n">dep</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">dep</span><span class="o">.</span><span class="n">filler</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">deps</span><span class="p">,</span> <span class="n">tags</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">deps</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Dependency</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">deps_and_tags</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
 <span class="k">def</span> <span class="nf">Lexical</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="n">Category</span><span class="p">,</span> <span class="n">word</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">index</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ParseTree</span><span class="p">:</span>

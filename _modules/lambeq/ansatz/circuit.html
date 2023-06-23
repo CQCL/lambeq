@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.ansatz.circuit &mdash; lambeq 0.3.1 [git latest] documentation</title>
+  <title>lambeq.ansatz.circuit &mdash; lambeq 0.3.2 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.1 [git latest]
+                0.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -146,7 +146,11 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CircuitAnsatz&#39;</span><span class="p">,</span> <span class="s1">&#39;IQPAnsatz&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CircuitAnsatz&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;IQPAnsatz&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Sim14Ansatz&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Sim15Ansatz&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;StronglyEntanglingAnsatz&#39;</span><span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">abstractmethod</span>
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Mapping</span>
@@ -156,15 +160,13 @@
 <span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">Bra</span><span class="p">,</span>
     <span class="n">Circuit</span><span class="p">,</span>
+    <span class="n">CRz</span><span class="p">,</span>
     <span class="n">Discard</span><span class="p">,</span>
     <span class="n">H</span><span class="p">,</span>
     <span class="n">Id</span><span class="p">,</span>
-    <span class="n">IQPansatz</span> <span class="k">as</span> <span class="n">IQP</span><span class="p">,</span>
     <span class="n">Ket</span><span class="p">,</span>
     <span class="n">qubit</span><span class="p">,</span>
-    <span class="n">Rx</span><span class="p">,</span> <span class="n">Ry</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span>
-    <span class="n">Sim14ansatz</span> <span class="k">as</span> <span class="n">Sim14</span><span class="p">,</span>
-    <span class="n">Sim15ansatz</span> <span class="k">as</span> <span class="n">Sim15</span>
+    <span class="n">Rx</span><span class="p">,</span> <span class="n">Ry</span><span class="p">,</span> <span class="n">Rz</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="n">Functor</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -273,6 +275,8 @@
 <span class="sd">    unitaries. This class uses :py:obj:`n_layers-1` adjacent CRz gates</span>
 <span class="sd">    to implement each diagonal unitary.</span>
 
+<span class="sd">    Code adapted from DisCoPy.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="IQPAnsatz.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.IQPAnsatz.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -298,13 +302,28 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob_map</span><span class="p">,</span>
                          <span class="n">n_layers</span><span class="p">,</span>
                          <span class="n">n_single_qubit_params</span><span class="p">,</span>
-                         <span class="n">IQP</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">circuit</span><span class="p">,</span>
                          <span class="n">discard</span><span class="p">,</span>
-                         <span class="p">[</span><span class="n">Rx</span><span class="p">,</span> <span class="n">Rz</span><span class="p">],</span>
-                         <span class="n">H</span><span class="p">)</span></div>
+                         <span class="p">[</span><span class="n">Rx</span><span class="p">,</span> <span class="n">Rz</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="IQPAnsatz.params_shape"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.IQPAnsatz.params_shape">[docs]</a>    <span class="k">def</span> <span class="nf">params_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="n">n_qubits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="n">n_qubits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="IQPAnsatz.circuit"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.IQPAnsatz.circuit">[docs]</a>    <span class="k">def</span> <span class="nf">circuit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_qubits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Rx</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="n">Rz</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="n">Rx</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+            <span class="n">hadamards</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">*</span> <span class="p">[</span><span class="n">H</span><span class="p">]))</span>
+            <span class="k">for</span> <span class="n">thetas</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+                <span class="n">rotations</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span><span class="o">.</span><span class="n">then</span><span class="p">(</span><span class="o">*</span><span class="p">(</span>
+                    <span class="n">Id</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">CRz</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">i</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)))</span>
+                <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">hadamards</span> <span class="o">&gt;&gt;</span> <span class="n">rotations</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># Final layer of Hadamards</span>
+                <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">hadamards</span>
+
+        <span class="k">return</span> <span class="n">circuit</span></div></div>
 
 
 <div class="viewcode-block" id="Sim14Ansatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim14Ansatz">[docs]</a><span class="k">class</span> <span class="nc">Sim14Ansatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
@@ -314,6 +333,8 @@
 <span class="sd">    opposite orientation.</span>
 
 <span class="sd">    Paper at: https://arxiv.org/pdf/1905.10876.pdf</span>
+
+<span class="sd">    Code adapted from DisCoPy.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -340,12 +361,37 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob_map</span><span class="p">,</span>
                          <span class="n">n_layers</span><span class="p">,</span>
                          <span class="n">n_single_qubit_params</span><span class="p">,</span>
-                         <span class="n">Sim14</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">circuit</span><span class="p">,</span>
                          <span class="n">discard</span><span class="p">,</span>
                          <span class="p">[</span><span class="n">Rx</span><span class="p">,</span> <span class="n">Rz</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Sim14Ansatz.params_shape"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim14Ansatz.params_shape">[docs]</a>    <span class="k">def</span> <span class="nf">params_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n_qubits</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">n_qubits</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sim14Ansatz.circuit"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim14Ansatz.circuit">[docs]</a>    <span class="k">def</span> <span class="nf">circuit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_qubits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Rx</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="n">Rz</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="n">Rx</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">thetas</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+                <span class="n">sublayer1</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">Ry</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[:</span><span class="n">n_qubits</span><span class="p">]))</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">):</span>
+                    <span class="n">tgt</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n_qubits</span>
+                    <span class="n">sublayer1</span> <span class="o">=</span> <span class="n">sublayer1</span><span class="o">.</span><span class="n">CRx</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="n">n_qubits</span> <span class="o">+</span> <span class="n">i</span><span class="p">],</span> <span class="n">i</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span>
+
+                <span class="n">sublayer2</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span>
+                    <span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">Ry</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">n_qubits</span><span class="p">]))</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">src</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">n_qubits</span>
+                    <span class="n">tgt</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n_qubits</span>
+                    <span class="n">sublayer2</span> <span class="o">=</span> <span class="n">sublayer2</span><span class="o">.</span><span class="n">CRx</span><span class="p">(</span><span class="n">thetas</span><span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="p">],</span> <span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span>
+
+                <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">sublayer1</span> <span class="o">&gt;&gt;</span> <span class="n">sublayer2</span>
+
+        <span class="k">return</span> <span class="n">circuit</span></div></div>
 
 
 <div class="viewcode-block" id="Sim15Ansatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim15Ansatz">[docs]</a><span class="k">class</span> <span class="nc">Sim15Ansatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>
@@ -355,6 +401,8 @@
 <span class="sd">    opposite orientation.</span>
 
 <span class="sd">    Paper at: https://arxiv.org/pdf/1905.10876.pdf</span>
+
+<span class="sd">    Code adapted from DisCoPy.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -381,12 +429,37 @@
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ob_map</span><span class="p">,</span>
                          <span class="n">n_layers</span><span class="p">,</span>
                          <span class="n">n_single_qubit_params</span><span class="p">,</span>
-                         <span class="n">Sim15</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">circuit</span><span class="p">,</span>
                          <span class="n">discard</span><span class="p">,</span>
                          <span class="p">[</span><span class="n">Rx</span><span class="p">,</span> <span class="n">Rz</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="Sim15Ansatz.params_shape"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim15Ansatz.params_shape">[docs]</a>    <span class="k">def</span> <span class="nf">params_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_qubits</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_layers</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">n_qubits</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Sim15Ansatz.circuit"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.Sim15Ansatz.circuit">[docs]</a>    <span class="k">def</span> <span class="nf">circuit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_qubits</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circuit</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n_qubits</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Rx</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="n">Rz</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="n">Rx</span><span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">thetas</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+                <span class="n">sublayer1</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">Ry</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[:</span><span class="n">n_qubits</span><span class="p">]))</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">):</span>
+                    <span class="n">tgt</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n_qubits</span>
+                    <span class="n">sublayer1</span> <span class="o">=</span> <span class="n">sublayer1</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span>
+
+                <span class="n">sublayer2</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">Ry</span><span class="p">,</span> <span class="n">thetas</span><span class="p">[</span><span class="n">n_qubits</span><span class="p">:]))</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_qubits</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                    <span class="n">src</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">n_qubits</span>
+                    <span class="n">tgt</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">n_qubits</span>
+                    <span class="n">sublayer2</span> <span class="o">=</span> <span class="n">sublayer2</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">tgt</span><span class="p">)</span>
+
+                <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">sublayer1</span> <span class="o">&gt;&gt;</span> <span class="n">sublayer2</span>
+
+        <span class="k">return</span> <span class="n">circuit</span></div></div>
 
 
 <div class="viewcode-block" id="StronglyEntanglingAnsatz"><a class="viewcode-back" href="../../../root-api.html#lambeq.ansatz.StronglyEntanglingAnsatz">[docs]</a><span class="k">class</span> <span class="nc">StronglyEntanglingAnsatz</span><span class="p">(</span><span class="n">CircuitAnsatz</span><span class="p">):</span>

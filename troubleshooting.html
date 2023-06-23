@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Troubleshooting &mdash; lambeq 0.3.1 [git latest] documentation</title>
+  <title>Troubleshooting &mdash; lambeq 0.3.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.1 [git latest]
+                0.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -54,6 +54,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#nan-and-inf-errors-during-training">NaN and Inf errors during training</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ssl-error-windows">SSL error [Windows]</a></li>
 </ul>
 </li>
@@ -155,10 +156,18 @@
 </style>
 <section id="troubleshooting">
 <span id="sec-troubleshooting"></span><h1>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading"></a></h1>
-<p>This is a collection of known and unsolved issues with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, including
+<p>This is a collection of known issues which may arise when working with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, including
 possible workarounds. If you encounter a problem that is not listed here, we
 encourage you to
 <a class="reference external" href="https://github.com/CQCL/lambeq/issues/new">submit an issue</a>.</p>
+<section id="nan-and-inf-errors-during-training">
+<h2>NaN and Inf errors during training<a class="headerlink" href="#nan-and-inf-errors-during-training" title="Permalink to this heading"></a></h2>
+<p>Since release <a class="reference internal" href="release_notes.html#rel-0-3-0"><span class="std std-ref">0.3.0</span></a>, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides its own numerically stable
+loss functions which guard against <code class="docutils literal notranslate"><span class="pre">NaN</span></code> and <code class="docutils literal notranslate"><span class="pre">Inf</span></code> numerical errors.
+This change also removed safeguards from <a class="reference internal" href="root-api.html#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a>, making protecting
+against such numerical errors the responsibility of the loss function.
+Any custom loss function must thus also guard against such errors.</p>
+</section>
 <section id="ssl-error-windows">
 <h2>SSL error [Windows]<a class="headerlink" href="#ssl-error-windows" title="Permalink to this heading"></a></h2>
 <p>When using <code class="docutils literal notranslate"><span class="pre">lambeq</span> <span class="pre">&lt;=</span> <span class="pre">0.2.3</span></code> on a Windows machine, the instantiation of the

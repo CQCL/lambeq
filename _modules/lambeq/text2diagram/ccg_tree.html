@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_tree &mdash; lambeq 0.3.1 [git latest] documentation</title>
+  <title>lambeq.text2diagram.ccg_tree &mdash; lambeq 0.3.2 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.1 [git latest]
+                0.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -153,9 +153,7 @@
                                         <span class="n">unaryBoxConstructor</span><span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_rule</span> <span class="kn">import</span> <span class="n">CCGRule</span><span class="p">,</span> <span class="n">GBC</span><span class="p">,</span> <span class="n">GBX</span><span class="p">,</span> <span class="n">GFC</span><span class="p">,</span> <span class="n">GFX</span>
-<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="p">(</span><span class="n">biclosed2str</span><span class="p">,</span> <span class="n">replace_cat_result</span><span class="p">,</span>
-                                           <span class="n">str2biclosed</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_types</span> <span class="kn">import</span> <span class="n">CCGAtomicType</span>
+<span class="kn">from</span> <span class="nn">lambeq.text2diagram.ccg_type</span> <span class="kn">import</span> <span class="n">CCGType</span><span class="p">,</span> <span class="n">replace_cat_result</span>
 
 <span class="c1"># Types</span>
 <span class="n">_JSONDictT</span> <span class="o">=</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
@@ -256,8 +254,9 @@
                  <span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="o">*</span><span class="p">,</span>
                  <span class="n">rule</span><span class="p">:</span> <span class="n">CCGRule</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">,</span>
-                 <span class="n">biclosed_type</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
-                 <span class="n">children</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                 <span class="n">biclosed_type</span><span class="p">:</span> <span class="n">CCGType</span><span class="p">,</span>
+                 <span class="n">children</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">CCGTree</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">metadata</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a CCG tree.</span>
 
 <span class="sd">        Parameters</span>
@@ -267,18 +266,21 @@
 <span class="sd">            :py:obj:`None`, it is inferred from its children.</span>
 <span class="sd">        rule : CCGRule, default: CCGRule.UNKNOWN</span>
 <span class="sd">            The final :py:class:`.CCGRule` used in the derivation.</span>
-<span class="sd">        biclosed_type : discopy.biclosed.Ty</span>
+<span class="sd">        biclosed_type : CCGType</span>
 <span class="sd">            The type associated to the derived phrase.</span>
 <span class="sd">        children : list of CCGTree, optional</span>
 <span class="sd">            A list of JSON subtrees. The types of these subtrees can be</span>
 <span class="sd">            combined with the :py:obj:`rule` to produce the output</span>
 <span class="sd">            :py:obj:`type`. A leaf node has an empty list of children.</span>
+<span class="sd">        metadata : dict, optional</span>
+<span class="sd">            A dictionary of miscellaneous data.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_text</span> <span class="o">=</span> <span class="n">text</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="p">(</span><span class="n">rule</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="o">=</span> <span class="n">biclosed_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">children</span><span class="p">)</span> <span class="k">if</span> <span class="n">children</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="n">metadata</span> <span class="k">if</span> <span class="n">metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">{}</span>
 
         <span class="n">n_children</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
         <span class="n">child_requirements</span> <span class="o">=</span> <span class="p">{</span><span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
@@ -363,7 +365,7 @@
         <span class="n">data_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">data</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">),</span>
                    <span class="n">rule</span><span class="o">=</span><span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;rule&#39;</span><span class="p">,</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">),</span>
-                   <span class="n">biclosed_type</span><span class="o">=</span><span class="n">str2biclosed</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]),</span>
+                   <span class="n">biclosed_type</span><span class="o">=</span><span class="n">CCGType</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">data_dict</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]),</span>
                    <span class="n">children</span><span class="o">=</span><span class="p">[</span><span class="bp">cls</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
                              <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;children&#39;</span><span class="p">,</span> <span class="p">[])])</span></div>
 
@@ -383,8 +385,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">new_tree</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">while</span> <span class="p">(</span><span class="n">new_tree</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNARY</span>
-               <span class="ow">and</span> <span class="p">(</span><span class="n">new_tree</span><span class="o">.</span><span class="n">biclosed_type</span>
-                    <span class="o">==</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">)):</span>
+               <span class="ow">and</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="o">==</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">):</span>
             <span class="n">new_tree</span> <span class="o">=</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">without_trivial_unary_rules</span><span class="p">()</span> <span class="k">for</span> <span class="n">child</span>
                              <span class="ow">in</span> <span class="n">new_tree</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
@@ -395,7 +396,7 @@
         <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Allows doing CCGTree.to_json(X) for optional X</span>
             <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># type: ignore[unreachable]</span>
 
-        <span class="n">data</span><span class="p">:</span> <span class="n">_JSONDictT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">biclosed2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">)}</span>
+        <span class="n">data</span><span class="p">:</span> <span class="n">_JSONDictT</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">)}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">!=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">:</span>
             <span class="n">data</span><span class="p">[</span><span class="s1">&#39;rule&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">value</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span> <span class="o">!=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">):</span>
@@ -421,14 +422,14 @@
                     <span class="n">use_slashes</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
                     <span class="n">_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a vertical string representation of the CCG tree.&quot;&quot;&quot;</span>
-        <span class="n">output_type</span> <span class="o">=</span> <span class="n">biclosed2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">,</span> <span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
+        <span class="n">pretty</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">use_slashes</span>
+        <span class="n">output_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">pretty</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span><span class="p">:</span>
             <span class="n">deriv</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39; </span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;SUCH_THAT&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">deriv</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">output_type</span><span class="si">}</span><span class="s1"> &#39;</span>
                      <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">chr_set</span><span class="p">[</span><span class="s2">&quot;LEFT_ARROW&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> &#39;</span>
-                     <span class="o">+</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">biclosed2str</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">,</span>
-                                               <span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
+                     <span class="o">+</span> <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">pretty</span><span class="p">)</span>
                                   <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">))</span>
         <span class="n">deriv</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">_prefix</span><span class="si">}{</span><span class="n">deriv</span><span class="si">}</span><span class="s1">&#39;</span>
 
@@ -450,7 +451,7 @@
                      <span class="n">use_slashes</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a standard CCG diagram for the tree with the</span>
 <span class="sd">        words arranged horizontally.&quot;&quot;&quot;</span>
-        <span class="n">output_type</span> <span class="o">=</span> <span class="n">biclosed2str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">,</span> <span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
+        <span class="n">output_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="ow">not</span> <span class="n">use_slashes</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">output_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">):</span>
             <span class="n">output_type</span> <span class="o">=</span> <span class="n">output_type</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span><span class="p">:</span>
@@ -554,39 +555,106 @@
 <span class="sd">            using cross composition.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">words</span><span class="p">,</span> <span class="n">grammar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_biclosed_diagram</span><span class="p">(</span><span class="n">planar</span><span class="p">)</span>
+        <span class="n">words</span><span class="p">,</span> <span class="n">grammar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolved</span><span class="p">()</span><span class="o">.</span><span class="n">_to_biclosed_diagram</span><span class="p">(</span><span class="n">planar</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">words</span> <span class="o">&gt;&gt;</span> <span class="n">grammar</span></div>
 
-    <span class="k">def</span> <span class="nf">_to_biclosed_diagram</span><span class="p">(</span>
-            <span class="bp">self</span><span class="p">,</span>
-            <span class="n">planar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="n">resolved_output</span><span class="p">:</span> <span class="n">Ty</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">]:</span>
-        <span class="n">biclosed_type</span> <span class="o">=</span> <span class="n">resolved_output</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span>
+    <span class="k">def</span> <span class="nf">_resolved</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">resolved_output</span><span class="p">:</span> <span class="n">CCGType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGTree</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform type resolution on the tree.</span>
+
+<span class="sd">        Actions:</span>
+<span class="sd">        - unary rules (for the most part) are removed and the types are</span>
+<span class="sd">        changed directly, resulting in changes in the lexical word</span>
+<span class="sd">        types.</span>
+<span class="sd">        - unary rules that involve a swap in the direction of the type</span>
+<span class="sd">        are not changed.</span>
+<span class="sd">        - conjunctions are replaced by applications.</span>
+<span class="sd">        - one other special case: rewriting the type of a forward</span>
+<span class="sd">        composition which has a type-raising child requires special</span>
+<span class="sd">        handling to ensure that the composed (middle) type is correct.</span>
+
+<span class="sd">        Resolution starts from the root of the tree, and then rewritten</span>
+<span class="sd">        types are propagated towards the leaves by recursive calls with</span>
+<span class="sd">        `output` set to the rewritten type (may be the same as the</span>
+<span class="sd">        original type if no rewriting is required for that child).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">resolved_output</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span><span class="p">:</span>
-            <span class="n">word</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(),</span> <span class="n">biclosed_type</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">word</span><span class="p">,</span> <span class="n">Id</span><span class="p">(</span><span class="n">biclosed_type</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">output</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">CCGTree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">biclosed_type</span><span class="o">=</span><span class="n">output</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNARY</span>
-                <span class="ow">and</span> <span class="ow">not</span> <span class="n">planar</span>
-                <span class="ow">and</span> <span class="p">((</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">is_over</span>
-                      <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">is_under</span><span class="p">)</span>
-                     <span class="ow">or</span> <span class="p">(</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">is_under</span>
-                         <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">is_over</span><span class="p">))):</span>
-            <span class="n">this_layer</span> <span class="o">=</span> <span class="n">UnarySwap</span><span class="p">(</span><span class="n">biclosed_type</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_COMPOSITION</span>
-                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_TYPE_RAISING</span><span class="p">):</span>
-            <span class="n">left</span> <span class="o">=</span> <span class="n">biclosed_type</span><span class="o">.</span><span class="n">left</span>
-            <span class="n">right</span> <span class="o">=</span> <span class="n">biclosed_type</span><span class="o">.</span><span class="n">right</span>
-            <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">left</span>
-            <span class="n">this_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">((</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">mid</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">mid</span> <span class="o">&lt;&lt;</span> <span class="n">right</span><span class="p">),</span>
-                                   <span class="n">biclosed_type</span><span class="p">)</span>
+        <span class="n">this_layer</span><span class="p">:</span> <span class="n">Diagram</span>
+        <span class="n">rule</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span>
+        <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNARY</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">({</span><span class="n">output</span><span class="o">.</span><span class="n">_direction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">_direction</span><span class="p">}</span>
+                    <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">}):</span>
+                <span class="n">this_layer</span> <span class="o">=</span> <span class="n">UnarySwap</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">discopy</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">child</span><span class="o">.</span><span class="n">_resolved</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_COMPOSITION</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_TYPE_RAISING</span><span class="p">):</span>
+            <span class="n">left_</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">left</span>
+            <span class="n">right_</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">right</span>
+            <span class="n">mid_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">left</span> <span class="o">&gt;&gt;</span> <span class="n">left_</span>
+
+            <span class="n">left</span> <span class="o">=</span> <span class="n">left_</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
+            <span class="n">mid</span> <span class="o">=</span> <span class="n">mid_</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="n">right_</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
+
+            <span class="n">this_layer</span> <span class="o">=</span> <span class="n">rule</span><span class="p">((</span><span class="n">left</span> <span class="o">&lt;&lt;</span> <span class="n">mid</span><span class="p">)</span> <span class="o">@</span> <span class="p">(</span><span class="n">mid</span> <span class="o">&lt;&lt;</span> <span class="n">right</span><span class="p">),</span> <span class="n">output</span><span class="o">.</span><span class="n">discopy</span><span class="p">())</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
-            <span class="n">this_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">Ty</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">child_types</span><span class="p">),</span> <span class="n">biclosed_type</span><span class="p">)</span>
+            <span class="n">child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
+                           <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
+            <span class="n">this_layer</span> <span class="o">=</span> <span class="n">rule</span><span class="p">(</span><span class="n">Ty</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">child_types</span><span class="p">),</span> <span class="n">output</span><span class="o">.</span><span class="n">discopy</span><span class="p">())</span>
 
-        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">_to_biclosed_diagram</span><span class="p">(</span><span class="n">planar</span><span class="p">,</span>
-                                               <span class="n">this_layer</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">CONJUNCTION</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">is_conjoinable</span><span class="p">:</span>
+                    <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">FORWARD_APPLICATION</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">rule</span> <span class="o">=</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">BACKWARD_APPLICATION</span>
+
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">child</span><span class="o">.</span><span class="n">_resolved</span><span class="p">(</span><span class="n">CCGType</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">this_layer</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">children</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span> <span class="ow">and</span> <span class="n">output</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CCGTree</span><span class="p">(</span><span class="n">rule</span><span class="o">=</span><span class="n">rule</span><span class="p">,</span> <span class="n">biclosed_type</span><span class="o">=</span><span class="n">output</span><span class="p">,</span> <span class="n">children</span><span class="o">=</span><span class="n">children</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_to_biclosed_diagram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                             <span class="n">planar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Diagram</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a (type-resolved) tree into a biclosed diagram.</span>
+
+<span class="sd">        Expects its input to already be type resolved. This can be done</span>
+<span class="sd">        using `._resolve()`.</span>
+
+<span class="sd">        Turns each rule into the correct box, and if the output is</span>
+<span class="sd">        expected to be planar, rearranges cross-composed diagrams.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">LEXICAL</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">Box</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">discopy</span><span class="p">()),</span>
+                    <span class="n">Id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">discopy</span><span class="p">()))</span>
+
+        <span class="n">this_layer</span><span class="p">:</span> <span class="n">Diagram</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">UNARY</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">planar</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;This diagram cannot be represented as a &#39;</span>
+                                 <span class="s1">&#39;planar biclosed diagram since it requires a &#39;</span>
+                                 <span class="s1">&#39;unary swap.&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">this_layer</span> <span class="o">=</span> <span class="n">UnarySwap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">discopy</span><span class="p">())</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">child_types</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
+                           <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">]</span>
+            <span class="n">this_layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span><span class="p">(</span><span class="n">Ty</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">child_types</span><span class="p">),</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">biclosed_type</span><span class="o">.</span><span class="n">discopy</span><span class="p">())</span>
+
+        <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">_to_biclosed_diagram</span><span class="p">(</span><span class="n">planar</span><span class="p">)</span>
                     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">children</span><span class="p">)]</span>
 
         <span class="k">if</span> <span class="n">planar</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">rule</span> <span class="o">==</span> <span class="n">CCGRule</span><span class="o">.</span><span class="n">BACKWARD_CROSSED_COMPOSITION</span><span class="p">:</span>
@@ -624,7 +692,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">def</span> <span class="nf">ob_func</span><span class="p">(</span><span class="n">ob</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Ty</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">pregroup</span><span class="o">.</span><span class="n">Ty</span><span class="p">()</span> <span class="k">if</span> <span class="n">ob</span> <span class="o">==</span> <span class="n">CCGAtomicType</span><span class="o">.</span><span class="n">PUNCTUATION</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">pregroup</span><span class="o">.</span><span class="n">Ty</span><span class="p">()</span> <span class="k">if</span> <span class="n">ob</span> <span class="o">==</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">PUNCTUATION</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
                     <span class="k">else</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">to_pregroup</span><span class="p">(</span><span class="n">ob</span><span class="p">))</span>
 
         <span class="k">def</span> <span class="nf">ar_func</span><span class="p">(</span><span class="n">box</span><span class="p">:</span> <span class="n">Box</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pregroup</span><span class="o">.</span><span class="n">Diagram</span><span class="p">:</span>

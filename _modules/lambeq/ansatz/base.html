@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.ansatz.base &mdash; lambeq 0.3.1 [git latest] documentation</title>
+  <title>lambeq.ansatz.base &mdash; lambeq 0.3.2 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.1 [git latest]
+                0.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -245,7 +245,11 @@
 
         <span class="n">dom</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; @ &#39;</span><span class="p">,</span> <span class="s1">&#39;@&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
         <span class="n">cod</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39; @ &#39;</span><span class="p">,</span> <span class="s1">&#39;@&#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
-        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">dom</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">cod</span><span class="si">}</span><span class="s1">&#39;</span></div>
+
+        <span class="n">raw_summary</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">dom</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">cod</span><span class="si">}</span><span class="s1">&#39;</span>
+
+        <span class="c1"># Escape special characters for sympy</span>
+        <span class="k">return</span> <span class="n">raw_summary</span><span class="o">.</span><span class="n">translate</span><span class="p">({</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">):</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\\</span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="s1">&#39;:, &#39;</span><span class="p">})</span></div>
 </pre></div>
 
            </div>

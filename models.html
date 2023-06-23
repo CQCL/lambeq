@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Choosing a model &mdash; lambeq 0.3.1 [git latest] documentation</title>
+  <title>Choosing a model &mdash; lambeq 0.3.2 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.1 [git latest]
+                0.3.2
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -162,7 +162,7 @@
 <section id="numpymodel">
 <span id="sec-numpymodel"></span><h2>NumpyModel<a class="headerlink" href="#numpymodel" title="Permalink to this heading"></a></h2>
 <p>A <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> uses the unitary and density matrix simulators in DisCoPy, which convert quantum circuits into a tensor network. The resulting tensor network is efficiently contracted using <code class="docutils literal notranslate"><span class="pre">opt_einsum</span></code>.</p>
-<p>Circuits containing only <code class="xref py py-class docutils literal notranslate"><span class="pre">Bra</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Ket</span></code> and unitary gates are evaluated using DisCoPy’s unitary simulator, while circuits containing <code class="xref py py-class docutils literal notranslate"><span class="pre">Encode</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code> are evaluated using DisCoPy’s density matrix simulator.</p>
+<p>Circuits containing only <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.gates.Bra.html#discopy.quantum.gates.Bra" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bra</span></code></a>, <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.gates.Ket.html#discopy.quantum.gates.Ket" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ket</span></code></a> and unitary gates are evaluated using DisCoPy’s unitary simulator, while circuits containing <code class="xref py py-class docutils literal notranslate"><span class="pre">Encode</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code> are evaluated using DisCoPy’s density matrix simulator.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Note that the unitary simulator converts a circuit with <code class="docutils literal notranslate"><span class="pre">n</span></code> output qubits into a tensor of shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">)</span> <span class="pre">*</span> <span class="pre">n</span></code>, while the density matrix simulator converts a circuit with <code class="docutils literal notranslate"><span class="pre">n</span></code> output qubits and <code class="docutils literal notranslate"><span class="pre">m</span></code> output bits into a tensor of shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">)</span> <span class="pre">*</span> <span class="pre">(2</span> <span class="pre">*</span> <span class="pre">n</span> <span class="pre">+</span> <span class="pre">m)</span></code>.</p>

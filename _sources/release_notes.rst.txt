@@ -4,6 +4,44 @@ Release notes
 =============
 
 
+.. _rel-0.3.2:
+
+`0.3.2 <https://github.com/CQCL/lambeq/releases/tag/0.3.2>`_
+------------------------------------------------------------
+
+Added:
+
+- Support for :term:`DisCoPy` >= 1.1.4 (credit: `toumix <https://github.com/CQCL/lambeq/pull/89>`_).
+    - replaced ``discopy.rigid`` with :py:mod:`discopy.grammar.pregroup` everywhere.
+    - replaced ``discopy.biclosed`` with :py:mod:`discopy.grammar.categorial` everywhere.
+    - Use ``Diagram.decode`` to account for the change in contructor signature ``Diagram(inside, dom, cod)``.
+    - updated attribute names that were previously hidden, e.g. ``._data`` becomes ``.data``.
+    - replaced diagrammatic conjugate with transpose.
+    - swapped left and right currying.
+    - dropped support for legacy DisCoPy.
+- Added :py:class:`~lambeq.CCGType` class for utilisation in the ``biclosed_type`` attribute of :py:class:`~lambeq.CCGTree`, allowing conversion to and from a discopy categorial object using :py:meth:`~lambeq.CCGType.discopy` and :py:meth:`~lambeq.CCGType.from_discopy` methods.
+- :py:class:`~lambeq.CCGTree`: added reference to the original tree from parsing by introducing a ``metadata`` field.
+
+
+Changed:
+
+- Internalised DisCoPy quantum ansätze in lambeq.
+- :py:class:`~lambeq.IQPAnsatz` now ends with a layer of Hadamard gates in the multi-qubit case and the post-selection basis is set to be the computational basis (Pauli Z).
+
+Fixed:
+
+- Fixed a bottleneck during the initialisation of the :py:class:`~lambeq.PennyLaneModel` caused by the inefficient substitution of Sympy symbols in the circuits.
+- Escape special characters in box labels for symbol creation.
+- Documentation: fixed broken links to DisCoPy documentation.
+- Documentation: enabled sphinxcontrib.jquery extension for Read the Docs theme.
+- Fixed disentangling ``RealAnsatz`` in extend-lambeq tutorial notebook.
+- Fixed model loading in PennyLane notebooks.
+- Fixed typo in :py:class:`~lambeq.SPSAOptimizer` (credit: `Gopal-Dahale <https://github.com/CQCL/lambeq/pull/102>`_)
+
+Removed:
+
+- Removed support for Python 3.8.
+
 .. _rel-0.3.1:
 
 `0.3.1 <https://github.com/CQCL/lambeq/releases/tag/0.3.1>`_
