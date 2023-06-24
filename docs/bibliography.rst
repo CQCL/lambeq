@@ -13,6 +13,8 @@ Bibliography
 
 .. [FTC2020] G. de Felice, A. Toumi, B. Coecke. `DisCoPy: Monoidal Categories in Python <https://arxiv.org/pdf/2005.02975.pdf>`_, `ACT 2020`
 
+.. [GL2012] F. Gao, H. Lixing. (2012). `Implementing the Nelder-Mead Simplex Algorithm with Adaptive Parameters <https://link.springer.com/article/10.1007/s10589-010-9329-3>`_, `Computational Optimization and Applications`,` 51. 259-277.10.1007/s10589-010-9329-3
+
 .. [HS2007] J. Hockenmaier, M. Steedman. `CCGbank: A Corpus of CCG Derivations and Dependency Structures Extracted from the Penn Treebank <https://aclanthology.org/J07-3004.pdf>`_, `Computational Linguistics, Volume 33, Number 3`, September 2007
 
 .. [HV2013] C. Heunen, J. Vicary. `Introduction to Categorical Quantum Mechanics <http://www.cs.ox.ac.uk/people/jamie.vicary/IntroductionToCategoricalQuantumMechanics.pdf>`_, `Course Notes`, Oxford University, 2013
@@ -27,6 +29,8 @@ Bibliography
 
 .. [Lea2021] R. Lorenz, A. Pearson, K. Meichanetzidis, D. Kartsaklis, B. Coecke. `QNLP in Practice: Running Compositional Models of Meaning on a Quantum Computer <https://arxiv.org/pdf/2102.12846.pdf>`_ `arXiv:2102.12846`, 2021
 
+.. [NM1965] J. Nelder, R. Mead. 1965. `A Simplex Method for Function Minimization`, `The Computer Journal` 7: 308-13
+
 .. [Mea2020] K. Meichanetzidis, A. Toumi, G. de Felice, B. Coecke. `Grammar-Aware Question-Answering on Quantum Computers <https://arxiv.org/pdf/2012.03756.pdf>`_, `arXiv:2012.03756`, 2020
 
 .. [Rea2016] L. Rimell, J. Maillard, T. Polajnar, S. Clark. `RELPRON: A Relative Clause Evaluation Data Set for Compositional Distributional Semantics <https://direct.mit.edu/coli/article/42/4/661/1555/RELPRON-A-Relative-Clause-Evaluation-Data-Set-for>`_, `Computational Linguistics`, 2016
@@ -37,7 +41,7 @@ Bibliography
 
 .. [SJA2019] S. Sim, P. Johnson, A. Aspuru-Guzik. `Expressibility and Entangling Capability of Parameterized Quantum Circuits for Hybrid Quantum-Classical Algorithms <https://arxiv.org/pdf/1905.10876.pdf>`_, `arXiv:1905.10876`, 2019
 
-.. [Spa1998] J. C. Spall, `Implementation of the simultaneous perturbation algorithm for stochastic optimization <https://ieeexplore.ieee.org/document/705889>`_, `IEEE Transactions on Aerospace and Electronic Systems`, 1998
+.. [Spa1998] J. Spall, `Implementation of the simultaneous perturbation algorithm for stochastic optimization <https://ieeexplore.ieee.org/document/705889>`_, `IEEE Transactions on Aerospace and Electronic Systems`, 1998
 
 .. [Ste2000] M. Steedman. The Syntactic Process, MIT Press, 2000
 
