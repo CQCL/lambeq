@@ -2,8 +2,7 @@ import pytest
 
 import numpy as np
 
-from discopy import Cup, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Id, Word
 
 from lambeq import AtomicType, IQPAnsatz, NelderMeadOptimizer
 
