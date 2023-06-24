@@ -223,7 +223,6 @@ class ParseResult:
     chart: Chart
     words: list[str] = field(init=False)
     root: list[ParseTree] = field(init=False)
-    _output_tags: list[Category] = field(default_factory=list, init=False)
 
     def __post_init__(self) -> None:
         self.words = []
@@ -267,24 +266,12 @@ class ParseResult:
         amalgamates results from the best-scoring trees in the chart.
 
         """
-
         if tree is None:
             try:
                 tree = self.root[0]
             except IndexError:
                 return self._skim_deps()
-
-        deps = tree.filled_deps.copy()
-        tags = []
-        if tree.left:
-            for child in (tree.left, tree.right):
-                if child:
-                    child_deps, child_tags = self.deps(child)
-                    deps += child_deps
-                    tags += child_tags
-        else:
-            tags.append(str(tree.cat).replace('[X]', ''))
-        return deps, tags
+        return tree.deps_and_tags
 
     def _skim_deps(
         self,
@@ -317,7 +304,7 @@ class ParseResult:
                 break
 
         left_deps, left_tags = self._skim_deps(start, result_start - 1)
-        tree_deps, tree_tags = self.deps(max_tree)
+        tree_deps, tree_tags = max_tree.deps_and_tags
         right_deps, right_tags = self._skim_deps(result_end + 1, end)
         return (left_deps + tree_deps + right_deps,
                 left_tags + tree_tags + right_tags)

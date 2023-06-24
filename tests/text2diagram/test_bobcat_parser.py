@@ -3,7 +3,7 @@ import pytest
 from io import StringIO
 from unittest.mock import patch
 
-from lambeq import BobcatParseError, BobcatParser, CCGAtomicType, VerbosityLevel
+from lambeq import BobcatParseError, BobcatParser, CCGType, VerbosityLevel
 
 
 @pytest.fixture(scope='module')
@@ -132,8 +132,8 @@ def test_tqdm_progress(bobcat_parser, sentence):
 
 
 def test_root_filtering(bobcat_parser):
-    S = CCGAtomicType.SENTENCE
-    N = CCGAtomicType.NOUN
+    S = CCGType.SENTENCE
+    N = CCGType.NOUN
 
     sentence1 = 'do'
     sentence2 = 'I do'

@@ -19,8 +19,7 @@ from enum import Enum
 
 __all__ = ['TreeReader', 'TreeReaderMode']
 
-from discopy import Word
-from discopy.rigid import Box, Diagram, Id, Ty
+from discopy.grammar.pregroup import Box, Diagram, Ty, Word
 
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType
@@ -117,7 +116,7 @@ class TreeReader(Reader):
                      word_type: Ty = S,
                      suppress_exceptions: bool = False) -> Diagram | None:
         """Convert a :py:class:`~.CCGTree` into a
-        :py:class:`~discopy.rigid.Diagram` .
+        :py:class:`~discopy.grammar.pregroup.Diagram` .
 
         This produces a tree-shaped diagram based on the output of the
         CCG parser.
@@ -139,13 +138,13 @@ class TreeReader(Reader):
 
         Returns
         -------
-        :py:class:`discopy.rigid.Diagram` or None
+        :py:class:`discopy.grammar.pregroup.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         """
 
         try:
-            ccg_words, ccg_parse = tree._to_biclosed_diagram()
+            ccg_words, ccg_parse = tree._resolved()._to_biclosed_diagram()
         except Exception as e:
             if suppress_exceptions:
                 return None
@@ -168,7 +167,7 @@ class TreeReader(Reader):
                 name = box.name
             tree_boxes.append(Box(name, dom, cod))
 
-        diagram = Diagram(
+        diagram = Diagram.decode(
             dom=Ty(),
             cod=word_type,
             boxes=tree_words + tree_boxes,
@@ -177,20 +176,23 @@ class TreeReader(Reader):
 
         # augment tree diagram with height labels
         if mode == TreeReaderMode.HEIGHT:
-            fols = diagram.foliation().boxes
-            diagram = fols[0]
-            for i, fol in enumerate(fols[1:]):
-                for left, box, right in fol.layers:
-                    new_box = Box(f'layer_{i + 1}', box.dom, box.cod)
-                    diagram >>= Id(left) @ new_box @ Id(right)
-
+            foliation = diagram.foliation()
+            diagram = diagram.id(diagram.dom)
+            for i, layer in enumerate(foliation):
+                new_layer = diagram.ty_factory()
+                for j, box_or_typ in enumerate(layer.boxes_or_types):
+                    new_layer @= (
+                        Box(f'layer_{i}', box_or_typ.dom, box_or_typ.cod)
+                        if i > 0 and j % 2 else box_or_typ
+                    )
+                diagram >>= new_layer
         return diagram
 
     def sentence2diagram(self,
                          sentence: SentenceType,
                          tokenised: bool = False,
                          suppress_exceptions: bool = False) -> Diagram | None:
-        """Parse a sentence into a :py:class:`~discopy.rigid.Diagram` .
+        """Parse a sentence into a DisCoPy diagram.
 
         This produces a tree-shaped diagram based on the output of the
         CCG parser.
@@ -208,7 +210,7 @@ class TreeReader(Reader):
 
         Returns
         -------
-        :py:class:`discopy.rigid.Diagram` or None
+        :py:class:`discopy.grammar.pregroup.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         """

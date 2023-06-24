@@ -27,9 +27,6 @@ import functools
 import logging
 from typing import Any, TYPE_CHECKING
 
-from discopy import Diagram
-from discopy.biclosed import Ty
-
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (
         SentenceBatchType, SentenceType,
@@ -38,13 +35,14 @@ from lambeq.core.utils import (
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
-from lambeq.text2diagram.ccg_types import CCGAtomicType
+from lambeq.text2diagram.ccg_type import CCGType
 
 if TYPE_CHECKING:
     import depccg
     from depccg.annotator import (annotate_XX, english_annotator,
                                   japanese_annotator)
     from depccg.cat import Category
+    from discopy.pregroup import Diagram
 
 
 def _import_depccg() -> None:
@@ -421,27 +419,24 @@ class DepCCGParser(CCGParser):
         return ret
 
     @staticmethod
-    def _to_biclosed(cat: Category) -> Ty:
+    def _to_biclosed(cat: Category) -> CCGType:
         """Transform a depccg category into a biclosed type."""
 
         if not cat.is_functor:
             if cat.base in ('N', 'NP'):
-                return CCGAtomicType.NOUN
+                return CCGType.NOUN
             if cat.base == 'S':
-                return CCGAtomicType.SENTENCE
+                return CCGType.SENTENCE
             if cat.base == 'PP':
-                return CCGAtomicType.PREPOSITIONAL_PHRASE
+                return CCGType.PREPOSITIONAL_PHRASE
             if cat.base == 'conj':
-                return CCGAtomicType.CONJUNCTION
+                return CCGType.CONJUNCTION
             if cat.base in ('LRB', 'RRB') or cat.base in ',.:;':
-                return CCGAtomicType.PUNCTUATION
+                return CCGType.PUNCTUATION
         else:
-            if cat.slash == '/':
-                return (DepCCGParser._to_biclosed(cat.left)
-                        << DepCCGParser._to_biclosed(cat.right))
-            if cat.slash == '\\':
-                return (DepCCGParser._to_biclosed(cat.right)
-                        >> DepCCGParser._to_biclosed(cat.left))
+            result = DepCCGParser._to_biclosed(cat.left)
+            argument = DepCCGParser._to_biclosed(cat.right)
+            return result.slash(cat.slash, argument)
         raise Exception(f'Invalid CCG type: {cat.base}')
 
     @staticmethod
@@ -454,18 +449,18 @@ class DepCCGParser(CCGParser):
         else:
             children = [*map(DepCCGParser._build_ccgtree, tree.children)]
             if tree.op_string == 'tr':
-                rule = ('BTR' if biclosed_type.left.left == biclosed_type.right
-                        else 'FTR')
+                rule = 'FTR' if biclosed_type.direction == '/' else 'BTR'
             elif tree.op_symbol == '<un>':
                 rule = 'U'
             elif tree.op_string in ('gbx', 'gfc'):
                 rule = CCGRule.infer_rule(
-                    Ty.tensor(*(child.biclosed_type for child in children)),
-                    biclosed_type)
+                    [child.biclosed_type for child in children],
+                    biclosed_type
+                )
             else:
                 rule = tree.op_string.upper()
-        return CCGTree(
-                text=tree.word,
-                rule=rule,
-                biclosed_type=biclosed_type,
-                children=children)
+        return CCGTree(text=tree.word,
+                       rule=rule,
+                       biclosed_type=biclosed_type,
+                       children=children,
+                       metadata={'original': tree})

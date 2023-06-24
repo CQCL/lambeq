@@ -30,7 +30,7 @@ from collections.abc import Callable, Iterable
 import pickle
 from typing import Any, TYPE_CHECKING
 
-from discopy import Tensor
+import discopy
 from discopy.tensor import Diagram
 import numpy
 from numpy.typing import ArrayLike
@@ -80,12 +80,13 @@ class NumpyModel(QuantumModel):
             return self.lambdas[diagram]
 
         def diagram_output(x: Iterable[ArrayLike]) -> ArrayLike:
-            with Tensor.backend('jax'), tn.DefaultBackend('jax'):
+            with discopy.tensor.backend('jax') as backend, \
+                    tn.DefaultBackend('jax'):  # noqa: N400
                 sub_circuit = self._fast_subs([diagram], x)[0]
                 result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
                 # square amplitudes to get probabilties for pure circuits
                 if not sub_circuit.is_mixed:
-                    result = Tensor.get_backend().abs(result) ** 2
+                    result = backend.abs(result) ** 2
                 return self._normalise_vector(result)
 
         self.lambdas[diagram] = jit(diagram_output)
@@ -98,13 +99,12 @@ class NumpyModel(QuantumModel):
         parameters = {k: v for k, v in zip(self.symbols, weights)}
         diagrams = pickle.loads(pickle.dumps(diagrams))  # does fast deepcopy
         for diagram in diagrams:
-            for b in diagram._boxes:
+            for b in diagram.boxes:
                 if b.free_symbols:
                     while hasattr(b, 'controlled'):
-                        b._free_symbols = set()
                         b = b.controlled
                     syms, values = [], []
-                    for sym in b._free_symbols:
+                    for sym in b.free_symbols:
                         syms.append(sym)
                         try:
                             values.append(parameters[sym])
@@ -112,11 +112,9 @@ class NumpyModel(QuantumModel):
                             raise KeyError(
                                 f'Unknown symbol: {repr(sym)}'
                             ) from e
-                    b._data = lambdify(syms, b._data)(*values)
+                    b.data = lambdify(syms, b.data)(*values)
                     b.drawing_name = b.name
-                    b._free_symbols = set()
-                    if hasattr(b, '_phase'):
-                        b._phase = b._data
+                    del b.free_symbols
         return diagrams
 
     def get_diagram_output(
@@ -155,13 +153,15 @@ class NumpyModel(QuantumModel):
             from jax import numpy as jnp
 
             lambdified_diagrams = [self._get_lambda(d) for d in diagrams]
+            if hasattr(self.weights, 'filled'):
+                self.weights = self.weights.filled()
             res: jnp.ndarray = jnp.array([diag_f(self.weights)
                                           for diag_f in lambdified_diagrams])
 
             return res
 
         diagrams = self._fast_subs(diagrams, self.weights)
-        with Tensor.backend('numpy'):
+        with discopy.tensor.backend('numpy'):
             results = []
             for d in diagrams:
                 result = tn.contractors.auto(*d.to_tn()).tensor

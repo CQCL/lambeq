@@ -9,8 +9,8 @@ import torch
 from torch import Size
 from torch.nn import Parameter
 
-from discopy import Cup, Diagram, Ob, Ty, Word
-from discopy.quantum.circuit import Id, Measure
+from discopy.grammar.pregroup import Cup, Diagram, Id, Ob, Ty, Word
+from discopy.quantum import Measure
 from lambeq import (AtomicType, Dataset, IQPAnsatz, PennyLaneModel,
                     PytorchTrainer)
 
@@ -52,7 +52,8 @@ def test_normalize():
     diagrams = [
         ansatz((Word("Alice", N) @ Word("runs", N >> S)
                 >> Cup(N, N.r) @ Id(S))),
-        ansatz(Diagram(dom=Ty(), cod=Ty('s'),
+        ansatz(Diagram.decode(
+                       dom=Ty(), cod=Ty('s'),
                        boxes=[Word('Alice', Ty('n')),
                               Word('cooks', Ty(Ob('n', z=1), 's',
                                                Ob('n', z=-1))),
