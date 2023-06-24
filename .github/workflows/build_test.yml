@@ -7,6 +7,7 @@ on:
       - 'beta'
       - 'release'
   pull_request:
+  workflow_dispatch:
 
 env:
   SRC_DIR: lambeq
@@ -103,7 +104,7 @@ jobs:
         path: ${{ steps.loc-depccg-cache.outputs.dir }}
         key: depccg
     - name: Download depccg pre-trained model if needed
-      if: steps.depccg-cache.outputs.cache-hit == 'false'
+      if: steps.depccg-enabled.outcome == 'success' && steps.depccg-cache.outputs.cache-hit != 'true'
       run: python -c 'import tarfile, urllib;from depccg.instance_models import MODEL_DIRECTORY;tarfile.open(urllib.request.urlretrieve("https://qnlp.cambridgequantum.com/models/tri_headfirst.tar.gz")[0]).extractall(MODEL_DIRECTORY)'
     - name: Test DepCCGParser
       if: steps.depccg-enabled.outcome == 'success'
@@ -123,7 +124,6 @@ jobs:
       run: >
         pytest --nbmake ${{ env.DOCS_DIR }}/tutorials/
         --nbmake-timeout=60
-        --ignore ${{ env.DOCS_DIR }}/tutorials/trainer_hybrid.ipynb
         --ignore ${{ env.DOCS_DIR }}/tutorials/code
     - name: Coverage report
       run: coverage report -m

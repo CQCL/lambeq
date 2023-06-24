@@ -26,6 +26,8 @@ def test_iqp_ansatz():
                         Id(1) @ Ket(0, 0) >> Id(1) @ H @ Id(1) >>
                         Id(2) @ H >>
                         Id(1) @ CRz(sym('runs__n.r@s_0')) >>
+                        Id(1) @ H @ Id(1) >>
+                        Id(2) @ H >>
                         CX @ Id(1) >>
                         H @ Id(2) >>
                         Id(1) @ sqrt(2) @ Id(2) >>
@@ -261,3 +263,20 @@ def test_discopy_tket_conversion():
     circuit = ansatz(sentence)
     circuit_converted = from_tk(circuit.to_tk())
     assert circuit.free_symbols == circuit_converted.free_symbols
+
+n_ty = Ty('n')
+comma_ty = Ty(',')
+space_ty = Ty(' ')
+@pytest.mark.parametrize('box, expected_sym_count', [
+    (Box('A', n_ty, n_ty), 4),
+    (Box('A', comma_ty, n_ty), 4),
+    (Box('A', comma_ty, n_ty @ comma_ty), 8),
+    (Box(',', comma_ty, n_ty @ comma_ty), 8),
+    (Box(':', comma_ty, n_ty @ comma_ty), 8),
+    (Box('[,]', comma_ty @ space_ty, n_ty @ comma_ty), 8),
+    (Box('[, ]', comma_ty @ space_ty, n_ty @ comma_ty), 8),
+    (Box(' ,: ', comma_ty, n_ty @ comma_ty), 8),
+    ])
+def test_special_characters(box, expected_sym_count):
+    ansatz = Sim15Ansatz({n_ty: 2, comma_ty: 2, space_ty: 2}, n_layers=1)
+    assert(len(ansatz(box).free_symbols) == expected_sym_count)

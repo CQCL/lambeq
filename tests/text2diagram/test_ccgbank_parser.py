@@ -2,7 +2,7 @@ from io import StringIO
 import pytest
 from unittest.mock import Mock, patch
 
-from lambeq import CCGAtomicType, CCGBankParseError, CCGBankParser, VerbosityLevel
+from lambeq import CCGType, CCGBankParseError, CCGBankParser, VerbosityLevel
 
 
 class BadParser(CCGBankParser):
@@ -68,9 +68,9 @@ def test_ccgbank_parser(minimal_ccgbank):
 
 def test_parser_atomic_type():
     with pytest.raises(CCGBankParseError):
-        CCGBankParser._parse_atomic_type('ABC')
+        CCGBankParser._map_atomic_type('ABC')
 
-    assert CCGBankParser._parse_atomic_type('conj') == CCGAtomicType.CONJUNCTION
+    assert CCGBankParser._map_atomic_type('conj') == CCGType.CONJUNCTION.name
 
 
 def test_verbosity_exceptions_init(minimal_ccgbank):

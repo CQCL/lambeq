@@ -3,10 +3,21 @@
 Troubleshooting
 ===============
 
-This is a collection of known and unsolved issues with ``lambeq``, including
+This is a collection of known issues which may arise when working with ``lambeq``, including
 possible workarounds. If you encounter a problem that is not listed here, we
 encourage you to
 `submit an issue <https://github.com/CQCL/lambeq/issues/new>`_.
+
+
+NaN and Inf errors during training
+----------------------------------
+
+Since release :ref:`rel-0.3.0`, ``lambeq`` provides its own numerically stable
+loss functions which guard against ``NaN`` and ``Inf`` numerical errors.
+This change also removed safeguards from :py:class:`~lambeq.QuantumModel`, making protecting
+against such numerical errors the responsibility of the loss function.
+Any custom loss function must thus also guard against such errors.
+
 
 SSL error [Windows]
 -------------------
