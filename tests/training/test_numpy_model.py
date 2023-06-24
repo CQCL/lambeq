@@ -4,8 +4,9 @@ from copy import deepcopy
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from discopy import Cup, Word, Tensor
-from discopy.quantum import CRz, CX, H, Id, Ket, Measure, SWAP
+from discopy.tensor import Tensor
+from discopy.grammar.pregroup import Cup, Id, Word
+from discopy.quantum import CRz, CX, H, Ket, Measure, SWAP
 
 from lambeq import AtomicType, IQPAnsatz, NumpyModel, Symbol
 
@@ -130,10 +131,10 @@ def test_pickling():
     deepcopied_diagram = deepcopy(diagram)
     pickled_diagram = pickle.loads(pickle.dumps(diagram))
     assert pickled_diagram == diagram
-    pickled_diagram._data = 'new data'
+    pickled_diagram.data = 'new data'
     for box in pickled_diagram.boxes:
-        box._name = 'Jim'
-        box._data = ['random', 'data']
+        box.name = 'Jim'
+        box.data = ['random', 'data']
     assert diagram == deepcopied_diagram
     assert diagram != pickled_diagram
     assert deepcopied_diagram != pickled_diagram

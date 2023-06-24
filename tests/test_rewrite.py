@@ -1,7 +1,7 @@
 import pytest
 
-from discopy import Word
-from discopy.rigid import Box, Cap, Cup, Diagram, Id, Ob, Spider, Swap, Ty, cups
+from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Id, Ob, Spider, Swap,
+                                      Ty, Word)
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, SimpleRewriteRule,
@@ -125,9 +125,9 @@ def test_rel_pronoun():
     rewriter = Rewriter(['subject_rel_pronoun', 'object_rel_pronoun'])
 
     diagram_subj = Id().tensor(cows, that_subj, eat, grass)
-    diagram_subj >>= Cup(N, N.r) @ Id(N) @ cups(S.l @ N, N.r @ S) @ Cup(N.l, N)
+    diagram_subj >>= Cup(N, N.r) @ N @ Diagram.cups(S.l @ N, N.r @ S) @ Cup(N.l, N)
 
-    expected_diagram_subj = Diagram(
+    expected_diagram_subj = Diagram.decode(
             dom=Ty(), cod=N,
             boxes=[cows, Spider(1, 2, N), Spider(0, 1, S.l), eat, Cup(N, N.r),
                    Cup(S.l, S), grass, Cup(N.l, N)],
@@ -137,9 +137,9 @@ def test_rel_pronoun():
 
     diagram_obj = Id().tensor(grass, that_obj, cows, eat)
     diagram_obj >>= Cup(N, N.r) @ Id(N) @ Id(N.l.l @ S.l) @ Cup(N, N.r) @ Id(S @ N.l)
-    diagram_obj >>= Id(N) @ cups(N.l.l @ S.l, S @ N.l)
+    diagram_obj >>= Id(N) @ Diagram.cups(N.l.l @ S.l, S @ N.l)
 
-    expected_diagram_obj = Diagram(
+    expected_diagram_obj = Diagram.decode(
             dom=Ty(), cod=N,
             boxes=[grass, Spider(1, 2, N), Cap(N.l, N.l.l), Swap(N.l, N.l.l),
                    Spider(0, 1, S.l), cows, eat, Cup(N, N.r), Cup(S.l, S),

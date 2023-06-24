@@ -25,9 +25,10 @@ __all__ = ['TensorAnsatz', 'MPSAnsatz', 'SpiderAnsatz']
 from collections.abc import Mapping
 import math
 
-from discopy import rigid, tensor, Ty, Word
-from discopy.rigid import Cup, Spider
-from discopy.tensor import Dim
+from discopy import tensor
+from discopy.grammar import pregroup
+from discopy.grammar.pregroup import Cup, Spider, Ty, Word
+from discopy.tensor import Category, Dim
 
 from lambeq.ansatz import BaseAnsatz, Symbol
 
@@ -41,30 +42,29 @@ class TensorAnsatz(BaseAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the dimension
-            space it uses in a tensor network.
+            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            dimension space it uses in a tensor network.
 
         """
         self.ob_map = ob_map
-        self.functor = rigid.Functor(
-            ob=ob_map,
-            ar=self._ar, ar_factory=tensor.Diagram, ob_factory=tensor.Dim)
+        self.functor = pregroup.Functor(ob=ob_map,
+                                        ar=self._ar,
+                                        cod=Category(Dim, tensor.Diagram))
 
-    def _ar(self, box: rigid.Box) -> tensor.Diagram:
+    def _ar(self, box: pregroup.Box) -> tensor.Diagram:
         name = self._summarise_box(box)
 
         directed_dom, directed_cod = self._generate_directed_dom_cod(box)
         syms = Symbol(name,
-                      directed_dom=math.prod(directed_dom),
-                      directed_cod=math.prod(directed_cod))
+                      directed_dom=math.prod(directed_dom.inside),
+                      directed_cod=math.prod(directed_cod.inside))
 
         # Box domain and codomain are unchanged
         dom = self.functor(box.dom)
         cod = self.functor(box.cod)
-
         return tensor.Box(box.name, dom, cod, syms)
 
-    def _generate_directed_dom_cod(self, box: rigid.Box) -> tuple[Dim, Dim]:
+    def _generate_directed_dom_cod(self, box: pregroup.Box) -> tuple[Dim, Dim]:
         """Generate the "flow" domain and codomain for a box.
 
         To initialise normalised tensors in expectation, it is necessary
@@ -74,7 +74,7 @@ class TensorAnsatz(BaseAnsatz):
 
         Parameters
         ----------
-        box : rigid.Box
+        box : pregroup.Box
             Box for which directed dom and cod should be generated.
 
         Returns
@@ -92,21 +92,21 @@ class TensorAnsatz(BaseAnsatz):
         # even winding numbers. Else, they are assigned to the flow-dom.
         for ty in box.cod:
             if ty.z % 2:
-                dom @= Ty(ty)
+                dom @= ty
             else:
-                cod @= Ty(ty)
+                cod @= ty
 
         # Types in the box-dom are assigned to the flow-dom if they have
         # even winding numbers. Else, they are assigned to the flow-cod.
         for ty in box.dom:
             if ty.z % 2:
-                cod @= Ty(ty)
+                cod @= ty
             else:
-                dom @= Ty(ty)
+                dom @= ty
 
         return self.functor(dom), self.functor(cod)
 
-    def __call__(self, diagram: rigid.Diagram) -> tensor.Diagram:
+    def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
         """Convert a DisCoPy diagram into a DisCoPy tensor."""
         return self.functor(diagram)
 
@@ -125,8 +125,8 @@ class MPSAnsatz(TensorAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the dimension
-            space it uses in a tensor network.
+            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            dimension space it uses in a tensor network.
         bond_dim: int
             The size of the bonding dimension.
         max_order: int
@@ -145,9 +145,10 @@ class MPSAnsatz(TensorAnsatz):
 
         self.bond_dim = bond_dim
         self.max_order = max_order
-        self.split_functor = rigid.Functor(ob=lambda ob: ob, ar=self._split_ar)
+        self.split_functor = pregroup.Functor(ob=lambda ob: ob,
+                                              ar=self._split_ar)
 
-    def _split_ar(self, ar: Word) -> rigid.Diagram:
+    def _split_ar(self, ar: Word) -> pregroup.Diagram:
         bond = self.BOND_TYPE
         if len(ar.cod) <= self.max_order:
             return Word(f'{ar.name}_0', ar.cod)
@@ -158,13 +159,14 @@ class MPSAnsatz(TensorAnsatz):
         for i, start in enumerate(range(0, len(ar.cod), step_size)):
             cod = bond.r @ ar.cod[start:start+step_size] @ bond
             boxes.append(Word(f'{ar.name}_{i}', cod))
-            cups += [rigid.Id(cod[1:-1]), Cup(bond, bond.r)]
+            cups += [pregroup.Id(cod[1:-1]), Cup(bond, bond.r)]
         boxes[0] = Word(boxes[0].name, boxes[0].cod[1:])
         boxes[-1] = Word(boxes[-1].name, boxes[-1].cod[:-1])
 
-        return rigid.Box.tensor(*boxes) >> rigid.Diagram.tensor(*cups[:-1])
+        return (pregroup.Diagram.tensor(*boxes)
+                >> pregroup.Diagram.tensor(*cups[:-1]))
 
-    def __call__(self, diagram: rigid.Diagram) -> tensor.Diagram:
+    def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
         return self.functor(self.split_functor(diagram))
 
 
@@ -179,8 +181,8 @@ class SpiderAnsatz(TensorAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.rigid.Ty` to the dimension
-            space it uses in a tensor network.
+            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            dimension space it uses in a tensor network.
         max_order: int
             The maximum order of each tensor, which must be at least 2.
 
@@ -191,22 +193,24 @@ class SpiderAnsatz(TensorAnsatz):
         super().__init__(ob_map)
 
         self.max_order = max_order
-        self.split_functor = rigid.Functor(ob=lambda ob: ob, ar=self._split_ar)
+        self.split_functor = pregroup.Functor(ob=lambda ob: ob,
+                                              ar=self._split_ar)
 
-    def _split_ar(self, ar: Word) -> rigid.Diagram:
+    def _split_ar(self, ar: Word) -> pregroup.Diagram:
         if len(ar.cod) <= self.max_order:
             return Word(f'{ar.name}_0', ar.cod)
 
         boxes = []
-        spiders = [rigid.Id(ar.cod[:1])]
+        spiders = [pregroup.Id(ar.cod[:1])]
         step_size = self.max_order - 1
         for i, start in enumerate(range(0, len(ar.cod)-1, step_size)):
             cod = ar.cod[start:start + step_size + 1]
             boxes.append(Word(f'{ar.name}_{i}', cod))
-            spiders += [rigid.Id(cod[1:-1]), Spider(2, 1, cod[-1:])]
-        spiders[-1] = rigid.Id(spiders[-1].cod)
+            spiders += [pregroup.Id(cod[1:-1]), Spider(2, 1, cod[-1:])]
+        spiders[-1] = pregroup.Id(spiders[-1].cod)
 
-        return rigid.Diagram.tensor(*boxes) >> rigid.Diagram.tensor(*spiders)
+        return (pregroup.Diagram.tensor(*boxes)
+                >> pregroup.Diagram.tensor(*spiders))
 
-    def __call__(self, diagram: rigid.Diagram) -> tensor.Diagram:
+    def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
         return self.functor(self.split_functor(diagram))
