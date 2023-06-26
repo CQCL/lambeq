@@ -4,10 +4,9 @@ import pytest
 from copy import deepcopy
 from unittest.mock import mock_open, patch
 
-from discopy import Box, Cap, Cup, Dim, Swap, Word
-from discopy.tensor import Id as tensor_Id
-from discopy.quantum.circuit import Id
-from discopy.rigid import Spider
+from discopy import tensor
+from discopy.tensor import Dim
+from discopy.grammar.pregroup import Box, Cap, Cup, Id, Spider, Swap, Word
 
 import numpy as np
 import torch
@@ -63,19 +62,19 @@ def test_initialise_weights():
 def test_pickling():
     phi = Symbol('phi', size=123)
     diagram = (
-        Box("box1", Dim(2), Dim(2), data=phi)
-        >> Spider(1, 2, Dim(2))
-        >> Swap(Dim(2), Dim(2))
-        >> tensor_Id(Dim(2))
-        @ (tensor_Id(Dim(2)) @ Cap(Dim(2), Dim(2)) >> Cup(Dim(2), Dim(2)) @ tensor_Id(Dim(2)))
+        tensor.Box("box1", Dim(2), Dim(2), data=phi)
+        >> tensor.Spider(1, 2, Dim(2))
+        >> tensor.Swap(Dim(2), Dim(2))
+        >> Dim(2) @ (Dim(2) @ tensor.Cap(Dim(2), Dim(2))
+                     >> tensor.Cup(Dim(2), Dim(2)) @ Dim(2))
     )
     deepcopied_diagram = deepcopy(diagram)
     pickled_diagram = pickle.loads(pickle.dumps(diagram))
     assert pickled_diagram == diagram
-    pickled_diagram._data = 'new data'
+    pickled_diagram.data = 'new data'
     for box in pickled_diagram.boxes:
-        box._name = 'Bob'
-        box._data = ['random', 'data']
+        box.name = 'Bob'
+        box.data = ['random', 'data']
     assert diagram == deepcopied_diagram
     assert diagram != pickled_diagram
     assert deepcopied_diagram != pickled_diagram

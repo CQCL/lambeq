@@ -140,11 +140,13 @@ class SPSAOptimizer(Optimizer):
         self.model.weights = xplus
         y0 = self.model(diagrams)
         loss0 = self.loss_fn(y0, targets)
+        self._warn_if_nan_or_inf(loss0)
 
         xminus = self.project(x - self.ck * delta)
         self.model.weights = xminus
         y1 = self.model(diagrams)
         loss1 = self.loss_fn(y1, targets)
+        self._warn_if_nan_or_inf(loss1)
 
         if self.bounds is None:
             grad = (loss0 - loss1) / (2 * self.ck * delta)

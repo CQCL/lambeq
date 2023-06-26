@@ -33,8 +33,8 @@ import socket
 import sys
 from typing import Any, Callable, Tuple, Type, TYPE_CHECKING
 
-from discopy import monoidal, rigid, Tensor
-from discopy.tensor import Diagram
+import discopy
+from discopy import monoidal, rigid
 from tqdm.auto import tqdm, trange
 
 if TYPE_CHECKING:
@@ -136,13 +136,13 @@ class Trainer(ABC):
         self.verbose = verbose
         self.seed = seed
 
-        self.train_circuits: list[Diagram] = []
+        self.train_circuits: list[rigid.Diagram] = []
         self.train_costs: list[float] = []
         self.train_epoch_costs: list[float] = []
         self.train_results: dict[str, list[Any]] = {}
         self._train_results_epoch: dict[str, list[Any]] = {}
 
-        self.val_circuits: list[Diagram] = []
+        self.val_circuits: list[rigid.Diagram] = []
         self.val_costs: list[float] = []
         self.val_results: dict[str, list[Any]] = {}
         self._val_results_epoch: dict[str, list[Any]] = {}
@@ -150,7 +150,7 @@ class Trainer(ABC):
         # NOTE: Saving this for the meantime but this
         # will probably be removed once the test dataset has
         # been decoupled from the trainer.
-        self.test_circuits: list[Diagram] = []
+        self.test_circuits: list[rigid.Diagram] = []
 
         self.ansatz = self.ansatz_cls(
             self.ansatz_ob_map, **self.ansatz_kwargs
@@ -469,7 +469,7 @@ class Trainer(ABC):
                           leave=True,
                           position=0)
 
-        # Run necessary preparations before training
+        # Run necessary preparatinos before training
         self._pre_training_loop()
 
         # start training loop
@@ -481,7 +481,7 @@ class Trainer(ABC):
                             leave=False,
                             position=1):
             train_loss = 0.0
-            with Tensor.backend(self.backend):
+            with discopy.tensor.backend(self.backend):
                 for batch in tqdm(train_dataset_circ,
                                   desc='Batch',
                                   total=batches_per_epoch,
@@ -534,9 +534,8 @@ class Trainer(ABC):
                     val_loss = 0.0
                     seen_so_far = 0
                     batches_per_validation = ceil(
-                        len(val_dataset_circ) / val_dataset_circ.batch_size
-                    )
-                    with Tensor.backend(self.backend):
+                        len(val_dataset_circ) / val_dataset_circ.batch_size)
+                    with discopy.tensor.backend(self.backend):
                         disable_tqdm = (self.verbose
                                         != VerbosityLevel.PROGRESS.value)
                         for v_batch in tqdm(val_dataset_circ,

@@ -121,7 +121,7 @@ Package containing the interfaces for the :term:`CCG <Combinatory Categorial Gra
 
 .. inheritance-diagram::
     lambeq.text2diagram.BobcatParser
-    lambeq.text2diagram.CCGAtomicType
+    lambeq.text2diagram.CCGType
     lambeq.text2diagram.CCGBankParser
     lambeq.text2diagram.CCGRule
     lambeq.text2diagram.CCGTree

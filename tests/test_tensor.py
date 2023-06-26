@@ -1,8 +1,8 @@
 import dill as pickle
 import pytest
 
-from discopy import Dim, Word
-from discopy.rigid import Diagram, Id, Ty
+from discopy.grammar.pregroup import Diagram, Id, Ty, Word
+from discopy.tensor import Dim
 import numpy as np
 from sympy.core.compatibility import default_sort_key
 import tensornetwork as tn

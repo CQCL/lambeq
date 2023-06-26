@@ -23,11 +23,11 @@ __all__ = ['AtomicType']
 
 from enum import Enum
 
-from discopy.rigid import Ty
+from discopy.grammar.pregroup import Ty
 
 
 class AtomicType(Ty, Enum):
-    """Standard pregroup atomic types mapping to their rigid type."""
+    """Standard pregroup atomic types."""
 
     _value_: str
 

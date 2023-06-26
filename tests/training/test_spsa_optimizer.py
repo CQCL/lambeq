@@ -2,8 +2,7 @@ import pytest
 
 import numpy as np
 
-from discopy import Cup, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Id, Word
 
 from lambeq import AtomicType, IQPAnsatz, SPSAOptimizer
 
@@ -17,7 +16,12 @@ diagrams = [
     ansatz((Word("Alice", N) @ Word("walks", N >> S) >> Cup(N, N.r) @ Id(S)))
 ]
 
+
+inf_err = "Warning: Inf value returned by loss function.\n"
+nan_err = "Warning: NaN value returned by loss function.\n"
+
 from lambeq.training.model import Model
+
 
 
 class ModelDummy(Model):
@@ -139,3 +143,26 @@ def test_load_state_dict():
     assert optim.ak == state_dict['ak']
     assert optim.ck == state_dict['ck']
     assert optim.current_sweep == state_dict['current_sweep']
+
+
+def test_inf_handling(capsys):
+    model = ModelDummy.from_diagrams(diagrams)
+    model.initialise_weights()
+    optim = SPSAOptimizer(model,
+                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
+                          loss_fn=lambda _y, _yh: np.inf)
+    optim.backward(([diagrams[0]], np.array([0])))
+
+    _, err_log = capsys.readouterr()
+    assert err_log == inf_err + inf_err
+
+def test_nan_handling(capsys):
+    model = ModelDummy.from_diagrams(diagrams)
+    model.initialise_weights()
+    optim = SPSAOptimizer(model,
+                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
+                          loss_fn=lambda _y, _yh: np.nan)
+    optim.backward(([diagrams[0]], np.array([0])))
+
+    _, err_log = capsys.readouterr()
+    assert err_log == nan_err + nan_err

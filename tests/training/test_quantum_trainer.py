@@ -2,8 +2,7 @@ from collections import OrderedDict
 import dill as pickle
 import numpy as np
 import tensornetwork as tn
-from discopy import Cup, Word
-from discopy.quantum.circuit import Id
+from discopy.grammar.pregroup import Cup, Id, Word
 
 from lambeq import AtomicType, IQPAnsatz, Dataset, NumpyModel, QuantumTrainer, SPSAOptimizer
 
