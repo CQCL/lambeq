@@ -13,6 +13,8 @@ Bibliography
 
 .. [FTC2020] G. de Felice, A. Toumi, B. Coecke. `DisCoPy: Monoidal Categories in Python <https://arxiv.org/pdf/2005.02975.pdf>`_, `ACT 2020`
 
+.. [GL2012] F. Gao, H. Lixing. `Implementing the Nelder-Mead Simplex Algorithm with Adaptive Parameters <https://link.springer.com/article/10.1007/s10589-010-9329-3>`_, `Computational Optimization and Applications`,` 51. 259-277.10.1007/s10589-010-9329-3, 2012
+
 .. [HS2007] J. Hockenmaier, M. Steedman. `CCGbank: A Corpus of CCG Derivations and Dependency Structures Extracted from the Penn Treebank <https://aclanthology.org/J07-3004.pdf>`_, `Computational Linguistics, Volume 33, Number 3`, September 2007
 
 .. [HV2013] C. Heunen, J. Vicary. `Introduction to Categorical Quantum Mechanics <http://www.cs.ox.ac.uk/people/jamie.vicary/IntroductionToCategoricalQuantumMechanics.pdf>`_, `Course Notes`, Oxford University, 2013
@@ -26,6 +28,8 @@ Bibliography
 .. [Lam1999] J. Lambek. Type Grammar Revisited, `Logical Aspects of Computational Linguistics`, 1999
 
 .. [Lea2021] R. Lorenz, A. Pearson, K. Meichanetzidis, D. Kartsaklis, B. Coecke. `QNLP in Practice: Running Compositional Models of Meaning on a Quantum Computer <https://arxiv.org/pdf/2102.12846.pdf>`_ `arXiv:2102.12846`, 2021
+
+.. [NM1965] J. Nelder, R. Mead. `A Simplex Method for Function Minimization <https://people.duke.edu/~hpgavin/cee201/Nelder+Mead-ComputerJournal-1965.pdf>`_, `The Computer Journal` 7: 308-13, 1965
 
 .. [Mea2020] K. Meichanetzidis, A. Toumi, G. de Felice, B. Coecke. `Grammar-Aware Question-Answering on Quantum Computers <https://arxiv.org/pdf/2012.03756.pdf>`_, `arXiv:2012.03756`, 2020
 

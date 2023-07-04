@@ -23,6 +23,7 @@ __all__ = ['Checkpoint',
            'TketModel',
 
            'Optimizer',
+           'NelderMeadOptimizer',
            'RotosolveOptimizer',
            'SPSAOptimizer',
 
@@ -47,8 +48,9 @@ from lambeq.training.quantum_model import QuantumModel
 from lambeq.training.tket_model import TketModel
 
 from lambeq.training.optimizer import Optimizer
-from lambeq.training.spsa_optimizer import SPSAOptimizer
+from lambeq.training.nelder_mead_optimizer import NelderMeadOptimizer
 from lambeq.training.rotosolve_optimizer import RotosolveOptimizer
+from lambeq.training.spsa_optimizer import SPSAOptimizer
 
 from lambeq.training.trainer import Trainer
 from lambeq.training.pytorch_trainer import PytorchTrainer
