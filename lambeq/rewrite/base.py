@@ -73,10 +73,11 @@ See `examples/rewrite.ipynb` for illustrative usage.
 """
 from __future__ import annotations
 
-__all__ = ['RewriteRule', 'CoordinationRewriteRule', 'SimpleRewriteRule',
-           'Rewriter']
+__all__ = ['CoordinationRewriteRule', 'Rewriter',
+           'RewriteRule', 'SimpleRewriteRule', 'UnknownWordsRewriteRule']
 
 from abc import ABC, abstractmethod
+from collections import Counter
 from collections.abc import Container, Iterable
 
 from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Functor, Id,
@@ -392,3 +393,72 @@ class Rewriter:
 
     def _ob(self, ob: Ty) -> Ty:
         return ob
+
+
+class UnknownWordsRewriteRule(RewriteRule):
+    """A rewrite rule for unknown words.
+
+    This rule matches any word not included in its vocabulary
+    and, when passed a diagram, replaces all the boxes
+    containing an unknown word with an `UNK` box corresponding to the
+    same pregroup type.
+
+    """
+
+    def __init__(self,
+                 vocabulary: Container[str | tuple[str, Ty]],
+                 unk_token: str = '<UNK>') -> None:
+        """Instantiate an UnknownWordsRewriteRule.
+
+        Parameters
+        ----------
+        vocabulary : container of str or tuple of str and Ty
+            A list of words (or words with specific output types) to not
+            be rewritten by this rule.
+        unk_token : str, default: '<UNK>'
+            The string to use for the UNK token.
+
+        """
+        self.vocabulary = vocabulary
+        self.unk_token = unk_token
+
+    def matches(self, box: Box) -> bool:
+        return ((box.name, box.cod) not in self.vocabulary
+                and box.name not in self.vocabulary)
+
+    def rewrite(self, box: Box) -> Diagram:
+        return type(box)(self.unk_token, dom=box.dom, cod=box.cod)
+
+    @classmethod
+    def from_diagrams(cls,
+                      diagrams: Iterable[Diagram],
+                      min_freq: int = 1,
+                      unk_token: str = '<UNK>',
+                      ignore_types: bool = False) -> UnknownWordsRewriteRule:
+        """Create the rewrite rule from a set of diagrams.
+
+        The vocabulary is the set of words that occur at least
+        `min_freq` times throughout the set of diagrams.
+
+        Parameters
+        ----------
+        diagrams : list of Diagram
+            Diagrams from which the vocabulary is created.
+        min_freq : int, default: 1
+            The minimum frequency required for a word to be included in
+            the vocabulary.
+        unk_token : str, default: '<UNK>'
+            The string to use for the UNK token.
+        ignore_types : bool, default: False
+            Whether to just consider the word when determining frequency
+            or to also consider the output type of the box (the default
+            behaviour).
+
+        """
+        counts = Counter(box.name if ignore_types else (box.name, box.cod)
+                         for diagram in diagrams
+                         for box in diagram.boxes
+                         if isinstance(box, Word))
+        vocabulary = {word for word, count in counts.items()
+                      if count >= min_freq}
+        return cls(vocabulary=vocabulary, unk_token=unk_token)

@@ -70,11 +70,12 @@ __all__ = [
         'stairs_reader',
         'word_sequence_reader',
 
-        'RewriteRule',
         'CoordinationRewriteRule',
         'CurryRewriteRule',
-        'SimpleRewriteRule',
         'Rewriter',
+        'RewriteRule',
+        'SimpleRewriteRule',
+        'UnknownWordsRewriteRule',
 
         'Tokeniser',
         'SpacyTokeniser',
@@ -114,8 +115,9 @@ from lambeq.core.globals import VerbosityLevel
 from lambeq.core.types import AtomicType
 from lambeq.pregroups import (create_pregroup_diagram, diagram2str,
                               is_pregroup_diagram, remove_cups, remove_swaps)
-from lambeq.rewrite import (RewriteRule, CoordinationRewriteRule,
-                            CurryRewriteRule, SimpleRewriteRule, Rewriter)
+from lambeq.rewrite import (CoordinationRewriteRule, CurryRewriteRule,
+                            Rewriter, RewriteRule, SimpleRewriteRule,
+                            UnknownWordsRewriteRule)
 from lambeq.text2diagram import (
         CCGType, CCGRule, CCGRuleUseError, CCGTree,
         CCGParser,

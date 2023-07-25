@@ -1,10 +1,11 @@
 import pytest
 
-from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Id, Spider, Swap,
-                                      Ty, Word)
+from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Id, Ob, Spider,
+                                      Swap, Ty, Word)
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
-                    CurryRewriteRule, SimpleRewriteRule)
+                    CurryRewriteRule, SimpleRewriteRule,
+                    UnknownWordsRewriteRule)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -172,3 +173,50 @@ def test_curry_functor():
 
     rewriter = Rewriter([CurryRewriteRule()])
     assert rewriter(diagram).normal_form() == expected
+
+
+def test_unknown_words_rewrite_rule():
+    diagram = (Word('Alice', N) @ Word('loves', N >> S << N) @ Word('Bob', N)
+               >> Cup(N, N.r) @ Id(S) @ Cup(N.l, N))
+
+    vocab = ['Alice', 'Bob']
+    rule = UnknownWordsRewriteRule(vocabulary=vocab)
+
+    rewriter = Rewriter([rule])
+    rewritten_diagram = rewriter(diagram)
+
+    expected_diagram = (Word('Alice', N) @ Word('<UNK>', N >> S << N)
+                        @ Word('Bob', N)
+                        >> Cup(N, N.r) @ Id(S) @ Cup(N.l, N))
+
+    assert rewritten_diagram == expected_diagram
+
+@pytest.mark.parametrize('ignore_types', [False, True])
+def test_handle_unknown_words(ignore_types):
+    train_diagram = (Word('Alice', N) @ Word('loves', N >> S << N)
+                     @ Word('Bob', N)
+                     >> Cup(N, N.r) @ Id(S) @ Cup(N.l, N))
+
+    rewrite_unknown_words = Rewriter([
+        UnknownWordsRewriteRule.from_diagrams(diagrams=[train_diagram],
+                                              min_freq=1,
+                                              ignore_types=ignore_types)
+    ])
+    if ignore_types:
+        assert rewrite_unknown_words.rules[0].vocabulary == {'Alice', 'loves', 'Bob'}
+    else:
+        assert rewrite_unknown_words.rules[0].vocabulary == {('Alice', N),
+                                                             ('loves', N >> S << N),
+                                                             ('Bob', N)}
+
+    processed_train_diagram = rewrite_unknown_words(train_diagram)
+    assert processed_train_diagram == train_diagram
+
+    test_diagram = (Word('Alice', N) @ Word('loves', N >> S << N)
+                    @ Word('Charlie', N)
+                    >> Cup(N, N.r) @ Id(S) @ Cup(N.l, N))
+    expected_test_diagram = (Word('Alice', N) @ Word('loves', N >> S << N)
+                             @ Word('<UNK>', N)
+                             >> Cup(N, N.r) @ Id(S) @ Cup(N.l, N))
+    processed_test_diagram = rewrite_unknown_words(test_diagram)
+    assert processed_test_diagram == expected_test_diagram
