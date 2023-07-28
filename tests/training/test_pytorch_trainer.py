@@ -60,7 +60,7 @@ def test_trainer(tmp_path):
     trainer.fit(train_dataset, val_dataset)
 
     assert len(trainer.train_costs) == EPOCHS
-    assert len(trainer.val_results["acc"]) == EPOCHS
+    assert len(trainer.val_eval_results["acc"]) == EPOCHS
 
 def test_restart_training(tmp_path):
     model = PytorchModel.from_diagrams(train_circuits + dev_circuits)
@@ -121,8 +121,8 @@ def test_restart_training(tmp_path):
 
     assert len(trainer_restarted.train_costs) == EPOCHS+1
     assert len(trainer_restarted.val_costs) == EPOCHS+1
-    assert len(trainer_restarted.val_results["acc"]) == EPOCHS+1
-    assert len(trainer_restarted.train_results["acc"]) == EPOCHS+1
+    assert len(trainer_restarted.val_eval_results["acc"]) == EPOCHS+1
+    assert len(trainer_restarted.train_eval_results["acc"]) == EPOCHS+1
     for a, b in zip(trainer_restarted.train_costs, trainer_uninterrupted.train_costs):
         assert np.isclose(a, b)
     for a, b in zip(model_new.weights, model_uninterrupted.weights):
@@ -150,7 +150,7 @@ def test_evaluation_skipping(tmp_path):
     train_dataset = Dataset(train_circuits, train_targets)
     val_dataset = Dataset(dev_circuits, dev_targets)
 
-    trainer.fit(train_dataset, val_dataset, evaluation_step=eval_step)
+    trainer.fit(train_dataset, val_dataset, eval_interval=eval_step)
 
     assert len(trainer.train_costs) == epochs
-    assert len(trainer.val_results["acc"]) == ceil(epochs/eval_step)
+    assert len(trainer.val_eval_results["acc"]) == ceil(epochs/eval_step)

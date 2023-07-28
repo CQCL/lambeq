@@ -78,11 +78,11 @@ def test_jax_usage():
     model = NumpyModel.from_diagrams([diagram], use_jit=True)
     lam = model._get_lambda(diagram)
 
-    expected_lambda_name = 'CompiledFunction'
+    expected_lambda_name = 'PjitFunction'
 
     from jax import config as jax_cfg
-    if hasattr(jax_cfg, 'jax_jit_pjit_api_merge') and jax_cfg.jax_jit_pjit_api_merge:
-        expected_lambda_name = 'PjitFunction'
+    if not getattr(jax_cfg, 'jax_jit_pjit_api_merge', True):
+        expected_lambda_name = 'CompiledFunction'
 
     assert type(lam).__name__ == expected_lambda_name
     assert model.lambdas[diagram] == model._get_lambda(diagram)

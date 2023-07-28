@@ -191,11 +191,16 @@ class QuantumTrainer(Trainer):
     def fit(self,
             train_dataset: Dataset,
             val_dataset: Dataset | None = None,
-            evaluation_step: int = 1,
-            logging_step: int = 1) -> None:
+            log_interval: int = 1,
+            eval_interval: int = 1,
+            early_stopping_interval: int | None = None) -> None:
 
         self.model._training = True
 
-        super().fit(train_dataset, val_dataset, evaluation_step, logging_step)
+        super().fit(train_dataset,
+                    val_dataset,
+                    log_interval,
+                    eval_interval,
+                    early_stopping_interval)
 
         self.model._training = False

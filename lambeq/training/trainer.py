@@ -122,19 +122,19 @@ class Trainer(ABC):
 
         self.train_costs: list[float] = []
         self.train_epoch_costs: list[float] = []
-        self.train_results: dict[str, list[Any]] = {}
-        self._train_results_epoch: dict[str, list[Any]] = {}
+        self.train_eval_results: dict[str, list[Any]] = {}
+        self._train_eval_running: dict[str, list[tuple[int, Any]]] = {}
 
         self.val_costs: list[float] = []
-        self.val_results: dict[str, list[Any]] = {}
-        self._val_results_epoch: dict[str, list[Any]] = {}
+        self.val_eval_results: dict[str, list[Any]] = {}
+        self._val_eval_running: dict[str, list[tuple[int, Any]]] = {}
 
         if self.evaluate_functions is not None:
             for name in self.evaluate_functions:
-                self.val_results[name] = []
-                self._val_results_epoch[name] = []
-                self.train_results[name] = []
-                self._train_results_epoch[name] = []
+                self.val_eval_results[name] = []
+                self._val_eval_running[name] = []
+                self.train_eval_results[name] = []
+                self._train_eval_running[name] = []
 
         if not VerbosityLevel.has_value(self.verbose):
             raise ValueError(f'`{self.verbose} flag is not supported by '
@@ -148,12 +148,17 @@ class Trainer(ABC):
             self.writer = SummaryWriter(log_dir=self.log_dir)
 
         # load checkpoint
-        self.start_epoch = 0
+        self.start_epoch = 1
         self.start_step = 0
         if self.from_checkpoint:
             self.checkpoint = self.load_training_checkpoint(self.log_dir)
         else:
             self.model.initialise_weights()
+
+    def _to_tensorboard(self, *args: Any) -> None:
+        """Write to tensorboard if `use_tensorboard` is set to `True`."""
+        if self.use_tensorboard:
+            self.writer.add_scalar(*args)
 
     def _generate_stat_report(self,
                               train_loss: float | None = None,
@@ -180,14 +185,14 @@ class Trainer(ABC):
             str_value = f'{value:.4f}' if value is not None else '-----'
             report.append(f'{name}: {str_value}')
         if self.evaluate_on_train and self.evaluate_functions is not None:
-            for name in self.train_results:
-                str_value = (f'{self.train_results[name][-1]:.4f}'
-                             if self.train_results[name] else '-----')
+            for name in self.train_eval_results:
+                str_value = (f'{self.train_eval_results[name][-1]:.4f}'
+                             if self.train_eval_results[name] else '-----')
                 report.append(f'train/{name}: {str_value}')
         if self.evaluate_functions is not None:
-            for name in self.val_results:
-                str_value = (f'{self.val_results[name][-1]:.4f}'
-                             if self.val_results[name] else '-----')
+            for name in self.val_eval_results:
+                str_value = (f'{self.val_eval_results[name][-1]:.4f}'
+                             if self.val_eval_results[name] else '-----')
                 report.append(f'valid/{name}: {str_value}')
         return '   '.join(report)
 
@@ -220,10 +225,10 @@ class Trainer(ABC):
         # load the training history
         self.train_costs = checkpoint['train_costs']
         self.train_epoch_costs = checkpoint['train_epoch_costs']
-        self.train_results = checkpoint['train_results']
+        self.train_eval_results = checkpoint['train_eval_results']
         self.val_costs = checkpoint['val_costs']
-        self.val_results = checkpoint['val_results']
-        self.start_epoch = checkpoint['epoch']
+        self.val_eval_results = checkpoint['val_eval_results']
+        self.start_epoch = checkpoint['epoch'] + 1
         self.start_step = checkpoint['step']
         if self.seed is not None:
             random.setstate(checkpoint['random_state'])
@@ -234,7 +239,8 @@ class Trainer(ABC):
 
     def save_checkpoint(self,
                         save_dict: Mapping[str, Any],
-                        log_dir: StrPathT) -> None:
+                        log_dir: StrPathT,
+                        prefix: str = '') -> None:
         """Save checkpoint.
 
         Parameters
@@ -243,12 +249,14 @@ class Trainer(ABC):
             Mapping containing the checkpoint information.
         log_dir : str or PathLike
             The path where to store the `model.lt` checkpoint file.
+        prefix : str, default: ''
+            Prefix for the checkpoint file name.
 
         """
         checkpoint = self.model._make_checkpoint()
         checkpoint.add_many(save_dict)
         self._add_extra_checkpoint_info(checkpoint)
-        checkpoint.to_file(os.path.join(log_dir, 'model.lt'))
+        checkpoint.to_file(os.path.join(log_dir, prefix + 'model.lt'))
 
     @abstractmethod
     def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:
@@ -313,11 +321,58 @@ class Trainer(ABC):
 
         """
 
+    def _get_weighted_mean(self,
+                           metric_running: list[tuple[int, Any]]):
+        """Calculate weighted mean of metric from the running results."""
+        total, batches = 0.0, 0
+        for (batch_size, metric) in metric_running:
+            total += batch_size * metric
+            batches += batch_size
+        return total / batches
+
+    def _step_and_eval(self,
+                       batch: tuple[list[Any], Any],
+                       step_func: Callable,
+                       losses: list[tuple[int, Any]],
+                       eval_results: dict[str, list[Any]],
+                       evaluate: bool = True) -> Any:
+        """Perform a forward step and evaluate the metrics."""
+        batch_size = len(batch[0])
+        y_hat, loss = step_func(batch)
+        losses.append((batch_size, loss))
+
+        if self.evaluate_functions is not None and evaluate:
+            for metr, func in self.evaluate_functions.items():
+                res = func(y_hat, batch[1])
+                eval_results[metr].append((batch_size, res))
+        return loss
+
+    def _summarize_metric(self,
+                          eval_results: dict[str, list[tuple[int, Any]]],
+                          results: dict[str, list[Any]],
+                          interval: int,
+                          status_bar: tqdm,
+                          mode: str) -> None:
+        """Calculate the metric results and write them to tensorboard and
+        command-line."""
+        for name in eval_results:
+            results[name].append(self._get_weighted_mean(eval_results[name]))
+            eval_results[name] = []  # reset
+            self._to_tensorboard(f'{mode}/{name}', results[name][-1], interval)
+            status_bar.set_description(
+                self._generate_stat_report(
+                    train_loss=(self.train_costs[-1] if self.train_costs
+                                else None),
+                    val_loss=self.val_costs[-1] if self.val_costs else None
+                )
+            )
+
     def fit(self,
             train_dataset: Dataset,
             val_dataset: Dataset | None = None,
-            evaluation_step: int = 1,
-            logging_step: int = 1) -> None:
+            log_interval: int = 1,
+            eval_interval: int = 1,
+            early_stopping_interval: int | None = None) -> None:
         """Fit the model on the training data and, optionally,
         evaluate it on the validation data.
 
@@ -327,157 +382,180 @@ class Trainer(ABC):
             Dataset used for training.
         val_dataset : :py:class:`Dataset`, optional
             Validation dataset.
-        evaluation_step : int, default: 1
-            Sets the intervals at which the metrics are evaluated on the
-            validation dataset.
-        logging_step : int, default: 1
+        log_interval : int, default: 1
             Sets the intervals at which the training statistics are
-            printed if `verbose = 'text'` (otherwise ignored).
+            printed if `verbose = 'text'` (otherwise ignored). If `None`,
+            the statistics are printed at the end of each epoch.
+        eval_interval : int, default: 1
+            Sets the number of epochs at which the metrics are
+            evaluated on the validation dataset. If `None`, the validation
+            is performed at the end of each epoch.
+        early_stopping_interval : int, optional
+            If specified, training is stopped if the validation loss does
+            not improve for `early_stopping_interval` validation cycles.
 
         """
         if self.from_checkpoint:
             self._load_extra_checkpoint_info(self.checkpoint)
 
-        def writer_helper(*args: Any) -> None:
-            if self.use_tensorboard:
-                self.writer.add_scalar(*args)
+        disable_tqdm = self.verbose != VerbosityLevel.PROGRESS.value
 
         # initialise progress bar
         step = self.start_step
-        batches_per_epoch = ceil(len(train_dataset)/train_dataset.batch_size)
+        if val_dataset is not None:
+            batches_per_validation = ceil(
+                len(val_dataset) / val_dataset.batch_size)
+
         status_bar = tqdm(total=float('inf'),
                           bar_format='{desc}',
                           desc=self._generate_stat_report(),
-                          disable=(
-                                self.verbose != VerbosityLevel.PROGRESS.value),
+                          disable=disable_tqdm,
                           leave=True,
                           position=0)
 
         # start training loop
-        for epoch in trange(self.start_epoch,
-                            self.epochs,
-                            desc='Epoch',
-                            disable=(
-                                self.verbose != VerbosityLevel.PROGRESS.value),
-                            leave=False,
-                            position=1):
-            train_loss = 0.0
-            with discopy.tensor.backend(self.backend):
+        with discopy.tensor.backend(self.backend):
+            early_stopping = False
+            best_val_loss = float('inf')
+            for epoch in trange(self.start_epoch,
+                                self.epochs + 1,
+                                desc='Epoch',
+                                disable=disable_tqdm,
+                                leave=False,
+                                position=1):
+
+                train_losses: list[tuple[int, Any]] = []
                 for batch in tqdm(train_dataset,
                                   desc='Batch',
-                                  total=batches_per_epoch,
-                                  disable=(self.verbose
-                                           != VerbosityLevel.PROGRESS.value),
+                                  total=train_dataset.batches_per_epoch,
+                                  disable=disable_tqdm,
                                   leave=False,
                                   position=2):
                     step += 1
-                    x, y_label = batch
-                    y_hat, loss = self.training_step(batch)
-                    if (self.evaluate_on_train
-                            and self.evaluate_functions is not None):
-                        for metr, func in self.evaluate_functions.items():
-                            res = func(y_hat, y_label)
-                            metric = self._train_results_epoch[metr]
-                            metric.append(len(x) * res)
-                    train_loss += len(batch[0]) * loss
-                    writer_helper('train/step_loss', loss, step)
-                    status_bar.set_description(
-                            self._generate_stat_report(
-                                train_loss=loss,
-                                val_loss=(self.val_costs[-1] if self.val_costs
-                                          else None)))
-            train_loss /= len(train_dataset)
-            self.train_epoch_costs.append(train_loss)
-            writer_helper('train/epoch_loss', train_loss, epoch + 1)
-
-            # evaluate on train
-            if (self.evaluate_on_train
-                    and self.evaluate_functions is not None):
-                for name in self._train_results_epoch:
-                    self.train_results[name].append(
-                        sum(self._train_results_epoch[name])/len(train_dataset)
+                    t_loss = self._step_and_eval(
+                        batch,
+                        self.training_step,
+                        train_losses,
+                        self._train_eval_running,
+                        self.evaluate_on_train
                     )
-                    self._train_results_epoch[name] = []  # reset
-                    writer_helper(
-                        f'train/{name}', self.train_results[name][-1],
-                        epoch+1)
-                    if self.verbose == VerbosityLevel.PROGRESS.value:
-                        status_bar.set_description(  # pragma: no cover
-                                self._generate_stat_report(
-                                    train_loss=train_loss,
-                                    val_loss=(self.val_costs[-1]
-                                              if self.val_costs else None)))
 
-            # evaluate metrics on validation data
-            if val_dataset is not None:
-                if epoch % evaluation_step == 0:
-                    val_loss = 0.0
-                    seen_so_far = 0
-                    batches_per_validation = ceil(len(val_dataset)
-                                                  / val_dataset.batch_size)
-                    with discopy.tensor.backend(self.backend):
-                        disable_tqdm = (self.verbose
-                                        != VerbosityLevel.PROGRESS.value)
-                        for v_batch in tqdm(val_dataset,
-                                            desc='Validation batch',
-                                            total=batches_per_validation,
-                                            disable=disable_tqdm,
-                                            leave=False,
-                                            position=2):
-                            x_val, y_label_val = v_batch
-                            y_hat_val, cur_loss = self.validation_step(v_batch)
-                            val_loss += cur_loss * len(x_val)
-                            seen_so_far += len(x_val)
-                            if self.evaluate_functions is not None:
-                                for metr, func in (
-                                        self.evaluate_functions.items()):
-                                    res = func(y_hat_val, y_label_val)
-                                    self._val_results_epoch[metr].append(
-                                        len(x_val)*res)
-                            status_bar.set_description(
-                                    self._generate_stat_report(
-                                        train_loss=train_loss,
-                                        val_loss=val_loss/seen_so_far))
-                        val_loss /= len(val_dataset)
-                        self.val_costs.append(val_loss)
+                    self._to_tensorboard('train/step_loss', t_loss, step)
+                    status_bar.set_description(
+                        self._generate_stat_report(
+                            train_loss=t_loss,
+                            val_loss=(self.val_costs[-1] if self.val_costs
+                                      else None)
+                            )
+                        )
+
+                # calculate metrics on train dataset
+                if self.evaluate_on_train and epoch % eval_interval == 0:
+                    self._summarize_metric(self._train_eval_running,
+                                           self.train_eval_results,
+                                           epoch,
+                                           status_bar,
+                                           mode='train')
+
+                # evaluate metrics on validation data
+                if val_dataset is not None and epoch % eval_interval == 0:
+                    val_loss: list[tuple[int, Any]] = []
+                    for v_batch in tqdm(val_dataset,
+                                        desc='Validation batch',
+                                        total=batches_per_validation,
+                                        disable=disable_tqdm,
+                                        leave=False,
+                                        position=2):
+
+                        v_loss = self._step_and_eval(v_batch,
+                                                     self.validation_step,
+                                                     val_loss,
+                                                     self._val_eval_running)
+
                         status_bar.set_description(
-                                self._generate_stat_report(
-                                    train_loss=train_loss,
-                                    val_loss=val_loss))
-                        writer_helper('val/loss', val_loss, epoch+1)
+                            self._generate_stat_report(train_loss=t_loss,
+                                                       val_loss=v_loss)
+                        )
 
-                    if self.evaluate_functions is not None:
-                        for name in self._val_results_epoch:
-                            self.val_results[name].append(
-                                sum(self._val_results_epoch[name])
-                                / len(val_dataset))
-                            self._val_results_epoch[name] = []  # reset
-                            writer_helper(
-                                f'val/{name}', self.val_results[name][-1],
-                                epoch + 1)
-                            status_bar.set_description(
-                                    self._generate_stat_report(
-                                        train_loss=train_loss,
-                                        val_loss=val_loss))
-            # save training stats checkpoint
-            trainer_stats = {'epoch': epoch+1,
+                    self.val_costs.append(self._get_weighted_mean(val_loss))
+
+                    status_bar.set_description(
+                        self._generate_stat_report(train_loss=t_loss,
+                                                   val_loss=self.val_costs[-1])
+                        )
+
+                    self._to_tensorboard('val/loss',
+                                         self.val_costs[-1],
+                                         epoch)
+
+                    self._summarize_metric(self._val_eval_running,
+                                           self.val_eval_results,
+                                           epoch,
+                                           status_bar,
+                                           mode='val')
+                    # save best model
+                    if self.val_costs[-1] < best_val_loss:
+                        best_val_loss = self.val_costs[-1]
+                        self.save_checkpoint(
+                            {'epoch': epoch,
                              'train_costs': self.train_costs,
                              'train_epoch_costs': self.train_epoch_costs,
-                             'train_results': self.train_results,
+                             'train_eval_results': self.train_eval_results,
                              'val_costs': self.val_costs,
-                             'val_results': self.val_results,
+                             'val_eval_results': self.val_eval_results,
                              'random_state': random.getstate(),
-                             'step': step}
-            self.save_checkpoint(trainer_stats, self.log_dir)
-            if self.verbose == VerbosityLevel.TEXT.value:  # pragma: no cover
-                if epoch == 0 or (epoch+1) % logging_step == 0:
-                    space = (len(str(self.epochs))-len(str(epoch+1)) + 2) * ' '
-                    prefix = f'Epoch {epoch+1}:' + space
-                    print(prefix + self._generate_stat_report(
-                            train_loss=train_loss,
-                            val_loss=(self.val_costs[-1] if self.val_costs
-                                      else None)),
-                          file=sys.stderr)
+                             'step': step},
+                            self.log_dir,
+                            prefix='best_'
+                        )
+
+                    # check for early stopping
+                    if (early_stopping_interval is not None
+                        and len(self.val_costs) > early_stopping_interval
+                        and self.val_costs[-early_stopping_interval - 1] < min(
+                            self.val_costs[-early_stopping_interval:])):
+                        early_stopping = True
+
+                # calculate epoch loss
+                self.train_epoch_costs.append(
+                    self._get_weighted_mean(train_losses))
+                self._to_tensorboard('train/epoch_loss',
+                                     self.train_epoch_costs[-1],
+                                     epoch)
+
+                # save training stats checkpoint
+                self.save_checkpoint(
+                    {'epoch': epoch,
+                     'train_costs': self.train_costs,
+                     'train_epoch_costs': self.train_epoch_costs,
+                     'train_eval_results': self.train_eval_results,
+                     'val_costs': self.val_costs,
+                     'val_eval_results': self.val_eval_results,
+                     'random_state': random.getstate(),
+                     'step': step},
+                    self.log_dir)
+
+                if (self.verbose
+                        == VerbosityLevel.TEXT.value):  # pragma: no cover
+                    if epoch % log_interval == 0:
+                        space = (len(str(self.epochs))
+                                 - len(str(epoch)) + 2) * ' '
+                        prefix = f'Epoch {epoch}:' + space
+                        print(prefix + self._generate_stat_report(
+                                train_loss=(self.train_costs[-1]
+                                            if self.train_costs else None),
+                                val_loss=(self.val_costs[-1]
+                                          if self.val_costs else None)),
+                              file=sys.stderr)
+
+                if early_stopping:
+                    if self.verbose == VerbosityLevel.TEXT.value:
+                        print('Early stopping!\n'
+                              'Best model saved to '
+                              f'{os.path.join(self.log_dir, "best_model.lt")}',
+                              file=sys.stderr)
+                    break  # break epoch loop
+
         status_bar.close()
         if self.verbose == VerbosityLevel.TEXT.value:
-            print('\nTraining completed!', file=sys.stderr)  # pragma: no cover
+            print('\nTraining completed!', file=sys.stderr)

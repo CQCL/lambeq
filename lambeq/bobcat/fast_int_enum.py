@@ -84,6 +84,9 @@ class FastIntEnum(int, metaclass=FastIntEnumType):
     def __new__(cls, value: str) -> FastIntEnum:
         return cls._member_map_[value]
 
+    def __getnewargs__(self) -> tuple[str]:  # type: ignore[override]
+        return (str(self),)
+
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}.{self.names[self]}'
 

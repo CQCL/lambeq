@@ -3,6 +3,30 @@
 Release notes
 =============
 
+.. _rel-0.3.3:
+
+`0.3.3 <https://github.com/CQCL/lambeq/releases/tag/0.3.3>`_
+------------------------------------------------------------
+This update features contributions from participants in `unitaryHACK 2023 <https://unitaryhack.dev/>`_:
+
+- Two new optimisers:
+    - The Nelder-Mead optimiser. (credit: `Gopal Dahale <https://github.com/CQCL/lambeq/pull/104>`_)
+    - The Rotosolve optimiser. (credit: `Ahmed Darwish <https://github.com/CQCL/lambeq/pull/93>`_)
+- A new rewrite rule for handling unknown words. (credit: `WingCode <https://github.com/CQCL/lambeq/pull/105>`_)
+
+Many thanks to all who participated.
+
+This update also contains the following changes:
+
+Added:
+
+- :py:class:`~lambeq.DiagramRewriter` is a new class that rewrites diagrams by looking at the diagram as a whole rather than by using rewrite rules on individual boxes. This includes an example :py:class:`~lambeq.UnifyCodomainRewriter` which adds an extra box to the end of diagrams to change the output to a specified type. (credit: `A.C.E07 <https://github.com/CQCL/lambeq/pull/111>`_)
+- Added an early stopping mechanism to :py:class:`~lambeq.Trainer` using the parameter ``early_stopping_interval``.
+
+Fixed:
+
+- In :py:class:`~lambeq.PennyLaneModel`, SymPy symbols are now substituted during the forward pass so that gradients are back-propagated to the original parameters.
+- A pickling error that prevented CCG trees produced by :py:class:`~lambeq.BobcatParser` from being unpickled has been fixed.
 
 .. _rel-0.3.2:
 

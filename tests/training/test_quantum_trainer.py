@@ -55,7 +55,7 @@ def test_trainer(tmp_path):
 
     trainer.fit(train_dataset, val_dataset)
     assert len(trainer.train_costs) == EPOCHS
-    assert len(trainer.val_results["acc"]) == EPOCHS
+    assert len(trainer.val_eval_results["acc"]) == EPOCHS
 
 def test_restart_training(tmp_path):
     log_dir = tmp_path / 'test_runs'
@@ -115,8 +115,8 @@ def test_restart_training(tmp_path):
 
     assert len(trainer_restarted.train_costs) == EPOCHS+1
     assert len(trainer_restarted.val_costs) == EPOCHS+1
-    assert len(trainer_restarted.val_results["acc"]) == EPOCHS+1
-    assert len(trainer_restarted.train_results["acc"]) == EPOCHS+1
+    assert len(trainer_restarted.val_eval_results["acc"]) == EPOCHS+1
+    assert len(trainer_restarted.train_eval_results["acc"]) == EPOCHS+1
     for a, b in zip(trainer_restarted.train_costs, trainer_uninterrupted.train_costs):
         assert np.isclose(a, b)
     for a, b in zip(model_new.weights, model_uninterrupted.weights):

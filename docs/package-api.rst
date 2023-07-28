@@ -18,7 +18,10 @@ Concrete implementations of classical and quantum :term:`ansätze <ansatz (plura
 .. inheritance-diagram::
     lambeq.ansatz.IQPAnsatz
     lambeq.ansatz.MPSAnsatz
+    lambeq.ansatz.Sim14Ansatz
+    lambeq.ansatz.Sim15Ansatz
     lambeq.ansatz.SpiderAnsatz
+    lambeq.ansatz.StronglyEntanglingAnsatz
     lambeq.ansatz.Symbol
    :top-classes: lambeq.ansatz.base.Symbol
    :parts: 1
@@ -172,9 +175,11 @@ Provides a selection of :term:`trainers <trainer>`, :term:`models <model>`, and 
     lambeq.training.Dataset
     lambeq.training.MSELoss
     lambeq.training.LossFunction
+    lambeq.training.NelderMeadOptimizer
     lambeq.training.NumpyModel
     lambeq.training.PytorchModel
     lambeq.training.PytorchTrainer
+    lambeq.training.RotosolveOptimizer
     lambeq.training.SPSAOptimizer
     lambeq.training.TketModel
     lambeq.training.PennyLaneModel

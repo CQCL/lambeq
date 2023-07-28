@@ -35,6 +35,9 @@ abstract class Trainer {
 
 abstract class Optimizer {
     model
+    loss
+    hyperparams: dict[str, float]
+    bounds
     {abstract} backward()
     {abstract} step()
     {abstract} state_dict()
@@ -76,15 +79,11 @@ class PytorchTrainer {
     optimizer
 }
 
-class SPSAOptimizer {
-    hyperparams
-    loss_fn
-    bounds
-}
+class SPSAOptimizer {}
+class NelderMeadOptimizer {}
+class RotosolveOptimizer {}
 
-class BinaryCrossEntropyLoss {
-  calculate_loss()
-}
+class BinaryCrossEntropyLoss {}
 
 class CrossEntropyLoss {
   calculate_loss()
@@ -108,6 +107,8 @@ Trainer <|-- PytorchTrainer
 Trainer <|-- QuantumTrainer
 
 Optimizer <|-- SPSAOptimizer
+Optimizer <|-- NelderMeadOptimizer
+Optimizer <|-- RotosolveOptimizer
 
 PennyLaneModel -- pennylane
 PennyLaneModel -- pytorch
@@ -120,8 +121,9 @@ Trainer *-- CheckPoint
 CheckPoint --* Model
 Trainer::model *- Model
 Trainer *-u- Dataset
-Model -* Optimizer::model
+QuantumModel -* Optimizer::model
 Optimizer -* QuantumTrainer::optimizer
+LossFunction --* Optimizer::loss
 
 PennyLaneModel -- PytorchTrainer: usedWith
 PytorchModel -- PytorchTrainer: usedWith

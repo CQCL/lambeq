@@ -17,8 +17,11 @@ class TensorAnsatz {
     functor
 }
 class CircuitAnsatz {
-    functor
+    functor: Functor
     ob_map: Mapping[Ty, int]
+    n_layers: int
+    n_single_qubit_params: int
+    discard: bool
 }
 class MPSAnsatz {
     BOND_TYPE
@@ -32,12 +35,12 @@ class SpiderAnsatz {
     split_functor
     tensor_functor
 }
-class IQPAnsatz {
-    discard: bool
-    functor
-    n_layers: int
-    n_single_qubit_params: int
-}
+
+class IQPAnsatz {}
+class StronglyEntanglingAnsatz {}
+class Sim14Ansatz {}
+class Sim15Ansatz {}
+
 class Symbol {
     size: int
     sort_key(order)
@@ -58,6 +61,9 @@ BaseAnsatz <|-- CircuitAnsatz
 TensorAnsatz <|-- MPSAnsatz
 TensorAnsatz <|-- SpiderAnsatz
 CircuitAnsatz <|-- IQPAnsatz
+CircuitAnsatz <|-- StronglyEntanglingAnsatz
+CircuitAnsatz <|-- Sim14Ansatz
+CircuitAnsatz <|-- Sim15Ansatz
 discopy.monoidal.Ty <|-- discopy.rigid.Ty
 
 MPSAnsatz::split_functor *-left- discopy.rigid.Functor
@@ -69,5 +75,7 @@ CircuitAnsatz::functor *-- discopy.quantum.circuit.Functor
 TensorAnsatz::functor *-- discopy.quantum.circuit.Functor
 IQPAnsatz::functor *-- discopy.quantum.circuit.Functor
 sympy.core.symbol.Symbol <|-- Symbol
+
+BaseAnsatz --> Symbol : uses
 
 @enduml

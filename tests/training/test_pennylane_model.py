@@ -194,7 +194,7 @@ def test_with_pytorch_trainer(tmp_path):
     trainer.fit(train_dataset, val_dataset)
 
     assert len(trainer.train_costs) == EPOCHS
-    assert len(trainer.val_results["acc"]) == EPOCHS
+    assert len(trainer.val_eval_results["acc"]) == EPOCHS
 
 
 def test_backends():

@@ -31,7 +31,7 @@ from lambeq.training.quantum_model import QuantumModel
 
 
 class RotosolveOptimizer(Optimizer):
-    """An Optimizer using the Rotosolve algorithm.
+    """An optimizer using the Rotosolve algorithm.
 
     Rotosolve is an optimizer for parametrized quantum circuits. It
     applies a shift of ±π/2 radians to each parameter, then updates the
@@ -41,7 +41,7 @@ class RotosolveOptimizer(Optimizer):
     This optimizer is designed to work with ansätze that are composed of
     single-qubit rotations, such as the
     :py:class:`.StronglyEntanglingAnsatz`, :py:class:`.Sim14Ansatz`
-    and :py:class:`.Sim14Ansatz`.
+    and :py:class:`.Sim15Ansatz`.
 
     See `Ostaszewski et al.
     <https://quantum-journal.org/papers/q-2021-01-28-391/pdf/>`_ for

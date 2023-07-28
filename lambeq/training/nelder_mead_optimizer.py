@@ -87,7 +87,6 @@ class NelderMeadOptimizer(Optimizer):
         - `fatol`: float, default: 1e-4
             The acceptable level of absolute error in the loss value
             between iterations that indicates convergence.
-        }
 
         Parameters
         ----------
@@ -104,22 +103,21 @@ class NelderMeadOptimizer(Optimizer):
         ------
         ValueError
             - If the hyperparameters are not set correctly, or if the
-            length of `bounds` does not match the number of the model
-            parameters.
+              length of `bounds` does not match the number of the model
+              parameters.
             - If the lower bounds are greater than the upper bounds.
             - If the initial simplex is not a 2D array.
             - If the initial simplex does not have N+1 rows, where N is
-            the number of model parameters.
+              the number of model parameters.
 
-        Warnings
-        --------
+        Warning
             - If the initial model weights are not within the bounds.
 
         References
         ----------
         Gao, Fuchang & Han, Lixing. (2012). Implementing the Nelder-Mead
-        simplex algorithm with adaptive parameters.
-        Computational Optimization and Applications. 51. 259-277.
+        Simplex Algorithm with Adaptive Parameters.
+        `Computational Optimization and Applications`, 51. 259-277.
         10.1007/s10589-010-9329-3.
 
         """

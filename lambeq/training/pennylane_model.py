@@ -69,6 +69,7 @@ class PennyLaneModel(Model, torch.nn.Module):
         Model.__init__(self)
         torch.nn.Module.__init__(self)
         self.circuit_map: dict[Circuit, PennyLaneCircuit] = {}
+        self.symbol_weight_map: dict[Symbol, torch.FloatTensor] = {}
         self._probabilities = probabilities
         self._normalize = normalize
         self._diff_method = diff_method
@@ -93,6 +94,7 @@ class PennyLaneModel(Model, torch.nn.Module):
         self._backend_config = checkpoint['model_backend_config']
         self.circuit_map = checkpoint['model_circuits']
         self.load_state_dict(checkpoint['model_state_dict'])
+        self.symbol_weight_map = dict(zip(self.symbols, self.weights))
 
         for p_circ in self.circuit_map.values():
             p_circ.initialise_device_and_circuit()
@@ -150,10 +152,8 @@ class PennyLaneModel(Model, torch.nn.Module):
             [torch.nn.Parameter(torch.rand(1).squeeze())
              for _ in self.symbols]
         )
-        symbol_weight_map = dict(zip(self.symbols, self.weights))
 
-        for p_circ in self.circuit_map.values():
-            p_circ.initialise_concrete_params(symbol_weight_map)
+        self.symbol_weight_map = dict(zip(self.symbols, self.weights))
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
         """Evaluate outputs of circuits using PennyLane.
@@ -175,8 +175,12 @@ class PennyLaneModel(Model, torch.nn.Module):
             Resulting tensor.
 
         """
-        circuit_evals = [self.circuit_map[d].eval()
-                         for d in diagrams]
+        circuit_evals = []
+        for d in diagrams:
+            p_circ = self.circuit_map[d]
+            p_circ.initialise_concrete_params(self.symbol_weight_map)
+            circuit_evals.append(p_circ.eval())
+
         if self._normalize:
             if self._probabilities:
                 circuit_evals = [c / torch.sum(c) for c in circuit_evals]
