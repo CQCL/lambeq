@@ -39,12 +39,13 @@ class SPSAOptimizer(Optimizer):
     See https://ieeexplore.ieee.org/document/705889 for details.
 
     """
+    model: QuantumModel
 
-    model : QuantumModel
-
-    def __init__(self, model: QuantumModel,
-                 hyperparams: dict[str, float],
+    def __init__(self,
+                 *,
+                 model: QuantumModel,
                  loss_fn: Callable[[Any, Any], float],
+                 hyperparams: dict[str, Any] | None,
                  bounds: ArrayLike | None = None) -> None:
         """Initialise the SPSA optimizer.
 
@@ -62,10 +63,10 @@ class SPSAOptimizer(Optimizer):
         ----------
         model : :py:class:`.QuantumModel`
             A lambeq quantum model.
-        hyperparams : dict of str to float.
-            A dictionary containing the models hyperparameters.
         loss_fn : Callable
             A loss function of form `loss(prediction, labels)`.
+        hyperparams : dict of str to float.
+            A dictionary containing the models hyperparameters.
         bounds : ArrayLike, optional
             The range of each of the model parameters.
 
@@ -77,11 +78,21 @@ class SPSAOptimizer(Optimizer):
             parameters.
 
         """
-        fields = ('a', 'c', 'A')
-        if any(field not in hyperparams for field in fields):
-            raise KeyError('Missing arguments in hyperparameter dict'
-                           f'configuation. Must contain {fields}.')
-        super().__init__(model, hyperparams, loss_fn, bounds)
+        if hyperparams is None:
+            raise ValueError('Missing `hyperparams` parameter')
+        else:
+            REQUIRED_FIELDS = {'a', 'c', 'A'}
+            missing_fields = REQUIRED_FIELDS - hyperparams.keys()
+            if missing_fields:
+                formatted_fields = ', '.join(f'`{key}`'
+                                             for key in missing_fields)
+                raise ValueError('Missing arguments in `hyperparams` '
+                                 f'dictionary: {formatted_fields}')
+
+        super().__init__(model=model,
+                         loss_fn=loss_fn,
+                         hyperparams=hyperparams,
+                         bounds=bounds)
         self.alpha = 0.602
         self.gamma = 0.101
         self.current_sweep = 1

@@ -29,6 +29,8 @@ Bibliography
 
 .. [Mea2020] K. Meichanetzidis, A. Toumi, G. de Felice, B. Coecke. `Grammar-Aware Question-Answering on Quantum Computers <https://arxiv.org/pdf/2012.03756.pdf>`_, `arXiv:2012.03756`, 2020
 
+.. [Oea2021] M. Ostaszewski, E. Grant, M. Benedetti.  `Structure Optimization for Parameterized Quantum Circuits <https://quantum-journal.org/papers/q-2021-01-28-391/pdf/>`_, `Quantum`, 2021
+
 .. [Rea2016] L. Rimell, J. Maillard, T. Polajnar, S. Clark. `RELPRON: A Relative Clause Evaluation Data Set for Compositional Distributional Semantics <https://direct.mit.edu/coli/article/42/4/661/1555/RELPRON-A-Relative-Clause-Evaluation-Data-Set-for>`_, `Computational Linguistics`, 2016
 
 .. [SCC2014a] M. Sadrzadeh, S. Clark, B. Coecke. `The Frobenius Anatomy of Word Meanings I: Subject and Object Relative Pronouns <https://arxiv.org/pdf/1404.5278.pdf>`_, `Journal of Logic and Computation`, 2014

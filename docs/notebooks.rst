@@ -12,6 +12,7 @@ Examples
     ../examples/rewrite.ipynb
     ../examples/circuit.ipynb
     ../examples/tensor.ipynb
+    ../examples/rotosolve_optimizer.ipynb
     ../examples/classical_pipeline.ipynb
     ../examples/quantum_pipeline.ipynb
     ../examples/quantum_pipeline_jax.ipynb

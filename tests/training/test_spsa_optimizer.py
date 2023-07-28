@@ -52,9 +52,9 @@ loss = lambda yhat, y: np.abs(yhat-y).sum()**2
 def test_init():
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = SPSAOptimizer(model,
+    optim = SPSAOptimizer(model=model,
+                          loss_fn=loss,
                           hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                          loss_fn= loss,
                           bounds=[[0, 10]]*len(model.weights))
     assert optim.alpha
     assert optim.gamma
@@ -70,9 +70,9 @@ def test_backward():
     np.random.seed(3)
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = SPSAOptimizer(model,
+    optim = SPSAOptimizer(model=model,
+                          loss_fn=loss,
                           hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                          loss_fn= loss,
                           bounds=[[0, 10]]*len(model.weights))
     optim.backward(([diagrams[0]], np.array([0])))
     assert np.array_equal(optim.gradient.round(5), np.array([12, 12, 0]))
@@ -82,9 +82,9 @@ def test_step():
     np.random.seed(3)
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = SPSAOptimizer(model,
+    optim = SPSAOptimizer(model=model,
+                          loss_fn=loss,
                           hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                          loss_fn= loss,
                           bounds=[[0, 10]]*len(model.weights))
     step_counter = optim.current_sweep
     optim.backward(([diagrams[0]], np.array([0])))
@@ -98,9 +98,9 @@ def test_project():
     np.random.seed(4)
     model = ModelDummy.from_diagrams(diagrams)
     model.weights = np.array([0, 10, 0])
-    optim = SPSAOptimizer(model,
+    optim = SPSAOptimizer(model=model,
+                          loss_fn=loss,
                           hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                          loss_fn= loss,
                           bounds=[[0, 10]]*len(model.weights))
     optim.backward((diagrams, np.array([0, 0])))
     assert np.array_equal(
@@ -108,19 +108,19 @@ def test_project():
 
 def test_missing_field():
     model = ModelDummy
-    with pytest.raises(KeyError):
-        _ = SPSAOptimizer(model=model,
-                                hyperparams={},
-                                loss_fn=loss)
+    with pytest.raises(ValueError):
+        SPSAOptimizer(model=model,
+                      loss_fn=loss,
+                      hyperparams={})
 
 def test_bound_error():
     model = ModelDummy()
     model.initialise_weights()
     with pytest.raises(ValueError):
-        _ = SPSAOptimizer(model=model,
-                                hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                                loss_fn=loss,
-                                bounds=[[0, 10]]*(len(model.weights)-1))
+        SPSAOptimizer(model=model,
+                      loss_fn=loss,
+                      hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
+                      bounds=[[0, 10]]*(len(model.weights)-1))
 
 def test_load_state_dict():
     state_dict = {'A': 0.1,
@@ -132,9 +132,9 @@ def test_load_state_dict():
     model = ModelDummy()
     model.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = SPSAOptimizer(model,
-                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                          loss_fn= loss)
+    optim = SPSAOptimizer(model=model,
+                          loss_fn=loss,
+                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001})
     optim.load_state_dict(state_dict)
 
     assert optim.A == state_dict['A']
@@ -148,9 +148,9 @@ def test_load_state_dict():
 def test_inf_handling(capsys):
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = SPSAOptimizer(model,
-                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                          loss_fn=lambda _y, _yh: np.inf)
+    optim = SPSAOptimizer(model=model,
+                          loss_fn=lambda _y, _yh: np.inf,
+                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001})
     optim.backward(([diagrams[0]], np.array([0])))
 
     _, err_log = capsys.readouterr()
@@ -159,9 +159,9 @@ def test_inf_handling(capsys):
 def test_nan_handling(capsys):
     model = ModelDummy.from_diagrams(diagrams)
     model.initialise_weights()
-    optim = SPSAOptimizer(model,
-                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001},
-                          loss_fn=lambda _y, _yh: np.nan)
+    optim = SPSAOptimizer(model=model,
+                          loss_fn=lambda _y, _yh: np.nan,
+                          hyperparams={'a': 0.01, 'c': 0.1, 'A':0.001})
     optim.backward(([diagrams[0]], np.array([0])))
 
     _, err_log = capsys.readouterr()

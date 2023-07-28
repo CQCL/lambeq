@@ -105,9 +105,9 @@ class QuantumTrainer(Trainer):
                          verbose,
                          seed)
 
-        self.optimizer = optimizer(self.model,
-                                   optim_hyperparams,
-                                   self.loss_function,
+        self.optimizer = optimizer(model=self.model,
+                                   loss_fn=self.loss_function,
+                                   hyperparams=optim_hyperparams,
                                    **(optimizer_args or {}))
 
     def _add_extra_checkpoint_info(self, checkpoint: Checkpoint) -> None:

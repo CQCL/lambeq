@@ -35,9 +35,10 @@ class Optimizer(ABC):
     """Optimizer base class."""
 
     def __init__(self,
+                 *,
                  model: Model,
-                 hyperparams: dict[Any, Any],
                  loss_fn: Callable[[Any, Any], float],
+                 hyperparams: dict[Any, Any] | None = None,
                  bounds: ArrayLike | None = None) -> None:
         """Initialise the optimizer base class.
 
@@ -45,17 +46,17 @@ class Optimizer(ABC):
         ----------
         model : :py:class:`.QuantumModel`
             A lambeq model.
-        hyperparams : dict of str to float.
-            A dictionary containing the models hyperparameters.
         loss_fn : Callable
             A loss function of form `loss(prediction, labels)`.
+        hyperparams : dict of str to float, optional
+            A dictionary containing the models hyperparameters.
         bounds : ArrayLike, optional
             The range of each of the model's parameters.
 
         """
-        self.hyperparams = hyperparams
         self.model = model
         self.loss_fn = loss_fn
+        self.hyperparams = hyperparams or {}
         self.bounds = bounds
         self.gradient = np.zeros(len(model.weights))
 
