@@ -5,7 +5,7 @@ from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Id, Ob, Spider,
 
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, SimpleRewriteRule,
-                    UnknownWordsRewriteRule)
+                    UnifyCodomainRewriter, UnknownWordsRewriteRule)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -174,6 +174,18 @@ def test_curry_functor():
     rewriter = Rewriter([CurryRewriteRule()])
     assert rewriter(diagram).normal_form() == expected
 
+def test_merge_wires_rewriter():
+    n, s = map(Ty, 'ns')
+    take = Word('take', n.r @ s @ n.l)
+    the = Word('the', n @ n.l)
+    bus = Word('bus', n)
+
+    diagram = (take @ the @ bus).cup(4, 5).cup(2, 3)
+    expected_diagram = diagram >> Box('MERGE_n.r @ s', n.r @ s, s)
+
+    rewriter = UnifyCodomainRewriter()
+
+    assert rewriter(diagram) == expected_diagram
 
 def test_unknown_words_rewrite_rule():
     diagram = (Word('Alice', N) @ Word('loves', N >> S << N) @ Word('Bob', N)
