@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.rewrite &mdash; lambeq 0.3.2 documentation</title>
+  <title>lambeq.rewrite &mdash; lambeq 0.3.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -38,7 +38,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -275,6 +275,48 @@ post-selection, which results in faster QML experiments.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.DiagramRewriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">DiagramRewriter</span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.DiagramRewriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for diagram level rewriters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.DiagramRewriter.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">discopy.grammar.pregroup.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">discopy.grammar.pregroup.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.DiagramRewriter.__call__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span></dt>
+<dd><p>Rewrite the given diagram(s) if the rule applies.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>diagram</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.pregroup.Diagram</span></code> or list of Diagram</span></dt><dd><p>The candidate diagram(s) to be rewritten.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.pregroup.Diagram</span></code> or list of Diagram</dt><dd><p>The rewritten diagram. If the rule does not apply, the
+original diagram is returned.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.DiagramRewriter.matches">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.DiagramRewriter.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given diagram should be rewritten.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.DiagramRewriter.rewrite">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.DiagramRewriter.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given diagram.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="lambeq.rewrite.RewriteRule">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">RewriteRule</span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#RewriteRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.RewriteRule" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
@@ -456,6 +498,158 @@ resulting rewritten diagram.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.rewrite.SimpleRewriteRule.rewrite">
 <span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Box.html#discopy.grammar.pregroup.Box" title="(in DisCoPy)"><span class="pre">Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#SimpleRewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.SimpleRewriteRule.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given box.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnifyCodomainRewriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">UnifyCodomainRewriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">grammar.pregroup.Ty(rigid.Ob('s'))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#UnifyCodomainRewriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnifyCodomainRewriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.DiagramRewriter" title="lambeq.rewrite.rewrite_diagram.DiagramRewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiagramRewriter</span></code></a></p>
+<p>Unifies the codomain of diagrams to match a given type.</p>
+<p>A rewriter that takes diagrams with <code class="docutils literal notranslate"><span class="pre">d.cod</span> <span class="pre">!=</span> <span class="pre">output_type</span></code> and
+append a <code class="docutils literal notranslate"><span class="pre">d.cod</span> <span class="pre">-&gt;</span> <span class="pre">output_type</span></code> box.</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>output_type</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.Ty</span></code>, default <code class="docutils literal notranslate"><span class="pre">S</span></code></span></dt><dd><p>The output type of the appended box.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnifyCodomainRewriter.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Diagram</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Diagram</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Diagram</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Diagram</span></span></span><a class="headerlink" href="#lambeq.rewrite.UnifyCodomainRewriter.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given diagram(s) if the rule applies.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>diagram</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.pregroup.Diagram</span></code> or list of Diagram</span></dt><dd><p>The candidate diagram(s) to be rewritten.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.pregroup.Diagram</span></code> or list of Diagram</dt><dd><p>The rewritten diagram. If the rule does not apply, the
+original diagram is returned.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnifyCodomainRewriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">grammar.pregroup.Ty(rigid.Ob('s'))</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lambeq.rewrite.UnifyCodomainRewriter.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnifyCodomainRewriter.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#UnifyCodomainRewriter.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnifyCodomainRewriter.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given diagram should be rewritten.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnifyCodomainRewriter.output_type">
+<span class="sig-name descname"><span class="pre">output_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Ty</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">grammar.pregroup.Ty(rigid.Ob('s'))</span></em><a class="headerlink" href="#lambeq.rewrite.UnifyCodomainRewriter.output_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnifyCodomainRewriter.rewrite">
+<span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#UnifyCodomainRewriter.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnifyCodomainRewriter.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given diagram.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnknownWordsRewriteRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.rewrite.</span></span><span class="sig-name descname"><span class="pre">UnknownWordsRewriteRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocabulary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ty</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unk_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'&lt;UNK&gt;'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnknownWordsRewriteRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.RewriteRule" title="lambeq.rewrite.base.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a></p>
+<p>A rewrite rule for unknown words.</p>
+<p>This rule matches any word not included in its vocabulary
+and, when passed a diagram, replaces all the boxes
+containing an unknown word with an <cite>UNK</cite> box corresponding to the
+same pregroup type.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnknownWordsRewriteRule.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Box</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Diagram</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#lambeq.rewrite.UnknownWordsRewriteRule.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Apply the rewrite rule to a box.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>box</strong><span class="classifier"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Box.html#discopy.grammar.pregroup.Box" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.Box</span></code></a></span></dt><dd><p>The candidate box to be tested against this rewrite rule.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.Diagram</span></code></a>, optional</dt><dd><p>The rewritten diagram, or <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code> if rule
+does not apply.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The default implementation uses the <a class="reference internal" href="#lambeq.rewrite.UnknownWordsRewriteRule.matches" title="lambeq.rewrite.UnknownWordsRewriteRule.matches"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matches()</span></code></a> and
+<a class="reference internal" href="#lambeq.rewrite.UnknownWordsRewriteRule.rewrite" title="lambeq.rewrite.UnknownWordsRewriteRule.rewrite"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rewrite()</span></code></a>  methods, but derived classes may choose to
+not use them, since the default <a class="reference internal" href="#lambeq.rewrite.Rewriter" title="lambeq.rewrite.Rewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">Rewriter</span></code></a>
+implementation does not call those methods directly, only this
+one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnknownWordsRewriteRule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocabulary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ty</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unk_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'&lt;UNK&gt;'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnknownWordsRewriteRule.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate an UnknownWordsRewriteRule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vocabulary</strong><span class="classifier">container of str or tuple of str and Ty</span></dt><dd><p>A list of words (or words with specific output types) to not
+be rewritten by this rule.</p>
+</dd>
+<dt><strong>unk_token</strong><span class="classifier">str, default: ‘&lt;UNK&gt;’</span></dt><dd><p>The string to use for the UNK token.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnknownWordsRewriteRule.from_diagrams">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagrams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unk_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'&lt;UNK&gt;'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="root-api.html#lambeq.UnknownWordsRewriteRule" title="lambeq.rewrite.base.UnknownWordsRewriteRule"><span class="pre">UnknownWordsRewriteRule</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.from_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnknownWordsRewriteRule.from_diagrams" title="Permalink to this definition"></a></dt>
+<dd><p>Create the rewrite rule from a set of diagrams.</p>
+<p>The vocabulary is the set of words that occur at least
+<cite>min_freq</cite> times throughout the set of diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>diagrams</strong><span class="classifier">list of Diagram</span></dt><dd><p>Diagrams from which the vocabulary is created.</p>
+</dd>
+<dt><strong>min_freq</strong><span class="classifier">int, default: 1</span></dt><dd><p>The minimum frequency required for a word to be included in
+the vocabulary.</p>
+</dd>
+<dt><strong>unk_token</strong><span class="classifier">str, default: ‘&lt;UNK&gt;’</span></dt><dd><p>The string to use for the UNK token.</p>
+</dd>
+<dt><strong>ignore_types</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to just consider the word when determining frequency
+or to also consider the output type of the box (the default
+behaviour).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnknownWordsRewriteRule.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Box.html#discopy.grammar.pregroup.Box" title="(in DisCoPy)"><span class="pre">Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnknownWordsRewriteRule.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given box should be rewritten.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.rewrite.UnknownWordsRewriteRule.rewrite">
+<span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Box.html#discopy.grammar.pregroup.Box" title="(in DisCoPy)"><span class="pre">Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.rewrite.UnknownWordsRewriteRule.rewrite" title="Permalink to this definition"></a></dt>
 <dd><p>Rewrite the given box.</p>
 </dd></dl>
 

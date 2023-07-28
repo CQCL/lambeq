@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.optimizer &mdash; lambeq 0.3.2 documentation</title>
+  <title>lambeq.training.optimizer &mdash; lambeq 0.3.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -161,9 +161,10 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Optimizer base class.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="Optimizer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Optimizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span>
                  <span class="n">model</span><span class="p">:</span> <span class="n">Model</span><span class="p">,</span>
-                 <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
                  <span class="n">loss_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+                 <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">bounds</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the optimizer base class.</span>
 
@@ -171,17 +172,17 @@
 <span class="sd">        ----------</span>
 <span class="sd">        model : :py:class:`.QuantumModel`</span>
 <span class="sd">            A lambeq model.</span>
-<span class="sd">        hyperparams : dict of str to float.</span>
-<span class="sd">            A dictionary containing the models hyperparameters.</span>
 <span class="sd">        loss_fn : Callable</span>
 <span class="sd">            A loss function of form `loss(prediction, labels)`.</span>
+<span class="sd">        hyperparams : dict of str to float, optional</span>
+<span class="sd">            A dictionary containing the models hyperparameters.</span>
 <span class="sd">        bounds : ArrayLike, optional</span>
 <span class="sd">            The range of each of the model&#39;s parameters.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparams</span> <span class="o">=</span> <span class="n">hyperparams</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">loss_fn</span> <span class="o">=</span> <span class="n">loss_fn</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparams</span> <span class="o">=</span> <span class="n">hyperparams</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bounds</span> <span class="o">=</span> <span class="n">bounds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gradient</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">weights</span><span class="p">))</span></div>
 

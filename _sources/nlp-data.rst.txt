@@ -92,6 +92,7 @@ When using :ref:`word tokenisation <wordtok>` (like in ``lambeq``), a common tec
 .. note::
 
   Note that in syntax-based models, such as :term:`DisCoCat`, handling unknown words with the above method becomes more complicated, since the type of each word needs to also be taken into account. In other words, you need to have a different ``UNK`` token for each grammatical type.
+  ``lambeq`` simplifies this process by providing the :py:class:`~.UnknownWordsRewriteRule` which can be used to replace unknown words, and create a vocabulary from a set of diagrams.
 
 .. rubric:: See also:
 

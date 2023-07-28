@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.trainer &mdash; lambeq 0.3.2 documentation</title>
+  <title>lambeq.training.trainer &mdash; lambeq 0.3.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -248,19 +248,19 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_train_eval_running</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_val_results_epoch</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_val_eval_running</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">{}</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_val_results_epoch</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_val_eval_running</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_train_eval_running</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">has_value</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="si">}</span><span class="s1"> flag is not supported by &#39;</span>
@@ -274,12 +274,17 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">SummaryWriter</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span><span class="p">)</span>
 
         <span class="c1"># load checkpoint</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_epoch</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_step</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">checkpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_training_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">initialise_weights</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_to_tensorboard</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Write to tensorboard if `use_tensorboard` is set to `True`.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_tensorboard</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_generate_stat_report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                               <span class="n">train_loss</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -306,14 +311,14 @@
             <span class="n">str_value</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;-----&#39;</span>
             <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">str_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">:</span>
-                <span class="n">str_value</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span>
-                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;-----&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">:</span>
+                <span class="n">str_value</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span>
+                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;-----&#39;</span><span class="p">)</span>
                 <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;train/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">str_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">:</span>
-                <span class="n">str_value</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span>
-                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;-----&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">:</span>
+                <span class="n">str_value</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span>
+                             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">else</span> <span class="s1">&#39;-----&#39;</span><span class="p">)</span>
                 <span class="n">report</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;valid/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">: </span><span class="si">{</span><span class="n">str_value</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;   &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">report</span><span class="p">)</span>
 
@@ -346,10 +351,10 @@
         <span class="c1"># load the training history</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;train_costs&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;train_epoch_costs&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;train_results&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;train_eval_results&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;val_costs&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;val_results&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">start_epoch</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;val_eval_results&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">start_epoch</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;epoch&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">start_step</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;step&#39;</span><span class="p">]</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">random</span><span class="o">.</span><span class="n">setstate</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;random_state&#39;</span><span class="p">])</span>
@@ -360,7 +365,8 @@
 
 <div class="viewcode-block" id="Trainer.save_checkpoint"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.save_checkpoint">[docs]</a>    <span class="k">def</span> <span class="nf">save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">save_dict</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
-                        <span class="n">log_dir</span><span class="p">:</span> <span class="n">StrPathT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">log_dir</span><span class="p">:</span> <span class="n">StrPathT</span><span class="p">,</span>
+                        <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save checkpoint.</span>
 
 <span class="sd">        Parameters</span>
@@ -369,12 +375,14 @@
 <span class="sd">            Mapping containing the checkpoint information.</span>
 <span class="sd">        log_dir : str or PathLike</span>
 <span class="sd">            The path where to store the `model.lt` checkpoint file.</span>
+<span class="sd">        prefix : str, default: &#39;&#39;</span>
+<span class="sd">            Prefix for the checkpoint file name.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">checkpoint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_make_checkpoint</span><span class="p">()</span>
         <span class="n">checkpoint</span><span class="o">.</span><span class="n">add_many</span><span class="p">(</span><span class="n">save_dict</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_add_extra_checkpoint_info</span><span class="p">(</span><span class="n">checkpoint</span><span class="p">)</span>
-        <span class="n">checkpoint</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="s1">&#39;model.lt&#39;</span><span class="p">))</span></div>
+        <span class="n">checkpoint</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">log_dir</span><span class="p">,</span> <span class="n">prefix</span> <span class="o">+</span> <span class="s1">&#39;model.lt&#39;</span><span class="p">))</span></div>
 
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">_add_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">:</span> <span class="n">Checkpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -439,11 +447,58 @@
 
 <span class="sd">        &quot;&quot;&quot;</span></div>
 
+    <span class="k">def</span> <span class="nf">_get_weighted_mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                           <span class="n">metric_running</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate weighted mean of metric from the running results.&quot;&quot;&quot;</span>
+        <span class="n">total</span><span class="p">,</span> <span class="n">batches</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">metric</span><span class="p">)</span> <span class="ow">in</span> <span class="n">metric_running</span><span class="p">:</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">batch_size</span> <span class="o">*</span> <span class="n">metric</span>
+            <span class="n">batches</span> <span class="o">+=</span> <span class="n">batch_size</span>
+        <span class="k">return</span> <span class="n">total</span> <span class="o">/</span> <span class="n">batches</span>
+
+    <span class="k">def</span> <span class="nf">_step_and_eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">batch</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span> <span class="n">Any</span><span class="p">],</span>
+                       <span class="n">step_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+                       <span class="n">losses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+                       <span class="n">eval_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span>
+                       <span class="n">evaluate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a forward step and evaluate the metrics.&quot;&quot;&quot;</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">y_hat</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="n">step_func</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">loss</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">evaluate</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">metr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">eval_results</span><span class="p">[</span><span class="n">metr</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">res</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">loss</span>
+
+    <span class="k">def</span> <span class="nf">_summarize_metric</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                          <span class="n">eval_results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span>
+                          <span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">]],</span>
+                          <span class="n">interval</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                          <span class="n">status_bar</span><span class="p">:</span> <span class="n">tqdm</span><span class="p">,</span>
+                          <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculate the metric results and write them to tensorboard and</span>
+<span class="sd">        command-line.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">eval_results</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_weighted_mean</span><span class="p">(</span><span class="n">eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">]))</span>
+            <span class="n">eval_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># reset</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensorboard</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">interval</span><span class="p">)</span>
+            <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
+                    <span class="n">train_loss</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span>
+                                <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">val_loss</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span> <span class="k">else</span> <span class="kc">None</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
 <div class="viewcode-block" id="Trainer.fit"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">train_dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
             <span class="n">val_dataset</span><span class="p">:</span> <span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="n">evaluation_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="n">logging_step</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">eval_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="n">early_stopping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model on the training data and, optionally,</span>
 <span class="sd">        evaluate it on the validation data.</span>
 
@@ -453,160 +508,183 @@
 <span class="sd">            Dataset used for training.</span>
 <span class="sd">        val_dataset : :py:class:`Dataset`, optional</span>
 <span class="sd">            Validation dataset.</span>
-<span class="sd">        evaluation_step : int, default: 1</span>
-<span class="sd">            Sets the intervals at which the metrics are evaluated on the</span>
-<span class="sd">            validation dataset.</span>
-<span class="sd">        logging_step : int, default: 1</span>
+<span class="sd">        log_interval : int, default: 1</span>
 <span class="sd">            Sets the intervals at which the training statistics are</span>
-<span class="sd">            printed if `verbose = &#39;text&#39;` (otherwise ignored).</span>
+<span class="sd">            printed if `verbose = &#39;text&#39;` (otherwise ignored). If `None`,</span>
+<span class="sd">            the statistics are printed at the end of each epoch.</span>
+<span class="sd">        eval_interval : int, default: 1</span>
+<span class="sd">            Sets the number of epochs at which the metrics are</span>
+<span class="sd">            evaluated on the validation dataset. If `None`, the validation</span>
+<span class="sd">            is performed at the end of each epoch.</span>
+<span class="sd">        early_stopping_interval : int, optional</span>
+<span class="sd">            If specified, training is stopped if the validation loss does</span>
+<span class="sd">            not improve for `early_stopping_interval` validation cycles.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_load_extra_checkpoint_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">checkpoint</span><span class="p">)</span>
 
-        <span class="k">def</span> <span class="nf">writer_helper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_tensorboard</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add_scalar</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">disable_tqdm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span>
 
         <span class="c1"># initialise progress bar</span>
         <span class="n">step</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">start_step</span>
-        <span class="n">batches_per_epoch</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span><span class="o">/</span><span class="n">train_dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">val_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">batches_per_validation</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span> <span class="o">/</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
+
         <span class="n">status_bar</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">),</span>
                           <span class="n">bar_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{desc}</span><span class="s1">&#39;</span><span class="p">,</span>
                           <span class="n">desc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(),</span>
-                          <span class="n">disable</span><span class="o">=</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                          <span class="n">disable</span><span class="o">=</span><span class="n">disable_tqdm</span><span class="p">,</span>
                           <span class="n">leave</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                           <span class="n">position</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
         <span class="c1"># start training loop</span>
-        <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_epoch</span><span class="p">,</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
-                            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Epoch&#39;</span><span class="p">,</span>
-                            <span class="n">disable</span><span class="o">=</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
-                            <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                            <span class="n">position</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">train_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
-            <span class="k">with</span> <span class="n">discopy</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
+        <span class="k">with</span> <span class="n">discopy</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
+            <span class="n">early_stopping</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">best_val_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_epoch</span><span class="p">,</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                                <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Epoch&#39;</span><span class="p">,</span>
+                                <span class="n">disable</span><span class="o">=</span><span class="n">disable_tqdm</span><span class="p">,</span>
+                                <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                <span class="n">position</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+
+                <span class="n">train_losses</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span>
                                   <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Batch&#39;</span><span class="p">,</span>
-                                  <span class="n">total</span><span class="o">=</span><span class="n">batches_per_epoch</span><span class="p">,</span>
-                                  <span class="n">disable</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
-                                           <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">),</span>
+                                  <span class="n">total</span><span class="o">=</span><span class="n">train_dataset</span><span class="o">.</span><span class="n">batches_per_epoch</span><span class="p">,</span>
+                                  <span class="n">disable</span><span class="o">=</span><span class="n">disable_tqdm</span><span class="p">,</span>
                                   <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                                   <span class="n">position</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
                     <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="n">x</span><span class="p">,</span> <span class="n">y_label</span> <span class="o">=</span> <span class="n">batch</span>
-                    <span class="n">y_hat</span><span class="p">,</span> <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training_step</span><span class="p">(</span><span class="n">batch</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span>
-                            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-                        <span class="k">for</span> <span class="n">metr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                            <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y_label</span><span class="p">)</span>
-                            <span class="n">metric</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">[</span><span class="n">metr</span><span class="p">]</span>
-                            <span class="n">metric</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">*</span> <span class="n">res</span><span class="p">)</span>
-                    <span class="n">train_loss</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">loss</span>
-                    <span class="n">writer_helper</span><span class="p">(</span><span class="s1">&#39;train/step_loss&#39;</span><span class="p">,</span> <span class="n">loss</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
-                    <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
-                                <span class="n">train_loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
-                                <span class="n">val_loss</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span>
-                                          <span class="k">else</span> <span class="kc">None</span><span class="p">)))</span>
-            <span class="n">train_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">train_loss</span><span class="p">)</span>
-            <span class="n">writer_helper</span><span class="p">(</span><span class="s1">&#39;train/epoch_loss&#39;</span><span class="p">,</span> <span class="n">train_loss</span><span class="p">,</span> <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-
-            <span class="c1"># evaluate on train</span>
-            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span>
-                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">[</span><span class="n">name</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">)</span>
+                    <span class="n">t_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_and_eval</span><span class="p">(</span>
+                        <span class="n">batch</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">training_step</span><span class="p">,</span>
+                        <span class="n">train_losses</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_train_eval_running</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span>
                     <span class="p">)</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_train_results_epoch</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># reset</span>
-                    <span class="n">writer_helper</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s1">&#39;train/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                        <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-                        <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>  <span class="c1"># pragma: no cover</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
-                                    <span class="n">train_loss</span><span class="o">=</span><span class="n">train_loss</span><span class="p">,</span>
-                                    <span class="n">val_loss</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-                                              <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)))</span>
 
-            <span class="c1"># evaluate metrics on validation data</span>
-            <span class="k">if</span> <span class="n">val_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">evaluation_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">val_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
-                    <span class="n">seen_so_far</span> <span class="o">=</span> <span class="mi">0</span>
-                    <span class="n">batches_per_validation</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span>
-                                                  <span class="o">/</span> <span class="n">val_dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">)</span>
-                    <span class="k">with</span> <span class="n">discopy</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
-                        <span class="n">disable_tqdm</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
-                                        <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
-                        <span class="k">for</span> <span class="n">v_batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span>
-                                            <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Validation batch&#39;</span><span class="p">,</span>
-                                            <span class="n">total</span><span class="o">=</span><span class="n">batches_per_validation</span><span class="p">,</span>
-                                            <span class="n">disable</span><span class="o">=</span><span class="n">disable_tqdm</span><span class="p">,</span>
-                                            <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                            <span class="n">position</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
-                            <span class="n">x_val</span><span class="p">,</span> <span class="n">y_label_val</span> <span class="o">=</span> <span class="n">v_batch</span>
-                            <span class="n">y_hat_val</span><span class="p">,</span> <span class="n">cur_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">validation_step</span><span class="p">(</span><span class="n">v_batch</span><span class="p">)</span>
-                            <span class="n">val_loss</span> <span class="o">+=</span> <span class="n">cur_loss</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
-                            <span class="n">seen_so_far</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span>
-                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                                <span class="k">for</span> <span class="n">metr</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="p">(</span>
-                                        <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
-                                    <span class="n">res</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">y_hat_val</span><span class="p">,</span> <span class="n">y_label_val</span><span class="p">)</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">_val_results_epoch</span><span class="p">[</span><span class="n">metr</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                                        <span class="nb">len</span><span class="p">(</span><span class="n">x_val</span><span class="p">)</span><span class="o">*</span><span class="n">res</span><span class="p">)</span>
-                            <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
-                                        <span class="n">train_loss</span><span class="o">=</span><span class="n">train_loss</span><span class="p">,</span>
-                                        <span class="n">val_loss</span><span class="o">=</span><span class="n">val_loss</span><span class="o">/</span><span class="n">seen_so_far</span><span class="p">))</span>
-                        <span class="n">val_loss</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">val_loss</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensorboard</span><span class="p">(</span><span class="s1">&#39;train/step_loss&#39;</span><span class="p">,</span> <span class="n">t_loss</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span>
+                    <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
+                            <span class="n">train_loss</span><span class="o">=</span><span class="n">t_loss</span><span class="p">,</span>
+                            <span class="n">val_loss</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span>
+                                      <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+
+                <span class="c1"># calculate metrics on train dataset</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_on_train</span> <span class="ow">and</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">eval_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_summarize_metric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_train_eval_running</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">,</span>
+                                           <span class="n">epoch</span><span class="p">,</span>
+                                           <span class="n">status_bar</span><span class="p">,</span>
+                                           <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+
+                <span class="c1"># evaluate metrics on validation data</span>
+                <span class="k">if</span> <span class="n">val_dataset</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">eval_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">val_loss</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">v_batch</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">,</span>
+                                        <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Validation batch&#39;</span><span class="p">,</span>
+                                        <span class="n">total</span><span class="o">=</span><span class="n">batches_per_validation</span><span class="p">,</span>
+                                        <span class="n">disable</span><span class="o">=</span><span class="n">disable_tqdm</span><span class="p">,</span>
+                                        <span class="n">leave</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                        <span class="n">position</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+
+                        <span class="n">v_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step_and_eval</span><span class="p">(</span><span class="n">v_batch</span><span class="p">,</span>
+                                                     <span class="bp">self</span><span class="o">.</span><span class="n">validation_step</span><span class="p">,</span>
+                                                     <span class="n">val_loss</span><span class="p">,</span>
+                                                     <span class="bp">self</span><span class="o">.</span><span class="n">_val_eval_running</span><span class="p">)</span>
+
                         <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
-                                    <span class="n">train_loss</span><span class="o">=</span><span class="n">train_loss</span><span class="p">,</span>
-                                    <span class="n">val_loss</span><span class="o">=</span><span class="n">val_loss</span><span class="p">))</span>
-                        <span class="n">writer_helper</span><span class="p">(</span><span class="s1">&#39;val/loss&#39;</span><span class="p">,</span> <span class="n">val_loss</span><span class="p">,</span> <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span><span class="n">train_loss</span><span class="o">=</span><span class="n">t_loss</span><span class="p">,</span>
+                                                       <span class="n">val_loss</span><span class="o">=</span><span class="n">v_loss</span><span class="p">)</span>
+                        <span class="p">)</span>
 
-                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_val_results_epoch</span><span class="p">:</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                                <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_val_results_epoch</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
-                                <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">val_dataset</span><span class="p">))</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">_val_results_epoch</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># reset</span>
-                            <span class="n">writer_helper</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;val/</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
-                                <span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                            <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
-                                        <span class="n">train_loss</span><span class="o">=</span><span class="n">train_loss</span><span class="p">,</span>
-                                        <span class="n">val_loss</span><span class="o">=</span><span class="n">val_loss</span><span class="p">))</span>
-            <span class="c1"># save training stats checkpoint</span>
-            <span class="n">trainer_stats</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_get_weighted_mean</span><span class="p">(</span><span class="n">val_loss</span><span class="p">))</span>
+
+                    <span class="n">status_bar</span><span class="o">.</span><span class="n">set_description</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span><span class="n">train_loss</span><span class="o">=</span><span class="n">t_loss</span><span class="p">,</span>
+                                                   <span class="n">val_loss</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                        <span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensorboard</span><span class="p">(</span><span class="s1">&#39;val/loss&#39;</span><span class="p">,</span>
+                                         <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                         <span class="n">epoch</span><span class="p">)</span>
+
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_summarize_metric</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_val_eval_running</span><span class="p">,</span>
+                                           <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">,</span>
+                                           <span class="n">epoch</span><span class="p">,</span>
+                                           <span class="n">status_bar</span><span class="p">,</span>
+                                           <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;val&#39;</span><span class="p">)</span>
+                    <span class="c1"># save best model</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">best_val_loss</span><span class="p">:</span>
+                        <span class="n">best_val_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span>
+                            <span class="p">{</span><span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epoch</span><span class="p">,</span>
                              <span class="s1">&#39;train_costs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span><span class="p">,</span>
                              <span class="s1">&#39;train_epoch_costs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">,</span>
-                             <span class="s1">&#39;train_results&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_results</span><span class="p">,</span>
+                             <span class="s1">&#39;train_eval_results&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">,</span>
                              <span class="s1">&#39;val_costs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">,</span>
-                             <span class="s1">&#39;val_results&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_results</span><span class="p">,</span>
+                             <span class="s1">&#39;val_eval_results&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">,</span>
                              <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">getstate</span><span class="p">(),</span>
-                             <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="n">step</span><span class="p">}</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span><span class="n">trainer_stats</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span><span class="p">)</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
-                <span class="k">if</span> <span class="n">epoch</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">logging_step</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                    <span class="n">space</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">))</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="s1">&#39; &#39;</span>
-                    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">:&#39;</span> <span class="o">+</span> <span class="n">space</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
-                            <span class="n">train_loss</span><span class="o">=</span><span class="n">train_loss</span><span class="p">,</span>
-                            <span class="n">val_loss</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span>
-                                      <span class="k">else</span> <span class="kc">None</span><span class="p">)),</span>
-                          <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                             <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="n">step</span><span class="p">},</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span><span class="p">,</span>
+                            <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;best_&#39;</span>
+                        <span class="p">)</span>
+
+                    <span class="c1"># check for early stopping</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">early_stopping_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">early_stopping_interval</span>
+                        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="n">early_stopping_interval</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="n">early_stopping_interval</span><span class="p">:])):</span>
+                        <span class="n">early_stopping</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="c1"># calculate epoch loss</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_get_weighted_mean</span><span class="p">(</span><span class="n">train_losses</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_to_tensorboard</span><span class="p">(</span><span class="s1">&#39;train/epoch_loss&#39;</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                                     <span class="n">epoch</span><span class="p">)</span>
+
+                <span class="c1"># save training stats checkpoint</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span>
+                    <span class="p">{</span><span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epoch</span><span class="p">,</span>
+                     <span class="s1">&#39;train_costs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span><span class="p">,</span>
+                     <span class="s1">&#39;train_epoch_costs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">,</span>
+                     <span class="s1">&#39;train_eval_results&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">,</span>
+                     <span class="s1">&#39;val_costs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">,</span>
+                     <span class="s1">&#39;val_eval_results&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">,</span>
+                     <span class="s1">&#39;random_state&#39;</span><span class="p">:</span> <span class="n">random</span><span class="o">.</span><span class="n">getstate</span><span class="p">(),</span>
+                     <span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="n">step</span><span class="p">},</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
+                        <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+                    <span class="k">if</span> <span class="n">epoch</span> <span class="o">%</span> <span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">space</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">epochs</span><span class="p">))</span>
+                                 <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">epoch</span><span class="p">))</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="s1">&#39; &#39;</span>
+                        <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Epoch </span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">:&#39;</span> <span class="o">+</span> <span class="n">space</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="n">prefix</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_stat_report</span><span class="p">(</span>
+                                <span class="n">train_loss</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+                                <span class="n">val_loss</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                                          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)),</span>
+                              <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">early_stopping</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Early stopping!</span><span class="se">\n</span><span class="s1">&#39;</span>
+                              <span class="s1">&#39;Best model saved to &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;best_model.lt&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
+                              <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+                    <span class="k">break</span>  <span class="c1"># break epoch loop</span>
+
         <span class="n">status_bar</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Training completed!&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>  <span class="c1"># pragma: no cover</span></div></div>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Training completed!&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.3.2 documentation</title>
+  <title>lambeq.training.spsa_optimizer &mdash; lambeq 0.3.3 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -165,12 +165,13 @@
 <span class="sd">    See https://ieeexplore.ieee.org/document/705889 for details.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">model</span><span class="p">:</span> <span class="n">QuantumModel</span>
 
-    <span class="n">model</span> <span class="p">:</span> <span class="n">QuantumModel</span>
-
-<div class="viewcode-block" id="SPSAOptimizer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">QuantumModel</span><span class="p">,</span>
-                 <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<div class="viewcode-block" id="SPSAOptimizer.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.SPSAOptimizer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="o">*</span><span class="p">,</span>
+                 <span class="n">model</span><span class="p">:</span> <span class="n">QuantumModel</span><span class="p">,</span>
                  <span class="n">loss_fn</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">float</span><span class="p">],</span>
+                 <span class="n">hyperparams</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">bounds</span><span class="p">:</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the SPSA optimizer.</span>
 
@@ -188,10 +189,10 @@
 <span class="sd">        ----------</span>
 <span class="sd">        model : :py:class:`.QuantumModel`</span>
 <span class="sd">            A lambeq quantum model.</span>
-<span class="sd">        hyperparams : dict of str to float.</span>
-<span class="sd">            A dictionary containing the models hyperparameters.</span>
 <span class="sd">        loss_fn : Callable</span>
 <span class="sd">            A loss function of form `loss(prediction, labels)`.</span>
+<span class="sd">        hyperparams : dict of str to float.</span>
+<span class="sd">            A dictionary containing the models hyperparameters.</span>
 <span class="sd">        bounds : ArrayLike, optional</span>
 <span class="sd">            The range of each of the model parameters.</span>
 
@@ -203,11 +204,21 @@
 <span class="sd">            parameters.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">fields</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">hyperparams</span> <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span><span class="s1">&#39;Missing arguments in hyperparameter dict&#39;</span>
-                           <span class="sa">f</span><span class="s1">&#39;configuation. Must contain </span><span class="si">{</span><span class="n">fields</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">hyperparams</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">bounds</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">hyperparams</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Missing `hyperparams` parameter&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">REQUIRED_FIELDS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">}</span>
+            <span class="n">missing_fields</span> <span class="o">=</span> <span class="n">REQUIRED_FIELDS</span> <span class="o">-</span> <span class="n">hyperparams</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">missing_fields</span><span class="p">:</span>
+                <span class="n">formatted_fields</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;`</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">`&#39;</span>
+                                             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">missing_fields</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Missing arguments in `hyperparams` &#39;</span>
+                                 <span class="sa">f</span><span class="s1">&#39;dictionary: </span><span class="si">{</span><span class="n">formatted_fields</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+                         <span class="n">loss_fn</span><span class="o">=</span><span class="n">loss_fn</span><span class="p">,</span>
+                         <span class="n">hyperparams</span><span class="o">=</span><span class="n">hyperparams</span><span class="p">,</span>
+                         <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.602</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.101</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_sweep</span> <span class="o">=</span> <span class="mi">1</span>

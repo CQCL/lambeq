@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; lambeq 0.3.2 documentation</title>
+  <title>&lt;no title&gt; &mdash; lambeq 0.3.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -423,8 +423,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">30</span>
-<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">BATCH_SIZE</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">EPOCHS</span> <span class="o">=</span> <span class="mi">100</span>
 <span class="n">SEED</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
@@ -655,10 +655,11 @@ Turning parse trees to diagrams.
     <span class="n">loss_function</span><span class="o">=</span><span class="n">bce</span><span class="p">,</span>
     <span class="n">epochs</span><span class="o">=</span><span class="n">EPOCHS</span><span class="p">,</span>
     <span class="n">optimizer</span><span class="o">=</span><span class="n">SPSAOptimizer</span><span class="p">,</span>
-    <span class="n">optim_hyperparams</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span><span class="mf">0.01</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">},</span>
+    <span class="n">optim_hyperparams</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span><span class="mf">0.001</span><span class="o">*</span><span class="n">EPOCHS</span><span class="p">},</span>
     <span class="n">evaluate_functions</span><span class="o">=</span><span class="n">eval_metrics</span><span class="p">,</span>
     <span class="n">evaluate_on_train</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">verbose</span> <span class="o">=</span> <span class="s1">&#39;text&#39;</span><span class="p">,</span>
+    <span class="n">log_dir</span><span class="o">=</span><span class="s1">&#39;RelPron/logs&#39;</span><span class="p">,</span>
     <span class="n">seed</span><span class="o">=</span><span class="mi">0</span>
 <span class="p">)</span>
 </pre></div>
@@ -683,7 +684,7 @@ Turning parse trees to diagrams.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">evaluation_step</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">logging_step</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train_dataset</span><span class="p">,</span> <span class="n">val_dataset</span><span class="p">,</span> <span class="n">early_stopping_interval</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -692,17 +693,20 @@ Turning parse trees to diagrams.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:     train/loss: 0.8875   valid/loss: 1.5880   train/acc: 0.6286   valid/acc: 0.5000
-Epoch 100:   train/loss: 0.2760   valid/loss: 1.1021   train/acc: 0.8929   valid/acc: 0.7258
-Epoch 200:   train/loss: 0.1741   valid/loss: 0.4057   train/acc: 0.9500   valid/acc: 0.7419
-Epoch 300:   train/loss: 0.1405   valid/loss: 1.0325   train/acc: 0.9643   valid/acc: 0.7419
-Epoch 400:   train/loss: 0.1108   valid/loss: 1.0666   train/acc: 0.9643   valid/acc: 0.7742
-Epoch 500:   train/loss: 0.0975   valid/loss: 1.6569   train/acc: 1.0000   valid/acc: 0.7419
-Epoch 600:   train/loss: 0.0921   valid/loss: 0.3631   train/acc: 0.9857   valid/acc: 0.7903
-Epoch 700:   train/loss: 0.0820   valid/loss: 1.0184   train/acc: 0.9786   valid/acc: 0.7581
-Epoch 800:   train/loss: 0.0858   valid/loss: 1.6595   train/acc: 0.9714   valid/acc: 0.8065
-Epoch 900:   train/loss: 0.0738   valid/loss: 1.0420   train/acc: 0.9857   valid/acc: 0.7903
-Epoch 1000:  train/loss: 0.0677   valid/loss: 1.6735   train/acc: 0.9857   valid/acc: 0.7742
+Epoch 1:    train/loss: 1.4714   valid/loss: 0.6096   train/acc: 0.5286   valid/acc: 0.7097
+Epoch 2:    train/loss: 0.6728   valid/loss: 0.2781   train/acc: 0.6857   valid/acc: 0.9677
+Epoch 3:    train/loss: 0.2518   valid/loss: 1.2313   train/acc: 0.7214   valid/acc: 0.7097
+Epoch 4:    train/loss: 1.7837   valid/loss: 0.6893   train/acc: 0.6214   valid/acc: 0.6452
+Epoch 5:    train/loss: 2.4371   valid/loss: 1.8276   train/acc: 0.7429   valid/acc: 0.6452
+Epoch 6:    train/loss: 0.5248   valid/loss: 0.8831   train/acc: 0.6643   valid/acc: 0.4032
+Epoch 7:    train/loss: 0.8468   valid/loss: 0.7782   train/acc: 0.5429   valid/acc: 0.5323
+Epoch 8:    train/loss: 1.2001   valid/loss: 1.5334   train/acc: 0.6000   valid/acc: 0.5161
+Epoch 9:    train/loss: 2.0601   valid/loss: 1.1032   train/acc: 0.4571   valid/acc: 0.4194
+Epoch 10:   train/loss: 0.8087   valid/loss: 0.5259   train/acc: 0.4071   valid/acc: 0.7581
+Epoch 11:   train/loss: 0.5098   valid/loss: 0.5661   train/acc: 0.7500   valid/acc: 0.7581
+Epoch 12:   train/loss: 0.5209   valid/loss: 1.2345   train/acc: 0.6429   valid/acc: 0.6935
+Early stopping!
+Best model saved to RelPron/logs/best_model.lt
 
 Training completed!
 </pre></div></div>
@@ -722,12 +726,23 @@ Training completed!
 <span class="n">ax_tl</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Loss&#39;</span><span class="p">)</span>
 
 <span class="n">colours</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;axes.prop_cycle&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">by_key</span><span class="p">()[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
-<span class="n">ax_tl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">[::</span><span class="mi">10</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
-<span class="n">ax_bl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">train_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">][::</span><span class="mi">10</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
-<span class="n">ax_tr</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[::</span><span class="mi">10</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
-<span class="n">ax_br</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">val_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">][::</span><span class="mi">10</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">range_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">ax_tl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">range_</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_bl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">range_</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_tr</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">range_</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">val_costs</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+<span class="n">ax_br</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">range_</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="nb">next</span><span class="p">(</span><span class="n">colours</span><span class="p">))</span>
+
+<span class="c1"># mark best model as circle</span>
+<span class="n">best_epoch</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">val_costs</span><span class="p">)</span>
+<span class="n">ax_tl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">best_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="p">[</span><span class="n">best_epoch</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">ax_tr</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">best_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="n">best_epoch</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">ax_bl</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">best_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">train_eval_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">][</span><span class="n">best_epoch</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="n">ax_br</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">best_epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">[</span><span class="s1">&#39;acc&#39;</span><span class="p">][</span><span class="n">best_epoch</span><span class="p">],</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+<span class="n">ax_tr</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">best_epoch</span> <span class="o">+</span> <span class="mf">1.4</span><span class="p">,</span> <span class="n">trainer</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="n">best_epoch</span><span class="p">],</span> <span class="s1">&#39;early stopping&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
 
 <span class="c1"># print test accuracy</span>
+<span class="n">model</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">trainer</span><span class="o">.</span><span class="n">log_dir</span> <span class="o">+</span> <span class="s1">&#39;/best_model.lt&#39;</span><span class="p">)</span>
 <span class="n">test_acc</span> <span class="o">=</span> <span class="n">acc</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">val_circuits</span><span class="p">),</span> <span class="n">val_labels</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Validation accuracy:&#39;</span><span class="p">,</span> <span class="n">test_acc</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 </pre></div>
@@ -738,7 +753,7 @@ Training completed!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Validation accuracy: 0.8064516129032258
+Validation accuracy: 0.9354838709677419
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">

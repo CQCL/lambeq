@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq &mdash; lambeq 0.3.2 documentation</title>
+  <title>lambeq &mdash; lambeq 0.3.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -39,7 +39,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -285,6 +285,7 @@
 <li class="toctree-l2"><a class="reference internal" href="examples/rewrite.html">Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/circuit.html">Circuit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/tensor.html">Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/rotosolve_optimizer.html">Rotosolve optimizer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/classical_pipeline.html">Classical pipeline</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/quantum_pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/quantum_pipeline_jax.html">Quantum pipeline using JAX backend</a></li>
@@ -469,6 +470,12 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DepCCGParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">DepCCGParser.sentences2trees()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.DiagramRewriter"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DiagramRewriter.__call__"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DiagramRewriter.matches"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.DiagramRewriter.rewrite"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter.rewrite()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.IQPAnsatz"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.IQPAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.IQPAnsatz.circuit"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz.circuit()</span></code></a></li>
@@ -508,6 +515,19 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Model.save"><code class="docutils literal notranslate"><span class="pre">Model.save()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.__init__"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.backward"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.backward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.bounds"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.bounds</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.load_state_dict"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.load_state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.model"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.objective"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.objective()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.project"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.project()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.state_dict"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.step"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NelderMeadOptimizer.update_hyper_params"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.update_hyper_params()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.NumpyModel"><code class="docutils literal notranslate"><span class="pre">NumpyModel</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.__init__"><code class="docutils literal notranslate"><span class="pre">NumpyModel.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.NumpyModel.forward"><code class="docutils literal notranslate"><span class="pre">NumpyModel.forward()</span></code></a></li>
@@ -533,6 +553,7 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.from_diagrams"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.from_diagrams()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.get_diagram_output()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.initialise_weights"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.initialise_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.symbol_weight_map"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.symbol_weight_map</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.symbols"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.symbols</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.training"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.training</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PennyLaneModel.weights"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.weights</span></code></a></li>
@@ -553,10 +574,10 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.model"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.model</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.train_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_costs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.train_epoch_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_epoch_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.train_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.train_eval_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.training_step"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.training_step()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.val_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.val_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.val_eval_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.PytorchTrainer.validation_step"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.validation_step()</span></code></a></li>
 </ul>
 </li>
@@ -576,10 +597,10 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.model"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.model</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.train_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_costs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.train_epoch_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_epoch_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.train_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.train_eval_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.training_step"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.training_step()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.val_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.val_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.val_eval_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.QuantumTrainer.validation_step"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.validation_step()</span></code></a></li>
 </ul>
 </li>
@@ -599,6 +620,16 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Rewriter.__init__"><code class="docutils literal notranslate"><span class="pre">Rewriter.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Rewriter.add_rules"><code class="docutils literal notranslate"><span class="pre">Rewriter.add_rules()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Rewriter.available_rules"><code class="docutils literal notranslate"><span class="pre">Rewriter.available_rules()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer.__init__"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer.backward"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.backward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer.load_state_dict"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.load_state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer.model"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer.project"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.project()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer.state_dict"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RotosolveOptimizer.step"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.step()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.SPSAOptimizer"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a><ul>
@@ -697,6 +728,20 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode.NO_TYPE"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.NO_TYPE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode.RULE_ONLY"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.RULE_ONLY</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.TreeReaderMode.RULE_TYPE"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.RULE_TYPE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.UnifyCodomainRewriter"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnifyCodomainRewriter.__init__"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnifyCodomainRewriter.matches"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnifyCodomainRewriter.output_type"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.output_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnifyCodomainRewriter.rewrite"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.rewrite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.UnknownWordsRewriteRule"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnknownWordsRewriteRule.__init__"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnknownWordsRewriteRule.from_diagrams"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.from_diagrams()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnknownWordsRewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.UnknownWordsRewriteRule.rewrite"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.rewrite()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.VerbosityLevel"><code class="docutils literal notranslate"><span class="pre">VerbosityLevel</span></code></a><ul>

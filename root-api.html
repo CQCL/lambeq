@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq package &mdash; lambeq 0.3.2 documentation</title>
+  <title>lambeq package &mdash; lambeq 0.3.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.2
+                0.3.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -256,6 +256,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.DepCCGParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">DepCCGParser.sentences2trees()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq.DiagramRewriter"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.DiagramRewriter.__call__"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.DiagramRewriter.matches"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.DiagramRewriter.rewrite"><code class="docutils literal notranslate"><span class="pre">DiagramRewriter.rewrite()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq.IQPAnsatz"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.IQPAnsatz.__init__"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.IQPAnsatz.circuit"><code class="docutils literal notranslate"><span class="pre">IQPAnsatz.circuit()</span></code></a></li>
@@ -295,6 +301,19 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.Model.save"><code class="docutils literal notranslate"><span class="pre">Model.save()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq.NelderMeadOptimizer"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.__init__"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.backward"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.backward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.bounds"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.bounds</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.load_state_dict"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.load_state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.model"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.objective"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.objective()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.project"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.project()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.state_dict"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.step"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.step()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.NelderMeadOptimizer.update_hyper_params"><code class="docutils literal notranslate"><span class="pre">NelderMeadOptimizer.update_hyper_params()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq.NumpyModel"><code class="docutils literal notranslate"><span class="pre">NumpyModel</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.NumpyModel.__init__"><code class="docutils literal notranslate"><span class="pre">NumpyModel.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.NumpyModel.forward"><code class="docutils literal notranslate"><span class="pre">NumpyModel.forward()</span></code></a></li>
@@ -320,6 +339,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PennyLaneModel.from_diagrams"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.from_diagrams()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PennyLaneModel.get_diagram_output"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.get_diagram_output()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PennyLaneModel.initialise_weights"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.initialise_weights()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.PennyLaneModel.symbol_weight_map"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.symbol_weight_map</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PennyLaneModel.symbols"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.symbols</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PennyLaneModel.training"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.training</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PennyLaneModel.weights"><code class="docutils literal notranslate"><span class="pre">PennyLaneModel.weights</span></code></a></li>
@@ -340,10 +360,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.model"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.model</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.train_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_costs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.train_epoch_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_epoch_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.train_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.train_eval_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.train_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.training_step"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.training_step()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.val_costs"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.val_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.val_eval_results"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.val_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.PytorchTrainer.validation_step"><code class="docutils literal notranslate"><span class="pre">PytorchTrainer.validation_step()</span></code></a></li>
 </ul>
 </li>
@@ -363,10 +383,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.model"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.model</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.train_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_costs</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.train_epoch_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_epoch_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.train_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.train_eval_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.train_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.training_step"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.training_step()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.val_costs"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_costs</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.val_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_results</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.val_eval_results"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.val_eval_results</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.QuantumTrainer.validation_step"><code class="docutils literal notranslate"><span class="pre">QuantumTrainer.validation_step()</span></code></a></li>
 </ul>
 </li>
@@ -386,6 +406,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.Rewriter.__init__"><code class="docutils literal notranslate"><span class="pre">Rewriter.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.Rewriter.add_rules"><code class="docutils literal notranslate"><span class="pre">Rewriter.add_rules()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.Rewriter.available_rules"><code class="docutils literal notranslate"><span class="pre">Rewriter.available_rules()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq.RotosolveOptimizer"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.RotosolveOptimizer.__init__"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.RotosolveOptimizer.backward"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.backward()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.RotosolveOptimizer.load_state_dict"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.load_state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.RotosolveOptimizer.model"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.model</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.RotosolveOptimizer.project"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.project()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.RotosolveOptimizer.state_dict"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.state_dict()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.RotosolveOptimizer.step"><code class="docutils literal notranslate"><span class="pre">RotosolveOptimizer.step()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq.SPSAOptimizer"><code class="docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a><ul>
@@ -484,6 +514,20 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.TreeReaderMode.NO_TYPE"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.NO_TYPE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.TreeReaderMode.RULE_ONLY"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.RULE_ONLY</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.TreeReaderMode.RULE_TYPE"><code class="docutils literal notranslate"><span class="pre">TreeReaderMode.RULE_TYPE</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq.UnifyCodomainRewriter"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnifyCodomainRewriter.__init__"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnifyCodomainRewriter.matches"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnifyCodomainRewriter.output_type"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.output_type</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnifyCodomainRewriter.rewrite"><code class="docutils literal notranslate"><span class="pre">UnifyCodomainRewriter.rewrite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq.UnknownWordsRewriteRule"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnknownWordsRewriteRule.__init__"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnknownWordsRewriteRule.from_diagrams"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.from_diagrams()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnknownWordsRewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.UnknownWordsRewriteRule.rewrite"><code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule.rewrite()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq.VerbosityLevel"><code class="docutils literal notranslate"><span class="pre">VerbosityLevel</span></code></a><ul>
@@ -2310,6 +2354,48 @@ are suppressed.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="lambeq.DiagramRewriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">DiagramRewriter</span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.DiagramRewriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Base class for diagram level rewriters.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.DiagramRewriter.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">discopy.grammar.pregroup.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">discopy.grammar.pregroup.Diagram</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.DiagramRewriter.__call__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span></dt>
+<dd><p>Rewrite the given diagram(s) if the rule applies.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>diagram</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.pregroup.Diagram</span></code> or list of Diagram</span></dt><dd><p>The candidate diagram(s) to be rewritten.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.pregroup.Diagram</span></code> or list of Diagram</dt><dd><p>The rewritten diagram. If the rule does not apply, the
+original diagram is returned.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.DiagramRewriter.matches">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.DiagramRewriter.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given diagram should be rewritten.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.DiagramRewriter.rewrite">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#DiagramRewriter.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.DiagramRewriter.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given diagram.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="lambeq.IQPAnsatz">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">IQPAnsatz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ob_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">Ty</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_single_qubit_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#IQPAnsatz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.IQPAnsatz" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#lambeq.CircuitAnsatz" title="lambeq.ansatz.circuit.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a></p>
@@ -2655,6 +2741,200 @@ usually have the extension <cite>.lt</cite>.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">NelderMeadOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.Optimizer" title="lambeq.training.optimizer.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a></p>
+<p>An optimizer based on the Nelder-Mead algorithm.</p>
+<p>This implementation is based heavily on SciPy’s <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html">optimize.minimize</a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the Nelder-Mead optimizer.</p>
+<p>The hyperparameters may contain the following key-value pairs:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><cite>adaptive</cite>: bool, default: False</dt><dd><p>Adjust the algorithm’s parameters based on the
+dimensionality of the problem. This is particularly helpful
+when minimizing functions in high-dimensional spaces.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>maxfev</cite>: int, default: 1000</dt><dd><p>Maximum number of function evaluations allowed.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>initial_simplex</cite>: ArrayLike (N+1, N), default: None</dt><dd><p>If provided, replaces the initial model weights. Each row
+should contain the coordinates of the <cite>i`th vertex of the
+`N+1</cite> vertices in the simplex, where <cite>N</cite> is the dimension.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>xatol</cite>: float, default: 1e-4</dt><dd><p>The acceptable level of absolute error in the optimal model
+weights (optimal solution) between iterations that indicates
+convergence.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>fatol</cite>: float, default: 1e-4</dt><dd><p>The acceptable level of absolute error in the loss value
+between iterations that indicates convergence.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>model</strong><span class="classifier"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a></span></dt><dd><p>A lambeq quantum model.</p>
+</dd>
+<dt><strong>hyperparams</strong><span class="classifier">dict of str to float</span></dt><dd><p>A dictionary containing the models hyperparameters.</p>
+</dd>
+<dt><strong>loss_fn</strong><span class="classifier">Callable[[ArrayLike, ArrayLike], float]]</span></dt><dd><p>A loss function of form <cite>loss(prediction, labels)</cite>.</p>
+</dd>
+<dt><strong>bounds</strong><span class="classifier">ArrayLike, optional</span></dt><dd><p>The range of each of the model parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ValueError</dt><dd><ul class="simple">
+<li><p>If the hyperparameters are not set correctly, or if the
+length of <cite>bounds</cite> does not match the number of the model
+parameters.</p></li>
+<li><p>If the lower bounds are greater than the upper bounds.</p></li>
+<li><p>If the initial simplex is not a 2D array.</p></li>
+<li><p>If the initial simplex does not have N+1 rows, where N is
+the number of model parameters.</p></li>
+</ul>
+</dd>
+<dt>Warning</dt><dd><ul class="simple">
+<li><p>If the initial model weights are not within the bounds.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<p>Gao, Fuchang &amp; Han, Lixing. (2012). Implementing the Nelder-Mead
+Simplex Algorithm with Adaptive Parameters.
+<cite>Computational Optimization and Applications</cite>, 51. 259-277.
+10.1007/s10589-010-9329-3.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.backward" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the gradients of the loss function.</p>
+<p>The gradients are calculated with respect to the model
+parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>batch</strong><span class="classifier">tuple of Iterable and numpy.ndarray</span></dt><dd><p>Current batch. Contains an Iterable of diagrams in index 0,
+and the targets in index 1.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The calculated loss.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.bounds">
+<span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">np.ndarray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#lambeq.NelderMeadOptimizer.bounds" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.load_state_dict">
+<span class="sig-name descname"><span class="pre">load_state_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.load_state_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.load_state_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Load state of the optimizer from the state dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>state_dict</strong><span class="classifier">dict</span></dt><dd><p>A dictionary containing a snapshot of the optimizer state.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></em><a class="headerlink" href="#lambeq.NelderMeadOptimizer.model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.objective">
+<span class="sig-name descname"><span class="pre">objective</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">w</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.objective"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.objective" title="Permalink to this definition"></a></dt>
+<dd><p>The objective function to be minimized.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x</strong><span class="classifier">ArrayLike</span></dt><dd><p>The input data.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">ArrayLike</span></dt><dd><p>The labels.</p>
+</dd>
+<dt><strong>w</strong><span class="classifier">ArrayLike</span></dt><dd><p>The model parameters.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>result: float</dt><dd><p>The result of the objective function.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the objective function does not return a scalar value.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.project">
+<span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.project" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.state_dict">
+<span class="sig-name descname"><span class="pre">state_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.state_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.state_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Return optimizer states as dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>dict</dt><dd><p>A dictionary containing the current state of the optimizer.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.step" title="Permalink to this definition"></a></dt>
+<dd><p>Perform optimisation step.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.NelderMeadOptimizer.update_hyper_params">
+<span class="sig-name descname"><span class="pre">update_hyper_params</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/nelder_mead_optimizer.html#NelderMeadOptimizer.update_hyper_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NelderMeadOptimizer.update_hyper_params" title="Permalink to this definition"></a></dt>
+<dd><p>Update the hyperparameters of the Nelder-Mead algorithm.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="lambeq.NumpyModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">NumpyModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">use_jit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/training/numpy_model.html#NumpyModel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.NumpyModel" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.training.quantum_model.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a></p>
@@ -2743,21 +3023,21 @@ to be evaluated.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="lambeq.Optimizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">Optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Model" title="lambeq.Model"><span class="pre">Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/training/optimizer.html#Optimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Optimizer" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">Optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Model" title="lambeq.Model"><span class="pre">Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/training/optimizer.html#Optimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Optimizer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>Optimizer base class.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.Optimizer.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Model" title="lambeq.Model"><span class="pre">Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/optimizer.html#Optimizer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Optimizer.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Model" title="lambeq.Model"><span class="pre">Model</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/optimizer.html#Optimizer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Optimizer.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialise the optimizer base class.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>model</strong><span class="classifier"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a></span></dt><dd><p>A lambeq model.</p>
 </dd>
-<dt><strong>hyperparams</strong><span class="classifier">dict of str to float.</span></dt><dd><p>A dictionary containing the models hyperparameters.</p>
-</dd>
 <dt><strong>loss_fn</strong><span class="classifier">Callable</span></dt><dd><p>A loss function of form <cite>loss(prediction, labels)</cite>.</p>
+</dd>
+<dt><strong>hyperparams</strong><span class="classifier">dict of str to float, optional</span></dt><dd><p>A dictionary containing the models hyperparameters.</p>
 </dd>
 <dt><strong>bounds</strong><span class="classifier">ArrayLike, optional</span></dt><dd><p>The range of each of the model’s parameters.</p>
 </dd>
@@ -2930,6 +3210,11 @@ evaluated.</p>
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.PennyLaneModel.symbol_weight_map">
+<span class="sig-name descname"><span class="pre">symbol_weight_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#lambeq.Symbol" title="lambeq.Symbol"><span class="pre">Symbol</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">torch.FloatTensor</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.PennyLaneModel.symbol_weight_map" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="lambeq.PennyLaneModel.symbols">
@@ -3108,8 +3393,8 @@ Default is <cite>runs/**CURRENT_DATETIME_HOSTNAME**</cite>.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="lambeq.PytorchTrainer.train_results">
-<span class="sig-name descname"><span class="pre">train_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.PytorchTrainer.train_results" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="lambeq.PytorchTrainer.train_eval_results">
+<span class="sig-name descname"><span class="pre">train_eval_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.PytorchTrainer.train_eval_results" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3138,8 +3423,8 @@ Default is <cite>runs/**CURRENT_DATETIME_HOSTNAME**</cite>.</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="lambeq.PytorchTrainer.val_results">
-<span class="sig-name descname"><span class="pre">val_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.PytorchTrainer.val_results" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="lambeq.PytorchTrainer.val_eval_results">
+<span class="sig-name descname"><span class="pre">val_eval_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.PytorchTrainer.val_eval_results" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3291,7 +3576,7 @@ Default is <cite>runs/**CURRENT_DATETIME_HOSTNAME**</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.QuantumTrainer.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluation_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/quantum_trainer.html#QuantumTrainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.QuantumTrainer.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/quantum_trainer.html#QuantumTrainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.QuantumTrainer.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit the model on the training data and, optionally,
 evaluate it on the validation data.</p>
 <dl class="field-list">
@@ -3301,11 +3586,16 @@ evaluate it on the validation data.</p>
 </dd>
 <dt><strong>val_dataset</strong><span class="classifier"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>, optional</span></dt><dd><p>Validation dataset.</p>
 </dd>
-<dt><strong>evaluation_step</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the intervals at which the metrics are evaluated on the
-validation dataset.</p>
+<dt><strong>log_interval</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the intervals at which the training statistics are
+printed if <cite>verbose = ‘text’</cite> (otherwise ignored). If <cite>None</cite>,
+the statistics are printed at the end of each epoch.</p>
 </dd>
-<dt><strong>logging_step</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the intervals at which the training statistics are
-printed if <cite>verbose = ‘text’</cite> (otherwise ignored).</p>
+<dt><strong>eval_interval</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the number of epochs at which the metrics are
+evaluated on the validation dataset. If <cite>None</cite>, the validation
+is performed at the end of each epoch.</p>
+</dd>
+<dt><strong>early_stopping_interval</strong><span class="classifier">int, optional</span></dt><dd><p>If specified, training is stopped if the validation loss does
+not improve for <cite>early_stopping_interval</cite> validation cycles.</p>
 </dd>
 </dl>
 </dd>
@@ -3328,8 +3618,8 @@ printed if <cite>verbose = ‘text’</cite> (otherwise ignored).</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="lambeq.QuantumTrainer.train_results">
-<span class="sig-name descname"><span class="pre">train_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.QuantumTrainer.train_results" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="lambeq.QuantumTrainer.train_eval_results">
+<span class="sig-name descname"><span class="pre">train_eval_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.QuantumTrainer.train_eval_results" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3358,8 +3648,8 @@ printed if <cite>verbose = ‘text’</cite> (otherwise ignored).</p>
 <dd></dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="lambeq.QuantumTrainer.val_results">
-<span class="sig-name descname"><span class="pre">val_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.QuantumTrainer.val_results" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="lambeq.QuantumTrainer.val_eval_results">
+<span class="sig-name descname"><span class="pre">val_eval_results</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#lambeq.QuantumTrainer.val_eval_results" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -3494,15 +3784,104 @@ names. If omitted, all the default rules are used.</p>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">RotosolveOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/training/rotosolve_optimizer.html#RotosolveOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.RotosolveOptimizer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.Optimizer" title="lambeq.training.optimizer.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a></p>
+<p>An optimizer using the Rotosolve algorithm.</p>
+<p>Rotosolve is an optimizer for parametrized quantum circuits. It
+applies a shift of ±π/2 radians to each parameter, then updates the
+parameter based on the resulting loss. The loss function is assumed
+to be a linear combination of Hamiltonian measurements.</p>
+<p>This optimizer is designed to work with ansätze that are composed of
+single-qubit rotations, such as the
+<a class="reference internal" href="#lambeq.StronglyEntanglingAnsatz" title="lambeq.StronglyEntanglingAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">StronglyEntanglingAnsatz</span></code></a>, <a class="reference internal" href="#lambeq.Sim14Ansatz" title="lambeq.Sim14Ansatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sim14Ansatz</span></code></a>
+and <a class="reference internal" href="#lambeq.Sim15Ansatz" title="lambeq.Sim15Ansatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sim15Ansatz</span></code></a>.</p>
+<p>See <a class="reference external" href="https://quantum-journal.org/papers/q-2021-01-28-391/pdf/">Ostaszewski et al.</a> for
+details.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/rotosolve_optimizer.html#RotosolveOptimizer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.RotosolveOptimizer.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the Rotosolve optimizer.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>model</strong><span class="classifier"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a></span></dt><dd><p>A lambeq quantum model.</p>
+</dd>
+<dt><strong>loss_fn</strong><span class="classifier">callable</span></dt><dd><p>A loss function of the form <cite>loss(prediction, labels)</cite>.</p>
+</dd>
+<dt><strong>hyperparams</strong><span class="classifier">dict of str to float, optional</span></dt><dd><p>Unused.</p>
+</dd>
+<dt><strong>bounds</strong><span class="classifier">ArrayLike, optional</span></dt><dd><p>Unused.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer.backward">
+<span class="sig-name descname"><span class="pre">backward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">collections.abc.Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">numpy.ndarray</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="_modules/lambeq/training/rotosolve_optimizer.html#RotosolveOptimizer.backward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.RotosolveOptimizer.backward" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a single backward pass.</p>
+<p>Rotosolve does not calculate a global gradient. Instead, the
+parameters are updated after applying a shift of ±π/2 radians to
+each parameter. Therefore, there is no global step to take.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>batch</strong><span class="classifier">tuple of Iterable and numpy.ndarray</span></dt><dd><p>Current batch. Contains an Iterable of diagrams in index 0,
+and the targets in index 1.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>float</dt><dd><p>The calculated loss after the backward pass.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer.load_state_dict">
+<span class="sig-name descname"><span class="pre">load_state_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/rotosolve_optimizer.html#RotosolveOptimizer.load_state_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.RotosolveOptimizer.load_state_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Load state of the optimizer from the state dictionary.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer.model">
+<span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.training.quantum_model.QuantumModel"><span class="pre">QuantumModel</span></a></em><a class="headerlink" href="#lambeq.RotosolveOptimizer.model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer.project">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="reference internal" href="_modules/lambeq/training/rotosolve_optimizer.html#RotosolveOptimizer.project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.RotosolveOptimizer.project" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer.state_dict">
+<span class="sig-name descname"><span class="pre">state_dict</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/training/rotosolve_optimizer.html#RotosolveOptimizer.state_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.RotosolveOptimizer.state_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Return optimizer states as dictionary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.RotosolveOptimizer.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/rotosolve_optimizer.html#RotosolveOptimizer.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.RotosolveOptimizer.step" title="Permalink to this definition"></a></dt>
+<dd><p>Perform optimisation step.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="lambeq.SPSAOptimizer">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">SPSAOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/training/spsa_optimizer.html#SPSAOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.SPSAOptimizer" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">SPSAOptimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/training/spsa_optimizer.html#SPSAOptimizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.SPSAOptimizer" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#lambeq.Optimizer" title="lambeq.training.optimizer.Optimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></a></p>
 <p>An Optimizer using SPSA.</p>
 <p>SPSA = Simultaneous Perturbation Stochastic Spproximations.
 See <a class="reference external" href="https://ieeexplore.ieee.org/document/705889">https://ieeexplore.ieee.org/document/705889</a> for details.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.SPSAOptimizer.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/spsa_optimizer.html#SPSAOptimizer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.SPSAOptimizer.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><span class="pre">QuantumModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/spsa_optimizer.html#SPSAOptimizer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.SPSAOptimizer.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialise the SPSA optimizer.</p>
 <p>The hyperparameters must contain the following key value pairs:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">hyperparams</span> <span class="o">=</span> <span class="p">{</span>
@@ -3518,9 +3897,9 @@ See <a class="reference external" href="https://ieeexplore.ieee.org/document/705
 <dd class="field-odd"><dl>
 <dt><strong>model</strong><span class="classifier"><a class="reference internal" href="#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a></span></dt><dd><p>A lambeq quantum model.</p>
 </dd>
-<dt><strong>hyperparams</strong><span class="classifier">dict of str to float.</span></dt><dd><p>A dictionary containing the models hyperparameters.</p>
-</dd>
 <dt><strong>loss_fn</strong><span class="classifier">Callable</span></dt><dd><p>A loss function of form <cite>loss(prediction, labels)</cite>.</p>
+</dd>
+<dt><strong>hyperparams</strong><span class="classifier">dict of str to float.</span></dt><dd><p>A dictionary containing the models hyperparameters.</p>
 </dd>
 <dt><strong>bounds</strong><span class="classifier">ArrayLike, optional</span></dt><dd><p>The range of each of the model parameters.</p>
 </dd>
@@ -3859,7 +4238,7 @@ dimension space it uses in a tensor network.</p>
 <p>Ansatz using three single qubit rotations (RzRyRz) followed by a
 ladder of CNOT gates with different ranges per layer.</p>
 <p>This is adapted from the PennyLane implementation of the
-<a class="reference external" href="https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html#pennylane.StronglyEntanglingLayers" title="(in PennyLane v0.30)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pennylane.StronglyEntanglingLayers</span></code></a>, pursuant to <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache
+<a class="reference external" href="https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html#pennylane.StronglyEntanglingLayers" title="(in PennyLane v0.31)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pennylane.StronglyEntanglingLayers</span></code></a>, pursuant to <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache
 2.0 licence</a>.</p>
 <p>The original paper which introduces the architecture can be found
 <a class="reference external" href="https://arxiv.org/abs/1804.00633">here</a>.</p>
@@ -4194,7 +4573,7 @@ Default is <cite>runs/**CURRENT_DATETIME_HOSTNAME**</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.Trainer.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaluation_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logging_step</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/trainer.html#Trainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Trainer.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/trainer.html#Trainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Trainer.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit the model on the training data and, optionally,
 evaluate it on the validation data.</p>
 <dl class="field-list">
@@ -4204,11 +4583,16 @@ evaluate it on the validation data.</p>
 </dd>
 <dt><strong>val_dataset</strong><span class="classifier"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a>, optional</span></dt><dd><p>Validation dataset.</p>
 </dd>
-<dt><strong>evaluation_step</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the intervals at which the metrics are evaluated on the
-validation dataset.</p>
+<dt><strong>log_interval</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the intervals at which the training statistics are
+printed if <cite>verbose = ‘text’</cite> (otherwise ignored). If <cite>None</cite>,
+the statistics are printed at the end of each epoch.</p>
 </dd>
-<dt><strong>logging_step</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the intervals at which the training statistics are
-printed if <cite>verbose = ‘text’</cite> (otherwise ignored).</p>
+<dt><strong>eval_interval</strong><span class="classifier">int, default: 1</span></dt><dd><p>Sets the number of epochs at which the metrics are
+evaluated on the validation dataset. If <cite>None</cite>, the validation
+is performed at the end of each epoch.</p>
+</dd>
+<dt><strong>early_stopping_interval</strong><span class="classifier">int, optional</span></dt><dd><p>If specified, training is stopped if the validation loss does
+not improve for <cite>early_stopping_interval</cite> validation cycles.</p>
 </dd>
 </dl>
 </dd>
@@ -4244,7 +4628,7 @@ training history.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.Trainer.save_checkpoint">
-<span class="sig-name descname"><span class="pre">save_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/trainer.html#Trainer.save_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Trainer.save_checkpoint" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">save_checkpoint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PathLike</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/trainer.html#Trainer.save_checkpoint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Trainer.save_checkpoint" title="Permalink to this definition"></a></dt>
 <dd><p>Save checkpoint.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -4252,6 +4636,8 @@ training history.</p>
 <dt><strong>save_dict</strong><span class="classifier">mapping of str to any</span></dt><dd><p>Mapping containing the checkpoint information.</p>
 </dd>
 <dt><strong>log_dir</strong><span class="classifier">str or PathLike</span></dt><dd><p>The path where to store the <cite>model.lt</cite> checkpoint file.</p>
+</dd>
+<dt><strong>prefix</strong><span class="classifier">str, default: ‘’</span></dt><dd><p>Prefix for the checkpoint file name.</p>
 </dd>
 </dl>
 </dd>
@@ -4440,6 +4826,110 @@ box directly combining two words will be named
 <dt class="sig sig-object py" id="lambeq.TreeReaderMode.RULE_TYPE">
 <span class="sig-name descname"><span class="pre">RULE_TYPE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#lambeq.TreeReaderMode.RULE_TYPE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.UnifyCodomainRewriter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">UnifyCodomainRewriter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">grammar.pregroup.Ty(rigid.Ob('s'))</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#UnifyCodomainRewriter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnifyCodomainRewriter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.DiagramRewriter" title="lambeq.rewrite.rewrite_diagram.DiagramRewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">DiagramRewriter</span></code></a></p>
+<p>Unifies the codomain of diagrams to match a given type.</p>
+<p>A rewriter that takes diagrams with <code class="docutils literal notranslate"><span class="pre">d.cod</span> <span class="pre">!=</span> <span class="pre">output_type</span></code> and
+append a <code class="docutils literal notranslate"><span class="pre">d.cod</span> <span class="pre">-&gt;</span> <span class="pre">output_type</span></code> box.</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>output_type</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">discopy.grammar.pregroup.Ty</span></code>, default <code class="docutils literal notranslate"><span class="pre">S</span></code></span></dt><dd><p>The output type of the appended box.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.UnifyCodomainRewriter.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Ty</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">grammar.pregroup.Ty(rigid.Ob('s'))</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#lambeq.UnifyCodomainRewriter.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.UnifyCodomainRewriter.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#UnifyCodomainRewriter.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnifyCodomainRewriter.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given diagram should be rewritten.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="lambeq.UnifyCodomainRewriter.output_type">
+<span class="sig-name descname"><span class="pre">output_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Ty</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">grammar.pregroup.Ty(rigid.Ob('s'))</span></em><a class="headerlink" href="#lambeq.UnifyCodomainRewriter.output_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.UnifyCodomainRewriter.rewrite">
+<span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/rewrite_diagram.html#UnifyCodomainRewriter.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnifyCodomainRewriter.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given diagram.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.UnknownWordsRewriteRule">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">UnknownWordsRewriteRule</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocabulary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ty</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unk_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'&lt;UNK&gt;'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnknownWordsRewriteRule" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.RewriteRule" title="lambeq.rewrite.base.RewriteRule"><code class="xref py py-class docutils literal notranslate"><span class="pre">RewriteRule</span></code></a></p>
+<p>A rewrite rule for unknown words.</p>
+<p>This rule matches any word not included in its vocabulary
+and, when passed a diagram, replaces all the boxes
+containing an unknown word with an <cite>UNK</cite> box corresponding to the
+same pregroup type.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.UnknownWordsRewriteRule.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vocabulary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Container</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Ty</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unk_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'&lt;UNK&gt;'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnknownWordsRewriteRule.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate an UnknownWordsRewriteRule.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>vocabulary</strong><span class="classifier">container of str or tuple of str and Ty</span></dt><dd><p>A list of words (or words with specific output types) to not
+be rewritten by this rule.</p>
+</dd>
+<dt><strong>unk_token</strong><span class="classifier">str, default: ‘&lt;UNK&gt;’</span></dt><dd><p>The string to use for the UNK token.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.UnknownWordsRewriteRule.from_diagrams">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagrams</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_freq</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unk_token</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'&lt;UNK&gt;'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lambeq.UnknownWordsRewriteRule" title="lambeq.rewrite.base.UnknownWordsRewriteRule"><span class="pre">UnknownWordsRewriteRule</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.from_diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnknownWordsRewriteRule.from_diagrams" title="Permalink to this definition"></a></dt>
+<dd><p>Create the rewrite rule from a set of diagrams.</p>
+<p>The vocabulary is the set of words that occur at least
+<cite>min_freq</cite> times throughout the set of diagrams.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>diagrams</strong><span class="classifier">list of Diagram</span></dt><dd><p>Diagrams from which the vocabulary is created.</p>
+</dd>
+<dt><strong>min_freq</strong><span class="classifier">int, default: 1</span></dt><dd><p>The minimum frequency required for a word to be included in
+the vocabulary.</p>
+</dd>
+<dt><strong>unk_token</strong><span class="classifier">str, default: ‘&lt;UNK&gt;’</span></dt><dd><p>The string to use for the UNK token.</p>
+</dd>
+<dt><strong>ignore_types</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to just consider the word when determining frequency
+or to also consider the output type of the box (the default
+behaviour).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.UnknownWordsRewriteRule.matches">
+<span class="sig-name descname"><span class="pre">matches</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Box.html#discopy.grammar.pregroup.Box" title="(in DisCoPy)"><span class="pre">Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.matches"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnknownWordsRewriteRule.matches" title="Permalink to this definition"></a></dt>
+<dd><p>Check if the given box should be rewritten.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.UnknownWordsRewriteRule.rewrite">
+<span class="sig-name descname"><span class="pre">rewrite</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">box</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Box.html#discopy.grammar.pregroup.Box" title="(in DisCoPy)"><span class="pre">Box</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/rewrite/base.html#UnknownWordsRewriteRule.rewrite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.UnknownWordsRewriteRule.rewrite" title="Permalink to this definition"></a></dt>
+<dd><p>Rewrite the given box.</p>
+</dd></dl>
 
 </dd></dl>
 
