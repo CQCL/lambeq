@@ -17,7 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from enum import Enum
 from functools import cached_property
-from typing import Dict, Any
+from typing import Any, Dict
 
 from lambeq.bobcat.lexicon import Atom, Category, Feature, Relation
 
