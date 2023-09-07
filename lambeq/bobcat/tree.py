@@ -17,7 +17,7 @@ from __future__ import annotations
 from dataclasses import dataclass, replace
 from enum import Enum
 from functools import cached_property
-from typing import Any
+from typing import Dict, Any
 
 from lambeq.bobcat.lexicon import Atom, Category, Feature, Relation
 
@@ -290,6 +290,16 @@ class ParseTree:
     @property
     def deps(self) -> list[Dependency]:
         return self.deps_and_tags[0]
+
+    def to_json(self) -> Dict[str, Any]:
+        data = {'type': str(self.cat), 'rule': self.rule.name}
+        if self.left:
+            data['children'] = [self.left.to_json()]
+        if self.right:
+            data['children'].append(self.right.to_json())
+        if not (self.left or self.right):
+            data['text'] = self.word
+        return data
 
 
 def Lexical(cat: Category, word: str, index: int) -> ParseTree:

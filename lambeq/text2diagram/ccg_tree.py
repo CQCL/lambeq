@@ -265,8 +265,10 @@ class CCGTree:
                              in new_tree.children]
         return new_tree
 
-    def to_json(self) -> _JSONDictT:
+    def to_json(self, original=False) -> _JSONDictT:
         """Convert tree into JSON form."""
+        if original:
+            return tree.metadata['original'].to_json()
         if self is None:  # Allows doing CCGTree.to_json(X) for optional X
             return None  # type: ignore[unreachable]
 
