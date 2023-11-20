@@ -1,0 +1,170 @@
+@startuml
+
+set namespaceseparator none
+skinparam dpi 96
+skinparam shadowing true
+skinparam ArrowColor Black
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+skinparam object {
+  backgroundColor lavender
+  borderColor black
+}
+
+
+' lambeq.backend.grammar
+class Entity {
+    category: ClassVar[Category]
+}
+
+class Category {
+    Ty: type[Ty]
+    Box: type[Box]
+    Layer: type[Layer]
+    Diagram: type[Diagram]
+}
+
+object grammar
+
+class Ty {
+    name: str
+    objects: List[Ty]
+    z: int
+    category: ClassVar[Category]
+    to_diagram()
+    count()
+    tensor()
+    rotate()
+    unwind()
+    repeat()
+    apply_functor()
+}
+
+abstract class Diagrammable {
+    cod: Ty
+    dom: Ty
+    {abstract} to_diagram()
+    {abstract} apply_functor()
+    {abstract} rotate()
+    {abstract} __matmul__()
+}
+
+class Box {
+    name: str
+    dom: Ty
+    cod: Ty
+    z: int
+    to_diagram()
+    rotate()
+    unwind()
+    dagger()
+    apply_functor()
+}
+
+class Layer {
+    left: Ty
+    box: Box
+    right: Ty
+    unpack()
+    extend()
+    rotate()
+    dagger()
+}
+
+exception InterchangerError
+
+class Diagram {
+    cod: Ty
+    dom: Ty
+    layers: List[Layer]
+    special_boxes
+    to_diagram
+    {static} id()
+    {static} create_pregroup_diagram()
+    {static} lift()
+    tensor()
+    then()
+    then_at()
+    rotate()
+    dagger()
+    transpose()
+    {static} permutation()
+    interchange()
+    normalize()
+    normal_form()
+    snake_removal()
+    draw()
+    apply_functor()
+}
+
+class Cap {
+    left: Ty
+    right: Ty
+    is_reversed: bool
+    {static} to_right()
+    {static} to_left()
+}
+class Cup {
+    left: Ty
+    right: Ty
+    is_reversed: bool
+    {static} to_right()
+    {static} to_left()
+}
+class Daggered {
+    box: Box
+}
+class Spider {
+    type: Ty
+    n_legs_in
+    n_legs_out
+}
+class Swap {
+    left: Ty
+    right: Ty
+}
+class Word {}
+object Id
+class Functor {
+    target_category: Category
+    ob_with_cache()
+    ar_with_cache()
+    ob()
+    ar()
+}
+
+Entity <|-- Ty
+Entity <|--- Box
+Diagrammable <|--- Box
+Entity <|-- Layer
+Entity <|-- Diagram
+Diagrammable <|--- Diagram
+Box <|-- Cap
+Box <|-- Cup
+Box <|-- Daggered
+Box <|--- Spider
+Box <|--- Swap
+Box <|--- Word
+
+Ty::category *-- Category
+Layer::box *-- Box
+Id -l- Diagram::id : is >
+Diagram::interchange -- InterchangerError : raises >
+Diagram::layers *-- Layer
+Diagrammable::to_diagram -- Diagram : generates >
+Functor::target_category *-l- Category
+
+Category <.d. grammar : <<instanceOf>>
+
+' lambeq.backend.drawing
+object draw
+object draw_equation
+object to_gif
+
+draw --u- Diagram : takes >
+draw_equation --u- Diagram : takesListOf >
+to_gif --u- Diagram : takes >
+
+@enduml

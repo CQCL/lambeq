@@ -62,5 +62,5 @@ Please be polite and respectful in any form of communication you have with other
 
 - :ref:`General information about sub-packages <sec-package-api>`
 - :ref:`UML diagrams for sub-packages <uml-diagrams>`
+- `"low-level lambeq" tutorial <advanced.rst>`_
 - `"Extending lambeq" tutorial <tutorials/extend-lambeq.ipynb>`_
-- `"DisCoPy usage" tutorial <advanced.rst>`_

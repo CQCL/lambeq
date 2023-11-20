@@ -18,6 +18,11 @@ def sentence():
 def tokenised_sentence():
     return ['What', 'Alice', 'is', 'and', 'is', 'not', '.']
 
+@pytest.fixture
+def tokenised_empty_sentence():
+    return []
+
+
 def test_sentence2diagram(bobcat_parser, sentence):
     assert bobcat_parser.sentence2diagram(sentence) is not None
 
@@ -30,6 +35,20 @@ def test_empty_sentences(bobcat_parser):
     with pytest.raises(ValueError):
         bobcat_parser.sentence2tree('')
     assert bobcat_parser.sentence2tree('', suppress_exceptions=True) is None
+
+    with pytest.raises(ValueError):
+        bobcat_parser.sentence2tree('   ')
+    assert bobcat_parser.sentence2tree('   ', suppress_exceptions=True) is None
+
+
+def test_tokenised_empty_sentences(bobcat_parser, tokenised_empty_sentence):
+    with pytest.raises(ValueError):
+        bobcat_parser.sentence2tree(tokenised_empty_sentence, tokenised=True)
+    assert bobcat_parser.sentence2tree(
+        tokenised_empty_sentence,
+        tokenised=True,
+        suppress_exceptions=True
+    ) is None
 
 
 def test_failed_sentence(bobcat_parser):

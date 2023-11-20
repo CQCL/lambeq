@@ -23,10 +23,11 @@ from __future__ import annotations
 from math import sqrt
 import pickle
 
-from discopy.tensor import backend, Diagram
 import torch
 
 from lambeq.ansatz.base import Symbol
+from lambeq.backend.numerical_backend import backend
+from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
@@ -34,7 +35,7 @@ from lambeq.training.model import Model
 class PytorchModel(Model, torch.nn.Module):
     """A lambeq model for the classical pipeline using PyTorch."""
 
-    weights: torch.nn.ParameterList  # type: ignore[assignment]
+    weights: torch.nn.ParameterList
     symbols: list[Symbol]  # type: ignore[assignment]
 
     def __init__(self) -> None:
@@ -46,7 +47,7 @@ class PytorchModel(Model, torch.nn.Module):
         """Reinitialise all modules in the model."""
         for module in self.modules():
             try:
-                module.reset_parameters()  # type: ignore[operator]
+                module.reset_parameters()
             except (AttributeError, TypeError):
                 pass
 
@@ -113,8 +114,8 @@ class PytorchModel(Model, torch.nn.Module):
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Diagrams <discopy.tensor.Diagram>` to be
+        diagrams : list of :py:class:`~lambeq.backend.tensor.Diagram`
+            The :py:class:`Diagrams <lambeq.backend.tensor.Diagram>` to be
             evaluated.
 
         Raises
@@ -136,7 +137,7 @@ class PytorchModel(Model, torch.nn.Module):
             for b in diagram.boxes:
                 if isinstance(b.data, Symbol):
                     try:
-                        b.data = parameters[b.data]
+                        b.data = parameters[b.data]  # type: ignore[attr-defined]  # noqa: E501
                     except KeyError as e:
                         raise KeyError(
                             f'Unknown symbol: {repr(b.data)}'
@@ -144,7 +145,7 @@ class PytorchModel(Model, torch.nn.Module):
 
         with backend('pytorch'), tn.DefaultBackend('pytorch'):
             return torch.stack([tn.contractors.auto(
-                *d.to_tn(dtype=float)).tensor for d in diagrams])
+                *d.to_tn()).tensor for d in diagrams])
 
     def forward(self, x: list[Diagram]) -> torch.Tensor:
         """Perform default forward pass by contracting tensors.
@@ -154,8 +155,8 @@ class PytorchModel(Model, torch.nn.Module):
 
         Parameters
         ----------
-        x : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Diagrams <discopy.tensor.Diagram>` to be
+        x : list of :py:class:`~lambeq.backend.tensor.Diagram`
+            The :py:class:`Diagrams <lambeq.backend.tensor.Diagram>` to be
             evaluated.
 
         Returns

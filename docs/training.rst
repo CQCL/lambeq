@@ -26,11 +26,11 @@ The following examples demonstrate the usage of the :py:mod:`.training` package 
 
 .. toctree::
 
-   ../tutorials/trainer_classical.ipynb
-   ../tutorials/trainer_quantum.ipynb
-   ../tutorials/trainer_hybrid.ipynb
+   ../tutorials/trainer-classical.ipynb
+   ../tutorials/trainer-quantum.ipynb
+   ../tutorials/trainer-hybrid.ipynb
 
 .. rubric:: See also:
 
 - :ref:`lambeq.training package <api_training>`
-- `Advanced: Manual training <manual_training.rst>`_
+- `Advanced: Manual training <manual-training.rst>`_

@@ -23,17 +23,16 @@ from __future__ import annotations
 from abc import abstractmethod
 from typing import Any, TYPE_CHECKING
 
-import discopy
-from discopy.tensor import Diagram
 import numpy as np
+
+from lambeq.backend import numerical_backend
+from lambeq.backend.tensor import Diagram
+from lambeq.training.checkpoint import Checkpoint
+from lambeq.training.model import Model
 
 
 if TYPE_CHECKING:
     from jax import numpy as jnp
-
-
-from lambeq.training.checkpoint import Checkpoint
-from lambeq.training.model import Model
 
 
 class QuantumModel(Model):
@@ -74,7 +73,7 @@ class QuantumModel(Model):
           * zero-vector: Returns the vector as-is.
         """
 
-        backend = discopy.tensor.get_backend()
+        backend = numerical_backend.get_backend()
         ret: np.ndarray = backend.abs(predictions)
 
         if predictions.shape:
@@ -137,8 +136,8 @@ class QuantumModel(Model):
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+        diagrams : list of :py:class:`~lambeq.backend.quantum.Diagram`
+            The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
             to be evaluated.
 
         """

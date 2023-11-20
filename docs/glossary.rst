@@ -48,7 +48,7 @@ Glossary
         The DIStributional COmpositional CATegorical model of natural language meaning developed by Bob Coecke, Mehrnoosh Sadrzadeh and Steve Clark [CSC2010]_.  The model applies a :term:`functor` :math:`F: \textrm{Grammar} \to \textrm{Meaning}` whose left-hand side is a free pregroup over a partially ordered set of basic grammar types, and the right-hand side is the category whose morphisms describe a sequence of operations that can be evaluated on a classical or quantum computer.
 
     DisCoPy
-        DIStributional COmpositional PYthon. A Python library for working with :term:`monoidal categories <monoidal category>` [FTC2020]_. DisCoPy is responsible for all the low-level processing in ``lambeq``, and includes abstractions for creating all standard :term:`quantum gates <quantum gate>` and building :term:`quantum circuits <quantum circuit>`. Additionally, it is equipped with many language-related features, such as support for :term:`pregroup grammars <pregroup grammar>` and :term:`functors <functor>` for implementing :term:`compositional models <compositional model>`.
+        DIStributional COmpositional PYthon. A Python library for working with :term:`monoidal categories <monoidal category>` [FTC2020]_. It includes abstractions for creating all standard :term:`quantum gates <quantum gate>` and building :term:`quantum circuits <quantum circuit>`. Additionally, it is equipped with many language-related features, such as support for :term:`pregroup grammars <pregroup grammar>` and :term:`functors <functor>` for implementing :term:`compositional models <compositional model>`.
 
     Frobenius algebra
         In the context of a :term:`symmetric monoidal category`, a Frobenius algebra provides morphisms :math:`\Delta: A \to A\otimes A` and :math:`\mu: A\otimes A \to A` for any object :math:`A`, satisfying certain conditions (the so-called Frobenius equations) and implementing the notion of a :term:`spider`. In ``lambeq`` and :term:`DisCoCat`, spiders can be used to implement :term:`rewrite rules <rewrite rule>` [Kea2014]_ [Kar2016]_ [SCC2014a]_ [SCC2014b]_.
@@ -126,7 +126,7 @@ Glossary
         A collection of measurement outcomes from a particular :term:`quantum circuit`.
 
     snake equations
-        Identities that hold between the dual objects of a :term:`monoidal category` and allow the "yanking" of wires and the rewriting and simplification of diagrams. In ``lambeq`` and :term:`DisCoPy`, the :py:meth:`monoidal.Diagram.normal_form() <discopy.monoidal.Diagram.normal_form>` method uses the snake equations in order to "stretch" the wires of a diagram and provide a normal form for it.
+        Identities that hold between the dual objects of a :term:`monoidal category` and allow the "yanking" of wires and the rewriting and simplification of diagrams. In ``lambeq``, the :py:meth:`.grammar.Diagram.normal_form() <lambeq.backend.grammar.Diagram.normal_form>` method uses the snake equations in order to "stretch" the wires of a diagram and provide a normal form for it.
 
     spider
         Another name for a :term:`Frobenius algebra`.

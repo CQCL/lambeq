@@ -23,10 +23,10 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any
 
-from discopy.quantum import Circuit, Id, Measure
-from discopy.tensor import Diagram
 import numpy as np
 
+from lambeq.backend.quantum import Diagram as Circuit, Id, Measure
+from lambeq.backend.tensor import Diagram
 from lambeq.training.quantum_model import QuantumModel
 
 
@@ -76,8 +76,8 @@ class TketModel(QuantumModel):
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+        diagrams : list of :py:class:`~lambeq.backend.quantum.Diagram
+            The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
             to be evaluated.
 
         Raises
@@ -105,12 +105,12 @@ class TketModel(QuantumModel):
             seed=self._randint()
         )
         self.backend_config['backend'].empty_cache()
-        # discopy evals a single diagram into a single result
+        # lambeq evals a single diagram into a single result
         # and not a list of results
         if len(diagrams) == 1:
-            result = self._normalise_vector(tensors.array)
+            result = self._normalise_vector(tensors)
             return result.reshape(1, *result.shape)
-        return np.array([self._normalise_vector(t.array) for t in tensors])
+        return np.array([self._normalise_vector(t) for t in tensors])
 
     def forward(self, x: list[Diagram]) -> np.ndarray:
         """Perform default forward pass of a lambeq quantum model.
@@ -120,8 +120,8 @@ class TketModel(QuantumModel):
 
         Parameters
         ----------
-        x : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+        x : list of :py:class:`~lambeq.backend.quantum.Diagram`
+            The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
             to be evaluated.
 
         Returns

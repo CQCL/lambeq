@@ -38,6 +38,7 @@ def _import_spacy() -> None:
     global spacy
     import spacy
     import spacy.lang.en
+    import spacy.cli
 
 
 class SpacyTokeniser(Tokeniser):
@@ -88,5 +89,10 @@ class SpacyTokeniser(Tokeniser):
 
         """
         disable = ['parser', 'tagger', 'ner', 'lemmatizer']
-        return [[str(t) for t in self.tokeniser(s, disable=disable)]
-                for s in sentences]
+        tokenised = []
+        for s in sentences:
+            s_cleaned = ' '.join(s.split())
+            tokenised.append([
+                str(t) for t in self.tokeniser(s_cleaned, disable=disable)
+            ])
+        return tokenised

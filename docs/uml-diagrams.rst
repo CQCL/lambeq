@@ -21,20 +21,20 @@ lambeq.ansatz
 .. image:: ./puml/img/ansatz.png
     :width: 100%
 
+.. _uml_backend:
+
+lambeq.backend
+--------------
+
+.. image:: ./puml/img/backend.png
+    :width: 100%
+
 .. _uml_bobcat:
 
 lambeq.bobcat
 -------------
 
 .. image:: ./puml/img/bobcat.png
-    :scale: 80%
-
-.. _uml_pregroups:
-
-lambeq.pregroups
-----------------
-
-.. image:: ./puml/img/pregroups.png
     :scale: 80%
 
 .. _uml_rewrite:

@@ -47,15 +47,6 @@ class Symbol {
 }
 class sympy.core.symbol.Symbol #back:wheat;line:tomato {}
 
-class discopy.rigid.Ty #back:lightblue;line:black {}
-class discopy.rigid.Ob #back:lightblue;line:black {}
-class discopy.rigid.Functor #back:lightblue;line:black {}
-class discopy.quantum.circuit.Functor #back:lightblue;line:black {}
-class discopy.monoidal.Ty #back:lightblue;line:black {}
-
-discopy.rigid.Ob <|-- discopy.rigid.Ty
-discopy.rigid.Functor <|-- discopy.quantum.circuit.Functor
-
 BaseAnsatz <|-- TensorAnsatz
 BaseAnsatz <|-- CircuitAnsatz
 TensorAnsatz <|-- MPSAnsatz
@@ -64,16 +55,14 @@ CircuitAnsatz <|-- IQPAnsatz
 CircuitAnsatz <|-- StronglyEntanglingAnsatz
 CircuitAnsatz <|-- Sim14Ansatz
 CircuitAnsatz <|-- Sim15Ansatz
-discopy.monoidal.Ty <|-- discopy.rigid.Ty
 
-MPSAnsatz::split_functor *-left- discopy.rigid.Functor
-MPSAnsatz::tensor_functor *-- discopy.rigid.Functor
-SpiderAnsatz::split_functor *-- discopy.rigid.Functor
-SpiderAnsatz::tensor_functor *-- discopy.rigid.Functor
-MPSAnsatz::BOND_TYPE *--left discopy.rigid.Ty
-CircuitAnsatz::functor *-- discopy.quantum.circuit.Functor
-TensorAnsatz::functor *-- discopy.quantum.circuit.Functor
-IQPAnsatz::functor *-- discopy.quantum.circuit.Functor
+MPSAnsatz::split_functor *-left- backend.grammar.Functor
+MPSAnsatz::tensor_functor *-- backend.grammar.Functor
+SpiderAnsatz::split_functor *-- backend.grammar.Functor
+SpiderAnsatz::tensor_functor *-- backend.grammar.Functor
+MPSAnsatz::BOND_TYPE *--left backend.grammar.Ty
+CircuitAnsatz::functor *-- backend.grammar.Functor
+TensorAnsatz::functor *-- backend.grammar.Functor
 sympy.core.symbol.Symbol <|-- Symbol
 
 BaseAnsatz --> Symbol : uses

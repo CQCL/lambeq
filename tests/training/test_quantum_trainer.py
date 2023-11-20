@@ -1,6 +1,6 @@
 import numpy as np
 import tensornetwork as tn
-from discopy.grammar.pregroup import Cup, Id, Word
+from lambeq.backend.grammar import Cup, Id, Word
 
 from lambeq import AtomicType, IQPAnsatz, Dataset, NumpyModel, QuantumTrainer, SPSAOptimizer
 

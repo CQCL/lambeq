@@ -23,48 +23,47 @@ from __future__ import annotations
 __all__ = ['TensorAnsatz', 'MPSAnsatz', 'SpiderAnsatz']
 
 from collections.abc import Mapping
-import math
-
-from discopy import tensor
-from discopy.grammar import pregroup
-from discopy.grammar.pregroup import Cup, Spider, Ty, Word
-from discopy.tensor import Category, Dim
 
 from lambeq.ansatz import BaseAnsatz, Symbol
+from lambeq.backend import grammar, tensor
+from lambeq.backend.grammar import Cup, Spider, Ty, Word
+from lambeq.backend.tensor import Dim
 
 
 class TensorAnsatz(BaseAnsatz):
     """Base class for tensor network ansatz."""
 
-    def __init__(self, ob_map: Mapping[Ty, Dim]) -> None:
+    def __init__(self, ob_map: Mapping[grammar.Ty, tensor.Dim]) -> None:
         """Instantiate a tensor network ansatz.
 
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to the
             dimension space it uses in a tensor network.
 
         """
+        # The user inputs a map, the new functor wants a function
         self.ob_map = ob_map
-        self.functor = pregroup.Functor(ob=ob_map,
-                                        ar=self._ar,
-                                        cod=Category(Dim, tensor.Diagram))
+        self.functor = grammar.Functor(tensor.tensor,
+                                       ob=lambda _, ty: ob_map[ty],
+                                       ar=self._ar)
 
-    def _ar(self, box: pregroup.Box) -> tensor.Diagram:
+    def _ar(self, functor: grammar.Functor, box: grammar.Box) -> tensor.Box:
         name = self._summarise_box(box)
 
         directed_dom, directed_cod = self._generate_directed_dom_cod(box)
         syms = Symbol(name,
-                      directed_dom=math.prod(directed_dom.inside),
-                      directed_cod=math.prod(directed_cod.inside))
+                      directed_dom=directed_dom.product,
+                      directed_cod=directed_cod.product)
 
         # Box domain and codomain are unchanged
-        dom = self.functor(box.dom)
-        cod = self.functor(box.cod)
-        return tensor.Box(box.name, dom, cod, syms)
+        dom = functor(box.dom)
+        cod = functor(box.cod)
 
-    def _generate_directed_dom_cod(self, box: pregroup.Box) -> tuple[Dim, Dim]:
+        return tensor.Box(box.name, dom, cod, syms)  # type: ignore[arg-type]
+
+    def _generate_directed_dom_cod(self, box: grammar.Box) -> tuple[Dim, Dim]:
         """Generate the "flow" domain and codomain for a box.
 
         To initialise normalised tensors in expectation, it is necessary
@@ -104,11 +103,12 @@ class TensorAnsatz(BaseAnsatz):
             else:
                 dom @= ty
 
-        return self.functor(dom), self.functor(cod)
+        return (self.functor(dom),
+                self.functor(cod))  # type: ignore[return-value]
 
-    def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
-        """Convert a DisCoPy diagram into a DisCoPy tensor."""
-        return self.functor(diagram)
+    def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
+        """Convert a diagram into a tensor."""
+        return self.functor(diagram)  # type: ignore[return-value]
 
 
 class MPSAnsatz(TensorAnsatz):
@@ -125,7 +125,7 @@ class MPSAnsatz(TensorAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to the
             dimension space it uses in a tensor network.
         bond_dim: int
             The size of the bonding dimension.
@@ -145,10 +145,13 @@ class MPSAnsatz(TensorAnsatz):
 
         self.bond_dim = bond_dim
         self.max_order = max_order
-        self.split_functor = pregroup.Functor(ob=lambda ob: ob,
-                                              ar=self._split_ar)
+        self.split_functor = grammar.Functor(
+            grammar.grammar,
+            ob=lambda _, ob: ob,
+            ar=self._split_ar  # type: ignore[arg-type]
+        )
 
-    def _split_ar(self, ar: Word) -> pregroup.Diagram:
+    def _split_ar(self, _: grammar.Functor, ar: Word) -> grammar.Diagrammable:
         bond = self.BOND_TYPE
         if len(ar.cod) <= self.max_order:
             return Word(f'{ar.name}_0', ar.cod)
@@ -159,15 +162,17 @@ class MPSAnsatz(TensorAnsatz):
         for i, start in enumerate(range(0, len(ar.cod), step_size)):
             cod = bond.r @ ar.cod[start:start+step_size] @ bond
             boxes.append(Word(f'{ar.name}_{i}', cod))
-            cups += [pregroup.Id(cod[1:-1]), Cup(bond, bond.r)]
+            cups += [grammar.Id(cod[1:-1]), Cup(bond, bond.r)]
         boxes[0] = Word(boxes[0].name, boxes[0].cod[1:])
         boxes[-1] = Word(boxes[-1].name, boxes[-1].cod[:-1])
 
-        return (pregroup.Diagram.tensor(*boxes)
-                >> pregroup.Diagram.tensor(*cups[:-1]))
+        return (grammar.Id().tensor(*boxes)
+                >> grammar.Id().tensor(*cups[:-1]))  # type: ignore[arg-type]
 
-    def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
-        return self.functor(self.split_functor(diagram))
+    def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
+        return self.functor(
+            self.split_functor(diagram)
+        )  # type: ignore[return-value]
 
 
 class SpiderAnsatz(TensorAnsatz):
@@ -181,7 +186,7 @@ class SpiderAnsatz(TensorAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.pregroup.Ty` to the
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to the
             dimension space it uses in a tensor network.
         max_order: int
             The maximum order of each tensor, which must be at least 2.
@@ -193,24 +198,30 @@ class SpiderAnsatz(TensorAnsatz):
         super().__init__(ob_map)
 
         self.max_order = max_order
-        self.split_functor = pregroup.Functor(ob=lambda ob: ob,
-                                              ar=self._split_ar)
+        self.split_functor = grammar.Functor(
+            grammar.grammar,
+            ob=lambda _, ob: ob,
+            ar=self._split_ar  # type: ignore[arg-type]
+        )
 
-    def _split_ar(self, ar: Word) -> pregroup.Diagram:
+    def _split_ar(self, _: grammar.Functor, ar: Word) -> grammar.Diagrammable:
         if len(ar.cod) <= self.max_order:
             return Word(f'{ar.name}_0', ar.cod)
 
         boxes = []
-        spiders = [pregroup.Id(ar.cod[:1])]
+        spiders = [grammar.Id(ar.cod[:1])]
         step_size = self.max_order - 1
         for i, start in enumerate(range(0, len(ar.cod)-1, step_size)):
             cod = ar.cod[start:start + step_size + 1]
             boxes.append(Word(f'{ar.name}_{i}', cod))
-            spiders += [pregroup.Id(cod[1:-1]), Spider(2, 1, cod[-1:])]
-        spiders[-1] = pregroup.Id(spiders[-1].cod)
+            spiders += [grammar.Id(cod[1:-1]),
+                        Spider(cod[-1:], 2, 1).to_diagram()]
+        spiders[-1] = grammar.Id(spiders[-1].cod)
 
-        return (pregroup.Diagram.tensor(*boxes)
-                >> pregroup.Diagram.tensor(*spiders))
+        return (grammar.Id().tensor(*boxes)
+                >> grammar.Id().tensor(*spiders))
 
-    def __call__(self, diagram: pregroup.Diagram) -> tensor.Diagram:
-        return self.functor(self.split_functor(diagram))
+    def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
+        return self.functor(
+            self.split_functor(diagram)
+        )  # type: ignore[return-value]

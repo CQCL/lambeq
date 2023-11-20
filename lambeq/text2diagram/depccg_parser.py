@@ -42,7 +42,7 @@ if TYPE_CHECKING:
     from depccg.annotator import (annotate_XX, english_annotator,
                                   japanese_annotator)
     from depccg.cat import Category
-    from discopy.pregroup import Diagram
+    from lambeq.backend.grammar import Diagram
 
 
 def _import_depccg() -> None:
@@ -347,7 +347,7 @@ class DepCCGParser(CCGParser):
                          tokenised: bool = False,
                          planar: bool = False,
                          suppress_exceptions: bool = False) -> Diagram | None:
-        """Parse a sentence into a DisCoPy diagram.
+        """Parse a sentence into a lambeq diagram.
 
         Parameters
         ----------
@@ -363,7 +363,7 @@ class DepCCGParser(CCGParser):
 
         Returns
         -------
-        discopy.Diagram or None
+        :py:class:`lambeq.backend.grammar.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         Raises

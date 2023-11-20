@@ -14,8 +14,7 @@
 
 __all__ = ['SpidersReader', 'bag_of_words_reader', 'spiders_reader']
 
-from discopy.grammar.pregroup import Diagram, Spider, Word
-
+from lambeq.backend.grammar import Diagram, Id, Spider, Word
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType, tokenised_sentence_type_check
 from lambeq.text2diagram.base import Reader
@@ -40,7 +39,7 @@ class SpidersReader(Reader):
             sentence = sentence.split()
 
         words = [Word(word, S) for word in sentence]
-        diagram = Diagram.tensor(*words) >> Spider(len(words), 1, S)
+        diagram = Id().tensor(*words) >> Spider(S, len(words), 1)
 
         return diagram
 

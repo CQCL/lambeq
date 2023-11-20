@@ -30,18 +30,18 @@ from collections.abc import Callable, Iterable
 import pickle
 from typing import Any, TYPE_CHECKING
 
-import discopy
-from discopy.tensor import Diagram
 import numpy
 from numpy.typing import ArrayLike
 from sympy import lambdify
 
+from lambeq.backend import numerical_backend
+from lambeq.backend.quantum import Diagram as Circuit
+from lambeq.backend.tensor import Diagram
+from lambeq.training.quantum_model import QuantumModel
+
 
 if TYPE_CHECKING:
     from jax import numpy as jnp
-
-
-from lambeq.training.quantum_model import QuantumModel
 
 
 class NumpyModel(QuantumModel):
@@ -80,11 +80,12 @@ class NumpyModel(QuantumModel):
             return self.lambdas[diagram]
 
         def diagram_output(x: Iterable[ArrayLike]) -> ArrayLike:
-            with discopy.tensor.backend('jax') as backend, \
-                    tn.DefaultBackend('jax'):  # noqa: N400
+            with (numerical_backend.backend('jax') as backend,
+                  tn.DefaultBackend('jax')):
                 sub_circuit = self._fast_subs([diagram], x)[0]
                 result = tn.contractors.auto(*sub_circuit.to_tn()).tensor
                 # square amplitudes to get probabilties for pure circuits
+                assert isinstance(sub_circuit, Circuit)
                 if not sub_circuit.is_mixed:
                     result = backend.abs(result) ** 2
                 return self._normalise_vector(result)
@@ -112,9 +113,7 @@ class NumpyModel(QuantumModel):
                             raise KeyError(
                                 f'Unknown symbol: {repr(sym)}'
                             ) from e
-                    b.data = lambdify(syms, b.data)(*values)
-                    b.drawing_name = b.name
-                    del b.free_symbols
+                    b.data = lambdify(syms, b.data)(*values)  # type: ignore[attr-defined] # noqa: E501
         return diagrams
 
     def get_diagram_output(
@@ -125,8 +124,8 @@ class NumpyModel(QuantumModel):
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+        diagrams : list of :py:class:`~lambeq.tensor.Diagram`
+            The :py:class:`Circuits <lambeq.quantum.circuit.Circuit>`
             to be evaluated.
 
         Raises
@@ -161,15 +160,15 @@ class NumpyModel(QuantumModel):
             return res
 
         diagrams = self._fast_subs(diagrams, self.weights)
-        with discopy.tensor.backend('numpy'):
-            results = []
-            for d in diagrams:
-                result = tn.contractors.auto(*d.to_tn()).tensor
-                # square amplitudes to get probabilties for pure circuits
-                if not d.is_mixed:
-                    result = numpy.abs(result) ** 2
-                results.append(self._normalise_vector(result))
-            return numpy.array(results)
+        results = []
+        for d in diagrams:
+            assert isinstance(d, Circuit)
+            result = tn.contractors.auto(*d.to_tn()).tensor
+            # square amplitudes to get probabilties for pure circuits
+            if not d.is_mixed:
+                result = numpy.abs(result) ** 2
+            results.append(self._normalise_vector(result))
+        return numpy.array(results)
 
     def forward(self, x: list[Diagram]) -> Any:
         """Perform default forward pass of a lambeq model.
@@ -179,8 +178,8 @@ class NumpyModel(QuantumModel):
 
         Parameters
         ----------
-        x : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+        x : list of :py:class:`~lamebq.tensor.Diagram`
+            The :py:class:`Circuits <lambeq.quantum.circuit.Circuit>`
             to be evaluated.
 
         Returns

@@ -9,6 +9,11 @@ def sentence():
 
 
 @pytest.fixture
+def sentence_with_extra_whitespace():
+    return 'This is a   £100  sentence.'
+
+
+@pytest.fixture
 def sentence_pair():
     return 'This is a £100 sentence. This is a dash-connected one '\
            '(with some parentheses).'
@@ -26,6 +31,15 @@ def test_sentence_tokenisation(sentence):
     tokeniser = SpacyTokeniser()
     tokenised_sentence = tokeniser.tokenise_sentence(sentence)
     assert tokenised_sentence == ["This", "is", "a", "£",
+                                  "100", "sentence", "."]
+
+
+def test_sentence_tokenisation_extra_ws(sentence_with_extra_whitespace):
+    tokeniser = SpacyTokeniser()
+    tokenised_sentence_with_whitespace = tokeniser.tokenise_sentence(
+        sentence_with_extra_whitespace
+    )
+    assert tokenised_sentence_with_whitespace == ["This", "is", "a", "£",
                                   "100", "sentence", "."]
 
 

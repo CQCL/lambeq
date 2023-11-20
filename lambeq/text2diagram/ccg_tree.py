@@ -22,98 +22,12 @@ import json
 from typing import Any, Dict
 from typing import overload
 
-from discopy.grammar import pregroup
-from discopy.grammar.categorial import (Box, Diagram, Functor, Id, Ty,
-                                        unaryBoxConstructor)
-
-from lambeq.text2diagram.ccg_rule import CCGRule, GBC, GBX, GFC, GFX
-from lambeq.text2diagram.ccg_type import CCGType, replace_cat_result
+from lambeq.backend.grammar import Diagram, Id, Word
+from lambeq.text2diagram.ccg_rule import CCGRule
+from lambeq.text2diagram.ccg_type import CCGType
 
 # Types
 _JSONDictT = Dict[str, Any]
-
-
-class UnarySwap(unaryBoxConstructor('cod'), Box):  # type: ignore[misc]
-    """Unary Swap box, for unary rules that change the type direction.
-
-    For example, the unary rule `S/NP -> NP\\NP` is handled by
-    `UnarySwap(n >> n)`, which becomes `Swap(n @ n.r)` in a pregroup
-    diagram.
-
-    """
-
-    def __init__(self, cod: Ty) -> None:
-        if cod.is_over:
-            # This defines a swap from Y.l @ X to X @ Y.l
-            # since:
-            #           Ty() << Y        -> Y.l
-            #  Ty() << (Ty() << Y)       -> Y.l.l
-            # (Ty() << (Ty() << Y)) >> X -> Y.l.l.r @ X = Y.l @ X
-            dom = (Ty() << (Ty() << cod.left)) >> cod.right
-        elif cod.is_under:
-            # Similarly, this defines a swap from Y @ X.r to X.r @ Y
-            dom = cod.left << ((cod.right >> Ty()) >> Ty())
-        else:
-            raise ValueError(f'Invalid type for unary swap: {cod}')
-        super().__init__(f'Swap({dom} -> {cod})', dom, cod)
-
-
-class PlanarBX(Box):
-    """Planar Backward Crossed Composition Box."""
-    def __init__(self, dom: Ty, diagram: Diagram) -> None:
-        assert dom.is_over
-        assert not diagram.dom
-
-        right = diagram.cod
-        assert right.is_under
-        assert right.left == dom.left
-
-        self.diagram = diagram
-        cod = right.right << dom.right
-        super().__init__(f'PlanarBX({dom}, {diagram})', dom, cod)
-
-
-class PlanarFX(Box):
-    """Planar Forward Crossed Composition Box."""
-    def __init__(self, dom: Ty, diagram: Diagram) -> None:
-        assert dom.is_under
-        assert not diagram.dom
-
-        left = diagram.cod
-        assert left.is_over
-        assert left.right == dom.right
-
-        self.diagram = diagram
-        cod = dom.left >> left.left
-        super().__init__(f'PlanarFX({dom}, {diagram})', dom, cod)
-
-
-class PlanarGBX(Box):
-    def __init__(self, dom: Ty, diagram: Diagram):
-        assert not diagram.dom
-
-        right = diagram.cod
-        assert right.is_under
-
-        cod, original = replace_cat_result(dom, right.left, right.right, '<|')
-        assert original == right.left
-
-        self.diagram = diagram
-        super().__init__(f'PlanarGBX({dom}, {diagram})', dom, cod)
-
-
-class PlanarGFX(Box):
-    def __init__(self, dom: Ty, diagram: Diagram):
-        assert not diagram.dom
-
-        left = diagram.cod
-        assert left.is_over
-
-        cod, original = replace_cat_result(dom, left.right, left.left, '>|')
-        assert original == left.right
-
-        self.diagram = diagram
-        super().__init__(f'PlanarGFX({dom}, {diagram})', dom, cod)
 
 
 class CCGTree:
@@ -174,6 +88,11 @@ class CCGTree:
         self.is_unary = len(self.children) == 1
         self.is_binary = len(self.children) == 2
 
+        if not self.children:
+            self.height = 0
+        else:
+            self.height = 1 + max(child.height for child in self.children)
+
     @property
     def text(self) -> str:
         """The word or phrase associated to the tree."""
@@ -224,7 +143,7 @@ class CCGTree:
                 :py:obj:`None`, it is inferred from its children.
             `rule` : :py:class:`.CCGRule`
                 The final :py:class:`.CCGRule` used in the derivation.
-            `type` : :py:class:`discopy.biclosed.Ty`
+            `type` : :py:class:`.CCGType`
                 The type associated to the derived phrase.
             `children` : :py:class:`list` or :py:class:`None`
                 A list of JSON subtrees. The types of these subtrees can
@@ -326,8 +245,6 @@ class CCGTree:
         """Create a standard CCG diagram for the tree with the
         words arranged horizontally."""
         output_type = self.biclosed_type.to_string(not use_slashes)
-        if output_type.startswith('('):
-            output_type = output_type[1:-1]
         if self.rule == CCGRule.LEXICAL:
             width = max(len(output_type), len(self.text))
             return (f'{self.text:{" "}^{width}}\n'
@@ -419,19 +336,6 @@ class CCGTree:
             deriv = self._vert_deriv(chr_set, use_slashes, '')
         return deriv
 
-    def to_biclosed_diagram(self, planar: bool = False) -> Diagram:
-        """Convert tree to a derivation in DisCoPy form.
-
-        Parameters
-        ----------
-        planar : bool, default: False
-            Force the diagram to be planar. This only affects trees
-            using cross composition.
-
-        """
-        words, grammar = self._resolved()._to_biclosed_diagram(planar)
-        return words >> grammar
-
     def _resolved(self, resolved_output: CCGType | None = None) -> CCGTree:
         """Perform type resolution on the tree.
 
@@ -460,29 +364,38 @@ class CCGTree:
             else:
                 return CCGTree(self.text, biclosed_type=output)
 
-        this_layer: Diagram
+        resolved_dom: tuple[CCGType, ...]
         rule = self.rule
         if rule == CCGRule.UNARY:
             if ({output._direction, self.child.biclosed_type._direction}
                     == {'/', '\\'}):
-                this_layer = UnarySwap(output.discopy())
+
+                # This defines a swap from Y.l @ X to X @ Y.l
+                # (and vice versa) since:
+                #           Ty() << Y        -> Y.l
+                #  Ty() << (Ty() << Y)       -> Y.l.l
+                # (Ty() << (Ty() << Y)) >> X -> Y.l.l.r @ X = Y.l @ X
+                other_direction = '\\' if output.direction == '/' else '/'
+                resolved_dom = (output.argument.slash(
+                    other_direction,
+                    CCGType().slash(
+                        output.direction,
+                        CCGType().slash(output.direction, output.result)
+                    )
+                ),)
             else:
                 return self.child._resolved(output)
         elif (rule == CCGRule.FORWARD_COMPOSITION
                 and self.left.rule == CCGRule.FORWARD_TYPE_RAISING):
-            left_ = output.left
-            right_ = output.right
-            mid_ = self.left.biclosed_type.right.left >> left_
+            left = output.left
+            right = output.right
+            mid = self.left.biclosed_type.right.left >> left
 
-            left = left_.discopy()
-            mid = mid_.discopy()
-            right = right_.discopy()
-
-            this_layer = rule((left << mid) @ (mid << right), output.discopy())
+            resolved_dom = rule.resolve((left << mid, mid << right), output)
         else:
-            child_types = [child.biclosed_type.discopy()
+            child_types = [child.biclosed_type
                            for child in self.children]
-            this_layer = rule(Ty.tensor(*child_types), output.discopy())
+            resolved_dom = rule.resolve(child_types, output)
 
             if rule == CCGRule.CONJUNCTION:
                 if self.children[0].biclosed_type.is_conjoinable:
@@ -491,7 +404,7 @@ class CCGTree:
                     rule = CCGRule.BACKWARD_APPLICATION
 
         children = [
-            child._resolved(CCGType.from_discopy(this_layer.dom[i:i+1]))
+            child._resolved(resolved_dom[i])
             for i, child in enumerate(self.children)
         ]
         if children == self.children and output == self.biclosed_type:
@@ -499,63 +412,7 @@ class CCGTree:
         else:
             return CCGTree(rule=rule, biclosed_type=output, children=children)
 
-    def _to_biclosed_diagram(self,
-                             planar: bool = False) -> tuple[Diagram, Diagram]:
-        """Convert a (type-resolved) tree into a biclosed diagram.
-
-        Expects its input to already be type resolved. This can be done
-        using `._resolve()`.
-
-        Turns each rule into the correct box, and if the output is
-        expected to be planar, rearranges cross-composed diagrams.
-
-        """
-        if self.rule == CCGRule.LEXICAL:
-            return (Box(self.text, Ty(), self.biclosed_type.discopy()),
-                    Id(self.biclosed_type.discopy()))
-
-        this_layer: Diagram
-        if self.rule == CCGRule.UNARY:
-            if planar:
-                raise ValueError('This diagram cannot be represented as a '
-                                 'planar biclosed diagram since it requires a '
-                                 'unary swap.')
-            else:
-                this_layer = UnarySwap(self.biclosed_type.discopy())
-        else:
-            child_types = [child.biclosed_type.discopy()
-                           for child in self.children]
-            this_layer = self.rule(Ty.tensor(*child_types),
-                                   self.biclosed_type.discopy())
-
-        children = [child._to_biclosed_diagram(planar)
-                    for i, child in enumerate(self.children)]
-
-        if planar and self.rule == CCGRule.BACKWARD_CROSSED_COMPOSITION:
-            (words, left_diag), (right_words, right_diag) = children
-            diag = (left_diag
-                    >> PlanarBX(left_diag.cod, right_words >> right_diag))
-        elif planar and self.rule == CCGRule.FORWARD_CROSSED_COMPOSITION:
-            (left_words, left_diag), (words, right_diag) = children
-            diag = (right_diag
-                    >> PlanarFX(right_diag.cod, left_words >> left_diag))
-        elif planar and (self.rule
-                         == CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION):
-            (words, left_diag), (right_words, right_diag) = children
-            diag = (left_diag
-                    >> PlanarGBX(left_diag.cod, right_words >> right_diag))
-        elif planar and (self.rule
-                         == CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION):
-            (left_words, left_diag), (words, right_diag) = children
-            diag = (right_diag
-                    >> PlanarGFX(right_diag.cod, left_words >> left_diag))
-        else:
-            words, diag = [Diagram.tensor(*d) for d in zip(*children)]
-            diag >>= this_layer
-
-        return words, diag
-
-    def to_diagram(self, planar: bool = False) -> pregroup.Diagram:
+    def to_diagram(self, planar: bool = False) -> Diagram:
         """Convert tree to a DisCoCat diagram.
 
         Parameters
@@ -565,95 +422,80 @@ class CCGTree:
             using cross composition.
 
         """
-        def ob_func(ob: Ty) -> pregroup.Ty:
-            return (pregroup.Ty() if ob == CCGType.PUNCTUATION.discopy()
-                    else Diagram.to_pregroup(ob))
+        words, grammar = self._resolved()._to_diagram(planar)
+        return words >> grammar
 
-        def ar_func(box: Box) -> pregroup.Diagram:
-            #           special box -> special diagram
-            # RemovePunctuation box -> identity wire(s)
-            #           punctuation -> empty diagram
-            #              word box -> Word
+    def _to_diagram(self, planar: bool = False) -> tuple[Diagram, Diagram]:
+        if self.rule == CCGRule.LEXICAL:
+            if self.biclosed_type == CCGType.PUNCTUATION:
+                return Id(), Id()
+            else:
+                output_type = self.biclosed_type.to_grammar()
+                return (Word(self.text, output_type).to_diagram(),
+                        Id(output_type))
 
-            def split(cat: Ty, base: Ty) -> tuple[pregroup.Ty,
-                                                  pregroup.Ty,
-                                                  pregroup.Ty]:
-                left = right = pregroup.Ty()
-                while cat != base:
-                    if cat.is_over:
-                        right = to_pregroup_diagram(cat.right).l @ right
-                        cat = cat.left
-                    elif cat.is_under:
-                        left @= to_pregroup_diagram(cat.left).r
-                        cat = cat.right
-                return left, to_pregroup_diagram(cat), right
+        this_layer: Diagram
+        if self.rule == CCGRule.UNARY:
+            if planar:
+                raise ValueError('This diagram cannot be represented as a '
+                                 'planar biclosed diagram since it requires a '
+                                 'unary swap.')
+            else:
+                if self.biclosed_type.is_over:
+                    left = self.biclosed_type.left.to_grammar()
+                    right = self.biclosed_type.right.to_grammar().l
+                else:
+                    left = self.biclosed_type.left.to_grammar().r
+                    right = self.biclosed_type.right.to_grammar()
+                this_layer = Diagram.swap(right, left).to_diagram()
+        else:
+            child_types = [child.biclosed_type
+                           for child in self.children]
+            this_layer = self.rule.apply(child_types, self.biclosed_type)
 
-            if isinstance(box, UnarySwap):
-                cod = ob_func(box.cod)
-                return pregroup.Swap(cod[1:], cod[:1])
+        children = [child._to_diagram(planar) for child in self.children]
 
-            if isinstance(box, PlanarBX):
-                join = to_pregroup_diagram(box.dom.left)
-                right = to_pregroup_diagram(box.dom)[len(join):]
-                inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.Diagram.cups(join, join.r)
-                return (join @ inner
-                        >> cups @ inner.cod[len(join):]) @ right
+        if planar and self.rule == CCGRule.BACKWARD_CROSSED_COMPOSITION:
+            (words, left_diag), (right_words, right_diag) = children
+            left = self.biclosed_type.left.to_grammar()
+            join = self.left.biclosed_type.left.to_grammar()
+            right = self.biclosed_type.right.to_grammar().l
+            diag = (left_diag
+                    >> Id(join) @ (right_words >> right_diag) @ Id(right)
+                    >> Diagram.cups(join, join.r) @ Id(left @ right))
+        elif planar and self.rule == CCGRule.FORWARD_CROSSED_COMPOSITION:
+            (left_words, left_diag), (words, right_diag) = children
 
-            if isinstance(box, PlanarFX):
-                join = to_pregroup_diagram(box.dom.right)
-                left = to_pregroup_diagram(box.dom)[:-len(join)]
-                inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.Diagram.cups(join.l, join)
-                return left @ (inner @ join >> inner.cod[:-len(join)] @ cups)
+            left = self.biclosed_type.left.to_grammar().r
+            join = self.right.biclosed_type.right.to_grammar()
+            right = self.biclosed_type.right.to_grammar()
+            diag = (right_diag
+                    >> Id(left) @ (left_words >> left_diag) @ Id(join)
+                    >> Id(left @ right) @ Diagram.cups(join.l, join))
+        elif planar and (self.rule
+                         == CCGRule.GENERALIZED_BACKWARD_CROSSED_COMPOSITION):
+            (words, left_diag), (right_words, right_diag) = children
 
-            if isinstance(box, PlanarGBX):
-                left, join, right = split(box.dom, box.diagram.cod.left)
-                inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.Diagram.cups(join, join.r)
-                mid = (join @ inner) >> (cups @ inner.cod[len(join):])
-                return left @ mid @ right
+            left, join, right = self.left.biclosed_type.split(
+                self.right.biclosed_type.left
+            )
+            inner = right_words >> right_diag
+            cups = Diagram.cups(join, join.r)
+            mid = (Id(join) @ inner) >> (cups @ Id(inner.cod[len(join):]))
+            diag = Id(left) @ mid @ Id(right)
+        elif planar and (self.rule
+                         == CCGRule.GENERALIZED_FORWARD_CROSSED_COMPOSITION):
+            (left_words, left_diag), (words, right_diag) = children
 
-            if isinstance(box, PlanarGFX):
-                left, join, right = split(box.dom, box.diagram.cod.right)
-                inner = to_pregroup_diagram(box.diagram)
-                cups = pregroup.Diagram.cups(join.l, join)
-                mid = (inner @ join) >> (inner.cod[:-len(join)] @ cups)
-                return left @ mid @ right
+            left, join, right = self.right.biclosed_type.split(
+                self.left.biclosed_type.right
+            )
+            inner = left_words >> left_diag
+            cups = Diagram.cups(join.l, join)
+            mid = (inner @ Id(join)) >> (Id(inner.cod[:-len(join)]) @ cups)
+            diag = Id(left) @ mid @ Id(right)
+        else:
+            words, diag = [Id().tensor(*d) for d in zip(*children)]
+            diag >>= this_layer
 
-            if isinstance(box, GBC):
-                left = to_pregroup_diagram(box.dom[0])
-                mid = to_pregroup_diagram(box.dom[1].left)
-                right = to_pregroup_diagram(box.dom[1].right)
-                cups = pregroup.Diagram.cups(mid, mid.r)
-                return left[:-len(mid)] @ cups @ right
-
-            if isinstance(box, GFC):
-                left = to_pregroup_diagram(box.dom[0].left)
-                mid = to_pregroup_diagram(box.dom[0].right)
-                right = to_pregroup_diagram(box.dom[1])
-                cups = pregroup.Diagram.cups(mid.l, mid)
-                return left @ cups @ right[len(mid):]
-
-            if isinstance(box, GBX):
-                mid = to_pregroup_diagram(box.dom[1].right)
-                left, join, right = split(box.dom[0], box.dom[1].left)
-                swaps = pregroup.Diagram.swap(right, join >> mid)
-                cups = pregroup.Diagram.cups(join, join.r)
-                return left @ (join @ swaps >> cups @ mid @ right)
-
-            if isinstance(box, GFX):
-                mid = to_pregroup_diagram(box.dom[0].left)
-                left, join, right = split(box.dom[1], box.dom[0].right)
-                cups = pregroup.Diagram.cups(join.l, join)
-                return (pregroup.Diagram.swap(mid << join, left) @ join
-                        >> left @ mid @ cups) @ right
-
-            cod = to_pregroup_diagram(box.cod)
-            return (pregroup.Id(cod) if box.dom or not cod
-                    else pregroup.Word(box.name, cod))
-
-        to_pregroup_diagram = Functor(ob=ob_func,
-                                      ar=ar_func,
-                                      cod=pregroup.Category())
-        return to_pregroup_diagram(self.to_biclosed_diagram(planar=planar))
+        return words, diag

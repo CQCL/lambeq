@@ -20,6 +20,8 @@ __all__ = ['CoordinationRewriteRule',
            'UnknownWordsRewriteRule',
 
            'DiagramRewriter',
+           'RemoveCupsRewriter',
+           'RemoveSwapsRewriter',
            'UnifyCodomainRewriter']
 
 from lambeq.rewrite.base import (CoordinationRewriteRule, CurryRewriteRule,
@@ -27,4 +29,6 @@ from lambeq.rewrite.base import (CoordinationRewriteRule, CurryRewriteRule,
                                  UnknownWordsRewriteRule)
 
 from lambeq.rewrite.rewrite_diagram import (DiagramRewriter,
+                                            RemoveCupsRewriter,
+                                            RemoveSwapsRewriter,
                                             UnifyCodomainRewriter)

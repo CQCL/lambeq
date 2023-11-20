@@ -20,9 +20,9 @@ from abc import abstractmethod
 from collections.abc import Iterable
 import sys
 
-from discopy.grammar.pregroup import Diagram
 from tqdm.auto import tqdm
 
+from lambeq.backend.grammar import Diagram
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (SentenceBatchType, SentenceType,
                                tokenised_sentence_type_check)
@@ -126,7 +126,7 @@ class CCGParser(Reader):
                            planar: bool = False,
                            suppress_exceptions: bool = False,
                            verbose: str | None = None) -> list[Diagram | None]:
-        """Parse multiple sentences into a list of discopy diagrams.
+        """Parse multiple sentences into a list of lambeq diagrams.
 
         Parameters
         ----------
@@ -150,7 +150,7 @@ class CCGParser(Reader):
 
         Returns
         -------
-        list of discopy.Diagram or None
+        list of :py:class:`lambeq.backend.grammar.Diagram` or None
             The parsed diagrams. May contain :py:obj:`None` if
             exceptions are suppressed.
 
@@ -186,7 +186,7 @@ class CCGParser(Reader):
                          tokenised: bool = False,
                          planar: bool = False,
                          suppress_exceptions: bool = False) -> Diagram | None:
-        """Parse a sentence into a DisCoPy diagram.
+        """Parse a sentence into a lambeq diagram.
 
         Parameters
         ----------
@@ -204,7 +204,7 @@ class CCGParser(Reader):
 
         Returns
         -------
-        discopy.Diagram or None
+        :py:class:`lambeq.backend.grammar.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         """

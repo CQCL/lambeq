@@ -44,8 +44,8 @@ of provided rules can be retrieved using
     curry
         The curry rewrite rule uses map-state duality to remove adjoint
         types from the boxes. When used in conjunction with
-        :py:meth:`~discopy.grammar.pregroup.Diagram.normal_form`, this
-        removes cups from the diagram.
+        :py:meth:`lambeq.backend.grammar.Diagram.pregroup_normal_form`,
+        this removes cups from the diagram.
 
     determiner
         The determiner rule removes determiners (such as "the") by
@@ -80,9 +80,9 @@ from abc import ABC, abstractmethod
 from collections import Counter
 from collections.abc import Container, Iterable
 
-from discopy.grammar.pregroup import (Box, Cap, Cup, Diagram, Functor, Id,
-                                      Spider, Swap, Ty, Word)
-
+from lambeq.backend.grammar import (Box, Cap, Cup, Diagram, Diagrammable,
+                                    Functor, grammar, Id, Spider, Swap,
+                                    Ty, Word)
 from lambeq.core.types import AtomicType
 
 N = AtomicType.NOUN
@@ -97,20 +97,20 @@ class RewriteRule(ABC):
         """Check if the given box should be rewritten."""
 
     @abstractmethod
-    def rewrite(self, box: Box) -> Diagram:
+    def rewrite(self, box: Box) -> Diagrammable:
         """Rewrite the given box."""
 
-    def __call__(self, box: Box) -> Diagram | None:
+    def __call__(self, box: Box) -> Diagrammable | None:
         """Apply the rewrite rule to a box.
 
         Parameters
         ----------
-        box : :py:class:`discopy.grammar.pregroup.Box`
+        box : :py:class:`lambeq.backend.grammar.Box`
             The candidate box to be tested against this rewrite rule.
 
         Returns
         -------
-        :py:class:`discopy.grammar.pregroup.Diagram`, optional
+        :py:class:`lambeq.backend.grammar.Diagram`, optional
             The rewritten diagram, or :py:obj:`None` if rule
             does not apply.
 
@@ -138,16 +138,16 @@ class SimpleRewriteRule(RewriteRule):
 
     def __init__(self,
                  cod: Ty,
-                 template: Diagram,
+                 template: Diagrammable,
                  words: Container[str] | None = None,
                  case_sensitive: bool = False) -> None:
         """Instantiate a simple rewrite rule.
 
         Parameters
         ----------
-        cod : :py:class:`discopy.grammar.pregroup.Ty`
+        cod : :py:class:`lambeq.backend.grammar.Ty`
             The type that the codomain of each box is matched against.
-        template : :py:class:`discopy.grammar.pregroup.Diagram`
+        template : :py:class:`lambeq.backend.grammar.Diagrammable`
             The diagram that a matching box is replaced with. A special
             placeholder box is replaced by the word in the matched box,
             and can be created using
@@ -173,13 +173,15 @@ class SimpleRewriteRule(RewriteRule):
         return box.cod == self.cod and (self.words is None
                                         or word in self.words)
 
-    def rewrite(self, box: Box) -> Diagram:
-        def replace_placeholder(ar: Box) -> Box:
+    def rewrite(self, box: Box) -> Diagrammable:
+        def replace_placeholder(_, ar: Box) -> Box:
             if ar.name == self.PLACEHOLDER_WORD:
-                return Word(box.name, ar.cod, data=ar.data)
+                return Word(box.name, ar.cod)
             return ar
 
-        return Functor(ob=lambda ob: ob, ar=replace_placeholder)(self.template)
+        return Functor(target_category=grammar,
+                       ob=lambda _, ob: ob,
+                       ar=replace_placeholder)(self.template)
 
     @classmethod
     def placeholder(cls, cod: Ty) -> Word:
@@ -187,17 +189,17 @@ class SimpleRewriteRule(RewriteRule):
 
         Parameters
         ----------
-        cod : :py:class:`discopy.grammar.pregroup.Ty`
+        cod : :py:class:`lambeq.backend.grammar.Ty`
             The codomain of the placeholder, and hence the word in the
             resulting rewritten diagram.
 
         Returns
         -------
-        :py:class:`discopy.grammar.pregroup.Box`
-            A placeholder box with the given codomain.
+        :py:class:`lambeq.backend.grammar.Word`
+            A placeholder word with the given codomain.
 
         """
-        return Box(cls.PLACEHOLDER_WORD, Ty(), cod)
+        return Word(cls.PLACEHOLDER_WORD, cod)
 
 
 connector_rule = SimpleRewriteRule(
@@ -234,15 +236,15 @@ object_rel_pronoun_rule = SimpleRewriteRule(
     words=['that', 'which', 'who', 'whom', 'whose'],
     cod=N.r @ N @ N.l.l @ S.l,
     template=(Cap(N.r, N)
-              >> Id(N.r) @ Spider(1, 2, N) @ Spider(0, 1, S.l)
+              >> Id(N.r) @ Spider(N, 1, 2) @ Spider(S.l, 0, 1)
               >> Id(N.r @ N) @ _noun_loop @ Id(S.l)))
 
 subject_rel_pronoun_rule = SimpleRewriteRule(
     words=['that', 'which', 'who', 'whom', 'whose'],
     cod=N.r @ N @ S.l @ N,
     template=(Cap(N.r, N)
-              >> Id(N.r) @ Spider(1, 2, N)
-              >> Id(N.r @ N) @ Spider(0, 1, S.l) @ Id(N)))
+              >> Id(N.r) @ Spider(N, 1, 2)
+              >> Id(N.r @ N) @ Spider(S.l, 0, 1) @ Id(N)))
 
 
 class CoordinationRewriteRule(RewriteRule):
@@ -274,12 +276,12 @@ class CoordinationRewriteRule(RewriteRule):
             return bool(right.r == mid == left.l)
         return False
 
-    def rewrite(self, box: Box) -> Diagram:
+    def rewrite(self, box: Box) -> Diagrammable:
         n = len(box.cod) // 3
         left, mid, right = box.cod[:n], box.cod[n:2*n], box.cod[2*n:]
         assert right.r == mid == left.l
         return (Diagram.caps(left, mid) @ Diagram.caps(mid, right)
-                >> Id(left) @ Diagram.spiders(2, 1, mid) @ Id(right))
+                >> Id(left) @ Spider(mid, 2, 1) @ Id(right))
 
 
 class CurryRewriteRule(RewriteRule):
@@ -289,7 +291,8 @@ class CurryRewriteRule(RewriteRule):
 
         This rule uses the map-state duality by iteratively
         uncurrying on both sides of each box. When used in conjunction
-        with :py:meth:`~discopy.grammar.pregroup.Diagram.normal_form`,
+        with
+        :py:meth:`lambeq.backend.grammar.Diagram.pregroup_normal_form`,
         this removes cups from the diagram in exchange for depth.
         Diagrams with fewer cups become circuits with fewer
         post-selection, which results in faster QML experiments.
@@ -299,7 +302,7 @@ class CurryRewriteRule(RewriteRule):
     def matches(self, box: Box) -> bool:
         return bool(box.cod and (box.cod[0].z or box.cod[-1].z))
 
-    def rewrite(self, box: Box) -> Diagram:
+    def rewrite(self, box: Box) -> Diagrammable:
         cod = box.cod
         i = 0
         while i < len(cod) and cod[i].z > 0:
@@ -311,9 +314,9 @@ class CurryRewriteRule(RewriteRule):
         dom = left.l @ box.dom @ right.r
         new_box = Box(box.name, dom, cod[i:j+1])
         if left:
-            new_box = Diagram.curry(new_box, n=len(left), left=False)
+            new_box = new_box.curry(n=len(left), left=False)
         if right:
-            new_box = Diagram.curry(new_box, n=len(right), left=True)
+            new_box = new_box.curry(n=len(right), left=True)
 
         return new_box
 
@@ -360,7 +363,9 @@ class Rewriter:
         else:
             self.rules = []
             self.add_rules(*rules)
-        self.apply_rewrites = Functor(ob=self._ob, ar=self._ar)
+        self.apply_rewrites = Functor(target_category=grammar,
+                                      ob=self._ob,
+                                      ar=self._ar)
 
     @classmethod
     def available_rules(cls) -> list[str]:
@@ -384,14 +389,14 @@ class Rewriter:
         """Apply the rewrite rules to the given diagram."""
         return self.apply_rewrites(diagram)
 
-    def _ar(self, box: Box) -> Diagram:
+    def _ar(self, _: Functor, box: Box) -> Diagrammable:
         for rule in self.rules:
             rewritten_box = rule(box)
             if rewritten_box is not None:
                 return rewritten_box
         return box
 
-    def _ob(self, ob: Ty) -> Ty:
+    def _ob(self, _: Functor, ob: Ty) -> Ty:
         return ob
 
 
@@ -423,11 +428,12 @@ class UnknownWordsRewriteRule(RewriteRule):
         self.unk_token = unk_token
 
     def matches(self, box: Box) -> bool:
-        return ((box.name, box.cod) not in self.vocabulary
+        return (isinstance(box, Word)
+                and (box.name, box.cod) not in self.vocabulary
                 and box.name not in self.vocabulary)
 
-    def rewrite(self, box: Box) -> Diagram:
-        return type(box)(self.unk_token, dom=box.dom, cod=box.cod)
+    def rewrite(self, box: Box) -> Box:
+        return Word(self.unk_token, cod=box.cod)
 
     @classmethod
     def from_diagrams(cls,
@@ -455,10 +461,11 @@ class UnknownWordsRewriteRule(RewriteRule):
             behaviour).
 
         """
-        counts = Counter(box.name if ignore_types else (box.name, box.cod)
-                         for diagram in diagrams
-                         for box in diagram.boxes
-                         if isinstance(box, Word))
+        counts: Counter[str | tuple[str, Ty]] = Counter(
+            box.name if ignore_types else (box.name, box.cod)
+            for diagram in diagrams
+            for box in diagram.boxes
+            if isinstance(box, Word))
         vocabulary = {word for word, count in counts.items()
                       if count >= min_freq}
         return cls(vocabulary=vocabulary, unk_token=unk_token)

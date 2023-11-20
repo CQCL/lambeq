@@ -45,7 +45,7 @@ from lambeq.text2diagram.ccg_type import CCGType
 from lambeq.typing import StrPathT
 
 if TYPE_CHECKING:
-    from discopy.pregroup import Diagram
+    from lambeq.backend.grammar import Diagram
 
 
 class CCGBankParseError(Exception):

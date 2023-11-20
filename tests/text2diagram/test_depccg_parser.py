@@ -2,7 +2,7 @@ import pytest
 
 from unittest.mock import Mock
 
-from discopy.grammar.pregroup import Cup, Diagram, Id, Swap, Ty, Word
+from lambeq.backend.grammar import Cup, Diagram, Id, Swap, Ty, Word
 
 from lambeq import AtomicType, CCGType, DepCCGParser, DepCCGParseError, VerbosityLevel
 
@@ -30,7 +30,7 @@ def test_to_biclosed(depccg_parser):
 
 def test_sentence2diagram(depccg_parser, sentence, tokenised_sentence):
     n, s = AtomicType.NOUN, AtomicType.SENTENCE
-    dom = Ty.tensor(n, n.l.l, s.l, n, n.r, s, n.l, n, s.r, n.r.r, n.r, s, n.l,
+    dom = Ty().tensor(n, n.l.l, s.l, n, n.r, s, n.l, n, s.r, n.r.r, n.r, s, n.l,
                     n.l.l, s.l, n, n.r, s, n.l, s.r, n.r.r, n.r, s)
     expected_words = (Word('What', dom[:3]) @
                       Word('Alice', dom[3:4]) @
@@ -39,22 +39,23 @@ def test_sentence2diagram(depccg_parser, sentence, tokenised_sentence):
                       Word('is', dom[16:19]) @
                       Word('not', dom[19:]))
 
-    type_raising = (Id(n) @ Diagram.caps(n.r @ s, s.l @ n) >>
-                    Cup(n, n.r) @ Id(s @ s.l @ n))
+    type_raising = Diagram.caps(s, s.l)
+
     bx = (Id(dom[16:18]) @ Swap(n.l, s.r) @ Id(dom[20:]) >>
           Id(dom[16:18] @ s.r) @ Swap(n.l, n.r.r) @ Id(dom[21:]) >>
           Diagram.cups(dom[16:18], dom[19:21]) @ Id(n.l @ dom[21:]) >>
           Swap(n.l, n.r) @ Id(s) >>
           Id(n.r) @ Swap(n.l, s))
     fa1 = Id(dom[7:13]) @ Diagram.cups(dom[13:16], n.r @ s @ n.l)
-    ba = Diagram.cups(dom[4:7], dom[7:10]) @ Id(dom[10:13])
-    fc = Id(s) @ Diagram.cups(s.l @ n, dom[10:12]) @ Id(dom[12:13])
+    ba = Diagram.cups(dom[3:7], dom[7:11]) @ Id(dom[11:13])
+    fc = Id(s) @ Diagram.cups(s.l, dom[11]) @ Id(dom[12:13])
+
     fa2 = Id(dom[:1]) @ Diagram.cups(dom[1:3], s @ n.l)
 
     expected_diagram = (expected_words >>
-                        Id(dom[:3]) @ type_raising @ Id(dom[4:]) >>
-                        Id(dom[:3] @ type_raising.cod @ dom[4:16]) @ bx >>
-                        Id(dom[:3] @ type_raising.cod @ dom[4:7]) @ fa1 >>
+                        Id(dom[:3]) @ type_raising @ Id(dom[3:]) >>
+                        Id(dom[:3] @ type_raising.cod @ dom[3:16]) @ bx >>
+                        Id(dom[:3] @ type_raising.cod @ dom[3:7]) @ fa1 >>
                         Id(dom[:3] @ type_raising.cod) @ ba >>
                         Id(dom[:3]) @ fc >>
                         fa2)

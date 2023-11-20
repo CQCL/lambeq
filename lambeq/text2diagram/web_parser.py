@@ -155,7 +155,7 @@ class WebParser(CCGParser):
             except requests.RequestException as e:
                 if suppress_exceptions:
                     tree = None
-                elif type(e) == requests.JSONDecodeError:
+                elif isinstance(e, requests.JSONDecodeError):
                     raise WebParseError(str(sentence)) from e
                 else:
                     raise e
