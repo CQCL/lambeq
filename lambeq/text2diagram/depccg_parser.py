@@ -55,6 +55,8 @@ def _import_depccg() -> None:
     from depccg.cat import Category
     import depccg.lang
     import depccg.parsing
+    from depccg.tree import Tree
+    Tree.to_json = depccg_to_json
 
 
 # disable irrelevant logging
@@ -464,3 +466,12 @@ class DepCCGParser(CCGParser):
                        biclosed_type=biclosed_type,
                        children=children,
                        metadata={'original': tree})
+
+def depccg_to_json(tree: depccg.tree.Tree) -> Dict[str, Any]:
+    data = {'type': str(tree.cat)}
+    if tree.is_leaf:
+        data['rule'], data['text'] = 'L', tree.word
+    else:
+        data['rule'] = tree.op_string.upper()
+        data['children'] = list(map(depccg_to_json, tree.children))
+    return data
