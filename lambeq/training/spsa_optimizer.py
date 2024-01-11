@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ from typing import Any
 import numpy as np
 from numpy.typing import ArrayLike
 
+from lambeq.backend.tensor import Diagram
 from lambeq.core.utils import flatten
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
@@ -139,7 +140,11 @@ class SPSAOptimizer(Optimizer):
         parameters = self.model.symbols
         x = self.model.weights
 
-        relevant_params = set.union(*[diag.free_symbols for diag in diags_gen])
+        # try to extract the relevant parameters from the diagrams
+        relevant_params = set.union(*[diag.free_symbols for diag in diags_gen
+                                      if isinstance(diag, Diagram)])
+        if not relevant_params:
+            relevant_params = set(parameters)
         mask = np.array([1 if sym in relevant_params else 0
                          for sym in parameters])
 

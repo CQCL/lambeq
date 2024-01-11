@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
-from lambeq.training.trainer import EvalFuncT, Trainer
+from lambeq.training.trainer import EvalFuncT, EvalMode, Trainer
 from lambeq.typing import StrPathT
 
 
@@ -193,6 +193,7 @@ class QuantumTrainer(Trainer):
             val_dataset: Dataset | None = None,
             log_interval: int = 1,
             eval_interval: int = 1,
+            eval_mode: str = EvalMode.EPOCH.value,
             early_stopping_interval: int | None = None) -> None:
 
         self.model._training = True
@@ -201,6 +202,7 @@ class QuantumTrainer(Trainer):
                     val_dataset,
                     log_interval,
                     eval_interval,
+                    eval_mode,
                     early_stopping_interval)
 
         self.model._training = False

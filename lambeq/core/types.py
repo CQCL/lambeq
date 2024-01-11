@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,17 +23,18 @@ __all__ = ['AtomicType']
 
 from enum import Enum
 
-from discopy.grammar.pregroup import Ty
+from lambeq.backend.grammar import Ty
 
 
 class AtomicType(Ty, Enum):
     """Standard pregroup atomic types."""
 
+    name: str
     _value_: str
 
-    def __new__(cls, value: str) -> Ty:
+    def __new__(cls, value: str) -> Ty:  # type: ignore[misc]
         ret = object.__new__(Ty)
-        ret._value_ = value  # required for Python 3.11+
+        ret.__setattr__('_value_', value)  # required for Python 3.11+
         return ret
 
     NOUN = 'n'

@@ -10,6 +10,7 @@ on:
 
 env:
   WORKFLOWS_DIR: .github/workflows
+  DOCS_DIR: docs
 
 jobs:
   docs:
@@ -29,6 +30,10 @@ jobs:
       run: |
         sudo apt-get install graphviz pandoc
         pip install -r docs/requirements.txt
+    - name: Draw diagrams from PlantUML files
+      uses: Timmy/plantuml-action@v1
+      with:
+        args: '-v -DPLANTUML_LIMIT_SIZE=8192 -tpng ${{ env.DOCS_DIR }}/puml/*.puml -o img'
     - name: Build documentation
       run: ${{ env.WORKFLOWS_DIR }}/build-docs
     - name: Deploy documentation

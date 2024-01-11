@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import Any, Literal
 
-from discopy import monoidal
-from discopy.grammar import pregroup
 import sympy
+
+from lambeq.backend import grammar, tensor
 
 
 class Symbol(sympy.Symbol):
@@ -96,26 +96,26 @@ class BaseAnsatz(ABC):
     """Base class for ansatz."""
 
     @abstractmethod
-    def __init__(self, ob_map: Mapping[pregroup.Ty, monoidal.Ty]) -> None:
+    def __init__(self, ob_map: Mapping[grammar.Ty, tensor.Dim]) -> None:
         """Instantiate an ansatz.
 
         Parameters
         ----------
         ob_map : dict
-            A mapping from `discopy.pregroup.Ty` to a type in the target
-            category. In the category of quantum circuits, this type is
-            the number of qubits; in the category of vector spaces, this
-            type is a vector space.
+            A mapping from `lambeq.backend.grammar.Ty` to a type in
+            the target category. In the category of quantum circuits,
+            this type is the number of qubits; in the category of
+            vector spaces, this type is a vector space.
 
         """
 
     @abstractmethod
-    def __call__(self, diagram: pregroup.Diagram) -> monoidal.Diagram:
-        """Convert a DisCoPy diagram into a DisCoPy circuit or tensor."""
+    def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
+        """Convert a diagram into a circuit or tensor."""
 
     @staticmethod
-    def _summarise_box(box: pregroup.Box) -> str:
-        """Summarise the given DisCoPy box."""
+    def _summarise_box(box: grammar.Box) -> str:
+        """Summarise the given box."""
 
         dom = str(box.dom).replace(' @ ', '@') if box.dom else ''
         cod = str(box.cod).replace(' @ ', '@') if box.cod else ''

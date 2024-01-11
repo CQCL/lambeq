@@ -15,7 +15,7 @@ lambeq is a toolkit for quantum natural language processing (QNLP).
 - Documentation: https://cqcl.github.io/lambeq/
 - User support: <lambeq-support@cambridgequantum.com>
 - Contributions: Please read [our guide](https://cqcl.github.io/lambeq/CONTRIBUTING.html).
-- If you want to subscribe to lambeq's mailing list, let us know by sending an email to <lambeq-support@cambridgequantum.com>. 
+- If you want to subscribe to lambeq's mailing list, let us know by sending an email to <lambeq-support@cambridgequantum.com>.
 
 ---
 **Note:** Please do not try to read the documentation directly from the preview provided in the [repository](https://github.com/CQCL/lambeq/tree/main/docs), since some of the pages will not be rendered properly.
@@ -42,9 +42,14 @@ To install lambeq with optional dependencies for extra features, run:
 pip install lambeq[extras]
 ```
 
-To enable depccg support, you will need to install depccg separately. More information can be found
-on the [depccg homepage](//github.com/masashi-y/depccg).
-Currently, only version 2.0.3.2 of depccg is supported. After installing depccg, you can download its model by using the script provided in the `contrib` folder of this repository:
+To enable DepCCG support, you will need to install the external parser separately.
+
+---
+**Note:** The DepCCG-related functionality is no longer actively supported in `lambeq`, and may not work as expected. We strongly recommend using the default Bobcat parser which comes as part of `lambeq`.
+
+---
+
+If you still want to use DepCCG, for example because you plan to apply ``lambeq`` on Japanese, you can install DepCCG separately following the instructions on the [DepCCG homepage](//github.com/masashi-y/depccg). After installing DepCCG, you can download its model by using the script provided in the `contrib` folder of this repository:
 
 ```bash
 python contrib/download_depccg_model.py

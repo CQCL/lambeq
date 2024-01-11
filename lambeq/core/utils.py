@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ from __future__ import annotations
 from collections.abc import Iterable, Iterator, Mapping
 from typing import Any, List, Union
 
-from discopy.monoidal import Diagram
+from lambeq.backend.grammar import Diagram
 
 SentenceType = Union[str, List[str]]
 SentenceBatchType = Union[List[str], List[List[str]]]

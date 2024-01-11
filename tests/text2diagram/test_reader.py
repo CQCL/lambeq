@@ -1,9 +1,9 @@
 import pytest
 from requests.exceptions import MissingSchema
 
-from discopy.grammar.pregroup import Box, Diagram, Id, Spider, Word
-from discopy.quantum.circuit import Circuit, Ty as QTy, qubit
-from discopy.quantum.gates import Ket, Bra, CX
+from lambeq.backend.grammar import Box, Diagram, Id, Spider, Word
+from lambeq.backend.quantum import Diagram as Circuit, Ty as QTy, qubit
+from lambeq.backend.quantum import Ket, Bra, CX, Id as QId
 
 from lambeq import (AtomicType, BobcatParser, IQPAnsatz, TreeReader,
                     TreeReaderMode, VerbosityLevel, WebParser, cups_reader,
@@ -30,8 +30,8 @@ def parser():
 def test_spiders_reader(sentence, words):
     S = AtomicType.SENTENCE
 
-    expected_diagram = (Diagram.tensor(*(Word(word, S) for word in words)) >>
-                        Spider(len(words), 1, S))
+    expected_diagram = (Id().tensor(*(Word(word, S) for word in words)) >>
+                        Spider(S, len(words), 1))
     assert (spiders_reader.sentences2diagrams([sentence])[0] ==
             spiders_reader.sentence2diagram(sentence) == expected_diagram)
 
@@ -39,8 +39,8 @@ def test_spiders_reader(sentence, words):
 def test_spiders_reader_tokenised(sentence, words):
     S = AtomicType.SENTENCE
 
-    expected_diagram = (Diagram.tensor(*(Word(word, S) for word in words)) >>
-                        Spider(len(words), 1, S))
+    expected_diagram = (Id().tensor(*(Word(word, S) for word in words)) >>
+                        Spider(S, len(words), 1))
     assert (spiders_reader.sentences2diagrams([sentence.split()], tokenised=True)[0] ==
             spiders_reader.sentence2diagram(sentence.split(), tokenised=True) ==
             expected_diagram)
@@ -52,12 +52,8 @@ def test_spiders_reader_circuit(sentence, words):
     ansatz = IQPAnsatz({S: 1}, n_layers=1, n_single_qubit_params=0)
     circuit = ansatz(spiders_reader.sentence2diagram(sentence))
 
-    expected_circuit = Circuit.decode(
-        dom=QTy(),
-        cod=qubit,
-        boxes=[Ket(0), Ket(0), Ket(0), Ket(0), CX, Bra(0), CX, Bra(0), CX, Bra(0)],
-        offsets=[0, 1, 2, 3, 0, 1, 1, 2, 0, 1]
-    )
+    joiner = CX >> (QId(qubit) @ Bra(0))
+    expected_circuit = Ket(0,0,0,0) >> joiner @ joiner >> joiner
 
     assert circuit == expected_circuit
 
@@ -98,7 +94,7 @@ def test_tree_reader(sentence, words, parser):
     assert reader1.sentence2diagram(sentence) == mode1_expect
 
     reader2 = TreeReader(ccg_parser=parser, mode=TreeReaderMode.RULE_TYPE)
-    mode2_expect = the_words >> make_parse('FA(n << n)', 'FA((n >> s) << n)', 'BA(n >> s)')
+    mode2_expect = the_words >> make_parse('FA(n/n, n)', r'FA((s\n)/n, n)', r'BA(n, s\n)')
     assert reader2.sentence2diagram(sentence) == mode2_expect
 
     reader3 = TreeReader(ccg_parser=parser, mode=TreeReaderMode.HEIGHT)

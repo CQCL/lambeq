@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,15 +30,15 @@ from pathlib import Path
 import pickle
 from typing import Any
 
-import discopy
 import yaml
 
 import lambeq
 from lambeq.ansatz import BaseAnsatz
 from lambeq.ansatz.circuit import CircuitAnsatz, IQPAnsatz
 from lambeq.ansatz.tensor import MPSAnsatz, SpiderAnsatz, TensorAnsatz
-from lambeq.pregroups import remove_swaps, text_printer
-from lambeq.pregroups.utils import is_pregroup_diagram
+from lambeq.backend import grammar, tensor
+from lambeq.backend.drawing import text_printer
+from lambeq.rewrite import RemoveSwapsRewriter
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.bobcat_parser import BobcatParser
 from lambeq.text2diagram.ccg_parser import CCGParser
@@ -183,7 +183,7 @@ def prepare_parser() -> argparse.ArgumentParser:
             type=str,
             choices=['json', 'pickle', 'text-unicode', 'text-ascii', 'image'],
             help='Format of the output. Use `json` and `pickle` to store the '
-                 'lambeq / DisCoPy objects in the respective formats, or '
+                 'lambeq objects in the respective formats, or '
                  '`text-unicode`, `text-ascii` and `image` to store directly '
                  'the derivations in diagrammatic form. Default value: '
                  f'{DEFAULT_ARG_VALUES["output_format"]}')
@@ -415,7 +415,7 @@ class ParserModule(CLIModule):
 
     def __call__(self,
                  cl_args: argparse.Namespace,
-                 module_input: str) -> list[discopy.Diagram] | list[CCGTree]:
+                 module_input: str) -> list[grammar.Diagram] | list[CCGTree]:
         if cl_args.split_sentences or cl_args.tokenise:
             tokeniser = SpacyTokeniser()
         sentences: list[str] | list[list[str]]
@@ -429,8 +429,9 @@ class ParserModule(CLIModule):
             reader = AVAILABLE_READERS[cl_args.reader.casefold()]
             if not isinstance(reader, Reader):
                 reader = reader()
-            return reader.sentences2diagrams(sentences,
-                                             tokenised=cl_args.tokenise)
+            read_sents = reader.sentences2diagrams(sentences,
+                                                   tokenised=cl_args.tokenise)
+            return [sent for sent in read_sents if sent is not None]
         elif cl_args.parser is not None:
             parser = AVAILABLE_PARSERS[cl_args.parser](
                     root_cats=cl_args.root_categories)
@@ -441,18 +442,20 @@ class ParserModule(CLIModule):
         if cl_args.mode == 'ccg':
             trees = parser.sentences2trees(sentences,
                                            tokenised=cl_args.tokenise)
-            return [t.without_trivial_unary_rules()
-                    if t else None for t in trees]
+            return [t.without_trivial_unary_rules() for t in trees
+                    if t is not None]
         elif cl_args.mode == 'pregroups':
             diagrams = parser.sentences2diagrams(sentences,
                                                  tokenised=cl_args.tokenise)
+            remove_swaps = RemoveSwapsRewriter()
             return [
-                remove_swaps(discopy.grammar.pregroup.Diagram.normal_form(d))
-                for d in diagrams
+                remove_swaps(d.pregroup_normal_form())
+                for d in diagrams if d is not None
             ]
         else:
-            return parser.sentences2diagrams(sentences,
-                                             tokenised=cl_args.tokenise)
+            parsed = parser.sentences2diagrams(sentences,
+                                               tokenised=cl_args.tokenise)
+            return [sent for sent in parsed if sent is not None]
 
 
 class RewriterModule(CLIModule):
@@ -460,11 +463,11 @@ class RewriterModule(CLIModule):
     def __call__(
             self,
             cl_args: argparse.Namespace,
-            module_input: list[discopy.Diagram]) -> list[discopy.Diagram]:
+            module_input: list[grammar.Diagram]) -> list[grammar.Diagram]:
         if cl_args.rewrite_rules is None:
             return module_input
         rewriter = lambeq.rewrite.Rewriter(cl_args.rewrite_rules)
-        return [discopy.grammar.pregroup.Diagram.normal_form(rewriter(diagram))
+        return [rewriter(diagram).normal_form()
                 for diagram in module_input]
 
 
@@ -473,7 +476,7 @@ class AnsatzModule(CLIModule):
        or a tensor diagram."""
     def __call__(self,
                  cl_args: argparse.Namespace,
-                 module_input: list[discopy.Diagram]) -> list[discopy.Diagram]:
+                 module_input: list[grammar.Diagram]) -> list[grammar.Diagram]:
         N = lambeq.core.types.AtomicType.NOUN
         S = lambeq.core.types.AtomicType.SENTENCE
         if cl_args.ansatz is None:
@@ -494,8 +497,8 @@ class AnsatzModule(CLIModule):
                                   S: s_dim},
                                  **remaining_args)
         elif issubclass(ansatz_type, TensorAnsatz):
-            ansatz = ansatz_type({N: discopy.tensor.Dim(n_dim),
-                                  S: discopy.tensor.Dim(s_dim)},
+            ansatz = ansatz_type({N: tensor.Dim(n_dim),
+                                  S: tensor.Dim(s_dim)},
                                  **remaining_args)
         return [ansatz(diagram) for diagram in module_input]
 
@@ -526,20 +529,27 @@ class DiagramSaveModule(CLIModule):
     """Output string diagrams to text, json, pickle and image formats."""
     def __call__(self,
                  cl_args: argparse.Namespace,
-                 module_input: list[discopy.Diagram]) -> None:
+                 module_input: list[grammar.Diagram]) -> None:
         if cl_args.output_format in ['text-ascii', 'text-unicode']:
             for i in range(len(module_input)):
-                if not is_pregroup_diagram(module_input[i]):
-                    module_input[i] = module_input[i].normal_form()
-                    if not is_pregroup_diagram(module_input[i]):
+                if not module_input[i].is_pregroup:
+                    module_input[i] = module_input[i].pregroup_normal_form()
+                    if not module_input[i].is_pregroup:
                         raise ValueError(  # pragma: no cover
                                 'Output format is set to '
-                                f'{cl_args.output_fomat} but '
+                                f'{cl_args.output_format} but '
                                 f'parsing sentence no. {i+1} did not '
                                 'produce a valid pregroup diagram.')
         if cl_args.output_format == 'json':
-            with open(cl_args.output_file, 'w') as f:
-                json.dump([d.to_tree() for d in module_input], f)
+            # TODO JSON output is currently disabled, methods to_tree()
+            # TODO and `from_tree()` need to be implemented in
+            # TODO `grammar.Diagram`
+
+            # with open(cl_args.output_file, 'w') as f:
+            #     json.dump([d.to_tree() for d in module_input], f)
+
+            raise NotImplementedError('JSON output is currently disabled. '
+                                      'Use option `pickle` instead.')
         elif cl_args.output_format in ['text-ascii', 'text-unicode']:
             printer = text_printer.TextDiagramPrinter(use_ascii=(
                                     cl_args.output_format == 'text-ascii'))
@@ -583,7 +593,7 @@ class DiagramSaveModule(CLIModule):
                     draw_args['fontsize'] = cl_args.output_options['fontsize']
                 try:
                     diagram.normal_form().draw(**draw_args)  # pragma: no cover
-                except ValueError:
+                except (ValueError, NotImplementedError):
                     diagram.draw(**draw_args)
 
 

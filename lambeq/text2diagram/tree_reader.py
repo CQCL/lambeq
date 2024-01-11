@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,13 +19,13 @@ from enum import Enum
 
 __all__ = ['TreeReader', 'TreeReaderMode']
 
-from discopy.grammar.pregroup import Box, Diagram, Ty, Word
-
+from lambeq.backend.grammar import Box, Diagram, Id, Ty, Word
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.bobcat_parser import BobcatParser
 from lambeq.text2diagram.ccg_parser import CCGParser
+from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
 
 S = AtomicType.SENTENCE
@@ -116,7 +116,7 @@ class TreeReader(Reader):
                      word_type: Ty = S,
                      suppress_exceptions: bool = False) -> Diagram | None:
         """Convert a :py:class:`~.CCGTree` into a
-        :py:class:`~discopy.grammar.pregroup.Diagram` .
+        :py:class:`~lambeq.backend.grammar.Diagram` .
 
         This produces a tree-shaped diagram based on the output of the
         CCG parser.
@@ -138,61 +138,50 @@ class TreeReader(Reader):
 
         Returns
         -------
-        :py:class:`discopy.grammar.pregroup.Diagram` or None
+        :py:class:`lambeq.backend.grammar.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         """
 
         try:
-            ccg_words, ccg_parse = tree._resolved()._to_biclosed_diagram()
+            return TreeReader._tree2diagram(tree._resolved(), mode, word_type)
         except Exception as e:
             if suppress_exceptions:
                 return None
             else:
                 raise e
 
-        tree_words = [Word(word.name, word_type) for word in ccg_words.boxes]
-        tree_boxes = []
-        for box in ccg_parse.boxes:
-            dom = word_type ** len(box.dom)
-            cod = word_type ** len(box.cod)
+    @staticmethod
+    def _tree2diagram(tree: CCGTree,
+                      mode: TreeReaderMode = TreeReaderMode.NO_TYPE,
+                      word_type: Ty = S) -> Diagram:
+        if tree.rule == CCGRule.LEXICAL:
+            return Word(tree.text, word_type).to_diagram()
+        else:
+            dom = word_type ** len(tree.children)
+            cod = word_type
+
             if mode == TreeReaderMode.NO_TYPE:
                 name = 'UNIBOX'
             elif mode == TreeReaderMode.HEIGHT:
-                name = 'layer_?'
+                name = f'layer_{tree.height}'
             elif mode == TreeReaderMode.RULE_ONLY:
-                name = box.name.split('(')[0]
+                name = tree.rule.value
             else:
                 assert mode == TreeReaderMode.RULE_TYPE
-                name = box.name
-            tree_boxes.append(Box(name, dom, cod))
+                types = ', '.join(str(child.biclosed_type)
+                                  for child in tree.children)
+                name = f'{tree.rule.value}({types})'
 
-        diagram = Diagram.decode(
-            dom=Ty(),
-            cod=word_type,
-            boxes=tree_words + tree_boxes,
-            offsets=(ccg_words >> ccg_parse).offsets
-        )
-
-        # augment tree diagram with height labels
-        if mode == TreeReaderMode.HEIGHT:
-            foliation = diagram.foliation()
-            diagram = diagram.id(diagram.dom)
-            for i, layer in enumerate(foliation):
-                new_layer = diagram.ty_factory()
-                for j, box_or_typ in enumerate(layer.boxes_or_types):
-                    new_layer @= (
-                        Box(f'layer_{i}', box_or_typ.dom, box_or_typ.cod)
-                        if i > 0 and j % 2 else box_or_typ
-                    )
-                diagram >>= new_layer
-        return diagram
+            children = [TreeReader._tree2diagram(child, mode, word_type)
+                        for child in tree.children]
+            return Id().tensor(*children) >> Box(name, dom, cod)
 
     def sentence2diagram(self,
                          sentence: SentenceType,
                          tokenised: bool = False,
                          suppress_exceptions: bool = False) -> Diagram | None:
-        """Parse a sentence into a DisCoPy diagram.
+        """Parse a sentence into a lambeq diagram.
 
         This produces a tree-shaped diagram based on the output of the
         CCG parser.
@@ -210,7 +199,7 @@ class TreeReader(Reader):
 
         Returns
         -------
-        :py:class:`discopy.grammar.pregroup.Diagram` or None
+        :py:class:`lambeq.backend.grammar.Diagram` or None
             The parsed diagram, or :py:obj:`None` on failure.
 
         """

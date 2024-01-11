@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,16 +24,16 @@ from __future__ import annotations
 import copy
 from typing import Any, TYPE_CHECKING
 
-from discopy.quantum import Circuit
-from discopy.tensor import Diagram
 from sympy import default_sort_key, Symbol
 import torch
 
+from lambeq.backend.quantum import Diagram as Circuit
+from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
 if TYPE_CHECKING:
-    from discopy.quantum.pennylane import PennyLaneCircuit
+    from lambeq.backend.pennylane import PennyLaneCircuit
 
 
 class PennyLaneModel(Model, torch.nn.Module):
@@ -43,7 +43,7 @@ class PennyLaneModel(Model, torch.nn.Module):
 
     """
 
-    weights: torch.nn.ParameterList  # type: ignore[assignment]
+    weights: torch.nn.ParameterList
     symbols: list[Symbol]
 
     def __init__(self,
@@ -68,7 +68,7 @@ class PennyLaneModel(Model, torch.nn.Module):
         """
         Model.__init__(self)
         torch.nn.Module.__init__(self)
-        self.circuit_map: dict[Circuit, PennyLaneCircuit] = {}
+        self.circuit_map: dict[Diagram, PennyLaneCircuit] = {}
         self.symbol_weight_map: dict[Symbol, torch.FloatTensor] = {}
         self._probabilities = probabilities
         self._normalize = normalize
@@ -131,7 +131,7 @@ class PennyLaneModel(Model, torch.nn.Module):
         """Reinitialise all modules in the model."""
         for module in self.modules():
             try:
-                module.reset_parameters()  # type: ignore[operator]
+                module.reset_parameters()
             except (AttributeError, TypeError):
                 pass
 
@@ -160,9 +160,9 @@ class PennyLaneModel(Model, torch.nn.Module):
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Diagrams <discopy.tensor.Diagram>` to be
-            evaluated.
+        diagrams : list of :py:class:`~lambeq.backend.quantum.Diagram`
+            The :py:class:`Diagrams <lambeq.backend.quantum.Diagram>` to
+            be evaluated.
 
         Raises
         ------
@@ -204,9 +204,9 @@ class PennyLaneModel(Model, torch.nn.Module):
 
         Parameters
         ----------
-        x : list of :py:class:`~discopy.quantum.Circuit`
-            The :py:class:`Circuits <discopy.quantum.Circuit>` to be
-            evaluated.
+        x : list of :py:class:`~lambeq.backend.quantum.Diagram`
+            The :py:class:`Circuits <lambeq.backend.quantum.Diagram>` to
+            be evaluated.
 
         Returns
         -------
@@ -225,11 +225,11 @@ class PennyLaneModel(Model, torch.nn.Module):
                       backend_config: dict[str, Any] | None = None,
                       **kwargs: Any) -> PennyLaneModel:
         """Build model from a list of
-        :py:class:`Circuits <discopy.quantum.Circuit>`.
+        :py:class:`Circuits <lambeq.backend.quantum.Diagram>`.
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.quantum.Circuit`
+        diagrams : list of :py:class:`~lambeq.backend.quantum.Diagram`
             The circuit diagrams to be evaluated.
         backend_config : dict, optional
             Configuration for hardware or simulator to be used. Defaults
@@ -239,10 +239,6 @@ class PennyLaneModel(Model, torch.nn.Module):
             'shots', and 'noise_model'.
 
         """
-        if not all(isinstance(x, Circuit) for x in diagrams):
-            raise ValueError('All diagrams must be of type'
-                             '`discopy.quantum.Circuit`.')
-
         model = cls(probabilities=probabilities, normalize=normalize,
                     diff_method=diff_method, backend_config=backend_config,
                     **kwargs)
@@ -251,6 +247,7 @@ class PennyLaneModel(Model, torch.nn.Module):
             {sym for circ in diagrams for sym in circ.free_symbols},
             key=default_sort_key)
         for circ in diagrams:
+            assert isinstance(circ, Circuit)
             p_circ = circ.to_pennylane(probabilities=model._probabilities,
                                        diff_method=model._diff_method,
                                        backend_config=model._backend_config)

@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,22 +25,23 @@ from math import ceil
 import random
 from typing import Any
 
-from discopy import tensor
+from lambeq.backend.numerical_backend import get_backend
 
 
 class Dataset:
     """Dataset class for the training of a lambeq model.
 
-    Data is returned in the format of
-    :py:class:`discopy.tensor.Tensor`'s backend, which by default is set
-    to NumPy. For example, to access the dataset as PyTorch tensors:
-
+    Data is returned in the format of lambeq's numerical backend, which
+    by default is set to NumPy. For example, to access the dataset
+    as PyTorch tensors:
+        >>> from lambeq.backend import numerical_backend
         >>> dataset = Dataset(['data1'], [[0, 1, 2, 3]])
-        >>> with tensor.backend('pytorch'):
+        >>> with numerical_backend.backend('pytorch'):
         ...     print(dataset[0])  # becomes pytorch tensor
         ('data1', tensor([0, 1, 2, 3]))
         >>> print(dataset[0])  # numpy array again
         ('data1', array([0, 1, 2, 3]))
+
     """
     def __init__(self,
                  data: list[Any],
@@ -82,7 +83,7 @@ class Dataset:
         """Get a single item or a subset from the dataset."""
         x = self.data[index]
         y = self.targets[index]
-        return x, tensor.get_backend().array(y)
+        return x, get_backend().array(y)
 
     def __len__(self) -> int:
         return len(self.data)
@@ -102,7 +103,7 @@ class Dataset:
         if self.shuffle:
             new_data, new_targets = self.shuffle_data(new_data, new_targets)
 
-        backend = tensor.get_backend()
+        backend = get_backend()
         for start_idx in range(0, len(self.data), self.batch_size):
             yield (new_data[start_idx: start_idx+self.batch_size],
                    backend.array(
@@ -129,5 +130,5 @@ class Dataset:
         """
         joint_list = list(zip(data, targets))
         random.shuffle(joint_list)
-        data, targets = zip(*joint_list)
-        return list(data), list(targets)
+        data_tuple, targets_tuple = zip(*joint_list)
+        return list(data_tuple), list(targets_tuple)

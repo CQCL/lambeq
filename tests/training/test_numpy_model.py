@@ -4,9 +4,8 @@ from copy import deepcopy
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from discopy.tensor import Tensor
-from discopy.grammar.pregroup import Cup, Id, Word
-from discopy.quantum import CRz, CX, H, Ket, Measure, SWAP
+from lambeq.backend.grammar import Cup, Id, Word
+from lambeq.backend.quantum import CRz, CX, H, Ket, Measure, SWAP
 
 from lambeq import AtomicType, IQPAnsatz, NumpyModel, Symbol
 
@@ -126,7 +125,7 @@ def test_checkpoint_loading_file_not_found_errors():
 
 def test_pickling():
     phi = Symbol('phi', size=123)
-    diagram = Ket(0, 0) >> CRz(phi) >> H @ H >> CX >> SWAP >> Measure(2)
+    diagram = Ket(0, 0) >> CRz(phi) >> H @ H >> CX >> SWAP >> Measure() @ Measure()
 
     deepcopied_diagram = deepcopy(diagram)
     pickled_diagram = pickle.loads(pickle.dumps(diagram))
@@ -151,6 +150,6 @@ def test_normalise():
 
 def test_fast_subs_error():
     with pytest.raises(KeyError):
-        diag = Ket(0, 0) >> CRz(Symbol('phi', size=123)) >> H @ H >> CX >> SWAP >> Measure(2)
+        diag = Ket(0, 0) >> CRz(Symbol('phi', size=123)) >> H @ H >> CX >> SWAP >> Measure() @ Measure()
         model = NumpyModel()
         model._fast_subs([diag], [])

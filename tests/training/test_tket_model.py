@@ -4,7 +4,7 @@ import pytest
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from discopy.grammar.pregroup import Cup, Id, Word
+from lambeq.backend.grammar import Cup, Id, Word
 from pytket.extensions.qiskit import AerBackend
 
 from lambeq import AtomicType, IQPAnsatz, TketModel
