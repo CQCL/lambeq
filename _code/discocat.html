@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; lambeq 0.3.3 documentation</title>
+  <title>&lt;no title&gt; &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,8 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
 </ul>
@@ -93,7 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -409,8 +408,9 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">pregroups</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">draw</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
+
 
 <span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
 
@@ -426,7 +426,7 @@ div.rendered_html tbody tr:hover {
 <span class="k">assert</span> <span class="n">Ty</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">])</span> <span class="o">==</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span>
 
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">words</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">cups</span>
-<span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -441,22 +441,15 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">Equation</span>
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">monoidal</span>
-<span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">raises</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">draw_equation</span>
 
 <span class="c1"># In the original diagram, words appear before the cups</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Before normal form:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">)))</span>
 
-<span class="n">diagram_nf</span> <span class="o">=</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">normal_form</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">diagram_nf</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;After normal form:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">diagram_nf</span><span class="o">.</span><span class="n">boxes</span><span class="p">)))</span>
 
-<span class="n">Equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">diagram_nf</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-
-<span class="c1"># In the normalised diagram, boxes are not in the right order</span>
-<span class="c1"># anymore, so cannot be drawn using pregroups.draw()</span>
-<span class="k">with</span> <span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-    <span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram_nf</span><span class="p">)</span>
+<span class="n">draw_equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">diagram_nf</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">draw_as_pregroup</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">foliated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -465,8 +458,8 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Before normal form: she, goes, home, Cup(n, n.r), Cup(n.l, n)
-After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
+Before normal form: she, goes, home, CUP, CUP
+After normal form: she, goes, CUP, home, CUP
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -489,7 +482,8 @@ After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">draw_equation</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">grammar</span><span class="p">,</span> <span class="n">Functor</span>
 
 <span class="c1"># determiners have the same type as adjectives</span>
 <span class="c1"># but we shouldn&#39;t add &#39;very&#39; behind them</span>
@@ -500,22 +494,24 @@ After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
 <span class="n">very</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;very&#39;</span><span class="p">,</span> <span class="n">adj</span> <span class="o">@</span> <span class="n">adj</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
 <span class="n">cups</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">adj</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">adj</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">very_ob</span><span class="p">(</span><span class="n">ty</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">very_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ty</span>
 
-<span class="k">def</span> <span class="nf">very_ar</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">very_ar</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">box</span> <span class="o">!=</span> <span class="n">very</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">determiners</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span> <span class="o">==</span> <span class="n">adj</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">very</span> <span class="o">@</span> <span class="n">box</span> <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="n">adj</span><span class="p">)</span> <span class="o">@</span> <span class="n">cups</span>
     <span class="k">return</span> <span class="n">box</span>
 
-<span class="n">very_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">very_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">very_ar</span><span class="p">)</span>
+<span class="n">very_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">grammar</span><span class="p">,</span>
+                       <span class="n">ob</span><span class="o">=</span><span class="n">very_ob</span><span class="p">,</span>
+                       <span class="n">ar</span><span class="o">=</span><span class="n">very_ar</span><span class="p">,)</span>
 
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="s1">&#39;a big bad wolf&#39;</span><span class="p">)</span>
 <span class="n">new_diagram</span> <span class="o">=</span> <span class="n">very_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 
-<span class="n">Equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">new_diagram</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">draw_equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">new_diagram</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -530,42 +526,56 @@ After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Swap</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Layer</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Swap</span>
 
-<span class="nd">@factory</span>
-<span class="k">class</span> <span class="nc">TwistedDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">cups</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="n">swaps</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="o">.</span><span class="vm">__func__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
-        <span class="n">cups</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="o">.</span><span class="vm">__func__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">swaps</span> <span class="o">&gt;&gt;</span> <span class="n">cups</span>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">caps</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span>
+<span class="n">twisted</span> <span class="o">=</span> <span class="n">Category</span><span class="p">(</span><span class="s1">&#39;twisted&#39;</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">TwistedWord</span><span class="p">(</span><span class="n">Word</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
-<span class="k">class</span> <span class="nc">TwistedSwap</span><span class="p">(</span><span class="n">Swap</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
-<span class="k">class</span> <span class="nc">TwistedCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
-<span class="k">class</span> <span class="nc">TwistedCap</span><span class="p">(</span><span class="n">Cap</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Diagram&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span> <span class="o">...</span>
 
-<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">braid_factory</span> <span class="o">=</span> <span class="n">TwistedSwap</span>
-<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">cup_factory</span> <span class="o">=</span> <span class="n">TwistedCup</span>
-<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">cap_factory</span> <span class="o">=</span> <span class="n">TwistedCap</span>
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Ty&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedTy</span><span class="p">(</span><span class="n">Ty</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Box&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedBox</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Layer&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedLayer</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">TwistedCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="n">TwistedBox</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">TwistedCap</span><span class="p">(</span><span class="n">Cap</span><span class="p">,</span> <span class="n">TwistedBox</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@TwistedDiagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;swap&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedSwap</span><span class="p">(</span><span class="n">Swap</span><span class="p">,</span> <span class="n">TwistedBox</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@TwistedDiagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;cap&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">twisted_cap_factory</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">caps</span> <span class="o">=</span> <span class="n">TwistedCap</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="ow">not</span> <span class="n">is_reversed</span><span class="p">)</span>
+    <span class="n">swaps</span> <span class="o">=</span> <span class="n">TwistedSwap</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">caps</span> <span class="o">&gt;&gt;</span> <span class="n">swaps</span>
+
+<span class="nd">@TwistedDiagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;cup&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">twisted_cup_factory</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">swaps</span> <span class="o">=</span> <span class="n">TwistedSwap</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+    <span class="n">cups</span> <span class="o">=</span> <span class="n">TwistedCup</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="ow">not</span> <span class="n">is_reversed</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swaps</span> <span class="o">&gt;&gt;</span> <span class="n">cups</span>
+
 
 <span class="n">twist_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span>
-    <span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ty</span><span class="p">:</span> <span class="n">ty</span><span class="p">,</span>
-    <span class="n">ar</span><span class="o">=</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="n">TwistedWord</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span>
-    <span class="n">cod</span><span class="o">=</span><span class="n">Category</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">))</span>
+    <span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">:</span> <span class="n">TwistedTy</span><span class="p">(</span><span class="n">ty</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+    <span class="n">ar</span><span class="o">=</span><span class="k">lambda</span> <span class="n">func</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">TwistedBox</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="n">func</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)),</span>
+    <span class="n">target_category</span><span class="o">=</span><span class="n">twisted</span><span class="p">)</span>
 
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="s1">&#39;This is twisted&#39;</span><span class="p">)</span>
-<span class="n">new_diagram</span> <span class="o">=</span> <span class="n">twist_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">twisted_diagram</span> <span class="o">=</span> <span class="n">twist_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 
-<span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
-<span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">new_diagram</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">(</span><span class="n">twisted_diagram</span><span class="p">)</span>
 
-<span class="n">snake</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cap</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Cup</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">Equation</span><span class="p">(</span><span class="n">twist_functor</span><span class="p">(</span><span class="n">snake</span><span class="p">),</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">snake</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cap</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Cup</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">draw_equation</span><span class="p">(</span><span class="n">twist_functor</span><span class="p">(</span><span class="n">snake</span><span class="p">),</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -594,11 +604,35 @@ After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Tensor</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/_code_discocat_5_0.png" src="../_images/_code_discocat_5_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/_code_discocat_5_1.png" src="../_images/_code_discocat_5_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">Id</span>
 
 <span class="c1"># Dim(1) is the unit object, so disappears when tensored with another Dim</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Dim</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -610,14 +644,14 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">id_box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;Id Box&#39;</span><span class="p">,</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">id_tensor</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">id_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 <span class="c1"># the actual values of id_box and id_tensor are equal</span>
-<span class="k">assert</span> <span class="p">(</span><span class="n">id_box</span><span class="o">.</span><span class="n">array</span> <span class="o">==</span> <span class="n">id_tensor</span><span class="o">.</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">id_box</span><span class="o">.</span><span class="n">array</span> <span class="o">==</span> <span class="n">id_tensor</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">id_box</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -627,46 +661,15 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-id_box.eval()=Tensor[int]([1, 0, 0, 1], dom=Dim(2), cod=Dim(2))
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">f_box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;f Box&#39;</span><span class="p">,</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">f_tensor</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">combined_diagram</span> <span class="o">=</span> <span class="n">id_box</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">f_box</span>
-<span class="n">combined_tensor</span> <span class="o">=</span> <span class="n">id_tensor</span> <span class="o">@</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">f_tensor</span>
-
-<span class="c1"># tensor diagram evaluates to the tensor</span>
-<span class="k">assert</span> <span class="n">combined_diagram</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">==</span> <span class="n">combined_tensor</span>
-<span class="n">combined_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">combined_tensor</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/_code_discocat_7_0.png" src="../_images/_code_discocat_7_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Tensor[int64]([0, 1, 2, 3, 4, 5, 6, 7], dom=Dim(2, 2), cod=Dim(2))
+id_box.eval()=array([[1., 0.],
+       [0., 1.]])
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tensor</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">array</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -685,7 +688,7 @@ array([[1, 0, 0],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tensor</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">array</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -713,24 +716,30 @@ array([[[[1, 0],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Functor</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Functor</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend</span> <span class="kn">import</span> <span class="n">tensor</span>
 
-<span class="k">def</span> <span class="nf">one_ob</span><span class="p">(</span><span class="n">ty</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">one_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
     <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Dim</span><span class="p">(</span><span class="o">*</span><span class="n">dims</span><span class="p">)</span> <span class="c1"># does Dim(2,2,..)</span>
 
-<span class="k">def</span> <span class="nf">one_ar</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
-    <span class="n">dom</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
-    <span class="n">cod</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-    <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">dom</span> <span class="o">@</span> <span class="n">cod</span><span class="p">)</span><span class="o">.</span><span class="n">inside</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">one_ar</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
+    <span class="n">cod</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">dom</span> <span class="o">@</span> <span class="n">cod</span><span class="p">)</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">box</span><span class="si">}</span><span class="s1">&quot; becomes&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tensor</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">box</span>
 
 <span class="n">one_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span>
-    <span class="n">ob</span><span class="o">=</span><span class="n">one_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">one_ar</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="n">Category</span><span class="p">())</span>
-<span class="n">one_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+    <span class="n">target_category</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span>
+    <span class="n">ob</span><span class="o">=</span><span class="n">one_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">one_ar</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">one_diagram</span> <span class="o">=</span> <span class="n">one_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">one_diagram</span><span class="w"> </span><span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">one_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -757,35 +766,33 @@ array([[[[1, 0],
 &#34;twisted&#34; becomes
 [[1. 1.]
  [1. 1.]]
+one_diagram = Diagram(dom=Dim(1), cod=Dim(2), layers=[Layer(left=Dim(1), box=[This; Dim(1) -&gt; Dim(2)], right=Dim(1)), Layer(left=Dim(2), box=[is; Dim(1) -&gt; Dim(2, 2, 2, 2)], right=Dim(1)), Layer(left=Dim(2, 2, 2, 2, 2), box=[twisted; Dim(1) -&gt; Dim(2, 2)], right=Dim(1)), Layer(left=Dim(2, 2, 2, 2), box=[CUP; Dim(2, 2) -&gt; Dim(1)], right=Dim(2)), Layer(left=Dim(2, 2, 2), box=[CUP; Dim(2, 2) -&gt; Dim(1)], right=Dim(1)), Layer(left=Dim(1), box=[CUP; Dim(2, 2) -&gt; Dim(1)], right=Dim(2))])
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-Tensor[int]([8, 8], dom=Dim(1), cod=Dim(2))
-</pre></div></div>
+<img alt="../_images/_code_discocat_10_1.png" src="../_images/_code_discocat_10_1.png" />
+</div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">Id</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">CX</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">CX</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
+
 
 <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">X</span>
 <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">CX</span>
 <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">@</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span> <span class="o">@</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span> <span class="o">@</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>
 
-<span class="c1"># from discopy 0.4.1, can do:</span>
 <span class="n">same_circuit</span> <span class="o">=</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
                 <span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="k">assert</span> <span class="n">circuit</span> <span class="o">==</span> <span class="n">same_circuit</span>
 
-<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">circuit</span><span class="o">.</span><span class="n">to_tk</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -810,8 +817,7 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Circuit</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">SWAP</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">Diagram</span> <span class="k">as</span> <span class="n">Circuit</span><span class="p">,</span> <span class="n">SWAP</span>
 
 <span class="c1"># to apply a CNOT on qubits 2 and 0:</span>
 <span class="n">circuit1</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -822,11 +828,11 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <span class="n">circuit1</span> <span class="o">&gt;&gt;=</span> <span class="n">SWAP</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># or you can do</span>
-<span class="n">perm</span> <span class="o">=</span> <span class="n">Circuit</span><span class="o">.</span><span class="n">permutation</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">perm</span> <span class="o">=</span> <span class="n">Circuit</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">circuit1</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">circuit2</span> <span class="o">=</span> <span class="n">perm</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">&gt;&gt;</span> <span class="n">perm</span>
 
 <span class="k">assert</span> <span class="n">circuit1</span> <span class="o">==</span> <span class="n">circuit2</span>
-<span class="n">circuit1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">circuit1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># no swaps introduced when converting to tket</span>
 <span class="n">circuit1</span><span class="o">.</span><span class="n">to_tk</span><span class="p">()</span>
@@ -853,9 +859,10 @@ tk.Circuit(3).CX(2, 0)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Controlled</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
-<span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">distance</span><span class="o">=-</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">Controlled</span><span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">Controlled</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
+
+<span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">distance</span><span class="o">=-</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">Controlled</span><span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -877,17 +884,14 @@ tk.Circuit(3).CX(2, 0)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Discard</span><span class="p">,</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Bra</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.channel</span> <span class="kn">import</span> <span class="n">C</span><span class="p">,</span> <span class="n">Q</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">Discard</span><span class="p">,</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Bra</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">Q</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">@</span> <span class="n">C</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">Discard</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Measure</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Discard</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Measure</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="c1"># circuits that have measurements in them are no longer unitary</span>
-<span class="c1"># and return CQMaps</span>
-<span class="nb">print</span><span class="p">((</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Measure</span><span class="p">())</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">(</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">Measure</span><span class="p">())</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -896,11 +900,19 @@ tk.Circuit(3).CX(2, 0)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-C(Dim(2, 2)) @ Q(Dim(2, 3))
-Channel([1.+0.j, 0.+0.j, 0.+0.j, 1.+0.j], dom=Q(Dim(2)), cod=CQ())
-Channel([1.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 1.+0.j], dom=Q(Dim(2)), cod=Q(Dim(2)))
-Tensor[complex]([1.+0.j, 0.+0.j], dom=Dim(1), cod=Dim(2))
-Channel([1.+0.j, 0.+0.j], dom=CQ(), cod=Q(Dim(2)))
+[[1.+0.j 0.+0.j]
+ [0.+0.j 1.+0.j]]
+
+[[[1.+0.j 0.+0.j]
+  [0.+0.j 0.+0.j]]
+
+ [[0.+0.j 0.+0.j]
+  [0.+0.j 1.+0.j]]]
+
+[1. 0.]
+
+[1.+0.j 0.+0.j]
+
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -917,15 +929,262 @@ Channel([1.+0.j, 0.+0.j], dom=CQ(), cod=Q(Dim(2)))
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Channel([1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j], dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)))
+array([[[[[[[[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]]],
+
+
+
+
+
+        [[[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]]]],
+
+
+
+
+
+
+       [[[[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]]]]]],
+
+
+
+
+
+        [[[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]]]]])
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">mixed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">mixed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -942,32 +1201,34 @@ Channel([1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j], dom=Q(Dim(2, 2)),
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Functor</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">quantum</span><span class="p">,</span> <span class="n">Id</span>
 
-<span class="k">def</span> <span class="nf">cnot_ob</span><span class="p">(</span><span class="n">ty</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">cnot_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
     <span class="c1"># this implicitly maps all rigid types to 1 qubit</span>
     <span class="k">return</span> <span class="n">qubit</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">cnot_ar</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">cnot_ar</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
     <span class="n">dom</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
     <span class="n">cod</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
     <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
     <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="c1"># Add Bras (post-selection) and Kets (states)</span>
     <span class="c1"># to get a circuit with the right amount of</span>
     <span class="c1"># input and output wires</span>
     <span class="k">if</span> <span class="n">cod</span> <span class="o">&lt;=</span> <span class="n">dom</span><span class="p">:</span>
-        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="n">Bra</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="n">cod</span><span class="p">))</span>
+        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="n">Bra</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="n">cod</span><span class="p">))</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">circuit</span> <span class="o">&lt;&lt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">@</span> <span class="n">Ket</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cod</span> <span class="o">-</span> <span class="n">dom</span><span class="p">))</span>
+        <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">@</span> <span class="n">Ket</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cod</span> <span class="o">-</span> <span class="n">dom</span><span class="p">))</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">circuit</span>
     <span class="k">return</span> <span class="n">circuit</span>
 
-<span class="n">cnot_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">cnot_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">cnot_ar</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="n">Category</span><span class="p">())</span>
-<span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-<span class="n">cnot_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">cnot_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">target_category</span><span class="o">=</span><span class="n">quantum</span><span class="p">,</span> <span class="n">ob</span><span class="o">=</span><span class="n">cnot_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">cnot_ar</span><span class="p">)</span>
+<span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">cnot_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -994,7 +1255,7 @@ Channel([1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j], dom=Q(Dim(2, 2)),
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

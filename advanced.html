@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Advanced: DisCoPy usage &mdash; lambeq 0.3.3 documentation</title>
+  <title>Advanced: low-level lambeq &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -23,7 +23,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Monoidal categories in DisCoPy" href="tutorials/monoidal.html" />
+    <link rel="next" title="Monoidal categories in lambeq" href="tutorials/monoidal.html" />
     <link rel="prev" title="A complete use case" href="tutorials/training-usecase.html" /> 
 </head>
 
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,10 +75,10 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced: DisCoPy usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html">Monoidal categories in DisCoPy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/discocat.html">DisCoCat in DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Advanced: low-level lambeq</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html">Monoidal categories in lambeq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/discocat.html">DisCoCat in lambeq</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
@@ -97,7 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -120,7 +119,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Advanced: DisCoPy usage</li>
+      <li class="breadcrumb-item active">Advanced: low-level lambeq</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/advanced.rst" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -154,18 +153,19 @@
     text-align: unset;
 }
 </style>
-<section id="advanced-discopy-usage">
-<span id="sec-advanced"></span><h1>Advanced: DisCoPy usage<a class="headerlink" href="#advanced-discopy-usage" title="Permalink to this heading"></a></h1>
-<p>To understand <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> in further depth, it is necessary to familiarise yourself with <a class="reference internal" href="discopy.html#sec-discopy"><span class="std std-ref">DisCoPy</span></a>, the underlying library used for manipulating <a class="reference internal" href="glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal categories</span></a>. After these tutorials, you will have the necessary knowledge to contribute to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> and DisCoPy.</p>
+<section id="advanced-low-level-lambeq">
+<span id="sec-advanced"></span><h1>Advanced: low-level lambeq<a class="headerlink" href="#advanced-low-level-lambeq" title="Permalink to this heading"></a></h1>
+<p>To understand <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> in further depth, it is necessary to familiarise yourself with the low-level <code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend</span></code> module and its <a class="reference internal" href="package-api.html#api-backend"><span class="std std-ref">available classes and methods</span></a>.</p>
+<p>After these tutorials, you will have the necessary knowledge to contribute to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/monoidal.html">Monoidal categories in DisCoPy</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/monoidal.html">Monoidal categories in lambeq</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html#Categories">Categories</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html#Monoidal-categories">Monoidal categories</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html#Rigid-monoidal-categories">Rigid monoidal categories</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/discocat.html">DisCoCat in DisCoPy</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/discocat.html">DisCoCat in lambeq</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/discocat.html#Pregroup-grammars">Pregroup grammars</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/discocat.html#Functors">Functors</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="tutorials/discocat.html#Example-1:-“Very”-functor">Example 1: “Very” functor</a></li>
@@ -185,13 +185,13 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="tutorials/training-usecase.html" class="btn btn-neutral float-left" title="A complete use case" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tutorials/monoidal.html" class="btn btn-neutral float-right" title="Monoidal categories in DisCoPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorials/monoidal.html" class="btn btn-neutral float-right" title="Monoidal categories in lambeq" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

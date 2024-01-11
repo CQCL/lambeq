@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.backend.drawing.drawing &mdash; lambeq 0.4.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            lambeq
+              <img src="../../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.4.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../string-diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../advanced.html">Advanced: low-level lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lambeq.backend.drawing.drawing</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.backend.drawing.drawing</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021-2024 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Lambeq drawing</span>
+<span class="sd">==============</span>
+<span class="sd">Functionality for drawing lambeq diagrams. This work is based on DisCoPy</span>
+<span class="sd">(https://discopy.org/) which is released under the BSD 3-Clause &quot;New&quot;</span>
+<span class="sd">or &quot;Revised&quot; License.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">tempfile</span> <span class="kn">import</span> <span class="n">NamedTemporaryFile</span><span class="p">,</span> <span class="n">TemporaryDirectory</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.backend</span> <span class="kn">import</span> <span class="n">grammar</span><span class="p">,</span> <span class="n">quantum</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.drawing.drawable</span> <span class="kn">import</span> <span class="p">(</span><span class="n">BOX_HEIGHT</span><span class="p">,</span> <span class="n">BoxNode</span><span class="p">,</span>
+                                             <span class="n">DrawableDiagram</span><span class="p">,</span>
+                                             <span class="n">DrawablePregroup</span><span class="p">,</span>
+                                             <span class="n">LEDGE</span><span class="p">,</span>
+                                             <span class="n">WireEndpointType</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.drawing.drawing_backend</span> <span class="kn">import</span> <span class="p">(</span><span class="n">DEFAULT_ASPECT</span><span class="p">,</span>
+                                                    <span class="n">DEFAULT_MARGINS</span><span class="p">,</span>
+                                                    <span class="n">DrawingBackend</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.drawing.helpers</span> <span class="kn">import</span> <span class="n">drawn_as_spider</span><span class="p">,</span> <span class="n">needs_asymmetry</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.drawing.mat_backend</span> <span class="kn">import</span> <span class="n">MatBackend</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.drawing.tikz_backend</span> <span class="kn">import</span> <span class="n">TikzBackend</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Diagram</span>
+
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span> <span class="k">as</span> <span class="n">HTML_ty</span>
+
+
+<div class="viewcode-block" id="draw"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.draw">[docs]</a><span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a grammar diagram.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    diagram: Diagram</span>
+<span class="sd">        Diagram to draw.</span>
+<span class="sd">    draw_as_nodes : bool, optional</span>
+<span class="sd">        Whether to draw boxes as nodes, default is `False`.</span>
+<span class="sd">    color : string, optional</span>
+<span class="sd">        Color of the box or node, default is white (`&#39;#ffffff&#39;`) for</span>
+<span class="sd">        boxes and red (`&#39;#ff0000&#39;`) for nodes.</span>
+<span class="sd">    textpad : pair of floats, optional</span>
+<span class="sd">        Padding between text and wires, default is `(0.1, 0.1)`.</span>
+<span class="sd">    draw_type_labels : bool, optional</span>
+<span class="sd">        Whether to draw type labels, default is `True`.</span>
+<span class="sd">    draw_box_labels : bool, optional</span>
+<span class="sd">        Whether to draw box labels, default is `True`.</span>
+<span class="sd">    aspect : string, optional</span>
+<span class="sd">        Aspect ratio, one of `[&#39;auto&#39;, &#39;equal&#39;]`.</span>
+<span class="sd">    margins : tuple, optional</span>
+<span class="sd">        Margins, default is `(0.05, 0.05)`.</span>
+<span class="sd">    nodesize : float, optional</span>
+<span class="sd">        BoxNode size for spiders and controlled gates.</span>
+<span class="sd">    fontsize : int, optional</span>
+<span class="sd">        Font size for the boxes, default is `12`.</span>
+<span class="sd">    fontsize_types : int, optional</span>
+<span class="sd">        Font size for the types, default is `12`.</span>
+<span class="sd">    figsize : tuple, optional</span>
+<span class="sd">        Figure size.</span>
+<span class="sd">    path : str, optional</span>
+<span class="sd">        Where to save the image, if `None` we call `plt.show()`.</span>
+<span class="sd">    to_tikz : bool, optional</span>
+<span class="sd">        Whether to output tikz code instead of matplotlib.</span>
+<span class="sd">    asymmetry : float, optional</span>
+<span class="sd">        Make a box and its dagger mirror images, default is</span>
+<span class="sd">        `.25 * any(box.is_dagger for box in diagram.boxes)`.</span>
+<span class="sd">    foliated : bool, default: False</span>
+<span class="sd">        If true, each box of the diagram is drawn in a separate</span>
+<span class="sd">        layer. By default boxes are compressed upwards into</span>
+<span class="sd">        available space.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;asymmetry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;asymmetry&#39;</span><span class="p">,</span> <span class="mf">.25</span> <span class="o">*</span> <span class="n">needs_asymmetry</span><span class="p">(</span><span class="n">diagram</span><span class="p">))</span>
+
+    <span class="n">drawable</span> <span class="o">=</span> <span class="n">DrawableDiagram</span><span class="o">.</span><span class="n">from_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span>
+                                            <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;foliated&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
+    <span class="n">drawable</span><span class="o">.</span><span class="n">scale_and_pad</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                           <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pad&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="s1">&#39;backend&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;backend&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;to_tikz&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">TikzBackend</span><span class="p">(</span>
+            <span class="n">use_tikzstyles</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_tikzstyles&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">MatBackend</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="n">min_size</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">max_v</span> <span class="o">=</span> <span class="nb">max</span><span class="p">([</span><span class="n">v</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="p">([</span><span class="n">point</span><span class="o">.</span><span class="n">coordinates</span> <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span>
+                 <span class="n">drawable</span><span class="o">.</span><span class="n">wire_endpoints</span> <span class="o">+</span> <span class="n">drawable</span><span class="o">.</span><span class="n">boxes</span><span class="p">])</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">point</span><span class="p">]</span>
+                <span class="o">+</span> <span class="p">[</span><span class="n">min_size</span><span class="p">])</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;nodesize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nodesize&#39;</span><span class="p">,</span> <span class="mf">1.</span><span class="p">)</span> <span class="o">/</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">max_v</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_wires</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">drawable</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_spiders</span><span class="p">(</span><span class="n">drawable</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">drawable</span><span class="o">.</span><span class="n">boxes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="n">quantum</span><span class="o">.</span><span class="n">Ket</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Bra</span><span class="p">,</span>  <span class="n">quantum</span><span class="o">.</span><span class="n">Bit</span><span class="p">)):</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_brakets</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">drawable</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Discard</span><span class="p">):</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_discard</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">drawable</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Measure</span><span class="p">):</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_measure</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">drawable</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Controlled</span><span class="p">):</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_controlled_gate</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">drawable</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="n">drawn_as_spider</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_box</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">drawable</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="n">backend</span><span class="o">.</span><span class="n">output</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">baseline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">tikz_options</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tikz_options&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">show</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+        <span class="n">margins</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;margins&#39;</span><span class="p">,</span> <span class="n">DEFAULT_MARGINS</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="draw_pregroup"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.draw_pregroup">[docs]</a><span class="k">def</span> <span class="nf">draw_pregroup</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Draw a pregroup grammar diagram.</span>
+
+<span class="sd">    A pregroup diagram is structured as:</span>
+<span class="sd">        (State @ State ... State) &gt;&gt; (Cups and Swaps)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    diagram: Diagram</span>
+<span class="sd">        Diagram to draw.</span>
+<span class="sd">    draw_as_nodes : bool, optional</span>
+<span class="sd">        Whether to draw boxes as nodes, default is `False`.</span>
+<span class="sd">    color : string, optional</span>
+<span class="sd">        Color of the box or node, default is white (`&#39;#ffffff&#39;`) for</span>
+<span class="sd">        boxes and red (`&#39;#ff0000&#39;`) for nodes.</span>
+<span class="sd">    textpad : pair of floats, optional</span>
+<span class="sd">        Padding between text and wires, default is `(0.1, 0.1)`.</span>
+<span class="sd">    aspect : string, optional</span>
+<span class="sd">        Aspect ratio, one of `[&#39;auto&#39;, &#39;equal&#39;]`.</span>
+<span class="sd">    margins : tuple, optional</span>
+<span class="sd">        Margins, default is `(0.05, 0.05)`.</span>
+<span class="sd">    fontsize : int, optional</span>
+<span class="sd">        Font size for the boxes, default is `12`.</span>
+<span class="sd">    fontsize_types : int, optional</span>
+<span class="sd">        Font size for the types, default is `12`.</span>
+<span class="sd">    figsize : tuple, optional</span>
+<span class="sd">        Figure size.</span>
+<span class="sd">    path : str, optional</span>
+<span class="sd">        Where to save the image, if `None` we call `plt.show()`.</span>
+<span class="sd">    to_tikz : bool, optional</span>
+<span class="sd">        Whether to output tikz code instead of matplotlib.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">diagram</span><span class="o">.</span><span class="n">is_pregroup</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Diagram is not a valid pregroup diagram.&#39;</span><span class="p">)</span>
+
+    <span class="n">drawable</span> <span class="o">=</span> <span class="n">DrawablePregroup</span><span class="o">.</span><span class="n">from_diagram</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+    <span class="n">drawable</span><span class="o">.</span><span class="n">scale_and_pad</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+                           <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pad&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="s1">&#39;backend&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;backend&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;to_tikz&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">TikzBackend</span><span class="p">(</span>
+            <span class="n">use_tikzstyles</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_tikzstyles&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">MatBackend</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_wires</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">drawable</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_spiders</span><span class="p">(</span><span class="n">drawable</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">drawable</span><span class="o">.</span><span class="n">boxes</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">drawn_as_spider</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">obj</span><span class="p">):</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_pregroup_state</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="n">backend</span><span class="o">.</span><span class="n">output</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">baseline</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">drawable</span><span class="o">.</span><span class="n">boxes</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span> <span class="ow">or</span> <span class="mf">.5</span><span class="p">,</span>
+        <span class="n">tikz_options</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tikz_options&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">show</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+        <span class="n">margins</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;margins&#39;</span><span class="p">,</span> <span class="n">DEFAULT_MARGINS</span><span class="p">),</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;aspect&#39;</span><span class="p">,</span> <span class="n">DEFAULT_ASPECT</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="to_gif"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.to_gif">[docs]</a><span class="k">def</span> <span class="nf">to_gif</span><span class="p">(</span><span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">],</span>
+           <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+           <span class="n">timestep</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
+           <span class="n">loop</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+           <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">HTML_ty</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a GIF stepping through the given diagrams.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    diagrams: list of Diagrams</span>
+<span class="sd">        Sequence of diagrams to draw.</span>
+<span class="sd">    path : str</span>
+<span class="sd">        Where to save the image, if `None` a gif gets created.</span>
+<span class="sd">    timestep : int, optional</span>
+<span class="sd">        Time step in milliseconds, default is `500`.</span>
+<span class="sd">    loop : bool, optional</span>
+<span class="sd">        Whether to loop, default is `False`</span>
+<span class="sd">    params : any, optional</span>
+<span class="sd">        Passed to `Diagram.draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    IPython.display.HTML or str</span>
+<span class="sd">        HTML to display the generated GIF</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">steps</span><span class="p">,</span> <span class="n">frames</span> <span class="o">=</span> <span class="n">diagrams</span><span class="p">,</span> <span class="p">[]</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">path</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">NamedTemporaryFile</span><span class="p">(</span>
+        <span class="n">suffix</span><span class="o">=</span><span class="s1">&#39;.gif&#39;</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s1">&#39;tmp_&#39;</span><span class="p">,</span> <span class="nb">dir</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">directory</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_diagram</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">steps</span><span class="p">):</span>
+            <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">.png&#39;</span><span class="p">)</span>
+            <span class="n">_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">tmp_path</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+            <span class="n">frames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">loop</span><span class="p">:</span>
+            <span class="n">frames</span> <span class="o">=</span> <span class="n">frames</span> <span class="o">+</span> <span class="n">frames</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">frames</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;GIF&#39;</span><span class="p">,</span> <span class="n">append_images</span><span class="o">=</span><span class="n">frames</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+                       <span class="n">save_all</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="n">timestep</span><span class="p">,</span>
+                       <span class="o">**</span><span class="p">{</span><span class="s1">&#39;loop&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span> <span class="k">if</span> <span class="n">loop</span> <span class="k">else</span> <span class="p">{})</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+            <span class="k">return</span> <span class="n">HTML</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&lt;img src=&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&lt;img src=&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&quot;&gt;&#39;</span></div>
+
+
+<div class="viewcode-block" id="draw_equation"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.draw_equation">[docs]</a><span class="k">def</span> <span class="nf">draw_equation</span><span class="p">(</span><span class="o">*</span><span class="n">terms</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Diagram</span><span class="p">,</span>
+                  <span class="n">symbol</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;=&#39;</span><span class="p">,</span>
+                  <span class="n">space</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                  <span class="n">path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                  <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw an equation with multiple diagrams.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    terms: list of Diagrams</span>
+<span class="sd">        Diagrams in equation.</span>
+<span class="sd">    symbol: str</span>
+<span class="sd">        Symbol separating equations. &#39;=&#39; by default.</span>
+<span class="sd">    space: float</span>
+<span class="sd">        Amount of space between adjacent diagrams.</span>
+<span class="sd">    path : str, optional</span>
+<span class="sd">        Where to save the image, if `None` we call `plt.show()`.</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters, passed to :meth:`draw`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">params</span><span class="p">[</span><span class="s1">&#39;asymmetry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+        <span class="s1">&#39;asymmetry&#39;</span><span class="p">,</span> <span class="mf">.25</span> <span class="o">*</span> <span class="nb">any</span><span class="p">(</span><span class="n">needs_asymmetry</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">))</span>
+
+    <span class="n">pad</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pad&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="n">scale_x</span><span class="p">,</span> <span class="n">scale_y</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="s1">&#39;backend&#39;</span> <span class="ow">in</span> <span class="n">params</span><span class="p">:</span>
+        <span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;backend&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;to_tikz&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">TikzBackend</span><span class="p">(</span>
+            <span class="n">use_tikzstyles</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;use_tikzstyles&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">MatBackend</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;figsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">term</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">terms</span><span class="p">):</span>
+        <span class="n">term</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="o">**</span><span class="nb">dict</span><span class="p">(</span>
+            <span class="n">params</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="p">(</span><span class="n">scale_x</span><span class="p">,</span> <span class="n">scale_y</span><span class="p">),</span> <span class="n">pad</span><span class="o">=</span><span class="n">pad</span><span class="p">))</span>
+        <span class="n">pad</span> <span class="o">=</span> <span class="p">(</span><span class="n">backend</span><span class="o">.</span><span class="n">max_width</span> <span class="o">+</span> <span class="n">space</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">pad</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">pad</span> <span class="o">=</span> <span class="p">(</span><span class="n">pad</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">space</span><span class="p">,</span> <span class="n">pad</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">backend</span><span class="o">.</span><span class="n">output</span><span class="p">(</span>
+        <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+        <span class="n">baseline</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">tikz_options</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tikz_options&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="n">show</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
+        <span class="n">margins</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;margins&#39;</span><span class="p">,</span> <span class="n">DEFAULT_MARGINS</span><span class="p">),</span>
+        <span class="n">aspect</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;aspect&#39;</span><span class="p">,</span> <span class="n">DEFAULT_ASPECT</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_draw_box</span><span class="p">(</span><span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span><span class="p">,</span>
+              <span class="n">drawable_diagram</span><span class="p">:</span> <span class="n">DrawableDiagram</span><span class="p">,</span>
+              <span class="n">drawable_box</span><span class="p">:</span> <span class="n">BoxNode</span><span class="p">,</span>
+              <span class="n">asymmetry</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+              <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DrawingBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a box on a given backend.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        A lambeq drawing backend.</span>
+<span class="sd">    drawable_diagram: DrawableDiagram</span>
+<span class="sd">        A drawable diagram.</span>
+<span class="sd">    drawable_box: BoxNode</span>
+<span class="sd">        A BoxNode to be drawn. Must be in `drawable_diagram`.</span>
+<span class="sd">    asymmetry: float</span>
+<span class="sd">        Amount of asymmetry, used to represent transposes,</span>
+<span class="sd">        conjugates and daggers,</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters. See `drawing.draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        Drawing backend updated with the box&#39;s graphic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">box</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">obj</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">:</span>
+        <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">x</span>
+
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">get_x_lims</span><span class="p">(</span><span class="n">drawable_diagram</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">BOX_HEIGHT</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="n">left</span><span class="p">,</span> <span class="n">height</span><span class="p">],</span> <span class="p">[</span><span class="n">right</span><span class="p">,</span> <span class="n">height</span><span class="p">],</span>
+              <span class="p">[</span><span class="n">right</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="n">BOX_HEIGHT</span><span class="p">],</span> <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="n">BOX_HEIGHT</span><span class="p">]]</span>
+
+    <span class="n">conjd</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">daggd</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Daggered</span><span class="p">)</span>
+    <span class="n">trand</span> <span class="o">=</span> <span class="n">conjd</span> <span class="ow">and</span> <span class="n">daggd</span>
+
+    <span class="k">if</span> <span class="n">trand</span><span class="p">:</span>
+        <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">asymmetry</span>
+    <span class="k">elif</span> <span class="n">conjd</span><span class="p">:</span>
+        <span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="n">asymmetry</span>
+    <span class="k">elif</span> <span class="n">daggd</span><span class="p">:</span>
+        <span class="n">points</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">asymmetry</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">points</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">asymmetry</span>
+
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_polygon</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;draw_box_labels&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">):</span>
+        <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                          <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                          <span class="n">fontsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">backend</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_pregroup_state</span><span class="p">(</span><span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span><span class="p">,</span>
+                         <span class="n">drawable_box</span><span class="p">:</span> <span class="n">BoxNode</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DrawingBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a pregroup word state on a given backend.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        A lambeq drawing backend.</span>
+<span class="sd">    drawable_box: BoxNode</span>
+<span class="sd">        A BoxNode to be drawn.</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters. See `drawing.draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        Drawing backend updated with the box&#39;s graphic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">box</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">obj</span>
+
+    <span class="n">left</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">BOX_HEIGHT</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="n">left</span><span class="p">,</span> <span class="n">height</span><span class="p">],</span> <span class="p">[</span><span class="n">right</span><span class="p">,</span> <span class="n">height</span><span class="p">],</span>
+              <span class="p">[</span><span class="n">right</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="n">BOX_HEIGHT</span><span class="p">],</span> <span class="p">[(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="mf">0.6</span><span class="p">],</span>
+              <span class="p">[</span><span class="n">left</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="n">BOX_HEIGHT</span><span class="p">]]</span>
+
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_polygon</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                      <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                      <span class="n">fontsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">backend</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_wires</span><span class="p">(</span><span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span><span class="p">,</span>
+                <span class="n">drawable_diagram</span><span class="p">:</span> <span class="n">DrawableDiagram</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DrawingBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw all wires of a diagram on a given backend.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        A lambeq drawing backend.</span>
+<span class="sd">    drawable_diagram: DrawableDiagram</span>
+<span class="sd">        A drawable diagram.</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters. See :meth:`draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        Drawing backend updated with the wires&#39; graphic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">src_idx</span><span class="p">,</span> <span class="n">tgt_idx</span> <span class="ow">in</span> <span class="n">drawable_diagram</span><span class="o">.</span><span class="n">wires</span><span class="p">:</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">drawable_diagram</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">src_idx</span><span class="p">]</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">drawable_diagram</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">tgt_idx</span><span class="p">]</span>
+
+        <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">(</span>
+            <span class="n">source</span><span class="o">.</span><span class="n">coordinates</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">coordinates</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;draw_type_labels&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span> <span class="ow">and</span> <span class="n">source</span><span class="o">.</span><span class="n">kind</span> <span class="ow">in</span>
+                <span class="p">{</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">WireEndpointType</span><span class="o">.</span><span class="n">COD</span><span class="p">}):</span>
+
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">coordinates</span>
+            <span class="n">pad_i</span><span class="p">,</span> <span class="n">pad_j</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;textpad&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mf">.1</span><span class="p">,</span> <span class="mf">.1</span><span class="p">))</span>
+            <span class="n">pad_j</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">WireEndpointType</span><span class="o">.</span><span class="n">INPUT</span> <span class="k">else</span> <span class="n">pad_j</span>
+            <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">obj</span><span class="p">),</span> <span class="n">i</span> <span class="o">+</span> <span class="n">pad_i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="n">pad_j</span><span class="p">,</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize_types&#39;</span><span class="p">,</span>
+                                    <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+                <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">backend</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_brakets</span><span class="p">(</span><span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span><span class="p">,</span>
+                  <span class="n">drawable_diagram</span><span class="p">:</span> <span class="n">DrawableDiagram</span><span class="p">,</span>
+                  <span class="n">drawable_box</span><span class="p">:</span> <span class="n">BoxNode</span><span class="p">,</span>
+                  <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DrawingBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw Bras and Kets on a given backend.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        A lambeq drawing backend.</span>
+<span class="sd">    drawable_diagram: DrawableDiagram</span>
+<span class="sd">        A drawable diagram.</span>
+<span class="sd">    drawable_box: BoxNode</span>
+<span class="sd">        A BoxNode to be drawn. Must be in `drawable_diagram`.</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters. See `drawing.draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        Drawing backend updated with the box&#39;s graphic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">box</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">obj</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="p">(</span><span class="n">quantum</span><span class="o">.</span><span class="n">Ket</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Bra</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Bit</span><span class="p">))</span>
+    <span class="n">is_bra</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Bra</span><span class="p">)</span>
+
+    <span class="n">factor</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="k">if</span> <span class="n">is_bra</span> <span class="k">else</span> <span class="mi">1</span>
+
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">get_x_lims</span><span class="p">(</span><span class="n">drawable_diagram</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">factor</span> <span class="o">*</span> <span class="mf">.25</span>
+
+    <span class="n">points</span> <span class="o">=</span> <span class="p">[[</span><span class="n">left</span><span class="p">,</span> <span class="n">height</span><span class="p">],</span> <span class="p">[</span><span class="n">right</span><span class="p">,</span> <span class="n">height</span><span class="p">],</span>
+              <span class="p">[(</span><span class="n">left</span><span class="o">+</span><span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">height</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="mf">.5</span><span class="p">]]</span>
+
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_polygon</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_text</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                      <span class="n">drawable_box</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                      <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span>
+                      <span class="n">fontsize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fontsize&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">backend</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_discard</span><span class="p">(</span><span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span><span class="p">,</span>
+                  <span class="n">drawable_diagram</span><span class="p">:</span> <span class="n">DrawableDiagram</span><span class="p">,</span>
+                  <span class="n">drawable_box</span><span class="p">:</span> <span class="n">BoxNode</span><span class="p">,</span>
+                  <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DrawingBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a Discards on a given backend.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        A lambeq drawing backend.</span>
+<span class="sd">    drawable_diagram: DrawableDiagram</span>
+<span class="sd">        A drawable diagram.</span>
+<span class="sd">    drawable_box: BoxNode</span>
+<span class="sd">        A BoxNode to be drawn. Must be in `drawable_diagram`.</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters. See `drawing.draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        Drawing backend updated with the box&#39;s graphic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">left</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">get_x_lims</span><span class="p">(</span><span class="n">drawable_diagram</span><span class="p">)</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mf">0.25</span>
+
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="mf">.1</span> <span class="o">*</span> <span class="n">j</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="mf">.1</span> <span class="o">*</span> <span class="n">j</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="p">(</span><span class="n">right</span> <span class="o">-</span> <span class="mf">.1</span> <span class="o">*</span> <span class="n">j</span><span class="p">,</span> <span class="n">height</span> <span class="o">-</span> <span class="mf">.1</span> <span class="o">*</span> <span class="n">j</span><span class="p">)</span>
+        <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">backend</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_measure</span><span class="p">(</span><span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span><span class="p">,</span>
+                  <span class="n">drawable_diagram</span><span class="p">:</span> <span class="n">DrawableDiagram</span><span class="p">,</span>
+                  <span class="n">drawable_box</span><span class="p">:</span> <span class="n">BoxNode</span><span class="p">,</span>
+                  <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DrawingBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draw a Measure box.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        A lambeq drawing backend.</span>
+<span class="sd">    drawable_diagram: DrawableDiagram</span>
+<span class="sd">        A drawable diagram.</span>
+<span class="sd">    drawable_box: BoxNode</span>
+<span class="sd">        A BoxNode to be drawn. Must be in `drawable_diagram`.</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters. See `drawing.draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        Drawing backend updated with the box&#39;s graphic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_box</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span>
+                        <span class="n">drawable_diagram</span><span class="p">,</span>
+                        <span class="n">drawable_box</span><span class="p">,</span>
+                        <span class="n">draw_box_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                        <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">y</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">i</span> <span class="o">-</span> <span class="mf">.15</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mf">.1</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mf">.1</span><span class="p">),</span> <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mf">.1</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">.15</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mf">.1</span><span class="p">),</span> <span class="n">bend_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">-</span> <span class="mf">.1</span><span class="p">),</span> <span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mf">.05</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="mf">.15</span><span class="p">),</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">backend</span>
+
+
+<span class="k">def</span> <span class="nf">_draw_controlled_gate</span><span class="p">(</span><span class="n">backend</span><span class="p">:</span> <span class="n">DrawingBackend</span><span class="p">,</span>
+                          <span class="n">drawable_diagram</span><span class="p">:</span> <span class="n">DrawableDiagram</span><span class="p">,</span>
+                          <span class="n">drawable_box</span><span class="p">:</span> <span class="n">BoxNode</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">params</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DrawingBackend</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Draw a Controlled gate.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        A lambeq drawing backend.</span>
+<span class="sd">    drawable_diagram: DrawableDiagram</span>
+<span class="sd">        A drawable diagram.</span>
+<span class="sd">    drawable_box: BoxNode</span>
+<span class="sd">        A BoxNode to be drawn. Must be in `drawable_diagram`.</span>
+<span class="sd">    **params:</span>
+<span class="sd">        Additional drawing parameters. See `drawing.draw`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    backend: DrawingBackend</span>
+<span class="sd">        Drawing backend updated with the box&#39;s graphic.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">drawable_box</span><span class="o">.</span><span class="n">obj</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Controlled</span><span class="p">)</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">obj</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">distance</span>
+    <span class="n">c_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">controlled</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
+
+    <span class="n">all_wires_pos_x</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span>
+        <span class="n">drawable_diagram</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">wire</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">cod_wires</span> <span class="o">+</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">dom_wires</span><span class="p">]))</span>
+
+    <span class="n">all_wires_pos_y</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span>
+        <span class="n">drawable_diagram</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">wire</span><span class="p">]</span><span class="o">.</span><span class="n">y</span>
+        <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">cod_wires</span> <span class="o">+</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">dom_wires</span><span class="p">]))</span>
+
+    <span class="n">middle_wire_pos_y</span> <span class="o">=</span> <span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">all_wires_pos_y</span><span class="p">)</span> <span class="o">+</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_wires_pos_y</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="c1"># This is the index of the control location</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="n">sign</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="c1"># Extract the location of the control and draw black dot</span>
+    <span class="n">control_dot_coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_wires_pos_x</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">middle_wire_pos_y</span><span class="p">)</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_node</span><span class="p">(</span><span class="o">*</span><span class="n">control_dot_coordinates</span><span class="p">,</span>
+                      <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+                      <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;circle&#39;</span><span class="p">,</span>
+                      <span class="n">nodesize</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nodesize&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">control_wire_endpoint_coordinates</span> <span class="o">=</span> <span class="p">(</span><span class="n">all_wires_pos_x</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="n">distance</span><span class="p">],</span>
+                                         <span class="n">middle_wire_pos_y</span><span class="p">)</span>
+
+    <span class="n">controlled_middle_coordinates</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">all_wires_pos_x</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="n">distance</span><span class="p">]</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="p">(</span><span class="n">c_size</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">middle_wire_pos_y</span><span class="p">)</span>
+
+    <span class="c1"># The target boundary is the point where the wire hits the box</span>
+    <span class="n">target_boundary</span> <span class="o">=</span> <span class="n">control_wire_endpoint_coordinates</span>
+
+    <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">controlled</span> <span class="o">==</span> <span class="n">quantum</span><span class="o">.</span><span class="n">X</span><span class="p">:</span>
+
+        <span class="c1"># CX gets drawn as a circled plus sign.</span>
+        <span class="n">backend</span><span class="o">.</span><span class="n">draw_node</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">controlled_middle_coordinates</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;circle&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span>
+            <span class="n">nodesize</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nodesize&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">backend</span><span class="o">.</span><span class="n">draw_node</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">controlled_middle_coordinates</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;plus&#39;</span><span class="p">,</span>
+            <span class="n">nodesize</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;nodesize&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="c1"># Draw the vertical line through the controlled box</span>
+        <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">controlled_middle_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">min</span><span class="p">(</span><span class="n">all_wires_pos_y</span><span class="p">)),</span>
+            <span class="p">(</span><span class="n">controlled_middle_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_wires_pos_y</span><span class="p">)))</span>
+
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># controlled box is not a CX gate</span>
+
+        <span class="c1"># If the controlled box is a regular box, we need to shift the</span>
+        <span class="c1"># endpoint controll wire to the left or right depending on the</span>
+        <span class="c1"># sign of the distance. This is indicated by shift_boundary</span>
+        <span class="n">shift_boundary</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># Get the connected wires of the controlled box</span>
+        <span class="k">if</span> <span class="n">sign</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">b_start</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="n">distance</span>
+            <span class="n">new_dom_wires</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">dom_wires</span><span class="p">[</span><span class="n">b_start</span><span class="p">:</span><span class="n">b_start</span><span class="o">+</span><span class="n">c_size</span><span class="p">]</span>
+            <span class="n">new_cod_wires</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">cod_wires</span><span class="p">[</span><span class="n">b_start</span><span class="p">:</span><span class="n">b_start</span><span class="o">+</span><span class="n">c_size</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">sign</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">new_dom_wires</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">dom_wires</span><span class="p">[:</span><span class="n">c_size</span><span class="p">]</span>
+            <span class="n">new_cod_wires</span> <span class="o">=</span> <span class="n">drawable_box</span><span class="o">.</span><span class="n">cod_wires</span><span class="p">[:</span><span class="n">c_size</span><span class="p">]</span>
+
+        <span class="c1"># Create a new box node for the controlled box</span>
+        <span class="n">controlled_box_node</span> <span class="o">=</span> <span class="n">BoxNode</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">controlled</span><span class="p">,</span>
+                                      <span class="o">*</span><span class="n">controlled_middle_coordinates</span><span class="p">,</span>
+                                      <span class="n">new_dom_wires</span><span class="p">,</span>
+                                      <span class="n">new_cod_wires</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">controlled</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Controlled</span><span class="p">):</span>  <span class="c1"># nested control</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_controlled_gate</span><span class="p">(</span>
+                <span class="n">backend</span><span class="p">,</span> <span class="n">drawable_diagram</span><span class="p">,</span> <span class="n">controlled_box_node</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+            <span class="n">next_box</span><span class="p">:</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Controlled</span> <span class="o">|</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Box</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">controlled</span>
+            <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_box</span><span class="p">,</span> <span class="n">quantum</span><span class="o">.</span><span class="n">Controlled</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">distance</span> <span class="o">*</span> <span class="n">next_box</span><span class="o">.</span><span class="n">distance</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">shift_boundary</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">break</span>
+                <span class="n">next_box</span> <span class="o">=</span> <span class="n">next_box</span><span class="o">.</span><span class="n">controlled</span>
+            <span class="k">if</span> <span class="n">next_box</span> <span class="o">==</span> <span class="n">quantum</span><span class="o">.</span><span class="n">X</span><span class="p">:</span>
+                <span class="n">shift_boundary</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">backend</span> <span class="o">=</span> <span class="n">_draw_box</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span>
+                                <span class="n">drawable_diagram</span><span class="p">,</span>
+                                <span class="n">controlled_box_node</span><span class="p">,</span>
+                                <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">shift_boundary</span><span class="p">:</span>
+            <span class="n">target_boundary</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">control_wire_endpoint_coordinates</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">LEDGE</span><span class="p">,</span>
+                <span class="n">control_wire_endpoint_coordinates</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1"># draw vertical line through control dot</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">all_wires_pos_x</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">all_wires_pos_y</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                      <span class="p">(</span><span class="n">all_wires_pos_x</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">all_wires_pos_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># draw all the other vertical wires</span>
+    <span class="n">extra_offset</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">controlled</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">extra_offset</span><span class="p">,</span> <span class="n">extra_offset</span> <span class="o">+</span> <span class="nb">abs</span><span class="p">(</span><span class="n">distance</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">((</span><span class="n">all_wires_pos_x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">all_wires_pos_y</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                          <span class="p">(</span><span class="n">all_wires_pos_x</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">all_wires_pos_y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># TODO change bend_in and bend_out for tikz backend</span>
+    <span class="n">backend</span><span class="o">.</span><span class="n">draw_wire</span><span class="p">(</span><span class="n">control_dot_coordinates</span><span class="p">,</span>
+                      <span class="n">target_boundary</span><span class="p">,</span>
+                      <span class="n">bend_in</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                      <span class="n">bend_out</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">backend</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

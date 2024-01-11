@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Choosing a model &mdash; lambeq 0.3.3 documentation</title>
+  <title>Choosing a model &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -23,8 +23,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Advanced: Manual training" href="manual_training.html" />
-    <link rel="prev" title="Training: Hybrid case" href="tutorials/trainer_hybrid.html" /> 
+    <link rel="next" title="Advanced: Manual training" href="manual-training.html" />
+    <link rel="prev" title="Training: Hybrid case" href="tutorials/trainer-hybrid.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -82,8 +81,8 @@
 <li class="toctree-l2"><a class="reference internal" href="#tketmodel">TketModel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -99,7 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -161,13 +160,13 @@
 <p>The following sections provide more information on the various models.</p>
 <section id="numpymodel">
 <span id="sec-numpymodel"></span><h2>NumpyModel<a class="headerlink" href="#numpymodel" title="Permalink to this heading"></a></h2>
-<p>A <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> uses the unitary and density matrix simulators in DisCoPy, which convert quantum circuits into a tensor network. The resulting tensor network is efficiently contracted using <code class="docutils literal notranslate"><span class="pre">opt_einsum</span></code>.</p>
-<p>Circuits containing only <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.gates.Bra.html#discopy.quantum.gates.Bra" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bra</span></code></a>, <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.gates.Ket.html#discopy.quantum.gates.Ket" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ket</span></code></a> and unitary gates are evaluated using DisCoPy’s unitary simulator, while circuits containing <code class="xref py py-class docutils literal notranslate"><span class="pre">Encode</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code> or <code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code> are evaluated using DisCoPy’s density matrix simulator.</p>
+<p>A <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> uses the unitary and density matrix simulators in the low-level <code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend</span></code>, which convert quantum circuits into a tensor network. The resulting tensor network is efficiently contracted using <code class="docutils literal notranslate"><span class="pre">opt_einsum</span></code>.</p>
+<p>Circuits containing only <a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Bra" title="lambeq.backend.quantum.Bra"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bra</span></code></a>, <a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Ket" title="lambeq.backend.quantum.Ket"><code class="xref py py-class docutils literal notranslate"><span class="pre">Ket</span></code></a> and unitary gates are evaluated using a unitary simulator, while circuits containing <a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Encode" title="lambeq.backend.quantum.Encode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Encode</span></code></a>, <a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Measure" title="lambeq.backend.quantum.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a> or <a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Discard" title="lambeq.backend.quantum.Discard"><code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code></a> are evaluated using a density matrix simulator.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Note that the unitary simulator converts a circuit with <code class="docutils literal notranslate"><span class="pre">n</span></code> output qubits into a tensor of shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">)</span> <span class="pre">*</span> <span class="pre">n</span></code>, while the density matrix simulator converts a circuit with <code class="docutils literal notranslate"><span class="pre">n</span></code> output qubits and <code class="docutils literal notranslate"><span class="pre">m</span></code> output bits into a tensor of shape <code class="docutils literal notranslate"><span class="pre">(2,</span> <span class="pre">)</span> <span class="pre">*</span> <span class="pre">(2</span> <span class="pre">*</span> <span class="pre">n</span> <span class="pre">+</span> <span class="pre">m)</span></code>.</p>
 </div>
-<p>In the common use case of using a <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.stairs_reader" title="lambeq.text2diagram.stairs_reader"><code class="xref py py-data docutils literal notranslate"><span class="pre">stairs_reader</span></code></a> or a <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a> with discarding for binary classification, the process involves measuring (<code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code>) one of the “open” qubits, and discarding (<code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code>) the rest of them.</p>
+<p>In the common use case of using a <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.stairs_reader" title="lambeq.text2diagram.stairs_reader"><code class="xref py py-data docutils literal notranslate"><span class="pre">stairs_reader</span></code></a> or a <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a> with discarding for binary classification, the process involves measuring (<a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Measure" title="lambeq.backend.quantum.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a>) one of the “open” qubits, and discarding (<a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Discard" title="lambeq.backend.quantum.Discard"><code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code></a>) the rest of them.</p>
 <p>One advantage that the <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> has over the <a class="reference internal" href="lambeq.training.html#lambeq.training.TketModel" title="lambeq.training.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> is that it supports the just-in-time (jit) compilation provided by the library <code class="docutils literal notranslate"><span class="pre">jax</span></code>. This speeds up the model’s diagram evaluation by an order of magnitude. The <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> with <code class="docutils literal notranslate"><span class="pre">jit</span></code> mode enabled can be instantiated with the following command:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">NumpyModel</span>
 
@@ -194,7 +193,7 @@
 </section>
 <section id="pennylanemodel">
 <span id="sec-pennylanemodel"></span><h2>PennyLaneModel<a class="headerlink" href="#pennylanemodel" title="Permalink to this heading"></a></h2>
-<p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> uses <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> and <a class="reference internal" href="glossary.html#term-PyTorch"><span class="xref std std-term">PyTorch</span></a> to allow classical-quantum machine learning experiments. With <code class="docutils literal notranslate"><span class="pre">probabilities=False</span></code>, <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> performs a state vector simulation, while with <code class="docutils literal notranslate"><span class="pre">probabilties=True</span></code> it performs a probability simulation. The state vector and probability simulations correspond to DisCoPy’s unitary and density matrix simulations.</p>
+<p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> uses <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> and <a class="reference internal" href="glossary.html#term-PyTorch"><span class="xref std std-term">PyTorch</span></a> to allow classical-quantum machine learning experiments. With <code class="docutils literal notranslate"><span class="pre">probabilities=False</span></code>, <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> performs a state vector simulation, while with <code class="docutils literal notranslate"><span class="pre">probabilties=True</span></code> it performs a probability simulation. The state vector and probability simulations correspond to unitary and density matrix simulations.</p>
 <p>To run the model on real quantum hardware, <code class="docutils literal notranslate"><span class="pre">probabilities=True</span></code> must be used, so that the <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> circuits are optimized using the parameter-shift rule to calculate the gradients.</p>
 <p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> can be used to optimize simulated circuits using exact backpropagation with PyTorch, which may give improved results over using <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> with <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a>. However, this optimization process is not possible on real quantum hardware, so for more realistic results the parameter-shift rule should be preferred.</p>
 <p>To construct a hybrid model that passes the output of a circuit through a classical neural network, it is only necessary to subclass <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> and modify the <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel.__init__" title="lambeq.training.PennyLaneModel.__init__"><code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code></a> method to store the classical PyTorch parameters, and the <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel.forward" title="lambeq.training.PennyLaneModel.forward"><code class="xref py py-meth docutils literal notranslate"><span class="pre">forward()</span></code></a> method to pass the result of <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel.get_diagram_output" title="lambeq.training.PennyLaneModel.get_diagram_output"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_diagram_output()</span></code></a> to the neural network. For example:</p>
@@ -215,7 +214,7 @@
 <p><a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> can be used with the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>, or a standard PyTorch training loop.</p>
 <p>By using different backend configurations, <a class="reference internal" href="lambeq.training.html#lambeq.training.PennyLaneModel" title="lambeq.training.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a> can be used for several different use-cases, listed below:</p>
 <span id="tbl-plane-usecases"></span><table class="docutils align-default" id="id1">
-<caption><span class="caption-number">Table 3 </span><span class="caption-text">Backend configurations for different use cases.</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
+<caption><span class="caption-number">Table 2 </span><span class="caption-text">Backend configurations for different use cases.</span><a class="headerlink" href="#id1" title="Permalink to this table"></a></caption>
 <colgroup>
 <col style="width: 33%" />
 <col style="width: 67%" />
@@ -268,7 +267,7 @@
 <p><a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> is the right choice for classical experiments. Here, string diagrams are treated as tensor networks, where boxes represent tensors and edges define the specific tensor contractions. Tensor contractions are optimised by the python package <code class="docutils literal notranslate"><span class="pre">opt_einsum</span></code>.</p>
 <p>To prepare the diagrams for the computation, we use a <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> that converts a pregroup diagram into a tensor diagram. Subclasses of <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> include the <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.SpiderAnsatz" title="lambeq.ansatz.SpiderAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpiderAnsatz</span></code></a> and the <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.MPSAnsatz" title="lambeq.ansatz.MPSAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">MPSAnsatz</span></code></a>, which reduce the size of large tensors by spliting them into chains of many smaller boxes. To prepare a tensor diagram for a sentence, for example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span><span class="p">,</span> <span class="n">BobcatParser</span><span class="p">,</span> <span class="n">TensorAnsatz</span>
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">Dim</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
 
 <span class="n">parser</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="p">()</span>
 <span class="n">pregroup_diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="s1">&#39;This is a tensor network.&#39;</span><span class="p">)</span>
@@ -298,7 +297,7 @@
       <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">net</span><span class="p">(</span><span class="n">preds</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>To simplify training, the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> can be used with the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>. A comprehensive tutorial can be found <a class="reference internal" href="tutorials/trainer_classical.html"><span class="doc">here</span></a>.</p>
+<p>To simplify training, the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchModel" title="lambeq.training.PytorchModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchModel</span></code></a> can be used with the <a class="reference internal" href="lambeq.training.html#lambeq.training.PytorchTrainer" title="lambeq.training.PytorchTrainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">PytorchTrainer</span></code></a>. A comprehensive tutorial can be found <a class="reference internal" href="tutorials/trainer-classical.html"><span class="doc">here</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The loss function and the accuracy metric in the tutorial are defined for two-dimensional binary labels: <code class="docutils literal notranslate"><span class="pre">[[1,0],</span> <span class="pre">[0,1],</span> <span class="pre">...]</span></code>. If your data has a different structure, you must implement your custom loss function and evaluation metrics.</p>
@@ -346,14 +345,14 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tutorials/trainer_hybrid.html" class="btn btn-neutral float-left" title="Training: Hybrid case" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="manual_training.html" class="btn btn-neutral float-right" title="Advanced: Manual training" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tutorials/trainer-hybrid.html" class="btn btn-neutral float-left" title="Training: Hybrid case" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="manual-training.html" class="btn btn-neutral float-right" title="Advanced: Manual training" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

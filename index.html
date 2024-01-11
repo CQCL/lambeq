@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq &mdash; lambeq 0.3.3 documentation</title>
+  <title>lambeq &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -39,7 +39,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -55,8 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -75,8 +74,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -92,7 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -152,7 +151,7 @@
 <section id="lambeq">
 <h1>lambeq<a class="headerlink" href="#lambeq" title="Permalink to this heading"></a></h1>
 <a class="reference internal image-reference" href="_images/Quantinuum_logo.png"><img alt="_images/Quantinuum_logo.png" class="align-right" src="_images/Quantinuum_logo.png" style="width: 240px;" /></a>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is an open-source, modular, extensible high-level Python library for experimental <a class="reference internal" href="glossary.html#term-quantum-NLP-QNLP"><span class="xref std std-term">Quantum Natural Language Processing</span></a> (QNLP), created by <a class="reference external" href="https://www.quantinuum.com">Quantinuum</a>’s QNLP team. At a high level, the library allows the conversion of any sentence to a <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a>, based on a given <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> and certain parameterisation and choices of <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a>, and facilitates <a class="reference internal" href="training.html#sec-training"><span class="std std-ref">training</span></a> for both quantum and classical NLP experiments. The notes for the latest release can be found <a class="reference internal" href="release_notes.html#sec-release-notes"><span class="std std-ref">here</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is an open-source, modular, extensible high-level Python library for experimental <a class="reference internal" href="glossary.html#term-quantum-NLP-QNLP"><span class="xref std std-term">Quantum Natural Language Processing</span></a> (QNLP), created by <a class="reference external" href="https://www.quantinuum.com">Quantinuum</a>’s QNLP team. At a high level, the library allows the conversion of any sentence to a <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a>, based on a given <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> and certain parameterisation and choices of <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a>, and facilitates <a class="reference internal" href="training.html#sec-training"><span class="std std-ref">training</span></a> for both quantum and classical NLP experiments. The notes for the latest release can be found <a class="reference internal" href="release-notes.html#sec-release-notes"><span class="std std-ref">here</span></a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is available for Python 3.9 and higher, on Linux, macOS and Windows. To install, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>lambeq
 </pre></div>
@@ -189,8 +188,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -241,16 +239,20 @@
 <li class="toctree-l2"><a class="reference internal" href="tutorials/sentence-input.html#Tree-readers">Tree readers</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/rewrite.html#Box-level-rewrite-rules">Box-level rewrite rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/rewrite.html#Diagram-level-rewriters">Diagram-level rewriters</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/parameterise.html#Quantum-case">Quantum case</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/parameterise.html#Classical-case">Classical case</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_classical.html">Training: Classical case</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_quantum.html">Training: Quantum case</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer_hybrid.html">Training: Hybrid case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer-classical.html">Training: Classical case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer-quantum.html">Training: Quantum case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer-hybrid.html">Training: Hybrid case</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a><ul>
@@ -260,14 +262,14 @@
 <li class="toctree-l2"><a class="reference internal" href="models.html#tketmodel">TketModel</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/training-symbols.html">Introduction to symbols</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html">A complete use case</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html">Monoidal categories in DisCoPy</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/discocat.html">DisCoCat in DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html">Monoidal categories in lambeq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/discocat.html">DisCoCat in lambeq</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a><ul>
@@ -279,16 +281,17 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/tokenisation.html">Tokenisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/unk-words.html">Handling unknown words</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/reader.html">Reader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/tree_reader.html">Tree reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/tree-reader.html">Tree reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/rewrite.html">Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/circuit.html">Circuit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/tensor.html">Tensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/rotosolve_optimizer.html">Rotosolve optimizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/classical_pipeline.html">Classical pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum_pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum_pipeline_jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/rotosolve-optimizer.html">Rotosolve optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/classical-pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quantum-pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quantum-pipeline-jax.html">Quantum pipeline using JAX backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="examples/pennylane.html">Training hybrid models using the Pennylane backend</a></li>
 </ul>
 </li>
@@ -305,6 +308,7 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.PREPOSITIONAL_PHRASE"><code class="docutils literal notranslate"><span class="pre">AtomicType.PREPOSITIONAL_PHRASE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.PUNCTUATION"><code class="docutils literal notranslate"><span class="pre">AtomicType.PUNCTUATION</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.SENTENCE"><code class="docutils literal notranslate"><span class="pre">AtomicType.SENTENCE</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.AtomicType.name"><code class="docutils literal notranslate"><span class="pre">AtomicType.name</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.BaseAnsatz"><code class="docutils literal notranslate"><span class="pre">BaseAnsatz</span></code></a><ul>
@@ -368,8 +372,10 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.UNARY"><code class="docutils literal notranslate"><span class="pre">CCGRule.UNARY</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.UNKNOWN"><code class="docutils literal notranslate"><span class="pre">CCGRule.UNKNOWN</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.__call__"><code class="docutils literal notranslate"><span class="pre">CCGRule.__call__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.apply"><code class="docutils literal notranslate"><span class="pre">CCGRule.apply()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.check_match"><code class="docutils literal notranslate"><span class="pre">CCGRule.check_match()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.infer_rule"><code class="docutils literal notranslate"><span class="pre">CCGRule.infer_rule()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.resolve"><code class="docutils literal notranslate"><span class="pre">CCGRule.resolve()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGRule.symbol"><code class="docutils literal notranslate"><span class="pre">CCGRule.symbol</span></code></a></li>
 </ul>
 </li>
@@ -385,7 +391,6 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.left"><code class="docutils literal notranslate"><span class="pre">CCGTree.left</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.right"><code class="docutils literal notranslate"><span class="pre">CCGTree.right</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.text"><code class="docutils literal notranslate"><span class="pre">CCGTree.text</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.to_biclosed_diagram"><code class="docutils literal notranslate"><span class="pre">CCGTree.to_biclosed_diagram()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.to_diagram"><code class="docutils literal notranslate"><span class="pre">CCGTree.to_diagram()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.to_json"><code class="docutils literal notranslate"><span class="pre">CCGTree.to_json()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGTree.without_trivial_unary_rules"><code class="docutils literal notranslate"><span class="pre">CCGTree.without_trivial_unary_rules()</span></code></a></li>
@@ -401,10 +406,7 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.SENTENCE"><code class="docutils literal notranslate"><span class="pre">CCGType.SENTENCE</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.__init__"><code class="docutils literal notranslate"><span class="pre">CCGType.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.argument"><code class="docutils literal notranslate"><span class="pre">CCGType.argument</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.conjoinable"><code class="docutils literal notranslate"><span class="pre">CCGType.conjoinable()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.direction"><code class="docutils literal notranslate"><span class="pre">CCGType.direction</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.discopy"><code class="docutils literal notranslate"><span class="pre">CCGType.discopy()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.from_discopy"><code class="docutils literal notranslate"><span class="pre">CCGType.from_discopy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.is_atomic"><code class="docutils literal notranslate"><span class="pre">CCGType.is_atomic</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.is_complex"><code class="docutils literal notranslate"><span class="pre">CCGType.is_complex</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.is_conjoinable"><code class="docutils literal notranslate"><span class="pre">CCGType.is_conjoinable</span></code></a></li>
@@ -419,6 +421,8 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.result"><code class="docutils literal notranslate"><span class="pre">CCGType.result</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.right"><code class="docutils literal notranslate"><span class="pre">CCGType.right</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.slash"><code class="docutils literal notranslate"><span class="pre">CCGType.slash()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.split"><code class="docutils literal notranslate"><span class="pre">CCGType.split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.to_grammar"><code class="docutils literal notranslate"><span class="pre">CCGType.to_grammar()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.to_string"><code class="docutils literal notranslate"><span class="pre">CCGType.to_string()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.CCGType.under"><code class="docutils literal notranslate"><span class="pre">CCGType.under()</span></code></a></li>
 </ul>
@@ -609,6 +613,16 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.Reader.sentences2diagrams"><code class="docutils literal notranslate"><span class="pre">Reader.sentences2diagrams()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.RemoveCupsRewriter"><code class="docutils literal notranslate"><span class="pre">RemoveCupsRewriter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RemoveCupsRewriter.matches"><code class="docutils literal notranslate"><span class="pre">RemoveCupsRewriter.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RemoveCupsRewriter.rewrite"><code class="docutils literal notranslate"><span class="pre">RemoveCupsRewriter.rewrite()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.RemoveSwapsRewriter"><code class="docutils literal notranslate"><span class="pre">RemoveSwapsRewriter</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RemoveSwapsRewriter.matches"><code class="docutils literal notranslate"><span class="pre">RemoveSwapsRewriter.matches()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RemoveSwapsRewriter.rewrite"><code class="docutils literal notranslate"><span class="pre">RemoveSwapsRewriter.rewrite()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.RewriteRule"><code class="docutils literal notranslate"><span class="pre">RewriteRule</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RewriteRule.__call__"><code class="docutils literal notranslate"><span class="pre">RewriteRule.__call__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.RewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">RewriteRule.matches()</span></code></a></li>
@@ -760,17 +774,13 @@
 <li class="toctree-l3"><a class="reference internal" href="root-api.html#lambeq.WebParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">WebParser.sentences2trees()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.create_pregroup_diagram"><code class="docutils literal notranslate"><span class="pre">create_pregroup_diagram()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.diagram2str"><code class="docutils literal notranslate"><span class="pre">diagram2str()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.is_pregroup_diagram"><code class="docutils literal notranslate"><span class="pre">is_pregroup_diagram()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.remove_cups"><code class="docutils literal notranslate"><span class="pre">remove_cups()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="root-api.html#lambeq.remove_swaps"><code class="docutils literal notranslate"><span class="pre">remove_swaps()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-ansatz">lambeq.ansatz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-backend">lambeq.backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-bobcat">lambeq.bobcat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-pregroups">lambeq.pregroups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-rewrite">lambeq.rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-text2diagram">lambeq.text2diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html#lambeq-tokeniser">lambeq.tokeniser</a></li>
@@ -779,8 +789,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="uml-diagrams.html">Class diagrams</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-ansatz">lambeq.ansatz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-backend">lambeq.backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-bobcat">lambeq.bobcat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-pregroups">lambeq.pregroups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-rewrite">lambeq.rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-text2diagram">lambeq.text2diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uml-diagrams.html#lambeq-tokeniser">lambeq.tokeniser</a></li>
@@ -813,7 +823,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
@@ -837,7 +847,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

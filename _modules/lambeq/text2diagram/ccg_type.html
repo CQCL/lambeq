@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_type &mdash; lambeq 0.3.3 documentation</title>
+  <title>lambeq.text2diagram.ccg_type &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -53,8 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -73,8 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
 </ul>
@@ -90,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -124,7 +123,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.text2diagram.ccg_type</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021-2023 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2024 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -140,14 +139,14 @@
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CCGParseError&#39;</span><span class="p">,</span> <span class="s1">&#39;CCGType&#39;</span><span class="p">,</span> <span class="s1">&#39;replace_cat_result&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CCGParseError&#39;</span><span class="p">,</span> <span class="s1">&#39;CCGType&#39;</span><span class="p">]</span>
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span>
 <span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">discopy.grammar.categorial</span> <span class="kn">import</span> <span class="n">Ty</span>
+    <span class="kn">from</span> <span class="nn">lambeq.backend</span> <span class="kn">import</span> <span class="n">grammar</span>
 
 
 <span class="k">class</span> <span class="nc">CCGParseError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
@@ -330,10 +329,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Whether the CCG type can be used to conjoin words.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">CONJUNCTION</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PUNCTUATION</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CCGType.conjoinable"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.conjoinable">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">conjoinable</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">type_</span><span class="p">:</span> <span class="n">Ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">type_</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">CONJUNCTION</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">PUNCTUATION</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="CCGType.slash"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.slash">[docs]</a>    <span class="k">def</span> <span class="nf">slash</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">argument</span><span class="p">:</span> <span class="n">CCGType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGType</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a complex CCG type.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">CCGType</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
@@ -370,47 +365,26 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">pretty</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">is_complex</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+            <span class="n">argument</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">pretty</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">is_complex</span><span class="p">:</span>
+                <span class="n">argument</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">argument</span><span class="si">}</span><span class="s1">)&#39;</span>
+
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_over</span><span class="p">:</span>
-                <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;(</span><span class="si">{0}</span><span class="s1">↢</span><span class="si">{1}</span><span class="s1">)&#39;</span> <span class="k">if</span> <span class="n">pretty</span> <span class="k">else</span> <span class="s1">&#39;(</span><span class="si">{0}</span><span class="s1">/</span><span class="si">{1}</span><span class="s1">)&#39;</span>
+                <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">↢</span><span class="si">{1}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">pretty</span> <span class="k">else</span> <span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">/</span><span class="si">{1}</span><span class="s1">&#39;</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;(</span><span class="si">{1}</span><span class="s1">↣</span><span class="si">{0}</span><span class="s1">)&#39;</span> <span class="k">if</span> <span class="n">pretty</span> <span class="k">else</span> <span class="sa">r</span><span class="s1">&#39;(</span><span class="si">{0}</span><span class="s1">\</span><span class="si">{1}</span><span class="s1">)&#39;</span>
-            <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">pretty</span><span class="p">),</span>
-                                   <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">pretty</span><span class="p">))</span></div>
+                <span class="n">template</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{1}</span><span class="s1">↣</span><span class="si">{0}</span><span class="s1">&#39;</span> <span class="k">if</span> <span class="n">pretty</span> <span class="k">else</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">\</span><span class="si">{1}</span><span class="s1">&#39;</span>
+            <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">argument</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="n">class_name</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="si">}</span><span class="s1">)&#39;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}{</span><span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
-
-<div class="viewcode-block" id="CCGType.discopy"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.discopy">[docs]</a>    <span class="k">def</span> <span class="nf">discopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Turn the CCG type into a DisCoPy biclosed type.&quot;&quot;&quot;</span>
-        <span class="kn">from</span> <span class="nn">discopy.grammar.categorial</span> <span class="kn">import</span> <span class="n">Ty</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_over</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_under</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Ty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Ty</span><span class="p">()</span></div>
-
-<div class="viewcode-block" id="CCGType.from_discopy"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.from_discopy">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">from_discopy</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">ty</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGType</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Turn a DisCoPy biclosed type into a CCG type.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">ty</span><span class="o">.</span><span class="n">is_over</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">ty</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">ty</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">ty</span><span class="o">.</span><span class="n">is_under</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">ty</span><span class="o">.</span><span class="n">left</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">ty</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">ty</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-            <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">cls</span><span class="p">()</span></div>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">class_name</span><span class="si">}</span><span class="s1">(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">to_string</span><span class="p">()</span><span class="si">}</span><span class="s1">)&#39;</span>
 
 <div class="viewcode-block" id="CCGType.parse"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.parse">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span>
@@ -544,10 +518,84 @@
                        <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">CCGType</span><span class="p">,</span> <span class="n">CCGType</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Replace the innermost category result with a new category.</span>
 
-<span class="sd">        See docstring for `replace_cat_result`.</span>
+<span class="sd">        This performs a lenient replacement operation. This means that</span>
+<span class="sd">        it will attempt to replace the specified result category</span>
+<span class="sd">        `original` with `replacement`, but if `original` cannot be</span>
+<span class="sd">        found, the innermost result category will be replaced (still by</span>
+<span class="sd">        `replacement`). This makes it suitable for cases where type</span>
+<span class="sd">        resolution has occurred, so that type rewrites can propagate.</span>
+<span class="sd">        This method returns the new category, alongside which category</span>
+<span class="sd">        has been replaced.</span>
+<span class="sd">        `direction` can be used to specify a particular structure that</span>
+<span class="sd">        must be satisfied by the replacement operation. If this is not</span>
+<span class="sd">        satisfied, then no replacement takes place, and the returned</span>
+<span class="sd">        replaced result category is `None`.</span>
 
-<span class="sd">        Apart from changing the types of the arguments, this also</span>
-<span class="sd">        changes `direction` to use characters `\|/` instead of `&gt;|&lt;`.</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        original : CCGType</span>
+<span class="sd">            The category that should be replaced.</span>
+<span class="sd">        replacement : CCGType</span>
+<span class="sd">            The replacement for the new category.</span>
+<span class="sd">        direction : str</span>
+<span class="sd">            Used to check the operations in the category. Consists of</span>
+<span class="sd">            either 1 or 2 characters, each being one of &#39;/&#39;, &#39;\&#39;, &#39;|&#39;.</span>
+<span class="sd">            If 2 characters, the first checks the innermost operation,</span>
+<span class="sd">            and the second checks the rest. If only 1 character, it is</span>
+<span class="sd">            used for all checks.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CCGType</span>
+<span class="sd">            The new category. If replacement fails, this is set to the</span>
+<span class="sd">            original category.</span>
+<span class="sd">        CCGType or None</span>
+<span class="sd">            The replaced result category. If replacement fails, this is</span>
+<span class="sd">            set to `None`.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        This function is mainly used for substituting inner types in</span>
+<span class="sd">        generalised versions of CCG rules. (See :py:meth:`.infer_rule`)</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; a, b, c, x, y = map(CCGType, &#39;abcxy&#39;)</span>
+
+<span class="sd">        **Example 1**: ``b &gt;&gt; c`` in ``a &gt;&gt; (b &gt;&gt; c)`` is matched and</span>
+<span class="sd">        replaced with ``x``.</span>
+
+<span class="sd">        &gt;&gt;&gt; new, replaced = (a &gt;&gt; (b &gt;&gt; c)).replace_result(b &gt;&gt; c, x)</span>
+<span class="sd">        &gt;&gt;&gt; print(new, replaced)</span>
+<span class="sd">        x\a c\b</span>
+
+<span class="sd">        **Example 2**: ``x`` cannot be matched, so the innermost</span>
+<span class="sd">        category ``c`` is replaced instead.</span>
+
+<span class="sd">        &gt;&gt;&gt; new, replaced = (a &gt;&gt; (b &gt;&gt; c)).replace_result(x, x &lt;&lt; y)</span>
+<span class="sd">        &gt;&gt;&gt; print(new, replaced)</span>
+<span class="sd">        ((x/y)\b)\a c</span>
+
+<span class="sd">        **Example 3**: if not all operators are ``&lt;&lt;``, then nothing is</span>
+<span class="sd">        replaced.</span>
+
+<span class="sd">        &gt;&gt;&gt; new, replaced = (a &gt;&gt; (c &lt;&lt; b)).replace_result(x, y, &#39;/&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(new, replaced)</span>
+<span class="sd">        (c/b)\a None</span>
+
+<span class="sd">        **Example 4**: the innermost use of ``&lt;&lt;`` is on ``c`` and</span>
+<span class="sd">        ``b``, so the target ``c`` is replaced with ``y``.</span>
+
+<span class="sd">        &gt;&gt;&gt; new, replaced = (a &gt;&gt; (c &lt;&lt; b)).replace_result(x, y, &#39;/|&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(new, replaced)</span>
+<span class="sd">        (y/b)\a c</span>
+
+<span class="sd">        **Example 5**: the innermost use of ``&gt;&gt;`` is on ``a`` and</span>
+<span class="sd">        ``(c &lt;&lt; b)``, so its target ``(c &lt;&lt; b)`` is replaced by ``y``.</span>
+
+<span class="sd">        &gt;&gt;&gt; new, replaced = (a &gt;&gt; (c &lt;&lt; b)).replace_result(x, y, r&#39;\|&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; print(new, replaced)</span>
+<span class="sd">        y\a c/b</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\|/&#39;</span><span class="p">)):</span>
@@ -555,30 +603,74 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="p">,</span> <span class="kc">None</span>
 
-        <span class="n">cat_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span>
-        <span class="n">arg</span><span class="p">,</span> <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span>
-
-        <span class="c1"># `replace` indicates whether `res` should be replaced, due to</span>
-        <span class="c1"># one of the following conditions being true:</span>
-        <span class="c1"># - `res` matches `original`</span>
-        <span class="c1"># - `res` is an atomic type</span>
-        <span class="c1"># - `cat_dir` does not match the required operation</span>
+        <span class="c1"># `replace` indicates whether `self.result` should be replaced,</span>
+        <span class="c1"># due to one of the following conditions being true:</span>
+        <span class="c1"># - `self.result` matches `original`</span>
+        <span class="c1"># - `self.result` is an atomic type</span>
+        <span class="c1"># - `self.direction` does not match the required operation</span>
         <span class="c1"># - attempting to replace any inner category fails</span>
-        <span class="n">replace</span> <span class="o">=</span> <span class="n">res</span> <span class="o">==</span> <span class="n">original</span> <span class="ow">or</span> <span class="n">res</span><span class="o">.</span><span class="n">is_atomic</span>
+        <span class="n">replace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span> <span class="o">==</span> <span class="n">original</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">is_atomic</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">replace</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">cat_dir</span> <span class="o">!=</span> <span class="n">direction</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">!=</span> <span class="n">direction</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
                 <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">new</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">replace_result</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">direction</span><span class="p">)</span>
+                <span class="n">new</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">replace_result</span><span class="p">(</span><span class="n">original</span><span class="p">,</span>
+                                                      <span class="n">replacement</span><span class="p">,</span>
+                                                      <span class="n">direction</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">old</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">replace</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># replacing inner category failed</span>
 
         <span class="k">if</span> <span class="n">replace</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">cat_dir</span> <span class="o">!=</span> <span class="n">direction</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">!=</span> <span class="n">direction</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;|&#39;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="p">,</span> <span class="kc">None</span>
-            <span class="n">new</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">res</span>
+            <span class="n">new</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">replacement</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span>
 
-        <span class="k">return</span> <span class="n">new</span><span class="o">.</span><span class="n">slash</span><span class="p">(</span><span class="n">cat_dir</span><span class="p">,</span> <span class="n">arg</span><span class="p">),</span> <span class="n">old</span></div></div>
+        <span class="k">return</span> <span class="n">new</span><span class="o">.</span><span class="n">slash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="p">),</span> <span class="n">old</span></div>
+
+<div class="viewcode-block" id="CCGType.to_grammar"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.to_grammar">[docs]</a>    <span class="k">def</span> <span class="nf">to_grammar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Ty</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Ty</span> <span class="o">|</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Turn the CCG type into a lambeq grammar type.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">Ty</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Ty</span>
+            <span class="k">assert</span> <span class="n">Ty</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_over</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">to_grammar</span><span class="p">(</span><span class="n">Ty</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">to_grammar</span><span class="p">(</span><span class="n">Ty</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_under</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">to_grammar</span><span class="p">(</span><span class="n">Ty</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">to_grammar</span><span class="p">(</span><span class="n">Ty</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Ty</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Ty</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CCGType.split"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.split">[docs]</a>    <span class="k">def</span> <span class="nf">split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base</span><span class="p">:</span> <span class="n">CCGType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">grammar</span><span class="o">.</span><span class="n">Ty</span><span class="p">,</span>
+                                            <span class="n">grammar</span><span class="o">.</span><span class="n">Ty</span><span class="p">,</span>
+                                            <span class="n">grammar</span><span class="o">.</span><span class="n">Ty</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Isolate the inner type of a CCG type, in lambeq.</span>
+
+<span class="sd">        For example, if the input is `T = (X\Y)/Z`, the lambeq type</span>
+<span class="sd">        would be `Y.r @ X @ Z.l` so:</span>
+
+<span class="sd">        &gt;&gt;&gt; T = CCGType.parse(r&#39;(X\Y)/Z&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; left, mid, right = T.split(CCGType(&#39;X&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; print(left, mid, right, sep=&#39;  +  &#39;)</span>
+<span class="sd">        Y.r  +  X  +  Z.l</span>
+
+<span class="sd">        &gt;&gt;&gt; left, mid, right = T.split(CCGType.parse(r&#39;X\Y&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; print(left, mid, right, sep=&#39;  +  &#39;)</span>
+<span class="sd">        Ty()  +  Y.r @ X  +  Z.l</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Ty</span>
+        <span class="n">cat</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">left</span> <span class="o">=</span> <span class="n">right</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">()</span>
+        <span class="k">while</span> <span class="n">cat</span> <span class="o">!=</span> <span class="n">base</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">cat</span><span class="o">.</span><span class="n">is_over</span><span class="p">:</span>
+                <span class="n">right</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">right</span><span class="o">.</span><span class="n">to_grammar</span><span class="p">()</span><span class="o">.</span><span class="n">l</span> <span class="o">@</span> <span class="n">right</span>
+                <span class="n">cat</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">left</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">left</span> <span class="o">@=</span> <span class="n">cat</span><span class="o">.</span><span class="n">left</span><span class="o">.</span><span class="n">to_grammar</span><span class="p">()</span><span class="o">.</span><span class="n">r</span>
+                <span class="n">cat</span> <span class="o">=</span> <span class="n">cat</span><span class="o">.</span><span class="n">right</span>
+        <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">cat</span><span class="o">.</span><span class="n">to_grammar</span><span class="p">(),</span> <span class="n">right</span></div></div>
 
 
 <span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
@@ -587,95 +679,6 @@
 <span class="n">CCGType</span><span class="o">.</span><span class="n">PREPOSITIONAL_PHRASE</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
 <span class="n">CCGType</span><span class="o">.</span><span class="n">CONJUNCTION</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;conj&#39;</span><span class="p">)</span>
 <span class="n">CCGType</span><span class="o">.</span><span class="n">PUNCTUATION</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;punc&#39;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">replace_cat_result</span><span class="p">(</span><span class="n">cat</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
-                       <span class="n">original</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
-                       <span class="n">replacement</span><span class="p">:</span> <span class="n">Ty</span><span class="p">,</span>
-                       <span class="n">direction</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;|&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">Ty</span><span class="p">,</span> <span class="n">Ty</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Replace the innermost category result with a new category.</span>
-
-<span class="sd">    This attempts to replace the specified result category with a</span>
-<span class="sd">    replacement. If the specified category cannot be found, it replaces</span>
-<span class="sd">    the innermost category possible. In both cases, the replaced</span>
-<span class="sd">    category is returned alongside the new category.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    cat : discopy.biclosed.Ty</span>
-<span class="sd">        The category whose result is replaced.</span>
-<span class="sd">    original : discopy.biclosed.Ty</span>
-<span class="sd">        The category that should be replaced.</span>
-<span class="sd">    replacement : discopy.biclosed.Ty</span>
-<span class="sd">        The replacement for the new category.</span>
-<span class="sd">    direction : str</span>
-<span class="sd">        Used to check the operations in the category. Consists of either</span>
-<span class="sd">        1 or 2 characters, each being one of &#39;&lt;&#39;, &#39;&gt;&#39;, &#39;|&#39;. If 2</span>
-<span class="sd">        characters, the first checks the innermost operation, and the</span>
-<span class="sd">        second checks the rest. If only 1 character, it is used for all</span>
-<span class="sd">        checks.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    discopy.biclosed.Ty</span>
-<span class="sd">        The new category.</span>
-<span class="sd">    discopy.biclosed.Ty</span>
-<span class="sd">        The replaced result category.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    This function is mainly used for substituting inner types in</span>
-<span class="sd">    generalised versions of CCG rules. (See :py:meth:`.infer_rule`)</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; from discopy.grammar.categorial import Ty</span>
-<span class="sd">    &gt;&gt;&gt; a, b, c, x, y = map(Ty, &#39;abcxy&#39;)</span>
-
-<span class="sd">    **Example 1**: ``b &gt;&gt; c`` in ``a &gt;&gt; (b &gt;&gt; c)`` is matched and</span>
-<span class="sd">    replaced with ``x``.</span>
-
-<span class="sd">    &gt;&gt;&gt; new, replaced = replace_cat_result(a &gt;&gt; (b &gt;&gt; c), b &gt;&gt; c, x)</span>
-<span class="sd">    &gt;&gt;&gt; print(new, replaced)</span>
-<span class="sd">    (a &gt;&gt; x) (b &gt;&gt; c)</span>
-
-<span class="sd">    **Example 2**: ``b &gt;&gt; a`` cannot be matched, so the innermost</span>
-<span class="sd">    category ``c`` is replaced instead.</span>
-
-<span class="sd">    &gt;&gt;&gt; new, replaced = replace_cat_result(a &gt;&gt; (b &gt;&gt; c), b &gt;&gt; a, x &lt;&lt; y)</span>
-<span class="sd">    &gt;&gt;&gt; print(new, replaced)</span>
-<span class="sd">    (a &gt;&gt; (b &gt;&gt; (x &lt;&lt; y))) c</span>
-
-<span class="sd">    **Example 3**: if not all operators are ``&lt;&lt;``, then nothing is</span>
-<span class="sd">    replaced.</span>
-
-<span class="sd">    &gt;&gt;&gt; new, replaced = replace_cat_result(a &gt;&gt; (c &lt;&lt; b), x, y, &#39;&lt;&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; print(new, replaced)</span>
-<span class="sd">    (a &gt;&gt; (c &lt;&lt; b)) None</span>
-
-<span class="sd">    **Example 4**: the innermost use of ``&lt;&lt;`` is on ``c`` and ``b``,</span>
-<span class="sd">    so the target ``c`` is replaced with ``y``.</span>
-
-<span class="sd">    &gt;&gt;&gt; new, replaced = replace_cat_result(a &gt;&gt; (c &lt;&lt; b), x, y, &#39;&lt;|&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; print(new, replaced)</span>
-<span class="sd">    (a &gt;&gt; (y &lt;&lt; b)) c</span>
-
-<span class="sd">    **Example 5**: the innermost use of ``&gt;&gt;`` is on ``a`` and</span>
-<span class="sd">    ``(c &lt;&lt; b)``, so its target ``(c &lt;&lt; b)`` is replaced by ``y``.</span>
-
-<span class="sd">    &gt;&gt;&gt; new, replaced = replace_cat_result(a &gt;&gt; (c &lt;&lt; b), x, y, &#39;&gt;|&#39;)</span>
-<span class="sd">    &gt;&gt;&gt; print(new, replaced)</span>
-<span class="sd">    (a &gt;&gt; y) (c &lt;&lt; b)</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="n">new</span><span class="p">,</span> <span class="n">old</span> <span class="o">=</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span><span class="o">.</span><span class="n">replace_result</span><span class="p">(</span>
-        <span class="n">CCGType</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">original</span><span class="p">),</span>
-        <span class="n">CCGType</span><span class="o">.</span><span class="n">from_discopy</span><span class="p">(</span><span class="n">replacement</span><span class="p">),</span>
-        <span class="n">direction</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&lt;&#39;</span><span class="p">,</span> <span class="s1">&#39;/&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">new</span><span class="o">.</span><span class="n">discopy</span><span class="p">(),</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">old</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">old</span><span class="o">.</span><span class="n">discopy</span><span class="p">()</span>
 </pre></div>
 
            </div>
@@ -685,7 +688,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

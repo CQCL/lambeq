@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.backend.tensor &mdash; lambeq 0.4.0 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            lambeq
+              <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.4.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string-diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: low-level lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lambeq.backend.tensor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.backend.tensor</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021-2024 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &#39;License&#39;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &#39;AS IS&#39; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or</span>
+<span class="c1"># implied. See the License for the specific language governing</span>
+<span class="c1"># permissions and limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Tensor category</span>
+<span class="sd">===============</span>
+<span class="sd">Lambeq&#39;s internal representation of the tensor category. This work is</span>
+<span class="sd">based on DisCoPy (https://discopy.org/) which is released under the</span>
+<span class="sd">BSD 3-Clause &#39;New&#39; or &#39;Revised&#39; License.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">replace</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">cached_property</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sympy</span>
+<span class="kn">import</span> <span class="nn">tensornetwork</span> <span class="k">as</span> <span class="nn">tn</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Self</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.backend</span> <span class="kn">import</span> <span class="n">grammar</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.numerical_backend</span> <span class="kn">import</span> <span class="n">get_backend</span>
+
+
+<span class="n">tensor</span> <span class="o">=</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Category</span><span class="p">(</span><span class="s1">&#39;tensor&#39;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Dim"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Dim">[docs]</a><span class="nd">@tensor</span><span class="p">(</span><span class="s1">&#39;Ty&#39;</span><span class="p">)</span>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Dim</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Ty</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Dimension in the tensor category.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dim : tuple of int</span>
+<span class="sd">        Tuple of dimensions represented by the object.</span>
+<span class="sd">    product: int</span>
+<span class="sd">        Product of contained dimensions.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">objects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Self</span><span class="p">]</span>  <span class="c1"># type: ignore[assignment,misc]</span>
+
+<div class="viewcode-block" id="Dim.__init__"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Dim.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="o">*</span><span class="n">dim</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">objects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Self</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a Dim type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dim : list[int]</span>
+<span class="sd">            List of dimensions to initialise.</span>
+<span class="sd">        objects: list[Self] or None, default None</span>
+<span class="sd">            List of `Dim`s, to prepare a non-atomic `Dim` object.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">dim</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="n">objects</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">dims</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">):</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dims</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">dims</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">objects</span><span class="o">=</span><span class="p">[</span><span class="n">Dim</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dims</span><span class="p">])</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">dim</span> <span class="k">for</span> <span class="n">subdim</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">subdim</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Dim.rotate"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Dim.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">z</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_repr_rec</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_empty</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;1&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># type: ignore[return-value]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">_repr_rec</span><span class="p">()</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">product</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">math</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Dim(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_repr_rec</span><span class="p">()</span><span class="si">}</span><span class="s1">)&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Box"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Box">[docs]</a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nd">@tensor</span>
+<span class="k">class</span> <span class="nc">Box</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Box</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Box (tensor) in the the tensor category.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : np.array or float or None</span>
+<span class="sd">        Data used to represent the `array` attribute. Typically either</span>
+<span class="sd">        the array itself, or a symbolic array.</span>
+<span class="sd">    array : np.array or float</span>
+<span class="sd">        Tensor which the box represents.</span>
+<span class="sd">    free_symbols : set of sympy.Symbol</span>
+<span class="sd">        In case of a symbolic tensor, set of symbols in the box&#39;s data.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">data</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">z</span><span class="p">:</span> <span class="nb">int</span>
+
+<div class="viewcode-block" id="Box.__init__"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Box.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                 <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span>
+                 <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span>
+                 <span class="n">data</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a `tensor.Box` type.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        name : str</span>
+<span class="sd">            Name for the box.</span>
+<span class="sd">        dom : Dim</span>
+<span class="sd">            Dimension of the box&#39;s domain.</span>
+<span class="sd">        cod : Dim</span>
+<span class="sd">            Dimension of the box&#39;s codomain.</span>
+<span class="sd">        data : float or np.ndarray, optional</span>
+<span class="sd">            The concrete tensor the box represents.</span>
+<span class="sd">        z : int, optional</span>
+<span class="sd">            Winding number of the box, indicating conjugation. Starts at</span>
+<span class="sd">            0 if not provided.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dom</span> <span class="o">=</span> <span class="n">dom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cod</span> <span class="o">=</span> <span class="n">cod</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">ret_arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_conjugate_array</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret_arr</span> <span class="o">=</span> <span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">ret_arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">dim</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">dim</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_adjoint_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the adjoint of the box&#39;s data&quot;&quot;&quot;</span>
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">array</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">))</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="k">else</span>
+                  <span class="n">i</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">))]</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_conjugate_array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns the diagrammtic conjugate of the box&#39;s data&quot;&quot;&quot;</span>
+
+        <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                            <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dom</span> <span class="o">@</span> <span class="n">cod</span><span class="p">)),</span>
+                            <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">dom</span> <span class="o">@</span> <span class="n">cod</span><span class="p">))])</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">conjugate</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Box.dagger"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Box.dagger">[docs]</a>    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the dagger (adjoint) of the box.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Box</span>
+<span class="sd">            Dagger of the box.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">Daggered</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Box.rotate"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Box.rotate">[docs]</a>    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the result of conjugating the box `z` times.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        z : int</span>
+<span class="sd">            Winding count. The number of conjugations to apply to the box.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Box</span>
+<span class="sd">            The box conjugated z times.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                       <span class="n">dom</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">z</span><span class="p">),</span>
+                       <span class="n">cod</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">z</span><span class="p">),</span>
+                       <span class="n">z</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">free_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">]:</span>
+        <span class="k">def</span> <span class="nf">recursive_free_symbols</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;shape&#39;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">():</span>
+                    <span class="k">return</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="n">recursive_free_symbols</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;free_symbols&#39;</span><span class="p">,</span> <span class="nb">set</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">recursive_free_symbols</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Box.lambdify"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Box.lambdify">[docs]</a>    <span class="k">def</span> <span class="nf">lambdify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">symbols</span><span class="p">:</span> <span class="s1">&#39;sympy.Symbol&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a lambdified version of a symbolic box.</span>
+
+<span class="sd">        Returns a function which when provided appropriate parameters,</span>
+<span class="sd">        initialises a concrete box.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        symbols : list of sympy.Symbols</span>
+<span class="sd">            List of symbols in the box in the order in which their</span>
+<span class="sd">            assigned values will appear in the concretisation call.</span>
+<span class="sd">        kwargs:</span>
+<span class="sd">            Additional parameters to pass to `sympy.lambdify`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Callable[..., Box]:</span>
+<span class="sd">            A lambda function which when invoked with appropriate</span>
+<span class="sd">            parameters, returns a concrete version of the box.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">free_symbols</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">symbols</span><span class="p">):</span>
+            <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">xs</span><span class="p">:</span> <span class="bp">self</span>
+
+        <span class="k">return</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">xs</span><span class="p">:</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
+            <span class="n">sympy</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="n">symbols</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)(</span><span class="o">*</span><span class="n">xs</span><span class="p">))</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}{</span><span class="s2">&quot;.l&quot;</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="si">}{</span><span class="s2">&quot;.r&quot;</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="si">}</span><span class="s1">; &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span><span class="si">}</span><span class="s1"> -&gt; </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span><span class="si">}</span><span class="s1">]&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="Layer"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Layer">[docs]</a><span class="nd">@dataclass</span>
+<span class="nd">@tensor</span>
+<span class="k">class</span> <span class="nc">Layer</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Layer in the tensor category.&quot;&quot;&quot;</span>
+
+    <span class="n">left</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span>
+    <span class="n">right</span><span class="p">:</span> <span class="n">Dim</span></div>
+
+
+<div class="viewcode-block" id="Diagram"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Diagram">[docs]</a><span class="nd">@dataclass</span>
+<span class="nd">@tensor</span>
+<span class="k">class</span> <span class="nc">Diagram</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Diagram</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Diagram in the tensor category.&quot;&quot;&quot;</span>
+
+    <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">layers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Layer</span><span class="p">]</span>  <span class="c1"># type: ignore[assignment]</span>
+
+<div class="viewcode-block" id="Diagram.lambdify"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Diagram.lambdify">[docs]</a>    <span class="k">def</span> <span class="nf">lambdify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">symbols</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="n">lambdified_layers</span> <span class="o">=</span> <span class="p">[(</span><span class="n">l_</span><span class="p">,</span>
+                              <span class="n">bx</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="n">symbols</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span>
+                              <span class="n">r_</span><span class="p">)</span> <span class="k">for</span> <span class="n">l_</span><span class="p">,</span> <span class="n">bx</span><span class="p">,</span> <span class="n">r_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">]</span>
+
+        <span class="k">def</span> <span class="nf">lambda_diagram</span><span class="p">(</span><span class="o">*</span><span class="n">xs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">cod</span><span class="p">,</span>
+                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span><span class="n">l_</span><span class="p">,</span>
+                                     <span class="n">bx_lambda</span><span class="p">(</span><span class="o">*</span><span class="n">xs</span><span class="p">),</span>
+                                     <span class="n">r_</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">l_</span><span class="p">,</span>
+                                              <span class="n">bx_lambda</span><span class="p">,</span>
+                                              <span class="n">r_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">lambdified_layers</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">lambda_diagram</span></div>
+
+    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">free_symbols</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="n">sympy</span><span class="o">.</span><span class="n">Symbol</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">free_symbols</span> <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Diagram.eval"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Diagram.eval">[docs]</a>    <span class="k">def</span> <span class="nf">eval</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">contractor</span><span class="o">=</span><span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the tensor diagram.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        contractor : tn contractor</span>
+<span class="sd">            `tensornetwork` contractor for chosen contraction algorithm.</span>
+<span class="sd">        dtype : type, optional</span>
+<span class="sd">            Data type of the resulting array. Defaults to `np.float32`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            n-dimension array representing the contracted tensor.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">contractor</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">to_tn</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">))</span><span class="o">.</span><span class="n">tensor</span></div>
+
+<div class="viewcode-block" id="Diagram.to_tn"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Diagram.to_tn">[docs]</a>    <span class="k">def</span> <span class="nf">to_tn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="nb">type</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the diagram to a `tensornetwork` TN.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        dtype : type, optional</span>
+<span class="sd">            Data type of the resulting array. Defaults to `np.float32`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple[list[tn.Node], list[tn.Edge]]</span>
+<span class="sd">            `tensornetwork` representation of the diagram. An edge</span>
+<span class="sd">            object is returned for each dangling edge in the network.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[</span><span class="n">tn</span><span class="o">.</span><span class="n">CopyNode</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                             <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span> <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="o">.</span><span class="n">dim</span><span class="p">]</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">]</span>
+        <span class="n">scan</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes</span><span class="p">]</span>
+
+        <span class="n">diag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="n">left</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">right</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">unpack</span><span class="p">()</span>
+            <span class="n">subdiag</span> <span class="o">=</span> <span class="n">box</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="s1">&#39;decompose&#39;</span><span class="p">):</span>
+                <span class="n">subdiag</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">decompose</span><span class="p">()</span>
+
+            <span class="n">diag</span> <span class="o">&gt;&gt;=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">left</span><span class="p">)</span>
+<div class="viewcode-block" id="Cap"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Cap">[docs]</a>                      <span class="o">@</span> <span class="n">subdiag</span>
+                      <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">right</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">lyr</span> <span class="ow">in</span> <span class="n">diag</span><span class="o">.</span><span class="n">layers</span><span class="p">:</span>
+            <span class="n">l</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">lyr</span><span class="o">.</span><span class="n">unpack</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Swap</span><span class="p">):</span>
+                <span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)],</span> <span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)]</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">):</span>
+                <span class="n">tn</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)],</span> <span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+                <span class="k">del</span> <span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">):</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">Spider</span><span class="p">):</span>
+                    <span class="n">node</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">CopyNode</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">n_legs_in</span> <span class="o">+</span> <span class="n">box</span><span class="o">.</span><span class="n">n_legs_out</span><span class="p">,</span>
+                                       <span class="n">box</span><span class="o">.</span><span class="n">type</span><span class="o">.</span><span class="n">product</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype</span><span class="p">,</span>
+                                       <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">node</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">array</span><span class="p">,</span>
+                                   <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                                   <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">)</span>
+
+                <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)):</span>
+                    <span class="n">tn</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span><span class="p">],</span> <span class="n">node</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+                <span class="n">scan</span> <span class="o">=</span> <span class="p">(</span><span class="n">scan</span><span class="p">[:</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)]</span>
+                        <span class="o">+</span> <span class="n">node</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">):]</span>
+                        <span class="o">+</span> <span class="n">scan</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">):])</span>
+
+        <span class="c1"># nodes, input_edge_order, output_edge_order</span>
+        <span class="k">return</span> <span class="n">nodes</span><span class="p">,</span> <span class="n">inputs</span> <span class="o">+</span> <span class="n">scan</span></div>
+
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="fm">__hash__</span></div>
+
+
+<span class="nd">@Diagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;cap&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Cap</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Cap</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Cap in the tensor category.&quot;&quot;&quot;</span>
+
+    <span class="n">left</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">right</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">is_reversed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Cap.__init__"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Cap.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">is_reversed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a tensor Cap.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        left : Dim</span>
+<span class="sd">            Dimension (type) of the left leg of the cap. Must be the</span>
+<span class="sd">            conjugate of `right`.</span>
+<span class="sd">        right : Dim</span>
+<span class="sd">            Dimension (type) of the right leg of the cap. Must be the</span>
+<span class="sd">            conjugate of `left`.</span>
+<span class="sd">        is_reversed : bool, default False</span>
+<span class="sd">            Ignored parameter, since left and right conjugates are</span>
+<span class="sd">            equivalent in the tensor category. Necessary to inherit</span>
+<span class="sd">            from `grammar.Cap` appropriately.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">product</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">arr</span></div>
+
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__hash__</span>
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__repr__</span></div>
+
+
+<div class="viewcode-block" id="Cup"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Cup">[docs]</a><span class="nd">@Diagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;cup&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Cup</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Cup</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Cup in the tensor category.&quot;&quot;&quot;</span>
+
+    <span class="n">left</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">right</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">is_reversed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Cup.__init__"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Cup.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">is_reversed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a tensor Cup.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        left : Dim</span>
+<span class="sd">            Dimension (type) of the left leg of the cup. Must be the</span>
+<span class="sd">            conjugate of `right`.</span>
+<span class="sd">        right : Dim</span>
+<span class="sd">            Dimension (type) of the right leg of the cup. Must be the</span>
+<span class="sd">            conjugate of `left`.</span>
+<span class="sd">        is_reversed : bool, default False</span>
+<span class="sd">            Ignored parameter, since left and right conjugates are</span>
+<span class="sd">            equivalent in the tensor category. Necessary to inherit</span>
+<span class="sd">            from `grammar.Cup` appropriately.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">left</span><span class="o">.</span><span class="n">product</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">arr</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">arr</span></div>
+
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__hash__</span>
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__repr__</span></div>
+
+
+<div class="viewcode-block" id="Swap"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Swap">[docs]</a><span class="nd">@Diagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;swap&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Swap</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Swap</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Swap in the tensor category.&quot;&quot;&quot;</span>
+
+    <span class="n">left</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">right</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Swap.__init__"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Swap.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">right</span><span class="p">:</span> <span class="n">Dim</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a tensor Swap.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        left : Dim</span>
+<span class="sd">            Dimension (type) of the left input of the swap.</span>
+<span class="sd">        right : Dim</span>
+<span class="sd">            Dimension (type) of the right input of the swap.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">grammar</span><span class="o">.</span><span class="n">Swap</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;SWAP&#39;</span><span class="p">,</span> <span class="n">left</span> <span class="o">@</span> <span class="n">right</span><span class="p">,</span> <span class="n">right</span> <span class="o">@</span> <span class="n">left</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Swap.dagger"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Swap.dagger">[docs]</a>    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">)</span></div>
+
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__hash__</span>
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__repr__</span></div>
+
+
+<div class="viewcode-block" id="Spider"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Spider">[docs]</a><span class="nd">@Diagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;spider&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Spider</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Spider</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A Spider in the tensor category.</span>
+
+<span class="sd">    Concretely represented by a copy node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">type</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">n_legs_in</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">n_legs_out</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span>
+    <span class="n">z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Spider.__init__"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Spider.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">n_legs_in</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a tensor Spider.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        type : Dim</span>
+<span class="sd">            Dimension (type) of each leg of the spider.</span>
+<span class="sd">        n_legs_in : int</span>
+<span class="sd">            Number of input legs of the spider.</span>
+<span class="sd">        n_legs_out : int</span>
+<span class="sd">            Number of input legs of the spider.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Box</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;SPIDER&#39;</span><span class="p">,</span> <span class="nb">type</span> <span class="o">**</span> <span class="n">n_legs_in</span><span class="p">,</span> <span class="nb">type</span> <span class="o">**</span> <span class="n">n_legs_out</span><span class="p">)</span>
+        <span class="n">grammar</span><span class="o">.</span><span class="n">Spider</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">type</span><span class="p">,</span> <span class="n">n_legs_in</span><span class="p">,</span> <span class="n">n_legs_out</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Spider.dagger"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Spider.dagger">[docs]</a>    <span class="k">def</span> <span class="nf">dagger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_legs_out</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_legs_in</span><span class="p">)</span></div>
+
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__hash__</span>
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__repr__</span></div>
+
+
+<span class="n">Id</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">id</span>
+
+
+<div class="viewcode-block" id="Daggered"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.tensor.Daggered">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">Daggered</span><span class="p">(</span><span class="n">grammar</span><span class="o">.</span><span class="n">Daggered</span><span class="p">,</span> <span class="n">Box</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A daggered box.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    box : Box</span>
+<span class="sd">        The box to be daggered.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">box</span><span class="p">:</span> <span class="n">Box</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">dom</span><span class="p">:</span> <span class="n">Dim</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">cod</span><span class="p">:</span> <span class="n">Dim</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">z</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">init</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;†&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cod</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">z</span>
+
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">__name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">__value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">__name</span> <span class="o">==</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">__value</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">__name</span><span class="p">,</span> <span class="n">__value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">array</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">_adjoint_array</span><span class="p">()</span>
+
+    <span class="fm">__hash__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__hash__</span>
+    <span class="fm">__repr__</span> <span class="o">=</span> <span class="n">Box</span><span class="o">.</span><span class="fm">__repr__</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

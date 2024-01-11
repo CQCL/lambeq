@@ -15,6 +15,8 @@ Bibliography
 
 .. [GL2012] F. Gao, H. Lixing. `Implementing the Nelder-Mead Simplex Algorithm with Adaptive Parameters <https://link.springer.com/article/10.1007/s10589-010-9329-3>`_, `Computational Optimization and Applications`,` 51. 259-277.10.1007/s10589-010-9329-3, 2012
 
+.. [Hea2019] V. Havlíček, A. Córcoles, K. Temme, A. Harrow, A. Kandala, J. Chow, J. Gambetta. `Supervised Learning with Quantum-Enhanced Feature Spaces <https://www.nature.com/articles/s41586-019-0980-2>`_. `Nature`, 567, 2019
+
 .. [HS2007] J. Hockenmaier, M. Steedman. `CCGbank: A Corpus of CCG Derivations and Dependency Structures Extracted from the Penn Treebank <https://aclanthology.org/J07-3004.pdf>`_, `Computational Linguistics, Volume 33, Number 3`, September 2007
 
 .. [HV2013] C. Heunen, J. Vicary. `Introduction to Categorical Quantum Mechanics <http://www.cs.ox.ac.uk/people/jamie.vicary/IntroductionToCategoricalQuantumMechanics.pdf>`_, `Course Notes`, Oxford University, 2013

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Installation &mdash; lambeq 0.3.3 documentation</title>
+  <title>Installation &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,12 +52,14 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#depccg-support">DepCCG support</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,8 +78,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -93,7 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -161,12 +163,17 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>lambeq<span class="o">[</span>extras<span class="o">]</span>
 </pre></div>
 </div>
-<p>To enable depccg support, you will need to install depccg separately. More information can be found
-on the <a class="reference external" href="//github.com/masashi-y/depccg">depccg homepage</a>.
-Currently, only version 2.0.3.2 of depccg is supported. After installing depccg, you can download its model by using the script provided in the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> folder of the <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> repository:</p>
+<section id="depccg-support">
+<h2>DepCCG support<a class="headerlink" href="#depccg-support" title="Permalink to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The DepCCG-related functionality is no longer actively supported in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, and may not work as expected. We strongly recommend using the default <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser which comes as part of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>.</p>
+</div>
+<p>If you still want to use DepCCG, for example because you plan to apply <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> on Japanese, you can install DepCCG separately following the instructions on the <a class="reference external" href="//github.com/masashi-y/depccg">DepCCG homepage</a>. After installing DepCCG, you can download its model by using the script provided in the <code class="docutils literal notranslate"><span class="pre">contrib</span></code> folder of the <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> repository:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>contrib/download_depccg_model.py
 </pre></div>
 </div>
+</section>
 </section>
 
 
@@ -180,7 +187,7 @@ Currently, only version 2.0.3.2 of depccg is supported. After installing depccg,
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

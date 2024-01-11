@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Training hybrid models using the Pennylane backend &mdash; lambeq 0.3.3 documentation</title>
+  <title>Training hybrid models using the Pennylane backend &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -26,7 +26,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="lambeq package" href="../root-api.html" />
-    <link rel="prev" title="Quantum pipeline using JAX backend" href="quantum_pipeline_jax.html" /> 
+    <link rel="prev" title="Quantum pipeline using JAX backend" href="quantum-pipeline-jax.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,7 +42,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -58,8 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -78,25 +77,26 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tokenisation.html">Tokenisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="unk-words.html">Handling unknown words</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reader.html">Reader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tree_reader.html">Tree reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree-reader.html">Tree reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rewrite.html">Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit.html">Circuit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor.html">Tensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rotosolve_optimizer.html">Rotosolve optimizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="classical_pipeline.html">Classical pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline_jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rotosolve-optimizer.html">Rotosolve optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classical-pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline-jax.html">Quantum pipeline using JAX backend</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Training hybrid models using the Pennylane backend</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Read-in-the-data-and-create-diagrams">Read in the data and create diagrams</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Remove-cups">Remove cups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Create-DisCoPy-circuits">Create DisCoPy circuits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Create-circuits">Create circuits</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Create-(pure-quantum)-model-and-initialise-parameters">Create (pure quantum) model and initialise parameters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Prepare-train-dataset">Prepare train dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Training">Training</a><ul>
@@ -127,7 +127,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -527,7 +527,9 @@ Turning parse trees to diagrams.
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">remove_cups</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">RemoveCupsRewriter</span>
+
+<span class="n">remove_cups</span> <span class="o">=</span> <span class="n">RemoveCupsRewriter</span><span class="p">()</span>
 
 <span class="n">train_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">raw_train_diagrams</span><span class="p">]</span>
 <span class="n">dev_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">remove_cups</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">raw_dev_diagrams</span><span class="p">]</span>
@@ -545,8 +547,8 @@ Turning parse trees to diagrams.
 </div>
 </div>
 </section>
-<section id="Create-DisCoPy-circuits">
-<h2>Create DisCoPy circuits<a class="headerlink" href="#Create-DisCoPy-circuits" title="Permalink to this heading"></a></h2>
+<section id="Create-circuits">
+<h2>Create circuits<a class="headerlink" href="#Create-circuits" title="Permalink to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -560,7 +562,7 @@ Turning parse trees to diagrams.
 <span class="n">dev_circuits</span> <span class="o">=</span>  <span class="p">[</span><span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">dev_diagrams</span><span class="p">]</span>
 <span class="n">test_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span> <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">test_diagrams</span><span class="p">]</span>
 
-<span class="n">train_circuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">train_circuits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -650,36 +652,36 @@ Turning parse trees to diagrams.
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-Epoch 1:   train/loss: 0.2781   valid/loss: 0.1772   train/acc: 0.5143   valid/acc: 0.8333
-Epoch 2:   train/loss: 0.1762   valid/loss: 0.2355   train/acc: 0.7714   valid/acc: 0.6667
-Epoch 3:   train/loss: 0.1661   valid/loss: 0.1701   train/acc: 0.7571   valid/acc: 0.7333
-Epoch 4:   train/loss: 0.0964   valid/loss: 0.1840   train/acc: 0.8857   valid/acc: 0.6333
-Epoch 5:   train/loss: 0.1264   valid/loss: 0.1950   train/acc: 0.8143   valid/acc: 0.7667
-Epoch 6:   train/loss: 0.1005   valid/loss: 0.1741   train/acc: 0.9143   valid/acc: 0.7333
-Epoch 7:   train/loss: 0.1232   valid/loss: 0.1788   train/acc: 0.8286   valid/acc: 0.7333
-Epoch 8:   train/loss: 0.1182   valid/loss: 0.1191   train/acc: 0.8429   valid/acc: 0.9000
-Epoch 9:   train/loss: 0.0813   valid/loss: 0.0954   train/acc: 0.9143   valid/acc: 0.9000
-Epoch 10:  train/loss: 0.0800   valid/loss: 0.0825   train/acc: 0.9286   valid/acc: 0.9000
-Epoch 11:  train/loss: 0.0735   valid/loss: 0.0876   train/acc: 0.9286   valid/acc: 0.8667
-Epoch 12:  train/loss: 0.0277   valid/loss: 0.0852   train/acc: 1.0000   valid/acc: 0.9000
-Epoch 13:  train/loss: 0.0410   valid/loss: 0.1321   train/acc: 0.9857   valid/acc: 0.8667
-Epoch 14:  train/loss: 0.0412   valid/loss: 0.0597   train/acc: 0.9429   valid/acc: 0.9667
-Epoch 15:  train/loss: 0.0489   valid/loss: 0.0914   train/acc: 0.9286   valid/acc: 0.8667
-Epoch 16:  train/loss: 0.0360   valid/loss: 0.0868   train/acc: 0.9714   valid/acc: 0.9000
-Epoch 17:  train/loss: 0.0477   valid/loss: 0.1206   train/acc: 0.9286   valid/acc: 0.8333
-Epoch 18:  train/loss: 0.0493   valid/loss: 0.0888   train/acc: 0.9429   valid/acc: 0.9000
-Epoch 19:  train/loss: 0.0572   valid/loss: 0.0588   train/acc: 0.9143   valid/acc: 0.9333
-Epoch 20:  train/loss: 0.0415   valid/loss: 0.0974   train/acc: 0.9714   valid/acc: 0.8667
-Epoch 21:  train/loss: 0.0443   valid/loss: 0.0876   train/acc: 0.9571   valid/acc: 0.9000
-Epoch 22:  train/loss: 0.0478   valid/loss: 0.0742   train/acc: 0.9429   valid/acc: 0.9000
-Epoch 23:  train/loss: 0.0332   valid/loss: 0.0784   train/acc: 0.9714   valid/acc: 0.9000
-Epoch 24:  train/loss: 0.0389   valid/loss: 0.0801   train/acc: 0.9857   valid/acc: 0.9667
-Epoch 25:  train/loss: 0.0376   valid/loss: 0.1539   train/acc: 0.9714   valid/acc: 0.8333
-Epoch 26:  train/loss: 0.0320   valid/loss: 0.0743   train/acc: 0.9714   valid/acc: 0.9333
-Epoch 27:  train/loss: 0.0509   valid/loss: 0.1458   train/acc: 0.9429   valid/acc: 0.8000
-Epoch 28:  train/loss: 0.0748   valid/loss: 0.1495   train/acc: 0.9143   valid/acc: 0.8000
-Epoch 29:  train/loss: 0.0956   valid/loss: 0.1150   train/acc: 0.8429   valid/acc: 0.8667
-Epoch 30:  train/loss: 0.1466   valid/loss: 0.1224   train/acc: 0.8143   valid/acc: 0.8333
+Epoch 1:   train/loss: 0.1542   valid/loss: 0.2271   train/acc: 0.5571   valid/acc: 0.5333
+Epoch 2:   train/loss: 0.1318   valid/loss: 0.2877   train/acc: 0.8571   valid/acc: 0.6000
+Epoch 3:   train/loss: 0.0677   valid/loss: 0.1879   train/acc: 0.8429   valid/acc: 0.7333
+Epoch 4:   train/loss: 0.1274   valid/loss: 0.1289   train/acc: 0.9000   valid/acc: 0.8333
+Epoch 5:   train/loss: 0.0604   valid/loss: 0.1909   train/acc: 0.8571   valid/acc: 0.6667
+Epoch 6:   train/loss: 0.0572   valid/loss: 0.1599   train/acc: 0.8857   valid/acc: 0.7333
+Epoch 7:   train/loss: 0.0147   valid/loss: 0.1156   train/acc: 0.9286   valid/acc: 0.8000
+Epoch 8:   train/loss: 0.0057   valid/loss: 0.0661   train/acc: 0.8857   valid/acc: 0.9333
+Epoch 9:   train/loss: 0.0987   valid/loss: 0.1099   train/acc: 0.9429   valid/acc: 0.8667
+Epoch 10:  train/loss: 0.0067   valid/loss: 0.0927   train/acc: 0.9714   valid/acc: 0.8667
+Epoch 11:  train/loss: 0.0855   valid/loss: 0.0410   train/acc: 0.9714   valid/acc: 0.9667
+Epoch 12:  train/loss: 0.0431   valid/loss: 0.0415   train/acc: 0.9714   valid/acc: 0.9333
+Epoch 13:  train/loss: 0.0365   valid/loss: 0.0260   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 14:  train/loss: 0.0007   valid/loss: 0.0238   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 15:  train/loss: 0.0002   valid/loss: 0.0110   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 16:  train/loss: 0.0002   valid/loss: 0.0057   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 17:  train/loss: 0.0014   valid/loss: 0.0077   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 18:  train/loss: 0.0047   valid/loss: 0.0070   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 19:  train/loss: 0.0020   valid/loss: 0.0059   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 20:  train/loss: 0.0007   valid/loss: 0.0050   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 21:  train/loss: 0.0002   valid/loss: 0.0045   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 22:  train/loss: 0.0001   valid/loss: 0.0053   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 23:  train/loss: 0.0001   valid/loss: 0.0055   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 24:  train/loss: 0.0000   valid/loss: 0.0056   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 25:  train/loss: 0.0000   valid/loss: 0.0056   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 26:  train/loss: 0.0000   valid/loss: 0.0057   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 27:  train/loss: 0.0000   valid/loss: 0.0058   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 28:  train/loss: 0.0000   valid/loss: 0.0058   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 29:  train/loss: 0.0000   valid/loss: 0.0058   train/acc: 1.0000   valid/acc: 1.0000
+Epoch 30:  train/loss: 0.0000   valid/loss: 0.0057   train/acc: 1.0000   valid/acc: 1.0000
 
 Training completed!
 </pre></div></div>
@@ -706,7 +708,7 @@ Training completed!
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.8666666666666667
+1.0
 </pre></div></div>
 </div>
 </section>
@@ -775,23 +777,17 @@ Training completed!
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch: 0
-Train loss: 2.0081786811351776
-Dev acc: 0.6666666666666666
+Train loss: 1.8844525516033173
+Dev acc: 0.8
 Epoch: 5
-Train loss: 0.1544425506144762
+Train loss: 0.19278545631095767
 Dev acc: 0.9666666666666667
 Epoch: 10
-Train loss: 0.12985258654225618
+Train loss: 0.014469785994151607
 Dev acc: 0.9333333333333333
 Epoch: 15
-Train loss: 0.10472874331753701
-Dev acc: 1.0
-Epoch: 20
-Train loss: 0.13289533253691843
+Train loss: 0.0006354562428896315
 Dev acc: 0.9666666666666667
-Epoch: 25
-Train loss: 0.18135563377290964
-Dev acc: 1.0
 Early stopping
 </pre></div></div>
 </div>
@@ -1000,26 +996,23 @@ Early stopping
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Epoch: 0
-Train loss: 4.326053082942963
-Dev acc: 0.52
+Train loss: 4.250532686710358
+Dev acc: 0.53
 Epoch: 5
-Train loss: 2.356892943382263
-Dev acc: 0.82
+Train loss: 1.1775649935007095
+Dev acc: 0.79
 Epoch: 10
-Train loss: 3.841829091310501
-Dev acc: 0.73
+Train loss: 3.184345841407776
+Dev acc: 0.74
 Epoch: 15
-Train loss: 1.039370372891426
-Dev acc: 0.92
+Train loss: 0.0829660682938993
+Dev acc: 0.88
 Epoch: 20
-Train loss: 0.3669174164533615
-Dev acc: 1.0
+Train loss: 0.0021069025970064104
+Dev acc: 0.815
 Epoch: 25
-Train loss: 0.10690710321068764
-Dev acc: 0.99
-Epoch: 30
-Train loss: 0.04612841410562396
-Dev acc: 1.0
+Train loss: 0.0008974437660071999
+Dev acc: 0.78
 Early stopping
 </pre></div></div>
 </div>
@@ -1037,7 +1030,7 @@ Early stopping
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-0.94
+0.88
 </pre></div></div>
 </div>
 </section>
@@ -1047,14 +1040,14 @@ Early stopping
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="quantum_pipeline_jax.html" class="btn btn-neutral float-left" title="Quantum pipeline using JAX backend" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="quantum-pipeline-jax.html" class="btn btn-neutral float-left" title="Quantum pipeline using JAX backend" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../root-api.html" class="btn btn-neutral float-right" title="lambeq package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

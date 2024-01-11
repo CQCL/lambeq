@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tokenisation &mdash; lambeq 0.3.3 documentation</title>
+  <title>Tokenisation &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -25,7 +25,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Parser" href="parser.html" />
+    <link rel="next" title="Handling unknown words" href="unk-words.html" />
     <link rel="prev" title="Examples" href="../notebooks.html" /> 
 </head>
 
@@ -42,7 +42,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -58,8 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -78,8 +77,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Tokenisation</a><ul>
@@ -87,16 +86,17 @@
 <li class="toctree-l3"><a class="reference internal" href="#Splitting-a-document-into-sentences">Splitting a document into sentences</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="unk-words.html">Handling unknown words</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reader.html">Reader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tree_reader.html">Tree reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree-reader.html">Tree reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rewrite.html">Rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="circuit.html">Circuit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor.html">Tensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rotosolve_optimizer.html">Rotosolve optimizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="classical_pipeline.html">Classical pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline_jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rotosolve-optimizer.html">Rotosolve optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classical-pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline-jax.html">Quantum pipeline using JAX backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pennylane.html">Training hybrid models using the Pennylane backend</a></li>
 </ul>
 </li>
@@ -113,7 +113,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -486,12 +486,11 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
-<span class="kn">from</span> <span class="nn">lambeq.pregroups</span> <span class="kn">import</span> <span class="n">draw</span>
 
 <span class="n">parser</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="s1">&#39;suppress&#39;</span><span class="p">)</span>
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="n">tokens</span><span class="p">,</span> <span class="n">tokenised</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -555,13 +554,13 @@ div.rendered_html tbody tr:hover {
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../notebooks.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="parser.html" class="btn btn-neutral float-right" title="Parser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="unk-words.html" class="btn btn-neutral float-right" title="Handling unknown words" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DisCoCat in DisCoPy &mdash; lambeq 0.3.3 documentation</title>
+  <title>DisCoCat in lambeq &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -26,7 +26,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Advanced: Extending lambeq" href="extend-lambeq.html" />
-    <link rel="prev" title="Monoidal categories in DisCoPy" href="monoidal.html" /> 
+    <link rel="prev" title="Monoidal categories in lambeq" href="monoidal.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -42,7 +42,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -58,8 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -78,10 +77,10 @@
 <li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="monoidal.html">Monoidal categories in DisCoPy</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">DisCoCat in DisCoPy</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="monoidal.html">Monoidal categories in lambeq</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">DisCoCat in lambeq</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Pregroup-grammars">Pregroup grammars</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Functors">Functors</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Example-1:-“Very”-functor">Example 1: “Very” functor</a></li>
@@ -109,7 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -132,8 +131,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../advanced.html">Advanced: DisCoPy usage</a></li>
-      <li class="breadcrumb-item active">DisCoCat in DisCoPy</li>
+          <li class="breadcrumb-item"><a href="../advanced.html">Advanced: low-level lambeq</a></li>
+      <li class="breadcrumb-item active">DisCoCat in lambeq</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/discocat.ipynb" class="fa fa-github"> Edit on GitHub</a>
       </li>
@@ -422,26 +421,27 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="DisCoCat-in-DisCoPy">
-<h1>DisCoCat in DisCoPy<a class="headerlink" href="#DisCoCat-in-DisCoPy" title="Permalink to this heading"></a></h1>
-<p>In the previous tutorial, we learnt the basics of <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal categories</span></a> and how to represent them in <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>. In this tutorial, we look at the <cite>Distributional Compositional Categorical</cite> model <a class="reference internal" href="../bibliography.html#csc2010" id="id1"><span>[CSC2010]</span></a>, which uses functors to map diagrams from the <a class="reference internal" href="monoidal.html#Rigid-monoidal-categories"><span class="std std-ref">rigid category</span></a> of <a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">pregroup grammars</span></a> to vector space semantics.</p>
+<section id="DisCoCat-in-lambeq">
+<h1>DisCoCat in lambeq<a class="headerlink" href="#DisCoCat-in-lambeq" title="Permalink to this heading"></a></h1>
+<p>In the previous tutorial, we learnt the basics of <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal categories</span></a> and how to represent them in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>. In this tutorial, we look at the <cite>Distributional Compositional Categorical</cite> model <a class="reference internal" href="../bibliography.html#csc2010" id="id1"><span>[CSC2010]</span></a>, which uses functors to map diagrams from the <a class="reference internal" href="monoidal.html#Rigid-monoidal-categories"><span class="std std-ref">rigid category</span></a> of <a class="reference internal" href="../string-diagrams.html#pregroup-grammars"><span class="std std-ref">pregroup grammars</span></a> to vector space semantics.</p>
 <p><a class="reference download internal" download="" href="../_downloads/917bbd1e1e31c3413993fb1e434efd18/discocat.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">code</span></code></a></p>
 <section id="Pregroup-grammars">
 <h2>Pregroup grammars<a class="headerlink" href="#Pregroup-grammars" title="Permalink to this heading"></a></h2>
-<p><a class="reference internal" href="../string_diagrams.html#pregroup-grammars"><span class="std std-ref">Pregroup grammar</span></a> is a grammatical formalism devised by Joachim Lambek in 1999 <a class="reference internal" href="../bibliography.html#lam1999" id="id3"><span>[Lam1999]</span></a>. In pregroups, each word is a morphism with type <span class="math notranslate nohighlight">\(I \to T\)</span> where <span class="math notranslate nohighlight">\(I\)</span> is the monoidal unit and <span class="math notranslate nohighlight">\(T\)</span> is a rigid type, referred to as the <em>pregroup type</em>. Here are some examples for pregroup type assignments:</p>
+<p><a class="reference internal" href="../string-diagrams.html#pregroup-grammars"><span class="std std-ref">Pregroup grammar</span></a> is a grammatical formalism devised by Joachim Lambek in 1999 <a class="reference internal" href="../bibliography.html#lam1999" id="id3"><span>[Lam1999]</span></a>. In pregroups, each word is a morphism with type <span class="math notranslate nohighlight">\(I \to T\)</span> where <span class="math notranslate nohighlight">\(I\)</span> is the monoidal unit and <span class="math notranslate nohighlight">\(T\)</span> is a rigid type, referred to as the <em>pregroup type</em>. Here are some examples for pregroup type assignments:</p>
 <ul class="simple">
 <li><p>a noun is given the base type <span class="math notranslate nohighlight">\(n\)</span>.</p></li>
 <li><p>an adjective consumes a noun on the noun’s left to return another noun, so it is given the type <span class="math notranslate nohighlight">\(n\cdot n^l\)</span>.</p></li>
 <li><p>a transitive verb consumes a noun on its left and another noun on its right to give a sentence, so is given the type <span class="math notranslate nohighlight">\(n^r \cdot s \cdot n^l\)</span>.</p></li>
 </ul>
 <p>In the context of pregroups, the <a class="reference internal" href="../glossary.html#term-adjoint"><span class="xref std std-term">adjoints</span></a> <span class="math notranslate nohighlight">\(n^l\)</span> and <span class="math notranslate nohighlight">\(n^r\)</span> can be thought of as the left and right inverses of a type <span class="math notranslate nohighlight">\(n\)</span> respectively. In a pregroup derivation, the words are concatenated using the monoidal product <span class="math notranslate nohighlight">\(\otimes\)</span> and linked using <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a>, which are special morphisms that exist in any <a class="reference internal" href="../glossary.html#term-rigid-category"><span class="xref std std-term">rigid category</span></a>. A sentence is grammatically sound if its derivation has a single uncontracted sentence wire.</p>
-<p>In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, words are defined using the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> class. A <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Word.html#discopy.grammar.pregroup.Word" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> is just a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.rigid.Box.html#discopy.rigid.Box" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> where the input type is fixed to be the monoidal unit <span class="math notranslate nohighlight">\(I\)</span> (or <code class="docutils literal notranslate"><span class="pre">Ty()</span></code>). A pregroup derivation diagram can be drawn using either the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">monoidal.Diagram.draw()</span></code></a> method or the <a class="reference internal" href="../lambeq.pregroups.html#lambeq.pregroups.draw" title="lambeq.pregroups.draw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lambeq.pregroups.draw()</span></code></a> method.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, words are defined using the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Word" title="lambeq.backend.grammar.Word"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> class. A <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Word" title="lambeq.backend.grammar.Word"><code class="xref py py-class docutils literal notranslate"><span class="pre">Word</span></code></a> is just a <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Box" title="lambeq.backend.grammar.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> where the input type is fixed to be the monoidal unit <span class="math notranslate nohighlight">\(I\)</span> (or <code class="docutils literal notranslate"><span class="pre">Ty()</span></code>). A pregroup derivation diagram can be drawn using either the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Diagram.draw" title="lambeq.backend.grammar.Diagram.draw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">backend.grammar.Diagram.draw()</span></code></a> method or the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.drawing.draw" title="lambeq.backend.drawing.draw"><code class="xref py py-func docutils literal notranslate"><span class="pre">backend.drawing.draw()</span></code></a> function.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
-<span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">pregroups</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">draw</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Word</span>
+
 
 <span class="n">n</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">),</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
 
@@ -457,7 +457,7 @@ div.rendered_html tbody tr:hover {
 <span class="k">assert</span> <span class="n">Ty</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">])</span> <span class="o">==</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span>
 
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">Id</span><span class="p">()</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="o">*</span><span class="n">words</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">cups</span>
-<span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -470,52 +470,30 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, method <a class="reference internal" href="../root-api.html#lambeq.create_pregroup_diagram" title="lambeq.create_pregroup_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_pregroup_diagram()</span></code></a> provides an alternative, more compact way to create pregroup diagrams, by explicitly defining a list of <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> and <a class="reference internal" href="../glossary.html#term-swap"><span class="xref std std-term">swaps</span></a>. For example, the above diagram can be also generated using the following code:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">create_pregroup_diagram</span>
-<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Ty</span>
+<p>In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, method <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Diagram.create_pregroup_diagram" title="lambeq.backend.grammar.Diagram.create_pregroup_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_pregroup_diagram()</span></code></a> provides an alternative, more compact way to create pregroup diagrams, by explicitly defining a list of <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> and <a class="reference internal" href="../glossary.html#term-swap"><span class="xref std std-term">swaps</span></a>. For example, the above diagram can be also generated using the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Ty</span>
 
 <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">Word</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;goes&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">),</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
 <span class="n">morphisms</span> <span class="o">=</span> <span class="p">[(</span><span class="n">Cup</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)]</span>
-<span class="n">diagram</span> <span class="o">=</span> <span class="n">create_pregroup_diagram</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">Ty</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">),</span> <span class="n">morphisms</span><span class="p">)</span>
+<span class="n">diagram</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">create_pregroup_diagram</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">morphisms</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where the numbers in <code class="docutils literal notranslate"><span class="pre">morphisms</span></code> define the indices of the corresponding wires at the top of the diagram
-<code class="docutils literal notranslate"><span class="pre">(n</span> <span class="pre">&#64;</span> <span class="pre">n.r</span> <span class="pre">&#64;</span> <span class="pre">s</span> <span class="pre">&#64;</span> <span class="pre">n.l</span> <span class="pre">&#64;</span> <span class="pre">n)</span></code>. In contrast, the <code class="docutils literal notranslate"><span class="pre">.cup()</span></code> method in <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> can be used to define
-diagrams using chaining, and uses indices at the bottom of the diagram:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">words</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;goes&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;home&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-<span class="n">same_diagram</span> <span class="o">=</span> <span class="n">words</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
+<code class="docutils literal notranslate"><span class="pre">(n</span> <span class="pre">&#64;</span> <span class="pre">n.r</span> <span class="pre">&#64;</span> <span class="pre">s</span> <span class="pre">&#64;</span> <span class="pre">n.l</span> <span class="pre">&#64;</span> <span class="pre">n)</span></code>.</p>
 </div>
-<p>The <code class="docutils literal notranslate"><span class="pre">.cup()</span></code> method can be applied to non-adjacent qubits, which implicitly introduces swaps. For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">n</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="s2">&quot;nsp&quot;</span><span class="p">)</span>
-<span class="n">words</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">n</span> <span class="o">@</span> <span class="n">p</span><span class="p">)</span> <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">s</span> <span class="o">@</span> <span class="n">n</span><span class="o">.</span><span class="n">l</span><span class="p">)</span> <span class="o">@</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">r</span> <span class="o">@</span> <span class="n">n</span><span class="p">)</span>
-
-<span class="n">words</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cup</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_static/images/string_diagram_with_swaps.png"><img alt="../_static/images/string_diagram_with_swaps.png" src="../_static/images/string_diagram_with_swaps.png" style="width: 350px;" /></a>
-</div>
-<p>Note that only diagrams of the form <code class="docutils literal notranslate"><span class="pre">word</span> <span class="pre">&#64;</span> <span class="pre">...</span> <span class="pre">&#64;</span> <span class="pre">word</span> <span class="pre">&gt;&gt;</span> <span class="pre">cups_and_swaps</span></code> can be drawn using <a class="reference internal" href="../lambeq.pregroups.html#lambeq.pregroups.draw" title="lambeq.pregroups.draw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lambeq.pregroups.draw()</span></code></a>. Applying functors or normal forms will often cause the diagram to deviate from this form, in which case <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram.draw" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">monoidal.Diagram.draw()</span></code></a> should be used.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.drawing</span> <span class="kn">import</span> <span class="n">Equation</span>
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">monoidal</span>
-<span class="kn">from</span> <span class="nn">pytest</span> <span class="kn">import</span> <span class="n">raises</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">draw_equation</span>
 
 <span class="c1"># In the original diagram, words appear before the cups</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Before normal form:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">)))</span>
 
-<span class="n">diagram_nf</span> <span class="o">=</span> <span class="n">monoidal</span><span class="o">.</span><span class="n">Diagram</span><span class="o">.</span><span class="n">normal_form</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">diagram_nf</span> <span class="o">=</span> <span class="n">diagram</span><span class="o">.</span><span class="n">normal_form</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;After normal form:&#39;</span><span class="p">,</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">diagram_nf</span><span class="o">.</span><span class="n">boxes</span><span class="p">)))</span>
 
-<span class="n">Equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">diagram_nf</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
-
-<span class="c1"># In the normalised diagram, boxes are not in the right order</span>
-<span class="c1"># anymore, so cannot be drawn using pregroups.draw()</span>
-<span class="k">with</span> <span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-    <span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram_nf</span><span class="p">)</span>
+<span class="n">draw_equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">diagram_nf</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">draw_as_pregroup</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">foliated</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -524,8 +502,8 @@ diagrams using chaining, and uses indices at the bottom of the diagram:</p>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Before normal form: she, goes, home, Cup(n, n.r), Cup(n.l, n)
-After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
+Before normal form: she, goes, home, CUP, CUP
+After normal form: she, goes, CUP, home, CUP
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -535,7 +513,7 @@ After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
 <img alt="../_images/tutorials_discocat_6_1.png" src="../_images/tutorials_discocat_6_1.png" />
 </div>
 </div>
-<p>In the example above, the application of normal form to the diagram introduces a <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a> before the word “home”, so the normalised version cannot be drawn with <a class="reference internal" href="../lambeq.pregroups.html#lambeq.pregroups.draw" title="lambeq.pregroups.draw"><code class="xref py py-meth docutils literal notranslate"><span class="pre">lambeq.pregroups.draw()</span></code></a> anymore.</p>
+<p>In the example above, the application of normal form to the diagram introduces a <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a> before the word “home”.</p>
 </section>
 <section id="Functors">
 <h2>Functors<a class="headerlink" href="#Functors" title="Permalink to this heading"></a></h2>
@@ -546,7 +524,7 @@ After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
 <li><p>monoidal structure of morphism is preserved: <span class="math notranslate nohighlight">\(F(g \otimes f) = F(g) \otimes F(f)\)</span></p></li>
 <li><p>compositonal structure of morphisms is preserved: <span class="math notranslate nohighlight">\(F(g \circ f) = F(g) \circ F(f)\)</span></p></li>
 </ul>
-<p>Put simply, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is a structure-preserving transformation. In a free <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal category</span></a>, applying a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to a diagram amounts to simply providing a mapping for each generating object and morphism. In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is defined by passing mappings (dictionaries or functions) as arguments <code class="docutils literal notranslate"><span class="pre">ob</span></code> and <code class="docutils literal notranslate"><span class="pre">ar</span></code> to the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.monoidal.Functor.html#discopy.monoidal.Functor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Functor</span></code></a> class.</p>
+<p>Put simply, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is a structure-preserving transformation. In a free <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal category</span></a>, applying a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to a diagram amounts to simply providing a mapping for each generating object and morphism. In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> is defined by passing mappings (dictionaries or functions) as arguments <code class="docutils literal notranslate"><span class="pre">ob</span></code> and <code class="docutils literal notranslate"><span class="pre">ar</span></code> to the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Functor" title="lambeq.backend.grammar.Functor"><code class="xref py py-class docutils literal notranslate"><span class="pre">Functor</span></code></a> class.</p>
 <p><a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">Functors</span></a> are one of the most powerful concepts in category theory. In fact, the encoding, rewriting and parameterisation steps of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="../pipeline.html#sec-pipeline"><span class="std std-ref">pipeline</span></a> are implemented individually as <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functors</span></a>, resulting in an overall functorial transformation from <a class="reference internal" href="../glossary.html#term-syntax-tree"><span class="xref std std-term">parse trees</span></a> to <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor networks</span></a> and <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a>. More specifically:</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="../root-api.html#lambeq.CCGParser" title="lambeq.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.CCGParser</span></code></a> uses a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> to transform a biclosed CCG diagram to a pregroup diagram <a class="reference internal" href="../bibliography.html#yk2021" id="id4"><span>[YK2021]</span></a>.</p></li>
@@ -554,11 +532,11 @@ After normal form: she, goes, Cup(n, n.r), home, Cup(n.l, n)
 <li><p><a class="reference internal" href="../root-api.html#lambeq.TensorAnsatz" title="lambeq.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.TensorAnsatz</span></code></a> functorially transforms a pregroup diagram to a tensor diagram, which can be evaluated as a tensor network using NumPy, JAX or PyTorch.</p></li>
 <li><p><a class="reference internal" href="../root-api.html#lambeq.CircuitAnsatz" title="lambeq.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.CircuitAnsatz</span></code></a> functorially transforms a pregroup diagram to a <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a>, for evaluation on a quantum device.</p></li>
 </ul>
-<p>Below we present two examples of <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functors</span></a>, implemented in <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>.</p>
+<p>Below we present two examples of <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functors</span></a>, implemented in <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>.</p>
 <section id="Example-1:-“Very”-functor">
 <h3>Example 1: “Very” functor<a class="headerlink" href="#Example-1:-“Very”-functor" title="Permalink to this heading"></a></h3>
 <p>This <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> adds the word “very” in front of every adjective in a <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> diagram.
-Since the mapping is from a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Diagram</span></code></a> to another <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Diagram</span></code></a>, a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Functor.html#discopy.grammar.pregroup.Functor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Functor</span></code></a> should be used. Further, the word “very” modifies an adjective to return another adjective, so it should have type
+Since the mapping is from a <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.Diagram</span></code></a> to another <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.Diagram</span></code></a>, a <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Functor" title="lambeq.backend.grammar.Functor"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.Functor</span></code></a> should be used. Further, the word “very” modifies an adjective to return another adjective, so it should have type
 <span class="math notranslate nohighlight">\((n \otimes n^l) \otimes (n \otimes n^l)^l = n \otimes n^l \otimes n^{ll} \otimes n^l\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
@@ -573,7 +551,8 @@ Since the mapping is from a <a class="reference external" href="https://docs.dis
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">draw_equation</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">grammar</span><span class="p">,</span> <span class="n">Functor</span>
 
 <span class="c1"># determiners have the same type as adjectives</span>
 <span class="c1"># but we shouldn&#39;t add &#39;very&#39; behind them</span>
@@ -584,22 +563,24 @@ Since the mapping is from a <a class="reference external" href="https://docs.dis
 <span class="n">very</span> <span class="o">=</span> <span class="n">Word</span><span class="p">(</span><span class="s1">&#39;very&#39;</span><span class="p">,</span> <span class="n">adj</span> <span class="o">@</span> <span class="n">adj</span><span class="o">.</span><span class="n">l</span><span class="p">)</span>
 <span class="n">cups</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">adj</span><span class="o">.</span><span class="n">l</span><span class="p">,</span> <span class="n">adj</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">very_ob</span><span class="p">(</span><span class="n">ty</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">very_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">ty</span>
 
-<span class="k">def</span> <span class="nf">very_ar</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">very_ar</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">box</span> <span class="o">!=</span> <span class="n">very</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">determiners</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span> <span class="o">==</span> <span class="n">adj</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">very</span> <span class="o">@</span> <span class="n">box</span> <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="n">adj</span><span class="p">)</span> <span class="o">@</span> <span class="n">cups</span>
     <span class="k">return</span> <span class="n">box</span>
 
-<span class="n">very_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">very_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">very_ar</span><span class="p">)</span>
+<span class="n">very_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">grammar</span><span class="p">,</span>
+                       <span class="n">ob</span><span class="o">=</span><span class="n">very_ob</span><span class="p">,</span>
+                       <span class="n">ar</span><span class="o">=</span><span class="n">very_ar</span><span class="p">,)</span>
 
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="s1">&#39;a big bad wolf&#39;</span><span class="p">)</span>
 <span class="n">new_diagram</span> <span class="o">=</span> <span class="n">very_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 
-<span class="n">Equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">new_diagram</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">draw_equation</span><span class="p">(</span><span class="n">diagram</span><span class="p">,</span> <span class="n">new_diagram</span><span class="p">,</span> <span class="n">symbol</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -613,48 +594,62 @@ Since the mapping is from a <a class="reference external" href="https://docs.dis
 </section>
 <section id="Example-2:-Twist-functor">
 <h3>Example 2: Twist functor<a class="headerlink" href="#Example-2:-Twist-functor" title="Permalink to this heading"></a></h3>
-<p>In this <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a>, <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> and <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">caps</span></a> are treated specially and are not passed to the <code class="docutils literal notranslate"><span class="pre">ar</span></code> function; instead they are passed to methods <code class="docutils literal notranslate"><span class="pre">Functor.cod.cups(left,</span> <span class="pre">right)</span></code> and <code class="docutils literal notranslate"><span class="pre">Functor.cod.caps(left,</span> <span class="pre">right)</span></code>, respectively. By default, the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Functor.html#discopy.grammar.pregroup.Functor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Functor</span></code></a> uses <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Category.html#discopy.grammar.pregroup.Category" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Category</span></code></a> as <code class="docutils literal notranslate"><span class="pre">cod</span></code> to implement the <a class="reference external" href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory pattern</a>, with methods such as <code class="docutils literal notranslate"><span class="pre">cups()</span></code>, <code class="docutils literal notranslate"><span class="pre">caps()</span></code>, <code class="docutils literal notranslate"><span class="pre">id()</span></code>, and <code class="docutils literal notranslate"><span class="pre">swap()</span></code>. For example, for a functor <code class="docutils literal notranslate"><span class="pre">F</span></code> that uses the default arrow factory <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diagram</span></code></a>, <code class="docutils literal notranslate"><span class="pre">F(Cup(a,</span> <span class="pre">a.r))</span> <span class="pre">==</span> <span class="pre">Diagram.cups(F(a),</span> <span class="pre">F(a.r))</span></code>.</p>
+<p>In this <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a>, <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> and <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">caps</span></a> are treated specially and are not passed to the <code class="docutils literal notranslate"><span class="pre">ar</span></code> function; instead they are passed to <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Diagram.register_special_box" title="lambeq.backend.grammar.Diagram.register_special_box"><code class="xref py py-meth docutils literal notranslate"><span class="pre">grammar.Diagram.register_special_box()</span></code></a> method.</p>
 <p>Here is an example of how to map a <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a> to a custom diagram, such as a “twisted” <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cup</span></a>. Note that it is up to the user to ensure the new <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> and <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">caps</span></a> satisfy the <a class="reference internal" href="../glossary.html#term-snake-equations"><span class="xref std std-term">snake equations</span></a>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">factory</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Swap</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Category</span><span class="p">,</span> <span class="n">Ty</span><span class="p">,</span> <span class="n">Layer</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Cup</span><span class="p">,</span> <span class="n">Cap</span><span class="p">,</span> <span class="n">Swap</span>
 
-<span class="nd">@factory</span>
-<span class="k">class</span> <span class="nc">TwistedDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span>
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">cups</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="n">swaps</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="o">.</span><span class="vm">__func__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
-        <span class="n">cups</span> <span class="o">=</span> <span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="o">.</span><span class="vm">__func__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">swaps</span> <span class="o">&gt;&gt;</span> <span class="n">cups</span>
 
-    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">caps</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span><span class="o">.</span><span class="n">dagger</span><span class="p">()</span>
+<span class="n">twisted</span> <span class="o">=</span> <span class="n">Category</span><span class="p">(</span><span class="s1">&#39;twisted&#39;</span><span class="p">)</span>
 
-<span class="k">class</span> <span class="nc">TwistedWord</span><span class="p">(</span><span class="n">Word</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
-<span class="k">class</span> <span class="nc">TwistedSwap</span><span class="p">(</span><span class="n">Swap</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
-<span class="k">class</span> <span class="nc">TwistedCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
-<span class="k">class</span> <span class="nc">TwistedCap</span><span class="p">(</span><span class="n">Cap</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">):</span> <span class="o">...</span>
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Diagram&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedDiagram</span><span class="p">(</span><span class="n">Diagram</span><span class="p">):</span> <span class="o">...</span>
 
-<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">braid_factory</span> <span class="o">=</span> <span class="n">TwistedSwap</span>
-<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">cup_factory</span> <span class="o">=</span> <span class="n">TwistedCup</span>
-<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">cap_factory</span> <span class="o">=</span> <span class="n">TwistedCap</span>
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Ty&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedTy</span><span class="p">(</span><span class="n">Ty</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Box&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedBox</span><span class="p">(</span><span class="n">Box</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@twisted</span><span class="p">(</span><span class="s1">&#39;Layer&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedLayer</span><span class="p">(</span><span class="n">Layer</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">TwistedCup</span><span class="p">(</span><span class="n">Cup</span><span class="p">,</span> <span class="n">TwistedBox</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="k">class</span> <span class="nc">TwistedCap</span><span class="p">(</span><span class="n">Cap</span><span class="p">,</span> <span class="n">TwistedBox</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@TwistedDiagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;swap&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TwistedSwap</span><span class="p">(</span><span class="n">Swap</span><span class="p">,</span> <span class="n">TwistedBox</span><span class="p">):</span> <span class="o">...</span>
+
+<span class="nd">@TwistedDiagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;cap&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">twisted_cap_factory</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">caps</span> <span class="o">=</span> <span class="n">TwistedCap</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="ow">not</span> <span class="n">is_reversed</span><span class="p">)</span>
+    <span class="n">swaps</span> <span class="o">=</span> <span class="n">TwistedSwap</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">caps</span> <span class="o">&gt;&gt;</span> <span class="n">swaps</span>
+
+<span class="nd">@TwistedDiagram</span><span class="o">.</span><span class="n">register_special_box</span><span class="p">(</span><span class="s1">&#39;cup&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">twisted_cup_factory</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">swaps</span> <span class="o">=</span> <span class="n">TwistedSwap</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">)</span>
+    <span class="n">cups</span> <span class="o">=</span> <span class="n">TwistedCup</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">is_reversed</span><span class="o">=</span><span class="ow">not</span> <span class="n">is_reversed</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">swaps</span> <span class="o">&gt;&gt;</span> <span class="n">cups</span>
+
 
 <span class="n">twist_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span>
-    <span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">ty</span><span class="p">:</span> <span class="n">ty</span><span class="p">,</span>
-    <span class="n">ar</span><span class="o">=</span><span class="k">lambda</span> <span class="n">word</span><span class="p">:</span> <span class="n">TwistedWord</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">),</span>
-    <span class="n">cod</span><span class="o">=</span><span class="n">Category</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">TwistedDiagram</span><span class="p">))</span>
+    <span class="n">ob</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">:</span> <span class="n">TwistedTy</span><span class="p">(</span><span class="n">ty</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+    <span class="n">ar</span><span class="o">=</span><span class="k">lambda</span> <span class="n">func</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">TwistedBox</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">),</span> <span class="n">func</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)),</span>
+    <span class="n">target_category</span><span class="o">=</span><span class="n">twisted</span><span class="p">)</span>
 
 <span class="n">diagram</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentence2diagram</span><span class="p">(</span><span class="s1">&#39;This is twisted&#39;</span><span class="p">)</span>
-<span class="n">new_diagram</span> <span class="o">=</span> <span class="n">twist_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">twisted_diagram</span> <span class="o">=</span> <span class="n">twist_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
 
-<span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
-<span class="n">pregroups</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">new_diagram</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">draw</span><span class="p">(</span><span class="n">twisted_diagram</span><span class="p">)</span>
 
-<span class="n">snake</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cap</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Cup</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">)</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-<span class="n">Equation</span><span class="p">(</span><span class="n">twist_functor</span><span class="p">(</span><span class="n">snake</span><span class="p">),</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">))</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">snake</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="o">@</span> <span class="n">Cap</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Cup</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="n">draw_equation</span><span class="p">(</span><span class="n">twist_functor</span><span class="p">(</span><span class="n">snake</span><span class="p">),</span> <span class="n">Id</span><span class="p">(</span><span class="n">n</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -679,26 +674,50 @@ Since the mapping is from a <a class="reference external" href="https://docs.dis
 <img alt="../_images/tutorials_discocat_16_2.png" src="../_images/tutorials_discocat_16_2.png" />
 </div>
 </div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">TwistedDiagram</span><span class="o">.</span><span class="n">caps</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">r</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_discocat_17_0.png" src="../_images/tutorials_discocat_17_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/tutorials_discocat_17_1.png" src="../_images/tutorials_discocat_17_1.png" />
+</div>
+</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Twisting the nested <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> for “is” and “twisted” together is <strong>not</strong> a functorial operation, so it cannot be implemented using a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.rigid.Functor.html#discopy.rigid.Functor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Functor</span></code></a>.</p>
+<p>Twisting the nested <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a> for “is” and “twisted” together is <strong>not</strong> a functorial operation, so it cannot be implemented using <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Functor" title="lambeq.backend.grammar.Functor"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.Functor</span></code></a>.</p>
 </div>
 </section>
 </section>
 <section id="Classical-DisCoCat:-Tensor-networks">
 <h2>Classical DisCoCat: Tensor networks<a class="headerlink" href="#Classical-DisCoCat:-Tensor-networks" title="Permalink to this heading"></a></h2>
 <p>The classical version of <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> sends diagrams in the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of pregroup derivations to tensors in the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of vector spaces <strong>FVect</strong>. <strong>FVect</strong> is a <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal category</span></a> with vector spaces (e.g. <span class="math notranslate nohighlight">\(\mathbb{R}^2 \otimes \mathbb{R}^2\)</span>) as objects and linear maps between vector spaces as morphisms. It is in fact a <a class="reference internal" href="../glossary.html#term-compact-closed-category"><span class="xref std std-term">compact closed category</span></a>, which is a special case of rigid categories where <span class="math notranslate nohighlight">\(A^l = A^r = A^*\)</span>.</p>
-<p>Using the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.html#module-discopy.tensor" title="(in DisCoPy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.tensor</span></code></a> module, you can define a free <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of vector spaces: objects are defined with the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Dim.html#discopy.tensor.Dim" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dim</span></code></a> class and morphisms with the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Box.html#discopy.tensor.Box" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Box</span></code></a> class. Composite morphisms are constructed by freely combining the generating morphisms using the <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operators. This is similar to how <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a>s and <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.monoidal.Diagram.html#discopy.monoidal.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">monoidal.Diagram</span></code></a>s are defined. The concrete value of the tensor is passed to the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute as an unshaped list; <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> will reshape it later based on the input and output dimensions.</p>
-<p>Apart of diagrams, the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.html#module-discopy.tensor" title="(in DisCoPy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.tensor</span></code></a> module has another class that can be tensored and composed: <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>. The key difference is that <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Box.html#discopy.tensor.Box" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Box</span></code></a>es in the diagrams compose together to make <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a>s, while <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>s compose together to make another <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>. In other words, <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a> computes tensor contractions directly, while <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> delays the computation until <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Diagram.html#discopy.tensor.Diagram.eval" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a> is called.</p>
+<p>Using the <a class="reference internal" href="../lambeq.backend.html#module-lambeq.backend.tensor" title="lambeq.backend.tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend.tensor</span></code></a> module, you can define a free <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of vector spaces: objects are defined with the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Dim" title="lambeq.backend.tensor.Dim"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.backend.tensor.Dim</span></code></a> class and morphisms with the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Box" title="lambeq.backend.tensor.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.backend.tensor.Box</span></code></a> class. Composite morphisms are constructed by freely combining the generating morphisms using the <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> operator. This is similar to how <a class="reference internal" href="../glossary.html#term-rigid-category"><span class="xref std std-term">rigid categories</span></a> and <a class="reference internal" href="../glossary.html#term-monoidal-category"><span class="xref std std-term">monoidal categories</span></a> are defined. The concrete value of the tensor is passed to the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute as an unshaped list; <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> will reshape it later based on the input and output dimensions.</p>
+<p>It is worth noting that <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Diagram" title="lambeq.backend.tensor.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.backend.tensor.Diagram</span></code></a> delays the computation of tensor contractions until <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Diagram.eval" title="lambeq.backend.tensor.Diagram.eval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">tensor.Diagram.eval()</span></code></a> is called.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">Tensor</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Box</span><span class="p">,</span> <span class="n">Diagram</span><span class="p">,</span> <span class="n">Dim</span><span class="p">,</span> <span class="n">Id</span>
 
 <span class="c1"># Dim(1) is the unit object, so disappears when tensored with another Dim</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Dim</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">@</span><span class="w"> </span><span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
-<br/></pre></div>
+</pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -710,14 +729,14 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">id_box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;Id Box&#39;</span><span class="p">,</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">id_tensor</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">id_tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 
 <span class="c1"># the actual values of id_box and id_tensor are equal</span>
-<span class="k">assert</span> <span class="p">(</span><span class="n">id_box</span><span class="o">.</span><span class="n">array</span> <span class="o">==</span> <span class="n">id_tensor</span><span class="o">.</span><span class="n">array</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="k">assert</span> <span class="p">(</span><span class="n">id_box</span><span class="o">.</span><span class="n">array</span> <span class="o">==</span> <span class="n">id_tensor</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">id_box</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">=}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -727,39 +746,8 @@ Dim(1) @ Dim(2) @ Dim(3)=Dim(2, 3)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-id_box.eval()=Tensor[int]([1, 0, 0, 1], dom=Dim(2), cod=Dim(2))
-</pre></div></div>
-</div>
-<div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
-</pre></div>
-</div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="n">f_box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="s1">&#39;f Box&#39;</span><span class="p">,</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">))</span>
-<span class="n">f_tensor</span> <span class="o">=</span> <span class="n">Tensor</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
-<span class="n">combined_diagram</span> <span class="o">=</span> <span class="n">id_box</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">f_box</span>
-<span class="n">combined_tensor</span> <span class="o">=</span> <span class="n">id_tensor</span> <span class="o">@</span> <span class="n">Tensor</span><span class="o">.</span><span class="n">id</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">&gt;&gt;</span> <span class="n">f_tensor</span>
-
-<span class="c1"># tensor diagram evaluates to the tensor</span>
-<span class="k">assert</span> <span class="n">combined_diagram</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span> <span class="o">==</span> <span class="n">combined_tensor</span>
-<span class="n">combined_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">combined_tensor</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_22_0.png" src="../_images/tutorials_discocat_22_0.png" />
-</div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-Tensor[int64]([0, 1, 2, 3, 4, 5, 6, 7], dom=Dim(2, 2), cod=Dim(2))
+id_box.eval()=array([[1., 0.],
+       [0., 1.]])
 </pre></div></div>
 </div>
 <p>In the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of vector spaces, <a class="reference internal" href="../glossary.html#term-cup"><span class="xref std std-term">cups</span></a>, <a class="reference internal" href="../glossary.html#term-cap"><span class="xref std std-term">caps</span></a> and <a class="reference internal" href="../glossary.html#term-swap"><span class="xref std std-term">swaps</span></a> take on concrete values as tensors.</p>
@@ -767,7 +755,7 @@ Tensor[int64]([0, 1, 2, 3, 4, 5, 6, 7], dom=Dim(2, 2), cod=Dim(2))
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tensor</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">array</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Diagram</span><span class="o">.</span><span class="n">cups</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -786,7 +774,7 @@ array([[1, 0, 0],
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Tensor</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">array</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Diagram</span><span class="o">.</span><span class="n">swap</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -810,29 +798,35 @@ array([[[[1, 0],
          [0, 1]]]])
 </pre></div></div>
 </div>
-<p>To implement a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Diagram</span></code></a> to <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Tensor</span></code></a>, use a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Functor.html#discopy.tensor.Functor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Functor</span></code></a> with <code class="docutils literal notranslate"><span class="pre">dom</span> <span class="pre">=</span> <span class="pre">pregroup.Category()</span></code>. This <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> will automatically contract the resulting <a class="reference internal" href="../glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a>.</p>
+<p>To implement a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.Diagram</span></code></a> to <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Diagram" title="lambeq.backend.tensor.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a>, use a <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.grammar.Functor" title="lambeq.backend.grammar.Functor"><code class="xref py py-class docutils literal notranslate"><span class="pre">grammar.Functor</span></code></a> with <code class="docutils literal notranslate"><span class="pre">target_category</span> <span class="pre">=</span> <span class="pre">lambeq.backend.tensor.tensor</span></code>, and with <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Dim" title="lambeq.backend.tensor.Dim"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Dim</span></code></a> and <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Diagram" title="lambeq.backend.tensor.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> as <code class="docutils literal notranslate"><span class="pre">cod</span></code>, respectively. In addition, <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.tensor.Diagram" title="lambeq.backend.tensor.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a>s can be instantiated with concrete values to be evaluated later using a custom tensor contractor. See the implementation of <a class="reference internal" href="../root-api.html#lambeq.TensorAnsatz" title="lambeq.ansatz.tensor.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> for an example.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Functor</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Functor</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend</span> <span class="kn">import</span> <span class="n">tensor</span>
 
-<span class="k">def</span> <span class="nf">one_ob</span><span class="p">(</span><span class="n">ty</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">one_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
     <span class="n">dims</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">Dim</span><span class="p">(</span><span class="o">*</span><span class="n">dims</span><span class="p">)</span> <span class="c1"># does Dim(2,2,..)</span>
 
-<span class="k">def</span> <span class="nf">one_ar</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
-    <span class="n">dom</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
-    <span class="n">cod</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
-    <span class="n">tensor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">dom</span> <span class="o">@</span> <span class="n">cod</span><span class="p">)</span><span class="o">.</span><span class="n">inside</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">one_ar</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
+    <span class="n">dom</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
+    <span class="n">cod</span> <span class="o">=</span> <span class="n">one_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
+    <span class="n">box</span> <span class="o">=</span> <span class="n">Box</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">dom</span> <span class="o">@</span> <span class="n">cod</span><span class="p">)</span><span class="o">.</span><span class="n">dim</span><span class="p">))</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">box</span><span class="si">}</span><span class="s1">&quot; becomes&#39;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">tensor</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">tensor</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">box</span>
 
 <span class="n">one_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span>
-    <span class="n">ob</span><span class="o">=</span><span class="n">one_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">one_ar</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="n">Category</span><span class="p">())</span>
-<span class="n">one_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+    <span class="n">target_category</span><span class="o">=</span><span class="n">tensor</span><span class="o">.</span><span class="n">tensor</span><span class="p">,</span>
+    <span class="n">ob</span><span class="o">=</span><span class="n">one_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">one_ar</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">one_diagram</span> <span class="o">=</span> <span class="n">one_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">one_diagram</span><span class="w"> </span><span class="si">= }</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">one_diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -859,41 +853,38 @@ array([[[[1, 0],
 &#34;twisted&#34; becomes
 [[1. 1.]
  [1. 1.]]
+one_diagram = Diagram(dom=Dim(1), cod=Dim(2), layers=[Layer(left=Dim(1), box=[This; Dim(1) -&gt; Dim(2)], right=Dim(1)), Layer(left=Dim(2), box=[is; Dim(1) -&gt; Dim(2, 2, 2, 2)], right=Dim(1)), Layer(left=Dim(2, 2, 2, 2, 2), box=[twisted; Dim(1) -&gt; Dim(2, 2)], right=Dim(1)), Layer(left=Dim(2, 2, 2, 2), box=[CUP; Dim(2, 2) -&gt; Dim(1)], right=Dim(2)), Layer(left=Dim(2, 2, 2), box=[CUP; Dim(2, 2) -&gt; Dim(1)], right=Dim(1)), Layer(left=Dim(1), box=[CUP; Dim(2, 2) -&gt; Dim(1)], right=Dim(2))])
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<div class="highlight"><pre>
-Tensor[int]([8, 8], dom=Dim(1), cod=Dim(2))
-</pre></div></div>
+<img alt="../_images/tutorials_discocat_27_1.png" src="../_images/tutorials_discocat_27_1.png" />
 </div>
-<p>Sometimes, defining a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Diagram.html#discopy.grammar.pregroup.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Diagram</span></code></a> to <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> offers more flexibility, since a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> can be instantiated with concrete values to be evaluated later using a custom tensor contractor. Such a functor can be defined using a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.Functor.html#discopy.grammar.pregroup.Functor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pregroup.Functor</span></code></a> with <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Dim.html#discopy.tensor.Dim" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Dim</span></code></a> and <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Diagram.html#discopy.tensor.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tensor.Diagram</span></code></a> as <code class="docutils literal notranslate"><span class="pre">cod</span></code>, respectively. See the implementation of <a class="reference internal" href="../lambeq.ansatz.html#lambeq.ansatz.TensorAnsatz" title="lambeq.ansatz.TensorAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">TensorAnsatz</span></code></a> for an example.</p>
+</div>
 </section>
 <section id="Quantum-DisCoCat:-Quantum-circuits">
 <h2>Quantum DisCoCat: Quantum circuits<a class="headerlink" href="#Quantum-DisCoCat:-Quantum-circuits" title="Permalink to this heading"></a></h2>
 <p>The quantum version of <a class="reference internal" href="../glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> sends diagrams in the <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of pregroup derivations to <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> in the category of Hilbert spaces <strong>FHilb</strong>. This is a <a class="reference internal" href="../glossary.html#term-compact-closed-category"><span class="xref std std-term">compact closed</span></a> monoidal category with Hilbert spaces (e.g. <span class="math notranslate nohighlight">\(\mathbb{C}^{2^n}\)</span>) as objects and unitary maps between Hilbert spaces as morphisms.</p>
-<p>The <a class="reference external" href="https://docs.discopy.org/en/main/api/quantum.html#module-discopy.quantum" title="(in DisCoPy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.quantum</span></code></a> module is a framework for the free <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a>: objects are generated using the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.circuit.Ob.html#discopy.quantum.circuit.Ob" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.circuit.Ob</span></code></a> class and morphisms by using <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.gates.html#module-discopy.quantum.gates" title="(in DisCoPy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">quantum.gates</span></code></a>. In <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, rotation values range from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span> rather than from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2\pi\)</span>. The circuit can then either be evaluated using tensor contraction with the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit.eval" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a> method, or exported to <a class="reference internal" href="../glossary.html#term-pytket"><span class="xref std std-term">pytket</span></a> using the <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit.to_tk" title="(in DisCoPy)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tk()</span></code></a> method, which supports multiple hardware backends.</p>
+<p>The <a class="reference internal" href="../lambeq.backend.html#module-lambeq.backend.quantum" title="lambeq.backend.quantum"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend.quantum</span></code></a> module is a framework for the free <a class="reference internal" href="../glossary.html#term-category"><span class="xref std std-term">category</span></a> of <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a>: objects are generated using the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.quantum.Ty" title="lambeq.backend.quantum.Ty"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.Ty</span></code></a> class and morphisms by using the available <a class="reference internal" href="../glossary.html#term-quantum-gate"><span class="xref std std-term">quantum gates</span></a> which are subclasses of <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.quantum.Box" title="lambeq.backend.quantum.Box"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.Box</span></code></a>. In <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, rotation values range from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(1\)</span> rather than from <span class="math notranslate nohighlight">\(0\)</span> to <span class="math notranslate nohighlight">\(2\pi\)</span>. The circuit can then either be evaluated using tensor contraction with the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.quantum.Diagram.eval" title="lambeq.backend.quantum.Diagram.eval"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eval()</span></code></a> method, or exported to <a class="reference internal" href="../glossary.html#term-pytket"><span class="xref std std-term">pytket</span></a> using the <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.quantum.Diagram.to_tk" title="lambeq.backend.quantum.Diagram.to_tk"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_tk()</span></code></a> method, which supports multiple hardware backends.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">Id</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">CX</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">CX</span><span class="p">,</span> <span class="n">Id</span><span class="p">,</span> <span class="n">qubit</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
+
 
 <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">X</span>
 <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">CX</span>
 <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span> <span class="o">@</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.2</span><span class="p">)</span> <span class="o">@</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span> <span class="o">@</span> <span class="n">Rz</span><span class="p">(</span><span class="mf">0.4</span><span class="p">)</span>
 
-<span class="c1"># from discopy 0.4.1, can do:</span>
 <span class="n">same_circuit</span> <span class="o">=</span> <span class="p">(</span><span class="n">Id</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">X</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">CX</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
                 <span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="k">assert</span> <span class="n">circuit</span> <span class="o">==</span> <span class="n">same_circuit</span>
 
-<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">circuit</span><span class="o">.</span><span class="n">to_tk</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -902,7 +893,7 @@ Tensor[int]([8, 8], dom=Dim(1), cod=Dim(2))
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_31_0.png" src="../_images/tutorials_discocat_31_0.png" />
+<img alt="../_images/tutorials_discocat_30_0.png" src="../_images/tutorials_discocat_30_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -919,8 +910,7 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Circuit</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.gates</span> <span class="kn">import</span> <span class="n">SWAP</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">Diagram</span> <span class="k">as</span> <span class="n">Circuit</span><span class="p">,</span> <span class="n">SWAP</span>
 
 <span class="c1"># to apply a CNOT on qubits 2 and 0:</span>
 <span class="n">circuit1</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -931,11 +921,11 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <span class="n">circuit1</span> <span class="o">&gt;&gt;=</span> <span class="n">SWAP</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="c1"># or you can do</span>
-<span class="n">perm</span> <span class="o">=</span> <span class="n">Circuit</span><span class="o">.</span><span class="n">permutation</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">perm</span> <span class="o">=</span> <span class="n">Circuit</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">circuit1</span><span class="o">.</span><span class="n">dom</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="n">circuit2</span> <span class="o">=</span> <span class="n">perm</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">Id</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">&gt;&gt;</span> <span class="n">perm</span>
 
 <span class="k">assert</span> <span class="n">circuit1</span> <span class="o">==</span> <span class="n">circuit2</span>
-<span class="n">circuit1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">circuit1</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="c1"># no swaps introduced when converting to tket</span>
 <span class="n">circuit1</span><span class="o">.</span><span class="n">to_tk</span><span class="p">()</span>
@@ -946,7 +936,7 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_33_0.png" src="../_images/tutorials_discocat_33_0.png" />
+<img alt="../_images/tutorials_discocat_32_0.png" src="../_images/tutorials_discocat_32_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -958,14 +948,15 @@ tk.Circuit(4).CX(1, 2).X(3).CX(0, 1).CX(2, 3).Rz(0.2, 0).Rz(0.4, 1).Rz(0.6, 2).R
 tk.Circuit(3).CX(2, 0)
 </pre></div></div>
 </div>
-<p>Since discopy 0.4.0, we have long-ranged controlled gates.</p>
+<p>We also have long-ranged controlled gates.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Controlled</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
-<span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">distance</span><span class="o">=-</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-<span class="n">Controlled</span><span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">Controlled</span><span class="p">,</span> <span class="n">Rz</span><span class="p">,</span> <span class="n">X</span>
+
+<span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">Rz</span><span class="p">(</span><span class="mf">0.5</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">distance</span><span class="o">=-</span><span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">Controlled</span><span class="p">(</span><span class="n">Controlled</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">distance</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -973,32 +964,29 @@ tk.Circuit(3).CX(2, 0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_35_0.png" src="../_images/tutorials_discocat_35_0.png" />
+<img alt="../_images/tutorials_discocat_34_0.png" src="../_images/tutorials_discocat_34_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_35_1.png" src="../_images/tutorials_discocat_35_1.png" />
+<img alt="../_images/tutorials_discocat_34_1.png" src="../_images/tutorials_discocat_34_1.png" />
 </div>
 </div>
-<p>So far, our <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> have been “pure” circuits, consisting of unitaries. Pure circuits can be evaluated locally to return a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>. Circuits containing <code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code>s and <code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code>s are considered “mixed”, and return <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.channel.html#module-discopy.quantum.channel" title="(in DisCoPy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">Channel</span></code></a>s instead of <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>s when evaluated, as they are not unitaries but rather classical-quantum maps (for more details, see Chapter 5 in <a class="reference internal" href="../bibliography.html#hv2013" id="id5"><span>[HV2013]</span></a>).</p>
+<p>So far, our <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> have been “pure” circuits, consisting of unitaries. Pure circuits can be evaluated locally to return a unitary <code class="docutils literal notranslate"><span class="pre">numpy</span></code> array. Circuits containing <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.quantum.Discard" title="lambeq.backend.quantum.Discard"><code class="xref py py-class docutils literal notranslate"><span class="pre">Discard</span></code></a>s and <a class="reference internal" href="../lambeq.backend.html#lambeq.backend.quantum.Measure" title="lambeq.backend.quantum.Measure"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measure</span></code></a>s are considered “mixed”, and return non-unitary <code class="docutils literal notranslate"><span class="pre">numpy</span></code> arrays when evaluated, as they are classical-quantum maps (for more details, see Chapter 5 in <a class="reference internal" href="../bibliography.html#hv2013" id="id5"><span>[HV2013]</span></a>).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum</span> <span class="kn">import</span> <span class="n">Discard</span><span class="p">,</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Bra</span>
-<span class="kn">from</span> <span class="nn">discopy.quantum.channel</span> <span class="kn">import</span> <span class="n">C</span><span class="p">,</span> <span class="n">Q</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">Discard</span><span class="p">,</span> <span class="n">Measure</span><span class="p">,</span> <span class="n">Ket</span><span class="p">,</span> <span class="n">Bra</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="o">@</span> <span class="n">Q</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">@</span> <span class="n">C</span><span class="p">(</span><span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)))</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">Discard</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Measure</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Discard</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Measure</span><span class="p">()</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 <span class="c1"># circuits that have measurements in them are no longer unitary</span>
-<span class="c1"># and return CQMaps</span>
-<span class="nb">print</span><span class="p">((</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="n">Measure</span><span class="p">())</span><span class="o">.</span><span class="n">eval</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="p">(</span><span class="n">Ket</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">Measure</span><span class="p">())</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1007,14 +995,22 @@ tk.Circuit(3).CX(2, 0)
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-C(Dim(2, 2)) @ Q(Dim(2, 3))
-Channel([1.+0.j, 0.+0.j, 0.+0.j, 1.+0.j], dom=Q(Dim(2)), cod=CQ())
-Channel([1.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 0.+0.j, 1.+0.j], dom=Q(Dim(2)), cod=Q(Dim(2)))
-Tensor[complex]([1.+0.j, 0.+0.j], dom=Dim(1), cod=Dim(2))
-Channel([1.+0.j, 0.+0.j], dom=CQ(), cod=Q(Dim(2)))
+[[1.+0.j 0.+0.j]
+ [0.+0.j 1.+0.j]]
+
+[[[1.+0.j 0.+0.j]
+  [0.+0.j 0.+0.j]]
+
+ [[0.+0.j 0.+0.j]
+  [0.+0.j 1.+0.j]]]
+
+[1. 0.]
+
+[1.+0.j 0.+0.j]
+
 </pre></div></div>
 </div>
-<p>Pure <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> can be coerced to evaluate into a <code class="xref py py-mod docutils literal notranslate"><span class="pre">CQMap</span></code> by setting <code class="docutils literal notranslate"><span class="pre">mixed=True</span></code>.</p>
+<p>Pure <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">circuits</span></a> can be coerced to evaluate into a classical-quantum map representation by setting <code class="docutils literal notranslate"><span class="pre">mixed=True</span></code>.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -1029,16 +1025,263 @@ Channel([1.+0.j, 0.+0.j], dom=CQ(), cod=Q(Dim(2)))
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-Channel([1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j], dom=Q(Dim(2, 2)), cod=Q(Dim(2, 2)))
+array([[[[[[[[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]]],
+
+
+
+
+
+        [[[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]]]],
+
+
+
+
+
+
+       [[[[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]]]]]],
+
+
+
+
+
+        [[[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[1.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 1.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]],
+
+
+
+
+         [[[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [0.+0.j, 1.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]],
+
+
+
+          [[[[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]],
+
+
+           [[[0.+0.j, 0.+0.j],
+             [1.+0.j, 0.+0.j]],
+
+            [[0.+0.j, 0.+0.j],
+             [0.+0.j, 0.+0.j]]]]]]]])
 </pre></div></div>
 </div>
-<p>Note that the tensor order of <code class="xref py py-mod docutils literal notranslate"><span class="pre">CQMap</span></code>s is doubled, compared to that of simple <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.tensor.Tensor.html#discopy.tensor.Tensor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></a>s:</p>
+<p>Note that the tensor order of classical-quantum maps is doubled, compared to that of pure quantum circuits:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">mixed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CX</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">mixed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1051,37 +1294,39 @@ Channel([1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j], dom=Q(Dim(2, 2)),
 (2, 2, 2, 2, 2, 2, 2, 2)
 </pre></div></div>
 </div>
-<p>To implement a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.rigid.Diagram.html#discopy.rigid.Diagram" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">rigid.Diagram</span></code></a> to <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.circuit.Circuit.html#discopy.quantum.circuit.Circuit" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.Circuit</span></code></a>, use a <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.quantum.circuit.Functor.html#discopy.quantum.circuit.Functor" title="(in DisCoPy)"><code class="xref py py-class docutils literal notranslate"><span class="pre">quantum.circuit.Functor</span></code></a>.</p>
+<p>We can implement a <a class="reference internal" href="../glossary.html#term-functor"><span class="xref std std-term">functor</span></a> from <a class="reference internal" href="../glossary.html#term-string-diagram"><span class="xref std std-term">string diagrams</span></a> to <a class="reference internal" href="../glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuits</span></a> like so.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">discopy.quantum.circuit</span> <span class="kn">import</span> <span class="n">Functor</span><span class="p">,</span> <span class="n">Id</span>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Functor</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">quantum</span><span class="p">,</span> <span class="n">Id</span>
 
-<span class="k">def</span> <span class="nf">cnot_ob</span><span class="p">(</span><span class="n">ty</span><span class="p">):</span>
+
+<span class="k">def</span> <span class="nf">cnot_ob</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
     <span class="c1"># this implicitly maps all rigid types to 1 qubit</span>
     <span class="k">return</span> <span class="n">qubit</span> <span class="o">**</span> <span class="nb">len</span><span class="p">(</span><span class="n">ty</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">cnot_ar</span><span class="p">(</span><span class="n">box</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">cnot_ar</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">box</span><span class="p">):</span>
     <span class="n">dom</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span>
     <span class="n">cod</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span>
     <span class="n">width</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">dom</span><span class="p">,</span> <span class="n">cod</span><span class="p">)</span>
     <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">width</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
-        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">@</span> <span class="n">CX</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span> <span class="o">@</span> <span class="n">Id</span><span class="p">(</span><span class="n">width</span> <span class="o">-</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
 
     <span class="c1"># Add Bras (post-selection) and Kets (states)</span>
     <span class="c1"># to get a circuit with the right amount of</span>
     <span class="c1"># input and output wires</span>
     <span class="k">if</span> <span class="n">cod</span> <span class="o">&lt;=</span> <span class="n">dom</span><span class="p">:</span>
-        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="n">Bra</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="n">cod</span><span class="p">))</span>
+        <span class="n">circuit</span> <span class="o">&gt;&gt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">cod</span><span class="p">)</span> <span class="o">@</span> <span class="n">Bra</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">dom</span> <span class="o">-</span> <span class="n">cod</span><span class="p">))</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">circuit</span> <span class="o">&lt;&lt;=</span> <span class="n">Id</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">@</span> <span class="n">Ket</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cod</span> <span class="o">-</span> <span class="n">dom</span><span class="p">))</span>
+        <span class="n">circuit</span> <span class="o">=</span> <span class="n">Id</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span> <span class="o">@</span> <span class="n">Ket</span><span class="p">(</span><span class="o">*</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">cod</span> <span class="o">-</span> <span class="n">dom</span><span class="p">))</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">()</span> <span class="o">&gt;&gt;</span> <span class="n">circuit</span>
     <span class="k">return</span> <span class="n">circuit</span>
 
-<span class="n">cnot_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">ob</span><span class="o">=</span><span class="n">cnot_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">cnot_ar</span><span class="p">,</span> <span class="n">dom</span><span class="o">=</span><span class="n">Category</span><span class="p">())</span>
-<span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
-<span class="n">cnot_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">cnot_functor</span> <span class="o">=</span> <span class="n">Functor</span><span class="p">(</span><span class="n">target_category</span><span class="o">=</span><span class="n">quantum</span><span class="p">,</span> <span class="n">ob</span><span class="o">=</span><span class="n">cnot_ob</span><span class="p">,</span> <span class="n">ar</span><span class="o">=</span><span class="n">cnot_ar</span><span class="p">)</span>
+<span class="n">diagram</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">cnot_functor</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span> <span class="n">draw_type_labels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1089,14 +1334,14 @@ Channel([1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j], dom=Q(Dim(2, 2)),
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_43_0.png" src="../_images/tutorials_discocat_43_0.png" />
+<img alt="../_images/tutorials_discocat_42_0.png" src="../_images/tutorials_discocat_42_0.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/tutorials_discocat_43_1.png" src="../_images/tutorials_discocat_43_1.png" />
+<img alt="../_images/tutorials_discocat_42_1.png" src="../_images/tutorials_discocat_42_1.png" />
 </div>
 </div>
 </section>
@@ -1106,14 +1351,14 @@ Channel([1.+0.j, 0.+0.j, 0.+0.j, ..., 0.+0.j, 0.+0.j, 0.+0.j], dom=Q(Dim(2, 2)),
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="monoidal.html" class="btn btn-neutral float-left" title="Monoidal categories in DisCoPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="monoidal.html" class="btn btn-neutral float-left" title="Monoidal categories in lambeq" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="extend-lambeq.html" class="btn btn-neutral float-right" title="Advanced: Extending lambeq" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

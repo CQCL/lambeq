@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Subpackages &mdash; lambeq 0.3.3 documentation</title>
+  <title>Subpackages &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,8 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -86,8 +85,8 @@
 <li class="toctree-l1"><a class="reference internal" href="root-api.html">lambeq package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Subpackages</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-ansatz">lambeq.ansatz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq-backend">lambeq.backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-bobcat">lambeq.bobcat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#lambeq-pregroups">lambeq.pregroups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-rewrite">lambeq.rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-text2diagram">lambeq.text2diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-tokeniser">lambeq.tokeniser</a></li>
@@ -102,7 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -183,43 +182,92 @@
 <div class="line"><br /></div>
 </div>
 </section>
+<section id="lambeq-backend">
+<span id="api-backend"></span><h2>lambeq.backend<a class="headerlink" href="#lambeq-backend" title="Permalink to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s internal representation of categories. This work is based on <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> (<a class="reference external" href="https://discopy.org/">https://discopy.org/</a>) which is released under the BSD 3-Clause “New” or “Revised” License.</p>
+<p class="rubric">API: <a class="reference internal" href="lambeq.backend.html"><span class="doc">lambeq.backend</span></a></p>
+<p class="rubric">UML diagrams: <a class="reference internal" href="uml-diagrams.html#uml-backend"><span class="std std-ref">lambeq.backend</span></a></p>
+<p class="rubric">Classes:</p>
+<div class="graphviz"><img src="_images/inheritance-794ee73da951aa37c9c0fcfbe2a243bf74252277.png" alt="Inheritance diagram of lambeq.backend.grammar.Entity, lambeq.backend.grammar.Category, lambeq.backend.grammar.Ty, lambeq.backend.quantum.Ty, lambeq.backend.grammar.Diagrammable, lambeq.backend.grammar.Box, lambeq.backend.quantum.Box, lambeq.backend.grammar.Layer, lambeq.backend.quantum.Layer, lambeq.backend.grammar.Diagram, lambeq.backend.quantum.Diagram, lambeq.backend.grammar.Cup, lambeq.backend.grammar.Cap, lambeq.backend.grammar.Daggered, lambeq.backend.quantum.Daggered, lambeq.backend.grammar.Spider, lambeq.backend.grammar.Swap, lambeq.backend.quantum.Swap, lambeq.backend.grammar.Word, lambeq.backend.grammar.Functor" usemap="#inheritancecf22319b8d" class="inheritance graphviz" /></div>
+<map id="inheritancecf22319b8d" name="inheritancecf22319b8d">
+<area shape="rect" id="node1" href="lambeq.backend.html#lambeq.backend.grammar.Box" target="_top" title="A box in the grammar category." alt="" coords="142,185,216,202"/>
+<area shape="rect" id="node3" href="lambeq.backend.html#lambeq.backend.grammar.Cap" target="_top" title="The unit of the adjunction for an atomic type." alt="" coords="282,168,356,185"/>
+<area shape="rect" id="node5" href="lambeq.backend.html#lambeq.backend.grammar.Cup" target="_top" title="The counit of the adjunction for an atomic type." alt="" coords="282,201,356,218"/>
+<area shape="rect" id="node6" href="lambeq.backend.html#lambeq.backend.grammar.Daggered" target="_top" title="A daggered box." alt="" coords="269,234,368,251"/>
+<area shape="rect" id="node12" href="lambeq.backend.html#lambeq.backend.grammar.Spider" target="_top" title="A spider in the grammar category." alt="" coords="276,267,361,284"/>
+<area shape="rect" id="node13" href="lambeq.backend.html#lambeq.backend.grammar.Swap" target="_top" title="A swap in the grammar category." alt="" coords="279,69,359,86"/>
+<area shape="rect" id="node15" href="lambeq.backend.html#lambeq.backend.grammar.Word" target="_top" title="A word in the grammar category." alt="" coords="279,102,358,119"/>
+<area shape="rect" id="node17" href="lambeq.backend.html#lambeq.backend.tensor.Box" target="_top" title="Box (tensor) in the the tensor category." alt="" coords="288,135,349,152"/>
+<area shape="rect" id="node2" href="lambeq.backend.html#lambeq.backend.grammar.Entity" target="_top" title="Entity()" alt="" coords="11,316,92,332"/>
+<area shape="rect" id="node7" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" target="_top" title="A diagram in the grammar category." alt="" coords="132,300,226,316"/>
+<area shape="rect" id="node11" href="lambeq.backend.html#lambeq.backend.grammar.Layer" target="_top" title="A layer in a diagram." alt="" coords="138,332,219,349"/>
+<area shape="rect" id="node14" href="lambeq.backend.html#lambeq.backend.grammar.Ty" target="_top" title="A type in the grammar category." alt="" coords="146,365,212,382"/>
+<area shape="rect" id="node4" href="lambeq.backend.html#lambeq.backend.grammar.Category" target="_top" title="The base class for all categories." alt="" coords="4,176,100,193"/>
+<area shape="rect" id="node19" href="lambeq.backend.html#lambeq.backend.tensor.Daggered" target="_top" title="A daggered box." alt="" coords="415,171,501,188"/>
+<area shape="rect" id="node21" href="lambeq.backend.html#lambeq.backend.tensor.Diagram" target="_top" title="Diagram in the tensor category." alt="" coords="278,300,360,316"/>
+<area shape="rect" id="node8" href="lambeq.backend.html#lambeq.backend.grammar.Diagrammable" target="_top" title="An abstract base class describing the behavior of a diagram." alt="" coords="258,36,380,53"/>
+<area shape="rect" id="node10" href="lambeq.backend.html#lambeq.backend.grammar.Functor" target="_top" title="A functor that maps between categories." alt="" coords="7,4,96,20"/>
+<area shape="rect" id="node23" href="lambeq.backend.html#lambeq.backend.tensor.Layer" target="_top" title="Layer in the tensor category." alt="" coords="284,332,353,349"/>
+<area shape="rect" id="node26" href="lambeq.backend.html#lambeq.backend.tensor.Swap" target="_top" title="A Swap in the tensor category." alt="" coords="424,69,492,86"/>
+<area shape="rect" id="node28" href="lambeq.backend.html#lambeq.backend.tensor.Dim" target="_top" title="Dimension in the tensor category." alt="" coords="288,365,350,382"/>
+<area shape="rect" id="node16" href="lambeq.backend.html#lambeq.backend.quantum.Box" target="_top" title="A box in the quantum category." alt="" coords="422,136,495,153"/>
+<area shape="rect" id="node18" href="lambeq.backend.html#lambeq.backend.quantum.Daggered" target="_top" title="A daggered gate reverses the box&#39;s effect on a quantum state." alt="" coords="546,171,644,188"/>
+<area shape="rect" id="node24" href="lambeq.backend.html#lambeq.backend.quantum.SelfConjugate" target="_top" title="A self&#45;conjugate box is equal to its own conjugate." alt="" coords="537,103,653,120"/>
+<area shape="rect" id="node25" href="lambeq.backend.html#lambeq.backend.quantum.Swap" target="_top" title="A swap box in the quantum category." alt="" coords="685,103,764,120"/>
+<area shape="rect" id="node20" href="lambeq.backend.html#lambeq.backend.quantum.Diagram" target="_top" title="A diagram in the quantum category." alt="" coords="412,300,505,316"/>
+<area shape="rect" id="node22" href="lambeq.backend.html#lambeq.backend.quantum.Layer" target="_top" title="A Layer in a quantum Diagram." alt="" coords="418,332,498,349"/>
+<area shape="rect" id="node27" href="lambeq.backend.html#lambeq.backend.quantum.Ty" target="_top" title="A type in the quantum category." alt="" coords="425,365,491,382"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="graphviz"><img src="_images/inheritance-92dc943fb1edb6ead8d6c16bdf92728b17374fba.png" alt="Inheritance diagram of lambeq.backend.quantum.Box, lambeq.backend.quantum.SelfConjugate, lambeq.backend.quantum.AntiConjugate, lambeq.backend.quantum.Swap, lambeq.backend.quantum.Ket, lambeq.backend.quantum.Bra, lambeq.backend.quantum.Parametrized, lambeq.backend.quantum.Rotation, lambeq.backend.quantum.Rx, lambeq.backend.quantum.Ry, lambeq.backend.quantum.Rz, lambeq.backend.quantum.Controlled, lambeq.backend.quantum.MixedState, lambeq.backend.quantum.Discard, lambeq.backend.quantum.Measure, lambeq.backend.quantum.Encode, lambeq.backend.quantum.Scalar, lambeq.backend.quantum.Sqrt, lambeq.backend.quantum.Daggered, lambeq.backend.quantum.Bit" usemap="#inheritance84ab2c9592" class="inheritance graphviz" /></div>
+<map id="inheritance84ab2c9592" name="inheritance84ab2c9592">
+<area shape="rect" id="node1" href="lambeq.backend.html#lambeq.backend.grammar.Box" target="_top" title="A box in the grammar category." alt="" coords="4,145,82,162"/>
+<area shape="rect" id="node2" href="lambeq.backend.html#lambeq.backend.grammar.Daggered" target="_top" title="A daggered box." alt="" coords="115,110,220,128"/>
+<area shape="rect" id="node3" href="lambeq.backend.html#lambeq.backend.grammar.Swap" target="_top" title="A swap in the grammar category." alt="" coords="125,179,210,197"/>
+<area shape="rect" id="node7" href="lambeq.backend.html#lambeq.backend.tensor.Box" target="_top" title="Box (tensor) in the the tensor category." alt="" coords="136,145,200,162"/>
+<area shape="rect" id="node13" href="lambeq.backend.html#lambeq.backend.tensor.Daggered" target="_top" title="A daggered box." alt="" coords="253,110,345,128"/>
+<area shape="rect" id="node26" href="lambeq.backend.html#lambeq.backend.tensor.Swap" target="_top" title="A Swap in the tensor category." alt="" coords="263,179,335,197"/>
+<area shape="rect" id="node4" href="lambeq.backend.html#lambeq.backend.quantum.AntiConjugate" target="_top" title="An anti&#45;conjugate box is equal to the conjugate of its conjugate." alt="" coords="535,74,659,92"/>
+<area shape="rect" id="node20" href="lambeq.backend.html#lambeq.backend.quantum.Rx" target="_top" title="Single qubit gate defining a rotation aound the x&#45;axis." alt="" coords="693,109,764,127"/>
+<area shape="rect" id="node22" href="lambeq.backend.html#lambeq.backend.quantum.Rz" target="_top" title="Single qubit gate defining a rotation aound the z&#45;axis." alt="" coords="693,74,764,92"/>
+<area shape="rect" id="node5" href="lambeq.backend.html#lambeq.backend.quantum.Box" target="_top" title="A box in the quantum category." alt="" coords="261,145,338,162"/>
+<area shape="rect" id="node6" href="lambeq.backend.html#lambeq.backend.quantum.Bit" target="_top" title="Classical state for a given bit." alt="" coords="404,110,476,128"/>
+<area shape="rect" id="node8" href="lambeq.backend.html#lambeq.backend.quantum.Bra" target="_top" title="A bra in the quantum category." alt="" coords="560,213,635,231"/>
+<area shape="rect" id="node9" href="lambeq.backend.html#lambeq.backend.quantum.SelfConjugate" target="_top" title="A self&#45;conjugate box is equal to its own conjugate." alt="" coords="378,284,501,302"/>
+<area shape="rect" id="node11" href="lambeq.backend.html#lambeq.backend.quantum.Parametrized" target="_top" title="A parametrized box in the quantum category." alt="" coords="380,145,500,162"/>
+<area shape="rect" id="node12" href="lambeq.backend.html#lambeq.backend.quantum.Daggered" target="_top" title="A daggered gate reverses the box&#39;s effect on a quantum state." alt="" coords="388,4,492,22"/>
+<area shape="rect" id="node16" href="lambeq.backend.html#lambeq.backend.quantum.Ket" target="_top" title="A ket in the quantum category." alt="" coords="560,178,634,196"/>
+<area shape="rect" id="node23" href="lambeq.backend.html#lambeq.backend.quantum.Scalar" target="_top" title="A scalar amplifies a quantum state by a given factor." alt="" coords="396,38,484,56"/>
+<area shape="rect" id="node25" href="lambeq.backend.html#lambeq.backend.quantum.Swap" target="_top" title="A swap box in the quantum category." alt="" coords="555,423,639,441"/>
+<area shape="rect" id="node14" href="lambeq.backend.html#lambeq.backend.quantum.Discard" target="_top" title="Discard a qubit. This is a measurement without post&#45;selection." alt="" coords="550,284,644,302"/>
+<area shape="rect" id="node15" href="lambeq.backend.html#lambeq.backend.quantum.Encode" target="_top" title="Encode a classical information bit into a qubit." alt="" coords="551,319,643,337"/>
+<area shape="rect" id="node17" href="lambeq.backend.html#lambeq.backend.quantum.Measure" target="_top" title="Measure a qubit and return a classical information bit." alt="" coords="548,354,646,372"/>
+<area shape="rect" id="node18" href="lambeq.backend.html#lambeq.backend.quantum.MixedState" target="_top" title="A mixed state is a state with a density matrix proportional to the" alt="" coords="542,389,653,407"/>
+<area shape="rect" id="node21" href="lambeq.backend.html#lambeq.backend.quantum.Ry" target="_top" title="Single qubit gate defining a rotation aound the y&#45;axis." alt="" coords="693,196,764,214"/>
+<area shape="rect" id="node10" href="lambeq.backend.html#lambeq.backend.quantum.Controlled" target="_top" title="A gate that applies a unitary controlled by a qubit&#39;s state." alt="" coords="544,144,650,161"/>
+<area shape="rect" id="node19" href="lambeq.backend.html#lambeq.backend.quantum.Rotation" target="_top" title="Single qubit gate defining a rotation around the bloch sphere." alt="" coords="548,109,646,127"/>
+<area shape="rect" id="node24" href="lambeq.backend.html#lambeq.backend.quantum.Sqrt" target="_top" title="A Square root." alt="" coords="558,38,636,56"/>
+</map><div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
 <section id="lambeq-bobcat">
 <span id="api-bobcat"></span><h2>lambeq.bobcat<a class="headerlink" href="#lambeq-bobcat" title="Permalink to this heading"></a></h2>
 <p>The code for <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser, a state-of-the-art <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> parser used for getting syntactic derivations of sentences.</p>
 <p class="rubric">API: <a class="reference internal" href="lambeq.bobcat.html"><span class="doc">lambeq.bobcat</span></a></p>
 <p class="rubric">UML diagrams: <a class="reference internal" href="uml-diagrams.html#uml-bobcat"><span class="std std-ref">lambeq.bobcat</span></a></p>
 <p class="rubric">Classes:</p>
-<div class="graphviz"><img src="_images/inheritance-adbc7c2caa3c28f9aa301cf38590aca2a8212fae.png" alt="Inheritance diagram of lambeq.bobcat.grammar.Grammar, lambeq.bobcat.lexicon.Category, lambeq.bobcat.parser.ChartParser, lambeq.bobcat.parser.Sentence, lambeq.bobcat.parser.Supertag, lambeq.bobcat.rules.Rule, lambeq.bobcat.tagger.Tagger, lambeq.bobcat.tagger.BertForChartClassification, lambeq.bobcat.tree.ParseTree" usemap="#inheritance9fcfd7b275" class="inheritance graphviz" /></div>
+<div class="graphviz"><img src="_images/inheritance-b9f7b35603c2a1d1f190423d49ec85a50fc6caee.png" alt="Inheritance diagram of lambeq.bobcat.grammar.Grammar, lambeq.bobcat.lexicon.Category, lambeq.bobcat.parser.ChartParser, lambeq.bobcat.parser.Sentence, lambeq.bobcat.parser.Supertag, lambeq.bobcat.rules.Rule, lambeq.bobcat.tagger.Tagger, lambeq.bobcat.tagger.BertForChartClassification, lambeq.bobcat.tree.ParseTree" usemap="#inheritance9fcfd7b275" class="inheritance graphviz" /></div>
 <map id="inheritance9fcfd7b275" name="inheritance9fcfd7b275">
-<area shape="rect" id="node1" href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification" target="_top" title="BertForChartClassification" alt="" coords="572,474,763,499"/>
+<area shape="rect" id="node1" href="lambeq.bobcat.html#lambeq.bobcat.BertForChartClassification" target="_top" title="BertForChartClassification" alt="" coords="572,498,763,523"/>
 <area shape="rect" id="node4" href="lambeq.bobcat.html#lambeq.bobcat.Category" target="_top" title="The type of a constituent in a CCG." alt="" coords="33,350,114,375"/>
 <area shape="rect" id="node5" href="lambeq.bobcat.html#lambeq.bobcat.ChartParser" target="_top" title="ChartParser" alt="" coords="25,301,122,326"/>
 <area shape="rect" id="node8" href="lambeq.bobcat.html#lambeq.bobcat.Grammar" target="_top" title="The grammar dataclass." alt="" coords="31,202,115,228"/>
 <area shape="rect" id="node11" href="lambeq.bobcat.html#lambeq.bobcat.ParseTree" target="_top" title="ParseTree(rule: &#39;Rule&#39;, cat: &#39;Category&#39;, left: &#39;ParseTree&#39;, right: &#39;ParseTree&#39;, unfilled_deps: &#39;list[Dependency]&#39;, filled_deps: &#39;list[Dependency]&#39;, var_map: &#39;dict[int, Variable]&#39;, score: &#39;float&#39; = 0)" alt="" coords="31,153,115,178"/>
-<area shape="rect" id="node14" href="lambeq.bobcat.html#lambeq.bobcat.Sentence" target="_top" title="An input sentence." alt="" coords="32,104,114,129"/>
-<area shape="rect" id="node15" href="lambeq.bobcat.html#lambeq.bobcat.Supertag" target="_top" title="A string category, annotated with its log probability." alt="" coords="33,55,113,80"/>
-<area shape="rect" id="node16" href="lambeq.bobcat.html#lambeq.bobcat.Tagger" target="_top" title="Tagger" alt="" coords="37,5,109,31"/>
-</map><div class="line-block">
-<div class="line"><br /></div>
-</div>
-</section>
-<section id="lambeq-pregroups">
-<span id="api-pregroups"></span><h2>lambeq.pregroups<a class="headerlink" href="#lambeq-pregroups" title="Permalink to this heading"></a></h2>
-<p>A collection of useful utilities for easier manipulation of <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> diagrams.</p>
-<p class="rubric">API: <a class="reference internal" href="lambeq.pregroups.html"><span class="doc">lambeq.pregroups</span></a></p>
-<p class="rubric">UML diagrams: <a class="reference internal" href="uml-diagrams.html#uml-pregroups"><span class="std std-ref">lambeq.pregroups</span></a></p>
-<p class="rubric">Methods</p>
-<ul class="simple">
-<li><p><a class="reference internal" href="lambeq.pregroups.html#lambeq.pregroups.create_pregroup_diagram" title="lambeq.pregroups.create_pregroup_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">create_pregroup_diagram()</span></code></a></p></li>
-<li><p><a class="reference internal" href="lambeq.pregroups.html#lambeq.pregroups.diagram2str" title="lambeq.pregroups.diagram2str"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diagram2str()</span></code></a></p></li>
-<li><p><a class="reference internal" href="lambeq.pregroups.html#lambeq.pregroups.is_pregroup_diagram" title="lambeq.pregroups.is_pregroup_diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">is_pregroup_diagram()</span></code></a></p></li>
-<li><p><a class="reference internal" href="lambeq.pregroups.html#lambeq.pregroups.remove_cups" title="lambeq.pregroups.remove_cups"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_cups()</span></code></a></p></li>
-<li><p><a class="reference internal" href="lambeq.pregroups.html#lambeq.pregroups.remove_swaps" title="lambeq.pregroups.remove_swaps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_swaps()</span></code></a></p></li>
-</ul>
-<p class="rubric">Classes</p>
-<div class="graphviz"><img src="_images/inheritance-08acc5ce09d2c916d67cd46d936a3825a73de1bd.png" alt="Inheritance diagram of lambeq.pregroups.TextDiagramPrinter" usemap="#inheritanceadfeb831d6" class="inheritance graphviz" /></div>
-<map id="inheritanceadfeb831d6" name="inheritanceadfeb831d6">
-<area shape="rect" id="node1" href="lambeq.pregroups.html#lambeq.pregroups.TextDiagramPrinter" target="_top" title="A text printer for pregroup diagrams." alt="" coords="5,5,153,31"/>
+<area shape="rect" id="node15" href="lambeq.bobcat.html#lambeq.bobcat.Sentence" target="_top" title="An input sentence." alt="" coords="32,104,114,129"/>
+<area shape="rect" id="node16" href="lambeq.bobcat.html#lambeq.bobcat.Supertag" target="_top" title="A string category, annotated with its log probability." alt="" coords="33,55,113,80"/>
+<area shape="rect" id="node17" href="lambeq.bobcat.html#lambeq.bobcat.Tagger" target="_top" title="Tagger" alt="" coords="37,5,109,31"/>
 </map><div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -230,13 +278,18 @@
 <p class="rubric">API: <a class="reference internal" href="lambeq.rewrite.html"><span class="doc">lambeq.rewrite</span></a></p>
 <p class="rubric">UML diagrams: <a class="reference internal" href="uml-diagrams.html#uml-rewrite"><span class="std std-ref">lambeq.rewrite</span></a></p>
 <p class="rubric">Classes</p>
-<div class="graphviz"><img src="_images/inheritance-8c9df08c30310d085dd943ae0b4237299b23b886.png" alt="Inheritance diagram of lambeq.rewrite.CoordinationRewriteRule, lambeq.rewrite.CurryRewriteRule, lambeq.rewrite.RewriteRule, lambeq.rewrite.Rewriter, lambeq.rewrite.SimpleRewriteRule" usemap="#inheritance709bdf749e" class="inheritance graphviz" /></div>
-<map id="inheritance709bdf749e" name="inheritance709bdf749e">
-<area shape="rect" id="node3" href="root-api.html#lambeq.RewriteRule" target="_top" title="Base class for rewrite rules." alt="" coords="131,55,232,80"/>
-<area shape="rect" id="node2" href="root-api.html#lambeq.CoordinationRewriteRule" target="_top" title="A rewrite rule for coordination." alt="" coords="280,5,464,31"/>
-<area shape="rect" id="node4" href="root-api.html#lambeq.CurryRewriteRule" target="_top" title="A rewrite rule using map&#45;state duality." alt="" coords="304,55,440,80"/>
-<area shape="rect" id="node6" href="root-api.html#lambeq.SimpleRewriteRule" target="_top" title="A simple rewrite rule." alt="" coords="299,104,445,129"/>
-<area shape="rect" id="node5" href="root-api.html#lambeq.Rewriter" target="_top" title="Class that rewrites diagrams." alt="" coords="5,5,83,31"/>
+<div class="graphviz"><img src="_images/inheritance-a37262e7fe14a6108221bc2243f28375d7ffadc8.png" alt="Inheritance diagram of lambeq.rewrite.CoordinationRewriteRule, lambeq.rewrite.CurryRewriteRule, lambeq.rewrite.DiagramRewriter, lambeq.rewrite.RemoveCupsRewriter, lambeq.rewrite.RemoveSwapsRewriter, lambeq.rewrite.RewriteRule, lambeq.rewrite.Rewriter, lambeq.rewrite.SimpleRewriteRule, lambeq.rewrite.UnifyCodomainRewriter, lambeq.rewrite.UnknownWordsRewriteRule" usemap="#inheritance45a04d45b2" class="inheritance graphviz" /></div>
+<map id="inheritance45a04d45b2" name="inheritance45a04d45b2">
+<area shape="rect" id="node3" href="root-api.html#lambeq.RewriteRule" target="_top" title="Base class for rewrite rules." alt="" coords="147,104,248,129"/>
+<area shape="rect" id="node5" href="root-api.html#lambeq.DiagramRewriter" target="_top" title="Base class for diagram level rewriters." alt="" coords="131,227,264,252"/>
+<area shape="rect" id="node2" href="root-api.html#lambeq.CoordinationRewriteRule" target="_top" title="A rewrite rule for coordination." alt="" coords="321,5,505,31"/>
+<area shape="rect" id="node4" href="root-api.html#lambeq.CurryRewriteRule" target="_top" title="A rewrite rule using map&#45;state duality." alt="" coords="345,55,481,80"/>
+<area shape="rect" id="node9" href="root-api.html#lambeq.SimpleRewriteRule" target="_top" title="A simple rewrite rule." alt="" coords="340,104,487,129"/>
+<area shape="rect" id="node11" href="root-api.html#lambeq.UnknownWordsRewriteRule" target="_top" title="A rewrite rule for unknown words." alt="" coords="312,153,515,179"/>
+<area shape="rect" id="node6" href="root-api.html#lambeq.RemoveCupsRewriter" target="_top" title="Removes cups from a given diagram." alt="" coords="332,203,495,228"/>
+<area shape="rect" id="node7" href="root-api.html#lambeq.RemoveSwapsRewriter" target="_top" title="Produce a proper pregroup diagram by removing any swaps." alt="" coords="327,252,500,277"/>
+<area shape="rect" id="node10" href="root-api.html#lambeq.UnifyCodomainRewriter" target="_top" title="Unifies the codomain of diagrams to match a given type." alt="" coords="325,301,502,327"/>
+<area shape="rect" id="node8" href="root-api.html#lambeq.Rewriter" target="_top" title="Class that rewrites diagrams." alt="" coords="5,128,83,153"/>
 </map><div class="line-block">
 <div class="line"><br /></div>
 </div>
@@ -328,7 +381,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.dataset &mdash; lambeq 0.3.3 documentation</title>
+  <title>lambeq.training.dataset &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -53,8 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -73,8 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
 </ul>
@@ -90,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -124,7 +123,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.training.dataset</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021-2023 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2024 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -151,22 +150,23 @@
 <span class="kn">import</span> <span class="nn">random</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
-<span class="kn">from</span> <span class="nn">discopy</span> <span class="kn">import</span> <span class="n">tensor</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.numerical_backend</span> <span class="kn">import</span> <span class="n">get_backend</span>
 
 
 <div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Dataset class for the training of a lambeq model.</span>
 
-<span class="sd">    Data is returned in the format of</span>
-<span class="sd">    :py:class:`discopy.tensor.Tensor`&#39;s backend, which by default is set</span>
-<span class="sd">    to NumPy. For example, to access the dataset as PyTorch tensors:</span>
-
+<span class="sd">    Data is returned in the format of lambeq&#39;s numerical backend, which</span>
+<span class="sd">    by default is set to NumPy. For example, to access the dataset</span>
+<span class="sd">    as PyTorch tensors:</span>
+<span class="sd">        &gt;&gt;&gt; from lambeq.backend import numerical_backend</span>
 <span class="sd">        &gt;&gt;&gt; dataset = Dataset([&#39;data1&#39;], [[0, 1, 2, 3]])</span>
-<span class="sd">        &gt;&gt;&gt; with tensor.backend(&#39;pytorch&#39;):</span>
+<span class="sd">        &gt;&gt;&gt; with numerical_backend.backend(&#39;pytorch&#39;):</span>
 <span class="sd">        ...     print(dataset[0])  # becomes pytorch tensor</span>
 <span class="sd">        (&#39;data1&#39;, tensor([0, 1, 2, 3]))</span>
 <span class="sd">        &gt;&gt;&gt; print(dataset[0])  # numpy array again</span>
 <span class="sd">        (&#39;data1&#39;, array([0, 1, 2, 3]))</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Dataset.__init__"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Dataset.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
@@ -208,7 +208,7 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a single item or a subset from the dataset.&quot;&quot;&quot;</span>
         <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">get_backend</span><span class="p">()</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -228,7 +228,7 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle</span><span class="p">:</span>
             <span class="n">new_data</span><span class="p">,</span> <span class="n">new_targets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shuffle_data</span><span class="p">(</span><span class="n">new_data</span><span class="p">,</span> <span class="n">new_targets</span><span class="p">)</span>
 
-        <span class="n">backend</span> <span class="o">=</span> <span class="n">tensor</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
+        <span class="n">backend</span> <span class="o">=</span> <span class="n">get_backend</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">start_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">):</span>
             <span class="k">yield</span> <span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="n">start_idx</span><span class="p">:</span> <span class="n">start_idx</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span><span class="p">],</span>
                    <span class="n">backend</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
@@ -255,8 +255,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">joint_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">targets</span><span class="p">))</span>
         <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">joint_list</span><span class="p">)</span>
-        <span class="n">data</span><span class="p">,</span> <span class="n">targets</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">joint_list</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">targets</span><span class="p">)</span></div></div>
+        <span class="n">data_tuple</span><span class="p">,</span> <span class="n">targets_tuple</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">joint_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">data_tuple</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">targets_tuple</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -266,7 +266,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

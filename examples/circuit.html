@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Circuit &mdash; lambeq 0.3.3 documentation</title>
+  <title>Circuit &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -42,7 +42,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -58,8 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -78,21 +77,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="tokenisation.html">Tokenisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="unk-words.html">Handling unknown words</a></li>
 <li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reader.html">Reader</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tree_reader.html">Tree reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree-reader.html">Tree reader</a></li>
 <li class="toctree-l2"><a class="reference internal" href="rewrite.html">Rewrite</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Circuit</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tensor.html">Tensor</a></li>
-<li class="toctree-l2"><a class="reference internal" href="rotosolve_optimizer.html">Rotosolve optimizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="classical_pipeline.html">Classical pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="quantum_pipeline_jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rotosolve-optimizer.html">Rotosolve optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classical-pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline-jax.html">Quantum pipeline using JAX backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pennylane.html">Training hybrid models using the Pennylane backend</a></li>
 </ul>
 </li>
@@ -109,7 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -459,8 +459,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ansatz</span> <span class="o">=</span> <span class="n">IQPAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">n_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">discopy_circuit</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
-<span class="n">discopy_circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -496,14 +496,14 @@ div.rendered_html tbody tr:hover {
     &lt;!-- Download Vue 3--&gt;
 &lt;script type=&#34;application/javascript&#34; src=&#34;https://cdn.jsdelivr.net/npm/vue@3&#34;&gt;&lt;/script&gt;
 &lt;!-- Download Circuit Renderer with styles --&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;https://unpkg.com/pytket-circuit-renderer@0.6/dist/pytket-circuit-renderer.umd.js&#34;&gt;&lt;/script&gt;
-&lt;link rel=&#34;stylesheet&#34; href=&#34;https://unpkg.com/pytket-circuit-renderer@0.6/dist/pytket-circuit-renderer.css&#34;&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://unpkg.com/pytket-circuit-renderer@0.7/dist/pytket-circuit-renderer.umd.js&#34;&gt;&lt;/script&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;https://unpkg.com/pytket-circuit-renderer@0.7/dist/pytket-circuit-renderer.css&#34;&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
 
 
-    &lt;div id=&#34;circuit-display-vue-container-4b8470d6-8959-4b1f-92b4-4614d009ef85&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
+    &lt;div id=&#34;circuit-display-vue-container-44cc14be-7707-4a4e-990f-e20c8b2d2126&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
         &lt;div style=&#34;display: none&#34;&gt;
             &lt;div id=&#34;circuit-json-to-display&#34;&gt;{&#34;bits&#34;: [[&#34;c&#34;, [0]], [&#34;c&#34;, [1]]], &#34;commands&#34;: [{&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*Alice__n_0&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*Alice__n_1&#34;], &#34;type&#34;: &#34;Rz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*runs__n.r@s_0&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*Alice__n_2&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*runs__n.r@s_1&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;c&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;c&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}], &#34;created_qubits&#34;: [], &#34;discarded_qubits&#34;: [], &#34;implicit_permutation&#34;: [[[&#34;q&#34;, [0]], [&#34;q&#34;, [0]]], [[&#34;q&#34;, [1]], [&#34;q&#34;, [1]]], [[&#34;q&#34;, [2]], [&#34;q&#34;, [2]]]], &#34;phase&#34;: &#34;0.0&#34;, &#34;qubits&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]], [&#34;q&#34;, [2]]]}&lt;/div&gt;
         &lt;/div&gt;
@@ -513,7 +513,7 @@ div.rendered_html tbody tr:hover {
         &gt;&lt;/circuit-display-container&gt;
     &lt;/div&gt;
     &lt;script type=&#34;application/javascript&#34;&gt;
-      const circuitRendererUid = &#34;4b8470d6-8959-4b1f-92b4-4614d009ef85&#34;;
+      const circuitRendererUid = &#34;44cc14be-7707-4a4e-990f-e20c8b2d2126&#34;;
       const displayOptions = JSON.parse(&#39;{}&#39;);
 
       // Script to initialise the circuit renderer app
@@ -600,14 +600,14 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
     &lt;!-- Download Vue 3--&gt;
 &lt;script type=&#34;application/javascript&#34; src=&#34;https://cdn.jsdelivr.net/npm/vue@3&#34;&gt;&lt;/script&gt;
 &lt;!-- Download Circuit Renderer with styles --&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;https://unpkg.com/pytket-circuit-renderer@0.6/dist/pytket-circuit-renderer.umd.js&#34;&gt;&lt;/script&gt;
-&lt;link rel=&#34;stylesheet&#34; href=&#34;https://unpkg.com/pytket-circuit-renderer@0.6/dist/pytket-circuit-renderer.css&#34;&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://unpkg.com/pytket-circuit-renderer@0.7/dist/pytket-circuit-renderer.umd.js&#34;&gt;&lt;/script&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;https://unpkg.com/pytket-circuit-renderer@0.7/dist/pytket-circuit-renderer.css&#34;&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
 
 
-    &lt;div id=&#34;circuit-display-vue-container-5786eded-f4ef-4f6a-96ab-3a51e28c2e5e&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
+    &lt;div id=&#34;circuit-display-vue-container-43b8f0fd-36b9-49a2-9cea-6e120387d02d&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
         &lt;div style=&#34;display: none&#34;&gt;
             &lt;div id=&#34;circuit-json-to-display&#34;&gt;{&#34;bits&#34;: [[&#34;c&#34;, [0]], [&#34;c&#34;, [1]]], &#34;commands&#34;: [{&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.002&#34;], &#34;type&#34;: &#34;Rz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.006&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.004&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;0.008&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;c&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;c&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}], &#34;created_qubits&#34;: [], &#34;discarded_qubits&#34;: [], &#34;implicit_permutation&#34;: [[[&#34;q&#34;, [0]], [&#34;q&#34;, [0]]], [[&#34;q&#34;, [1]], [&#34;q&#34;, [1]]], [[&#34;q&#34;, [2]], [&#34;q&#34;, [2]]]], &#34;phase&#34;: &#34;0.0&#34;, &#34;qubits&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]], [&#34;q&#34;, [2]]]}&lt;/div&gt;
         &lt;/div&gt;
@@ -617,7 +617,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
         &gt;&lt;/circuit-display-container&gt;
     &lt;/div&gt;
     &lt;script type=&#34;application/javascript&#34;&gt;
-      const circuitRendererUid = &#34;5786eded-f4ef-4f6a-96ab-3a51e28c2e5e&#34;;
+      const circuitRendererUid = &#34;43b8f0fd-36b9-49a2-9cea-6e120387d02d&#34;;
       const displayOptions = JSON.parse(&#39;{}&#39;);
 
       // Script to initialise the circuit renderer app
@@ -665,7 +665,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

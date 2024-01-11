@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lambeq.backend.drawing.drawable &mdash; lambeq 0.4.0 documentation</title>
+      <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../../../../_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+        <script src="../../../../_static/doctools.js"></script>
+        <script src="../../../../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            lambeq
+              <img src="../../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.4.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../string-diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../advanced.html">Advanced: low-level lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../notebooks.html">Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../release-notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">lambeq.backend.drawing.drawable</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lambeq.backend.drawing.drawable</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2021-2024 Cambridge Quantum Computing Ltd.</span>
+<span class="c1">#</span>
+<span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
+<span class="c1"># you may not use this file except in compliance with the License.</span>
+<span class="c1"># You may obtain a copy of the License at</span>
+<span class="c1">#</span>
+<span class="c1">#     http://www.apache.org/licenses/LICENSE-2.0</span>
+<span class="c1">#</span>
+<span class="c1"># Unless required by applicable law or agreed to in writing, software</span>
+<span class="c1"># distributed under the License is distributed on an &quot;AS IS&quot; BASIS,</span>
+<span class="c1"># WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
+<span class="c1"># See the License for the specific language governing permissions and</span>
+<span class="c1"># limitations under the License.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Drawable Components</span>
+<span class="sd">===================</span>
+<span class="sd">Utilities to convert a grammar diagram into a drawable form.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.backend</span> <span class="kn">import</span> <span class="n">grammar</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">quantum</span>
+
+
+<span class="n">X_SPACING</span> <span class="o">=</span> <span class="mf">2.5</span>  <span class="c1"># Minimum space between adjacent wires</span>
+<span class="n">LEDGE</span> <span class="o">=</span> <span class="mf">0.5</span>  <span class="c1"># Space from last wire to right box edge</span>
+<span class="n">BOX_HEIGHT</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">HALF_BOX_HEIGHT</span> <span class="o">=</span> <span class="mf">0.25</span>
+
+
+<span class="k">class</span> <span class="nc">WireEndpointType</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;An enumeration for :py:class:`WireEndpoint`.</span>
+
+<span class="sd">    WireEndpoints in diagrams can be of 4 types:</span>
+
+<span class="sd">    .. glossary::</span>
+
+<span class="sd">        DOM</span>
+<span class="sd">            Domain of a box.</span>
+
+<span class="sd">        COD</span>
+<span class="sd">            Codomain of a box.</span>
+
+<span class="sd">        INPUT</span>
+<span class="sd">            Input wire to the diagram.</span>
+
+<span class="sd">        OUTPUT</span>
+<span class="sd">            Output wire from the diagram.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">DOM</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">COD</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">INPUT</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">OUTPUT</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">WireEndpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    One end of a wire in a DrawableDiagram.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    kind: WireEndpointType</span>
+<span class="sd">        Type of wire endpoint.</span>
+<span class="sd">    obj: grammar.Ty</span>
+<span class="sd">        Categorial type carried by the wire.</span>
+<span class="sd">    x: float</span>
+<span class="sd">        X coordinate of the wire end.</span>
+<span class="sd">    y: float</span>
+<span class="sd">        Y coordinate of the wire end.</span>
+<span class="sd">    coordinates: (float, float)</span>
+<span class="sd">        (x, y) coordinates.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">kind</span><span class="p">:</span> <span class="n">WireEndpointType</span>
+    <span class="n">obj</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Ty</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">BoxNode</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Box in a DrawableDiagram.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    obj: grammar.Box</span>
+<span class="sd">        Grammar box represented by the node.</span>
+<span class="sd">    x: float</span>
+<span class="sd">        X coordinate of the box.</span>
+<span class="sd">    y: float</span>
+<span class="sd">        Y coordinate of the box.</span>
+<span class="sd">    coordinates: (float, float)</span>
+<span class="sd">        (x, y) coordinates.</span>
+<span class="sd">    dom_wires: list of int</span>
+<span class="sd">        Wire endpoints in the domain of the box, represented by</span>
+<span class="sd">        indices into an array maintained by `DrawableDiagram`.</span>
+<span class="sd">    com_wires: list of int</span>
+<span class="sd">        Wire endpoints in the codomain of the box, represented by</span>
+<span class="sd">        indices into an array maintained by `DrawableDiagram`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">obj</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Box</span>
+
+    <span class="n">x</span><span class="p">:</span> <span class="nb">float</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="n">dom_wires</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">cod_wires</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">coordinates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_dom_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a wire to to box&#39;s domain.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : int</span>
+<span class="sd">            Index of wire in associated `DrawableDiagram`&#39;s</span>
+<span class="sd">            `wire_endpoints` attribute.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dom_wires</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_cod_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a wire to to box&#39;s codomain.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        idx : int</span>
+<span class="sd">            Index of wire in associated `DrawableDiagram`&#39;s</span>
+<span class="sd">            `wire_endpoints` attribute.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cod_wires</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_x_lims</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                   <span class="n">drawable_diagram</span><span class="p">:</span> <span class="n">DrawableDiagram</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get left and right limits of the box.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        drawable_diagram : DrawableDiagram</span>
+<span class="sd">            `DrawableDiagram` with which this box is associated.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">all_wires_pos</span> <span class="o">=</span> <span class="p">[</span><span class="n">drawable_diagram</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">wire</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+                         <span class="k">for</span> <span class="n">wire</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cod_wires</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dom_wires</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">all_wires_pos</span><span class="p">:</span>  <span class="c1"># scalar box</span>
+            <span class="n">all_wires_pos</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">]</span>
+
+        <span class="n">left</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">all_wires_pos</span><span class="p">)</span> <span class="o">-</span> <span class="n">LEDGE</span>
+        <span class="n">right</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">all_wires_pos</span><span class="p">)</span> <span class="o">+</span> <span class="n">LEDGE</span>
+
+        <span class="k">return</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
+
+
+<div class="viewcode-block" id="DrawableDiagram"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.DrawableDiagram">[docs]</a><span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">DrawableDiagram</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of a lambeq diagram carrying all</span>
+<span class="sd">    information necessary to render it.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    boxes: list of BoxNode</span>
+<span class="sd">        Boxes in the diagram.</span>
+<span class="sd">    wire_endpoints: list of WireEndpoint</span>
+<span class="sd">        Endpoints for all wires in the diagram.</span>
+<span class="sd">    wires: list of tuple of the form (int, int)</span>
+<span class="sd">        The wires in a diagram, each represented by the indices of</span>
+<span class="sd">        its 2 endpoints in `wire_endpoints`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">boxes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BoxNode</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">wire_endpoints</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">WireEndpoint</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">wires</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_wire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">source</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">target</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add an edge between 2 connected wire endpoints.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wires</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_add_wire_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wire_end</span><span class="p">:</span> <span class="n">WireEndpoint</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a `WireEndpoint` to the diagram.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_add_boxnode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box</span><span class="p">:</span> <span class="n">BoxNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a `BoxNode` to the diagram.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">box</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">boxes</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">_add_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">scan</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                 <span class="n">box</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span>
+                 <span class="n">off</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">x_pos</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">y_pos</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a box to the graph, creating necessary wire endpoints.&quot;&quot;&quot;</span>
+
+        <span class="n">node</span> <span class="o">=</span> <span class="n">BoxNode</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">x_pos</span><span class="p">,</span> <span class="n">y_pos</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_add_boxnode</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="c1"># Create a node representing each element in the box&#39;s domain</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">):</span>
+            <span class="n">nbr_idx</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+            <span class="n">wire_end</span> <span class="o">=</span> <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">DOM</span><span class="p">,</span>
+                                    <span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span>
+                                    <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">nbr_idx</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                    <span class="n">y</span><span class="o">=</span><span class="n">y_pos</span> <span class="o">+</span> <span class="n">HALF_BOX_HEIGHT</span><span class="p">)</span>
+
+            <span class="n">wire_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span><span class="n">wire_end</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">add_dom_wire</span><span class="p">(</span><span class="n">wire_idx</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_add_wire</span><span class="p">(</span><span class="n">nbr_idx</span><span class="p">,</span> <span class="n">wire_idx</span><span class="p">)</span>
+
+        <span class="n">scan_insert</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># Create a node representing each element in the box&#39;s codomain</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">):</span>
+
+            <span class="c1"># If the box is a quantum gate, retain x coordinate of wires</span>
+            <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">category</span> <span class="o">==</span> <span class="n">quantum</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">):</span>
+                <span class="n">nbr_idx</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">nbr_idx</span><span class="p">]</span><span class="o">.</span><span class="n">x</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x_pos</span> <span class="o">+</span> <span class="n">X_SPACING</span> <span class="o">*</span> <span class="p">(</span><span class="n">i</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y_pos</span> <span class="o">-</span> <span class="n">HALF_BOX_HEIGHT</span>
+
+            <span class="n">wire_end</span> <span class="o">=</span> <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">COD</span><span class="p">,</span>
+                                    <span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span>
+                                    <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span>
+                                    <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+
+            <span class="n">wire_idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span><span class="n">wire_end</span><span class="p">)</span>
+            <span class="n">scan_insert</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire_idx</span><span class="p">)</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">add_cod_wire</span><span class="p">(</span><span class="n">wire_idx</span><span class="p">)</span>
+
+        <span class="c1"># Replace node&#39;s dom with its cod in scan</span>
+        <span class="k">return</span> <span class="n">scan</span><span class="p">[:</span><span class="n">off</span><span class="p">]</span> <span class="o">+</span> <span class="n">scan_insert</span> <span class="o">+</span> <span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">):]</span>
+
+    <span class="k">def</span> <span class="nf">_find_box_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">box</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span>
+                        <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                        <span class="n">off</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                        <span class="n">scan</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+
+        <span class="n">left_edge</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">right_edge</span> <span class="o">=</span> <span class="n">x</span>
+
+        <span class="c1"># dom edges come from upstream wire endpoints</span>
+        <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>
+            <span class="n">left_edge</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">left_edge</span><span class="p">)</span>
+            <span class="n">right_edge</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                <span class="n">right_edge</span><span class="p">)</span>
+
+        <span class="c1"># cod edges are evenly spaced</span>
+        <span class="k">if</span> <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">:</span>
+            <span class="n">left_edge</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">X_SPACING</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">left_edge</span><span class="p">)</span>
+            <span class="n">right_edge</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">X_SPACING</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+                                              <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span>
+                             <span class="n">right_edge</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">left_edge</span> <span class="o">-</span> <span class="n">LEDGE</span><span class="p">,</span> <span class="n">right_edge</span> <span class="o">+</span> <span class="n">LEDGE</span>
+
+    <span class="k">def</span> <span class="nf">_make_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">scan</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
+                    <span class="n">box</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Box</span><span class="p">,</span>
+                    <span class="n">off</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determines x and y coords for a new box.</span>
+<span class="sd">        Modifies x coordinates of existing nodes to make space.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">scan</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+
+        <span class="n">half_width</span> <span class="o">=</span> <span class="n">X_SPACING</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">off</span><span class="p">:</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">half_width</span>
+            <span class="k">elif</span> <span class="n">off</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan</span><span class="p">):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">half_width</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)]]</span><span class="o">.</span><span class="n">x</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="k">if</span> <span class="n">off</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;</span> <span class="n">x</span> <span class="o">-</span> <span class="n">half_width</span><span class="p">:</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">pad</span> <span class="o">=</span> <span class="n">limit</span> <span class="o">-</span> <span class="n">x</span> <span class="o">+</span> <span class="n">half_width</span>
+
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="n">limit</span><span class="p">:</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">-=</span> <span class="n">pad</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">off</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">scan</span><span class="p">)</span>
+                <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)]]</span><span class="o">.</span><span class="n">x</span>
+                     <span class="o">&lt;</span> <span class="n">x</span> <span class="o">+</span> <span class="n">half_width</span><span class="p">)):</span>
+            <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)]]</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">pad</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">half_width</span> <span class="o">-</span> <span class="n">limit</span>
+
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">limit</span><span class="p">:</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">pad</span>
+
+        <span class="n">left_edge</span><span class="p">,</span> <span class="n">right_edge</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_box_edges</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">scan</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">for</span> <span class="n">upstream_box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span><span class="p">:</span>
+            <span class="n">bl</span><span class="p">,</span> <span class="n">br</span> <span class="o">=</span> <span class="n">upstream_box</span><span class="o">.</span><span class="n">get_x_lims</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">bl</span> <span class="o">&gt;</span> <span class="n">right_edge</span> <span class="ow">or</span> <span class="n">br</span> <span class="o">&lt;</span> <span class="n">left_edge</span><span class="p">):</span>
+                <span class="c1"># Boxes overlap</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">upstream_box</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+    <span class="k">def</span> <span class="nf">_move_to_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the min x and middle-y coordinates of the diagram to 0.</span>
+<span class="sd">        Setting the diagram to be centred on the y axis allows us to</span>
+<span class="sd">        avoid precomputing the diagram&#39;s height.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">])</span>
+
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">])</span>
+        <span class="n">max_y</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">])</span>
+
+        <span class="n">mid_y</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_y</span> <span class="o">+</span> <span class="n">max_y</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="o">-=</span> <span class="n">min_x</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="o">-=</span> <span class="n">mid_y</span>
+
+<div class="viewcode-block" id="DrawableDiagram.from_diagram"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.DrawableDiagram.from_diagram">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_diagram</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span>
+                     <span class="n">diagram</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Diagram</span><span class="p">,</span>
+                     <span class="n">foliated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builds a graph representation of the diagram, calculating</span>
+<span class="sd">        coordinates for each box and wire.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        diagram : grammar Diagram</span>
+<span class="sd">            A lambeq diagram.</span>
+<span class="sd">        foliated : bool, default: False</span>
+<span class="sd">            If true, each box of the diagram is drawn in a separate</span>
+<span class="sd">            layer. By default boxes are compressed upwards into</span>
+<span class="sd">            available space.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        drawable : DrawableDiagram</span>
+<span class="sd">            Representation of diagram including all coordinates</span>
+<span class="sd">            necessary to draw it.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">drawable</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+
+        <span class="n">scan</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">dom</span><span class="p">):</span>
+            <span class="n">wire_end</span> <span class="o">=</span> <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">INPUT</span><span class="p">,</span>
+                                    <span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span>
+                                    <span class="n">x</span><span class="o">=</span><span class="n">X_SPACING</span> <span class="o">*</span> <span class="n">i</span><span class="p">,</span>
+                                    <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">wire_end_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span><span class="n">wire_end</span><span class="p">)</span>
+            <span class="n">scan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire_end_idx</span><span class="p">)</span>
+
+        <span class="n">min_y</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="k">for</span> <span class="n">depth</span><span class="p">,</span> <span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">off</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">,</span>
+                                               <span class="n">diagram</span><span class="o">.</span><span class="n">offsets</span><span class="p">)):</span>
+
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_make_space</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">off</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">depth</span> <span class="k">if</span> <span class="n">foliated</span> <span class="k">else</span> <span class="n">y</span>
+
+            <span class="n">scan</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_box</span><span class="p">(</span><span class="n">scan</span><span class="p">,</span> <span class="n">box</span><span class="p">,</span> <span class="n">off</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">min_y</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">):</span>
+            <span class="n">wire_end</span> <span class="o">=</span> <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+                                    <span class="n">obj</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span>
+                                    <span class="n">x</span><span class="o">=</span><span class="n">drawable</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                    <span class="n">y</span><span class="o">=</span><span class="n">min_y</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">wire_end_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span><span class="n">wire_end</span><span class="p">)</span>
+            <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire</span><span class="p">(</span><span class="n">scan</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">wire_end_idx</span><span class="p">)</span>
+
+        <span class="n">drawable</span><span class="o">.</span><span class="n">_move_to_origin</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">drawable</span></div>
+
+<div class="viewcode-block" id="DrawableDiagram.scale_and_pad"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.DrawableDiagram.scale_and_pad">[docs]</a>    <span class="k">def</span> <span class="nf">scale_and_pad</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                      <span class="n">scale</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+                      <span class="n">pad</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Scales and pads the diagram as specified.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        scale : tuple of 2 floats</span>
+<span class="sd">            Scaling factors for x and y axes respectively.</span>
+<span class="sd">        pad : tuple of 2 floats</span>
+<span class="sd">            Padding values for x and y axes respectively.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">min_x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">node</span><span class="o">.</span><span class="n">x</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">])</span>
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">([</span><span class="n">node</span><span class="o">.</span><span class="n">y</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">wire_end</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">:</span>
+            <span class="n">wire_end</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">min_x</span> <span class="o">+</span> <span class="p">(</span><span class="n">wire_end</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">wire_end</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">wire_end</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">for</span> <span class="n">box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">boxes</span><span class="p">:</span>
+            <span class="n">box</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">min_x</span> <span class="o">+</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">min_x</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">box</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">min_y</span> <span class="o">+</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">min_y</span><span class="p">)</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">pad</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">wire_end_idx</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">dom_wires</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">wire_end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">box</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">HALF_BOX_HEIGHT</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="k">for</span> <span class="n">wire_end_idx</span> <span class="ow">in</span> <span class="n">box</span><span class="o">.</span><span class="n">cod_wires</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">wire_end_idx</span><span class="p">]</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">box</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">HALF_BOX_HEIGHT</span> <span class="o">*</span> <span class="n">scale</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span></div></div>
+
+
+<span class="k">class</span> <span class="nc">PregroupError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">diagram</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Diagram </span><span class="si">{</span><span class="n">diagram</span><span class="si">}</span><span class="s1"> is not a pregroup diagram. &#39;</span>
+                         <span class="s1">&#39;A pregroup diagram must be structured like &#39;</span>
+                         <span class="s1">&#39;(State @ State ... State) &gt;&gt; (Cups and Swaps)&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span> <span class="nc">DrawablePregroup</span><span class="p">(</span><span class="n">DrawableDiagram</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Representation of a lambeq pregroup diagram carrying all</span>
+<span class="sd">    information necessary to render it.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x_tracks: list of int</span>
+<span class="sd">        Stores the &quot;track&quot; on which the corresponding `WireEndpoint` in</span>
+<span class="sd">        `wire_endpoints` lies. This helps determine the depth of</span>
+<span class="sd">        pregroup grammar boxes in the diagram.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">x_tracks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_add_wire_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">wire_end</span><span class="p">:</span> <span class="n">WireEndpoint</span><span class="p">,</span> <span class="n">x_track</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Add a `WireEndpoint` to the diagram, with track information.&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_tracks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x_track</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span><span class="n">wire_end</span><span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">from_diagram</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span>
+                     <span class="n">diagram</span><span class="p">:</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Diagram</span><span class="p">,</span>
+                     <span class="n">foliated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Builds a graph representation of the diagram, calculating</span>
+<span class="sd">        coordinates for each box and wire.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        diagram : grammar Diagram</span>
+<span class="sd">            A lambeq diagram.</span>
+<span class="sd">        foliated : bool, default: False</span>
+<span class="sd">            This parameter is not used for pregroup diagrams, which are</span>
+<span class="sd">            always drawn un-foliated.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        drawable : DrawableDiagram</span>
+<span class="sd">            Representation of diagram including all coordinates</span>
+<span class="sd">            necessary to draw it.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">foliated</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pregroup diagrams cannot be drawn foliated.&#39;</span>
+                  <span class="s1">&#39; Set `draw_as_pregroup` to `False` to see&#39;</span>
+                  <span class="s1">&#39; foliation for this diagram.&#39;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+
+        <span class="n">words</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">grammar_start_idx</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">layer</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">layers</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">box</span><span class="p">,</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Cup</span><span class="p">)</span>
+                    <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">box</span><span class="p">,</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Swap</span><span class="p">)):</span>
+                <span class="n">grammar_start_idx</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">layer</span><span class="o">.</span><span class="n">right</span> <span class="ow">or</span> <span class="n">layer</span><span class="o">.</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PregroupError</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+
+            <span class="n">words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">box</span><span class="p">)</span>
+
+        <span class="n">HSPACE</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="n">VSPACE</span> <span class="o">=</span> <span class="mf">0.75</span>
+        <span class="n">BOX_WIDTH</span> <span class="o">=</span> <span class="mi">2</span>
+
+        <span class="n">drawable</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">()</span>
+        <span class="n">scan</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">track_ctr</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">word</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">words</span><span class="p">):</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">BoxNode</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="p">(</span><span class="n">HSPACE</span> <span class="o">+</span> <span class="n">BOX_WIDTH</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span>
+                           <span class="o">+</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">BOX_WIDTH</span> <span class="o">*</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Cap</span><span class="p">)),</span>
+                           <span class="mi">0</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">ty</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">):</span>
+                <span class="n">wire_x</span> <span class="o">=</span> <span class="p">((</span><span class="n">HSPACE</span> <span class="o">+</span> <span class="n">BOX_WIDTH</span><span class="p">)</span> <span class="o">*</span> <span class="n">i</span>
+                          <span class="o">+</span> <span class="p">(</span><span class="n">BOX_WIDTH</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">cod</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+                <span class="n">wire_end_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span>
+                    <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">COD</span><span class="p">,</span>
+                                 <span class="n">ty</span><span class="p">,</span>
+                                 <span class="n">wire_x</span><span class="p">,</span>
+                                 <span class="mf">0.25</span><span class="p">),</span> <span class="n">track_ctr</span><span class="p">)</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">add_cod_wire</span><span class="p">(</span><span class="n">wire_end_idx</span><span class="p">)</span>
+                <span class="n">scan</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">wire_end_idx</span><span class="p">)</span>
+
+                <span class="n">track_ctr</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">drawable</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+        <span class="n">depth_map</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">track_ctr</span><span class="p">)]</span>
+
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">grammar_start_idx</span><span class="p">:]:</span>
+            <span class="n">off</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">layer</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+            <span class="n">box</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">box</span>
+
+            <span class="n">lx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">rx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span>
+
+            <span class="n">l_track</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">x_tracks</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span><span class="p">]]</span>
+            <span class="n">r_track</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">x_tracks</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span>
+
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">depth_map</span><span class="p">[</span><span class="n">l_track</span><span class="p">:</span> <span class="n">r_track</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">l_wire_end_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span>
+                <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">DOM</span><span class="p">,</span>
+                             <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                             <span class="n">lx</span><span class="p">,</span>
+                             <span class="n">y</span> <span class="o">-</span> <span class="n">VSPACE</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">l_track</span><span class="p">)</span>
+            <span class="n">r_wire_end_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span>
+                <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">DOM</span><span class="p">,</span>
+                             <span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                             <span class="n">rx</span><span class="p">,</span>
+                             <span class="n">y</span> <span class="o">-</span> <span class="n">VSPACE</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">r_track</span><span class="p">)</span>
+
+            <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire</span><span class="p">(</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span><span class="p">],</span> <span class="n">l_wire_end_idx</span><span class="p">)</span>
+            <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire</span><span class="p">(</span><span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">],</span> <span class="n">r_wire_end_idx</span><span class="p">)</span>
+
+            <span class="n">grammar_box</span> <span class="o">=</span> <span class="n">BoxNode</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="p">(</span><span class="n">lx</span> <span class="o">+</span> <span class="n">rx</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">VSPACE</span><span class="p">)</span>
+            <span class="n">grammar_box</span><span class="o">.</span><span class="n">add_dom_wire</span><span class="p">(</span><span class="n">l_wire_end_idx</span><span class="p">)</span>
+            <span class="n">grammar_box</span><span class="o">.</span><span class="n">add_dom_wire</span><span class="p">(</span><span class="n">r_wire_end_idx</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Swap</span><span class="p">):</span>
+                <span class="n">l_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span>
+                    <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">COD</span><span class="p">,</span>
+                                 <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                 <span class="n">lx</span><span class="p">,</span>
+                                 <span class="n">y</span> <span class="o">-</span> <span class="n">VSPACE</span><span class="p">),</span> <span class="n">l_track</span><span class="p">)</span>
+                <span class="n">r_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span>
+                    <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">COD</span><span class="p">,</span>
+                                 <span class="n">box</span><span class="o">.</span><span class="n">cod</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                 <span class="n">rx</span><span class="p">,</span>
+                                 <span class="n">y</span> <span class="o">-</span> <span class="n">VSPACE</span><span class="p">),</span> <span class="n">r_track</span><span class="p">)</span>
+                <span class="n">grammar_box</span><span class="o">.</span><span class="n">add_cod_wire</span><span class="p">(</span><span class="n">l_idx</span><span class="p">)</span>
+                <span class="n">grammar_box</span><span class="o">.</span><span class="n">add_cod_wire</span><span class="p">(</span><span class="n">r_idx</span><span class="p">)</span>
+
+                <span class="n">scan</span><span class="p">[</span><span class="n">off</span><span class="p">]</span> <span class="o">=</span> <span class="n">l_idx</span>
+                <span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">r_idx</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">grammar</span><span class="o">.</span><span class="n">Cup</span><span class="p">):</span>
+                <span class="c1"># 2 elements of the codomain are consumed.</span>
+                <span class="n">scan</span> <span class="o">=</span> <span class="n">scan</span><span class="p">[:</span><span class="n">off</span><span class="p">]</span> <span class="o">+</span> <span class="n">scan</span><span class="p">[</span><span class="n">off</span> <span class="o">+</span> <span class="mi">2</span><span class="p">:]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">PregroupError</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+
+            <span class="n">drawable</span><span class="o">.</span><span class="n">boxes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">grammar_box</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l_track</span><span class="p">,</span> <span class="n">r_track</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">depth_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">VSPACE</span>
+
+        <span class="n">min_y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">depth_map</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">diagram</span><span class="o">.</span><span class="n">cod</span><span class="p">):</span>
+            <span class="n">wire_end</span> <span class="o">=</span> <span class="n">WireEndpoint</span><span class="p">(</span><span class="n">WireEndpointType</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span>
+                                    <span class="n">obj</span><span class="p">,</span>
+                                    <span class="n">drawable</span><span class="o">.</span><span class="n">wire_endpoints</span><span class="p">[</span><span class="n">scan</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                    <span class="n">min_y</span> <span class="o">-</span> <span class="n">VSPACE</span><span class="p">)</span>
+            <span class="n">wire_end_idx</span> <span class="o">=</span> <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire_end</span><span class="p">(</span><span class="n">wire_end</span><span class="p">)</span>
+            <span class="n">drawable</span><span class="o">.</span><span class="n">_add_wire</span><span class="p">(</span><span class="n">scan</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">wire_end_idx</span><span class="p">)</span>
+
+        <span class="n">drawable</span><span class="o">.</span><span class="n">_move_to_origin</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">drawable</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

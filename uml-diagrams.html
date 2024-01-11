@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Class diagrams &mdash; lambeq 0.3.3 documentation</title>
+  <title>Class diagrams &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,8 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -87,8 +86,8 @@
 <li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Class diagrams</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-ansatz">lambeq.ansatz</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq-backend">lambeq.backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-bobcat">lambeq.bobcat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#lambeq-pregroups">lambeq.pregroups</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-rewrite">lambeq.rewrite</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-text2diagram">lambeq.text2diagram</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq-tokeniser">lambeq.tokeniser</a></li>
@@ -102,7 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -167,18 +166,23 @@
 <p>Click on a diagram to zoom.</p>
 </div>
 <p>The significance of the colors used for the class/package boxes is explained in the following diagram:</p>
-<a class="reference internal image-reference" href="_images/legend.png"><img alt="_images/legend.png" src="_images/legend.png" style="width: 512.0px; height: 241.60000000000002px;" /></a>
+<a class="reference internal image-reference" href="_images/legend.png"><img alt="_images/legend.png" src="_images/legend.png" style="width: 382.40000000000003px; height: 241.60000000000002px;" /></a>
 <section id="lambeq-ansatz">
 <span id="uml-ansatz"></span><h2>lambeq.ansatz<a class="headerlink" href="#lambeq-ansatz" title="Permalink to this heading"></a></h2>
 <a class="reference internal image-reference" href="_images/ansatz.png"><img alt="_images/ansatz.png" src="_images/ansatz.png" style="width: 100%;" /></a>
 </section>
+<section id="lambeq-backend">
+<span id="uml-backend"></span><h2>lambeq.backend<a class="headerlink" href="#lambeq-backend" title="Permalink to this heading"></a></h2>
+<p>This shows the internals of the classes from <a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.grammar" title="lambeq.backend.grammar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">grammar</span></code></a> and how they are related to each other via attributes and methods.</p>
+<a class="reference internal image-reference" href="_images/backend.png"><img alt="_images/backend.png" src="_images/backend.png" style="width: 80%;" /></a>
+<p>Zooming out a bit, this shows how the classes from <a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.grammar" title="lambeq.backend.grammar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">grammar</span></code></a>, <a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.tensor" title="lambeq.backend.tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">tensor</span></code></a>, and <a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.quantum" title="lambeq.backend.quantum"><code class="xref py py-mod docutils literal notranslate"><span class="pre">quantum</span></code></a> interact through inheritance.</p>
+<a class="reference internal image-reference" href="_images/backend-inheritance.png"><img alt="_images/backend-inheritance.png" src="_images/backend-inheritance.png" style="width: 80%;" /></a>
+<p>This is similar to the above diagram but with a focus on classes from <a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.quantum" title="lambeq.backend.quantum"><code class="xref py py-mod docutils literal notranslate"><span class="pre">quantum</span></code></a>.</p>
+<a class="reference internal image-reference" href="_images/backend-quantum-inheritance.png"><img alt="_images/backend-quantum-inheritance.png" src="_images/backend-quantum-inheritance.png" style="width: 80%;" /></a>
+</section>
 <section id="lambeq-bobcat">
 <span id="uml-bobcat"></span><h2>lambeq.bobcat<a class="headerlink" href="#lambeq-bobcat" title="Permalink to this heading"></a></h2>
-<a class="reference internal image-reference" href="_images/bobcat.png"><img alt="_images/bobcat.png" src="_images/bobcat.png" style="width: 279.2px; height: 397.6px;" /></a>
-</section>
-<section id="lambeq-pregroups">
-<span id="uml-pregroups"></span><h2>lambeq.pregroups<a class="headerlink" href="#lambeq-pregroups" title="Permalink to this heading"></a></h2>
-<a class="reference internal image-reference" href="_images/pregroups1.png"><img alt="_images/pregroups1.png" src="_images/pregroups1.png" style="width: 149.6px; height: 54.400000000000006px;" /></a>
+<a class="reference internal image-reference" href="_images/bobcat.png"><img alt="_images/bobcat.png" src="_images/bobcat.png" style="width: 260.8px; height: 397.6px;" /></a>
 </section>
 <section id="lambeq-rewrite">
 <span id="uml-rewrite"></span><h2>lambeq.rewrite<a class="headerlink" href="#lambeq-rewrite" title="Permalink to this heading"></a></h2>
@@ -190,11 +194,11 @@
 </section>
 <section id="lambeq-tokeniser">
 <span id="uml-tokeniser"></span><h2>lambeq.tokeniser<a class="headerlink" href="#lambeq-tokeniser" title="Permalink to this heading"></a></h2>
-<a class="reference internal image-reference" href="_images/tokeniser.png"><img alt="_images/tokeniser.png" src="_images/tokeniser.png" style="width: 138.4px; height: 278.40000000000003px;" /></a>
+<a class="reference internal image-reference" href="_images/tokeniser.png"><img alt="_images/tokeniser.png" src="_images/tokeniser.png" style="width: 128.8px; height: 278.40000000000003px;" /></a>
 </section>
 <section id="lambeq-training">
 <span id="uml-training"></span><h2>lambeq.training<a class="headerlink" href="#lambeq-training" title="Permalink to this heading"></a></h2>
-<a class="reference internal image-reference" href="_images/training.png"><img alt="_images/training.png" src="_images/training.png" style="width: 736.02px; height: 842.16px;" /></a>
+<a class="reference internal image-reference" href="_images/training.png"><img alt="_images/training.png" src="_images/training.png" style="width: 726.7399999999999px; height: 839.8399999999999px;" /></a>
 </section>
 </section>
 
@@ -209,7 +213,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

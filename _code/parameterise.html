@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>&lt;no title&gt; &mdash; lambeq 0.3.3 documentation</title>
+  <title>&lt;no title&gt; &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,8 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
 </ul>
@@ -93,7 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -431,8 +430,8 @@ div.rendered_html tbody tr:hover {
 
 <span class="c1"># Convert string diagram to quantum circuit</span>
 <span class="n">ansatz</span> <span class="o">=</span> <span class="n">IQPAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="n">S</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">n_layers</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<span class="n">discopy_circuit</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
-<span class="n">discopy_circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">circuit</span> <span class="o">=</span> <span class="n">ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
+<span class="n">circuit</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -449,7 +448,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pytket.circuit.display</span> <span class="kn">import</span> <span class="n">render_circuit_jupyter</span>
 
-<span class="n">tket_circuit</span> <span class="o">=</span> <span class="n">discopy_circuit</span><span class="o">.</span><span class="n">to_tk</span><span class="p">()</span>
+<span class="n">tket_circuit</span> <span class="o">=</span> <span class="n">circuit</span><span class="o">.</span><span class="n">to_tk</span><span class="p">()</span>
 
 <span class="n">render_circuit_jupyter</span><span class="p">(</span><span class="n">tket_circuit</span><span class="p">)</span>
 </pre></div>
@@ -468,14 +467,14 @@ div.rendered_html tbody tr:hover {
     &lt;!-- Download Vue 3--&gt;
 &lt;script type=&#34;application/javascript&#34; src=&#34;https://cdn.jsdelivr.net/npm/vue@3&#34;&gt;&lt;/script&gt;
 &lt;!-- Download Circuit Renderer with styles --&gt;
-&lt;script type=&#34;application/javascript&#34; src=&#34;https://unpkg.com/pytket-circuit-renderer@0.6/dist/pytket-circuit-renderer.umd.js&#34;&gt;&lt;/script&gt;
-&lt;link rel=&#34;stylesheet&#34; href=&#34;https://unpkg.com/pytket-circuit-renderer@0.6/dist/pytket-circuit-renderer.css&#34;&gt;
+&lt;script type=&#34;application/javascript&#34; src=&#34;https://unpkg.com/pytket-circuit-renderer@0.7/dist/pytket-circuit-renderer.umd.js&#34;&gt;&lt;/script&gt;
+&lt;link rel=&#34;stylesheet&#34; href=&#34;https://unpkg.com/pytket-circuit-renderer@0.7/dist/pytket-circuit-renderer.css&#34;&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
 
 
-    &lt;div id=&#34;circuit-display-vue-container-5220b14a-b2cb-4fce-95b1-06f5994ca475&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
+    &lt;div id=&#34;circuit-display-vue-container-8d04c943-04df-418f-8265-6151df9e8a5c&#34; class=&#34;pytket-circuit-display-container&#34;&gt;
         &lt;div style=&#34;display: none&#34;&gt;
             &lt;div id=&#34;circuit-json-to-display&#34;&gt;{&#34;bits&#34;: [[&#34;c&#34;, [0]], [&#34;c&#34;, [1]], [&#34;c&#34;, [2]], [&#34;c&#34;, [3]], [&#34;c&#34;, [4]], [&#34;c&#34;, [5]], [&#34;c&#34;, [6]], [&#34;c&#34;, [7]], [&#34;c&#34;, [8]], [&#34;c&#34;, [9]]], &#34;commands&#34;: [{&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*John__n_0&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [4]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [5]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [6]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [7]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [8]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [9]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [10]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*park__n_0&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*John__n_1&#34;], &#34;type&#34;: &#34;Rz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*walks__n.r@s_0&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [4]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_0&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [8]], [&#34;q&#34;, [9]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*the__n@n.l_0&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [10]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*park__n_1&#34;], &#34;type&#34;: &#34;Rz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*John__n_2&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [4]], [&#34;q&#34;, [5]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_1&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [8]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [9]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [10]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*park__n_2&#34;], &#34;type&#34;: &#34;Rx&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*walks__n.r@s_1&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [4]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [5]], [&#34;q&#34;, [6]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_2&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [8]], [&#34;q&#34;, [9]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*the__n@n.l_1&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;q&#34;, [4]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_4&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [5]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [6]], [&#34;q&#34;, [7]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_3&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [8]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [9]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [4]], [&#34;q&#34;, [5]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_5&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [6]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [7]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [9]], [&#34;q&#34;, [10]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [10]], [&#34;c&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;q&#34;, [3]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [4]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [5]], [&#34;q&#34;, [6]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_6&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [9]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [9]], [&#34;c&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [3]], [&#34;c&#34;, [5]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;q&#34;, [4]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [5]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [6]], [&#34;q&#34;, [7]]], &#34;op&#34;: {&#34;params&#34;: [&#34;2*in__s.r@n.r.r@n.r@s@n.l_7&#34;], &#34;type&#34;: &#34;CRz&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [2]], [&#34;c&#34;, [4]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [4]], [&#34;c&#34;, [7]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [5]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [6]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [7]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [1]], [&#34;c&#34;, [6]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [5]], [&#34;c&#34;, [9]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [7]], [&#34;q&#34;, [8]]], &#34;op&#34;: {&#34;type&#34;: &#34;CX&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [8]], [&#34;c&#34;, [3]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [0]], [&#34;c&#34;, [8]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [7]]], &#34;op&#34;: {&#34;type&#34;: &#34;H&#34;}}, {&#34;args&#34;: [[&#34;q&#34;, [7]], [&#34;c&#34;, [2]]], &#34;op&#34;: {&#34;type&#34;: &#34;Measure&#34;}}], &#34;created_qubits&#34;: [], &#34;discarded_qubits&#34;: [], &#34;implicit_permutation&#34;: [[[&#34;q&#34;, [0]], [&#34;q&#34;, [0]]], [[&#34;q&#34;, [1]], [&#34;q&#34;, [1]]], [[&#34;q&#34;, [2]], [&#34;q&#34;, [2]]], [[&#34;q&#34;, [3]], [&#34;q&#34;, [3]]], [[&#34;q&#34;, [4]], [&#34;q&#34;, [4]]], [[&#34;q&#34;, [5]], [&#34;q&#34;, [5]]], [[&#34;q&#34;, [6]], [&#34;q&#34;, [6]]], [[&#34;q&#34;, [7]], [&#34;q&#34;, [7]]], [[&#34;q&#34;, [8]], [&#34;q&#34;, [8]]], [[&#34;q&#34;, [9]], [&#34;q&#34;, [9]]], [[&#34;q&#34;, [10]], [&#34;q&#34;, [10]]]], &#34;phase&#34;: &#34;0.0&#34;, &#34;qubits&#34;: [[&#34;q&#34;, [0]], [&#34;q&#34;, [1]], [&#34;q&#34;, [2]], [&#34;q&#34;, [3]], [&#34;q&#34;, [4]], [&#34;q&#34;, [5]], [&#34;q&#34;, [6]], [&#34;q&#34;, [7]], [&#34;q&#34;, [8]], [&#34;q&#34;, [9]], [&#34;q&#34;, [10]]]}&lt;/div&gt;
         &lt;/div&gt;
@@ -485,7 +484,7 @@ div.rendered_html tbody tr:hover {
         &gt;&lt;/circuit-display-container&gt;
     &lt;/div&gt;
     &lt;script type=&#34;application/javascript&#34;&gt;
-      const circuitRendererUid = &#34;5220b14a-b2cb-4fce-95b1-06f5994ca475&#34;;
+      const circuitRendererUid = &#34;8d04c943-04df-418f-8265-6151df9e8a5c&#34;;
       const displayOptions = JSON.parse(&#39;{}&#39;);
 
       // Script to initialise the circuit renderer app
@@ -535,7 +534,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">TensorAnsatz</span>
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
 
 <span class="n">tensor_ansatz</span> <span class="o">=</span> <span class="n">TensorAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">S</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)})</span>
 <span class="n">tensor_diagram</span> <span class="o">=</span> <span class="n">tensor_ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
@@ -556,7 +555,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">SpiderAnsatz</span>
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
 
 <span class="n">spider_ansatz</span> <span class="o">=</span> <span class="n">SpiderAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">S</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)})</span>
 <span class="n">spider_diagram</span> <span class="o">=</span> <span class="n">spider_ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
@@ -576,7 +575,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">MPSAnsatz</span>
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
 
 <span class="n">mps_ansatz</span> <span class="o">=</span> <span class="n">MPSAnsatz</span><span class="p">({</span><span class="n">N</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">S</span><span class="p">:</span> <span class="n">Dim</span><span class="p">(</span><span class="mi">2</span><span class="p">)},</span> <span class="n">bond_dim</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 <span class="n">mps_diagram</span> <span class="o">=</span> <span class="n">mps_ansatz</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
@@ -600,7 +599,7 @@ window.pytketCircuitDisplays[circuitRendererUid] = app;
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

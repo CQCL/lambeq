@@ -169,7 +169,7 @@ Note that the order of the types in the new diagram has been changed in a way th
     The ``pregroups`` mode trades off diagrammatic simplicity and conformance to a formal pregroup grammar for a larger vocabulary, since each word is associated with more types than before and new words (combined tokens) are added to the vocabulary. Depending on the size of your dataset, this might lead to data sparsity problems during training.
 
 .. Note::
-    To convert a string diagram into a strict pregroup diagram programmatically, one can use the :py:meth:`~lambeq.remove_swaps` method.
+    To convert a string diagram into a strict pregroup diagram programmatically, one can use the :py:class:`.RemoveSwapsRewriter` class.
 
 Using a reader
 --------------
@@ -227,7 +227,7 @@ For the classical case, applying a :py:class:`.SpiderAnsatz` with 2 dimensions a
 Other options
 -------------
 
-To store the :term:`DisCoPy` (for string diagrams) or the :py:class:`.CCGTree` objects (for the CCG trees) in ``json`` or ``pickle`` format, type:
+To store the :py:class:`lambeq.backend.grammar.Diagram` (for string diagrams) or the :py:class:`.CCGTree` objects (for the CCG trees) in ``json`` or ``pickle`` format, type:
 
 .. code-block:: console
 

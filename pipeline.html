@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pipeline &mdash; lambeq 0.3.3 documentation</title>
+  <title>Pipeline &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,8 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -93,7 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -162,10 +161,10 @@
 <p>In more detail:</p>
 <ol class="arabic simple">
 <li><p>A <a class="reference internal" href="glossary.html#term-syntax-tree"><span class="xref std std-term">syntax tree</span></a> for the sentence is obtained by calling a statistical <a class="reference internal" href="parsing.html#sec-parsing"><span class="std std-ref">CCG parser</span></a>. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is equipped with a detailed API that greatly simplifies this process, and ships with support for several state-of-the-art parsers.</p></li>
-<li><p>Internally, the <a class="reference internal" href="glossary.html#term-syntax-tree"><span class="xref std std-term">parse tree</span></a> is converted into a <a class="reference internal" href="string_diagrams.html#sec-string-diagrams"><span class="std std-ref">string diagram</span></a>. This is an abstract representation of the sentence reflecting the relationships between the words as defined by the <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> of choice, independently of any implementation decisions that take place at a lower level.</p></li>
+<li><p>Internally, the <a class="reference internal" href="glossary.html#term-syntax-tree"><span class="xref std std-term">parse tree</span></a> is converted into a <a class="reference internal" href="string-diagrams.html#sec-string-diagrams"><span class="std std-ref">string diagram</span></a>. This is an abstract representation of the sentence reflecting the relationships between the words as defined by the <a class="reference internal" href="glossary.html#term-compositional-model"><span class="xref std std-term">compositional model</span></a> of choice, independently of any implementation decisions that take place at a lower level.</p></li>
 <li><p>The <a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> can be simplified or otherwise transformed by the application of <a class="reference internal" href="tutorials/rewrite.html"><span class="doc">rewriting rules</span></a>; these can be used for example to remove specific interactions between words that might be considered redundant for the task at hand, or in order to make the computation more amenable to implementation on a quantum processing unit.</p></li>
 <li><p>The resulting <a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> can be converted into a concrete <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a> (or a <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> in the case of a “classical” experiment), based on a specific <a class="reference internal" href="tutorials/parameterise.html"><span class="doc">parameterisation</span></a> scheme and concrete choices of <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a>. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> features an extensible class hierarchy containing a selection of pre-defined <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a>, appropriate for both classical and quantum experiments.</p></li>
-<li><p>Now the output of the pipeline (<a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a> or <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a>) is ready to be used for <a class="reference internal" href="training.html#sec-training"><span class="std std-ref">training</span></a>. Since Release <a class="reference internal" href="release_notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a>, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a detailed hierarchy of model and trainer classes that cover all the important use-cases of supervised learning.</p></li>
+<li><p>Now the output of the pipeline (<a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a> or <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a>) is ready to be used for <a class="reference internal" href="training.html#sec-training"><span class="std std-ref">training</span></a>. Since Release <a class="reference internal" href="release-notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a>, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a detailed hierarchy of model and trainer classes that cover all the important use-cases of supervised learning.</p></li>
 </ol>
 <p>In the case of a fully quantum pipeline, the trainer will first process the <a class="reference internal" href="glossary.html#term-quantum-circuit"><span class="xref std std-term">quantum circuit</span></a> by calling a quantum compiler, and then it will upload the result onto a quantum computer, while in the classical case the <a class="reference internal" href="glossary.html#term-tensor-network"><span class="xref std std-term">tensor network</span></a> will be passed to an ML or optimisation library, such as PyTorch or JAX.</p>
 </section>
@@ -181,7 +180,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

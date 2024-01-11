@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>A complete use case &mdash; lambeq 0.3.3 documentation</title>
+  <title>A complete use case &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -25,7 +25,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Advanced: DisCoPy usage" href="../advanced.html" />
+    <link rel="next" title="Advanced: low-level lambeq" href="../advanced.html" />
     <link rel="prev" title="Introduction to symbols" href="training-symbols.html" /> 
 </head>
 
@@ -42,7 +42,7 @@
               <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -58,8 +58,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -78,7 +77,7 @@
 <li class="toctree-l1"><a class="reference internal" href="parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../manual_training.html">Advanced: Manual training</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="training-symbols.html">Introduction to symbols</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">A complete use case</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Preparation">Preparation</a><ul>
@@ -98,7 +97,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../notebooks.html">Examples</a></li>
 </ul>
@@ -114,7 +113,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -137,7 +136,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-          <li class="breadcrumb-item"><a href="../manual_training.html">Advanced: Manual training</a></li>
+          <li class="breadcrumb-item"><a href="../manual-training.html">Advanced: Manual training</a></li>
       <li class="breadcrumb-item active">A complete use case</li>
       <li class="wy-breadcrumbs-aside">
               <a href="https://github.com/CQCL/lambeq/blob/main/docs/tutorials/training-usecase.ipynb" class="fa fa-github"> Edit on GitHub</a>
@@ -445,7 +444,7 @@ div.rendered_html tbody tr:hover {
 <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">np</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">set_backend</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.numerical_backend</span> <span class="kn">import</span> <span class="n">set_backend</span>
 <span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">)</span>
 
 <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Fix the seed</span>
@@ -455,7 +454,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Note the <code class="docutils literal notranslate"><span class="pre">set_backend('jax')</span></code> assignment in the above code. This is required to let <a class="reference internal" href="../glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> know that from now on we use JAX’s version of <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
+<p>Note the <code class="docutils literal notranslate"><span class="pre">set_backend('jax')</span></code> assignment in the above code. This is required to let <span class="xref std std-term">lambeq</span> know that from now on we use JAX’s version of <code class="docutils literal notranslate"><span class="pre">numpy</span></code>.</p>
 </div>
 <p>Let’s read the datasets:</p>
 <section id="Input-data">
@@ -569,7 +568,7 @@ Array([[1., 0.],
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create ansatz and convert to tensor diagrams</span>
 
 <span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">AtomicType</span><span class="p">,</span> <span class="n">SpiderAnsatz</span>
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Dim</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">NOUN</span>
 <span class="n">S</span> <span class="o">=</span> <span class="n">AtomicType</span><span class="o">.</span><span class="n">SENTENCE</span>
@@ -643,7 +642,7 @@ array([0.5488135 , 0.71518937])
     <span class="c1"># Lambdify</span>
     <span class="n">np_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="n">vocab</span><span class="p">)(</span><span class="o">*</span><span class="n">tensors</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">train_circuits</span><span class="p">]</span>
     <span class="c1"># Compute predictions</span>
-    <span class="n">predictions</span> <span class="o">=</span>  <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">array</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np_circuits</span><span class="p">]))</span>
+    <span class="n">predictions</span> <span class="o">=</span>  <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np_circuits</span><span class="p">]))</span>
 
     <span class="c1"># binary cross-entropy loss</span>
     <span class="n">cost</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">train_targets</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">predictions</span><span class="p">))</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train_targets</span><span class="p">)</span>
@@ -702,10 +701,10 @@ array([0.5488135 , 0.71518937])
 Epoch 10 - loss 0.1838509440422058
 Epoch 20 - loss 0.029141228646039963
 Epoch 30 - loss 0.014427061192691326
-Epoch 40 - loss 0.009020490571856499
+Epoch 40 - loss 0.009020495228469372
 Epoch 50 - loss 0.006290055345743895
-Epoch 60 - loss 0.004701165948063135
-Epoch 70 - loss 0.0036874727811664343
+Epoch 60 - loss 0.004701168276369572
+Epoch 70 - loss 0.0036874753423035145
 Epoch 80 - loss 0.0029964144341647625
 Epoch 90 - loss 0.0025011023972183466
 </pre></div></div>
@@ -722,7 +721,7 @@ Epoch 90 - loss 0.0025011023972183466
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Testing</span>
 
 <span class="n">np_test_circuits</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">lambdify</span><span class="p">(</span><span class="o">*</span><span class="n">vocab</span><span class="p">)(</span><span class="o">*</span><span class="n">tensors</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">test_circuits</span><span class="p">]</span>
-<span class="n">test_predictions</span> <span class="o">=</span>  <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">array</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np_test_circuits</span><span class="p">]))</span>
+<span class="n">test_predictions</span> <span class="o">=</span>  <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">np_test_circuits</span><span class="p">]))</span>
 
 <span class="n">hits</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np_test_circuits</span><span class="p">)):</span>
@@ -754,9 +753,9 @@ Accuracy on test set: 0.8666666666666667
 <p>More information can be also found in <a class="reference internal" href="../bibliography.html#mea2020" id="id2"><span>[Mea2020]</span></a> and <a class="reference internal" href="../bibliography.html#lea2021" id="id3"><span>[Lea2021]</span></a>, the papers that describe the first NLP experiments on quantum hardware.</p>
 <p class="rubric">See also:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="../examples/classical_pipeline.html"><span class="doc">Classical pipeline with Pytorch</span></a></p></li>
-<li><p><a class="reference internal" href="../examples/quantum_pipeline.html"><span class="doc">Quantum pipeline with tket</span></a></p></li>
-<li><p><a class="reference internal" href="../examples/quantum_pipeline_jax.html"><span class="doc">Quantum pipeline with JAX</span></a></p></li>
+<li><p><a class="reference internal" href="../examples/classical-pipeline.html"><span class="doc">Classical pipeline with Pytorch</span></a></p></li>
+<li><p><a class="reference internal" href="../examples/quantum-pipeline.html"><span class="doc">Quantum pipeline with tket</span></a></p></li>
+<li><p><a class="reference internal" href="../examples/quantum-pipeline-jax.html"><span class="doc">Quantum pipeline with JAX</span></a></p></li>
 </ul>
 </section>
 </section>
@@ -766,13 +765,13 @@ Accuracy on test set: 0.8666666666666667
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="training-symbols.html" class="btn btn-neutral float-left" title="Introduction to symbols" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../advanced.html" class="btn btn-neutral float-right" title="Advanced: DisCoPy usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../advanced.html" class="btn btn-neutral float-right" title="Advanced: low-level lambeq" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

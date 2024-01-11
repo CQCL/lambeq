@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.core.types &mdash; lambeq 0.3.3 documentation</title>
+  <title>lambeq.core.types &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -53,8 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -73,8 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
 </ul>
@@ -90,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -124,7 +123,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.core.types</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021-2023 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2024 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -149,17 +148,18 @@
 
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
 
-<span class="kn">from</span> <span class="nn">discopy.grammar.pregroup</span> <span class="kn">import</span> <span class="n">Ty</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Ty</span>
 
 
 <div class="viewcode-block" id="AtomicType"><a class="viewcode-back" href="../../../root-api.html#lambeq.AtomicType">[docs]</a><span class="k">class</span> <span class="nc">AtomicType</span><span class="p">(</span><span class="n">Ty</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Standard pregroup atomic types.&quot;&quot;&quot;</span>
 
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">_value_</span><span class="p">:</span> <span class="nb">str</span>
 
-    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Ty</span><span class="p">:</span>  <span class="c1"># type: ignore[misc]</span>
         <span class="n">ret</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="n">Ty</span><span class="p">)</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">_value_</span> <span class="o">=</span> <span class="n">value</span>  <span class="c1"># required for Python 3.11+</span>
+        <span class="n">ret</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="s1">&#39;_value_&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>  <span class="c1"># required for Python 3.11+</span>
         <span class="k">return</span> <span class="n">ret</span>
 
     <span class="n">NOUN</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
@@ -177,7 +177,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

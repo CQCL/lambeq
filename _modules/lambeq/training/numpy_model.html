@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.numpy_model &mdash; lambeq 0.3.3 documentation</title>
+  <title>lambeq.training.numpy_model &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -53,8 +53,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -73,8 +72,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../notebooks.html">Examples</a></li>
 </ul>
@@ -90,7 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -124,7 +123,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for lambeq.training.numpy_model</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright 2021-2023 Cambridge Quantum Computing Ltd.</span>
+<span></span><span class="c1"># Copyright 2021-2024 Cambridge Quantum Computing Ltd.</span>
 <span class="c1">#</span>
 <span class="c1"># Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);</span>
 <span class="c1"># you may not use this file except in compliance with the License.</span>
@@ -153,21 +152,19 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span>
-<span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
 
-<span class="kn">import</span> <span class="nn">discopy</span>
-<span class="kn">from</span> <span class="nn">discopy.tensor</span> <span class="kn">import</span> <span class="n">Diagram</span>
 <span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">numpy.typing</span> <span class="kn">import</span> <span class="n">ArrayLike</span>
-<span class="kn">from</span> <span class="nn">sympy</span> <span class="kn">import</span> <span class="n">lambdify</span>
+
+<span class="kn">from</span> <span class="nn">lambeq.backend</span> <span class="kn">import</span> <span class="n">numerical_backend</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.quantum</span> <span class="kn">import</span> <span class="n">Diagram</span> <span class="k">as</span> <span class="n">Circuit</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.tensor</span> <span class="kn">import</span> <span class="n">Diagram</span>
+<span class="kn">from</span> <span class="nn">lambeq.training.quantum_model</span> <span class="kn">import</span> <span class="n">QuantumModel</span>
 
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">jax</span> <span class="kn">import</span> <span class="n">numpy</span> <span class="k">as</span> <span class="n">jnp</span>
-
-
-<span class="kn">from</span> <span class="nn">lambeq.training.quantum_model</span> <span class="kn">import</span> <span class="n">QuantumModel</span>
 
 
 <div class="viewcode-block" id="NumpyModel"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel">[docs]</a><span class="k">class</span> <span class="nc">NumpyModel</span><span class="p">(</span><span class="n">QuantumModel</span><span class="p">):</span>
@@ -206,42 +203,18 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">diagram</span><span class="p">]</span>
 
         <span class="k">def</span> <span class="nf">diagram_output</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ArrayLike</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">discopy</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">,</span> \
-                    <span class="n">tn</span><span class="o">.</span><span class="n">DefaultBackend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">):</span>  <span class="c1"># noqa: N400</span>
+            <span class="k">with</span> <span class="p">(</span><span class="n">numerical_backend</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">backend</span><span class="p">,</span>
+                  <span class="n">tn</span><span class="o">.</span><span class="n">DefaultBackend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">)):</span>
                 <span class="n">sub_circuit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fast_subs</span><span class="p">([</span><span class="n">diagram</span><span class="p">],</span> <span class="n">x</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">sub_circuit</span><span class="o">.</span><span class="n">to_tn</span><span class="p">())</span><span class="o">.</span><span class="n">tensor</span>
                 <span class="c1"># square amplitudes to get probabilties for pure circuits</span>
+                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sub_circuit</span><span class="p">,</span> <span class="n">Circuit</span><span class="p">)</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">sub_circuit</span><span class="o">.</span><span class="n">is_mixed</span><span class="p">:</span>
                     <span class="n">result</span> <span class="o">=</span> <span class="n">backend</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalise_vector</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">diagram</span><span class="p">]</span> <span class="o">=</span> <span class="n">jit</span><span class="p">(</span><span class="n">diagram_output</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambdas</span><span class="p">[</span><span class="n">diagram</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">_fast_subs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                   <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">],</span>
-                   <span class="n">weights</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Substitute weights into a list of parameterised circuit.&quot;&quot;&quot;</span>
-        <span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">,</span> <span class="n">weights</span><span class="p">)}</span>
-        <span class="n">diagrams</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pickle</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">diagrams</span><span class="p">))</span>  <span class="c1"># does fast deepcopy</span>
-        <span class="k">for</span> <span class="n">diagram</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">diagram</span><span class="o">.</span><span class="n">boxes</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">:</span>
-                    <span class="k">while</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="s1">&#39;controlled&#39;</span><span class="p">):</span>
-                        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">controlled</span>
-                    <span class="n">syms</span><span class="p">,</span> <span class="n">values</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-                    <span class="k">for</span> <span class="n">sym</span> <span class="ow">in</span> <span class="n">b</span><span class="o">.</span><span class="n">free_symbols</span><span class="p">:</span>
-                        <span class="n">syms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span>
-                        <span class="k">try</span><span class="p">:</span>
-                            <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">sym</span><span class="p">])</span>
-                        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                            <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">(</span>
-                                <span class="sa">f</span><span class="s1">&#39;Unknown symbol: </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">sym</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span>
-                            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
-                    <span class="n">b</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">lambdify</span><span class="p">(</span><span class="n">syms</span><span class="p">,</span> <span class="n">b</span><span class="o">.</span><span class="n">data</span><span class="p">)(</span><span class="o">*</span><span class="n">values</span><span class="p">)</span>
-                    <span class="n">b</span><span class="o">.</span><span class="n">drawing_name</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">name</span>
-                    <span class="k">del</span> <span class="n">b</span><span class="o">.</span><span class="n">free_symbols</span>
-        <span class="k">return</span> <span class="n">diagrams</span>
 
 <div class="viewcode-block" id="NumpyModel.get_diagram_output"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.get_diagram_output">[docs]</a>    <span class="k">def</span> <span class="nf">get_diagram_output</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -251,8 +224,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        diagrams : list of :py:class:`~discopy.tensor.Diagram`</span>
-<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;`</span>
+<span class="sd">        diagrams : list of :py:class:`~lambeq.tensor.Diagram`</span>
+<span class="sd">            The :py:class:`Circuits &lt;lambeq.quantum.circuit.Circuit&gt;`</span>
 <span class="sd">            to be evaluated.</span>
 
 <span class="sd">        Raises</span>
@@ -287,15 +260,15 @@
             <span class="k">return</span> <span class="n">res</span>
 
         <span class="n">diagrams</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fast_subs</span><span class="p">(</span><span class="n">diagrams</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
-        <span class="k">with</span> <span class="n">discopy</span><span class="o">.</span><span class="n">tensor</span><span class="o">.</span><span class="n">backend</span><span class="p">(</span><span class="s1">&#39;numpy&#39;</span><span class="p">):</span>
-            <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="o">.</span><span class="n">to_tn</span><span class="p">())</span><span class="o">.</span><span class="n">tensor</span>
-                <span class="c1"># square amplitudes to get probabilties for pure circuits</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">is_mixed</span><span class="p">:</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
-                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_normalise_vector</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
-            <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">diagrams</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">Circuit</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">contractors</span><span class="o">.</span><span class="n">auto</span><span class="p">(</span><span class="o">*</span><span class="n">d</span><span class="o">.</span><span class="n">to_tn</span><span class="p">())</span><span class="o">.</span><span class="n">tensor</span>
+            <span class="c1"># square amplitudes to get probabilties for pure circuits</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">d</span><span class="o">.</span><span class="n">is_mixed</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_normalise_vector</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="NumpyModel.forward"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.NumpyModel.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform default forward pass of a lambeq model.</span>
@@ -305,8 +278,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        x : list of :py:class:`~discopy.tensor.Diagram`</span>
-<span class="sd">            The :py:class:`Circuits &lt;discopy.quantum.circuit.Circuit&gt;`</span>
+<span class="sd">        x : list of :py:class:`~lamebq.tensor.Diagram`</span>
+<span class="sd">            The :py:class:`Circuits &lt;lambeq.quantum.circuit.Circuit&gt;`</span>
 <span class="sd">            to be evaluated.</span>
 
 <span class="sd">        Returns</span>
@@ -325,7 +298,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

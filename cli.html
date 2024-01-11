@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Command-line interface &mdash; lambeq 0.3.3 documentation</title>
+  <title>Command-line interface &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,8 +56,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pipeline.html">Pipeline</a></li>
 <li class="toctree-l1"><a class="reference internal" href="parsing.html">Syntactic parsing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -76,8 +75,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -110,7 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -169,7 +168,7 @@
 </style>
 <section id="command-line-interface">
 <span id="sec-cli"></span><h1>Command-line interface<a class="headerlink" href="#command-line-interface" title="Permalink to this heading"></a></h1>
-<p>While <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is primarily aimed for programmatic use, since Release <a class="reference internal" href="release_notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> it is also equipped with a command-line interface that provides immediate and easy access to most of the toolkit’s functionality. For example, this addition allows <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to be used as a dual <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>, capable of providing syntactic derivations in both <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> and <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> form.</p>
+<p>While <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is primarily aimed for programmatic use, since Release <a class="reference internal" href="release-notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> it is also equipped with a command-line interface that provides immediate and easy access to most of the toolkit’s functionality. For example, this addition allows <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> to be used as a dual <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>, capable of providing syntactic derivations in both <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> and <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> form.</p>
 <p>A summary of the available options is given below.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lambeq<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>-v<span class="o">]</span><span class="w"> </span><span class="o">[</span>-m<span class="w"> </span><span class="o">{</span>string-diagram,pregroups,ccg<span class="o">}]</span><span class="w"> </span><span class="o">[</span>-i<span class="w"> </span>INPUT_FILE<span class="o">]</span>
 <span class="w">       </span><span class="o">[</span>-f<span class="w"> </span><span class="o">{</span>json,pickle,text-unicode,text-ascii,image<span class="o">}]</span>
@@ -305,7 +304,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>To convert a string diagram into a strict pregroup diagram programmatically, one can use the <a class="reference internal" href="root-api.html#lambeq.remove_swaps" title="lambeq.remove_swaps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">remove_swaps()</span></code></a> method.</p>
+<p>To convert a string diagram into a strict pregroup diagram programmatically, one can use the <a class="reference internal" href="lambeq.rewrite.html#lambeq.rewrite.RemoveSwapsRewriter" title="lambeq.rewrite.RemoveSwapsRewriter"><code class="xref py py-class docutils literal notranslate"><span class="pre">RemoveSwapsRewriter</span></code></a> class.</p>
 </div>
 </section>
 <section id="using-a-reader">
@@ -359,7 +358,7 @@ In case your input file does not contain one sentence per line, you can add the 
 </section>
 <section id="other-options">
 <h2>Other options<a class="headerlink" href="#other-options" title="Permalink to this heading"></a></h2>
-<p>To store the <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> (for string diagrams) or the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> objects (for the CCG trees) in <code class="docutils literal notranslate"><span class="pre">json</span></code> or <code class="docutils literal notranslate"><span class="pre">pickle</span></code> format, type:</p>
+<p>To store the <a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.backend.grammar.Diagram</span></code></a> (for string diagrams) or the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> objects (for the CCG trees) in <code class="docutils literal notranslate"><span class="pre">json</span></code> or <code class="docutils literal notranslate"><span class="pre">pickle</span></code> format, type:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>lambeq<span class="w"> </span>-f<span class="w"> </span>pickle<span class="w"> </span>-i<span class="w"> </span>sentences.txt<span class="w"> </span>-o<span class="w"> </span>diagrams.pickle
 </pre></div>
 </div>
@@ -426,7 +425,7 @@ To load the configuration from this file next time, <code class="docutils litera
 <dl class="option-list">
 <dt><kbd>-f, --output_format</kbd></dt>
 <dd><p>Possible choices: json, pickle, text-unicode, text-ascii, image</p>
-<p>Format of the output. Use <cite>json</cite> and <cite>pickle</cite> to store the lambeq / DisCoPy objects in the respective formats, or <cite>text-unicode</cite>, <cite>text-ascii</cite> and <cite>image</cite> to store directly the derivations in diagrammatic form. Default value: text-unicode</p>
+<p>Format of the output. Use <cite>json</cite> and <cite>pickle</cite> to store the lambeq objects in the respective formats, or <cite>text-unicode</cite>, <cite>text-ascii</cite> and <cite>image</cite> to store directly the derivations in diagrammatic form. Default value: text-unicode</p>
 </dd>
 <dt><kbd>-g, --image_format</kbd></dt>
 <dd><p>Possible choices: png, pdf, jpeg, jpg, eps, pgf, ps, raw, rgba, svg, svgz, tif, tiff</p>
@@ -521,7 +520,7 @@ To load the configuration from this file next time, <code class="docutils litera
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

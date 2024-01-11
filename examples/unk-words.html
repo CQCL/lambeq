@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Handling unknown words &mdash; lambeq 0.4.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/table-wrap.css" type="text/css" />
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Parser" href="parser.html" />
+    <link rel="prev" title="Tokenisation" href="tokenisation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            lambeq
+              <img src="../_static/lambeq_logo.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.4.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pipeline.html">Pipeline</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parsing.html">Syntactic parsing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../string-diagrams.html">String diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../use-cases.html">lambeq use cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing to lambeq</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">NLP-101</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-data.html">Working with text data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-class.html">Text classification</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-ml.html">Machine learning best practices</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nlp-refs.html">References for further study</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Tutorials</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/sentence-input.html">Step 1. Sentence input</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/parameterise.html">Step 3. Parameterisation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../training.html">Step 4: Training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../models.html">Choosing a model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced.html">Advanced: low-level lambeq</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="tokenisation.html">Tokenisation</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Handling unknown words</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Handling-unknown-words-in-syntax-free-models">Handling unknown words in syntax-free models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Handling-unknown-words-in-syntax-based-models">Handling unknown words in syntax-based models</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="parser.html">Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reader.html">Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tree-reader.html">Tree reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rewrite.html">Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="circuit.html">Circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tensor.html">Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rotosolve-optimizer.html">Rotosolve optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="classical-pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="quantum-pipeline-jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pennylane.html">Training hybrid models using the Pennylane backend</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../root-api.html">lambeq package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../package-api.html">Subpackages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../uml-diagrams.html">Class diagrams</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Command-line interface</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliography.html">Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../release-notes.html">Release notes</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">External links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/downloads.html">Resources</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://qnlp.cambridgequantum.com/generate.html">Web demo</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">lambeq</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../notebooks.html">Examples</a></li>
+      <li class="breadcrumb-item active">Handling unknown words</li>
+      <li class="wy-breadcrumbs-aside">
+              <a href="https://github.com/CQCL/lambeq/blob/main/docs/examples/unk-words.ipynb" class="fa fa-github"> Edit on GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars and line breaks on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+    white-space: pre;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt .copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+.jp-RenderedHTMLCommon thead,
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+.jp-RenderedHTMLCommon th,
+div.rendered_html th {
+  font-weight: bold;
+}
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+.jp-RenderedHTMLCommon tbody tr:hover,
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Handling-unknown-words">
+<h1>Handling unknown words<a class="headerlink" href="#Handling-unknown-words" title="Permalink to this heading"></a></h1>
+<p>The term <em>unknown words</em> refers to words that might appear during evaluation and testing, but they were not present during training, so the model does not include any representation of them. Consider the following toy train and test sets, where the words ‘John’ and ‘dislikes’ occur only in the test data:</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train_data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Alice loves Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;Alice hates Charlie&#39;</span><span class="p">,</span> <span class="s1">&#39;Bob loves Jim&#39;</span><span class="p">]</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Jim dislikes Bob&#39;</span><span class="p">,</span> <span class="s1">&#39;John loves Alice&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>A common technique to handle unknown words is to replace all <em>rare</em> words in your training data (e.g. words that occur less than 3 times) with a special token <code class="docutils literal notranslate"><span class="pre">UNK</span></code>, and then learn a representation for this as you do with any other token. This representation can be used during evaluation in place of all unknown words in your test data. <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> simplifies this process with the help of a special rewrite rule, <code class="docutils literal notranslate"><span class="pre">UnknownWordsRewriteRule</span></code>, which works as follows:</p>
+<ol class="arabic simple">
+<li><p>Create a vocabulary from the train data, based on a minimum frequency for each word.</p></li>
+<li><p>Replace all words in the train data that are not included in the vocabulary with <code class="docutils literal notranslate"><span class="pre">UNK</span></code>, and do the training as usual</p></li>
+<li><p>Replace all words in the test data that are not included in the vocabulary with <code class="docutils literal notranslate"><span class="pre">UNK</span></code>, and do the testing as usual.</p></li>
+</ol>
+<p>The following sections show how to use this rule in practice, first for models that are not based on syntax (such as the <code class="docutils literal notranslate"><span class="pre">spiders_reader</span></code>), and then for the slightly more complicated case of syntax-based models.</p>
+<section id="Handling-unknown-words-in-syntax-free-models">
+<h2>Handling unknown words in syntax-free models<a class="headerlink" href="#Handling-unknown-words-in-syntax-free-models" title="Permalink to this heading"></a></h2>
+<p>In syntax-free models, such as the spiders reader and the stairs reader, each word has a single representation, no matter in how many different grammatical roles the word appears in the data. For example, consider the word “play”; although it could appear both as a noun and a verb, in a typical syntax-free model there would be just a single representation of the word. Let’s look at a concrete example, using a spiders reader, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s equivalent of a bag-of-words model.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">spiders_reader</span>
+
+<span class="n">train_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Alice loves cats&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bob loves Alice&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Alice hates dogs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bob hates cats&quot;</span>
+<span class="p">]</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Bob dislikes dogs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Bob loves mice&quot;</span>
+<span class="p">]</span>
+
+<span class="c1"># Create the diagrams from the data</span>
+<span class="n">train_diagrams</span> <span class="o">=</span> <span class="n">spiders_reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+<span class="n">test_diagrams</span> <span class="o">=</span> <span class="n">spiders_reader</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We will now create an <code class="docutils literal notranslate"><span class="pre">UnknownWordRewriteRule</span></code> and we will use it to generate a vocabulary from the train data, with all words that occur <em>at least 2 times</em>. This can be done with the class method <code class="docutils literal notranslate"><span class="pre">from_diagrams</span></code>:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">UnknownWordsRewriteRule</span>
+
+<span class="n">unk_wrd_rule</span> <span class="o">=</span> <span class="n">UnknownWordsRewriteRule</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span>
+    <span class="n">diagrams</span><span class="o">=</span><span class="n">train_diagrams</span><span class="p">,</span>
+    <span class="n">min_freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">ignore_types</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+
+<span class="c1"># Show vocabulary</span>
+<span class="n">unk_wrd_rule</span><span class="o">.</span><span class="n">vocabulary</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;Alice&#39;, &#39;Bob&#39;, &#39;cats&#39;, &#39;hates&#39;, &#39;loves&#39;}
+</pre></div></div>
+</div>
+<p>Note that the word “dogs” is not included in this vocabulary, since it occurs only once in the train data, so it doesn’t meet the inclusion condition. Further, notice that the parameter <code class="docutils literal notranslate"><span class="pre">ignore_types</span></code> is set to True, which forces the rewrite rule to ignore differences that occur only in the grammatical type of the token.</p>
+<p>In order to use the rewrite rule in practice, we need to pass it to a <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> rewriter and apply it on the train and test data.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">Rewriter</span>
+
+<span class="n">rewriter</span> <span class="o">=</span> <span class="n">Rewriter</span><span class="p">([</span><span class="n">unk_wrd_rule</span><span class="p">])</span>
+
+<span class="c1"># Replace rare/unknown words with UNK</span>
+<span class="n">rewritten_train_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">rewriter</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_diagrams</span><span class="p">]</span>
+<span class="n">rewritten_test_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">rewriter</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">test_diagrams</span><span class="p">]</span>
+
+<span class="c1"># Training</span>
+<span class="c1"># ...</span>
+
+<span class="c1"># Testing</span>
+<span class="c1"># ...</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s examine the results on the train set:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">rewritten_train_diagrams</span><span class="p">:</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_9_0.png" src="../_images/examples_unk-words_9_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_9_1.png" src="../_images/examples_unk-words_9_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_9_2.png" src="../_images/examples_unk-words_9_2.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_9_3.png" src="../_images/examples_unk-words_9_3.png" />
+</div>
+</div>
+<p>In the third diagram, “dogs” is replaced by <code class="docutils literal notranslate"><span class="pre">UNK</span></code>, since it appeared in the train data only once, so it was considered a rare word and thus was not included in the vocabulary. We can now use these diagrams for training, so the model will learn a representation for the <code class="docutils literal notranslate"><span class="pre">UNK</span></code> token equally as for every other word.</p>
+<p>Let’s now have a look at the test diagrams:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">rewritten_test_diagrams</span><span class="p">:</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_11_0.png" src="../_images/examples_unk-words_11_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_11_1.png" src="../_images/examples_unk-words_11_1.png" />
+</div>
+</div>
+<p>Every word that was not included in the original vocabulary created from the train data is now replaced with the <code class="docutils literal notranslate"><span class="pre">UNK</span></code> token, and it will use the learned representation of that token.</p>
+</section>
+<section id="Handling-unknown-words-in-syntax-based-models">
+<h2>Handling unknown words in syntax-based models<a class="headerlink" href="#Handling-unknown-words-in-syntax-based-models" title="Permalink to this heading"></a></h2>
+<p>In syntax-based models, such as DisCoCat, words are added to the vocabulary based on both their surface form <em>and</em> the grammatical type in which they occur in the data. This means that it is possible to have more than one <code class="docutils literal notranslate"><span class="pre">UNK</span></code> token in your vocabulary, and even that a token that occurs under different grammatical roles (e.g. “play” as a verb and “play” as a noun) could be replaced by different <code class="docutils literal notranslate"><span class="pre">UNK</span></code> tokens depending on the type of each occurrence. In the following example, we use
+BobcatParser to create DisCoCat diagrams for a toy dataset.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">lambeq</span> <span class="kn">import</span> <span class="n">BobcatParser</span>
+
+<span class="n">train_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;children play hide-and-seek&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;musicians play music&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a theatrical play&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;music for children&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;a play for musicians&quot;</span>
+<span class="p">]</span>
+
+<span class="n">test_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;play ball&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;nice play&quot;</span>
+<span class="p">]</span>
+
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">BobcatParser</span><span class="p">()</span>
+<span class="n">train_diagrams</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">train_data</span><span class="p">)</span>
+<span class="n">test_diagrams</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "150d5e2306864c389c0b4be6807445c6", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f63426f05b94436ca74ea6b5a036c00f", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "6188b5e814764720b503416dab605c67", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "f98155a740fd4377bac7f78236428f57", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "d1558baabb59454786ef64ca4bb56aa2", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<script type="application/vnd.jupyter.widget-view+json">{"model_id": "c4824e7fb8a44fb199043effa5b121bd", "version_major": 2, "version_minor": 0}</script></div>
+</div>
+<p>We will apply the same rule as before, with the difference that now the <code class="docutils literal notranslate"><span class="pre">ignore_types</span></code> parameter is set to False, which means that the type of each token is also taken into account.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">unk_wrd_rule</span> <span class="o">=</span> <span class="n">UnknownWordsRewriteRule</span><span class="o">.</span><span class="n">from_diagrams</span><span class="p">(</span>
+    <span class="n">diagrams</span><span class="o">=</span><span class="n">train_diagrams</span><span class="p">,</span>
+    <span class="n">min_freq</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">ignore_types</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">)</span>
+
+<span class="c1"># Print vocabulary</span>
+<span class="k">for</span> <span class="n">tok</span><span class="p">,</span> <span class="n">typ</span> <span class="ow">in</span> <span class="n">unk_wrd_rule</span><span class="o">.</span><span class="n">vocabulary</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">tok</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="nb">str</span><span class="p">(</span><span class="n">typ</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+for : n.r @ n @ n.l
+play : n
+play : n.r @ s @ n.l
+a : n @ n.l
+music : n
+children : n
+musicians : n
+</pre></div></div>
+</div>
+<p>Note that the word “play” has two representations in the vocabulary: one as a transitive verb with type <code class="docutils literal notranslate"><span class="pre">n.r</span> <span class="pre">&#64;</span> <span class="pre">s</span> <span class="pre">&#64;n.l</span></code>, and one as a simple noun. These two tokens are considered different in a syntax-based model. Let’s use this vocabulary to introduce <code class="docutils literal notranslate"><span class="pre">UNK</span></code> tokens in the train and test diagrams.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rewriter</span> <span class="o">=</span> <span class="n">Rewriter</span><span class="p">([</span><span class="n">unk_wrd_rule</span><span class="p">])</span>
+
+<span class="n">rewritten_train_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">rewriter</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">train_diagrams</span><span class="p">]</span>
+<span class="n">rewritten_test_diagrams</span> <span class="o">=</span> <span class="p">[</span><span class="n">rewriter</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">test_diagrams</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>When examining the training diagrams, we can see two different <code class="docutils literal notranslate"><span class="pre">UNK</span></code> tokens being added: one for nouns (first diagram) and one for adjectives (third diagram). This is because the corresponding words (“hide-and-seek”, “theatrical”) occurred only once in the train data, so they were not included in the vocabulary.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">rewritten_train_diagrams</span><span class="p">:</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_20_0.png" src="../_images/examples_unk-words_20_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_20_1.png" src="../_images/examples_unk-words_20_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_20_2.png" src="../_images/examples_unk-words_20_2.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_20_3.png" src="../_images/examples_unk-words_20_3.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_20_4.png" src="../_images/examples_unk-words_20_4.png" />
+</div>
+</div>
+<p>These <code class="docutils literal notranslate"><span class="pre">UNK</span></code> representations will be used in the testing diagrams in place of the unseen noun (“ball”) and adjective (“nice”).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">rewritten_test_diagrams</span><span class="p">:</span>
+    <span class="n">d</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_22_0.png" src="../_images/examples_unk-words_22_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/examples_unk-words_22_1.png" src="../_images/examples_unk-words_22_1.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tokenisation.html" class="btn btn-neutral float-left" title="Tokenisation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parser.html" class="btn btn-neutral float-right" title="Parser" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

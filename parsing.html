@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Syntactic parsing &mdash; lambeq 0.3.3 documentation</title>
+  <title>Syntactic parsing &mdash; lambeq 0.4.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -23,7 +23,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="String diagrams" href="string_diagrams.html" />
+    <link rel="next" title="String diagrams" href="string-diagrams.html" />
     <link rel="prev" title="Pipeline" href="pipeline.html" /> 
 </head>
 
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.3.3
+                0.4.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,8 +59,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#reading-ccgbank">Reading CCGBank</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="string_diagrams.html">String diagrams</a></li>
-<li class="toctree-l1"><a class="reference internal" href="discopy.html">DisCoPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="string-diagrams.html">String diagrams</a></li>
 <li class="toctree-l1"><a class="reference internal" href="use-cases.html">lambeq use cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing to lambeq</a></li>
 </ul>
@@ -79,8 +78,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual_training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: DisCoPy usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 </ul>
@@ -96,7 +95,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release_notes.html">Release notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -155,8 +154,8 @@
 </style>
 <section id="syntactic-parsing">
 <span id="sec-parsing"></span><h1>Syntactic parsing<a class="headerlink" href="#syntactic-parsing" title="Permalink to this heading"></a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="string_diagrams.html#sec-string-diagrams"><span class="std std-ref">string diagrams</span></a> are based on a <a class="reference internal" href="string_diagrams.html#sec-pregroup-grammars"><span class="std std-ref">pregroup grammar</span></a> to keep track of the types and the interactions between the words in a sentence. When a detailed syntactic derivation is required (as in the case of <a class="reference internal" href="glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a>), a <a class="reference internal" href="glossary.html#term-syntax-tree"><span class="xref std std-term">syntax tree</span></a> needs to be provided by a statistical <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>. However, since the <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup grammar</span></a> formalism is not particularly well-known in the <a class="reference internal" href="glossary.html#term-natural-language-processing-NLP"><span class="xref std std-term">NLP</span></a> community, there is currently no wide-coverage pregroup <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a> that can automatically provide the syntactic derivations. To address this problem, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a passage from a derivation in the closest alternative grammar formalism, namely <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">Combinatory Categorial Grammar (CCG)</span></a>, to a <a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> which faithfully encodes the syntactic structure of the sentence in a pregroup-like form <a class="reference internal" href="bibliography.html#yk2021" id="id1"><span>[YK2021]</span></a>. Due to the availability of many robust <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parsing tools</span></a>, this allows the conversion of large corpora with sentences of arbitrary length and syntactic structure into <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> and <a class="reference internal" href="glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> form.</p>
-<p>Since Release <a class="reference internal" href="release_notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a>, the standard <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> installation includes a state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id2"><span>[SC2021]</span></a>, fully integrated into the toolkit. This parser is provided under the name <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a>. Additionally, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> implements a detailed interface in the <a class="reference internal" href="lambeq.text2diagram.html#module-lambeq.text2diagram" title="lambeq.text2diagram"><code class="xref py py-mod docutils literal notranslate"><span class="pre">text2diagram</span></code></a> package that allows connection to one of the many external CCG parsing tools that are currently available. For example, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is also shipped with support for <a class="reference internal" href="glossary.html#term-depccg"><span class="xref std std-term">depccg</span></a> <a class="footnote-reference brackets" href="#f1" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="reference internal" href="bibliography.html#ynm2017" id="id4"><span>[YNM2017]</span></a>, a fast parser that comes with a convenient Python interface.</p>
+<p><code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s <a class="reference internal" href="string-diagrams.html#sec-string-diagrams"><span class="std std-ref">string diagrams</span></a> are based on a <a class="reference internal" href="string-diagrams.html#sec-pregroup-grammars"><span class="std std-ref">pregroup grammar</span></a> to keep track of the types and the interactions between the words in a sentence. When a detailed syntactic derivation is required (as in the case of <a class="reference internal" href="glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a>), a <a class="reference internal" href="glossary.html#term-syntax-tree"><span class="xref std std-term">syntax tree</span></a> needs to be provided by a statistical <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a>. However, since the <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup grammar</span></a> formalism is not particularly well-known in the <a class="reference internal" href="glossary.html#term-natural-language-processing-NLP"><span class="xref std std-term">NLP</span></a> community, there is currently no wide-coverage pregroup <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parser</span></a> that can automatically provide the syntactic derivations. To address this problem, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> provides a passage from a derivation in the closest alternative grammar formalism, namely <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">Combinatory Categorial Grammar (CCG)</span></a>, to a <a class="reference internal" href="glossary.html#term-string-diagram"><span class="xref std std-term">string diagram</span></a> which faithfully encodes the syntactic structure of the sentence in a pregroup-like form <a class="reference internal" href="bibliography.html#yk2021" id="id1"><span>[YK2021]</span></a>. Due to the availability of many robust <a class="reference internal" href="glossary.html#term-Combinatory-Categorial-Grammar-CCG"><span class="xref std std-term">CCG</span></a> <a class="reference internal" href="glossary.html#term-parser"><span class="xref std std-term">parsing tools</span></a>, this allows the conversion of large corpora with sentences of arbitrary length and syntactic structure into <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> and <a class="reference internal" href="glossary.html#term-DisCoCat"><span class="xref std std-term">DisCoCat</span></a> form.</p>
+<p>Since Release <a class="reference internal" href="release-notes.html#rel-0-2-0"><span class="std std-ref">0.2.0</span></a>, the standard <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> installation includes a state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id2"><span>[SC2021]</span></a>, fully integrated into the toolkit. This parser is provided under the name <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a>. Additionally, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> implements a detailed interface in the <a class="reference internal" href="lambeq.text2diagram.html#module-lambeq.text2diagram" title="lambeq.text2diagram"><code class="xref py py-mod docutils literal notranslate"><span class="pre">text2diagram</span></code></a> package that allows connection to one of the many external CCG parsing tools that are currently available. For example, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> is also shipped with support for <a class="reference internal" href="glossary.html#term-depccg"><span class="xref std std-term">depccg</span></a> <a class="footnote-reference brackets" href="#f1" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> <a class="reference internal" href="bibliography.html#ynm2017" id="id4"><span>[YNM2017]</span></a>, a fast parser that comes with a convenient Python interface.</p>
 <p>Additional external parsers can be made available to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> by extending the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGParser" title="lambeq.text2diagram.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGParser</span></code></a> class in order to create a wrapper subclass that encapsulates the necessary calls and translates the respective parser’s output into <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> format.</p>
 <p>Finally, for users who prefer to keep the installation of the toolkit light, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> also includes a web-based parser class that sends parsing queries to an online API, so that local installation of a full CCG parser is not strictly necessary anymore – although strongly recommended for most practical uses of the toolkit.</p>
 <section id="reading-ccgbank">
@@ -187,13 +186,13 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pipeline.html" class="btn btn-neutral float-left" title="Pipeline" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="string_diagrams.html" class="btn btn-neutral float-right" title="String diagrams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="string-diagrams.html" class="btn btn-neutral float-right" title="String diagrams" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023 Cambridge Quantum Computing Ltd..</p>
+    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
