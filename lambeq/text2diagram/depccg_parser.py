@@ -467,7 +467,7 @@ class DepCCGParser(CCGParser):
                        children=children,
                        metadata={'original': tree})
 
-def depccg_to_json(tree: depccg.tree.Tree) -> Dict[str, Any]:
+def depccg_to_json(tree: depccg.tree.Tree) -> dict[str, Any]:
     data = {'type': str(tree.cat)}
     if tree.is_leaf:
         data['rule'], data['text'] = 'L', tree.word
