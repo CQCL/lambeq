@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 """
 Reader
 ======
-A :py:class:`Reader` is a parser that turns sentences into DisCoPy
+A :py:class:`Reader` is a parser that turns sentences into lambeq
 diagrams, but not according to the DisCoCat model.
 
 For example, the :py:class:`LinearReader` combines linearly from
@@ -48,8 +48,7 @@ __all__ = ['Reader']
 
 from abc import ABC, abstractmethod
 
-from discopy.grammar.pregroup import Diagram
-
+from lambeq.backend.grammar import Diagram
 from lambeq.core.utils import SentenceBatchType, SentenceType
 
 
@@ -60,11 +59,11 @@ class Reader(ABC):
     def sentence2diagram(self,
                          sentence: SentenceType,
                          tokenised: bool = False) -> Diagram | None:
-        """Parse a sentence into a DisCoPy diagram."""
+        """Parse a sentence into a lambeq diagram."""
 
     def sentences2diagrams(self,
                            sentences: SentenceBatchType,
                            tokenised: bool = False) -> list[Diagram | None]:
-        """Parse multiple sentences into a list of DisCoPy diagrams."""
+        """Parse multiple sentences into a list of lambeq diagrams."""
         return [self.sentence2diagram(sentence, tokenised=tokenised)
                 for sentence in sentences]

@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@ Module based on a quantum backend, using `tket`.
 """
 from __future__ import annotations
 
-from collections.abc import Callable
 from typing import Any
 
-from discopy.quantum import Circuit, Id, Measure
-from discopy.tensor import Diagram
 import numpy as np
 
+from lambeq.backend.quantum import Diagram as Circuit, Id, Measure
+from lambeq.backend.tensor import Diagram
 from lambeq.training.quantum_model import QuantumModel
 
 
@@ -62,12 +61,6 @@ class TketModel(QuantumModel):
                            f'Missing arguments: {missing_fields}.')
         self.backend_config = backend_config
 
-    def _make_lambda(self, diagram: Diagram) -> Callable[..., Any]:
-        """Measure and lambdify diagrams."""
-        measured = diagram >> Id().tensor(*[Measure()] * len(diagram.cod))
-        ret: Callable = measured.lambdify(*self.symbols)
-        return ret
-
     def _randint(self, low: int = -1 << 63, high: int = (1 << 63)-1) -> int:
         return np.random.randint(low, high, dtype=np.int64)
 
@@ -76,8 +69,8 @@ class TketModel(QuantumModel):
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+        diagrams : list of :py:class:`~lambeq.backend.quantum.Diagram
+            The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
             to be evaluated.
 
         Raises
@@ -98,19 +91,22 @@ class TketModel(QuantumModel):
                              'then call `initialise_weights()`, or load '
                              'from pre-trained checkpoint.')
 
-        lambdified_diagrams = [self._make_lambda(d) for d in diagrams]
+        measured = [diagram >> Id().tensor(*[Measure()] * len(diagram.cod))
+                    for diagram in diagrams]  # noqa: E501
+        measured = self._fast_subs(measured, self.weights)
+
         tensors = Circuit.eval(
-            *[diag_f(*self.weights) for diag_f in lambdified_diagrams],
+            *measured,  # type: ignore[arg-type]
             **self.backend_config,
             seed=self._randint()
         )
         self.backend_config['backend'].empty_cache()
-        # discopy evals a single diagram into a single result
+        # lambeq evals a single diagram into a single result
         # and not a list of results
         if len(diagrams) == 1:
-            result = self._normalise_vector(tensors.array)
+            result = self._normalise_vector(tensors)
             return result.reshape(1, *result.shape)
-        return np.array([self._normalise_vector(t.array) for t in tensors])
+        return np.array([self._normalise_vector(t) for t in tensors])
 
     def forward(self, x: list[Diagram]) -> np.ndarray:
         """Perform default forward pass of a lambeq quantum model.
@@ -120,8 +116,8 @@ class TketModel(QuantumModel):
 
         Parameters
         ----------
-        x : list of :py:class:`~discopy.tensor.Diagram`
-            The :py:class:`Circuits <discopy.quantum.circuit.Circuit>`
+        x : list of :py:class:`~lambeq.backend.quantum.Diagram`
+            The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
             to be evaluated.
 
         Returns

@@ -14,7 +14,7 @@
 #              about the Python environment where the notebooks are
 #              executed. This includes the output of 'pip list',
 #              displaying all installed packages, and specific information
-#              for 'lambeq' and 'discopy' packages using 'pip show'.
+#              for 'lambeq' using 'pip show'.
 #
 #              Lastly, the script checks whether each notebook's execution
 #              succeeded, storing the executed notebooks even if they
@@ -79,17 +79,15 @@ fi
 
 # Store the output of 'pip show'
 lambeq_info=$(pip show lambeq)
-discopy_info=$(pip show discopy)
 
 # Extract the version numbers
 lambeq_version=$(echo "$lambeq_info" | grep "^Version" | cut -d ' ' -f 2)
-discopy_version=$(echo "$discopy_info" | grep "^Version" | cut -d ' ' -f 2)
 
 # Create a timestamp for output directory
 timestamp=$(date +%Y%m%d_%H%M%S)
 
-# Add lambeq and discopy versions to the directory name
-timestamp="${timestamp}_lambeq-${lambeq_version}_discopy-${discopy_version}"
+# Add lambeq versions to the directory name
+timestamp="${timestamp}_lambeq-${lambeq_version}"
 
 # Create a new directory with timestamp
 mkdir -p "$base_path/$timestamp"
@@ -102,7 +100,6 @@ pip list > $base_path/$timestamp/pip_list.txt
 
 # Store the output of 'pip show'
 echo "$lambeq_info" > $base_path/$timestamp/lambeq_info.txt
-echo "$discopy_info" > $base_path/$timestamp/discopy_info.txt
 
 # The directories containing your notebooks
 dirs=("examples" "tutorials")

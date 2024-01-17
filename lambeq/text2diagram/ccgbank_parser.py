@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ from lambeq.text2diagram.ccg_type import CCGType
 from lambeq.typing import StrPathT
 
 if TYPE_CHECKING:
-    from discopy.pregroup import Diagram
+    from lambeq.backend.grammar import Diagram
 
 
 class CCGBankParseError(Exception):

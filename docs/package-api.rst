@@ -28,6 +28,69 @@ Concrete implementations of classical and quantum :term:`ansätze <ansatz (plura
 
 |
 
+.. _api_backend:
+
+lambeq.backend
+--------------
+``lambeq``'s internal representation of categories. This work is based on :term:`DisCoPy` (https://discopy.org/) which is released under the BSD 3-Clause "New" or "Revised" License.
+
+.. rubric:: API: :doc:`lambeq.backend`
+
+.. rubric:: UML diagrams: :ref:`uml_backend`
+
+.. rubric:: Classes:
+
+.. inheritance-diagram::
+    lambeq.backend.grammar.Entity
+    lambeq.backend.grammar.Category
+    lambeq.backend.grammar.Ty
+    lambeq.backend.quantum.Ty
+    lambeq.backend.grammar.Diagrammable
+    lambeq.backend.grammar.Box
+    lambeq.backend.quantum.Box
+    lambeq.backend.grammar.Layer
+    lambeq.backend.quantum.Layer
+    lambeq.backend.grammar.Diagram
+    lambeq.backend.quantum.Diagram
+    lambeq.backend.grammar.Cup
+    lambeq.backend.grammar.Cap
+    lambeq.backend.grammar.Daggered
+    lambeq.backend.quantum.Daggered
+    lambeq.backend.grammar.Spider
+    lambeq.backend.grammar.Swap
+    lambeq.backend.quantum.Swap
+    lambeq.backend.grammar.Word
+    lambeq.backend.grammar.Functor
+   :parts: 2
+
+|
+
+.. inheritance-diagram::
+    lambeq.backend.quantum.Box
+    lambeq.backend.quantum.SelfConjugate
+    lambeq.backend.quantum.AntiConjugate
+    lambeq.backend.quantum.Swap
+    lambeq.backend.quantum.Ket
+    lambeq.backend.quantum.Bra
+    lambeq.backend.quantum.Parametrized
+    lambeq.backend.quantum.Rotation
+    lambeq.backend.quantum.Rx
+    lambeq.backend.quantum.Ry
+    lambeq.backend.quantum.Rz
+    lambeq.backend.quantum.Controlled
+    lambeq.backend.quantum.MixedState
+    lambeq.backend.quantum.Discard
+    lambeq.backend.quantum.Measure
+    lambeq.backend.quantum.Encode
+    lambeq.backend.quantum.Scalar
+    lambeq.backend.quantum.Sqrt
+    lambeq.backend.quantum.Daggered
+    lambeq.backend.quantum.Bit
+   :top-classes: lambeq.backend.grammar.Box
+   :parts: 2
+
+|
+
 .. _api_bobcat:
 
 lambeq.bobcat
@@ -55,31 +118,6 @@ The code for :term:`Bobcat` parser, a state-of-the-art :term:`CCG <Combinatory C
 
 |
 
-.. _api_pregroups:
-
-lambeq.pregroups
-----------------
-A collection of useful utilities for easier manipulation of :term:`pregroup <pregroup grammar>` diagrams.
-
-.. rubric:: API: :doc:`lambeq.pregroups`
-
-.. rubric:: UML diagrams: :ref:`uml_pregroups`
-
-.. rubric:: Methods
-
-- :py:meth:`~lambeq.pregroups.create_pregroup_diagram`
-- :py:meth:`~lambeq.pregroups.diagram2str`
-- :py:meth:`~lambeq.pregroups.is_pregroup_diagram`
-- :py:meth:`~lambeq.pregroups.remove_cups`
-- :py:meth:`~lambeq.pregroups.remove_swaps`
-
-.. rubric:: Classes
-
-.. inheritance-diagram:: lambeq.pregroups.TextDiagramPrinter
-   :parts: 1
-
-|
-
 .. _api_rewrite:
 
 lambeq.rewrite
@@ -95,9 +133,14 @@ Contains implementations of :term:`rewrite rules <rewrite rule>` for the transfo
 .. inheritance-diagram::
     lambeq.rewrite.CoordinationRewriteRule
     lambeq.rewrite.CurryRewriteRule
+    lambeq.rewrite.DiagramRewriter
+    lambeq.rewrite.RemoveCupsRewriter
+    lambeq.rewrite.RemoveSwapsRewriter
     lambeq.rewrite.RewriteRule
     lambeq.rewrite.Rewriter
     lambeq.rewrite.SimpleRewriteRule
+    lambeq.rewrite.UnifyCodomainRewriter
+    lambeq.rewrite.UnknownWordsRewriteRule
    :parts: 1
 
 |

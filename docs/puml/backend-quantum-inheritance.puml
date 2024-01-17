@@ -1,0 +1,58 @@
+@startuml
+
+set namespaceseparator none
+left to right direction
+skinparam dpi 96
+skinparam shadowing true
+skinparam ArrowColor Black
+skinparam PackageStyle folder
+skinparam class {
+  backgroundColor Business
+  borderColor Red
+}
+skinparam object {
+  backgroundColor lavender
+  borderColor black
+}
+
+
+' inheritance relations
+grammar.Box <|-- tensor.Box
+grammar.Box <|-- grammar.Daggered
+grammar.Box <|-- grammar.Swap
+
+grammar.Daggered <|-- tensor.Daggered
+tensor.Box <|-- tensor.Daggered
+grammar.Swap <|-- tensor.Swap
+tensor.Box <|-- tensor.Swap
+
+tensor.Box <|-- quantum.Box
+tensor.Swap <|-- quantum.Swap
+quantum.Box <|-- quantum.Swap
+tensor.Daggered <|-- quantum.Daggered
+quantum.Box <|--- quantum.Bra
+quantum.Box <|--- quantum.SelfConjugate
+quantum.Box <|--- quantum.Ket
+quantum.Box <|-- quantum.Daggered
+quantum.Box <|-- quantum.Scalar
+quantum.Box <|-- quantum.Bit
+quantum.Box <|-- quantum.Parametrized
+quantum.Box <|-- quantum.AntiConjugate
+quantum.SelfConjugate <|-- quantum.Swap
+quantum.SelfConjugate <|-- quantum.Ket
+quantum.SelfConjugate <|-- quantum.Bra
+quantum.SelfConjugate <|-- quantum.Ry
+quantum.SelfConjugate <|-- quantum.Discard
+quantum.SelfConjugate <|-- quantum.Encode
+quantum.SelfConjugate <|-- quantum.Measure
+quantum.SelfConjugate <|-- quantum.MixedState
+quantum.Scalar <|-- quantum.Sqrt
+quantum.Parametrized <|-- quantum.Rotation
+quantum.Parametrized <|-- quantum.Controlled
+quantum.Rotation <|-- quantum.Rz
+quantum.Rotation <|-- quantum.Rx
+quantum.Rotation <|-- quantum.Ry
+quantum.AntiConjugate <|-- quantum.Rz
+quantum.AntiConjugate <|-- quantum.Rx
+
+@enduml

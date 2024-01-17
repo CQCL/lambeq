@@ -2,7 +2,7 @@ import pytest
 
 import numpy as np
 
-from discopy.grammar.pregroup import Cup, Word, Id
+from lambeq.backend.grammar import Cup, Word, Id
 
 from lambeq import AtomicType, IQPAnsatz, RotosolveOptimizer
 

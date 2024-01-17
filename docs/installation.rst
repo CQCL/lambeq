@@ -15,9 +15,13 @@ To install ``lambeq`` with optional dependencies for extra features, run::
 
    pip install lambeq[extras]
 
-To enable depccg support, you will need to install depccg separately. More information can be found
-on the `depccg homepage <//github.com/masashi-y/depccg>`_.
-Currently, only version 2.0.3.2 of depccg is supported. After installing depccg, you can download its model by using the script provided in the ``contrib`` folder of the ``lambeq`` repository::
+DepCCG support
+--------------
+
+.. note::
+   The DepCCG-related functionality is no longer actively supported in ``lambeq``, and may not work as expected. We strongly recommend using the default :term:`Bobcat` parser which comes as part of ``lambeq``.
+
+If you still want to use DepCCG, for example because you plan to apply ``lambeq`` on Japanese, you can install DepCCG separately following the instructions on the `DepCCG homepage <//github.com/masashi-y/depccg>`_. After installing DepCCG, you can download its model by using the script provided in the ``contrib`` folder of the ``lambeq`` repository::
 
    python contrib/download_depccg_model.py
 

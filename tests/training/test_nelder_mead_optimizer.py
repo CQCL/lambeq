@@ -2,7 +2,7 @@ import pytest
 
 import numpy as np
 
-from discopy.grammar.pregroup import Cup, Id, Word
+from lambeq.backend.grammar import Cup, Id, Word
 
 from lambeq import AtomicType, IQPAnsatz, NelderMeadOptimizer
 

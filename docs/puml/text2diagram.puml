@@ -79,21 +79,6 @@ class CCGTree
 class bobcat.Tagger #back:wheat;line:tomato
 class bobcat.ChartParser #back:wheat;line:tomato
 
-class ccg_rule.GBC
-class ccg_rule.GFX
-class ccg_rule.GFC
-class ccg_rule.GBX
-class ccg_rule.RPL
-class ccg_rule.RPR
-
-class discopy.rigid.Ty #back:lightblue;line:black {}
-class discopy.rigid.Ob #back:lightblue;line:black {}
-class discopy.monoidal.Ty #back:lightblue;line:black {}
-class discopy.monoidal.Diagram #back:lightblue;line:black {}
-class discopy.rigid.Diagram #back:lightblue;line:black {}
-class discopy.grammar.categorial.Diagram #back:lightblue;line:black {}
-class discopy.grammar.categorial.Box #back:lightblue;line:black {}
-
 object cups_reader
 object spiders_reader
 object stairs_reader
@@ -115,19 +100,12 @@ SpidersReader <.. spiders_reader : <<instanceOf>>
 
 DepCCGParser - depccg: > uses
 
-discopy.monoidal.Ty <|-- discopy.rigid.Ty
-discopy.rigid.Ob <|-- discopy.rigid.Ty
-discopy.rigid.Diagram --|> discopy.monoidal.Diagram
-
-discopy.monoidal.Diagram <|-r- discopy.grammar.categorial.Diagram
-discopy.grammar.categorial.Diagram <|-- discopy.grammar.categorial.Box
-
 TreeReader::ccg_parser o-- CCGParser
 TreeReader::mode *-l- TreeReaderMode
-LinearReader::word_type *-- discopy.rigid.Ty
-TreeReader::word_type *-- discopy.rigid.Ty
-LinearReader::combining_diagram *-- discopy.rigid.Diagram
-LinearReader::start_box *-- discopy.rigid.Diagram
+LinearReader::word_type *-- backend.grammar.Ty
+TreeReader::word_type *-- backend.grammar.Ty
+LinearReader::combining_diagram *-- backend.grammar.Diagram
+LinearReader::start_box *-- backend.grammar.Diagram
 
 BobcatParser::parser *-- bobcat.ChartParser
 BobcatParser::tagger *-- bobcat.Tagger
@@ -138,15 +116,8 @@ WebParser -- depccg: uses >
 
 CCGTree *-- CCGRule
 CCGTree -u- CCGParser : < generates
-discopy.rigid.Diagram -- CCGTree : < isConvertedTo
+backend.grammar.Diagram -- CCGTree : < isConvertedTo
 
-Reader -- discopy.rigid.Diagram : generates >
-
-discopy.grammar.categorial.Box <|-- ccg_rule.GBC
-discopy.grammar.categorial.Box <|-- ccg_rule.GFX
-discopy.grammar.categorial.Box <|-- ccg_rule.GFC
-discopy.grammar.categorial.Box <|-- ccg_rule.GBX
-discopy.grammar.categorial.Box <|-- ccg_rule.RPL
-discopy.grammar.categorial.Box <|-- ccg_rule.RPR
+Reader -- backend.grammar.Diagram : generates >
 
 @enduml

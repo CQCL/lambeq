@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,6 +38,7 @@ def _import_spacy() -> None:
     global spacy
     import spacy
     import spacy.lang.en
+    import spacy.cli
 
 
 class SpacyTokeniser(Tokeniser):
@@ -88,5 +89,10 @@ class SpacyTokeniser(Tokeniser):
 
         """
         disable = ['parser', 'tagger', 'ner', 'lemmatizer']
-        return [[str(t) for t in self.tokeniser(s, disable=disable)]
-                for s in sentences]
+        tokenised = []
+        for s in sentences:
+            s_cleaned = ' '.join(s.split())
+            tokenised.append([
+                str(t) for t in self.tokeniser(s_cleaned, disable=disable)
+            ])
+        return tokenised

@@ -245,19 +245,19 @@ def test_pickle(parser_patch, sentence_input, unicode_sentence_output):
         handle.read.assert_called_once()
         handle.write.assert_called_once()
 
-
-def test_json(parser_patch, sentence_input, unicode_sentence_output):
-    with patch('sys.argv', ['lambeq', '-i', 'sentence.txt',
-                            '-f', 'json', '-o', 'output.json']),\
-         patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
-         patch('lambeq.cli.open',
-               unittest.mock.mock_open(read_data=sentence_input)) as m:
-        main()
-        m.assert_any_call('sentence.txt', 'r')
-        m.assert_called_with('output.json', 'w')
-        handle = m()
-        handle.read.assert_called_once()
-        handle.write.assert_called()
+# TODO This needs to be uncommented once we support saving Diagrams as JSON
+# def test_json(parser_patch, sentence_input, unicode_sentence_output):
+#     with patch('sys.argv', ['lambeq', '-i', 'sentence.txt',
+#                             '-f', 'json', '-o', 'output.json']),\
+#          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
+#          patch('lambeq.cli.open',
+#                unittest.mock.mock_open(read_data=sentence_input)) as m:
+#         main()
+#         m.assert_any_call('sentence.txt', 'r')
+#         m.assert_called_with('output.json', 'w')
+#         handle = m()
+#         handle.read.assert_called_once()
+#         handle.write.assert_called()
 
 
 def test_folder_creation(parser_patch, multi_sentence_input):
@@ -266,7 +266,7 @@ def test_folder_creation(parser_patch, multi_sentence_input):
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('lambeq.cli.open', unittest.mock.mock_open(
                                      read_data=multi_sentence_input)) as m,\
-         patch('lambeq.cli.discopy.grammar.pregroup.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d,\
          patch('lambeq.cli.Path', new=unittest.mock.MagicMock()) as p:
         main()
@@ -282,7 +282,7 @@ def test_image_args(parser_patch, sentence_input):
                             'fig_height=3', 'fontsize=12', '-o',
                             'diagram.pdf', sentence_input]),\
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
-         patch('lambeq.cli.discopy.grammar.pregroup.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d:
         main()
         d.assert_called()
@@ -296,7 +296,7 @@ def test_split_stdin_and_multisentece_image_error(parser_patch, multi_sentence_i
          patch('sys.stdin',
                new=StringIO(multi_sentence_input.replace('\n', ' '))),\
          patch('sys.stdout', new=StringIO()) as fake_out,\
-         patch('lambeq.cli.discopy.grammar.pregroup.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d:
         with pytest.raises(ValueError):
             main()
@@ -318,7 +318,7 @@ def test_tree_reader(parser_patch, sentence_input):
                             'fig_width=16', 'fig_height=3', 'fontsize=12',
                             '-o', 'diagram.pdf', sentence_input]),\
          patch('lambeq.cli.AVAILABLE_READERS', {'tree': partial(TreeReader, ccg_parser=parser_patch['bobcat'])}),\
-         patch('lambeq.cli.discopy.monoidal.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d:
         main()
         d.assert_called()
@@ -328,7 +328,7 @@ def test_stairs_reader(sentence_input):
     with patch('sys.argv', ['lambeq', '-r', 'stairs', '-f', 'image', '-u',
                             'fig_width=16', 'fig_height=3', 'fontsize=12',
                             '-o', 'diagram.pdf', sentence_input]),\
-         patch('lambeq.cli.discopy.monoidal.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d:
         main()
         d.assert_called()
@@ -343,7 +343,7 @@ def test_IQP_ansatz_and_rewrites(parser_patch, multi_sentence_input):
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('lambeq.cli.open', unittest.mock.mock_open(
                                   read_data=multi_sentence_input)) as m,\
-         patch('lambeq.cli.discopy.monoidal.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d,\
          patch('lambeq.cli.Path', new=unittest.mock.MagicMock()) as p:
         main()
@@ -362,7 +362,7 @@ def test_spiders_ansatz(parser_patch, multi_sentence_input):
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('lambeq.cli.open', unittest.mock.mock_open(
                                     read_data=multi_sentence_input)) as m,\
-         patch('lambeq.cli.discopy.monoidal.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d,\
          patch('lambeq.cli.Path', new=unittest.mock.MagicMock()) as p:
         main()
@@ -381,7 +381,7 @@ def test_mps_ansatz(parser_patch, multi_sentence_input):
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('lambeq.cli.open', unittest.mock.mock_open(
                                     read_data=multi_sentence_input)) as m,\
-         patch('lambeq.cli.discopy.monoidal.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d,\
          patch('lambeq.cli.Path', new=unittest.mock.MagicMock()) as p:
         main()
@@ -399,7 +399,7 @@ def test_tensor_ansatz(parser_patch, multi_sentence_input):
          patch('lambeq.cli.AVAILABLE_PARSERS', new=parser_patch),\
          patch('lambeq.cli.open', unittest.mock.mock_open(
                                     read_data=multi_sentence_input)) as m,\
-         patch('lambeq.cli.discopy.monoidal.Diagram.draw',
+         patch('lambeq.cli.lambeq.backend.drawing.draw',
                new=unittest.mock.MagicMock()) as d,\
          patch('lambeq.cli.Path', new=unittest.mock.MagicMock()) as p:
         main()

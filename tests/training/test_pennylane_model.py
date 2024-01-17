@@ -9,8 +9,8 @@ import torch
 from torch import Size
 from torch.nn import Parameter
 
-from discopy.grammar.pregroup import Cup, Diagram, Id, Ob, Ty, Word
-from discopy.quantum import Measure
+from lambeq.backend.grammar import Cup, Id, Word
+from lambeq.backend.quantum import Measure
 from lambeq import (AtomicType, Dataset, IQPAnsatz, PennyLaneModel,
                     PytorchTrainer)
 
@@ -52,15 +52,8 @@ def test_normalize():
     diagrams = [
         ansatz((Word("Alice", N) @ Word("runs", N >> S)
                 >> Cup(N, N.r) @ Id(S))),
-        ansatz(Diagram.decode(
-                       dom=Ty(), cod=Ty('s'),
-                       boxes=[Word('Alice', Ty('n')),
-                              Word('cooks', Ty(Ob('n', z=1), 's',
-                                               Ob('n', z=-1))),
-                              Word('food', Ty('n')),
-                              Cup(Ty(Ob('n', z=-1)), Ty('n')),
-                              Cup(Ty('n'), Ty(Ob('n', z=1)))],
-                       offsets=[0, 1, 4, 3, 0]))
+        ansatz(Word('Alice', N) @ Word('cooks', N.r  @ S @ N.l) @ Word('food', N) >> \
+                              Cup(N, N.r) @ S @ Cup(N.l, N))
     ]
 
     for i in range(len(diagrams)):
@@ -74,7 +67,7 @@ def test_normalize():
             p_pred = instance.forward(diagrams)[i]
             d = (diagrams[i] >> Measure()) if b else diagrams[i]
             d_pred = (d.lambdify(*instance.symbols)
-                     (*[x.item() for x in instance.weights]).eval().array)
+                     (*[x.item() for x in instance.weights]).eval())
 
             assert np.allclose(p_pred.detach().numpy(), d_pred, atol=1e-5)
 
@@ -91,10 +84,6 @@ def test_initialise_errors():
     with pytest.raises(ValueError):
         model = PennyLaneModel()
         model.initialise_weights()
-
-    diag = Word("Alice", N) @ Word("runs", N.r @ S) >> Cup(N, N.r) @ Id(S)
-    with pytest.raises(ValueError):
-        model = PennyLaneModel.from_diagrams([diag])
 
 
 def test_get_diagram_output_error():

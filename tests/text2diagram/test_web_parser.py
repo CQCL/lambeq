@@ -3,7 +3,7 @@ from shutil import ExecError
 import pytest
 from unittest.mock import patch
 
-from discopy.grammar.pregroup import Cup, Diagram, Ty, Word
+from lambeq.backend.grammar import Cup, Id, Ty, Word
 
 from lambeq import AtomicType, VerbosityLevel, WebParser, WebParseError
 
@@ -25,16 +25,18 @@ def test_sentence2diagram(web_parser):
     sentence = 'he does not sleep'
 
     n, s = AtomicType.NOUN, AtomicType.SENTENCE
-    expected_diagram = Diagram.decode(
-        dom=Ty(), cod=Ty('s'),
-        boxes=[
-            Word('he', n),
-            Word('does', n.r @ s @ s.l @ n),
-            Word('sleep', n.r @ s),
-            Word('not', s.r @ n.r.r @ n.r @ s),
-            Cup(s, s.r), Cup(n.r, n.r.r), Cup(n, n.r), Cup(s.l, s), Cup(n, n.r)
-        ],
-        offsets=[0, 1, 5, 3, 2, 1, 4, 3, 0])
+    expected_diagram = Id()
+    boxes=[
+        Word('he', n),
+        Word('does', n.r @ s @ s.l @ n),
+        Word('sleep', n.r @ s),
+        Word('not', s.r @ n.r.r @ n.r @ s),
+        Cup(s, s.r), Cup(n.r, n.r.r), Cup(n, n.r), Cup(s.l, s), Cup(n, n.r)
+    ]
+    offsets=[0, 1, 5, 3, 2, 1, 4, 3, 0]
+
+    for box, offset in zip(boxes, offsets):
+        expected_diagram = expected_diagram.then_at(box, offset)
 
     diagram = web_parser.sentence2diagram(sentence, planar=True)
     assert diagram == expected_diagram

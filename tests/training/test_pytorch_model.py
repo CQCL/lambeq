@@ -1,12 +1,11 @@
-import os
 import pickle
 import pytest
 from copy import deepcopy
 from unittest.mock import mock_open, patch
 
-from discopy import tensor
-from discopy.tensor import Dim
-from discopy.grammar.pregroup import Box, Cap, Cup, Id, Spider, Swap, Word
+from lambeq.backend import tensor
+from lambeq.backend.tensor import Dim, Id as t_Id
+from lambeq.backend.grammar import Cup, Id, Word
 
 import numpy as np
 import torch
@@ -63,9 +62,9 @@ def test_pickling():
     phi = Symbol('phi', size=123)
     diagram = (
         tensor.Box("box1", Dim(2), Dim(2), data=phi)
-        >> tensor.Spider(1, 2, Dim(2))
+        >> tensor.Spider(Dim(2), 1, 2)
         >> tensor.Swap(Dim(2), Dim(2))
-        >> Dim(2) @ (Dim(2) @ tensor.Cap(Dim(2), Dim(2))
+        >> t_Id(Dim(2)) @ (t_Id(Dim(2)) @ tensor.Cap(Dim(2), Dim(2))
                      >> tensor.Cup(Dim(2), Dim(2)) @ Dim(2))
     )
     deepcopied_diagram = deepcopy(diagram)

@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ __all__ = ['CoordinationRewriteRule',
            'UnknownWordsRewriteRule',
 
            'DiagramRewriter',
+           'RemoveCupsRewriter',
+           'RemoveSwapsRewriter',
            'UnifyCodomainRewriter']
 
 from lambeq.rewrite.base import (CoordinationRewriteRule, CurryRewriteRule,
@@ -27,4 +29,6 @@ from lambeq.rewrite.base import (CoordinationRewriteRule, CurryRewriteRule,
                                  UnknownWordsRewriteRule)
 
 from lambeq.rewrite.rewrite_diagram import (DiagramRewriter,
+                                            RemoveCupsRewriter,
+                                            RemoveSwapsRewriter,
                                             UnifyCodomainRewriter)

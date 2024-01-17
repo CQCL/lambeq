@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,8 +16,10 @@
 Circuit Ansatz
 ==============
 A circuit ansatz converts a DisCoCat diagram into a quantum circuit.
-
+This work is based on DisCoPy (https://discopy.org/) which is released
+under the BSD 3-Clause "New" or "Revised" License.
 """
+
 from __future__ import annotations
 
 __all__ = ['CircuitAnsatz',
@@ -29,24 +31,26 @@ __all__ = ['CircuitAnsatz',
 from abc import abstractmethod
 from collections.abc import Callable, Mapping
 from itertools import cycle
+from typing import Type
 
-from discopy.grammar.pregroup import Box, Category, Diagram, Ty
-from discopy.quantum import (
-    Bra,
-    Circuit,
-    CRz,
-    Discard,
-    H,
-    Id,
-    Ket,
-    qubit,
-    Rx, Ry, Rz
-)
-from discopy.quantum.circuit import Functor
 import numpy as np
 from sympy import Symbol, symbols
 
 from lambeq.ansatz import BaseAnsatz
+from lambeq.backend.grammar import Box, Diagram, Functor, Ty
+from lambeq.backend.quantum import (
+    Bra,
+    CRz,
+    Diagram as Circuit,
+    Discard,
+    H,
+    Id,
+    Ket,
+    quantum,
+    qubit,
+    Rotation,
+    Rx, Ry, Rz
+)
 
 computational_basis = Id(qubit)
 
@@ -60,14 +64,14 @@ class CircuitAnsatz(BaseAnsatz):
                  n_single_qubit_params: int,
                  circuit: Callable[[int, np.ndarray], Circuit],
                  discard: bool = False,
-                 single_qubit_rotations: list[Circuit] | None = None,
+                 single_qubit_rotations: list[Type[Rotation]] | None = None,
                  postselection_basis: Circuit = computational_basis) -> None:
         """Instantiate a circuit ansatz.
 
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to
             the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
@@ -89,7 +93,8 @@ class CircuitAnsatz(BaseAnsatz):
             and `n_single_qubit_params`.
 
         """
-        self.ob_map = ob_map
+        self.ob_map = {src: qubit ** ty if isinstance(ty, int) else ty
+                       for src, ty in ob_map.items()}
         self.n_layers = n_layers
         self.n_single_qubit_params = n_single_qubit_params
         self.circuit = circuit
@@ -97,11 +102,13 @@ class CircuitAnsatz(BaseAnsatz):
         self.postselection_basis = postselection_basis
         self.single_qubit_rotations = single_qubit_rotations or []
 
-        self.functor = Functor(ob=ob_map, ar=self._ar, dom=Category())
+        self.functor = Functor(target_category=quantum,
+                               ob=self._ob,
+                               ar=self._ar)
 
     def __call__(self, diagram: Diagram) -> Circuit:
-        """Convert a DisCoPy diagram into a DisCoPy circuit."""
-        return self.functor(diagram)
+        """Convert a lambeq diagram into a lambeq circuit."""
+        return self.functor(diagram)  # type: ignore[return-value]
 
     def ob_size(self, pg_type: Ty) -> int:
         """Calculate the number of qubits used for a given type."""
@@ -111,7 +118,10 @@ class CircuitAnsatz(BaseAnsatz):
     def params_shape(self, n_qubits: int) -> tuple[int, ...]:
         """Calculate the shape of the parameters required."""
 
-    def _ar(self, box: Box) -> Circuit:
+    def _ob(self, _: Functor, ty: Ty) -> Ty:
+        return self.ob_map[ty]
+
+    def _ar(self, _: Functor, box: Box) -> Circuit:
         label = self._summarise_box(box)
         dom, cod = self.ob_size(box.dom), self.ob_size(box.cod)
 
@@ -131,10 +141,12 @@ class CircuitAnsatz(BaseAnsatz):
             circuit = self.circuit(n_qubits, params)
 
         if cod > dom:
-            circuit <<= Id(dom) @ Ket(*[0]*(cod - dom))
+            circuit = Id(dom) @ Ket(*[0]*(cod - dom)) >> circuit
         elif cod < dom:
             if self.discard:
-                circuit >>= Id(cod) @ Discard(dom - cod)
+                circuit >>= Id(cod) @ Id().tensor(
+                    *[Discard() for _ in range(dom - cod)]
+                )
             else:
                 circuit >>= Id(cod).tensor(
                     *[self.postselection_basis] * (dom-cod))
@@ -163,7 +175,7 @@ class IQPAnsatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to
             the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
@@ -197,7 +209,7 @@ class IQPAnsatz(CircuitAnsatz):
             if self.n_layers > 0:  # Final layer of Hadamards
                 circuit >>= hadamards
 
-        return circuit
+        return circuit  # type: ignore[return-value]
 
 
 class Sim14Ansatz(CircuitAnsatz):
@@ -222,7 +234,7 @@ class Sim14Ansatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to
             the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
@@ -265,7 +277,7 @@ class Sim14Ansatz(CircuitAnsatz):
 
                 circuit >>= sublayer1 >> sublayer2
 
-        return circuit
+        return circuit  # type: ignore[return-value]
 
 
 class Sim15Ansatz(CircuitAnsatz):
@@ -290,7 +302,7 @@ class Sim15Ansatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to
             the number of qubits it uses in a circuit.
         n_layers : int
             The number of layers used by the ansatz.
@@ -333,7 +345,7 @@ class Sim15Ansatz(CircuitAnsatz):
 
                 circuit >>= sublayer1 >> sublayer2
 
-        return circuit
+        return circuit  # type: ignore[return-value]
 
 
 class StronglyEntanglingAnsatz(CircuitAnsatz):
@@ -362,7 +374,7 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
         Parameters
         ----------
         ob_map : dict
-            A mapping from :py:class:`discopy.grammar.pregroup.Ty` to
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to
             the number of qubits it uses in a circuit.
         n_layers : int
             The number of circuit layers used by the ansatz.

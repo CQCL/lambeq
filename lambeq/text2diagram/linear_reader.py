@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@
 __all__ = ['LinearReader', 'cups_reader',
            'stairs_reader', 'word_sequence_reader']
 
-from discopy.grammar.pregroup import Box, Cup, Diagram, Id, Ty, Word
-
+from lambeq.backend.grammar import Box, Cup, Diagram, Id, Ty, Word
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType, tokenised_sentence_type_check
 from lambeq.text2diagram.base import Reader
@@ -56,7 +55,7 @@ class LinearReader(Reader):
     def sentence2diagram(self,
                          sentence: SentenceType,
                          tokenised: bool = False) -> Diagram:
-        """Parse a sentence into a DisCoPy diagram.
+        """Parse a sentence into a lambeq diagram.
 
         If tokenise is :py:obj:`True`, sentence is tokenised, otherwise
         it is split into tokens by whitespace. This method creates a
@@ -90,13 +89,15 @@ class LinearReader(Reader):
             assert isinstance(sentence, str)
             sentence = sentence.split()
         words = (Word(word, self.word_type) for word in sentence)
-        diagram = Diagram.tensor(self.start_box, *words)
+        diagram = self.start_box.tensor(*words)
         while len(diagram.cod) > 1:
             diagram >>= (self.combining_diagram @
                          Id(diagram.cod[len(self.combining_diagram.dom):]))
         return diagram
 
 
-cups_reader = LinearReader(Cup(S, S.r), S >> S, Word('START', S))
-stairs_reader = LinearReader(Box('STAIR', S @ S, S))
+cups_reader = LinearReader(Cup(S, S.r).to_diagram(),
+                           S >> S,
+                           Word('START', S).to_diagram())
+stairs_reader = LinearReader(Box('STAIR', S @ S, S).to_diagram())
 word_sequence_reader = cups_reader

@@ -1,10 +1,10 @@
 import pytest
 
-from discopy.grammar.pregroup import Box, Cup, Ty, Word
-from discopy.quantum import (Bra, Controlled, CRx, CRz, CX, Discard, H, Ket,
-                             qubit, Rx, Ry, Rz, sqrt, X)
-from discopy.quantum.circuit import Circuit, Id
-from discopy.quantum.tk import from_tk
+from lambeq.backend.grammar import Box, Cup, Ty, Word
+from lambeq.backend.quantum import (Bra, Diagram as Circuit, Controlled, CRx,
+                                    CRz, CX, Discard, H, Ket, qubit, Rx, Ry,
+                                    Rz, Sqrt, X, Id)
+from lambeq.backend.converters.tk import from_tk
 from sympy import Symbol as sym
 
 from lambeq import (AtomicType, IQPAnsatz, Sim14Ansatz, Sim15Ansatz,
@@ -29,8 +29,7 @@ def test_iqp_ansatz():
                         Id(1) @ H @ Id(1) >>
                         Id(2) @ H >>
                         CX @ Id(1) >>
-                        H @ Id(2) >>
-                        Id(1) @ sqrt(2) @ Id(2) >>
+                        H @ Sqrt(2) @ Id(2) >>
                         Bra(0, 0) @ Id(1))
     assert ansatz(diagram) == expected_circuit
 
@@ -53,8 +52,8 @@ def test_sim14_ansatz():
                         Id(2) @ Ry(sym('runs__n.r@s_5')) >>
                         Id(1) @ CRx(sym('runs__n.r@s_6')) >>
                         Id(1) @ Controlled(Rx(sym('runs__n.r@s_7')), distance=-1) >>
-                        CX @ Id(1) >> H @ Id(2) >>
-                        Id(1) @ sqrt(2) @ Id(2) >> Bra(0, 0) @ Id(1))
+                        CX @ Id(1) >> H @ Sqrt(2) @ Id(2) >>
+                        Bra(0, 0) @ Id(1))
 
     assert ansatz(diagram) == expected_circuit
 
@@ -75,9 +74,8 @@ def test_sim15_ansatz():
                         Id(1) @ Ry(sym('runs__n.r@s_2')) @ Id(1) >>
                         Id(2) @ Ry(sym('runs__n.r@s_3')) >>
                         Id(1) @ CX >> Id(1) @ Controlled(X, distance=-1) >>
-                        CX @ Id(1) >> H @ Id(2) >>
-                        Id(1) @ sqrt(2) @ Id(2)
-                        >> Bra(0, 0) @ Id(1))
+                        CX @ Id(1) >> H @ Sqrt(2) @ Id(2) >>
+                        Bra(0, 0) @ Id(1))
 
     assert ansatz(diagram) == expected_circuit
 
@@ -122,17 +120,17 @@ def test_s15_ansatz_empty():
 
 def test_discard():
     ansatz = IQPAnsatz({S: 2}, n_layers=0, discard=True)
-    assert ansatz(Box('DISCARD', S, Ty())) == Discard(qubit ** 2)
+    assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
 
 
 def test_s14_discard():
     ansatz = Sim14Ansatz({S: 2}, n_layers=0, discard=True)
-    assert ansatz(Box('DISCARD', S, Ty())) == Discard(qubit ** 2)
+    assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
 
 
 def test_s15_discard():
     ansatz = Sim15Ansatz({S: 2}, n_layers=0, discard=True)
-    assert ansatz(Box('DISCARD', S, Ty())) == Discard(qubit ** 2)
+    assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
 
 
 def test_postselection():
@@ -148,28 +146,35 @@ def test_strongly_entangling_ansatz():
     diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
                Cup(N, N.r) @ S)
     ansatz = StronglyEntanglingAnsatz({N: 1, S: 1}, n_layers=1)
-    expected_circuit = Circuit.decode(
-                               dom=Circuit.ty_factory(),
-                               boxes=[Ket(0),
-                               Rz(sym('Alice__n_0')),
-                               Ry(sym('Alice__n_1')),
-                               Rz(sym('Alice__n_2')),
-                               Ket(0, 0),
-                               Rz(sym('runs__n.r@s_0')),
-                               Ry(sym('runs__n.r@s_1')),
-                               Rz(sym('runs__n.r@s_2')),
-                               Rz(sym('runs__n.r@s_3')),
-                               Ry(sym('runs__n.r@s_4')),
-                               Rz(sym('runs__n.r@s_5')),
-                               CX,
-                               Controlled(X, distance=-1),
-                               CX,
-                               H,
-                               sqrt(2),
-                               Bra(0, 0)],
-                               offsets=[0, 0, 0, 0, 1, 1, 1, 1, 2,
-                                        2, 2, 1, 1, 0, 0, 1, 0])
+
+    expected_circuit = Id()
+
+    boxes=[Ket(0),
+        Rz(sym('Alice__n_0')),
+        Ry(sym('Alice__n_1')),
+        Rz(sym('Alice__n_2')),
+        Ket(0, 0),
+        Rz(sym('runs__n.r@s_0')),
+        Ry(sym('runs__n.r@s_1')),
+        Rz(sym('runs__n.r@s_2')),
+        Rz(sym('runs__n.r@s_3')),
+        Ry(sym('runs__n.r@s_4')),
+        Rz(sym('runs__n.r@s_5')),
+        CX,
+        Controlled(X, distance=-1),
+        CX,
+        H,
+        Sqrt(2),
+        Bra(0, 0)]
+    offsets=[0, 0, 0, 0, 1, 1, 1, 1, 2,
+            2, 2, 1, 1, 0, 0, 1, 0]
+
+    for box, idx in zip(boxes, offsets):
+        expected_circuit = expected_circuit.then_at(box, idx)
+    # ansatz(diagram).draw()
+
     assert ansatz(diagram) == expected_circuit
+
 
 def test_strongly_entangling_ansatz_inverted():
     d = Box("inverted", S, Ty())
@@ -184,65 +189,63 @@ def test_strongly_entangling_ansatz_empty():
 
 def test_strongly_entangling_ansatz_discard():
     ansatz = StronglyEntanglingAnsatz({S: 2}, n_layers=0, discard=True)
-    assert ansatz(Box('DISCARD', S, Ty())) == Discard(qubit ** 2)
+    assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
 
 def test_strongly_entangling_ansatz_one_qubit():
     q = Ty('q')
     ansatz = StronglyEntanglingAnsatz({q: 1}, n_layers=5)
-    assert ansatz(Box('X', q, q)) == Circuit.decode(
-                                             dom=qubit,
-                                             boxes=[Rz(sym('X_q_q_0')),
-                                                    Ry(sym('X_q_q_1')),
-                                                    Rz(sym('X_q_q_2'))],
-                                             offsets=[0, 0, 0])
+    assert ansatz(Box('X', q, q)) == Rz(sym('X_q_q_0')) >> Ry(sym('X_q_q_1')) >> Rz(sym('X_q_q_2'))
 
 def test_strongly_entangling_ansatz_ranges():
     q = Ty('q')
-    box = Box('X', q, q)
+    diagram = Box('X', q, q)
     ansatz = StronglyEntanglingAnsatz({q: 3}, 3, ranges=[1,1,2])
 
-    expected_circuit = Circuit.decode(
-                               dom=qubit @ qubit @ qubit,
-                               boxes=[Rz(sym('X_q_q_0')),
-                                      Ry(sym('X_q_q_1')),
-                                      Rz(sym('X_q_q_2')),
-                                      Rz(sym('X_q_q_3')),
-                                      Ry(sym('X_q_q_4')),
-                                      Rz(sym('X_q_q_5')),
-                                      Rz(sym('X_q_q_6')),
-                                      Ry(sym('X_q_q_7')),
-                                      Rz(sym('X_q_q_8')),
-                                      CX,
-                                      CX,
-                                      Controlled(X, distance=-2),
-                                      Rz(sym('X_q_q_9')),
-                                      Ry(sym('X_q_q_10')),
-                                      Rz(sym('X_q_q_11')),
-                                      Rz(sym('X_q_q_12')),
-                                      Ry(sym('X_q_q_13')),
-                                      Rz(sym('X_q_q_14')),
-                                      Rz(sym('X_q_q_15')),
-                                      Ry(sym('X_q_q_16')),
-                                      Rz(sym('X_q_q_17')),
-                                      CX,
-                                      CX,
-                                      Controlled(X, distance=-2),
-                                      Rz(sym('X_q_q_18')),
-                                      Ry(sym('X_q_q_19')),
-                                      Rz(sym('X_q_q_20')),
-                                      Rz(sym('X_q_q_21')),
-                                      Ry(sym('X_q_q_22')),
-                                      Rz(sym('X_q_q_23')),
-                                      Rz(sym('X_q_q_24')),
-                                      Ry(sym('X_q_q_25')),
-                                      Rz(sym('X_q_q_26')),
-                                      Controlled(X, distance=2),
-                                      Controlled(X, distance=-1),
-                                      Controlled(X, distance=-1)],
-                               offsets=[0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0,
-                                        0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0, 0,
-                                        0, 1, 1, 1, 2, 2, 2, 0, 0, 1])
-    assert ansatz(box) == expected_circuit
+    expected_circuit = Id(qubit ** 3)
+    boxes=[Rz(sym('X_q_q_0')),
+        Ry(sym('X_q_q_1')),
+        Rz(sym('X_q_q_2')),
+        Rz(sym('X_q_q_3')),
+        Ry(sym('X_q_q_4')),
+        Rz(sym('X_q_q_5')),
+        Rz(sym('X_q_q_6')),
+        Ry(sym('X_q_q_7')),
+        Rz(sym('X_q_q_8')),
+        CX,
+        CX,
+        Controlled(X, distance=-2),
+        Rz(sym('X_q_q_9')),
+        Ry(sym('X_q_q_10')),
+        Rz(sym('X_q_q_11')),
+        Rz(sym('X_q_q_12')),
+        Ry(sym('X_q_q_13')),
+        Rz(sym('X_q_q_14')),
+        Rz(sym('X_q_q_15')),
+        Ry(sym('X_q_q_16')),
+        Rz(sym('X_q_q_17')),
+        CX,
+        CX,
+        Controlled(X, distance=-2),
+        Rz(sym('X_q_q_18')),
+        Ry(sym('X_q_q_19')),
+        Rz(sym('X_q_q_20')),
+        Rz(sym('X_q_q_21')),
+        Ry(sym('X_q_q_22')),
+        Rz(sym('X_q_q_23')),
+        Rz(sym('X_q_q_24')),
+        Ry(sym('X_q_q_25')),
+        Rz(sym('X_q_q_26')),
+        Controlled(X, distance=2),
+        Controlled(X, distance=-1),
+        Controlled(X, distance=-1)]
+    offsets=[0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0,
+            0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0, 0,
+            0, 1, 1, 1, 2, 2, 2, 0, 0, 1]
+
+    for box, idx in zip(boxes, offsets):
+        expected_circuit = expected_circuit.then_at(box, idx)
+
+    assert ansatz(diagram) == expected_circuit
 
 def test_strongly_entangling_ansatz_ranges_error():
     q = Ty('q')
@@ -256,7 +259,7 @@ def test_strongly_entangling_ansatz_ranges_error2():
         ansatz = StronglyEntanglingAnsatz({q: 2}, 3, ranges=[1, 1, 2])
         ansatz(box)
 
-def test_discopy_tket_conversion():
+def test_lambeq_tket_conversion():
     word1, word2 = Word('Alice', N), Word('Bob', N.r)
     sentence = word1 @ word2 >> Cup(N, N.r)
     ansatz = IQPAnsatz({N: 1}, n_layers=1)

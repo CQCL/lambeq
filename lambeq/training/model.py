@@ -1,4 +1,4 @@
-# Copyright 2021-2023 Cambridge Quantum Computing Ltd.
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,10 +24,10 @@ from abc import ABC, abstractmethod
 from collections.abc import Collection
 from typing import Any
 
-from discopy.tensor import Diagram
 from sympy import default_sort_key, Symbol as SymPySymbol
 
 from lambeq.ansatz.base import Symbol
+from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.typing import StrPathT
 
@@ -146,7 +146,7 @@ class Model(ABC):
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
+        diagrams : list of :py:class:`~lambeq.tensor.Diagram`
             The tensor or circuit diagrams to be evaluated.
 
         """
@@ -158,11 +158,11 @@ class Model(ABC):
     @classmethod
     def from_diagrams(cls, diagrams: list[Diagram], **kwargs: Any) -> Model:
         """Build model from a list of
-        :py:class:`Diagrams <discopy.tensor.Diagram>`.
+        :py:class:`Diagrams <lambeq.tensor.Diagram>`.
 
         Parameters
         ----------
-        diagrams : list of :py:class:`~discopy.tensor.Diagram`
+        diagrams : list of :py:class:`~lambeq.tensor.Diagram`
             The tensor or circuit diagrams to be evaluated.
 
         Other Parameters

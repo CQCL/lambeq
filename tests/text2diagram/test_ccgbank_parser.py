@@ -43,18 +43,18 @@ def test_ccgbank_parser(minimal_ccgbank):
     ccgbank_parser = CCGBankParser(minimal_ccgbank)
     good_diagrams = ccgbank_parser.section2diagrams(0)
     assert len(good_diagrams) == 2 and all(good_diagrams)
-    diagrams_with_generator = [(key, diagram) for key, diagram in 
+    diagrams_with_generator = [(key, diagram) for key, diagram in
                                 ccgbank_parser.section2diagrams_gen(0)]
     assert len(diagrams_with_generator) == 2 and all(
-            good_diagrams[key] == diagram for 
+            good_diagrams[key] == diagram for
             key, diagram in diagrams_with_generator)
 
     good_trees = ccgbank_parser.section2trees(0)
     assert len(good_trees) == 2 and all(good_trees)
-    trees_with_generator = [(key, tree) for key, tree in 
+    trees_with_generator = [(key, tree) for key, tree in
                                 ccgbank_parser.section2trees_gen(0)]
     assert len(trees_with_generator) == 2 and all(
-            good_trees[key] == tree for 
+            good_trees[key] == tree for
             key, tree in trees_with_generator)
 
     with pytest.raises(CCGBankParseError):
