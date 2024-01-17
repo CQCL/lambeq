@@ -25,6 +25,8 @@ from typing import overload
 from lambeq.backend.grammar import Diagram, Id, Word
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_type import CCGType
+from lambeq.text2diagram.depccg_parser import Tree as DepCCGTree
+from lambeq.bobcat import ParseTree as BobcatTree
 
 # Types
 _JSONDictT = Dict[str, Any]
@@ -44,6 +46,7 @@ class CCGTree:
                  rule: CCGRule | str = CCGRule.UNKNOWN,
                  biclosed_type: CCGType,
                  children: Iterable[CCGTree] | None = None,
+                 original: DepCCGTree | BobcatTree | None = None,
                  metadata: dict[Any, Any] | None = None) -> None:
         """Initialise a CCG tree.
 
@@ -68,6 +71,7 @@ class CCGTree:
         self.rule = CCGRule(rule)
         self.biclosed_type = biclosed_type
         self.children = list(children) if children is not None else []
+        self.original = original
         self.metadata = metadata if metadata is not None else {}
 
         n_children = len(self.children)
@@ -186,8 +190,8 @@ class CCGTree:
 
     def to_json(self, original=False) -> _JSONDictT:
         """Convert tree into JSON form."""
-        if original:
-            return self.metadata['original'].to_json()
+        if original and self.original is not None:
+            return self.original.to_json()
         if self is None:  # Allows doing CCGTree.to_json(X) for optional X
             return None  # type: ignore[unreachable]
 

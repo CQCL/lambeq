@@ -25,7 +25,7 @@ __all__ = ['DepCCGParser', 'DepCCGParseError']
 from collections.abc import Iterable
 import functools
 import logging
-from typing import Any, TYPE_CHECKING
+from typing import Dict, Any, TYPE_CHECKING
 
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (
@@ -42,6 +42,7 @@ if TYPE_CHECKING:
     from depccg.annotator import (annotate_XX, english_annotator,
                                   japanese_annotator)
     from depccg.cat import Category
+    from depccg.tree import Tree
     from lambeq.backend.grammar import Diagram
 
 
@@ -468,8 +469,8 @@ class DepCCGParser(CCGParser):
                        metadata={'original': tree})
 
 
-def depccg_to_json(tree: depccg.tree.Tree) -> dict[str, Any]:
-    data = {'type': str(tree.cat)}
+def depccg_to_json(tree: depccg.tree.Tree) -> Dict[str, Any]:
+    data: Dict[str, Any] = {'type': str(tree.cat)}
     if tree.is_leaf:
         data['rule'], data['text'] = 'L', tree.word
     else:

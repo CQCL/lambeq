@@ -292,7 +292,8 @@ class ParseTree:
         return self.deps_and_tags[0]
 
     def to_json(self) -> Dict[str, Any]:
-        data = {'type': str(self.cat), 'rule': self.rule.name}
+        data: Dict[str, Any] = {
+            'type': str(self.cat), 'rule': self.rule.name}
         if self.left:
             data['children'] = [self.left.to_json()]
         if self.right:
