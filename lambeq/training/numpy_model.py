@@ -143,7 +143,7 @@ class NumpyModel(QuantumModel):
             if not d.is_mixed:
                 result = numpy.abs(result) ** 2
             results.append(self._normalise_vector(result))
-        return numpy.array(results)
+        return numpy.asarray(results,dtype='object')
 
     def forward(self, x: list[Diagram]) -> Any:
         """Perform default forward pass of a lambeq model.
