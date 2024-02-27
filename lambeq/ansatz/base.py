@@ -26,8 +26,9 @@ from abc import ABC, abstractmethod
 from collections.abc import Mapping
 from typing import Any, Literal
 
+from typing import Optional
 import sympy
-
+import numpy as np
 from lambeq.backend import grammar, tensor
 
 
@@ -124,3 +125,14 @@ class BaseAnsatz(ABC):
 
         # Escape special characters for sympy
         return raw_summary.translate({ord(c): f'\\{c}' for c in ':, '})
+    
+    @abstractmethod
+    def _custom_(self, unitary_matrix: np.ndarray, qubits: list, label: Optional[str] = None):
+        """Abstract method to add a custom gate to the quantum circuit.
+        
+        Parameters:
+        unitary_matrix (np.ndarray): Unitary matrix representing the custom gate.
+        qubits (list): List of qubits the gate acts on.
+        label (Optional[str]): An optional label for the gate.
+        """
+        pass        

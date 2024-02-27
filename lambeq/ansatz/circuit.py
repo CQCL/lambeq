@@ -106,6 +106,11 @@ class CircuitAnsatz(BaseAnsatz):
                                ob=self._ob,
                                ar=self._ar)
 
+    def add_custom_gate(self, unitary_matrix: np.ndarray, qubits: list, label: str = None) -> None:
+        """Add a custom gate to the quantum circuit."""
+        custom_gate = Circuit.custom(unitary_matrix, label=label)
+        self.circuit.append(custom_gate, qubits)
+
     def __call__(self, diagram: Diagram) -> Circuit:
         """Convert a lambeq diagram into a lambeq circuit."""
         return self.functor(diagram)  # type: ignore[return-value]
