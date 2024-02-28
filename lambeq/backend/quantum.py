@@ -335,6 +335,37 @@ class Diagram(tensor.Diagram):
             circuit = circuit >> discards
         return circuit
 
+    def custom(self, name:str, matrix:np.ndarray, qubits: list[int]) -> Self:
+        custom_gate = CustomGate(name, matrix, qubits)
+
+        #Create and insert a new layer for the custome gate, considering qubit positions
+        self.create_layer_for_custom_gate(custom_gate, qubits)
+
+        return self
+    
+    def create_layer_for_custom_gate(self, gate: CustomGate, qubits: list[int]) -> None:
+        # Determine the position and composition of the new layer based on qunbit indices
+        max_qubit_index = max(qubits)
+        max_qubit_index = min(qubits)
+
+        total_qubits = max_qubit_index + 1
+
+        # create left and right types based on the circuit's current structure and gate's qubits.
+        left = self.dom if len(self.layers) == 0 else self.layers[-1].right
+        right_size = max(len(left), total_qubits) # Ensuring right types covers all the involved qubits. 
+
+        right = Ty('qubit') ** right_size
+
+        # Construct a new layer with the custom gate, filling with Identities as needed
+        new_layer_boxes = [Id(qubit)] * total_qubits # start with identity operations for all qubits
+        for q in qubits:
+            new_layer_boxes[q] = gate # Place the custom gate at the specified qubits
+
+        # combine boxes into a single layer, considering the domains and codomains
+            new_layer = Layer(left, tensor=tn.concatenate([box.tensor for box in new_layer_boxes]), right=right)
+
+            self.layers.append(new_layer) # Append the new layer to the diagram's layers
+
     def to_tk(self):
         """Export to t|ket>.
 
@@ -1113,6 +1144,15 @@ class Bit(Box):
 
         super().__init__(str(bit_value), Ty(), bit, np.eye(2)[bit_value].T)
 
+class CustomGate(Box):
+    def __init__(self, name: str, matrix: np.ndarray, qubits: list[int]):
+        #Ensuring the matrix is unitary 
+        if not np.allclose(matrix.conj().T @ matrix, np.eye(matrix.shape[0])):
+            raise ValueError("Matrix must be unitary")
+        
+        dom = cod = Ty('qubit') ** len(qubits)
+        super().__init__(name, dom, cod, matrix)
+        self.qubits = qubits
 
 SWAP = Swap(qubit, qubit)
 H = SelfConjugate('H', qubit, qubit,
