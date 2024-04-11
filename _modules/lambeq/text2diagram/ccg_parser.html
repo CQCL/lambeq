@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_parser &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.text2diagram.ccg_parser &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -249,6 +249,7 @@
                            <span class="n">sentences</span><span class="p">:</span> <span class="n">SentenceBatchType</span><span class="p">,</span>
                            <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                            <span class="n">planar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                           <span class="n">collapse_noun_phrases</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                            <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                            <span class="n">verbose</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse multiple sentences into a list of lambeq diagrams.</span>
@@ -257,15 +258,19 @@
 <span class="sd">        ----------</span>
 <span class="sd">        sentences : list of str, or list of list of str</span>
 <span class="sd">            The sentences to be parsed.</span>
+<span class="sd">        tokenised : bool, default: False</span>
+<span class="sd">            Whether each sentence has been passed as a list of tokens.</span>
 <span class="sd">        planar : bool, default: False</span>
 <span class="sd">            Force diagrams to be planar when they contain</span>
 <span class="sd">            crossed composition.</span>
+<span class="sd">        collapse_noun_phrases : bool, default: True</span>
+<span class="sd">            If set, then before converting each tree to a diagram, any</span>
+<span class="sd">            noun phrase types in the tree are changed into nouns. This</span>
+<span class="sd">            includes sub-types, e.g. `S/NP` becomes `S/N`.</span>
 <span class="sd">        suppress_exceptions : bool, default: False</span>
 <span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if a</span>
 <span class="sd">            sentence fails to parse, instead of raising an exception,</span>
 <span class="sd">            its return entry is :py:obj:`None`.</span>
-<span class="sd">        tokenised : bool, default: False</span>
-<span class="sd">            Whether each sentence has been passed as a list of tokens.</span>
 <span class="sd">        verbose : str, optional</span>
 <span class="sd">            See :py:class:`VerbosityLevel` for options. Not all parsers</span>
 <span class="sd">            implement all three levels of progress reporting, see the</span>
@@ -284,7 +289,7 @@
                                      <span class="n">suppress_exceptions</span><span class="o">=</span><span class="n">suppress_exceptions</span><span class="p">,</span>
                                      <span class="n">tokenised</span><span class="o">=</span><span class="n">tokenised</span><span class="p">,</span>
                                      <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
-        <span class="n">diagrams</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">verbose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span>
         <span class="k">if</span> <span class="n">verbose</span> <span class="ow">is</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
@@ -296,12 +301,17 @@
                 <span class="n">disable</span><span class="o">=</span><span class="n">verbose</span> <span class="o">!=</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">PROGRESS</span><span class="o">.</span><span class="n">value</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">tree</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">diagrams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">(</span><span class="n">planar</span><span class="o">=</span><span class="n">planar</span><span class="p">))</span>
+                    <span class="n">diagram</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">to_diagram</span><span class="p">(</span>
+                        <span class="n">planar</span><span class="o">=</span><span class="n">planar</span><span class="p">,</span>
+                        <span class="n">collapse_noun_phrases</span><span class="o">=</span><span class="n">collapse_noun_phrases</span>
+                    <span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                     <span class="k">if</span> <span class="n">suppress_exceptions</span><span class="p">:</span>
                         <span class="n">diagrams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="n">e</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">diagrams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">diagrams</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">diagrams</span></div>
@@ -310,6 +320,7 @@
                          <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
                          <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                          <span class="n">planar</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                         <span class="n">collapse_noun_phrases</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                          <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence into a lambeq diagram.</span>
 
@@ -317,15 +328,19 @@
 <span class="sd">        ----------</span>
 <span class="sd">        sentence : str or list of str</span>
 <span class="sd">            The sentence to be parsed.</span>
+<span class="sd">        tokenised : bool, default: False</span>
+<span class="sd">            Whether the sentence has been passed as a list of tokens.</span>
 <span class="sd">        planar : bool, default: False</span>
 <span class="sd">            Force diagrams to be planar when they contain</span>
 <span class="sd">            crossed composition.</span>
+<span class="sd">        collapse_noun_phrases : bool, default: True</span>
+<span class="sd">            If set, then before converting the tree to a diagram, all</span>
+<span class="sd">            noun phrase types in the tree are changed into nouns. This</span>
+<span class="sd">            includes sub-types, e.g. `S/NP` becomes `S/N`.</span>
 <span class="sd">        suppress_exceptions : bool, default: False</span>
 <span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if</span>
 <span class="sd">            the sentence fails to parse, instead of raising an</span>
 <span class="sd">            exception, returns :py:obj:`None`.</span>
-<span class="sd">        tokenised : bool, default: False</span>
-<span class="sd">            Whether the sentence has been passed as a list of tokens.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -342,6 +357,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span>
                             <span class="p">[</span><span class="n">sent</span><span class="p">],</span>
                             <span class="n">planar</span><span class="o">=</span><span class="n">planar</span><span class="p">,</span>
+                            <span class="n">collapse_noun_phrases</span><span class="o">=</span><span class="n">collapse_noun_phrases</span><span class="p">,</span>
                             <span class="n">suppress_exceptions</span><span class="o">=</span><span class="n">suppress_exceptions</span><span class="p">,</span>
                             <span class="n">tokenised</span><span class="o">=</span><span class="n">tokenised</span><span class="p">,</span>
                             <span class="n">verbose</span><span class="o">=</span><span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -352,6 +368,7 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sentences2diagrams</span><span class="p">(</span>
                             <span class="p">[</span><span class="n">sentence</span><span class="p">],</span>
                             <span class="n">planar</span><span class="o">=</span><span class="n">planar</span><span class="p">,</span>
+                            <span class="n">collapse_noun_phrases</span><span class="o">=</span><span class="n">collapse_noun_phrases</span><span class="p">,</span>
                             <span class="n">suppress_exceptions</span><span class="o">=</span><span class="n">suppress_exceptions</span><span class="p">,</span>
                             <span class="n">tokenised</span><span class="o">=</span><span class="n">tokenised</span><span class="p">,</span>
                             <span class="n">verbose</span><span class="o">=</span><span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">SUPPRESS</span><span class="o">.</span><span class="n">value</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div></div>

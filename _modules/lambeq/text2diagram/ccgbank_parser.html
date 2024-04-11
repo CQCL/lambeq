@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.text2diagram.ccgbank_parser &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -557,8 +557,10 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">match</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">CCGBankParseError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;failed to parse atomic type </span><span class="si">{</span><span class="nb">repr</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">cat</span> <span class="o">=</span> <span class="n">match</span><span class="p">[</span><span class="s1">&#39;bare_cat&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">cat</span>
-        <span class="k">if</span> <span class="n">cat</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;NP&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN_PHRASE</span><span class="o">.</span><span class="n">name</span>
         <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">SENTENCE</span><span class="o">.</span><span class="n">name</span>
         <span class="k">elif</span> <span class="n">cat</span> <span class="o">==</span> <span class="s1">&#39;PP&#39;</span><span class="p">:</span>

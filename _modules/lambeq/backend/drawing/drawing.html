@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.backend.drawing.drawing &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.backend.drawing.drawing &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
@@ -165,6 +165,7 @@
                                                     <span class="n">DrawingBackend</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">lambeq.backend.drawing.helpers</span> <span class="kn">import</span> <span class="n">drawn_as_spider</span><span class="p">,</span> <span class="n">needs_asymmetry</span>
 <span class="kn">from</span> <span class="nn">lambeq.backend.drawing.mat_backend</span> <span class="kn">import</span> <span class="n">MatBackend</span>
+<span class="kn">from</span> <span class="nn">lambeq.backend.drawing.text_printer</span> <span class="kn">import</span> <span class="n">PregroupTextPrinter</span>
 <span class="kn">from</span> <span class="nn">lambeq.backend.drawing.tikz_backend</span> <span class="kn">import</span> <span class="n">TikzBackend</span>
 <span class="kn">from</span> <span class="nn">lambeq.backend.grammar</span> <span class="kn">import</span> <span class="n">Diagram</span>
 
@@ -324,6 +325,52 @@
         <span class="n">show</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;show&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">),</span>
         <span class="n">margins</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;margins&#39;</span><span class="p">,</span> <span class="n">DEFAULT_MARGINS</span><span class="p">),</span>
         <span class="n">aspect</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;aspect&#39;</span><span class="p">,</span> <span class="n">DEFAULT_ASPECT</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="render_as_str"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.render_as_str">[docs]</a><span class="k">def</span> <span class="nf">render_as_str</span><span class="p">(</span><span class="n">diagram</span><span class="p">:</span> <span class="n">Diagram</span><span class="p">,</span>
+                  <span class="n">word_spacing</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+                  <span class="n">use_at_separator</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                  <span class="n">compress_layers</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="n">use_ascii</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a grammar diagram as text.</span>
+
+<span class="sd">    Presently only implemented for pregroup diagrams.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    diagram: Diagram</span>
+<span class="sd">        Diagram to draw.</span>
+<span class="sd">    word_spacing : int, default: 2</span>
+<span class="sd">        The number of spaces between the words of the diagrams.</span>
+<span class="sd">    use_at_separator : bool, default: False</span>
+<span class="sd">        Whether to represent types using @ as the monoidal product.</span>
+<span class="sd">        Otherwise, use the unicode dot character.</span>
+<span class="sd">    compress_layers : bool, default: True</span>
+<span class="sd">        Whether to draw boxes in the same layer when they can occur</span>
+<span class="sd">        simultaneously, otherwise, draw one box per layer.</span>
+<span class="sd">    use_ascii: bool, default: False</span>
+<span class="sd">        Whether to draw using ASCII characters only, for</span>
+<span class="sd">        compatibility reasons.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Drawing of diagram in string format.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">diagram</span><span class="o">.</span><span class="n">is_pregroup</span><span class="p">:</span>
+        <span class="n">text_printer</span> <span class="o">=</span> <span class="n">PregroupTextPrinter</span><span class="p">(</span><span class="n">word_spacing</span><span class="p">,</span>
+                                           <span class="n">use_at_separator</span><span class="p">,</span>
+                                           <span class="n">compress_layers</span><span class="p">,</span>
+                                           <span class="n">use_ascii</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># TODO: Add text/CLI drawing for non-pregroup diagrams.</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Text drawing is only supported for&#39;</span>
+                                  <span class="s1">&#39; pregroups. Provided diagram is not a&#39;</span>
+                                  <span class="s1">&#39; pregroup diagram.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">text_printer</span><span class="o">.</span><span class="n">diagram2str</span><span class="p">(</span><span class="n">diagram</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="to_gif"><a class="viewcode-back" href="../../../../lambeq.backend.html#lambeq.backend.drawing.to_gif">[docs]</a><span class="k">def</span> <span class="nf">to_gif</span><span class="p">(</span><span class="n">diagrams</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Diagram</span><span class="p">],</span>

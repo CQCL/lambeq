@@ -20,6 +20,7 @@ Concrete implementations of classical and quantum :term:`ansätze <ansatz (plura
     lambeq.ansatz.MPSAnsatz
     lambeq.ansatz.Sim14Ansatz
     lambeq.ansatz.Sim15Ansatz
+    lambeq.ansatz.Sim4Ansatz
     lambeq.ansatz.SpiderAnsatz
     lambeq.ansatz.StronglyEntanglingAnsatz
     lambeq.ansatz.Symbol

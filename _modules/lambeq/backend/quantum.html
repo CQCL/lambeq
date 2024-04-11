@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.backend.quantum &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.backend.quantum &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -647,7 +647,9 @@
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">utensor</span> <span class="o">=</span> <span class="n">box</span><span class="o">.</span><span class="n">array</span>
                     <span class="n">node1</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">utensor</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span><span class="p">,</span> <span class="s1">&#39;q1_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="p">))</span>
-                    <span class="n">node2</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">utensor</span><span class="p">)</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span><span class="p">,</span> <span class="s1">&#39;q2_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="p">))</span>
+                    <span class="k">with</span> <span class="n">backend</span><span class="p">()</span> <span class="k">as</span> <span class="n">np</span><span class="p">:</span>
+                        <span class="n">node2</span> <span class="o">=</span> <span class="n">tn</span><span class="o">.</span><span class="n">Node</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">conj</span><span class="p">(</span><span class="n">utensor</span><span class="p">)</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span><span class="p">,</span>
+                                        <span class="s1">&#39;q2_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">box</span><span class="p">))</span>
 
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">dom</span><span class="p">)):</span>
                         <span class="n">tn</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">q_scan1</span><span class="p">[</span><span class="n">q_offset</span> <span class="o">+</span> <span class="n">i</span><span class="p">],</span> <span class="n">node1</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>

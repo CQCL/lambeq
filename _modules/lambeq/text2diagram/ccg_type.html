@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.ccg_type &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.text2diagram.ccg_type &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -512,6 +512,18 @@
 
         <span class="k">return</span> <span class="n">biclosed_type</span><span class="p">,</span> <span class="n">end</span>
 
+<div class="viewcode-block" id="CCGType.replace"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.replace">[docs]</a>    <span class="k">def</span> <span class="nf">replace</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">original</span><span class="p">:</span> <span class="n">CCGType</span><span class="p">,</span> <span class="n">replacement</span><span class="p">:</span> <span class="n">CCGType</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CCGType</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Replace all occurrences of a sub-type with a different type.&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="n">original</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">replacement</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_atomic</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">new_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span>
+            <span class="n">new_argument</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argument</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">new_result</span><span class="o">.</span><span class="n">slash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">new_argument</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="CCGType.replace_result"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.CCGType.replace_result">[docs]</a>    <span class="k">def</span> <span class="nf">replace_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                        <span class="n">original</span><span class="p">:</span> <span class="n">CCGType</span><span class="p">,</span>
                        <span class="n">replacement</span><span class="p">:</span> <span class="n">CCGType</span><span class="p">,</span>
@@ -674,7 +686,7 @@
 
 
 <span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
-<span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN_PHRASE</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;n&#39;</span><span class="p">)</span>
+<span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN_PHRASE</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;np&#39;</span><span class="p">)</span>
 <span class="n">CCGType</span><span class="o">.</span><span class="n">SENTENCE</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;s&#39;</span><span class="p">)</span>
 <span class="n">CCGType</span><span class="o">.</span><span class="n">PREPOSITIONAL_PHRASE</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
 <span class="n">CCGType</span><span class="o">.</span><span class="n">CONJUNCTION</span> <span class="o">=</span> <span class="n">CCGType</span><span class="p">(</span><span class="s1">&#39;conj&#39;</span><span class="p">)</span>

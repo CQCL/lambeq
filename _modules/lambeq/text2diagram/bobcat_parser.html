@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.text2diagram.bobcat_parser &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -436,8 +436,10 @@
                 <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">PUNCTUATION</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">atom</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">atom</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">atom</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;NP&#39;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;N&#39;</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN</span>
+                <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;NP&#39;</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">NOUN_PHRASE</span>
                 <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;S&#39;</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">CCGType</span><span class="o">.</span><span class="n">SENTENCE</span>
                 <span class="k">elif</span> <span class="n">atom</span> <span class="o">==</span> <span class="s1">&#39;PP&#39;</span><span class="p">:</span>

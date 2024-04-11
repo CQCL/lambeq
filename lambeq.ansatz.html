@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.ansatz &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.ansatz &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -38,7 +38,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -202,7 +202,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>circuit</strong><span class="classifier">callable</span></dt><dd><p>Circuit generator used by the ansatz. This is a function
 (or a class constructor) that takes a number of qubits and
@@ -258,7 +260,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
 </dd>
@@ -325,7 +329,7 @@ state, which must be at least 3.</p>
 <p>Modification of circuit 14 from Sim et al.</p>
 <p>Replaces circuit-block construction with two rings of CRx gates, in
 opposite orientation.</p>
-<p>Paper at: <a class="reference external" href="https://arxiv.org/pdf/1905.10876.pdf">https://arxiv.org/pdf/1905.10876.pdf</a></p>
+<p>Paper at: <a class="reference external" href="https://arxiv.org/abs/1905.10876">https://arxiv.org/abs/1905.10876</a></p>
 <p>Code adapted from DisCoPy.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.ansatz.Sim14Ansatz.__init__">
@@ -339,7 +343,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
 </dd>
@@ -368,7 +374,7 @@ the number of qubits it uses in a circuit.</p>
 <p>Modification of circuit 15 from Sim et al.</p>
 <p>Replaces circuit-block construction with two rings of CNOT gates, in
 opposite orientation.</p>
-<p>Paper at: <a class="reference external" href="https://arxiv.org/pdf/1905.10876.pdf">https://arxiv.org/pdf/1905.10876.pdf</a></p>
+<p>Paper at: <a class="reference external" href="https://arxiv.org/abs/1905.10876">https://arxiv.org/abs/1905.10876</a></p>
 <p>Code adapted from DisCoPy.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.ansatz.Sim15Ansatz.__init__">
@@ -382,7 +388,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
 </dd>
@@ -399,6 +407,50 @@ the number of qubits it uses in a circuit.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.ansatz.Sim15Ansatz.params_shape">
 <span class="sig-name descname"><span class="pre">params_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim15Ansatz.params_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.ansatz.Sim15Ansatz.params_shape" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the shape of the parameters required.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.ansatz.Sim4Ansatz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.ansatz.</span></span><span class="sig-name descname"><span class="pre">Sim4Ansatz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ob_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Ty" title="lambeq.backend.grammar.Ty"><span class="pre">Ty</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_single_qubit_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.ansatz.Sim4Ansatz" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="root-api.html#lambeq.CircuitAnsatz" title="lambeq.ansatz.circuit.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a></p>
+<p>Circuit 4 from Sim et al.</p>
+<p>Ansatz with a layer of Rx and Rz gates, followed by a
+ladder of CRxs.</p>
+<p>Paper at: <a class="reference external" href="https://arxiv.org/abs/1905.10876">https://arxiv.org/abs/1905.10876</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.ansatz.Sim4Ansatz.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ob_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Ty" title="lambeq.backend.grammar.Ty"><span class="pre">Ty</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_single_qubit_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.ansatz.Sim4Ansatz.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate a Sim 4 ansatz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ob_map</strong><span class="classifier">dict</span></dt><dd><p>A mapping from <a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Ty" title="lambeq.backend.grammar.Ty"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.backend.grammar.Ty</span></code></a> to
+the number of qubits it uses in a circuit.</p>
+</dd>
+<dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
+</dd>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
+</dd>
+<dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.ansatz.Sim4Ansatz.circuit">
+<span class="sig-name descname"><span class="pre">circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Diagram" title="lambeq.backend.quantum.Diagram"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz.circuit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.ansatz.Sim4Ansatz.circuit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.ansatz.Sim4Ansatz.params_shape">
+<span class="sig-name descname"><span class="pre">params_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz.params_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.ansatz.Sim4Ansatz.params_shape" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the shape of the parameters required.</p>
 </dd></dl>
 
@@ -442,7 +494,7 @@ dimension space it uses in a tensor network.</p>
 <p>Ansatz using three single qubit rotations (RzRyRz) followed by a
 ladder of CNOT gates with different ranges per layer.</p>
 <p>This is adapted from the PennyLane implementation of the
-<a class="reference external" href="https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html#pennylane.StronglyEntanglingLayers" title="(in PennyLane v0.34)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pennylane.StronglyEntanglingLayers</span></code></a>, pursuant to <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache
+<a class="reference external" href="https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html#pennylane.StronglyEntanglingLayers" title="(in PennyLane v0.35)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pennylane.StronglyEntanglingLayers</span></code></a>, pursuant to <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache
 2.0 licence</a>.</p>
 <p>The original paper which introduces the architecture can be found
 <a class="reference external" href="https://arxiv.org/abs/1804.00633">here</a>.</p>
@@ -458,7 +510,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of circuit layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>ranges</strong><span class="classifier">list of int, optional</span></dt><dd><p>The range of the CNOT gate between wires in each layer. By
 default, the range starts at one (i.e. adjacent wires) and

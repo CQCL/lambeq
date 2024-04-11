@@ -3,6 +3,29 @@
 Release notes
 =============
 
+.. _rel-0.4.1:
+
+`0.4.1 <https://github.com/CQCL/lambeq/releases/tag/0.4.1>`_
+------------------------------------------------------------
+
+Added:
+
+- Support for Python 3.12.
+- A new :py:class:`~lambeq.Sim4Ansatz` based on the Sim `et al.` paper [SJA2019]_.
+- A new argument in :py:meth:`.Trainer.fit` for specifying an :py:attr:`early_stopping_criterion` other than validation loss.
+- A new argument :py:attr:`collapse_noun_phrases` in methods of :py:class:`.CCGParser` and :py:class:`.CCGTree` classes (for example, see :py:meth:`.CCGParser.sentence2diagram`) that allows the user to maintain noun phrases in the derivation or collapse them into nouns as desired.
+- Raised meaningful exception when users try to convert to/from DisCoPy 1.1.0
+
+Changed:
+
+- An internal refactoring of module :py:mod:`.backend.drawing` in view of planned new features.
+- Updated random number generation in :py:class:`~lambeq.TketModel` by using the recommended :py:meth:`numpy.random.default_rnd` method.
+
+Fixed:
+
+- Handling of possible empty ``Bra`` s and ``Ket`` s during conversion from DisCoPy.
+- Fixed a bug in JIT compilation of mixed circuit evaluations.
+
 .. _rel-0.4.0:
 
 `0.4.0 <https://github.com/CQCL/lambeq/releases/tag/0.4.0>`_

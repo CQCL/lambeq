@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.backend.grammar &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.backend.grammar &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -1302,6 +1302,35 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">draw</span>
             <span class="n">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Diagram.render_as_str"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.grammar.Diagram.render_as_str">[docs]</a>    <span class="k">def</span> <span class="nf">render_as_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Render the diagram as text.</span>
+
+<span class="sd">        Presently only implemented for pregroup diagrams.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        word_spacing : int, default: 2</span>
+<span class="sd">            The number of spaces between the words of the diagrams.</span>
+<span class="sd">        use_at_separator : bool, default: False</span>
+<span class="sd">            Whether to represent types using @ as the monoidal product.</span>
+<span class="sd">            Otherwise, use the unicode dot character.</span>
+<span class="sd">        compress_layers : bool, default: True</span>
+<span class="sd">            Whether to draw boxes in the same layer when they can occur</span>
+<span class="sd">            simultaneously, otherwise, draw one box per layer.</span>
+<span class="sd">        use_ascii: bool, default: False</span>
+<span class="sd">            Whether to draw using ASCII characters only, for</span>
+<span class="sd">            compatibility reasons.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Drawing of diagram in string format.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">lambeq.backend.drawing</span> <span class="kn">import</span> <span class="n">render_as_str</span>
+        <span class="k">return</span> <span class="n">render_as_str</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Diagram.apply_functor"><a class="viewcode-back" href="../../../lambeq.backend.html#lambeq.backend.grammar.Diagram.apply_functor">[docs]</a>    <span class="k">def</span> <span class="nf">apply_functor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">functor</span><span class="p">:</span> <span class="n">Functor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span><span class="p">:</span>
         <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_id</span>

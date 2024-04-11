@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq package &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq package &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -40,7 +40,7 @@
               <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -168,6 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#lambeq.CCGTree"><code class="docutils literal notranslate"><span class="pre">CCGTree</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGTree.__init__"><code class="docutils literal notranslate"><span class="pre">CCGTree.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGTree.child"><code class="docutils literal notranslate"><span class="pre">CCGTree.child</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGTree.collapse_noun_phrases"><code class="docutils literal notranslate"><span class="pre">CCGTree.collapse_noun_phrases()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGTree.deriv"><code class="docutils literal notranslate"><span class="pre">CCGTree.deriv()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGTree.from_json"><code class="docutils literal notranslate"><span class="pre">CCGTree.from_json()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGTree.left"><code class="docutils literal notranslate"><span class="pre">CCGTree.left</span></code></a></li>
@@ -199,6 +200,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGType.name"><code class="docutils literal notranslate"><span class="pre">CCGType.name</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGType.over"><code class="docutils literal notranslate"><span class="pre">CCGType.over()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGType.parse"><code class="docutils literal notranslate"><span class="pre">CCGType.parse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGType.replace"><code class="docutils literal notranslate"><span class="pre">CCGType.replace()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGType.replace_result"><code class="docutils literal notranslate"><span class="pre">CCGType.replace_result()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGType.result"><code class="docutils literal notranslate"><span class="pre">CCGType.result</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.CCGType.right"><code class="docutils literal notranslate"><span class="pre">CCGType.right</span></code></a></li>
@@ -451,6 +453,12 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.Sim15Ansatz.params_shape"><code class="docutils literal notranslate"><span class="pre">Sim15Ansatz.params_shape()</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#lambeq.Sim4Ansatz"><code class="docutils literal notranslate"><span class="pre">Sim4Ansatz</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.Sim4Ansatz.__init__"><code class="docutils literal notranslate"><span class="pre">Sim4Ansatz.__init__()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.Sim4Ansatz.circuit"><code class="docutils literal notranslate"><span class="pre">Sim4Ansatz.circuit()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lambeq.Sim4Ansatz.params_shape"><code class="docutils literal notranslate"><span class="pre">Sim4Ansatz.params_shape()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#lambeq.SimpleRewriteRule"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.SimpleRewriteRule.__init__"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule.__init__()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.SimpleRewriteRule.matches"><code class="docutils literal notranslate"><span class="pre">SimpleRewriteRule.matches()</span></code></a></li>
@@ -556,7 +564,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#lambeq.WebParser.sentences2trees"><code class="docutils literal notranslate"><span class="pre">WebParser.sentences2trees()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#lambeq.diagram2str"><code class="docutils literal notranslate"><span class="pre">diagram2str()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="package-api.html">Subpackages</a></li>
@@ -1131,21 +1138,25 @@ suppressed, that entry is <code class="xref py py-obj docutils literal notransla
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.CCGParser.sentence2diagram">
-<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGParser.sentence2diagram" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collapse_noun_phrases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGParser.sentence2diagram" title="Permalink to this definition"></a></dt>
 <dd><p>Parse a sentence into a lambeq diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sentence</strong><span class="classifier">str or list of str</span></dt><dd><p>The sentence to be parsed.</p>
 </dd>
+<dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether the sentence has been passed as a list of tokens.</p>
+</dd>
 <dt><strong>planar</strong><span class="classifier">bool, default: False</span></dt><dd><p>Force diagrams to be planar when they contain
 crossed composition.</p>
+</dd>
+<dt><strong>collapse_noun_phrases</strong><span class="classifier">bool, default: True</span></dt><dd><p>If set, then before converting the tree to a diagram, all
+noun phrase types in the tree are changed into nouns. This
+includes sub-types, e.g. <cite>S/NP</cite> becomes <cite>S/N</cite>.</p>
 </dd>
 <dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
 the sentence fails to parse, instead of raising an
 exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</dd>
-<dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether the sentence has been passed as a list of tokens.</p>
 </dd>
 </dl>
 </dd>
@@ -1187,21 +1198,25 @@ exception, returns <code class="xref py py-obj docutils literal notranslate"><sp
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.CCGParser.sentences2diagrams">
-<span class="sig-name descname"><span class="pre">sentences2diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentences</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceBatchType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser.sentences2diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGParser.sentences2diagrams" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sentences2diagrams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentences</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceBatchType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collapse_noun_phrases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_parser.html#CCGParser.sentences2diagrams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGParser.sentences2diagrams" title="Permalink to this definition"></a></dt>
 <dd><p>Parse multiple sentences into a list of lambeq diagrams.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>sentences</strong><span class="classifier">list of str, or list of list of str</span></dt><dd><p>The sentences to be parsed.</p>
 </dd>
+<dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether each sentence has been passed as a list of tokens.</p>
+</dd>
 <dt><strong>planar</strong><span class="classifier">bool, default: False</span></dt><dd><p>Force diagrams to be planar when they contain
 crossed composition.</p>
+</dd>
+<dt><strong>collapse_noun_phrases</strong><span class="classifier">bool, default: True</span></dt><dd><p>If set, then before converting each tree to a diagram, any
+noun phrase types in the tree are changed into nouns. This
+includes sub-types, e.g. <cite>S/NP</cite> becomes <cite>S/N</cite>.</p>
 </dd>
 <dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
 sentence fails to parse, instead of raising an exception,
 its return entry is <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</dd>
-<dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether each sentence has been passed as a list of tokens.</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">str, optional</span></dt><dd><p>See <a class="reference internal" href="#lambeq.VerbosityLevel" title="lambeq.VerbosityLevel"><code class="xref py py-class docutils literal notranslate"><span class="pre">VerbosityLevel</span></code></a> for options. Not all parsers
 implement all three levels of progress reporting, see the
@@ -1504,6 +1519,13 @@ combined with the <code class="xref py py-obj docutils literal notranslate"><spa
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="lambeq.CCGTree.collapse_noun_phrases">
+<span class="sig-name descname"><span class="pre">collapse_noun_phrases</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lambeq.CCGTree" title="lambeq.text2diagram.ccg_tree.CCGTree"><span class="pre">CCGTree</span></a></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.collapse_noun_phrases"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.collapse_noun_phrases" title="Permalink to this definition"></a></dt>
+<dd><p>Change noun phrase types into noun types.</p>
+<p>This includes sub-types, e.g. <cite>S/NP</cite> becomes <cite>S/N</cite>.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="lambeq.CCGTree.deriv">
 <span class="sig-name descname"><span class="pre">deriv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">word_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_slashes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.deriv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.deriv" title="Permalink to this definition"></a></dt>
 <dd><p>Produce a string representation of the tree.</p>
@@ -1579,7 +1601,7 @@ children.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.CCGTree.to_diagram">
-<span class="sig-name descname"><span class="pre">to_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.to_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.to_diagram" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collapse_noun_phrases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_tree.html#CCGTree.to_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGTree.to_diagram" title="Permalink to this definition"></a></dt>
 <dd><p>Convert tree to a DisCoCat diagram.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1666,7 +1688,7 @@ i.e. XY.</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="lambeq.CCGType.NOUN_PHRASE">
-<span class="sig-name descname"><span class="pre">NOUN_PHRASE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#lambeq.CCGType" title="lambeq.CCGType"><span class="pre">CCGType</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CCGType(n)</span></em><a class="headerlink" href="#lambeq.CCGType.NOUN_PHRASE" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">NOUN_PHRASE</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#lambeq.CCGType" title="lambeq.CCGType"><span class="pre">CCGType</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">CCGType(np)</span></em><a class="headerlink" href="#lambeq.CCGType.NOUN_PHRASE" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -1816,6 +1838,12 @@ C  conj  C
 </pre></div>
 </div>
 <p>thus <code class="docutils literal notranslate"><span class="pre">C[conj]</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">C\C</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.CCGType.replace">
+<span class="sig-name descname"><span class="pre">replace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">original</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.CCGType" title="lambeq.text2diagram.ccg_type.CCGType"><span class="pre">CCGType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.CCGType" title="lambeq.text2diagram.ccg_type.CCGType"><span class="pre">CCGType</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#lambeq.CCGType" title="lambeq.text2diagram.ccg_type.CCGType"><span class="pre">CCGType</span></a></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/ccg_type.html#CCGType.replace"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.CCGType.replace" title="Permalink to this definition"></a></dt>
+<dd><p>Replace all occurrences of a sub-type with a different type.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2065,7 +2093,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>circuit</strong><span class="classifier">callable</span></dt><dd><p>Circuit generator used by the ansatz. This is a function
 (or a class constructor) that takes a number of qubits and
@@ -2367,7 +2397,7 @@ default, the English categories are:</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.DepCCGParser.sentence2diagram">
-<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/depccg_parser.html#DepCCGParser.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.DepCCGParser.sentence2diagram" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collapse_noun_phrases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/depccg_parser.html#DepCCGParser.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.DepCCGParser.sentence2diagram" title="Permalink to this definition"></a></dt>
 <dd><p>Parse a sentence into a lambeq diagram.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2375,11 +2405,15 @@ default, the English categories are:</p>
 <dt><strong>sentence</strong><span class="classifier">str, list[str]</span></dt><dd><p>The sentence to be parsed, passed either as a string, or as
 a list of tokens.</p>
 </dd>
+<dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether the sentence has been passed as a list of tokens.</p>
+</dd>
+<dt><strong>collapse_noun_phrases</strong><span class="classifier">bool, default: True</span></dt><dd><p>If set, then before converting each tree to a diagram, all
+noun phrase types in the tree are changed into nouns. This
+includes sub-types, e.g. <cite>S/NP</cite> becomes <cite>S/N</cite>.</p>
+</dd>
 <dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if
 the sentence fails to parse, instead of raising an
 exception, returns <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>.</p>
-</dd>
-<dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether the sentence has been passed as a list of tokens.</p>
 </dd>
 </dl>
 </dd>
@@ -2536,7 +2570,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
 </dd>
@@ -3696,7 +3732,7 @@ Default is <cite>runs/**CURRENT_DATETIME_HOSTNAME**</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.QuantumTrainer.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'epoch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/quantum_trainer.html#QuantumTrainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.QuantumTrainer.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'epoch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimize_criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/quantum_trainer.html#QuantumTrainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.QuantumTrainer.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit the model on the training data and, optionally,
 evaluate it on the validation data.</p>
 <dl class="field-list">
@@ -3720,8 +3756,15 @@ evaluated after multiples of <cite>eval_interval</cite> epochs. If
 <cite>eval_interval</cite> steps. Ignored if <cite>val_dataset</cite> is
 <cite>None</cite>.</p>
 </dd>
+<dt><strong>early_stopping_criterion</strong><span class="classifier">str, optional</span></dt><dd><p>If specified, the value of this on <cite>val_dataset</cite> (if provided)
+will be used as the stopping criterion instead of
+the (default) validation loss.</p>
+</dd>
 <dt><strong>early_stopping_interval</strong><span class="classifier">int, optional</span></dt><dd><p>If specified, training is stopped if the validation loss does
 not improve for <cite>early_stopping_interval</cite> validation cycles.</p>
+</dd>
+<dt><strong>minimize_criterion: bool, default: True</strong></dt><dd><p>Flag indicating if we should minimize or maximize the early
+stopping criterion.</p>
 </dd>
 </dl>
 </dd>
@@ -4239,7 +4282,7 @@ and the targets in index 1.</p>
 <p>Modification of circuit 14 from Sim et al.</p>
 <p>Replaces circuit-block construction with two rings of CRx gates, in
 opposite orientation.</p>
-<p>Paper at: <a class="reference external" href="https://arxiv.org/pdf/1905.10876.pdf">https://arxiv.org/pdf/1905.10876.pdf</a></p>
+<p>Paper at: <a class="reference external" href="https://arxiv.org/abs/1905.10876">https://arxiv.org/abs/1905.10876</a></p>
 <p>Code adapted from DisCoPy.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.Sim14Ansatz.__init__">
@@ -4253,7 +4296,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
 </dd>
@@ -4282,7 +4327,7 @@ the number of qubits it uses in a circuit.</p>
 <p>Modification of circuit 15 from Sim et al.</p>
 <p>Replaces circuit-block construction with two rings of CNOT gates, in
 opposite orientation.</p>
-<p>Paper at: <a class="reference external" href="https://arxiv.org/pdf/1905.10876.pdf">https://arxiv.org/pdf/1905.10876.pdf</a></p>
+<p>Paper at: <a class="reference external" href="https://arxiv.org/abs/1905.10876">https://arxiv.org/abs/1905.10876</a></p>
 <p>Code adapted from DisCoPy.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.Sim15Ansatz.__init__">
@@ -4296,7 +4341,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
 </dd>
@@ -4313,6 +4360,50 @@ the number of qubits it uses in a circuit.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.Sim15Ansatz.params_shape">
 <span class="sig-name descname"><span class="pre">params_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim15Ansatz.params_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Sim15Ansatz.params_shape" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the shape of the parameters required.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="lambeq.Sim4Ansatz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">Sim4Ansatz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ob_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Ty" title="lambeq.backend.grammar.Ty"><span class="pre">Ty</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_single_qubit_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Sim4Ansatz" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lambeq.CircuitAnsatz" title="lambeq.ansatz.circuit.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a></p>
+<p>Circuit 4 from Sim et al.</p>
+<p>Ansatz with a layer of Rx and Rz gates, followed by a
+ladder of CRxs.</p>
+<p>Paper at: <a class="reference external" href="https://arxiv.org/abs/1905.10876">https://arxiv.org/abs/1905.10876</a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.Sim4Ansatz.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ob_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Mapping</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Ty" title="lambeq.backend.grammar.Ty"><span class="pre">Ty</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_single_qubit_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discard</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Sim4Ansatz.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Instantiate a Sim 4 ansatz.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ob_map</strong><span class="classifier">dict</span></dt><dd><p>A mapping from <a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Ty" title="lambeq.backend.grammar.Ty"><code class="xref py py-class docutils literal notranslate"><span class="pre">lambeq.backend.grammar.Ty</span></code></a> to
+the number of qubits it uses in a circuit.</p>
+</dd>
+<dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of layers used by the ansatz.</p>
+</dd>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
+</dd>
+<dt><strong>discard</strong><span class="classifier">bool, default: False</span></dt><dd><p>Discard open wires instead of post-selecting.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.Sim4Ansatz.circuit">
+<span class="sig-name descname"><span class="pre">circuit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.quantum.Diagram" title="lambeq.backend.quantum.Diagram"><span class="pre">Diagram</span></a></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz.circuit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Sim4Ansatz.circuit" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lambeq.Sim4Ansatz.params_shape">
+<span class="sig-name descname"><span class="pre">params_shape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_qubits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/lambeq/ansatz/circuit.html#Sim4Ansatz.params_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Sim4Ansatz.params_shape" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate the shape of the parameters required.</p>
 </dd></dl>
 
@@ -4479,7 +4570,7 @@ dimension space it uses in a tensor network.</p>
 <p>Ansatz using three single qubit rotations (RzRyRz) followed by a
 ladder of CNOT gates with different ranges per layer.</p>
 <p>This is adapted from the PennyLane implementation of the
-<a class="reference external" href="https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html#pennylane.StronglyEntanglingLayers" title="(in PennyLane v0.34)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pennylane.StronglyEntanglingLayers</span></code></a>, pursuant to <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache
+<a class="reference external" href="https://docs.pennylane.ai/en/stable/code/api/pennylane.StronglyEntanglingLayers.html#pennylane.StronglyEntanglingLayers" title="(in PennyLane v0.35)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pennylane.StronglyEntanglingLayers</span></code></a>, pursuant to <a class="reference external" href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache
 2.0 licence</a>.</p>
 <p>The original paper which introduces the architecture can be found
 <a class="reference external" href="https://arxiv.org/abs/1804.00633">here</a>.</p>
@@ -4495,7 +4586,9 @@ the number of qubits it uses in a circuit.</p>
 </dd>
 <dt><strong>n_layers</strong><span class="classifier">int</span></dt><dd><p>The number of circuit layers used by the ansatz.</p>
 </dd>
-<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.</p>
+<dt><strong>n_single_qubit_params</strong><span class="classifier">int, default: 3</span></dt><dd><p>The number of single qubit rotations used by the ansatz.
+It only affects wires that <cite>ob_map</cite> maps to a single
+qubit.</p>
 </dd>
 <dt><strong>ranges</strong><span class="classifier">list of int, optional</span></dt><dd><p>The range of the CNOT gate between wires in each layer. By
 default, the range starts at one (i.e. adjacent wires) and
@@ -4814,7 +4907,7 @@ Default is <cite>runs/**CURRENT_DATETIME_HOSTNAME**</cite>.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.Trainer.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'epoch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/trainer.html#Trainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Trainer.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">val_dataset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#lambeq.Dataset" title="lambeq.Dataset"><span class="pre">Dataset</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eval_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'epoch'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">early_stopping_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimize_criterion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/training/trainer.html#Trainer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.Trainer.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit the model on the training data and, optionally,
 evaluate it on the validation data.</p>
 <dl class="field-list">
@@ -4838,8 +4931,15 @@ evaluated after multiples of <cite>eval_interval</cite> epochs. If
 <cite>eval_interval</cite> steps. Ignored if <cite>val_dataset</cite> is
 <cite>None</cite>.</p>
 </dd>
+<dt><strong>early_stopping_criterion</strong><span class="classifier">str, optional</span></dt><dd><p>If specified, the value of this on <cite>val_dataset</cite> (if provided)
+will be used as the stopping criterion instead of
+the (default) validation loss.</p>
+</dd>
 <dt><strong>early_stopping_interval</strong><span class="classifier">int, optional</span></dt><dd><p>If specified, training is stopped if the validation loss does
 not improve for <cite>early_stopping_interval</cite> validation cycles.</p>
+</dd>
+<dt><strong>minimize_criterion: bool, default: True</strong></dt><dd><p>Flag indicating if we should minimize or maximize the early
+stopping criterion.</p>
 </dd>
 </dl>
 </dd>
@@ -4974,7 +5074,7 @@ type from <a class="reference internal" href="#lambeq.AtomicType" title="lambeq.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="lambeq.TreeReader.sentence2diagram">
-<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.TreeReader.sentence2diagram" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">sentence2diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sentence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SentenceType</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tokenised</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collapse_noun_phrases</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suppress_exceptions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/lambeq/text2diagram/tree_reader.html#TreeReader.sentence2diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.TreeReader.sentence2diagram" title="Permalink to this definition"></a></dt>
 <dd><p>Parse a sentence into a lambeq diagram.</p>
 <p>This produces a tree-shaped diagram based on the output of the
 CCG parser.</p>
@@ -4984,6 +5084,10 @@ CCG parser.</p>
 <dt><strong>sentence</strong><span class="classifier">str or list of str</span></dt><dd><p>The sentence to be parsed.</p>
 </dd>
 <dt><strong>tokenised</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether the sentence has been passed as a list of tokens.</p>
+</dd>
+<dt><strong>collapse_noun_phrases</strong><span class="classifier">bool, default: True</span></dt><dd><p>If set, then before converting each tree to a diagram, any
+noun phrase types in the tree are changed into nouns. This
+includes sub-types, e.g. <cite>S/NP</cite> becomes <cite>S/N</cite>.</p>
 </dd>
 <dt><strong>suppress_exceptions</strong><span class="classifier">bool, default: False</span></dt><dd><p>Whether to suppress exceptions. If <code class="xref py py-obj docutils literal notranslate"><span class="pre">True</span></code>, then if a
 sentence fails to parse, instead of raising an exception,
@@ -5205,7 +5309,7 @@ behaviour).</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>PROGESS</p></td>
+<tr class="row-even"><td><p>PROGRESS</p></td>
 <td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">'progress'</span></code></p></td>
 <td><p>Use progress bar.</p></td>
 </tr>
@@ -5316,15 +5420,6 @@ match <cite>tokenised</cite> flag.</p>
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="lambeq.diagram2str">
-<span class="sig-prename descclassname"><span class="pre">lambeq.</span></span><span class="sig-name descname"><span class="pre">diagram2str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">diagram</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="lambeq.backend.html#lambeq.backend.grammar.Diagram" title="lambeq.backend.grammar.Diagram"><span class="pre">Diagram</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">word_spacing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_at_separator</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compress_layers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_ascii</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/lambeq/backend/drawing/text_printer.html#diagram2str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lambeq.diagram2str" title="Permalink to this definition"></a></dt>
-<dd><p>Produces a string that graphically represents the input diagram
-with text characters, without the need of first creating a printer.
-For specific arguments, see the constructor of the
-<code class="xref py py-class docutils literal notranslate"><span class="pre">TextDiagramPrinter</span></code> class.</p>
 </dd></dl>
 
 </section>

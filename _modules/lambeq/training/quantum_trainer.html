@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.quantum_trainer &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.training.quantum_trainer &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -319,7 +319,9 @@
             <span class="n">log_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">eval_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">eval_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">EvalMode</span><span class="o">.</span><span class="n">EPOCH</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-            <span class="n">early_stopping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">early_stopping_criterion</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">early_stopping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">minimize_criterion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_training</span> <span class="o">=</span> <span class="kc">True</span>
 
@@ -328,7 +330,9 @@
                     <span class="n">log_interval</span><span class="p">,</span>
                     <span class="n">eval_interval</span><span class="p">,</span>
                     <span class="n">eval_mode</span><span class="p">,</span>
-                    <span class="n">early_stopping_interval</span><span class="p">)</span>
+                    <span class="n">early_stopping_criterion</span><span class="p">,</span>
+                    <span class="n">early_stopping_interval</span><span class="p">,</span>
+                    <span class="n">minimize_criterion</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">_training</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 </pre></div>

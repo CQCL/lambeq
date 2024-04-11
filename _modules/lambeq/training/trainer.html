@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.training.trainer &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.training.trainer &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -499,13 +499,59 @@
                 <span class="p">)</span>
             <span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_check_early_stopping</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                              <span class="n">early_stopping_criterion</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                              <span class="n">early_stopping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                              <span class="n">minimize_criterion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Determine if training should be stopped based on the specified</span>
+<span class="sd">        early stopping configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        early_stopping_criterion : str, optional</span>
+<span class="sd">            If specified, the value of this on `val_dataset` (if provided)</span>
+<span class="sd">            will be used as the stopping criterion instead of</span>
+<span class="sd">            the (default) validation loss.</span>
+<span class="sd">        early_stopping_interval : int, optional</span>
+<span class="sd">            If specified, training is stopped if the validation loss does</span>
+<span class="sd">            not improve for `early_stopping_interval` validation cycles.</span>
+<span class="sd">        minimize_criterion: bool, default: True</span>
+<span class="sd">            Flag indicating if we should minimize or maximize the early</span>
+<span class="sd">            stopping criterion.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Boolean</span>
+<span class="sd">            Flag if early stopping should be performed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">minimize_criterion</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">early_stopping</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">criterion_vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span>
+        <span class="k">if</span> <span class="n">early_stopping_criterion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">criterion_vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">[</span>
+                <span class="n">early_stopping_criterion</span>
+            <span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">early_stopping_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">criterion_vals</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">early_stopping_interval</span><span class="p">):</span>
+
+            <span class="n">reference</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">criterion_vals</span><span class="p">[</span><span class="o">-</span><span class="n">early_stopping_interval</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+            <span class="n">latter_vals</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="n">factor</span> <span class="o">*</span> <span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span>
+                <span class="n">criterion_vals</span><span class="p">[</span><span class="o">-</span><span class="n">early_stopping_interval</span><span class="p">:]</span>
+            <span class="p">]</span>
+            <span class="n">early_stopping</span> <span class="o">=</span> <span class="n">reference</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="n">latter_vals</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">early_stopping</span>
+
 <div class="viewcode-block" id="Trainer.fit"><a class="viewcode-back" href="../../../root-api.html#lambeq.training.Trainer.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
             <span class="n">train_dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
             <span class="n">val_dataset</span><span class="p">:</span> <span class="n">Dataset</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
             <span class="n">log_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">eval_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
             <span class="n">eval_mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">EvalMode</span><span class="o">.</span><span class="n">EPOCH</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-            <span class="n">early_stopping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">early_stopping_criterion</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">early_stopping_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">minimize_criterion</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the model on the training data and, optionally,</span>
 <span class="sd">        evaluate it on the validation data.</span>
 
@@ -529,9 +575,16 @@
 <span class="sd">            `&#39;step&#39;`, the metrics are evaluated after multiples of</span>
 <span class="sd">            `eval_interval` steps. Ignored if `val_dataset` is</span>
 <span class="sd">            `None`.</span>
+<span class="sd">        early_stopping_criterion : str, optional</span>
+<span class="sd">            If specified, the value of this on `val_dataset` (if provided)</span>
+<span class="sd">            will be used as the stopping criterion instead of</span>
+<span class="sd">            the (default) validation loss.</span>
 <span class="sd">        early_stopping_interval : int, optional</span>
 <span class="sd">            If specified, training is stopped if the validation loss does</span>
 <span class="sd">            not improve for `early_stopping_interval` validation cycles.</span>
+<span class="sd">        minimize_criterion: bool, default: True</span>
+<span class="sd">            Flag indicating if we should minimize or maximize the early</span>
+<span class="sd">            stopping criterion.</span>
 
 <span class="sd">        Raises</span>
 <span class="sd">        ------</span>
@@ -549,6 +602,20 @@
             <span class="n">evaluation_step</span> <span class="o">=</span> <span class="n">eval_interval</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Invalid evaluation mode: </span><span class="si">{</span><span class="n">eval_mode</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+
+        <span class="c1"># check that early stopping critera is in available list</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">early_stopping_criterion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">early_stopping_criterion</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Invalid early stopping criterion: &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">early_stopping_criterion</span><span class="si">}</span><span class="s1">. &#39;</span>
+                             <span class="s1">&#39;Should be one of &#39;</span>
+                             <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">evaluate_functions</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Used for early stopping</span>
+        <span class="n">factor</span> <span class="o">=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">minimize_criterion</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">best_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">best_step</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="n">logging_step</span> <span class="o">=</span> <span class="n">log_interval</span> <span class="o">*</span> <span class="n">evaluation_step</span>
         <span class="n">total_steps</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">*</span> <span class="n">train_dataset</span><span class="o">.</span><span class="n">batches_per_epoch</span>
@@ -570,7 +637,7 @@
         <span class="c1"># start training loop</span>
         <span class="k">with</span> <span class="n">backend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">):</span>
             <span class="n">early_stopping</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="n">best_val_loss</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+            <span class="n">best_val_criterion</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="n">trange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_epoch</span><span class="p">,</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
                                 <span class="n">desc</span><span class="o">=</span><span class="s1">&#39;Epoch&#39;</span><span class="p">,</span>
@@ -655,8 +722,17 @@
                                                <span class="n">status_bar</span><span class="p">,</span>
                                                <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;val&#39;</span><span class="p">)</span>
                         <span class="c1"># save best model</span>
-                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">best_val_loss</span><span class="p">:</span>
-                            <span class="n">best_val_loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">criterion_vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span>
+                        <span class="k">if</span> <span class="n">early_stopping_criterion</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                            <span class="n">criterion_vals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_eval_results</span><span class="p">[</span>
+                                <span class="n">early_stopping_criterion</span>
+                            <span class="p">]</span>
+
+                        <span class="n">criterion_val</span> <span class="o">=</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">criterion_vals</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">criterion_val</span> <span class="o">&lt;</span> <span class="n">best_val_criterion</span><span class="p">:</span>
+                            <span class="n">best_val_criterion</span> <span class="o">=</span> <span class="n">criterion_val</span>
+                            <span class="n">best_epoch</span> <span class="o">=</span> <span class="n">epoch</span>
+                            <span class="n">best_step</span> <span class="o">=</span> <span class="n">step</span>
                             <span class="bp">self</span><span class="o">.</span><span class="n">save_checkpoint</span><span class="p">(</span>
                                 <span class="p">{</span><span class="s1">&#39;epoch&#39;</span><span class="p">:</span> <span class="n">epoch</span><span class="p">,</span>
                                  <span class="s1">&#39;train_costs&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_costs</span><span class="p">,</span>
@@ -693,12 +769,13 @@
                                   <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
 
                     <span class="c1"># check for early stopping</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">early_stopping_interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                        <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">early_stopping_interval</span>
-                        <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="n">early_stopping_interval</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span>
-                            <span class="bp">self</span><span class="o">.</span><span class="n">val_costs</span><span class="p">[</span><span class="o">-</span><span class="n">early_stopping_interval</span><span class="p">:])):</span>
-                        <span class="n">early_stopping</span> <span class="o">=</span> <span class="kc">True</span>
-                        <span class="k">break</span>  <span class="c1"># inner epoch loop</span>
+                    <span class="n">early_stopping</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_early_stopping</span><span class="p">(</span>
+                        <span class="n">early_stopping_criterion</span><span class="p">,</span>
+                        <span class="n">early_stopping_interval</span><span class="p">,</span>
+                        <span class="n">minimize_criterion</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">early_stopping</span><span class="p">:</span>
+                        <span class="k">break</span>   <span class="c1"># inner epoch loop</span>
 
                 <span class="c1"># calculate epoch loss</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">train_epoch_costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
@@ -722,7 +799,8 @@
                 <span class="k">if</span> <span class="n">early_stopping</span><span class="p">:</span>
                     <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">==</span> <span class="n">VerbosityLevel</span><span class="o">.</span><span class="n">TEXT</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
                         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Early stopping!</span><span class="se">\n</span><span class="s1">&#39;</span>
-                              <span class="s1">&#39;Best model saved to &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;Best model (epoch=</span><span class="si">{</span><span class="n">best_epoch</span><span class="si">}</span><span class="s1">, &#39;</span>
+                              <span class="sa">f</span><span class="s1">&#39;step=</span><span class="si">{</span><span class="n">best_step</span><span class="si">}</span><span class="s1">) saved to</span><span class="se">\n</span><span class="s1">&#39;</span>
                               <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_dir</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;best_model.lt&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                               <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
                     <span class="k">break</span>  <span class="c1"># break outer epoch loop</span>

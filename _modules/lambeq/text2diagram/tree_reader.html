@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>lambeq.text2diagram.tree_reader &mdash; lambeq 0.4.0 documentation</title>
+  <title>lambeq.text2diagram.tree_reader &mdash; lambeq 0.4.1 documentation</title>
       <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../../_static/graphviz.css" type="text/css" />
@@ -37,7 +37,7 @@
               <img src="../../../_static/lambeq_logo.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.4.0
+                0.4.1
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
@@ -305,6 +305,7 @@
 <div class="viewcode-block" id="TreeReader.sentence2diagram"><a class="viewcode-back" href="../../../root-api.html#lambeq.text2diagram.TreeReader.sentence2diagram">[docs]</a>    <span class="k">def</span> <span class="nf">sentence2diagram</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                          <span class="n">sentence</span><span class="p">:</span> <span class="n">SentenceType</span><span class="p">,</span>
                          <span class="n">tokenised</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                         <span class="n">collapse_noun_phrases</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                          <span class="n">suppress_exceptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Diagram</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a sentence into a lambeq diagram.</span>
 
@@ -317,6 +318,10 @@
 <span class="sd">            The sentence to be parsed.</span>
 <span class="sd">        tokenised : bool, default: False</span>
 <span class="sd">            Whether the sentence has been passed as a list of tokens.</span>
+<span class="sd">        collapse_noun_phrases : bool, default: True</span>
+<span class="sd">            If set, then before converting each tree to a diagram, any</span>
+<span class="sd">            noun phrase types in the tree are changed into nouns. This</span>
+<span class="sd">            includes sub-types, e.g. `S/NP` becomes `S/N`.</span>
 <span class="sd">        suppress_exceptions : bool, default: False</span>
 <span class="sd">            Whether to suppress exceptions. If :py:obj:`True`, then if a</span>
 <span class="sd">            sentence fails to parse, instead of raising an exception,</span>
@@ -336,6 +341,10 @@
 
         <span class="k">if</span> <span class="n">tree</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">collapse_noun_phrases</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">collapse_noun_phrases</span><span class="p">()</span>
+
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tree2diagram</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span>
                                  <span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
                                  <span class="n">word_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">word_type</span><span class="p">,</span>
