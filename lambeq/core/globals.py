@@ -27,7 +27,7 @@ class VerbosityLevel(Enum):
         * - Option
           - Value
           - Description
-        * - PROGESS
+        * - PROGRESS
           - :py:obj:`'progress'`
           - Use progress bar.
         * - TEXT

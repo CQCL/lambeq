@@ -152,7 +152,7 @@ def test_tqdm_progress(bobcat_parser, sentence):
 
 def test_root_filtering(bobcat_parser):
     S = CCGType.SENTENCE
-    N = CCGType.NOUN
+    N = CCGType.NOUN_PHRASE
 
     sentence1 = 'do'
     sentence2 = 'I do'

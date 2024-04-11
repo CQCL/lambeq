@@ -24,18 +24,33 @@ from __future__ import annotations
 
 from typing import cast, Type, TypeVar, Union
 
-try:
-    from discopy import quantum as dq
-    from discopy import tensor as dt
-    from discopy.grammar import pregroup as dg
-
-except ImportError:
-    raise ImportError('`import discopy` failed. Please install discopy by '
-                      'running `pip install discopy`.')
+from packaging import version
 
 from lambeq.backend import grammar as lg
 from lambeq.backend import quantum as lq
 from lambeq.backend import tensor as lt
+
+
+MIN_DISCOPY_VERSION = '1.1.0'
+
+try:
+    import discopy
+except ImportError as ie:
+    raise ImportError(
+        '`import discopy` failed. Please install discopy by '
+        f'running `pip install "discopy>={MIN_DISCOPY_VERSION}"`.'
+    ) from ie
+else:
+    if version.parse(discopy.__version__) < version.parse(MIN_DISCOPY_VERSION):
+        raise DeprecationWarning(
+            'Conversion from lambeq to discopy and vice versa '
+            f'requires discopy>={MIN_DISCOPY_VERSION}. Please update discopy '
+            f'by running `pip install "discopy>={MIN_DISCOPY_VERSION}"`.'
+        )
+
+from discopy import quantum as dq   # noqa: E402,I100
+from discopy import tensor as dt    # noqa: E402
+from discopy.grammar import pregroup as dg  # noqa: E402
 
 
 _LAMBEQ_QUANTUM_BOX_TY = Union[type[lq.Box], lq.Box]
@@ -68,7 +83,8 @@ _DISCOPY_DIAGRAM_TY = Union[dg.Diagram, dq.Circuit, dt.Diagram]
 _DISCOPY_TY_VAR = TypeVar('_DISCOPY_TY_VAR', dg.Ty, dq.Ty, dt.Dim)
 _LAMBEQ_TY_VAR = TypeVar('_LAMBEQ_TY_VAR', lg.Ty, lq.Ty, lt.Dim)
 _DISCOPY_BOX_VAR = TypeVar('_DISCOPY_BOX_VAR', dg.Box, dq.Box, dt.Box)
-_LAMBEQ_BOX_VAR = TypeVar('_LAMBEQ_BOX_VAR', lg.Box, lq.Box, lt.Box)
+_LAMBEQ_BOX_VAR = TypeVar('_LAMBEQ_BOX_VAR',
+                          lg.Box, lq.Box, lt.Box, lq.Diagram)
 _DISCOPY_ENTITY = TypeVar('_DISCOPY_ENTITY', dg.Ty, dq.Ty, dt.Dim, dg.Box,
                           dq.Box, dt.Box)
 
@@ -188,15 +204,19 @@ def convert_quantum_l2d(box: lq.Box) -> dq.Box:
     return op
 
 
-def convert_quantum_d2l(box: dq.Box) -> lq.Box:
+def convert_quantum_d2l(box: dq.Box) -> lq.Box | lq.Diagram:
     lq_box: _LAMBEQ_QUANTUM_BOX_TY
 
     if box.is_dagger:
         op = convert_quantum_d2l(box.dagger()).dagger()
 
     elif isinstance(box, dq.Controlled):
-        op = lq.Controlled(controlled=convert_quantum_d2l(box.controlled),
-                           distance=box.distance)
+        controlled = convert_quantum_d2l(box.controlled)
+        if isinstance(controlled, lq.Diagram):
+            op = controlled
+        else:
+            op = lq.Controlled(controlled=controlled,
+                               distance=box.distance)
 
     elif isinstance(box, (dq.Rx, dq.Ry, dq.Rz,
                           dq.gates.Scalar, dq.gates.Sqrt)):
@@ -205,9 +225,13 @@ def convert_quantum_d2l(box: dq.Box) -> lq.Box:
         op = lq_box(cast(float, box.data))
 
     elif isinstance(box, (dq.Bra, dq.Ket)):
-        lq_box = cast(type[Union[lq.Bra, lq.Ket]],
-                      QUANTUM_MAPPINGS_D2L[type(box)])
-        op = lq_box(*box.bitstring)
+        if box.bitstring:
+            lq_box = cast(type[Union[lq.Bra, lq.Ket]],
+                          QUANTUM_MAPPINGS_D2L[type(box)])
+
+            op = lq_box(*box.bitstring)
+        else:
+            op = lq.Id()
 
     elif isinstance(box, (dq.Discard, dq.Encode)):
         lq_box = cast(type[Union[lq.Discard, lq.Encode]],
@@ -415,7 +439,7 @@ def box_d2l(box: dg.Box,
         return convert_grammar_d2l(box)  # type: ignore[return-value]
     elif target == lq.Box:
         assert isinstance(box, dq.Box)
-        return convert_quantum_d2l(box)
+        return convert_quantum_d2l(box)  # type: ignore[return-value]
     elif target == lt.Box:
         assert isinstance(box, dt.Box)
         return convert_tensor_d2l(box)  # type: ignore[return-value]
@@ -496,6 +520,12 @@ def from_discopy(diagram: _DISCOPY_DIAGRAM_TY) -> _LAMBEQ_DIAGRAM_TY:
         The converted diagram.
 
     """
+
+    if version.parse(discopy.__version__) < version.parse(MIN_DISCOPY_VERSION):
+        raise DeprecationWarning(
+            'Conversion from discopy to lambeq'
+            f'requires discopy>={MIN_DISCOPY_VERSION}.'
+        )
 
     if isinstance(diagram, dq.Circuit):
         from lambeq.backend.quantum import Box, Ty, Id

@@ -432,8 +432,10 @@ class CCGBankParser(CCGParser):
         if not match:
             raise CCGBankParseError(f'failed to parse atomic type {repr(cat)}')
         cat = match['bare_cat'] or cat
-        if cat in ('N', 'NP'):
+        if cat == 'N':
             return CCGType.NOUN.name
+        elif cat == 'NP':
+            return CCGType.NOUN_PHRASE.name
         elif cat == 'S':
             return CCGType.SENTENCE.name
         elif cat == 'PP':

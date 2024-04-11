@@ -1,4 +1,5 @@
 from math import ceil
+import time
 
 import torch
 import numpy as np
@@ -61,6 +62,7 @@ def test_trainer(tmp_path):
 
     assert len(trainer.train_costs) == EPOCHS
     assert len(trainer.val_eval_results["acc"]) == EPOCHS
+
 
 def test_restart_training(tmp_path):
     model = PytorchModel.from_diagrams(train_circuits + dev_circuits)
@@ -128,6 +130,7 @@ def test_restart_training(tmp_path):
     for a, b in zip(model_new.weights, model_uninterrupted.weights):
         assert torch.allclose(a, b)
 
+
 def test_evaluation_skipping(tmp_path):
     model = PytorchModel.from_diagrams(train_circuits + dev_circuits)
     log_dir = tmp_path / 'test_run'
@@ -154,3 +157,72 @@ def test_evaluation_skipping(tmp_path):
 
     assert len(trainer.train_costs) == epochs
     assert len(trainer.val_eval_results["acc"]) == ceil(epochs/eval_step)
+
+
+def test_early_stopping(tmp_path):
+    model = PytorchModel.from_diagrams(train_circuits + dev_circuits)
+    log_dir = tmp_path / 'test_run'
+    epochs = 100
+    inc_function = lambda _, __: time.time() * 1e-10
+    eval_step = 1
+    trainer = PytorchTrainer(
+        model=model,
+        loss_function=torch.nn.BCEWithLogitsLoss(),
+        optimizer=torch.optim.AdamW,
+        learning_rate=3e-3,
+        epochs=epochs,
+        evaluate_functions={"acc": inc_function},
+        evaluate_on_train=True,
+        use_tensorboard=True,
+        log_dir=log_dir,
+        verbose='suppress',
+        seed=0
+    )
+
+    train_dataset = Dataset(train_circuits, train_targets)
+    val_dataset = Dataset(dev_circuits, dev_targets)
+
+
+    trainer.fit(train_dataset, val_dataset,
+                eval_interval=eval_step,
+                early_stopping_criterion="acc",
+                early_stopping_interval=5)
+
+
+    assert len(trainer.val_eval_results["acc"]) == 6
+    assert len(trainer.train_costs) == 6
+
+
+def test_early_stopping_max(tmp_path):
+    model = PytorchModel.from_diagrams(train_circuits + dev_circuits)
+    log_dir = tmp_path / 'test_run'
+    epochs = 100
+    dec_function = lambda _, __: -time.time() * 1e-10
+    eval_step = 1
+    trainer = PytorchTrainer(
+        model=model,
+        loss_function=torch.nn.BCEWithLogitsLoss(),
+        optimizer=torch.optim.AdamW,
+        learning_rate=3e-3,
+        epochs=epochs,
+        evaluate_functions={"acc": dec_function},
+        evaluate_on_train=True,
+        use_tensorboard=True,
+        log_dir=log_dir,
+        verbose='suppress',
+        seed=0
+    )
+
+    train_dataset = Dataset(train_circuits, train_targets)
+    val_dataset = Dataset(dev_circuits, dev_targets)
+
+
+    trainer.fit(train_dataset, val_dataset,
+                eval_interval=eval_step,
+                early_stopping_criterion="acc",
+                early_stopping_interval=10,
+                minimize_criterion=False)
+
+
+    assert len(trainer.val_eval_results["acc"]) == 11
+    assert len(trainer.train_costs) == 11

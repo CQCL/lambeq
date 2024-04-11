@@ -60,9 +60,10 @@ class TketModel(QuantumModel):
             raise KeyError('Missing arguments in backend configuation. '
                            f'Missing arguments: {missing_fields}.')
         self.backend_config = backend_config
+        self.rng = np.random.default_rng()
 
     def _randint(self, low: int = -1 << 63, high: int = (1 << 63)-1) -> int:
-        return np.random.randint(low, high, dtype=np.int64)
+        return self.rng.integers(low, high, dtype=np.int64)
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> np.ndarray:
         """Return the prediction for each diagram using t|ket>.

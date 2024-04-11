@@ -1178,6 +1178,35 @@ class Diagram(Entity):
             from lambeq.backend.drawing import draw
             draw(self, **kwargs)
 
+    def render_as_str(self, **kwargs: Any) -> str:
+        """Render the diagram as text.
+
+        Presently only implemented for pregroup diagrams.
+
+        Parameters
+        ----------
+        word_spacing : int, default: 2
+            The number of spaces between the words of the diagrams.
+        use_at_separator : bool, default: False
+            Whether to represent types using @ as the monoidal product.
+            Otherwise, use the unicode dot character.
+        compress_layers : bool, default: True
+            Whether to draw boxes in the same layer when they can occur
+            simultaneously, otherwise, draw one box per layer.
+        use_ascii: bool, default: False
+            Whether to draw using ASCII characters only, for
+            compatibility reasons.
+
+        Returns
+        -------
+        str
+            Drawing of diagram in string format.
+
+        """
+
+        from lambeq.backend.drawing import render_as_str
+        return render_as_str(self, **kwargs)
+
     def apply_functor(self, functor: Functor) -> Diagram:
         assert not self.is_id
         diagram = functor(self.id(self.dom))

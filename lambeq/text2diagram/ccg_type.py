@@ -387,6 +387,18 @@ class CCGType:
 
         return biclosed_type, end
 
+    def replace(self, original: CCGType, replacement: CCGType) -> CCGType:
+        """Replace all occurrences of a sub-type with a different type."""
+
+        if self == original:
+            return replacement
+        elif self.is_atomic:
+            return self
+        else:
+            new_result = self.result.replace(original, replacement)
+            new_argument = self.argument.replace(original, replacement)
+            return new_result.slash(self.direction, new_argument)
+
     def replace_result(self,
                        original: CCGType,
                        replacement: CCGType,
@@ -549,7 +561,7 @@ class CCGType:
 
 
 CCGType.NOUN = CCGType('n')
-CCGType.NOUN_PHRASE = CCGType('n')
+CCGType.NOUN_PHRASE = CCGType('np')
 CCGType.SENTENCE = CCGType('s')
 CCGType.PREPOSITIONAL_PHRASE = CCGType('p')
 CCGType.CONJUNCTION = CCGType('conj')

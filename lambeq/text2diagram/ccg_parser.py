@@ -124,6 +124,7 @@ class CCGParser(Reader):
                            sentences: SentenceBatchType,
                            tokenised: bool = False,
                            planar: bool = False,
+                           collapse_noun_phrases: bool = True,
                            suppress_exceptions: bool = False,
                            verbose: str | None = None) -> list[Diagram | None]:
         """Parse multiple sentences into a list of lambeq diagrams.
@@ -132,15 +133,19 @@ class CCGParser(Reader):
         ----------
         sentences : list of str, or list of list of str
             The sentences to be parsed.
+        tokenised : bool, default: False
+            Whether each sentence has been passed as a list of tokens.
         planar : bool, default: False
             Force diagrams to be planar when they contain
             crossed composition.
+        collapse_noun_phrases : bool, default: True
+            If set, then before converting each tree to a diagram, any
+            noun phrase types in the tree are changed into nouns. This
+            includes sub-types, e.g. `S/NP` becomes `S/N`.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
             its return entry is :py:obj:`None`.
-        tokenised : bool, default: False
-            Whether each sentence has been passed as a list of tokens.
         verbose : str, optional
             See :py:class:`VerbosityLevel` for options. Not all parsers
             implement all three levels of progress reporting, see the
@@ -159,7 +164,7 @@ class CCGParser(Reader):
                                      suppress_exceptions=suppress_exceptions,
                                      tokenised=tokenised,
                                      verbose=verbose)
-        diagrams = []
+        diagrams: list[Diagram | None] = []
         if verbose is None:
             verbose = self.verbose
         if verbose is VerbosityLevel.TEXT.value:
@@ -171,12 +176,17 @@ class CCGParser(Reader):
                 disable=verbose != VerbosityLevel.PROGRESS.value):
             if tree is not None:
                 try:
-                    diagrams.append(tree.to_diagram(planar=planar))
+                    diagram = tree.to_diagram(
+                        planar=planar,
+                        collapse_noun_phrases=collapse_noun_phrases
+                    )
                 except Exception as e:
                     if suppress_exceptions:
                         diagrams.append(None)
                     else:
                         raise e
+                else:
+                    diagrams.append(diagram)
             else:
                 diagrams.append(None)
         return diagrams
@@ -185,6 +195,7 @@ class CCGParser(Reader):
                          sentence: SentenceType,
                          tokenised: bool = False,
                          planar: bool = False,
+                         collapse_noun_phrases: bool = True,
                          suppress_exceptions: bool = False) -> Diagram | None:
         """Parse a sentence into a lambeq diagram.
 
@@ -192,15 +203,19 @@ class CCGParser(Reader):
         ----------
         sentence : str or list of str
             The sentence to be parsed.
+        tokenised : bool, default: False
+            Whether the sentence has been passed as a list of tokens.
         planar : bool, default: False
             Force diagrams to be planar when they contain
             crossed composition.
+        collapse_noun_phrases : bool, default: True
+            If set, then before converting the tree to a diagram, all
+            noun phrase types in the tree are changed into nouns. This
+            includes sub-types, e.g. `S/NP` becomes `S/N`.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
             exception, returns :py:obj:`None`.
-        tokenised : bool, default: False
-            Whether the sentence has been passed as a list of tokens.
 
         Returns
         -------
@@ -217,6 +232,7 @@ class CCGParser(Reader):
             return self.sentences2diagrams(
                             [sent],
                             planar=planar,
+                            collapse_noun_phrases=collapse_noun_phrases,
                             suppress_exceptions=suppress_exceptions,
                             tokenised=tokenised,
                             verbose=VerbosityLevel.SUPPRESS.value)[0]
@@ -227,6 +243,7 @@ class CCGParser(Reader):
             return self.sentences2diagrams(
                             [sentence],
                             planar=planar,
+                            collapse_noun_phrases=collapse_noun_phrases,
                             suppress_exceptions=suppress_exceptions,
                             tokenised=tokenised,
                             verbose=VerbosityLevel.SUPPRESS.value)[0]

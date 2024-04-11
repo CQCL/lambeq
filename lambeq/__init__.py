@@ -29,6 +29,7 @@ __all__ = [
         'MPSAnsatz',
         'Sim14Ansatz',
         'Sim15Ansatz',
+        'Sim4Ansatz',
         'SpiderAnsatz',
         'StronglyEntanglingAnsatz',
         'Symbol',
@@ -52,8 +53,6 @@ __all__ = [
         'AtomicType',
 
         'VerbosityLevel',
-
-        'diagram2str',
 
         'Reader',
         'LinearReader',
@@ -107,11 +106,10 @@ __all__ = [
 
 from lambeq import ansatz, core, rewrite, text2diagram, tokeniser, training
 from lambeq.ansatz import (BaseAnsatz, CircuitAnsatz, IQPAnsatz, MPSAnsatz,
-                           Sim14Ansatz, Sim15Ansatz, SpiderAnsatz,
+                           Sim14Ansatz, Sim15Ansatz, Sim4Ansatz, SpiderAnsatz,
                            StronglyEntanglingAnsatz, Symbol, TensorAnsatz)
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.types import AtomicType
-from lambeq.backend.drawing.text_printer import diagram2str
 from lambeq.rewrite import (CoordinationRewriteRule, CurryRewriteRule,
                             DiagramRewriter, RemoveCupsRewriter,
                             RemoveSwapsRewriter, Rewriter, RewriteRule,

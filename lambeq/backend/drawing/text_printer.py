@@ -21,26 +21,10 @@ e.g. for the purpose of outputting them graphically in a terminal.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, InitVar
 from enum import Enum
 
 from lambeq.backend.grammar import Cup, Diagram, Word
-
-
-def diagram2str(diagram: Diagram,
-                word_spacing: int = 2,
-                use_at_separator: bool = False,
-                compress_layers: bool = True,
-                use_ascii: bool = False) -> str:
-    """Produces a string that graphically represents the input diagram
-    with text characters, without the need of first creating a printer.
-    For specific arguments, see the constructor of the
-    :py:class:`.TextDiagramPrinter` class."""
-    printer = TextDiagramPrinter(word_spacing,
-                                 use_at_separator,
-                                 compress_layers,
-                                 use_ascii)
-    return printer.diagram2str(diagram)
 
 
 class _MorphismType(Enum):
@@ -60,56 +44,63 @@ class _Morphism:
     end: int
 
 
-class TextDiagramPrinter:
+UNICODE_CHAR_SET: dict[str, str] = {
+    'BAR': '│',
+    'TOP_R_CORNER': '╮',
+    'TOP_L_CORNER': '╭',
+    'BOTTOM_L_CORNER': '╰',
+    'BOTTOM_R_CORNER': '╯',
+    'LINE': '─',
+    'DOT': '·'
+}
+
+ASCII_CHAR_SET: dict[str, str] = {
+    'BAR': '|',
+    'TOP_R_CORNER': chr(160),
+    'TOP_L_CORNER': chr(160),
+    'BOTTOM_L_CORNER': '\\',
+    'BOTTOM_R_CORNER': '/',
+    'LINE': '_',
+    'DOT': ' '
+}
+
+
+@dataclass
+class DiagramTextPrinter:
+    """A text printer for all grammar diagrams.
+
+    Parameters
+    ----------
+    word_spacing : int, default: 2
+        The number of spaces between the words of the diagrams.
+    use_at_separator : bool, default: False
+        Whether to represent types using @ as the monoidal product.
+        Otherwise, use the unicode dot character.
+    compress_layers : bool, default: True
+        Whether to draw boxes in the same layer when they can occur
+        simultaneously, otherwise, draw one box per layer.
+    use_ascii: bool, default: False
+        Whether to draw using ASCII characters only, for
+        compatibility reasons.
+
+    """
+
+    word_spacing: int = 2
+    use_at_separator: bool = False
+    compress_layers: bool = True
+    use_ascii: InitVar[bool] = False
+
+    def __post_init__(self, use_ascii: bool) -> None:
+        self.chr_set = (UNICODE_CHAR_SET if not use_ascii else ASCII_CHAR_SET)
+
+    def diagram2str(self, diagram: Diagram) -> str:
+        # TODO: Add text/CLI drawing for non-pregroup diagrams.
+        raise NotImplementedError()
+
+
+@dataclass
+class PregroupTextPrinter(DiagramTextPrinter):
     """A text printer for pregroup diagrams."""
-
-    UNICODE_CHAR_SET: dict[str, str] = {
-        'BAR': '│',
-        'TOP_R_CORNER': '╮',
-        'TOP_L_CORNER': '╭',
-        'BOTTOM_L_CORNER': '╰',
-        'BOTTOM_R_CORNER': '╯',
-        'LINE': '─',
-        'DOT': '·'
-    }
-
-    ASCII_CHAR_SET: dict[str, str] = {
-        'BAR': '|',
-        'TOP_R_CORNER': chr(160),
-        'TOP_L_CORNER': chr(160),
-        'BOTTOM_L_CORNER': '\\',
-        'BOTTOM_R_CORNER': '/',
-        'LINE': '_',
-        'DOT': ' '
-    }
-
-    def __init__(self,
-                 word_spacing: int = 2,
-                 use_at_separator: bool = False,
-                 compress_layers: bool = True,
-                 use_ascii: bool = False) -> None:
-        """Initialise a text diagram printer.
-
-        Parameters
-        ----------
-        word_spacing : int, default: 2
-            The number of spaces between the words of the diagrams.
-        use_at_separator : bool, default: False
-            Whether to represent types using @ as the monoidal product.
-            Otherwise, use the unicode dot character.
-        compress_layers : bool, default: True
-            Whether to draw boxes in the same layer when they can occur
-            simultaneously, otherwise, draw one box per layer.
-        use_ascii: bool, default: False
-            Whether to draw using ASCII characters only, for
-            compatibility reasons.
-
-        """
-        self.word_spacing = word_spacing
-        self.use_at_separator = use_at_separator
-        self.compress_layers = compress_layers
-        self.chr_set = (self.UNICODE_CHAR_SET if not use_ascii
-                        else self.ASCII_CHAR_SET)
 
     def diagram2str(self, diagram: Diagram) -> str:
         """Produces a string that contains a graphical representation of
@@ -210,7 +201,7 @@ class TextDiagramPrinter:
         print_rows = []
         wires = {i: n for i, n in enumerate(pos)}
         for layer in layers:
-            print_rows += self.draw_layer(layer, wires)
+            print_rows += self._draw_layer(layer, wires)
             for morphism in layer:
                 if morphism.morphism == _MorphismType.CUP:
                     del wires[morphism.start]
@@ -220,9 +211,9 @@ class TextDiagramPrinter:
                  *print_rows]
         return '\n'.join(lines)
 
-    def draw_layer(self,
-                   layer: list[_Morphism],
-                   wires: dict[int, int]) -> list[str]:
+    def _draw_layer(self,
+                    layer: list[_Morphism],
+                    wires: dict[int, int]) -> list[str]:
         # `wires` is a mapping from the index of the wire in the input
         # diagram to the location of the wire in the printed output, a
         # column index

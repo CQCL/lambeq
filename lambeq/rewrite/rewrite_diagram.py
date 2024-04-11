@@ -379,10 +379,6 @@ class RemoveSwapsRewriter(DiagramRewriter):
             new_diag = new_diag.then_at(box, offset)
 
         return new_diag
-        # return Diagram.decode(dom=diagram.dom,
-        #                       cod=diagram.cod,
-        #                       boxes=new_words+new_morphisms,
-        #                       offsets=wrd_offsets+mor_offsets)
 
     def rewrite(self, diagram: Diagram) -> Diagram:
         atomic_types = [ob for b in diagram.boxes

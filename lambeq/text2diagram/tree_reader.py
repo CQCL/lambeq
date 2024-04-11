@@ -180,6 +180,7 @@ class TreeReader(Reader):
     def sentence2diagram(self,
                          sentence: SentenceType,
                          tokenised: bool = False,
+                         collapse_noun_phrases: bool = True,
                          suppress_exceptions: bool = False) -> Diagram | None:
         """Parse a sentence into a lambeq diagram.
 
@@ -192,6 +193,10 @@ class TreeReader(Reader):
             The sentence to be parsed.
         tokenised : bool, default: False
             Whether the sentence has been passed as a list of tokens.
+        collapse_noun_phrases : bool, default: True
+            If set, then before converting each tree to a diagram, any
+            noun phrase types in the tree are changed into nouns. This
+            includes sub-types, e.g. `S/NP` becomes `S/N`.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
@@ -211,6 +216,10 @@ class TreeReader(Reader):
 
         if tree is None:
             return None
+
+        if collapse_noun_phrases:
+            tree = tree.collapse_noun_phrases()
+
         return self.tree2diagram(tree,
                                  mode=self.mode,
                                  word_type=self.word_type,

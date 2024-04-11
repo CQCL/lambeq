@@ -5,7 +5,7 @@ from unittest.mock import mock_open, patch
 
 import numpy as np
 from lambeq.backend.grammar import Cup, Id, Word
-from lambeq.backend.quantum import CRz, CX, H, Ket, Measure, SWAP
+from lambeq.backend.quantum import CRz, CX, Discard, H, Ket, Measure, SWAP, qubit
 
 from lambeq import AtomicType, IQPAnsatz, NumpyModel, Symbol
 
@@ -44,6 +44,20 @@ def test_jax_forward():
     model.initialise_weights()
     pred = model.forward(diagrams)
     assert pred.shape == (len(diagrams), s_dim)
+
+
+def test_jax_forward_mixed():
+    N = AtomicType.NOUN
+    S = AtomicType.SENTENCE
+
+    density_matrix_dim = (2, 2, 2, 2)
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S))) >> (Discard() @ qubit @ qubit)]
+    model = NumpyModel.from_diagrams(diagrams, use_jit=True)
+    model.initialise_weights()
+    pred = model.forward(diagrams)
+
+    assert pred.shape == (len(diagrams), *density_matrix_dim)
 
 
 def test_lambda_error():

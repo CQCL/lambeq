@@ -311,8 +311,10 @@ class BobcatParser(CCGParser):
                 return CCGType.PUNCTUATION
             else:
                 atom = str(cat.atom)
-                if atom in ('N', 'NP'):
+                if atom == 'N':
                     return CCGType.NOUN
+                elif atom == 'NP':
+                    return CCGType.NOUN_PHRASE
                 elif atom == 'S':
                     return CCGType.SENTENCE
                 elif atom == 'PP':

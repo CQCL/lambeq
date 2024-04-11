@@ -24,6 +24,7 @@ from __future__ import annotations
 
 __all__ = ['CircuitAnsatz',
            'IQPAnsatz',
+           'Sim4Ansatz',
            'Sim14Ansatz',
            'Sim15Ansatz',
            'StronglyEntanglingAnsatz']
@@ -77,6 +78,8 @@ class CircuitAnsatz(BaseAnsatz):
             The number of layers used by the ansatz.
         n_single_qubit_params : int
             The number of single qubit rotations used by the ansatz.
+            It only affects wires that `ob_map` maps to a single
+            qubit.
         circuit : callable
             Circuit generator used by the ansatz. This is a function
             (or a class constructor) that takes a number of qubits and
@@ -181,6 +184,8 @@ class IQPAnsatz(CircuitAnsatz):
             The number of layers used by the ansatz.
         n_single_qubit_params : int, default: 3
             The number of single qubit rotations used by the ansatz.
+            It only affects wires that `ob_map` maps to a single
+            qubit.
         discard : bool, default: False
             Discard open wires instead of post-selecting.
 
@@ -218,7 +223,7 @@ class Sim14Ansatz(CircuitAnsatz):
     Replaces circuit-block construction with two rings of CRx gates, in
     opposite orientation.
 
-    Paper at: https://arxiv.org/pdf/1905.10876.pdf
+    Paper at: https://arxiv.org/abs/1905.10876
 
     Code adapted from DisCoPy.
 
@@ -240,6 +245,8 @@ class Sim14Ansatz(CircuitAnsatz):
             The number of layers used by the ansatz.
         n_single_qubit_params : int, default: 3
             The number of single qubit rotations used by the ansatz.
+            It only affects wires that `ob_map` maps to a single
+            qubit.
         discard : bool, default: False
             Discard open wires instead of post-selecting.
 
@@ -286,7 +293,7 @@ class Sim15Ansatz(CircuitAnsatz):
     Replaces circuit-block construction with two rings of CNOT gates, in
     opposite orientation.
 
-    Paper at: https://arxiv.org/pdf/1905.10876.pdf
+    Paper at: https://arxiv.org/abs/1905.10876
 
     Code adapted from DisCoPy.
 
@@ -308,6 +315,8 @@ class Sim15Ansatz(CircuitAnsatz):
             The number of layers used by the ansatz.
         n_single_qubit_params : int, default: 3
             The number of single qubit rotations used by the ansatz.
+            It only affects wires that `ob_map` maps to a single
+            qubit.
         discard : bool, default: False
             Discard open wires instead of post-selecting.
 
@@ -348,6 +357,68 @@ class Sim15Ansatz(CircuitAnsatz):
         return circuit  # type: ignore[return-value]
 
 
+class Sim4Ansatz(CircuitAnsatz):
+    """Circuit 4 from Sim et al.
+
+    Ansatz with a layer of Rx and Rz gates, followed by a
+    ladder of CRxs.
+
+    Paper at: https://arxiv.org/abs/1905.10876
+
+    """
+
+    def __init__(self,
+                 ob_map: Mapping[Ty, int],
+                 n_layers: int,
+                 n_single_qubit_params: int = 3,
+                 discard: bool = False) -> None:
+        """Instantiate a Sim 4 ansatz.
+
+        Parameters
+        ----------
+        ob_map : dict
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to
+            the number of qubits it uses in a circuit.
+        n_layers : int
+            The number of layers used by the ansatz.
+        n_single_qubit_params : int, default: 3
+            The number of single qubit rotations used by the ansatz.
+            It only affects wires that `ob_map` maps to a single
+            qubit.
+        discard : bool, default: False
+            Discard open wires instead of post-selecting.
+
+        """
+        super().__init__(ob_map,
+                         n_layers,
+                         n_single_qubit_params,
+                         self.circuit,
+                         discard,
+                         [Rx, Rz])
+
+    def params_shape(self, n_qubits: int) -> tuple[int, ...]:
+        return (self.n_layers, 3 * n_qubits - 1)
+
+    def circuit(self, n_qubits: int, params: np.ndarray) -> Circuit:
+        if n_qubits == 1:
+            circuit = Rx(params[0]) >> Rz(params[1]) >> Rx(params[2])
+        else:
+            circuit = Id(n_qubits)
+
+            for thetas in params:
+                circuit >>= Id().tensor(*map(Rx, thetas[:n_qubits]))
+                circuit >>= Id().tensor(*map(Rz,
+                                             thetas[n_qubits:2 * n_qubits]))
+
+                crxs = Id(n_qubits)
+                for i in range(n_qubits - 1):
+                    crxs = crxs.CRx(thetas[2 * n_qubits + i], i, i + 1)
+
+                circuit >>= crxs
+
+        return circuit  # type: ignore[return-value]
+
+
 class StronglyEntanglingAnsatz(CircuitAnsatz):
     """Strongly entangling ansatz.
 
@@ -380,6 +451,8 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
             The number of circuit layers used by the ansatz.
         n_single_qubit_params : int, default: 3
             The number of single qubit rotations used by the ansatz.
+            It only affects wires that `ob_map` maps to a single
+            qubit.
         ranges : list of int, optional
             The range of the CNOT gate between wires in each layer. By
             default, the range starts at one (i.e. adjacent wires) and

@@ -37,7 +37,6 @@ from lambeq.ansatz import BaseAnsatz
 from lambeq.ansatz.circuit import CircuitAnsatz, IQPAnsatz
 from lambeq.ansatz.tensor import MPSAnsatz, SpiderAnsatz, TensorAnsatz
 from lambeq.backend import grammar, tensor
-from lambeq.backend.drawing import text_printer
 from lambeq.rewrite import RemoveSwapsRewriter
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.bobcat_parser import BobcatParser
@@ -551,9 +550,11 @@ class DiagramSaveModule(CLIModule):
             raise NotImplementedError('JSON output is currently disabled. '
                                       'Use option `pickle` instead.')
         elif cl_args.output_format in ['text-ascii', 'text-unicode']:
-            printer = text_printer.TextDiagramPrinter(use_ascii=(
-                                    cl_args.output_format == 'text-ascii'))
-            ascii_art = [printer.diagram2str(diag) for diag in module_input]
+            use_ascii = cl_args.output_format == 'text-ascii'
+            ascii_art = [
+                diag.render_as_str(use_ascii=use_ascii)
+                for diag in module_input
+            ]
             if cl_args.output_file is not None:
                 with open(cl_args.output_file, 'w') as f:
                     f.write('\n'.join(ascii_art))

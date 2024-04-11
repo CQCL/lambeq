@@ -14,10 +14,10 @@
 
 from __future__ import annotations
 
-from distutils.dir_util import copy_tree
 import hashlib
 import os
 from pathlib import Path
+from shutil import copytree
 import sys
 import tarfile
 import tempfile
@@ -209,7 +209,9 @@ class ModelDownloader:
             model_file.close()
 
             # Copy extracted model to model_dir
-            copy_tree(extraction_target, str(self.model_dir))
+            copytree(extraction_target,
+                     str(self.model_dir),
+                     dirs_exist_ok=True)
 
         with open(self.model_dir / VERSION_FNAME, 'w') as w:
             w.write(self.remote_version)

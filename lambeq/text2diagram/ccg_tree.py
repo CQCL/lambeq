@@ -336,6 +336,22 @@ class CCGTree:
             deriv = self._vert_deriv(chr_set, use_slashes, '')
         return deriv
 
+    def collapse_noun_phrases(self) -> CCGTree:
+        """Change noun phrase types into noun types.
+
+        This includes sub-types, e.g. `S/NP` becomes `S/N`.
+
+        """
+        return type(self)(
+            text=self._text,
+            rule=self.rule,
+            biclosed_type=self.biclosed_type.replace(CCGType.NOUN_PHRASE,
+                                                     CCGType.NOUN),
+            children=[child.collapse_noun_phrases()
+                      for child in self.children],
+            metadata=self.metadata
+        )
+
     def _resolved(self, resolved_output: CCGType | None = None) -> CCGTree:
         """Perform type resolution on the tree.
 
@@ -412,7 +428,9 @@ class CCGTree:
         else:
             return CCGTree(rule=rule, biclosed_type=output, children=children)
 
-    def to_diagram(self, planar: bool = False) -> Diagram:
+    def to_diagram(self,
+                   planar: bool = False,
+                   collapse_noun_phrases: bool = True) -> Diagram:
         """Convert tree to a DisCoCat diagram.
 
         Parameters
@@ -422,6 +440,9 @@ class CCGTree:
             using cross composition.
 
         """
+        if collapse_noun_phrases:
+            self = self.collapse_noun_phrases()
+
         words, grammar = self._resolved()._to_diagram(planar)
         return words >> grammar
 

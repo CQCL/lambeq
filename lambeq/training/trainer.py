@@ -374,13 +374,59 @@ class Trainer(ABC):
                 )
             )
 
+    def _check_early_stopping(self,
+                              early_stopping_criterion: str | None = None,
+                              early_stopping_interval: int | None = None,
+                              minimize_criterion: bool = True) -> bool:
+        """Determine if training should be stopped based on the specified
+        early stopping configuration.
+
+        Parameters
+        ----------
+        early_stopping_criterion : str, optional
+            If specified, the value of this on `val_dataset` (if provided)
+            will be used as the stopping criterion instead of
+            the (default) validation loss.
+        early_stopping_interval : int, optional
+            If specified, training is stopped if the validation loss does
+            not improve for `early_stopping_interval` validation cycles.
+        minimize_criterion: bool, default: True
+            Flag indicating if we should minimize or maximize the early
+            stopping criterion.
+
+        Returns
+        -------
+        Boolean
+            Flag if early stopping should be performed.
+        """
+        factor = 1 if minimize_criterion else -1
+        early_stopping = False
+        criterion_vals = self.val_costs
+        if early_stopping_criterion is not None:
+            criterion_vals = self.val_eval_results[
+                early_stopping_criterion
+            ]
+        if (early_stopping_interval is not None
+                and len(criterion_vals) > early_stopping_interval):
+
+            reference = factor * criterion_vals[-early_stopping_interval - 1]
+            latter_vals = [
+                factor * val for val in
+                criterion_vals[-early_stopping_interval:]
+            ]
+            early_stopping = reference < min(latter_vals)
+
+        return early_stopping
+
     def fit(self,
             train_dataset: Dataset,
             val_dataset: Dataset | None = None,
             log_interval: int = 1,
             eval_interval: int = 1,
             eval_mode: str = EvalMode.EPOCH.value,
-            early_stopping_interval: int | None = None) -> None:
+            early_stopping_criterion: str | None = None,
+            early_stopping_interval: int | None = None,
+            minimize_criterion: bool = True) -> None:
         """Fit the model on the training data and, optionally,
         evaluate it on the validation data.
 
@@ -404,9 +450,16 @@ class Trainer(ABC):
             `'step'`, the metrics are evaluated after multiples of
             `eval_interval` steps. Ignored if `val_dataset` is
             `None`.
+        early_stopping_criterion : str, optional
+            If specified, the value of this on `val_dataset` (if provided)
+            will be used as the stopping criterion instead of
+            the (default) validation loss.
         early_stopping_interval : int, optional
             If specified, training is stopped if the validation loss does
             not improve for `early_stopping_interval` validation cycles.
+        minimize_criterion: bool, default: True
+            Flag indicating if we should minimize or maximize the early
+            stopping criterion.
 
         Raises
         ------
@@ -424,6 +477,20 @@ class Trainer(ABC):
             evaluation_step = eval_interval
         else:
             raise ValueError(f'Invalid evaluation mode: {eval_mode}.')
+
+        # check that early stopping critera is in available list
+        if (early_stopping_criterion is not None
+                and self.evaluate_functions is not None
+                and early_stopping_criterion not in self.evaluate_functions):
+            raise ValueError('Invalid early stopping criterion: '
+                             f'{early_stopping_criterion}. '
+                             'Should be one of '
+                             f'{self.evaluate_functions.keys()}')
+
+        # Used for early stopping
+        factor = 1 if minimize_criterion else -1
+        best_epoch = 0
+        best_step = 0
 
         logging_step = log_interval * evaluation_step
         total_steps = self.epochs * train_dataset.batches_per_epoch
@@ -445,7 +512,7 @@ class Trainer(ABC):
         # start training loop
         with backend(self.backend):
             early_stopping = False
-            best_val_loss = float('inf')
+            best_val_criterion = float('inf')
             for epoch in trange(self.start_epoch,
                                 self.epochs + 1,
                                 desc='Epoch',
@@ -530,8 +597,17 @@ class Trainer(ABC):
                                                status_bar,
                                                mode='val')
                         # save best model
-                        if self.val_costs[-1] < best_val_loss:
-                            best_val_loss = self.val_costs[-1]
+                        criterion_vals = self.val_costs
+                        if early_stopping_criterion is not None:
+                            criterion_vals = self.val_eval_results[
+                                early_stopping_criterion
+                            ]
+
+                        criterion_val = factor * criterion_vals[-1]
+                        if criterion_val < best_val_criterion:
+                            best_val_criterion = criterion_val
+                            best_epoch = epoch
+                            best_step = step
                             self.save_checkpoint(
                                 {'epoch': epoch,
                                  'train_costs': self.train_costs,
@@ -568,12 +644,13 @@ class Trainer(ABC):
                                   file=sys.stderr)
 
                     # check for early stopping
-                    if (early_stopping_interval is not None
-                        and len(self.val_costs) > early_stopping_interval
-                        and self.val_costs[-early_stopping_interval - 1] < min(
-                            self.val_costs[-early_stopping_interval:])):
-                        early_stopping = True
-                        break  # inner epoch loop
+                    early_stopping = self._check_early_stopping(
+                        early_stopping_criterion,
+                        early_stopping_interval,
+                        minimize_criterion
+                    )
+                    if early_stopping:
+                        break   # inner epoch loop
 
                 # calculate epoch loss
                 self.train_epoch_costs.append(
@@ -597,7 +674,8 @@ class Trainer(ABC):
                 if early_stopping:
                     if self.verbose == VerbosityLevel.TEXT.value:
                         print('Early stopping!\n'
-                              'Best model saved to '
+                              f'Best model (epoch={best_epoch}, '
+                              f'step={best_step}) saved to\n'
                               f'{os.path.join(self.log_dir, "best_model.lt")}',
                               file=sys.stderr)
                     break  # break outer epoch loop

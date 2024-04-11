@@ -346,6 +346,7 @@ class DepCCGParser(CCGParser):
                          sentence: SentenceType,
                          tokenised: bool = False,
                          planar: bool = False,
+                         collapse_noun_phrases: bool = True,
                          suppress_exceptions: bool = False) -> Diagram | None:
         """Parse a sentence into a lambeq diagram.
 
@@ -354,12 +355,16 @@ class DepCCGParser(CCGParser):
         sentence : str, list[str]
             The sentence to be parsed, passed either as a string, or as
             a list of tokens.
+        tokenised : bool, default: False
+            Whether the sentence has been passed as a list of tokens.
+        collapse_noun_phrases : bool, default: True
+            If set, then before converting each tree to a diagram, all
+            noun phrase types in the tree are changed into nouns. This
+            includes sub-types, e.g. `S/NP` becomes `S/N`.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if
             the sentence fails to parse, instead of raising an
             exception, returns :py:obj:`None`.
-        tokenised : bool, default: False
-            Whether the sentence has been passed as a list of tokens.
 
         Returns
         -------
@@ -381,6 +386,7 @@ class DepCCGParser(CCGParser):
             return self.sentences2diagrams(
                             [sent],
                             planar=planar,
+                            collapse_noun_phrases=collapse_noun_phrases,
                             suppress_exceptions=suppress_exceptions,
                             tokenised=tokenised,
                             verbose=VerbosityLevel.PROGRESS.value)[0]
@@ -391,6 +397,7 @@ class DepCCGParser(CCGParser):
             return self.sentences2diagrams(
                             [sentence],
                             planar=planar,
+                            collapse_noun_phrases=collapse_noun_phrases,
                             suppress_exceptions=suppress_exceptions,
                             tokenised=tokenised,
                             verbose=VerbosityLevel.PROGRESS.value)[0]
@@ -423,8 +430,10 @@ class DepCCGParser(CCGParser):
         """Transform a depccg category into a biclosed type."""
 
         if not cat.is_functor:
-            if cat.base in ('N', 'NP'):
+            if cat.base == 'N':
                 return CCGType.NOUN
+            elif cat.base == 'NP':
+                return CCGType.NOUN_PHRASE
             if cat.base == 'S':
                 return CCGType.SENTENCE
             if cat.base == 'PP':

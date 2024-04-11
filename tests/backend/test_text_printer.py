@@ -1,7 +1,9 @@
 import pytest
 
 from lambeq.backend.grammar import Cup, Id, Swap, Ty, Word
-from lambeq import AtomicType, diagram2str, cups_reader
+from lambeq.backend.quantum import CX, H, qubit
+from lambeq.backend.tensor import Box, Dim
+from lambeq import AtomicType, cups_reader
 
 
 n = AtomicType.NOUN
@@ -76,7 +78,7 @@ def test_diagram_with_just_caps(diagram1):
                       " │     ╰────────────────────────────────────────╯    │  │  ╰──────────────────────────╯\n" \
                       " ╰───────────────────────────────────────────────────╯  │"
 
-    assert diagram2str(diagram1) == expected_output
+    assert diagram1.render_as_str() == expected_output
 
 
 def test_diagram_with_cups_and_swaps(diagram2):
@@ -95,7 +97,7 @@ def test_diagram_with_cups_and_swaps(diagram2):
                       "                         ╭─╰──╮         │\n" \
                       "                         │    ╰─────────╯"
 
-    assert diagram2str(diagram2) == expected_output
+    assert diagram2.render_as_str() == expected_output
 
 
 def test_diagram_from_cups_reader():
@@ -105,7 +107,7 @@ def test_diagram_from_cups_reader():
                       "  ╰─────╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  │"
 
     diagram = cups_reader.sentence2diagram("John gave Mary a flower")
-    assert diagram2str(diagram) == expected_output
+    assert diagram.render_as_str() == expected_output
 
 
 def test_diagram_with_just_identities_1():
@@ -117,7 +119,7 @@ def test_diagram_with_just_identities_1():
                       " n\n" \
                       " │"
 
-    assert diagram2str(diagram) == expected_output
+    assert diagram.render_as_str() == expected_output
 
 
 def test_diagram_with_just_identities_2():
@@ -129,9 +131,19 @@ def test_diagram_with_just_identities_2():
                       "n.r·s\n" \
                       " │  │"
 
-    assert diagram2str(diagram) == expected_output
+    assert diagram.render_as_str() == expected_output
 
 
 def test_diagram_no_pregroup(diagram1):
-    with pytest.raises(ValueError):
-        diagram2str(diagram1.normal_form())
+    with pytest.raises(NotImplementedError):
+        diagram1.normal_form().render_as_str()
+
+
+def test_tensor():
+    with pytest.raises(NotImplementedError):
+        (Box("A", Dim(), Dim(3)) >> Box("A", Dim(3), Dim(4, 3))).render_as_str()
+
+
+def test_quantum():
+    with pytest.raises(NotImplementedError):
+        (H @ qubit >> CX).render_as_str()

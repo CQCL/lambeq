@@ -522,7 +522,9 @@ class Diagram(tensor.Diagram):
                 else:
                     utensor = box.array
                     node1 = tn.Node(utensor + 0j, 'q1_' + str(box))
-                    node2 = tn.Node(np.conj(utensor) + 0j, 'q2_' + str(box))
+                    with backend() as np:
+                        node2 = tn.Node(np.conj(utensor) + 0j,
+                                        'q2_' + str(box))
 
                     for i in range(len(box.dom)):
                         tn.connect(q_scan1[q_offset + i], node1[i])

@@ -40,6 +40,7 @@ from lambeq.backend.drawing.drawing_backend import (DEFAULT_ASPECT,
                                                     DrawingBackend)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
 from lambeq.backend.drawing.mat_backend import MatBackend
+from lambeq.backend.drawing.text_printer import PregroupTextPrinter
 from lambeq.backend.drawing.tikz_backend import TikzBackend
 from lambeq.backend.grammar import Diagram
 
@@ -199,6 +200,52 @@ def draw_pregroup(diagram: Diagram, **params) -> None:
         show=params.get('show', True),
         margins=params.get('margins', DEFAULT_MARGINS),
         aspect=params.get('aspect', DEFAULT_ASPECT))
+
+
+def render_as_str(diagram: Diagram,
+                  word_spacing: int = 2,
+                  use_at_separator: bool = False,
+                  compress_layers: bool = True,
+                  use_ascii: bool = False) -> str:
+    """Render a grammar diagram as text.
+
+    Presently only implemented for pregroup diagrams.
+
+    Parameters
+    ----------
+    diagram: Diagram
+        Diagram to draw.
+    word_spacing : int, default: 2
+        The number of spaces between the words of the diagrams.
+    use_at_separator : bool, default: False
+        Whether to represent types using @ as the monoidal product.
+        Otherwise, use the unicode dot character.
+    compress_layers : bool, default: True
+        Whether to draw boxes in the same layer when they can occur
+        simultaneously, otherwise, draw one box per layer.
+    use_ascii: bool, default: False
+        Whether to draw using ASCII characters only, for
+        compatibility reasons.
+
+    Returns
+    -------
+    str
+        Drawing of diagram in string format.
+
+    """
+
+    if diagram.is_pregroup:
+        text_printer = PregroupTextPrinter(word_spacing,
+                                           use_at_separator,
+                                           compress_layers,
+                                           use_ascii)
+    else:
+        # TODO: Add text/CLI drawing for non-pregroup diagrams.
+        raise NotImplementedError('Text drawing is only supported for'
+                                  ' pregroups. Provided diagram is not a'
+                                  ' pregroup diagram.')
+
+    return text_printer.diagram2str(diagram)
 
 
 def to_gif(diagrams: list[Diagram],
