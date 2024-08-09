@@ -1,55 +1,278 @@
-<!DOCTYPE html>
-<html class="writer-html5" lang="en" >
-<head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="prev" title="Index" href="genindex.html" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Release notes &mdash; lambeq 0.4.1 documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/table-wrap.css" type="text/css" />
-    <link rel="shortcut icon" href="_static/favicon.ico"/>
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
+    <link rel="shortcut icon" href="_static/quantinuum_favicon.svg"/><!-- Generated with Sphinx 6.1.3 and Furo 2024.07.18 -->
+        <title>Release notes - lambeq 0.4.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=cf7d2580863ab3a5f2abbe6c31b65acd4d87b848" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=cf727022eb7470bc603c08d2e55c3247faec75c9" />
+    <link rel="stylesheet" type="text/css" href="_static/css/table-wrap.css" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
   
-        <script src="_static/jquery.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
-        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Index" href="genindex.html" /> 
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style>
+<link rel="stylesheet" href="_static/tokens.css"/>
+<link rel="stylesheet" href="_static/styles.css"/>
+<link rel="stylesheet" href="_static/tailwind.css"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="preload"
+as="style">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+<style>  
+  .sidebar-sticky {
+    top: calc(3.5rem - 0px);
+    height: calc(100vh - 3.5rem);
+  }
+  
+  @media (min-width: 97em) {
+    html {
+      font-size: 100% !important;
+    }
+  }
+  
+</style>
 </head>
+  <body>
+    <script>document.body.setAttribute("data-theme", "light")</script>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
 
-          
-          
-          <a href="index.html" class="icon icon-home">
-            lambeq
-              <img src="_static/lambeq_logo.png" class="logo" alt="Logo"/>
-          </a>
-              <div class="version">
-                0.4.1
-              </div>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
-</div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<nav style="position:fixed;top:0;z-index:1021;width:100%;">
+    <div class="nexus-nav"></div>
+</nav>
+<script type="text/javascript" src="_static/nav-config.js" ></script>
+<script>
+
+  const prefix = "./"
+  const isExternalURL = (string) => {
+    try {
+      return new URL(string).origin !== location.origin;
+    } catch (err) {
+      console.error(err)
+      return false;  
+    }
+  }
+  //
+
+  const resolveLink = (string) => {
+    if (isExternalURL(string)) return string
+    if (string.startsWith("/")) {
+      string = string.slice(1)
+    }
+    if (prefix === "#") {
+      return string;
+    }
+    return prefix + string;
+  
+  }
+  const navTextLinks = navConfig.navTextLinks.map(x => ({
+    ...x,
+    href: resolveLink(x.href),
+  }));
+   const navProductName = navConfig.navProductName;
+  const navIconLinks = navConfig.navIconLinks.map(x => {
+    return {...x,
+    href: resolveLink(x.href),
+    iconImageURL: resolveLink(x.iconImageURL),
+  }}
+  
+  );
+
+</script>
+<script type="text/javascript" src="_static/index.global.js"></script>
+
+
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">lambeq 0.4.2 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="_static/lambeq_logo.png" alt="Logo"/>
+  </div>
+  
+  <span class="sidebar-brand-text">lambeq 0.4.2 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Getting started</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
@@ -72,12 +295,40 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/sentence-input.html">Step 1. Sentence input</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/rewrite.html">Step 2. Diagram rewriting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/parameterise.html">Step 3. Parameterisation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="training.html">Step 4: Training</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="training.html">Step 4: Training</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Step 4: Training</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer-classical.html">Training: Classical case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer-quantum.html">Training: Quantum case</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/trainer-hybrid.html">Training: Hybrid case</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Choosing a model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a></li>
-<li class="toctree-l1"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="manual-training.html">Advanced: Manual training</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of Advanced: Manual training</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-symbols.html">Introduction to symbols</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/training-usecase.html">A complete use case</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="advanced.html">Advanced: low-level lambeq</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of Advanced: low-level lambeq</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/monoidal.html">Monoidal categories in lambeq</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/discocat.html">DisCoCat in lambeq</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/extend-lambeq.html">Advanced: Extending lambeq</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="notebooks.html">Examples</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" role="switch" type="checkbox"/><label for="toctree-checkbox-4"><div class="visually-hidden">Toggle navigation of Examples</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/tokenisation.html">Tokenisation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/unk-words.html">Handling unknown words</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/parser.html">Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/reader.html">Reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/tree-reader.html">Tree reader</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/rewrite.html">Rewrite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/circuit.html">Circuit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/tensor.html">Tensor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/rotosolve-optimizer.html">Rotosolve optimizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/classical-pipeline.html">Classical pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quantum-pipeline.html">Quantum pipeline using the Quantum Trainer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/quantum-pipeline-jax.html">Quantum pipeline using JAX backend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/pennylane.html">Training hybrid models using the Pennylane backend</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
 <ul>
@@ -91,27 +342,7 @@
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 <li class="toctree-l1"><a class="reference internal" href="genindex.html">Index</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Release notes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-4-1">0.4.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-4-0">0.4.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-3-3">0.3.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-3-2">0.3.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-3-1">0.3.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-3-0">0.3.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-8">0.2.8</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-7">0.2.7</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-6">0.2.6</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-5">0.2.5</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-4">0.2.4</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-3">0.2.3</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-2">0.2.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-1">0.2.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-2-0">0.2.0</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-1-2">0.1.2</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-1-1">0.1.1</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#rel-0-1-0">0.1.0</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Release notes</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">External links</span></p>
 <ul>
@@ -120,62 +351,73 @@
 <li class="toctree-l1"><a class="reference external" href="https://discopy.readthedocs.io">DisCoPy</a></li>
 </ul>
 
-        </div>
-      </div>
-    </nav>
-
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">lambeq</a>
-      </nav>
-
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Release notes</li>
-      <li class="wy-breadcrumbs-aside">
-              <a href="https://github.com/CQCL/lambeq/blob/main/docs/release-notes.rst" class="fa fa-github"> Edit on GitHub</a>
-      </li>
-  </ul>
-  <hr/>
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  
-<style>
-/* CSS overrides for sphinx_rtd_theme */
+</div>
 
-/* 24px margin */
-.nbinput.nblast.container,
-.nboutput.nblast.container {
-    margin-bottom: 19px;  /* padding has already 5px */
-}
-
-/* ... except between code cells! */
-.nblast.container + .nbinput.container {
-    margin-top: -19px;
-}
-
-.admonition > p:before {
-    margin-right: 4px;  /* make room for the exclamation icon */
-}
-
-/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
-.math {
-    text-align: unset;
-}
-</style>
-<section id="release-notes">
-<span id="sec-release-notes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this heading"></a></h1>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="_sources/release-notes.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="release-notes">
+<span id="sec-release-notes"></span><h1>Release notes<a class="headerlink" href="#release-notes" title="Permalink to this heading">¶</a></h1>
+<section id="rel-0-4-2">
+<span id="id2"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.4.2">0.4.2</a><a class="headerlink" href="#rel-0-4-2" title="Permalink to this heading">¶</a></h2>
+<p>Added:</p>
+<ul class="simple">
+<li><p>Added timing information to training logs and model checkpoints.</p></li>
+</ul>
+<p>Changed:</p>
+<ul class="simple">
+<li><p>Changed theme of online documentation.</p></li>
+<li><p>Updated required version of <code class="docutils literal notranslate"><span class="pre">pytket</span></code> to 1.31.0.</p></li>
+</ul>
+<p>Fixed:</p>
+<ul class="simple">
+<li><p>Fixed bug in generation of single-legged quantum spiders.</p></li>
+<li><p>Fixed bug when evaluating quantum circuits using Tket.</p></li>
+</ul>
+<p>Removed:</p>
+<ul class="simple">
+<li><p>Removed support for Python 3.9.</p></li>
+</ul>
+</section>
 <section id="rel-0-4-1">
-<span id="id2"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.4.1">0.4.1</a><a class="headerlink" href="#rel-0-4-1" title="Permalink to this heading"></a></h2>
+<span id="id4"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.4.1">0.4.1</a><a class="headerlink" href="#rel-0-4-1" title="Permalink to this heading">¶</a></h2>
 <p>Added:</p>
 <ul class="simple">
 <li><p>Support for Python 3.12.</p></li>
-<li><p>A new <a class="reference internal" href="root-api.html#lambeq.Sim4Ansatz" title="lambeq.Sim4Ansatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sim4Ansatz</span></code></a> based on the Sim <cite>et al.</cite> paper <a class="reference internal" href="bibliography.html#sja2019" id="id3"><span>[SJA2019]</span></a>.</p></li>
+<li><p>A new <a class="reference internal" href="root-api.html#lambeq.Sim4Ansatz" title="lambeq.Sim4Ansatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Sim4Ansatz</span></code></a> based on the Sim <cite>et al.</cite> paper <a class="reference internal" href="bibliography.html#sja2019" id="id5"><span>[SJA2019]</span></a>.</p></li>
 <li><p>A new argument in <a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer.fit" title="lambeq.training.Trainer.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Trainer.fit()</span></code></a> for specifying an <code class="xref py py-attr docutils literal notranslate"><span class="pre">early_stopping_criterion</span></code> other than validation loss.</p></li>
 <li><p>A new argument <code class="xref py py-attr docutils literal notranslate"><span class="pre">collapse_noun_phrases</span></code> in methods of <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGParser" title="lambeq.text2diagram.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGParser</span></code></a> and <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> classes (for example, see <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGParser.sentence2diagram" title="lambeq.text2diagram.CCGParser.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">CCGParser.sentence2diagram()</span></code></a>) that allows the user to maintain noun phrases in the derivation or collapse them into nouns as desired.</p></li>
 <li><p>Raised meaningful exception when users try to convert to/from DisCoPy 1.1.0</p></li>
@@ -192,12 +434,11 @@
 </ul>
 </section>
 <section id="rel-0-4-0">
-<span id="id5"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.4.0">0.4.0</a><a class="headerlink" href="#rel-0-4-0" title="Permalink to this heading"></a></h2>
+<span id="id7"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.4.0">0.4.0</a><a class="headerlink" href="#rel-0-4-0" title="Permalink to this heading">¶</a></h2>
 <p>Added:</p>
-<ul>
+<ul class="simple">
 <li><p>A new integrated backend that replaces <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>, which until now was providing the low-level functionality of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>. The new backend offers better performance, increased stability, faster training speeds, and a simplified high-level interface to the user. The new backend consists of the following sub-modules:</p>
-<blockquote>
-<div><ul class="simple">
+<ul>
 <li><p><a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.grammar" title="lambeq.backend.grammar"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend.grammar</span></code></a>: Contains the building blocks for creating string diagrams.</p></li>
 <li><p><a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.tensor" title="lambeq.backend.tensor"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend.tensor</span></code></a>: Contains the necessary classes to create tensor diagrams.</p></li>
 <li><p><a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.quantum" title="lambeq.backend.quantum"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend.quantum</span></code></a>: Adds quantum-specific functionality to the backend and provides a circuit simulator based on the <a class="reference external" href="https://github.com/google/TensorNetwork">TensorNetwork</a> library.</p></li>
@@ -206,7 +447,6 @@
 <li><p><a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.numerical_backend" title="lambeq.backend.numerical_backend"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend.numerical_backend</span></code></a>: Common interface for numerical backends (such as Numpy, Jax, PyTorch, TensorFlow)</p></li>
 <li><p><a class="reference internal" href="lambeq.backend.html#module-lambeq.backend.drawing" title="lambeq.backend.drawing"><code class="xref py py-mod docutils literal notranslate"><span class="pre">lambeq.backend.drawing</span></code></a>: Contains drawing functionality for diagrams and circuits.</p></li>
 </ul>
-</div></blockquote>
 </li>
 <li><p><a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a>: Added a special case for adjectival conjunction in tree translation.</p></li>
 <li><p><a class="reference internal" href="root-api.html#lambeq.TreeReader" title="lambeq.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a>: Diagrams now are created straight from the <a class="reference internal" href="root-api.html#lambeq.CCGTree" title="lambeq.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>.</p></li>
@@ -228,16 +468,14 @@
 </ul>
 </section>
 <section id="rel-0-3-3">
-<span id="id7"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.3">0.3.3</a><a class="headerlink" href="#rel-0-3-3" title="Permalink to this heading"></a></h2>
+<span id="id9"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.3">0.3.3</a><a class="headerlink" href="#rel-0-3-3" title="Permalink to this heading">¶</a></h2>
 <p>This update features contributions from participants in <a class="reference external" href="https://unitaryhack.dev/">unitaryHACK 2023</a>:</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt>Two new optimisers:</dt><dd><ul>
+<li><p>Two new optimisers:</p>
+<ul>
 <li><p>The Nelder-Mead optimiser. (credit: <a class="reference external" href="https://github.com/CQCL/lambeq/pull/104">Gopal Dahale</a>)</p></li>
 <li><p>The Rotosolve optimiser. (credit: <a class="reference external" href="https://github.com/CQCL/lambeq/pull/93">Ahmed Darwish</a>)</p></li>
 </ul>
-</dd>
-</dl>
 </li>
 <li><p>A new rewrite rule for handling unknown words. (credit: <a class="reference external" href="https://github.com/CQCL/lambeq/pull/105">WingCode</a>)</p></li>
 </ul>
@@ -255,11 +493,11 @@
 </ul>
 </section>
 <section id="rel-0-3-2">
-<span id="id9"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.2">0.3.2</a><a class="headerlink" href="#rel-0-3-2" title="Permalink to this heading"></a></h2>
+<span id="id11"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.2">0.3.2</a><a class="headerlink" href="#rel-0-3-2" title="Permalink to this heading">¶</a></h2>
 <p>Added:</p>
 <ul class="simple">
-<li><dl class="simple">
-<dt>Support for <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> &gt;= 1.1.4 (credit: <a class="reference external" href="https://github.com/CQCL/lambeq/pull/89">toumix</a>).</dt><dd><ul>
+<li><p>Support for <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a> &gt;= 1.1.4 (credit: <a class="reference external" href="https://github.com/CQCL/lambeq/pull/89">toumix</a>).</p>
+<ul>
 <li><p>replaced <code class="docutils literal notranslate"><span class="pre">discopy.rigid</span></code> with <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.pregroup.html#module-discopy.grammar.pregroup" title="(in DisCoPy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.grammar.pregroup</span></code></a> everywhere.</p></li>
 <li><p>replaced <code class="docutils literal notranslate"><span class="pre">discopy.biclosed</span></code> with <a class="reference external" href="https://docs.discopy.org/en/main/_api/discopy.grammar.categorial.html#module-discopy.grammar.categorial" title="(in DisCoPy)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">discopy.grammar.categorial</span></code></a> everywhere.</p></li>
 <li><p>Use <code class="docutils literal notranslate"><span class="pre">Diagram.decode</span></code> to account for the change in contructor signature <code class="docutils literal notranslate"><span class="pre">Diagram(inside,</span> <span class="pre">dom,</span> <span class="pre">cod)</span></code>.</p></li>
@@ -268,8 +506,6 @@
 <li><p>swapped left and right currying.</p></li>
 <li><p>dropped support for legacy DisCoPy.</p></li>
 </ul>
-</dd>
-</dl>
 </li>
 <li><p>Added <a class="reference internal" href="root-api.html#lambeq.CCGType" title="lambeq.CCGType"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGType</span></code></a> class for utilisation in the <code class="docutils literal notranslate"><span class="pre">biclosed_type</span></code> attribute of <a class="reference internal" href="root-api.html#lambeq.CCGTree" title="lambeq.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>, allowing conversion to and from a discopy categorial object using <code class="xref py py-meth docutils literal notranslate"><span class="pre">discopy()</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">from_discopy()</span></code> methods.</p></li>
 <li><p><a class="reference internal" href="root-api.html#lambeq.CCGTree" title="lambeq.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a>: added reference to the original tree from parsing by introducing a <code class="docutils literal notranslate"><span class="pre">metadata</span></code> field.</p></li>
@@ -295,7 +531,7 @@
 </ul>
 </section>
 <section id="rel-0-3-1">
-<span id="id12"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.1">0.3.1</a><a class="headerlink" href="#rel-0-3-1" title="Permalink to this heading"></a></h2>
+<span id="id14"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.1">0.3.1</a><a class="headerlink" href="#rel-0-3-1" title="Permalink to this heading">¶</a></h2>
 <p>Changed:</p>
 <ul class="simple">
 <li><p>Added example and tutorial notebooks to tests.</p></li>
@@ -309,7 +545,7 @@
 </ul>
 </section>
 <section id="rel-0-3-0">
-<span id="id14"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.0">0.3.0</a><a class="headerlink" href="#rel-0-3-0" title="Permalink to this heading"></a></h2>
+<span id="id16"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.3.0">0.3.0</a><a class="headerlink" href="#rel-0-3-0" title="Permalink to this heading">¶</a></h2>
 <p>Added:</p>
 <ul class="simple">
 <li><p>Support for hybrid quantum-classical models using the <a class="reference internal" href="root-api.html#lambeq.PennyLaneModel" title="lambeq.PennyLaneModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">PennyLaneModel</span></code></a>. <a class="reference internal" href="glossary.html#term-PennyLane"><span class="xref std std-term">PennyLane</span></a> is a powerful QML library that allows the development of hybrid ML models by hooking numerically determined gradients of parametrised quantum circuits (PQCs) to the autograd modules of ML libraries like PyTorch or TensorFlow.</p></li>
@@ -339,7 +575,7 @@
 </ul>
 </section>
 <section id="rel-0-2-8">
-<span id="id16"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.8">0.2.8</a><a class="headerlink" href="#rel-0-2-8" title="Permalink to this heading"></a></h2>
+<span id="id18"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.8">0.2.8</a><a class="headerlink" href="#rel-0-2-8" title="Permalink to this heading">¶</a></h2>
 <p>Changed:</p>
 <ul class="simple">
 <li><p>Improved the performance of <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> when using Jax JIT-compilation.</p></li>
@@ -352,13 +588,13 @@
 </ul>
 </section>
 <section id="rel-0-2-7">
-<span id="id18"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.7">0.2.7</a><a class="headerlink" href="#rel-0-2-7" title="Permalink to this heading"></a></h2>
+<span id="id20"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.7">0.2.7</a><a class="headerlink" href="#rel-0-2-7" title="Permalink to this heading">¶</a></h2>
 <p>Added:</p>
 <ul class="simple">
 <li><p>Added support for Japanese to <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.DepCCGParser" title="lambeq.text2diagram.DepCCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">DepCCGParser</span></code></a> (credit: <a class="reference external" href="https://github.com/CQCL/lambeq/pull/24">KentaroAOKI</a>).</p></li>
 <li><p>Overhauled the <a class="reference internal" href="lambeq.ansatz.html#lambeq.ansatz.CircuitAnsatz" title="lambeq.ansatz.CircuitAnsatz"><code class="xref py py-class docutils literal notranslate"><span class="pre">CircuitAnsatz</span></code></a> interface, and added three new <a class="reference internal" href="glossary.html#term-ansatz-plural-ansatze"><span class="xref std std-term">ansätze</span></a>.</p></li>
-<li><p>Added helper methods to <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> to get the children of a tree.
-Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader.tree2diagram" title="lambeq.text2diagram.TreeReader.tree2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TreeReader.tree2diagram()</span></code></a> method to <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a>, extracted from <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader.sentence2diagram" title="lambeq.text2diagram.TreeReader.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TreeReader.sentence2diagram()</span></code></a>.</p></li>
+<li><p>Added helper methods to <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGTree" title="lambeq.text2diagram.CCGTree"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGTree</span></code></a> to get the children of a tree.</p></li>
+<li><p>Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader.tree2diagram" title="lambeq.text2diagram.TreeReader.tree2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TreeReader.tree2diagram()</span></code></a> method to <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a>, extracted from <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader.sentence2diagram" title="lambeq.text2diagram.TreeReader.sentence2diagram"><code class="xref py py-meth docutils literal notranslate"><span class="pre">TreeReader.sentence2diagram()</span></code></a>.</p></li>
 <li><p>Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReaderMode" title="lambeq.text2diagram.TreeReaderMode"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReaderMode</span></code></a> named <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReaderMode.HEIGHT" title="lambeq.text2diagram.TreeReaderMode.HEIGHT"><code class="xref py py-attr docutils literal notranslate"><span class="pre">TreeReaderMode.HEIGHT</span></code></a>.</p></li>
 <li><p>Added new methods to <a class="reference internal" href="lambeq.training.html#lambeq.training.Checkpoint" title="lambeq.training.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpoint</span></code></a> for creating, saving and loading checkpoints for training.</p></li>
 <li><p>Documentation: added a section for how to select the right model and trainer for training.</p></li>
@@ -389,15 +625,15 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-6">
-<span id="id20"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.6">0.2.6</a><a class="headerlink" href="#rel-0-2-6" title="Permalink to this heading"></a></h2>
+<span id="id22"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.6">0.2.6</a><a class="headerlink" href="#rel-0-2-6" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>Added a strict pregroups mode to the CLI. With this mode enabled, all swaps are removed from the output string diagrams by changing the ordering of the atomic types, converting them into a valid <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> form as given in <a class="reference internal" href="bibliography.html#lam1999" id="id21"><span>[Lam1999]</span></a>.</p></li>
+<li><p>Added a strict pregroups mode to the CLI. With this mode enabled, all swaps are removed from the output string diagrams by changing the ordering of the atomic types, converting them into a valid <a class="reference internal" href="glossary.html#term-pregroup-grammar"><span class="xref std std-term">pregroup</span></a> form as given in <a class="reference internal" href="bibliography.html#lam1999" id="id23"><span>[Lam1999]</span></a>.</p></li>
 <li><p>Adjusted the behaviour of output normalisation in quantum models. Now, <a class="reference internal" href="lambeq.training.html#lambeq.training.NumpyModel" title="lambeq.training.NumpyModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">NumpyModel</span></code></a> always returns probabilities instead of amplitudes.</p></li>
 <li><p>Removed the prediction from the output of the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a>, which now returns just the loss.</p></li>
 </ul>
 </section>
 <section id="rel-0-2-5">
-<span id="id23"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.5">0.2.5</a><a class="headerlink" href="#rel-0-2-5" title="Permalink to this heading"></a></h2>
+<span id="id25"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.5">0.2.5</a><a class="headerlink" href="#rel-0-2-5" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Added a “swapping” unary rule box to handle unary rules that change the direction of composition, improving the coverage of the <a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a>.</p></li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">--version</span></code> flag to the CLI.</p></li>
@@ -409,7 +645,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-4">
-<span id="id25"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.4">0.2.4</a><a class="headerlink" href="#rel-0-2-4" title="Permalink to this heading"></a></h2>
+<span id="id27"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.4">0.2.4</a><a class="headerlink" href="#rel-0-2-4" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Fix a bug that caused the <a class="reference internal" href="root-api.html#lambeq.BobcatParser" title="lambeq.BobcatParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">BobcatParser</span></code></a> and the <a class="reference internal" href="root-api.html#lambeq.WebParser" title="lambeq.WebParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">WebParser</span></code></a> to trigger an SSL certificate error using Windows.</p></li>
 <li><p>Fix false positives in assigning conjunction rule using the <a class="reference internal" href="root-api.html#lambeq.CCGBankParser" title="lambeq.CCGBankParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a>. The rule <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">+</span> <span class="pre">X[conj]</span> <span class="pre">-&gt;</span> <span class="pre">X[conj]</span></code> is a case of removing left punctuation, but was being assigned conjunction erroneously.</p></li>
@@ -417,7 +653,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-3">
-<span id="id27"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.3">0.2.3</a><a class="headerlink" href="#rel-0-2-3" title="Permalink to this heading"></a></h2>
+<span id="id29"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.3">0.2.3</a><a class="headerlink" href="#rel-0-2-3" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Fix a bug that raised a <code class="docutils literal notranslate"><span class="pre">dtype</span></code> error when using the <a class="reference internal" href="root-api.html#lambeq.TketModel" title="lambeq.TketModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">TketModel</span></code></a> on Windows.</p></li>
 <li><p>Fix a bug that caused the normalisation of scalar outputs of circuits without open wires using a <a class="reference internal" href="root-api.html#lambeq.QuantumModel" title="lambeq.QuantumModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">QuantumModel</span></code></a>.</p></li>
@@ -430,7 +666,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-2">
-<span id="id29"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.2">0.2.2</a><a class="headerlink" href="#rel-0-2-2" title="Permalink to this heading"></a></h2>
+<span id="id31"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.2">0.2.2</a><a class="headerlink" href="#rel-0-2-2" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Add support for Python 3.10.</p></li>
 <li><p>Unify class hierarchies for parsers and readers: <a class="reference internal" href="root-api.html#lambeq.CCGParser" title="lambeq.CCGParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGParser</span></code></a> is now a subclass of <a class="reference internal" href="root-api.html#lambeq.Reader" title="lambeq.Reader"><code class="xref py py-class docutils literal notranslate"><span class="pre">Reader</span></code></a> and placed in the common package <a class="reference internal" href="lambeq.text2diagram.html#module-lambeq.text2diagram" title="lambeq.text2diagram"><code class="xref py py-mod docutils literal notranslate"><span class="pre">text2diagram</span></code></a>. The old packages <code class="xref py py-mod docutils literal notranslate"><span class="pre">reader</span></code> and <code class="xref py py-mod docutils literal notranslate"><span class="pre">ccg2discocat</span></code> are no longer available. Compatibility problems with previous versions should be minimal, since from Release <a class="reference internal" href="#rel-0-2-0"><span class="std std-ref">0.2.0</span></a> and onwards all <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> classes can be imported from the global namespace.</p></li>
@@ -441,7 +677,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-1">
-<span id="id31"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.1">0.2.1</a><a class="headerlink" href="#rel-0-2-1" title="Permalink to this heading"></a></h2>
+<span id="id33"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.1">0.2.1</a><a class="headerlink" href="#rel-0-2-1" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>A new <a class="reference internal" href="lambeq.training.html#lambeq.training.Checkpoint" title="lambeq.training.Checkpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">Checkpoint</span></code></a> class that implements pickling and file operations from the <a class="reference internal" href="lambeq.training.html#lambeq.training.Trainer" title="lambeq.training.Trainer"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trainer</span></code></a> and <a class="reference internal" href="lambeq.training.html#lambeq.training.Model" title="lambeq.training.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>.</p></li>
 <li><p>Improvements to the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> module, allowing multiple diagrams to be accepted as input to the <a class="reference internal" href="lambeq.training.html#lambeq.training.SPSAOptimizer" title="lambeq.training.SPSAOptimizer"><code class="xref py py-class docutils literal notranslate"><span class="pre">SPSAOptimizer</span></code></a>.</p></li>
@@ -449,16 +685,16 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-2-0">
-<span id="id33"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.0">0.2.0</a><a class="headerlink" href="#rel-0-2-0" title="Permalink to this heading"></a></h2>
+<span id="id35"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.2.0">0.2.0</a><a class="headerlink" href="#rel-0-2-0" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
-<li><p>A new state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id34"><span>[SC2021]</span></a>, fully integrated with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, which replaces depccg as the default parser of the toolkit. The new <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser has better performance, simplifies installation, and provides compatibility with Windows (which was not supported due to a depccg conflict). depccg is still supported as an alternative external dependency.</p></li>
+<li><p>A new state-of-the-art CCG parser based on <a class="reference internal" href="bibliography.html#sc2021" id="id36"><span>[SC2021]</span></a>, fully integrated with <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, which replaces depccg as the default parser of the toolkit. The new <a class="reference internal" href="glossary.html#term-Bobcat"><span class="xref std std-term">Bobcat</span></a> parser has better performance, simplifies installation, and provides compatibility with Windows (which was not supported due to a depccg conflict). depccg is still supported as an alternative external dependency.</p></li>
 <li><p>A <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package, providing a selection of trainers, models, and optimizers that greatly simplify supervised training for most of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s use cases, classical and quantum. The new package adds several new features to <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, such as the ability to save to and restore models from checkpoints.</p></li>
 <li><p>Furthermore, the <a class="reference internal" href="lambeq.training.html#module-lambeq.training" title="lambeq.training"><code class="xref py py-mod docutils literal notranslate"><span class="pre">training</span></code></a> package uses <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy</span></a>’s tensor network capability to contract tensor diagrams efficiently. In particular, <a class="reference internal" href="glossary.html#term-DisCoPy"><span class="xref std std-term">DisCoPy 0.4.1</span></a>’s new unitary and density matrix simulators result in substantially faster training speeds compared to the previous version.</p></li>
 <li><p>A command-line interface, which provides most of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>’s functionality from the command line. For example, <code class="docutils literal notranslate"><span class="pre">lambeq</span></code> can now be used as a standard command-line pregroup parser.</p></li>
 <li><p>A web parser class that can send parsing queries to an online API, so that local installation of a parser is not strictly necessary anymore. The web parser is particularly helpful for testing purposes, interactive usage or when a local parser is unavailable, but should not be used for serious experiments.</p></li>
 <li><p>A new <code class="xref py py-mod docutils literal notranslate"><span class="pre">pregroups</span></code> package that provides methods for easy creation of pregroup diagrams, removal of cups, and printing of diagrams in text form (i.e. in a terminal).</p></li>
 <li><p>A new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.TreeReader" title="lambeq.text2diagram.TreeReader"><code class="xref py py-class docutils literal notranslate"><span class="pre">TreeReader</span></code></a> class that exploits the biclosed structure of CCG grammatical derivations.</p></li>
-<li><p>Three new rewrite rules for relative pronouns <a class="reference internal" href="bibliography.html#scc2014a" id="id35"><span>[SCC2014a]</span></a> <a class="reference internal" href="bibliography.html#scc2014b" id="id36"><span>[SCC2014b]</span></a> and coordination <a class="reference internal" href="bibliography.html#kar2016" id="id37"><span>[Kar2016]</span></a>.</p></li>
+<li><p>Three new rewrite rules for relative pronouns <a class="reference internal" href="bibliography.html#scc2014a" id="id37"><span>[SCC2014a]</span></a> <a class="reference internal" href="bibliography.html#scc2014b" id="id38"><span>[SCC2014b]</span></a> and coordination <a class="reference internal" href="bibliography.html#kar2016" id="id39"><span>[Kar2016]</span></a>.</p></li>
 <li><p>Tokenisation features have been added in all parsers and readers.</p></li>
 <li><p>Additional generator methods and minor improvements for the <a class="reference internal" href="lambeq.text2diagram.html#lambeq.text2diagram.CCGBankParser" title="lambeq.text2diagram.CCGBankParser"><code class="xref py py-class docutils literal notranslate"><span class="pre">CCGBankParser</span></code></a> class.</p></li>
 <li><p>Improved and more detailed package structure.</p></li>
@@ -468,7 +704,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-1-2">
-<span id="id39"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.2">0.1.2</a><a class="headerlink" href="#rel-0-1-2" title="Permalink to this heading"></a></h2>
+<span id="id41"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.2">0.1.2</a><a class="headerlink" href="#rel-0-1-2" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Add URLs to the setup file.</p></li>
 <li><p>Fix logo link in README.</p></li>
@@ -477,7 +713,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-1-1">
-<span id="id41"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.1">0.1.1</a><a class="headerlink" href="#rel-0-1-1" title="Permalink to this heading"></a></h2>
+<span id="id43"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.1">0.1.1</a><a class="headerlink" href="#rel-0-1-1" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>Update install script to use PyPI package.</p></li>
 <li><p>Add badges and documentation link to the README file.</p></li>
@@ -489,7 +725,7 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </ul>
 </section>
 <section id="rel-0-1-0">
-<span id="id43"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.0">0.1.0</a><a class="headerlink" href="#rel-0-1-0" title="Permalink to this heading"></a></h2>
+<span id="id45"></span><h2><a class="reference external" href="https://github.com/CQCL/lambeq/releases/tag/0.1.0">0.1.0</a><a class="headerlink" href="#rel-0-1-0" title="Permalink to this heading">¶</a></h2>
 <p>The initial release of <code class="docutils literal notranslate"><span class="pre">lambeq</span></code>, containing a lot of core material. Main features:</p>
 <ul class="simple">
 <li><p>Converting sentences to string diagrams.</p></li>
@@ -505,34 +741,98 @@ Added a new <a class="reference internal" href="lambeq.text2diagram.html#lambeq.
 </section>
 </section>
 
-
-           </div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          <a class="prev-page" href="genindex.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Index</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2021-2024 Cambridge Quantum Computing Ltd.
+            </div>
+            <div class="terms" style="display:flex; gap:0.5rem; align-items:center; margin: 0.25rem 0rem;">
+              <a href="https://www.quantinuum.com/privacy-statement" target="_blank">Privacy Statement</a>
+              <div role="separator">/</div>
+              <a href="https://www.quantinuum.com/cookie-notice" target="_blank">Cookie Notice</a>
+              <div role="separator">/</div>
+              <a href="https://www.quantinuum.com/terms-conditions" target="_blank">Terms and Conditions</a>
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
           </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="genindex.html" class="btn btn-neutral float-left" title="Index" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
     </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Release notes</a><ul>
+<li><a class="reference internal" href="#rel-0-4-2">0.4.2</a></li>
+<li><a class="reference internal" href="#rel-0-4-1">0.4.1</a></li>
+<li><a class="reference internal" href="#rel-0-4-0">0.4.0</a></li>
+<li><a class="reference internal" href="#rel-0-3-3">0.3.3</a></li>
+<li><a class="reference internal" href="#rel-0-3-2">0.3.2</a></li>
+<li><a class="reference internal" href="#rel-0-3-1">0.3.1</a></li>
+<li><a class="reference internal" href="#rel-0-3-0">0.3.0</a></li>
+<li><a class="reference internal" href="#rel-0-2-8">0.2.8</a></li>
+<li><a class="reference internal" href="#rel-0-2-7">0.2.7</a></li>
+<li><a class="reference internal" href="#rel-0-2-6">0.2.6</a></li>
+<li><a class="reference internal" href="#rel-0-2-5">0.2.5</a></li>
+<li><a class="reference internal" href="#rel-0-2-4">0.2.4</a></li>
+<li><a class="reference internal" href="#rel-0-2-3">0.2.3</a></li>
+<li><a class="reference internal" href="#rel-0-2-2">0.2.2</a></li>
+<li><a class="reference internal" href="#rel-0-2-1">0.2.1</a></li>
+<li><a class="reference internal" href="#rel-0-2-0">0.2.0</a></li>
+<li><a class="reference internal" href="#rel-0-1-2">0.1.2</a></li>
+<li><a class="reference internal" href="#rel-0-1-1">0.1.1</a></li>
+<li><a class="reference internal" href="#rel-0-1-0">0.1.0</a></li>
+</ul>
+</li>
+</ul>
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p>&#169; Copyright 2021-2024 Cambridge Quantum Computing Ltd..</p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+          </div>
         </div>
       </div>
-    </section>
+      
+      
+    </aside>
   </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+</div>
+<script>document.body.setAttribute("data-theme", "light")</script><script src="_static/jquery.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    </body>
 </html>
