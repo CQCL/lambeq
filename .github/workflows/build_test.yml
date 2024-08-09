@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.9, "3.10", "3.11", "3.12" ]
+        python-version: [ "3.10", "3.11", "3.12" ]
     outputs:
       error-check: ${{ steps.error-check.conclusion }}
     steps:
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.9, "3.10", "3.11", "3.12" ]
+        python-version: [ "3.10", "3.11", "3.12" ]
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}
@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.9, "3.10", "3.11", "3.12" ]
+        python-version: [ "3.10", "3.11", "3.12" ]
     steps:
     - uses: actions/checkout@v3
     - name: Setup Python ${{ matrix.python-version }}

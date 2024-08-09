@@ -32,6 +32,7 @@ import os
 import random
 import socket
 import sys
+import time
 from typing import Any, Callable, TYPE_CHECKING
 
 from tqdm.auto import tqdm, trange
@@ -42,6 +43,7 @@ if TYPE_CHECKING:
 
 from lambeq.backend.numerical_backend import backend
 from lambeq.core.globals import VerbosityLevel
+from lambeq.core.utils import normalise_duration
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.dataset import Dataset
 from lambeq.training.model import Model
@@ -128,11 +130,14 @@ class Trainer(ABC):
         self.seed = seed
 
         self.train_costs: list[float] = []
+        self.train_durations: list[float] = []
         self.train_epoch_costs: list[float] = []
+        self.train_epoch_durations: list[float] = []
         self.train_eval_results: dict[str, list[Any]] = {}
         self._train_eval_running: dict[str, list[tuple[int, Any]]] = {}
 
         self.val_costs: list[float] = []
+        self.val_durations: list[float] = []
         self.val_eval_results: dict[str, list[Any]] = {}
         self._val_eval_running: dict[str, list[tuple[int, Any]]] = {}
 
@@ -169,7 +174,13 @@ class Trainer(ABC):
 
     def _generate_stat_report(self,
                               train_loss: float | None = None,
-                              val_loss: float | None = None) -> str:
+                              val_loss: float | None = None,
+                              train_duration: float | None = None,
+                              val_duration: float | None = None,
+                              train_duration_mean: float | None = None,
+                              val_duration_mean: float | None = None,
+                              eval_mode: str = EvalMode.EPOCH.value,
+                              full_timing_report: bool = False) -> str:
         """Generate the text to display with the progress bar.
 
         Parameters
@@ -178,6 +189,16 @@ class Trainer(ABC):
             Current training loss.
         val_loss : float, optional
             Current validation loss.
+        train_duration: float, optional
+            Accumulated training time for the logging interval.
+        val_duration: float, optional
+            Accumulated validation time for the logging interval.
+        train_duration_mean: float, optional
+            Mean training time per epoch/step for the logging interval.
+        val_duration_mean: float, optional
+            Mean validation time per evaluation for the logging interval.
+        eval_mode: :py:class:`EvalMode`, default: 'epoch'
+            The evaluation mode passed to the :py:meth:`.fit` method.
 
         Returns
         -------
@@ -188,9 +209,25 @@ class Trainer(ABC):
 
         report = []
         for name, value in [('train/loss', train_loss),
-                            ('valid/loss', val_loss)]:
+                            ('valid/loss', val_loss),]:
             str_value = f'{value:.4f}' if value is not None else '-----'
             report.append(f'{name}: {str_value}')
+        for name, value in [('train/time', train_duration),
+                            ('valid/time', val_duration)]:
+            str_value = (normalise_duration(value)
+                         if value is not None else '-----')
+            report.append(f'{name}: {str_value}')
+
+        if full_timing_report:
+            # Mean durations are optional - they're mostly important
+            # when verbose='text'
+            for name, value in [(f'train/time_per_{eval_mode}',
+                                train_duration_mean),
+                                ('valid/time_per_eval', val_duration_mean)]:
+                if value is not None:
+                    str_value = normalise_duration(value)
+                    report.append(f'{name}: {str_value}')
+
         if self.evaluate_on_train and self.evaluate_functions is not None:
             for name in self.train_eval_results:
                 str_value = (f'{self.train_eval_results[name][-1]:.4f}'
@@ -231,9 +268,12 @@ class Trainer(ABC):
 
         # load the training history
         self.train_costs = checkpoint['train_costs']
+        self.train_durations = checkpoint['train_durations']
         self.train_epoch_costs = checkpoint['train_epoch_costs']
+        self.train_epoch_durations = checkpoint['train_epoch_durations']
         self.train_eval_results = checkpoint['train_eval_results']
         self.val_costs = checkpoint['val_costs']
+        self.val_durations = checkpoint['val_durations']
         self.val_eval_results = checkpoint['val_eval_results']
         self.start_epoch = checkpoint['epoch'] + 1
         self.start_step = checkpoint['step']
@@ -342,8 +382,10 @@ class Trainer(ABC):
                        step_func: Callable,
                        losses: list[tuple[int, Any]],
                        eval_results: dict[str, list[Any]],
+                       step_durations: list[Any],
                        evaluate: bool = True) -> Any:
         """Perform a forward step and evaluate the metrics."""
+        step_start = time.time()
         batch_size = len(batch[0])
         y_hat, loss = step_func(batch)
         losses.append((batch_size, loss))
@@ -352,6 +394,10 @@ class Trainer(ABC):
             for metr, func in self.evaluate_functions.items():
                 res = func(y_hat, batch[1])
                 eval_results[metr].append((batch_size, res))
+        step_end = time.time()
+        step_duration = step_end - step_start
+        step_durations.append(step_duration)
+
         return loss
 
     def _summarize_metric(self,
@@ -359,7 +405,8 @@ class Trainer(ABC):
                           results: dict[str, list[Any]],
                           interval: int,
                           status_bar: tqdm,
-                          mode: str) -> None:
+                          mode: str,
+                          full_timing_report: bool = False) -> None:
         """Calculate the metric results and write them to tensorboard and
         command-line."""
         for name in eval_results:
@@ -370,7 +417,12 @@ class Trainer(ABC):
                 self._generate_stat_report(
                     train_loss=(self.train_costs[-1] if self.train_costs
                                 else None),
-                    val_loss=self.val_costs[-1] if self.val_costs else None
+                    val_loss=self.val_costs[-1] if self.val_costs else None,
+                    train_duration=(self.train_durations[-1] if
+                                    self.train_durations else None),
+                    val_duration=(self.val_durations[-1] if self.val_durations
+                                  else None),
+                    full_timing_report=full_timing_report,
                 )
             )
 
@@ -426,7 +478,8 @@ class Trainer(ABC):
             eval_mode: str = EvalMode.EPOCH.value,
             early_stopping_criterion: str | None = None,
             early_stopping_interval: int | None = None,
-            minimize_criterion: bool = True) -> None:
+            minimize_criterion: bool = True,
+            full_timing_report: bool = False) -> None:
         """Fit the model on the training data and, optionally,
         evaluate it on the validation data.
 
@@ -460,6 +513,8 @@ class Trainer(ABC):
         minimize_criterion: bool, default: True
             Flag indicating if we should minimize or maximize the early
             stopping criterion.
+        full_timing_report: bool, default: False
+            Flag for including mean timing statistics in the logs.
 
         Raises
         ------
@@ -520,6 +575,7 @@ class Trainer(ABC):
                                 leave=False,
                                 position=1):
 
+                epoch_start = time.time()
                 train_losses: list[tuple[int, Any]] = []
                 for batch in tqdm(train_dataset,
                                   desc='Batch',
@@ -534,6 +590,7 @@ class Trainer(ABC):
                         self.training_step,
                         train_losses,
                         self._train_eval_running,
+                        self.train_durations,
                         self.evaluate_on_train
                     )
 
@@ -542,17 +599,27 @@ class Trainer(ABC):
                         self._generate_stat_report(
                             train_loss=t_loss,
                             val_loss=(self.val_costs[-1] if self.val_costs
-                                      else None)
+                                      else None),
+                            train_duration=self.train_durations[-1],
+                            val_duration=(self.val_durations[-1] if
+                                          self.val_durations else None),
+                            full_timing_report=full_timing_report,
                         )
                     )
+                    self._to_tensorboard('train/time',
+                                         self.train_durations[-1],
+                                         step)
 
                     # calculate metrics on train dataset
                     if self.evaluate_on_train and step % evaluation_step == 0:
-                        self._summarize_metric(self._train_eval_running,
-                                               self.train_eval_results,
-                                               epoch,
-                                               status_bar,
-                                               mode='train')
+                        self._summarize_metric(
+                            self._train_eval_running,
+                            self.train_eval_results,
+                            epoch,
+                            status_bar,
+                            mode='train',
+                            full_timing_report=full_timing_report,
+                        )
 
                     # evaluate metrics on validation data
                     if val_dataset is not None and step % evaluation_step == 0:
@@ -568,12 +635,18 @@ class Trainer(ABC):
                                 v_batch,
                                 self.validation_step,
                                 val_loss,
-                                self._val_eval_running
+                                self._val_eval_running,
+                                self.val_durations,
                             )
 
                             status_bar.set_description(
-                                self._generate_stat_report(train_loss=t_loss,
-                                                           val_loss=v_loss)
+                                self._generate_stat_report(
+                                    train_loss=t_loss,
+                                    val_loss=v_loss,
+                                    train_duration=self.train_durations[-1],
+                                    val_duration=self.val_durations[-1],
+                                    full_timing_report=full_timing_report,
+                                )
                             )
 
                         self.val_costs.append(
@@ -583,19 +656,28 @@ class Trainer(ABC):
                         status_bar.set_description(
                             self._generate_stat_report(
                                 train_loss=t_loss,
-                                val_loss=self.val_costs[-1]
+                                val_loss=self.val_costs[-1],
+                                train_duration=self.train_durations[-1],
+                                val_duration=self.val_durations[-1],
+                                full_timing_report=full_timing_report,
                             )
                         )
 
                         self._to_tensorboard('val/loss',
                                              self.val_costs[-1],
                                              epoch)
+                        self._to_tensorboard('val/time',
+                                             self.val_durations[-1],
+                                             epoch)
 
-                        self._summarize_metric(self._val_eval_running,
-                                               self.val_eval_results,
-                                               epoch,
-                                               status_bar,
-                                               mode='val')
+                        self._summarize_metric(
+                            self._val_eval_running,
+                            self.val_eval_results,
+                            epoch,
+                            status_bar,
+                            mode='val',
+                            full_timing_report=full_timing_report,
+                        )
                         # save best model
                         criterion_vals = self.val_costs
                         if early_stopping_criterion is not None:
@@ -611,9 +693,12 @@ class Trainer(ABC):
                             self.save_checkpoint(
                                 {'epoch': epoch,
                                  'train_costs': self.train_costs,
+                                 'train_durations': self.train_durations,
                                  'train_epoch_costs': self.train_epoch_costs,
                                  'train_eval_results': self.train_eval_results,
                                  'val_costs': self.val_costs,
+                                 'val_durations': self.val_durations,
+                                 'train_epoch_durations': self.train_epoch_durations,   # noqa: E501
                                  'val_eval_results': self.val_eval_results,
                                  'random_state': random.getstate(),
                                  'step': step},
@@ -636,12 +721,36 @@ class Trainer(ABC):
                                               - len(str(step)) + 2) * ' '
                                 prefix += f'Step {step}:' + step_space
 
-                            print(prefix + self._generate_stat_report(
+                            train_duration = (
+                                sum(self.train_durations[-logging_step:]) if
+                                self.train_durations else None
+                            )
+                            train_duration_mean = (
+                                train_duration
+                                / (log_interval * eval_interval)
+                            ) if train_duration else None
+                            val_duration = (
+                                sum(self.val_durations[-log_interval:]) if
+                                self.val_durations else None
+                            )
+                            val_duration_mean = (
+                                val_duration / log_interval
+                            ) if val_duration else None
+                            print(
+                                prefix + self._generate_stat_report(
                                     train_loss=(self.train_costs[-1]
                                                 if self.train_costs else None),
                                     val_loss=(self.val_costs[-1]
-                                              if self.val_costs else None)),
-                                  file=sys.stderr)
+                                              if self.val_costs else None),
+                                    train_duration=train_duration,
+                                    val_duration=val_duration,
+                                    train_duration_mean=train_duration_mean,
+                                    val_duration_mean=val_duration_mean,
+                                    eval_mode=eval_mode,
+                                    full_timing_report=full_timing_report,
+                                ),
+                                file=sys.stderr
+                            )
 
                     # check for early stopping
                     early_stopping = self._check_early_stopping(
@@ -652,20 +761,30 @@ class Trainer(ABC):
                     if early_stopping:
                         break   # inner epoch loop
 
+                epoch_end = time.time()
+                epoch_duration = epoch_end - epoch_start
+                self.train_epoch_durations.append(epoch_duration)
+
                 # calculate epoch loss
                 self.train_epoch_costs.append(
                     self._get_weighted_mean(train_losses))
                 self._to_tensorboard('train/epoch_loss',
                                      self.train_epoch_costs[-1],
                                      epoch)
+                self._to_tensorboard('train/time_per_epoch',
+                                     self.train_epoch_durations[-1],
+                                     epoch)
 
                 # save training stats checkpoint
                 self.save_checkpoint(
                     {'epoch': epoch,
                      'train_costs': self.train_costs,
+                     'train_durations': self.train_durations,
                      'train_epoch_costs': self.train_epoch_costs,
                      'train_eval_results': self.train_eval_results,
+                     'train_epoch_durations': self.train_epoch_durations,
                      'val_costs': self.val_costs,
+                     'val_durations': self.val_durations,
                      'val_eval_results': self.val_eval_results,
                      'random_state': random.getstate(),
                      'step': step},
@@ -681,5 +800,34 @@ class Trainer(ABC):
                     break  # break outer epoch loop
 
         status_bar.close()
+
+        # Summarize timing statistics
+        total_training_time = sum(self.train_durations)
+        training_time_per_epoch = normalise_duration(
+            total_training_time / len(self.train_epoch_durations))
+        training_time_per_step = normalise_duration(
+            total_training_time / len(self.train_durations))
+        total_training_time_s = normalise_duration(
+            total_training_time)
+        total_validation_time = None
+        validation_time_per_eval = None
+        if len(self.val_durations):
+            total_validation_time = sum(self.val_durations)
+            validation_time_per_eval = normalise_duration(
+                total_validation_time / len(self.val_durations))
+        total_validation_time_s = normalise_duration(
+            total_validation_time)
+
+        timing_summary_desc = (
+            f'train/time: {total_training_time_s}'
+            f'   train/time_per_epoch: {training_time_per_epoch}'
+            f'   train/time_per_step: {training_time_per_step}'
+            f'   valid/time: {total_validation_time_s}'
+            f'   valid/time_per_eval: {validation_time_per_eval}'
+        )
+
         if self.verbose == VerbosityLevel.TEXT.value:
             print('\nTraining completed!', file=sys.stderr)
+
+        # Display timing summary regardless of verbosity
+        print(timing_summary_desc, file=sys.stderr)

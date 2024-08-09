@@ -1,6 +1,7 @@
 import pytest
 
 import numpy as np
+from pytket.extensions.qiskit import AerBackend
 import sympy
 
 from lambeq.backend.quantum import *
@@ -125,6 +126,30 @@ def test_functors():
     assert F(d3) == d3_f
 
 
+def test_spiders():
+
+    assert generate_spider(Ty(), 4, 3) == Id()
+
+    assert generate_spider(qubit, 1, 0) == Sqrt(2) @ H >> Bra(0)
+    assert generate_spider(qubit, 0, 1) == generate_spider(qubit, 1, 0).dagger()
+
+    assert generate_spider(qubit, 1, 1) == Id(qubit)
+
+    assert generate_spider(qubit, 2, 0).eval() == pytest.approx(generate_cup(qubit, qubit).eval())
+    assert generate_spider(qubit, 2, 0) == generate_spider(qubit, 0, 2).dagger()
+
+    assert generate_spider(qubit, 3, 2).eval().flatten() == pytest.approx([1, 0, 0, 0, 0, 0, 0, 0,
+                                                                           0, 0, 0, 0, 0, 0, 0, 0,
+                                                                           0, 0, 0, 0, 0, 0, 0, 0,
+                                                                           0, 0, 0, 0, 0, 0, 0, 1])
+    assert generate_spider(qubit, 2, 3).eval().flatten() == pytest.approx([1, 0, 0, 0, 0, 0, 0, 0,
+                                                                           0, 0, 0, 0, 0, 0, 0, 0,
+                                                                           0, 0, 0, 0, 0, 0, 0, 0,
+                                                                           0, 0, 0, 0, 0, 0, 0, 1])
+    with pytest.raises(NotImplementedError):
+        generate_spider(qubit @ qubit, 2, 3)
+
+
 def test_mixed_eval():
 
     assert (Ket(0) >> Discard()).eval() == 1
@@ -139,3 +164,9 @@ def test_mixed_eval():
     assert Ket(0).eval(mixed=True).reshape(4) == pytest.approx(np.array([1, 0, 0, 0]))
     assert Ket(1).eval(mixed=True).reshape(4) == pytest.approx(np.array([0, 0, 0, 1]))
     assert (Ket(0) >> H).eval(mixed=True).reshape(4) == pytest.approx(np.array([0.5, 0.5, 0.5, 0.5]))
+
+
+def test_eval_w_aer_backend():
+    backend = AerBackend()
+
+    assert ((Ket(0) >> Measure()) @ (Ket(1) >> Measure())).eval(backend=backend) == pytest.approx(np.array([[0, 1], [0, 0]]))

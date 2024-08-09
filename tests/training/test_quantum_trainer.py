@@ -1,3 +1,5 @@
+from math import ceil
+
 import numpy as np
 import tensornetwork as tn
 from lambeq.backend.grammar import Cup, Id, Word
@@ -54,8 +56,14 @@ def test_trainer(tmp_path):
     val_dataset = Dataset(dev_circuits, dev_targets)
 
     trainer.fit(train_dataset, val_dataset)
+
     assert len(trainer.train_costs) == EPOCHS
     assert len(trainer.val_eval_results["acc"]) == EPOCHS
+    assert len(trainer.train_epoch_durations) == EPOCHS
+    assert len(trainer.train_durations) == EPOCHS * (
+        ceil(len(train_diagrams) / train_dataset.batch_size))
+    assert len(trainer.val_durations) == EPOCHS
+
 
 def test_restart_training(tmp_path):
     log_dir = tmp_path / 'test_runs'

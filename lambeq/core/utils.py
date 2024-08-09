@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator, Mapping
+from math import floor
 from typing import Any, List, Union
 
 from lambeq.backend.grammar import Diagram
@@ -60,3 +61,54 @@ def flatten(diagrams: Iterable[Any]) -> Iterator[Diagram]:
             yield from flatten(d.values())
         elif isinstance(d, Iterable):
             yield from flatten(d)
+
+
+def normalise_duration(duration_secs: float | None) -> str:
+    """Normalise a duration value in seconds into a more human-readable
+    form.
+
+        >>> normalise_duration(4890.0)
+        '1h21m30s'
+        >>> normalise_duration(65.0)
+        '1m5s'
+        >>> normalise_duration(0.29182375)
+        '0.29s'
+        >>> normalise_duration(0.29682375)
+        '0.30s'
+        >>> normalise_duration(None)
+        'None'
+
+    Parameters
+    ----------
+    duration_secs : float
+        The duration value in seconds.
+
+    """
+    if duration_secs is None:
+        return 'None'
+
+    seconds_in_day = 24 * 60 * 60
+    seconds_in_hour = 60 * 60
+    seconds_in_min = 60
+
+    days = floor(duration_secs / seconds_in_day)
+    duration_secs -= days * seconds_in_day
+    hours = floor(duration_secs / seconds_in_hour)
+    duration_secs -= hours * seconds_in_hour
+    minutes = floor(duration_secs / seconds_in_min)
+    secs = duration_secs - minutes * seconds_in_min
+
+    out = []
+    if days:
+        out.append(f'{days}d')
+    if hours:
+        out.append(f'{hours}h')
+    if minutes:
+        out.append(f'{minutes}m')
+
+    if len(out):
+        out.append(f'{round(secs):.0f}s')
+    else:
+        out.append(f'{secs:.2f}s')
+
+    return ''.join(out)

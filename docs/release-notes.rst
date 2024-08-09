@@ -3,6 +3,29 @@
 Release notes
 =============
 
+.. _rel-0.4.2:
+
+`0.4.2 <https://github.com/CQCL/lambeq/releases/tag/0.4.2>`_
+------------------------------------------------------------
+
+Added:
+
+- Added timing information to training logs and model checkpoints.
+
+Changed:
+
+- Changed theme of online documentation.
+- Updated required version of ``pytket`` to 1.31.0.
+
+Fixed:
+
+- Fixed bug in generation of single-legged quantum spiders.
+- Fixed bug when evaluating quantum circuits using Tket.
+
+Removed:
+
+- Removed support for Python 3.9.
+
 .. _rel-0.4.1:
 
 `0.4.1 <https://github.com/CQCL/lambeq/releases/tag/0.4.1>`_
@@ -35,13 +58,13 @@ Added:
 
 - A new integrated backend that replaces :term:`DisCoPy`, which until now was providing the low-level functionality of ``lambeq``. The new backend offers better performance, increased stability, faster training speeds, and a simplified high-level interface to the user. The new backend consists of the following sub-modules:
 
-    - :py:mod:`lambeq.backend.grammar`: Contains the building blocks for creating string diagrams.
-    - :py:mod:`lambeq.backend.tensor`: Contains the necessary classes to create tensor diagrams.
-    - :py:mod:`lambeq.backend.quantum`: Adds quantum-specific functionality to the backend and provides a circuit simulator based on the `TensorNetwork <https://github.com/google/TensorNetwork>`_ library.
-    - :py:mod:`lambeq.backend.pennylane`: Interface with PennyLane.
-    - :py:mod:`lambeq.backend.tk`: Inteface with Tket.
-    - :py:mod:`lambeq.backend.numerical_backend`: Common interface for numerical backends (such as Numpy, Jax, PyTorch, TensorFlow)
-    - :py:mod:`lambeq.backend.drawing`: Contains drawing functionality for diagrams and circuits.
+  - :py:mod:`lambeq.backend.grammar`: Contains the building blocks for creating string diagrams.
+  - :py:mod:`lambeq.backend.tensor`: Contains the necessary classes to create tensor diagrams.
+  - :py:mod:`lambeq.backend.quantum`: Adds quantum-specific functionality to the backend and provides a circuit simulator based on the `TensorNetwork <https://github.com/google/TensorNetwork>`_ library.
+  - :py:mod:`lambeq.backend.pennylane`: Interface with PennyLane.
+  - :py:mod:`lambeq.backend.tk`: Inteface with Tket.
+  - :py:mod:`lambeq.backend.numerical_backend`: Common interface for numerical backends (such as Numpy, Jax, PyTorch, TensorFlow)
+  - :py:mod:`lambeq.backend.drawing`: Contains drawing functionality for diagrams and circuits.
 
 - :py:class:`~lambeq.BobcatParser`: Added a special case for adjectival conjunction in tree translation.
 - :py:class:`~lambeq.TreeReader`: Diagrams now are created straight from the :py:class:`~lambeq.CCGTree`.
@@ -68,8 +91,10 @@ Removed:
 This update features contributions from participants in `unitaryHACK 2023 <https://unitaryhack.dev/>`_:
 
 - Two new optimisers:
-    - The Nelder-Mead optimiser. (credit: `Gopal Dahale <https://github.com/CQCL/lambeq/pull/104>`_)
-    - The Rotosolve optimiser. (credit: `Ahmed Darwish <https://github.com/CQCL/lambeq/pull/93>`_)
+
+  - The Nelder-Mead optimiser. (credit: `Gopal Dahale <https://github.com/CQCL/lambeq/pull/104>`_)
+  - The Rotosolve optimiser. (credit: `Ahmed Darwish <https://github.com/CQCL/lambeq/pull/93>`_)
+
 - A new rewrite rule for handling unknown words. (credit: `WingCode <https://github.com/CQCL/lambeq/pull/105>`_)
 
 Many thanks to all who participated.
@@ -94,13 +119,15 @@ Fixed:
 Added:
 
 - Support for :term:`DisCoPy` >= 1.1.4 (credit: `toumix <https://github.com/CQCL/lambeq/pull/89>`_).
-    - replaced ``discopy.rigid`` with :py:mod:`discopy.grammar.pregroup` everywhere.
-    - replaced ``discopy.biclosed`` with :py:mod:`discopy.grammar.categorial` everywhere.
-    - Use ``Diagram.decode`` to account for the change in contructor signature ``Diagram(inside, dom, cod)``.
-    - updated attribute names that were previously hidden, e.g. ``._data`` becomes ``.data``.
-    - replaced diagrammatic conjugate with transpose.
-    - swapped left and right currying.
-    - dropped support for legacy DisCoPy.
+
+  - replaced ``discopy.rigid`` with :py:mod:`discopy.grammar.pregroup` everywhere.
+  - replaced ``discopy.biclosed`` with :py:mod:`discopy.grammar.categorial` everywhere.
+  - Use ``Diagram.decode`` to account for the change in contructor signature ``Diagram(inside, dom, cod)``.
+  - updated attribute names that were previously hidden, e.g. ``._data`` becomes ``.data``.
+  - replaced diagrammatic conjugate with transpose.
+  - swapped left and right currying.
+  - dropped support for legacy DisCoPy.
+
 - Added :py:class:`~lambeq.CCGType` class for utilisation in the ``biclosed_type`` attribute of :py:class:`~lambeq.CCGTree`, allowing conversion to and from a discopy categorial object using :py:meth:`~lambeq.CCGType.discopy` and :py:meth:`~lambeq.CCGType.from_discopy` methods.
 - :py:class:`~lambeq.CCGTree`: added reference to the original tree from parsing by introducing a ``metadata`` field.
 
@@ -197,7 +224,7 @@ Added:
 - Added support for Japanese to :py:class:`.DepCCGParser` (credit: `KentaroAOKI <https://github.com/CQCL/lambeq/pull/24>`_).
 - Overhauled the :py:class:`.CircuitAnsatz` interface, and added three new :term:`ansätze <ansatz (plural: ansätze)>`.
 - Added helper methods to :py:class:`.CCGTree` to get the children of a tree.
-  Added a new :py:meth:`.TreeReader.tree2diagram` method to :py:class:`.TreeReader`, extracted from :py:meth:`.TreeReader.sentence2diagram`.
+- Added a new :py:meth:`.TreeReader.tree2diagram` method to :py:class:`.TreeReader`, extracted from :py:meth:`.TreeReader.sentence2diagram`.
 - Added a new :py:class:`.TreeReaderMode` named :py:attr:`.TreeReaderMode.HEIGHT`.
 - Added new methods to :py:class:`.Checkpoint` for creating, saving and loading checkpoints for training.
 - Documentation: added a section for how to select the right model and trainer for training.
@@ -232,9 +259,7 @@ Removed:
 ------------------------------------------------------------
 
 - Added a strict pregroups mode to the CLI. With this mode enabled, all swaps are removed from the output string diagrams by changing the ordering of the atomic types, converting them into a valid :term:`pregroup <pregroup grammar>` form as given in [Lam1999]_.
-
 - Adjusted the behaviour of output normalisation in quantum models. Now, :py:class:`.NumpyModel` always returns probabilities instead of amplitudes.
-
 - Removed the prediction from the output of the :py:class:`.SPSAOptimizer`, which now returns just the loss.
 
 .. _rel-0.2.5:
@@ -243,17 +268,11 @@ Removed:
 ------------------------------------------------------------
 
 - Added a "swapping" unary rule box to handle unary rules that change the direction of composition, improving the coverage of the :py:class:`~lambeq.BobcatParser`.
-
 - Added a ``--version`` flag to the CLI.
-
 - Added a :py:meth:`~lambeq.Model.make_checkpoint` method to all training models.
-
 - Changed the :py:class:`~lambeq.WebParser` so that the online service to use is specified by name rather than by URL.
-
 - Changed the :py:class:`~lambeq.BobcatParser` to only allow one tree per category in a cell, doubling parsing speed without affecting the structure of the parse trees (in most cases).
-
 - Fixed the parameter names in :py:class:`~lambeq.CCGRule`, where ``dom`` and ``cod`` had inadvertently been swapped.
-
 - Made the linting of the codebase stricter, enforced by the GitHub action. The flake8 configuration can be viewed in the ``setup.cfg`` file.
 
 .. _rel-0.2.4:
@@ -262,9 +281,7 @@ Removed:
 ------------------------------------------------------------
 
 - Fix a bug that caused the :py:class:`~lambeq.BobcatParser` and the :py:class:`~lambeq.WebParser` to trigger an SSL certificate error using Windows.
-
 - Fix false positives in assigning conjunction rule using the :py:class:`~lambeq.CCGBankParser`. The rule ``, + X[conj] -> X[conj]`` is a case of removing left punctuation, but was being assigned conjunction erroneously.
-
 - Add support for using ``jax`` as backend of ``tensornetwork`` when setting ``use_jit=True`` in the :py:class:`~lambeq.NumpyModel`. The interface is not affected by this change, but performance of the model is significantly improved.
 
 .. _rel-0.2.3:
@@ -273,19 +290,12 @@ Removed:
 ------------------------------------------------------------
 
 - Fix a bug that raised a ``dtype`` error when using the :py:class:`~lambeq.TketModel` on Windows.
-
 - Fix a bug that caused the normalisation of scalar outputs of circuits without open wires using a :py:class:`~lambeq.QuantumModel`.
-
 - Change the behaviour of :py:data:`~lambeq.spiders_reader` such that the :term:`spiders <Frobenius algebra>` decompose logarithmically. This change also affects other rewrite rules that use :term:`spiders <Frobenius algebra>`, such as coordination and relative pronouns.
-
 - Rename ``AtomicType.PREPOSITION`` to :py:data:`AtomicType.PREPOSITIONAL_PHRASE <lambeq.AtomicType.PREPOSITIONAL_PHRASE>`.
-
 - :py:class:`~lambeq.CCGRule`: Add :py:meth:`~lambeq.CCGRule.symbol` method that returns the ASCII symbol of a given :term:`CCG <Combinatory Categorial Grammar (CCG)>` rule.
-
 - :py:class:`~lambeq.CCGTree`: Extend :py:meth:`~lambeq.CCGTree.deriv` method with :term:`CCG <Combinatory Categorial Grammar (CCG)>` output. It is now capable of returning standard CCG diagrams.
-
 - :ref:`Command-line interface <sec-cli>`: Add :term:`CCG <Combinatory Categorial Grammar (CCG)>` mode. When enabled, the output will be a string representation of the CCG diagram corresponding to the :py:class:`~lambeq.CCGTree` object produced by the parser, instead of a :term:`DisCoPy` diagram or circuit.
-
 - Documentation: Add a :ref:`troubleshooting <sec-troubleshooting>` page.
 
 .. _rel-0.2.2:
@@ -294,21 +304,17 @@ Removed:
 ------------------------------------------------------------
 
 - Add support for Python 3.10.
-
 - Unify class hierarchies for parsers and readers: :py:class:`~lambeq.CCGParser` is now a subclass of :py:class:`~lambeq.Reader` and placed in the common package :py:mod:`.text2diagram`. The old packages :py:mod:`.reader` and :py:mod:`.ccg2discocat` are no longer available. Compatibility problems with previous versions should be minimal, since from Release :ref:`rel-0.2.0` and onwards all ``lambeq`` classes can be imported from the global namespace.
-
 - Add :py:class:`.CurryRewriteRule`, which uses map-state duality in order to remove adjoint types from the boxes of a diagram. When used in conjunction with :py:meth:`~discopy.rigid.Diagram.normal_form`, this removes cups from the diagram, eliminating post-selection.
-
 - The :term:`Bobcat` parser now updates automatically when new versions are made available online.
-
 - Update grammar file of :term:`Bobcat` parser to avoid problems with conflicting unary rules.
-
 - Allow customising available root categories for the parser when using the command-line interface.
 
 .. _rel-0.2.1:
 
 `0.2.1 <https://github.com/CQCL/lambeq/releases/tag/0.2.1>`_
 ------------------------------------------------------------
+
 - A new :py:class:`.Checkpoint` class that implements pickling and file operations from the :py:class:`.Trainer` and :py:class:`.Model`.
 - Improvements to the :py:mod:`.training` module, allowing multiple diagrams to be accepted as input to the :py:class:`.SPSAOptimizer`.
 - Updated documentation, including sub-package structures and class diagrams.

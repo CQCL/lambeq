@@ -7,17 +7,17 @@ While the :py:mod:`.training` package is the recommended way of performing super
 
 In general, there are many ways to train a ``lambeq`` model, and the right one to use depends on the task at hand, the type of experiment (quantum or classical), and even other factors, such as hardware requirements. At the highest level, the process involves the following steps (for the classical case):
 
-1. Extract the word :term:`symbols <symbol>` from all diagrams to create a vocabulary.
-2. Assign tensors to each one of the words in the vocabulary, initialised randomly.
-3. Training loop:
+#. Extract the word :term:`symbols <symbol>` from all diagrams to create a vocabulary.
+#. Assign tensors to each one of the words in the vocabulary, initialised randomly.
+#. Training loop:
 
-    3.1. Substitute the tensors from the vocabulary for the corresponding words in the diagram.
+   a. Substitute the tensors from the vocabulary for the corresponding words in the diagram.
 
-    3.2. Contract the diagram to get a result.
+   b. Contract the diagram to get a result.
 
-    3.3. Use the result to compute loss.
+   c. Use the result to compute loss.
 
-    3.4. Use loss to compute gradient and update tensors.
+   d. Use loss to compute gradient and update tensors.
 
 In the quantum case we do not explicitly have tensors, but :term:`circuit <quantum circuit>` parameters defining rotation angles on :term:`qubits <qubit>`, that need to be associated with concrete numbers; these are also represented by :term:`symbols <symbol>`.
 

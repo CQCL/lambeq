@@ -214,7 +214,7 @@ class Diagram(tensor.Diagram):
             gate = GATES[name]
             if callable(gate):
                 return partial(self.apply_parametrized_gate, gate)
-            return partial(self.apply_gate, gate)
+            return partial(self.apply_gate, gate)   # type: ignore[arg-type]
         except KeyError:
             return super().__getattr__(name)  # type: ignore[misc]
 
@@ -308,7 +308,7 @@ class Diagram(tensor.Diagram):
 
         for i, circuit in enumerate(circuits):
             n_bits = len(circuit.post_processing.dom)
-            result = np.zeros(*(n_bits * (2, )))
+            result = np.zeros((n_bits * (2, )))
             for bitstring, count in counts[i].items():
                 result[bitstring] = count
             if circuit.post_processing:
@@ -632,8 +632,15 @@ def generate_spider(type: Ty, n_legs_in: int, n_legs_out: int) -> Diagram:
     if i == o == 1:
         return Id(type)
 
+    if type == Ty():
+        return Id()
+
+    if type != qubit:
+        raise NotImplementedError('Multi-qubit spiders are not presently'
+                                  ' supported.')
+
     if (i, o) == (1, 0):
-        return cast(Diagram, Sqrt(2) >> H >> Bra(0))
+        return cast(Diagram, Sqrt(2) @ H >> Bra(0))
     if (i, o) == (2, 1):
         return cast(Diagram, CX >> Id(qubit) @ Bra(0))
     if o > i:

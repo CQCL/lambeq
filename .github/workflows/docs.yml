@@ -7,10 +7,19 @@ on:
       - 'beta'
       - 'release'
   pull_request:
+  workflow_dispatch:
+  release:
+    types:
+      - released
+
+# We need the following permission to upload the documentation as a release asset.
+permissions:
+  contents: write
 
 env:
   WORKFLOWS_DIR: .github/workflows
   DOCS_DIR: docs
+  DOCS_BUILD_DIR: docs/_build/html
 
 jobs:
   docs:
@@ -19,11 +28,12 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
+        submodules: recursive
         fetch-depth: 0  # fetches tags, required for version info
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9
+        python-version: "3.10"
     - name: Build lambeq
       run: pip install .
     - name: Install documentation dependencies
@@ -42,6 +52,15 @@ jobs:
       env:
         REPO: self
         BRANCH: docs
-        FOLDER: docs/_build/html/
+        FOLDER: ${{ env.DOCS_BUILD_DIR }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CLEAR_GLOBS_FILE: ${{ env.WORKFLOWS_DIR }}/clear-target-files
+    - name: Zip up documentation to store as release asset
+      if: ${{ github.event_name == 'release' }}
+      run: |
+        tar -cavf lambeq-docs-${{ github.event.release.tag_name }}.tar.gz -C ${{ env.DOCS_BUILD_DIR }} .
+    - name: Add documentation artifact as release asset
+      if: ${{ github.event_name == 'release' }}
+      run: gh release upload ${{ github.event.release.tag_name }} lambeq-docs-${{ github.event.release.tag_name }}.tar.gz --clobber
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -196,7 +196,8 @@ class QuantumTrainer(Trainer):
             eval_mode: str = EvalMode.EPOCH.value,
             early_stopping_criterion: str | None = None,
             early_stopping_interval: int | None = None,
-            minimize_criterion: bool = True) -> None:
+            minimize_criterion: bool = True,
+            full_timing_report: bool = False) -> None:
 
         self.model._training = True
 
@@ -207,6 +208,7 @@ class QuantumTrainer(Trainer):
                     eval_mode,
                     early_stopping_criterion,
                     early_stopping_interval,
-                    minimize_criterion)
+                    minimize_criterion,
+                    full_timing_report,)
 
         self.model._training = False

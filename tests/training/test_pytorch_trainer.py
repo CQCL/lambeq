@@ -62,6 +62,10 @@ def test_trainer(tmp_path):
 
     assert len(trainer.train_costs) == EPOCHS
     assert len(trainer.val_eval_results["acc"]) == EPOCHS
+    assert len(trainer.train_epoch_durations) == EPOCHS
+    assert len(trainer.train_durations) == EPOCHS * (
+        ceil(len(train_diagrams) / train_dataset.batch_size))
+    assert len(trainer.val_durations) == EPOCHS
 
 
 def test_restart_training(tmp_path):
@@ -156,7 +160,10 @@ def test_evaluation_skipping(tmp_path):
     trainer.fit(train_dataset, val_dataset, eval_interval=eval_step)
 
     assert len(trainer.train_costs) == epochs
+    assert len(trainer.train_durations) == epochs
     assert len(trainer.val_eval_results["acc"]) == ceil(epochs/eval_step)
+    assert len(trainer.val_durations) == ceil(epochs/eval_step)
+    assert len(trainer.train_epoch_durations) == epochs
 
 
 def test_early_stopping(tmp_path):
@@ -191,6 +198,9 @@ def test_early_stopping(tmp_path):
 
     assert len(trainer.val_eval_results["acc"]) == 6
     assert len(trainer.train_costs) == 6
+    assert len(trainer.train_durations) == 6
+    assert len(trainer.val_durations) == 6
+    assert len(trainer.train_epoch_durations) == 6
 
 
 def test_early_stopping_max(tmp_path):
@@ -226,3 +236,6 @@ def test_early_stopping_max(tmp_path):
 
     assert len(trainer.val_eval_results["acc"]) == 11
     assert len(trainer.train_costs) == 11
+    assert len(trainer.train_durations) == 11
+    assert len(trainer.val_durations) == 11
+    assert len(trainer.train_epoch_durations) == 11

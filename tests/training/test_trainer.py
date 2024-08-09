@@ -16,11 +16,13 @@ def test_logdir_timestamp():
         trainer = Trainer(model, loss, epochs=1)
         assert trainer.log_dir
 
+
 def test_verbose_error():
     d = 'test_runs/' + str(uuid.uuid1())
     with patch('os.makedirs', lambda *args, **kwargs: None) as m:
         with pytest.raises(ValueError):
             _ = Trainer(model, loss, epochs=1, verbose='false_flag', log_dir=d)
+
 
 def test_wrong_checkpoint_dir():
     d = 'test_runs/' + str(uuid.uuid1())

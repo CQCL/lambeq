@@ -62,7 +62,7 @@ autodoc_default_options = {
 numpydoc_show_class_members = False
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ['_templates', 'quantinuum-sphinx/_templates']
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
@@ -75,7 +75,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 html_theme_options = {
   'navigation_depth': -1
 }
@@ -90,9 +90,9 @@ html_context = {
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ['quantinuum-sphinx/_static', '_static']
 html_logo = '_static/images/lambeq_logo.png'
-html_favicon = '_static/images/favicon.ico'
+html_favicon = 'quantinuum-sphinx/_static/assets/quantinuum_favicon.svg'
 
 # CSS for allowing text wrapping within table cells
 html_css_files = [
