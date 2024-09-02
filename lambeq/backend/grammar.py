@@ -989,11 +989,14 @@ class Diagram(Entity):
 
         The transpose of any diagram in a category with cups and caps
         can be constructed as follows:
-                                        (default)
-                Left transpose       Right transpose
-                      │╭╮                  ╭╮│
-                      │█│                  │█│
-                      ╰╯│                  │╰╯
+
+        .. code-block:: console
+
+                                            (default)
+                    Left transpose       Right transpose
+                        │╭╮                  ╭╮│
+                        │█│                  │█│
+                        ╰╯│                  │╰╯
 
         The input and output types of the transposed diagram are the
         adjoints of the respective types of the original diagram.
@@ -1870,16 +1873,16 @@ class Functor:
     >>> n = Ty('n')
     >>> diag = Cap(n, n.l) @ Id(n) >> Id(n) @ Cup(n.l, n)
     >>> diag.draw(
-    ...     figsize=(2, 2), path='./docs/_static/images/snake.png')
+    ...     figsize=(2, 2), path='./snake.png')
 
-    .. image:: ./docs/_static/images/snake.png
+    .. image:: ./_static/images/snake.png
         :align: center
 
     >>> F = Functor(grammar, lambda _, ty : ty @ ty)
     >>> F(diag).draw(
-    ...     figsize=(2, 2), path='./docs/_static/images/snake-2.png')
+    ...     figsize=(2, 2), path='./snake-2.png')
 
-    .. image:: ./docs/_static/images/snake-2.png
+    .. image:: ./_static/images/snake-2.png
         :align: center
 
     """

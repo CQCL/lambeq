@@ -12,7 +12,6 @@ on:
 env:
   SRC_DIR: lambeq
   TEST_DIR: tests
-  DOCS_DIR: docs
 
 jobs:
   lint:
@@ -82,22 +81,6 @@ jobs:
         --doctest-modules
         --durations=50
         --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py
-        --ignore=${{ env.DOCS_DIR }}/extract_code_cells.py
-    - name: Preparation for notebook testing
-      run: pip install nbmake
-    - name: Test example notebooks
-      env:
-        TEST_NOTEBOOKS: 1
-      run: >
-        pytest --nbmake ${{ env.DOCS_DIR }}/examples/
-        --nbmake-timeout=60
-    - name: Test tutorial notebooks
-      env:
-        TEST_NOTEBOOKS: 1
-      run: >
-        pytest --nbmake ${{ env.DOCS_DIR }}/tutorials/
-        --nbmake-timeout=60
-        --ignore ${{ env.DOCS_DIR }}/tutorials/code
     - name: Coverage report
       run: coverage report -m
   type_check:
