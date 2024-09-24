@@ -38,7 +38,7 @@ import numpy as np
 from sympy import Symbol, symbols
 
 from lambeq.ansatz import BaseAnsatz
-from lambeq.backend.grammar import Box, Diagram, Functor, Ty, Daggered
+from lambeq.backend.grammar import Box, Daggered, Diagram, Functor, Ty
 from lambeq.backend.quantum import (
     Bra,
     CRz,
@@ -127,7 +127,7 @@ class CircuitAnsatz(BaseAnsatz):
     def _ar(self, _: Functor, box: Box) -> Circuit:
         if isinstance(box, Daggered):
             return self._ar(_, box.dagger()).dagger()
-        
+
         label = self._summarise_box(box)
         dom, cod = self.ob_size(box.dom), self.ob_size(box.cod)
 
