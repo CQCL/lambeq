@@ -125,9 +125,6 @@ class CircuitAnsatz(BaseAnsatz):
         return self.ob_map[ty]
 
     def _ar(self, _: Functor, box: Box) -> Circuit:
-        if isinstance(box, Daggered):
-            return self._ar(_, box.dagger()).dagger()
-
         label = self._summarise_box(box)
         dom, cod = self.ob_size(box.dom), self.ob_size(box.cod)
 

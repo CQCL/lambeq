@@ -1571,6 +1571,9 @@ class Daggered(Box):
 
     def dagger(self) -> Box:
         return self.box
+    
+    def apply_functor(self, functor: Functor) -> Diagrammable:
+        return functor(self.dagger()).dagger()
 
     @classmethod
     def from_json(cls, data: _JSONDictT | str) -> Self:
