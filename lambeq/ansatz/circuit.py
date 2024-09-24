@@ -38,7 +38,7 @@ import numpy as np
 from sympy import Symbol, symbols
 
 from lambeq.ansatz import BaseAnsatz
-from lambeq.backend.grammar import Box, Daggered, Diagram, Functor, Ty
+from lambeq.backend.grammar import Box, Diagram, Functor, Ty
 from lambeq.backend.quantum import (
     Bra,
     CRz,
