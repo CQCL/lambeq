@@ -385,21 +385,35 @@ class Diagram(grammar.Diagram):
                 del scan[len(l): len(l) + 2]
             else:
                 if isinstance(box, Spider):
-                    node = tn.CopyNode(box.n_legs_in + box.n_legs_out,
-                                       box.type.product, dtype=dtype,
-                                       backend=backend)
+                    rank = box.n_legs_in + box.n_legs_out
+                    dim = box.type.product
+                    if rank <= 3:
+                        node = tn.CopyNode(rank, dim, dtype=dtype, backend=backend)
+                        nodes.append(node)
+                        legs = node.edges
+                    else:
+                        internal_nodes = [tn.CopyNode(3, dim, dtype=dtype, backend=backend) for _ in range(rank-2)]
+                        nodes.extend(internal_nodes)
+
+                        for i in range(len(internal_nodes)-1):
+                            tn.connect(internal_nodes[i][0], internal_nodes[i+1][1])
+                        
+                        legs = ([internal_nodes[0][1]]
+                                + [n[2] for n in internal_nodes]
+                                + [internal_nodes[-1][0]])
                 else:
                     node = tn.Node(box.array,
                                    str(box.name),
                                    backend=backend)
 
-                nodes.append(node)
+                    nodes.append(node)
+                    legs = node.edges
 
                 for i in range(len(box.dom)):
-                    tn.connect(scan[len(l) + i], node[i])
+                    tn.connect(scan[len(l) + i], legs[i])
 
                 scan = (scan[:len(l)]
-                        + node[len(box.dom):]
+                        + legs[len(box.dom):]
                         + scan[len(l) + len(box.dom):])
 
         # nodes, input_edge_order, output_edge_order
