@@ -362,6 +362,9 @@ class Diagrammable(Protocol):
 
         """
 
+    def dagger(self) -> Diagrammable:
+        """Implements conjugation of diagrams."""
+
     def __matmul__(self, rhs: Diagrammable | Ty) -> Diagrammable:
         """Implements the tensor operator `@` with another diagram."""
 
