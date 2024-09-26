@@ -388,19 +388,31 @@ class Diagram(grammar.Diagram):
                     rank = box.n_legs_in + box.n_legs_out
                     dim = box.type.product
                     if rank <= 3:
-                        node = tn.CopyNode(rank, dim, dtype=dtype, backend=backend)
+                        node = tn.CopyNode(rank, dim, dtype=dtype,
+                                           backend=backend)
                         nodes.append(node)
                         legs = node.edges
                     else:
-                        internal_nodes = [tn.CopyNode(3, dim, dtype=dtype, backend=backend) for _ in range(rank-2)]
-                        nodes.extend(internal_nodes)
+                        # Decompose the spider into a chain of
+                        # three-legged spiders of length rank - 2
+                        # For example, a 5-legged spider will be
+                        # decomposed into:
+                        #       2           2           2
+                        #       |           |           |
+                        # ---1-[N0]-0----1-[N1]-0----1-[N2]-0---
+                        # where the numbers indicate the leg indices of
+                        # the spiders.
+                        spiders = [tn.CopyNode(3, dim, dtype=dtype,
+                                               backend=backend)
+                                   for _ in range(rank-2)]
+                        nodes.extend(spiders)
 
-                        for i in range(len(internal_nodes)-1):
-                            tn.connect(internal_nodes[i][0], internal_nodes[i+1][1])
-                        
-                        legs = ([internal_nodes[0][1]]
-                                + [n[2] for n in internal_nodes]
-                                + [internal_nodes[-1][0]])
+                        for i in range(len(spiders)-1):
+                            tn.connect(spiders[i][0], spiders[i+1][1])
+
+                        legs = ([spiders[0][1]]
+                                + [n[2] for n in spiders]
+                                + [spiders[-1][0]])
                 else:
                     node = tn.Node(box.array,
                                    str(box.name),
