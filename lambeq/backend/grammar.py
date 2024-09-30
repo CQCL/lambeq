@@ -362,6 +362,9 @@ class Diagrammable(Protocol):
 
         """
 
+    def dagger(self) -> Diagrammable:
+        """Implements conjugation of diagrams."""
+
     def __matmul__(self, rhs: Diagrammable | Ty) -> Diagrammable:
         """Implements the tensor operator `@` with another diagram."""
 
@@ -1571,6 +1574,9 @@ class Daggered(Box):
 
     def dagger(self) -> Box:
         return self.box
+
+    def apply_functor(self, functor: Functor) -> Diagrammable:
+        return functor(self.dagger()).dagger()
 
     @classmethod
     def from_json(cls, data: _JSONDictT | str) -> Self:
