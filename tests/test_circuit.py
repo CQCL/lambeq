@@ -320,3 +320,20 @@ space_ty = Ty(' ')
 def test_special_characters(box, expected_sym_count):
     ansatz = Sim15Ansatz({n_ty: 2, comma_ty: 2, space_ty: 2}, n_layers=1)
     assert(len(ansatz(box).free_symbols) == expected_sym_count)
+
+
+def test_ansatz_is_dagger_functor():
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    diagram = Word('John', N)
+    circuit1 = ansatz(diagram).dagger()
+    circuit2 = ansatz(diagram.dagger())
+    assert circuit1 == circuit2
+
+def test_ansatz_is_dagger_functor_sentence():
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
+               Cup(N, N.r) @ S)
+
+    circuit1 = ansatz(diagram).dagger().normal_form()
+    circuit2 = ansatz(diagram.dagger()).normal_form()
+    assert circuit1 == circuit2

@@ -277,6 +277,7 @@ def test_Functor_on_box():
     assert func(g.r) == func(g).r == g_z.r
     assert func(f >> g) == f_z >> g_z
     assert func(f @ g) == f_z @ g_z
+    assert func(f.dagger()) == func(f).dagger()
 
     def bad_ar(func, box):
         return Box("BOX", a, c) if box.cod == b else box
