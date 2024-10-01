@@ -385,21 +385,47 @@ class Diagram(grammar.Diagram):
                 del scan[len(l): len(l) + 2]
             else:
                 if isinstance(box, Spider):
-                    node = tn.CopyNode(box.n_legs_in + box.n_legs_out,
-                                       box.type.product, dtype=dtype,
-                                       backend=backend)
+                    rank = box.n_legs_in + box.n_legs_out
+                    dim = box.type.product
+                    if rank <= 3:
+                        node = tn.CopyNode(rank, dim, dtype=dtype,
+                                           backend=backend)
+                        nodes.append(node)
+                        legs = node.edges
+                    else:
+                        # Decompose the spider into a chain of
+                        # three-legged spiders of length rank - 2
+                        # For example, a 5-legged spider will be
+                        # decomposed into:
+                        #       2           2           2
+                        #       |           |           |
+                        # ---1-[N0]-0----1-[N1]-0----1-[N2]-0---
+                        # where the numbers indicate the leg indices of
+                        # the spiders.
+                        spiders = [tn.CopyNode(3, dim, dtype=dtype,
+                                               backend=backend)
+                                   for _ in range(rank-2)]
+                        nodes.extend(spiders)
+
+                        for i in range(len(spiders)-1):
+                            tn.connect(spiders[i][0], spiders[i+1][1])
+
+                        legs = ([spiders[0][1]]
+                                + [n[2] for n in spiders]
+                                + [spiders[-1][0]])
                 else:
                     node = tn.Node(box.array,
                                    str(box.name),
                                    backend=backend)
 
-                nodes.append(node)
+                    nodes.append(node)
+                    legs = node.edges
 
                 for i in range(len(box.dom)):
-                    tn.connect(scan[len(l) + i], node[i])
+                    tn.connect(scan[len(l) + i], legs[i])
 
                 scan = (scan[:len(l)]
-                        + node[len(box.dom):]
+                        + legs[len(box.dom):]
                         + scan[len(l) + len(box.dom):])
 
         # nodes, input_edge_order, output_edge_order
