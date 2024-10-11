@@ -61,6 +61,7 @@ __all__ = [
         'bag_of_words_reader',
         'cups_reader',
         'spiders_reader',
+        'spider_chain_reader',
         'stairs_reader',
         'word_sequence_reader',
 
@@ -124,7 +125,7 @@ from lambeq.text2diagram import (
         WebParseError, WebParser,
         Reader, LinearReader, TreeReader, TreeReaderMode,
         bag_of_words_reader, cups_reader, spiders_reader,
-        stairs_reader, word_sequence_reader)
+        spider_chain_reader, stairs_reader, word_sequence_reader)
 from lambeq.tokeniser import Tokeniser, SpacyTokeniser
 from lambeq.training import (Checkpoint, Dataset, Optimizer,
                              NelderMeadOptimizer, RotosolveOptimizer,

@@ -12,12 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['SpidersReader', 'bag_of_words_reader', 'spiders_reader']
+__all__ = ['SpidersReader', 'bag_of_words_reader',
+           'spiders_reader', 'spider_chain_reader']
 
 from lambeq.backend.grammar import Diagram, Id, Spider, Word
 from lambeq.core.types import AtomicType
 from lambeq.core.utils import SentenceType, tokenised_sentence_type_check
 from lambeq.text2diagram.base import Reader
+from lambeq.text2diagram.linear_reader import LinearReader
 
 S = AtomicType.SENTENCE
 
@@ -46,3 +48,4 @@ class SpidersReader(Reader):
 
 spiders_reader = SpidersReader()
 bag_of_words_reader = spiders_reader
+spider_chain_reader = LinearReader(Spider(AtomicType.SENTENCE, 2, 1))
