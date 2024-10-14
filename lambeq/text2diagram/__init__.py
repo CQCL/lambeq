@@ -34,6 +34,7 @@ __all__ = ['CCGType',
            'bag_of_words_reader',
            'cups_reader',
            'spiders_reader',
+           'spider_chain_reader',
            'stairs_reader',
            'word_sequence_reader']
 
@@ -53,5 +54,6 @@ from lambeq.text2diagram.linear_reader import (LinearReader,
                                                stairs_reader,
                                                word_sequence_reader)
 from lambeq.text2diagram.spiders_reader import (bag_of_words_reader,
-                                                spiders_reader)
+                                                spiders_reader,
+                                                spider_chain_reader)
 from lambeq.text2diagram.tree_reader import TreeReader, TreeReaderMode
