@@ -10,13 +10,37 @@ exclude_lines = [
 ]
 
 [tool.mypy]
+enable_error_code = ["ignore-without-code"]
 pretty = true
 show_error_codes = true
+warn_redundant_casts = true
+warn_return_any = true
+warn_unreachable = true
 warn_unused_configs = true
+warn_unused_ignores = true
 
 [[tool.mypy.overrides]]
-module = ["depccg.*", "discopy.*", "sympy.*", "tensornetwork"]
+module = [
+    "depccg.*",
+    "discopy.*",
+    "jax.*",
+    "pennylane.*",
+    "requests.*",
+    "sympy.*",
+    "tensorflow.*",
+    "tensornetwork.*",
+    "tqdm.*"
+]
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["transformers.*"]
+ignore_missing_imports = true
+follow_imports = "skip"
+
+[[tool.mypy.overrides]]
+module = ["lambeq.text2diagram.bobcat_parser", "lambeq.bobcat.*"]
+strict_optional = false
 
 [tool.setuptools_scm]
 write_to = "lambeq/version.py"

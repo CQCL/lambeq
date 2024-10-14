@@ -1,29 +1,29 @@
 import pytest
 
-from discopy import Dim, Word
-from discopy.rigid import Diagram, Id, Ty
+from lambeq.backend.grammar import Diagram, Id, Ty, Word
+from lambeq.backend.tensor import Dim
 import numpy as np
 from sympy.core.compatibility import default_sort_key
 import tensornetwork as tn
 
-from lambeq.tensor import MPSAnsatz, TensorAnsatz, SpiderAnsatz
+from lambeq import MPSAnsatz, SpiderAnsatz, TensorAnsatz
 
 
 @pytest.fixture
 def diagram():
-    cod = Ty(*'abcd')
+    cod = Ty(objects=list(map(Ty, 'abcd')))
     return ((Word('big', cod.l) @ Word('words', cod @ Ty('a'))) >>
             (Diagram.cups(cod.l, cod) @ Id(Ty('a'))))
 
 
 def test_tensor_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(2) for t in 'abcd'}
-    ansatz = TensorAnsatz(ob_map, bond_dim=1)
+    ansatz = TensorAnsatz(ob_map)
     tensor = ansatz(diagram)
     syms = sorted(tensor.free_symbols, key=default_sort_key)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)
-    result = subbed_diagram.eval(contractor=tn.contractors.auto).array
+    result = subbed_diagram.eval(contractor=tn.contractors.auto)
     assert np.all(result == np.array([16, 16]))
 
 
@@ -50,7 +50,7 @@ def test_mps_ansatz_eval(diagram):
     syms = sorted(tensor.free_symbols, key=default_sort_key)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)
-    result = subbed_diagram.eval(contractor=tn.contractors.auto).array
+    result = subbed_diagram.eval(contractor=tn.contractors.auto)
     assert np.all(result == np.array([256] * 4))
 
 
@@ -74,5 +74,5 @@ def test_spider_ansatz_eval(diagram):
     syms = sorted(tensor.free_symbols, key=default_sort_key)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)
-    result = subbed_diagram.eval(contractor=tn.contractors.auto).array
+    result = subbed_diagram.eval(contractor=tn.contractors.auto)
     assert np.all(result == np.array([256] * 4))
