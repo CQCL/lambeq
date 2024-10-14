@@ -244,7 +244,9 @@ class Ty(Entity):
             return replace(self, z=self.z + z)
         else:
             objects = reversed(self.objects) if z % 2 == 1 else self.objects
-            return type(self)(objects=[ob.rotate(z) for ob in objects])
+            return type(self)(
+                objects=[ob.rotate(z)
+                         for ob in objects])  # type: ignore[union-attr]
 
     def unwind(self) -> Self:
         return self.rotate(-self.z)

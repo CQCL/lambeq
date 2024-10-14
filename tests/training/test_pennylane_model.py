@@ -198,7 +198,7 @@ def test_backends():
                       >> Cup(N, N.r) @ Id(S)))
     diagrams = [diagram]
 
-    from qiskit.providers.aer.noise import NoiseModel
+    from qiskit_aer.noise import NoiseModel
 
     noise_model = NoiseModel()
     backend_config = {'backend': 'qiskit.aer',

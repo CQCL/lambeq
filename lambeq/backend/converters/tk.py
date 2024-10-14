@@ -419,7 +419,7 @@ def from_tk(tk_circuit: tk.Circuit) -> Diagram:
             left = circuit.cod[:offset]
             right = circuit.cod[offset + len(box.dom):]
             circuit = circuit >> left @ box @ right
-    circuit = circuit >> Id().tensor(*(  # type: ignore[arg-type]
+    circuit = circuit >> Id().tensor(*(
         Bra(bras[i]) if i in bras
         else Discard() if x == qubit else Id(bit)
         for i, x in enumerate(circuit.cod)))
