@@ -1,6 +1,4 @@
-# lambeq
-
-[![lambeq logo](https://cqcl.github.io/lambeq/_static/lambeq_logo.png)](//cqcl.github.io/lambeq)
+# λambeq
 
 ![Build status](https://github.com/CQCL/lambeq/actions/workflows/build_test.yml/badge.svg)
 [![License](https://img.shields.io/github/license/CQCL/lambeq)](LICENSE)
@@ -12,116 +10,61 @@
 
 lambeq is a toolkit for quantum natural language processing (QNLP).
 
-- Documentation: https://cqcl.github.io/lambeq/
-- User support: <lambeq-support@cambridgequantum.com>
-- If you want to subscribe to lambeq's mailing list, send an email to <lambeq-users@cambridgequantum.com> with the word "subscribe" as subject.
+- Documentation: https://cqcl.github.io/lambeq-docs/
+- User support: <lambeq-support@quantinuum.com>
+- Contributions: Please read [our guide](https://cqcl.github.io/lambeq-docs/CONTRIBUTING.html).
+- If you want to subscribe to lambeq's mailing list, let us know by sending an email to <lambeq-support@quantinuum.com>.
 
 ## Getting started
 
 ### Prerequisites
 
-- Python 3.7+
+- Python 3.10+
 
 ### Installation
 
-#### Direct pip install
+lambeq can be installed with the command:
 
-The base lambeq can be installed with the command:
 ```bash
 pip install lambeq
 ```
 
-This does not include optional dependencies such as depccg and PyTorch,
-which have to be installed separately. In particular, depccg is required
-for `lambeq.ccg2discocat.DepCCGParser`.
+The default installation of lambeq includes Bobcat parser, a state-of-the-art statistical parser (see [related paper](https://arxiv.org/abs/2109.10044)) fully integrated with the toolkit.
 
-To install lambeq with depccg, run instead:
+To install lambeq with optional dependencies for extra features, run:
+
 ```bash
-pip install cython numpy
-pip install 'lambeq[depccg]'
-depccg_en download
+pip install lambeq[extras]
 ```
-See below for further options.
 
-#### Automatic installation (recommended)
+To enable DepCCG support, you will need to install the external parser separately.
 
-This runs an interactive installer to help pick the installation
-destination and configuration.
+---
+**Note:** The DepCCG-related functionality is no longer actively supported in `lambeq`, and may not work as expected. We strongly recommend using the default Bobcat parser which comes as part of `lambeq`.
 
-1. Run:
-   ```bash
-   sh <(curl 'https://cqcl.github.io/lambeq/install.sh')
-   ```
+---
 
-#### Git installation
+If you still want to use DepCCG, for example because you plan to apply ``lambeq`` on Japanese, you can install DepCCG separately following the instructions on the [DepCCG homepage](//github.com/masashi-y/depccg). After installing DepCCG, you can download its model by using the script provided in the `contrib` folder of this repository:
 
-This requires Git to be installed.
-
-1. Download this repository:
-   ```bash
-   git clone https://github.com/CQCL/lambeq
-   ```
-
-2. Enter the repository:
-   ```bash
-   cd lambeq
-   ```
-
-3. Make sure `pip` is up-to-date:
-
-   ```bash
-   pip install --upgrade pip wheel
-   ```
-
-4. (Optional) If installing the optional dependency `depccg`, the
-   following packages must be installed *before* installing `depccg`:
-   ```bash
-   pip install cython numpy
-   ```
-   Further information can be found on the
-   [depccg homepage](//github.com/masashi-y/depccg).
-
-5. Install lambeq from the local repository using pip:
-   ```bash
-   pip install --use-feature=in-tree-build .
-   ```
-
-   To include depccg, run instead:
-   ```bash
-   pip install --use-feature=in-tree-build .[depccg]
-   ```
-
-   To include all optional dependencies, run instead:
-   ```bash
-   pip install --use-feature=in-tree-build .[all]
-   ```
-
-6. If using a pretrained depccg parser,
-[download a pretrained model](//github.com/masashi-y/depccg#using-a-pretrained-english-parser):
-   ```bash
-   depccg_en download
-   ```
+```bash
+python contrib/download_depccg_model.py
+```
 
 ## Usage
 
-The [docs/examples](//github.com/CQCL/lambeq/tree/main/docs/examples)
-directory contains notebooks demonstrating usage of the various tools in
-lambeq.
+The [docs/examples](//github.com/CQCL/lambeq-docs/tree/main/docs/examples)
+directory in lambeq's [documentation repository](https://github.com/CQCL/lambeq-docs) contains notebooks demonstrating usage of the various tools in lambeq.
 
 Example - parsing a sentence into a diagram (see
-[docs/examples/ccg2discocat.ipynb](//github.com/CQCL/lambeq/blob/main/docs/examples/ccg2discocat.ipynb)):
+[docs/examples/parser.ipynb](//github.com/CQCL/lambeq-docs/blob/main/docs/examples/parser.ipynb)):
 
 ```python
-from lambeq.ccg2discocat import DepCCGParser
+from lambeq import BobcatParser
 
-depccg_parser = DepCCGParser()
-diagram = depccg_parser.sentence2diagram('This is a test sentence')
+parser = BobcatParser()
+diagram = parser.sentence2diagram('This is a test sentence')
 diagram.draw()
 ```
-
-Note: all pre-trained depccg models apart from the basic one are broken,
-and depccg has not yet been updated to fix this. Therefore, it is
-recommended to just use the basic parser, as shown here.
 
 ## Testing
 
@@ -131,34 +74,13 @@ Run all tests with the command:
 pytest
 ```
 
-Note: if you have installed in a virtual environment, remember to
+Note: if you have installed lambeq in a virtual environment, remember to
 install pytest in the same environment using pip.
-
-## Building Documentation
-
-To build the documentation, first install the required dependencies:
-
-```bash
-pip install -r docs/requirements.txt
-```
-then run the commands:
-
-```bash
-cd docs
-make clean
-make html
-```
-the docs will be under `docs/_build`.
-
-To rebuild the rst files themselves, run:
-
-```bash
-sphinx-apidoc --force -o docs lambeq
-```
 
 ## License
 
-Distributed under the Apache 2.0 license. See [`LICENSE`](LICENSE) for more details.
+Distributed under the Apache 2.0 license. See [`LICENSE`](LICENSE) for
+more details.
 
 ## Citation
 
