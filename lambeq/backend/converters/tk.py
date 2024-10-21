@@ -35,7 +35,7 @@ from lambeq.backend import Functor, Symbol
 from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ, Controlled, CRx,
                                     CRy, CRz, Daggered, Diagram, Discard,
                                     GATES, Id, Ket, Measure, quantum, qubit,
-                                    Rx, Ry, Rz, Scalar, Swap, X, Y, Z)
+                                    Rx, Ry, Rz, Scalar, Swap, X, Y, Z, is_circuital, circuital_to_dict, to_circuital)
 
 OPTYPE_MAP = {'H': OpType.H,
               'X': OpType.X,
@@ -192,7 +192,7 @@ class Circuit(tk.Circuit):
         return counts
 
 
-def to_tk(circuit: Diagram):
+def to_tk_old(circuit: Diagram):
     """
     Takes a :py:class:`lambeq.quantum.Diagram`, returns
     a :py:class:`Circuit`.
@@ -360,6 +360,41 @@ def _tk_to_lmbq_param(theta):
         return Symbol(symbol.name, scale=scale)
     else:
         raise ValueError('Parameter must be a (possibly scaled) sympy Symbol')
+
+
+def to_tk(diagram):
+
+    if not is_circuital(diagram):
+        diagram = to_circuital(diagram)
+
+    circuit_dict = circuital_to_dict(diagram)
+
+    circuit = Circuit(circuit_dict["qubits"], circuit_dict["qubits"])
+
+    for gate in circuit_dict["gates"]:
+
+        if not gate["type"] in OPTYPE_MAP:
+            raise NotImplementedError(f"Gate {gate} not supported")
+
+        if "phase" in gate:
+            op = Op.create(OPTYPE_MAP[gate["type"]], 2 * gate["phase"])
+        else:
+            op = Op.create(OPTYPE_MAP[gate["type"]])
+
+        if gate["dagger"]:
+            op = op.dagger
+
+        qubits = gate["qubits"]
+
+        circuit.add_gate(op, qubits)
+
+    for measure in circuit_dict["measures"]:
+        if measure["type"] == "Measure":
+            circuit.Measure(measure["qubit"], measure["qubit"])
+        elif measure["type"] == "Bra":
+            circuit.post_select({measure["qubit"]: measure["qubit"]})
+
+    return circuit
 
 
 def from_tk(tk_circuit: tk.Circuit) -> Diagram:
