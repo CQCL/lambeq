@@ -365,7 +365,7 @@ class Diagrammable(Protocol):
         """
 
     def dagger(self) -> Diagrammable:
-        """Implements conjugation of diagrams."""
+        """Apply the dagger operation."""
 
     def __matmul__(self, rhs: Diagrammable | Ty) -> Diagrammable:
         """Implements the tensor operator `@` with another diagram."""
@@ -749,6 +749,12 @@ class Diagram(Entity):
     @property
     def boxes(self) -> list[Box]:
         return [layer.box for layer in self.layers]
+
+    @property
+    def has_frames(self) -> bool:
+        return any([(isinstance(box, Frame)
+                     or isinstance(box, DaggeredFrame))
+                    for box in self.boxes])
 
     @classmethod
     def create_pregroup_diagram(
@@ -1986,3 +1992,98 @@ class Functor:
                                  'use the functor on boxes.')
 
         return self.custom_ar(self, ar)
+
+
+@Diagram.register_special_box('frame')
+@dataclass
+class Frame(Box):
+    """A frame in the grammar category.
+
+    It can contain other diagrams as its components. Frame is
+    an abstract container, which means that the relationship
+    between its domain/codomain with those of the individual
+    nested diagrams remains undefined at this level, and is
+    left to be implemented by the application of purpose-specific
+    ansatze and rewriters.
+
+    Frames can be nested to an arbitrary depth.
+
+    Parameters
+    ----------
+    name : str
+        The name of the frame.
+    dom : Ty
+        The domain of the frame.
+    cod : Ty
+        The codomain of the frame.
+    z : int, optional
+        The winding number of the frame, by default 0.
+    components : list of `Diagrammable`
+        The components inside this frame.
+
+    """
+
+    name: str
+    dom: Ty
+    cod: Ty
+    components: list[Diagrammable] = field(default_factory=list)
+    z: int = 0
+
+    def __repr__(self):
+        return (f'Frame({self.name}, '
+                + f'dom={self.dom}, '
+                + f'cod={self.cod}, '
+                + f'z={self.z}, '
+                + 'components=['
+                + ' @ '.join(map(repr, self.components)) + ']')
+
+    def rotate(self, z: int) -> Self:
+        """Rotate the box, changing the winding number."""
+        return replace(self,
+                       dom=self.dom.rotate(z),
+                       cod=self.cod.rotate(z),
+                       z=self.z + z,
+                       components=[c.rotate(z) for c in
+                                   reversed(self.components)])
+
+    def dagger(self) -> DaggeredFrame | Frame:
+        return DaggeredFrame(self)
+
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
+
+@dataclass
+class DaggeredFrame(Frame):
+    """A daggered frame.
+
+    Parameters
+    ----------
+    frame : Frame
+        The frame to be daggered.
+
+    """
+
+    frame: Frame
+    name: str = field(init=False)
+    dom: Ty = field(init=False)
+    cod: Ty = field(init=False)
+    z: int = field(init=False)
+    components: list[Diagrammable] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.name = self.frame.name + '†'
+        self.dom = self.frame.cod
+        self.cod = self.frame.dom
+        self.z = self.frame.z
+        self.components = [c.dagger() for c in self.frame.components]
+
+    def rotate(self, z: int) -> Self:
+        """Rotate the daggered frame."""
+        return type(self)(self.frame.rotate(z))
+
+    def dagger(self) -> Frame:
+        return self.frame
+
+    def __hash__(self) -> int:
+        return hash(repr(self))

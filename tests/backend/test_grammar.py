@@ -399,3 +399,87 @@ def test_to_from_json():
         assert case_json['category'] == 'grammar'
         assert 'entity' in case_json
         assert grammar.from_json(json.dumps(case_json)) == case
+
+
+def test_frame():
+    n = Ty('n')
+    s = Ty('s')
+    d = ((Word('Alice', s) @ Word('runs', s.r @ s))
+         >> (Cup(s, s.r) @ Id(s)))
+
+    f = Frame(
+        'f1', n @ n, n @ n,
+        components=[
+            Box('b1', Ty(), n),
+            Box('b1', Ty(), Ty()),
+            Box('b1', n, Ty()),
+            d,
+        ]
+    )
+    assert f.name == 'f1'
+    assert len(f.components) == 4
+
+
+def test_diagram_has_frame():
+    n = Ty('n')
+    s = Ty('s')
+    d = ((Word('Alice', s) @ Word('runs', s.r @ s))
+         >> (Cup(s, s.r) @ Id(s)))
+
+    assert not d.has_frames
+
+    f = Frame(
+        'f1', n @ n, n @ n,
+        components=[
+            Box('b1', Ty(), n),
+            Box('b1', Ty(), Ty()),
+            Box('b1', n, Ty()),
+            d,
+        ]
+    )
+    d @= f
+    assert d.has_frames
+
+
+def test_frame_manipulation():
+    n, s = Ty('n'), Ty('s')
+    ba = Box('A', n, n @ s)
+    bb = Box('B', s, Ty())
+    f = Frame('F', n, s, 0, [ba >> n @ bb, bb])
+    fl = Frame('F', n.l, s.l, -1, [bb.l, (ba >> n @ bb).l])
+
+    assert f.l == fl
+    assert f.dagger().dagger() == f
+    assert f.dagger().l == f.l.dagger()
+
+
+def test_frame_functor():
+    n, s = Ty('n'), Ty('s')
+    ba = Box('A', n, n @ s)
+    bb = Box('B', s, Ty())
+    ba_BOX = Box('BOX', n, n @ s)
+    bb_BOX = Box('BOX', s, Ty())
+    d = Frame('F', n, s, 0, [ba >> n @ bb, bb])
+    rename_d = Frame('F', n, s, 0, [ba_BOX >> n @ bb_BOX, bb_BOX])
+
+    # Identity on all elements
+    f_id = Functor(grammar,
+                   ob=lambda _, ty: ty,
+                   ar=lambda _, ob: ob)
+
+    def nested_ar(functor, ob):
+        if isinstance(ob, Frame):
+            return Frame(ob.name,
+                         ob.dom,
+                         ob.cod,
+                         ob.z,
+                         [functor(c) for c in ob.components])
+        return Box("BOX", ob.dom, ob.cod)
+
+    # Identity on types and frames, rename boxes
+    f_rename_boxes = Functor(grammar,
+                             ob=lambda _, ty: ty,
+                             ar=nested_ar)
+
+    assert f_id(d) == d
+    assert f_rename_boxes(d) == rename_d
