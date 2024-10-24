@@ -752,9 +752,7 @@ class Diagram(Entity):
 
     @property
     def has_frames(self) -> bool:
-        return any([(isinstance(box, Frame)
-                     or isinstance(box, DaggeredFrame))
-                    for box in self.boxes])
+        return any([isinstance(box, Frame) for box in self.boxes])
 
     @classmethod
     def create_pregroup_diagram(

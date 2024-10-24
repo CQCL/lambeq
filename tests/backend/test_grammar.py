@@ -311,9 +311,25 @@ def test_deepcopy():
     from copy import deepcopy
     import pickle
 
-    s = Ty('s')
+    n, s = map(Ty, 'ns')
     b1 = Box('copy', s, s, 1)
     b2 = Box('copy2', s, s, 1)
+    words1 = [Word('John', n),
+              Word('walks', n.r @ s),
+              Word('in', s.r @ n.r.r @ n.r @ s @ n.l),
+              Word('the', n @ n.l),
+              Word('park', n)]
+    cups1 = [(Cup, 2, 3), (Cup, 7, 8), (Cup, 9, 10), (Cup, 1, 4), (Cup, 0, 5)]
+    d1 = Diagram.create_pregroup_diagram(words1, cups1)
+
+    words2 = [Word('John', n),
+              Word('gave', n.r @ s @ n.l @ n.l),
+              Word('Mary', n),
+              Word('a', n @ n.l),
+              Word('flower', n)]
+    cups2 = [(Cup, 0, 1), (Swap, 3, 4), (Cup, 4, 5), (Cup, 7, 8), (Cup, 3, 6)]
+    d2 = Diagram.create_pregroup_diagram(words2, cups2)
+
     cases = (
         Ty(),
         s,
@@ -332,7 +348,9 @@ def test_deepcopy():
         Swap(s @ s, s @ s),
         Word('Alice', s),
         Word('Alice', s) @ Word('runs', s.r @ s) >> \
-            Cup(s, s.r) @ Id(s)
+            Cup(s, s.r) @ Id(s),
+        Frame('frame', dom=n, cod=n @ n, components=d1),
+        d2 @ Frame('frame', dom=n, cod=n @ n, components=d1),
     )
 
     for case in cases:
@@ -439,6 +457,7 @@ def test_diagram_has_frame():
     )
     d @= f
     assert d.has_frames
+    assert d.dagger().has_frames
 
 
 def test_frame_manipulation():
