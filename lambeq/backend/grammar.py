@@ -2113,10 +2113,6 @@ class Frame(Box):
             'components': [component.to_json(is_top_level=False)
                            for component in self.components]
         }
-        for component in self.components:
-            print(f'{component = }')
-            print(json.dumps(component.to_json(is_top_level=False)))
-            print('*' * 100)
 
         if is_top_level:
             data_dict['category'] = self.category.name
