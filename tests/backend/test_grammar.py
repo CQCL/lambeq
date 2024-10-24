@@ -311,9 +311,27 @@ def test_deepcopy():
     from copy import deepcopy
     import pickle
 
-    s = Ty('s')
+    n, s = map(Ty, 'ns')
     b1 = Box('copy', s, s, 1)
     b2 = Box('copy2', s, s, 1)
+    words1 = [Word('John', n),
+              Word('walks', n.r @ s),
+              Word('in', s.r @ n.r.r @ n.r @ s @ n.l),
+              Word('the', n @ n.l),
+              Word('park', n)]
+    cups1 = [(Cup, 2, 3), (Cup, 7, 8), (Cup, 9, 10), (Cup, 1, 4), (Cup, 0, 5)]
+    d1 = Diagram.create_pregroup_diagram(words1, cups1)
+
+    words2 = [Word('John', n),
+              Word('gave', n.r @ s @ n.l @ n.l),
+              Word('Mary', n),
+              Word('a', n @ n.l),
+              Word('flower', n)]
+    cups2 = [(Cup, 0, 1), (Swap, 3, 4), (Cup, 4, 5), (Cup, 7, 8), (Cup, 3, 6)]
+    d2 = Diagram.create_pregroup_diagram(words2, cups2)
+
+    f1 = Frame('frame', dom=n, cod=n @ n, components=[d1])
+
     cases = (
         Ty(),
         s,
@@ -332,7 +350,10 @@ def test_deepcopy():
         Swap(s @ s, s @ s),
         Word('Alice', s),
         Word('Alice', s) @ Word('runs', s.r @ s) >> \
-            Cup(s, s.r) @ Id(s)
+            Cup(s, s.r) @ Id(s),
+        f1,
+        d2 @ Frame('frame', dom=n, cod=n @ n, components=[d1, f1]),
+        f1 @ Frame('frame', dom=n, cod=n @ n, components=[d1, f1]).dagger(),
     )
 
     for case in cases:
@@ -355,21 +376,23 @@ def test_to_from_json():
     b1 = Box('copy', s, s, 1)
     b2 = Box('copy2', s, s, 1)
 
-    words1 = [Word("John", n),
-              Word("walks", n.r @ s),
-              Word("in", s.r @ n.r.r @ n.r @ s @ n.l),
-              Word("the", n @ n.l),
-              Word("park", n)]
+    words1 = [Word('John', n),
+              Word('walks', n.r @ s),
+              Word('in', s.r @ n.r.r @ n.r @ s @ n.l),
+              Word('the', n @ n.l),
+              Word('park', n)]
     cups1 = [(Cup, 2, 3), (Cup, 7, 8), (Cup, 9, 10), (Cup, 1, 4), (Cup, 0, 5)]
     d1 = Diagram.create_pregroup_diagram(words1, cups1)
 
-    words2 = [Word("John", n),
-              Word("gave", n.r @ s @ n.l @ n.l),
-              Word("Mary", n),
-              Word("a", n @ n.l),
-              Word("flower", n)]
+    words2 = [Word('John', n),
+              Word('gave', n.r @ s @ n.l @ n.l),
+              Word('Mary', n),
+              Word('a', n @ n.l),
+              Word('flower', n)]
     cups2 = [(Cup, 0, 1), (Swap, 3, 4), (Cup, 4, 5), (Cup, 7, 8), (Cup, 3, 6)]
     d2 = Diagram.create_pregroup_diagram(words2, cups2)
+
+    f1 = Frame('frame', dom=n, cod=n @ n, components=[d1])
 
     cases = (
         Ty(),
@@ -392,6 +415,9 @@ def test_to_from_json():
             Cup(s, s.r) @ Id(s),
         d1,
         d2,
+        f1,
+        d2 @ Frame('frame', dom=n, cod=n @ n, components=[d1, f1]),
+        f1 @ Frame('frame', dom=n, cod=n @ n, components=[d1, f1]).dagger(),
     )
 
     for case in cases:
@@ -399,3 +425,88 @@ def test_to_from_json():
         assert case_json['category'] == 'grammar'
         assert 'entity' in case_json
         assert grammar.from_json(json.dumps(case_json)) == case
+
+
+def test_frame():
+    n = Ty('n')
+    s = Ty('s')
+    d = ((Word('Alice', s) @ Word('runs', s.r @ s))
+         >> (Cup(s, s.r) @ Id(s)))
+
+    f = Frame(
+        'f1', n @ n, n @ n,
+        components=[
+            Box('b1', Ty(), n),
+            Box('b1', Ty(), Ty()),
+            Box('b1', n, Ty()),
+            d,
+        ]
+    )
+    assert f.name == 'f1'
+    assert len(f.components) == 4
+
+
+def test_diagram_has_frame():
+    n = Ty('n')
+    s = Ty('s')
+    d = ((Word('Alice', s) @ Word('runs', s.r @ s))
+         >> (Cup(s, s.r) @ Id(s)))
+
+    assert not d.has_frames
+
+    f = Frame(
+        'f1', n @ n, n @ n,
+        components=[
+            Box('b1', Ty(), n),
+            Box('b1', Ty(), Ty()),
+            Box('b1', n, Ty()),
+            d,
+        ]
+    )
+    d @= f
+    assert d.has_frames
+    assert d.dagger().has_frames
+
+
+def test_frame_manipulation():
+    n, s = Ty('n'), Ty('s')
+    ba = Box('A', n, n @ s)
+    bb = Box('B', s, Ty())
+    f = Frame('F', n, s, 0, [ba >> n @ bb, bb])
+    fl = Frame('F', n.l, s.l, -1, [bb.l, (ba >> n @ bb).l])
+
+    assert f.l == fl
+    assert f.dagger().dagger() == f
+    assert f.dagger().l == f.l.dagger()
+
+
+def test_frame_functor():
+    n, s = Ty('n'), Ty('s')
+    ba = Box('A', n, n @ s)
+    bb = Box('B', s, Ty())
+    ba_BOX = Box('BOX', n, n @ s)
+    bb_BOX = Box('BOX', s, Ty())
+    d = Frame('F', n, s, 0, [ba >> n @ bb, bb])
+    rename_d = Frame('F', n, s, 0, [ba_BOX >> n @ bb_BOX, bb_BOX])
+
+    # Identity on all elements
+    f_id = Functor(grammar,
+                   ob=lambda _, ty: ty,
+                   ar=lambda _, ob: ob)
+
+    def nested_ar(functor, ob):
+        if isinstance(ob, Frame):
+            return Frame(ob.name,
+                         ob.dom,
+                         ob.cod,
+                         ob.z,
+                         [functor(c) for c in ob.components])
+        return Box("BOX", ob.dom, ob.cod)
+
+    # Identity on types and frames, rename boxes
+    f_rename_boxes = Functor(grammar,
+                             ob=lambda _, ty: ty,
+                             ar=nested_ar)
+
+    assert f_id(d) == d
+    assert f_rename_boxes(d) == rename_d

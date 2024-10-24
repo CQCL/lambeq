@@ -101,6 +101,8 @@ class Category:
             'Spider': Spider,
             'Swap': Swap,
             'Word': Word,
+            'Frame': Frame,
+            'DaggeredFrame': DaggeredFrame,
             'Ty': self.Ty,
             'Box': self.Box,
             'Layer': self.Layer,
@@ -246,7 +248,7 @@ class Ty(Entity):
             objects = reversed(self.objects) if z % 2 == 1 else self.objects
             return type(self)(
                 objects=[ob.rotate(z)
-                         for ob in objects])  # type: ignore[union-attr]
+                         for ob in objects])
 
     def unwind(self) -> Self:
         return self.rotate(-self.z)
@@ -365,13 +367,20 @@ class Diagrammable(Protocol):
         """
 
     def dagger(self) -> Diagrammable:
-        """Implements conjugation of diagrams."""
+        """Apply the dagger operation."""
 
     def __matmul__(self, rhs: Diagrammable | Ty) -> Diagrammable:
         """Implements the tensor operator `@` with another diagram."""
 
     def __rshift__(self, rhs: Diagrammable) -> Diagrammable:
         """Implements composition `>>` with another diagram."""
+
+    @classmethod
+    def from_json(cls, data: _JSONDictT | str) -> Diagrammable:
+        """Create diagrammable from JSON data."""
+
+    def to_json(self, is_top_level: bool = True) -> _JSONDictT | str:
+        """Create JSON encoding for diagrammable."""
 
 
 @grammar
@@ -582,6 +591,8 @@ class Layer(Entity):
             'Spider': Spider,
             'Swap': Swap,
             'Word': Word,
+            'Frame': Frame,
+            'DaggeredFrame': DaggeredFrame,
             'Box': cls.category.Box,
         }
         box_cls = _entity_mapping[data_dict['box']['entity']]
@@ -597,7 +608,7 @@ class Layer(Entity):
 
         Parameters
         ----------
-        is_top_level : bool, optional
+        is_top_level : bool, optional (default=True)
             This flag indicates that this object is the top-most object
             and should have the global metadata (e.g. category). This
             should be set to `False` when calling `to_json` on attribute
@@ -749,6 +760,10 @@ class Diagram(Entity):
     @property
     def boxes(self) -> list[Box]:
         return [layer.box for layer in self.layers]
+
+    @property
+    def has_frames(self) -> bool:
+        return any([isinstance(box, Frame) for box in self.boxes])
 
     @classmethod
     def create_pregroup_diagram(
@@ -1986,3 +2001,178 @@ class Functor:
                                  'use the functor on boxes.')
 
         return self.custom_ar(self, ar)
+
+
+@Diagram.register_special_box('frame')
+@dataclass
+class Frame(Box):
+    """A frame in the grammar category.
+
+    It can contain other diagrams as its components. Frame is
+    an abstract container, which means that the relationship
+    between its domain/codomain with those of the individual
+    nested diagrams remains undefined at this level, and is
+    left to be implemented by the application of purpose-specific
+    ansatze and rewriters.
+
+    Frames can be nested to an arbitrary depth.
+
+    Parameters
+    ----------
+    name : str
+        The name of the frame.
+    dom : Ty
+        The domain of the frame.
+    cod : Ty
+        The codomain of the frame.
+    z : int, optional
+        The winding number of the frame, by default 0.
+    components : list of `Diagrammable`
+        The components inside this frame.
+
+    """
+
+    name: str
+    dom: Ty
+    cod: Ty
+    components: list[Diagrammable] = field(default_factory=list)
+    z: int = 0
+
+    def __repr__(self):
+        return (f'Frame({self.name}, '
+                + f'dom={self.dom}, '
+                + f'cod={self.cod}, '
+                + f'z={self.z}, '
+                + 'components=['
+                + ' @ '.join(map(repr, self.components)) + ']')
+
+    def rotate(self, z: int) -> Self:
+        """Rotate the box, changing the winding number."""
+        return replace(self,
+                       dom=self.dom.rotate(z),
+                       cod=self.cod.rotate(z),
+                       z=self.z + z,
+                       components=[c.rotate(z) for c in
+                                   reversed(self.components)])
+
+    def dagger(self) -> DaggeredFrame | Frame:
+        return DaggeredFrame(self)
+
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
+    @classmethod
+    def from_json(cls, data: _JSONDictT | str) -> Self:
+        """Decode a JSON object or string into a
+        :py:class:`~lambeq.backend.Frame`.
+
+        Returns
+        -------
+        :py:class:`~lambeq.backend.Frame`
+            The frame generated from the JSON data.
+        """
+        data_dict = json.loads(data) if isinstance(data, str) else data
+        _, _ = data_dict.pop('category', None), data_dict.pop('entity')
+        data_dict['dom'] = cls.category.Ty.from_json(data_dict['dom'])
+        data_dict['cod'] = cls.category.Ty.from_json(data_dict['cod'])
+        components = []
+        for component_json in data_dict['components']:
+            component_entity = component_json['entity']
+            if component_entity == 'Diagram':
+                component = cls.category.Diagram.from_json(component_json)
+            else:
+                comp_cls = cls.category.Diagram.special_boxes[
+                    component_entity.lower()
+                ]
+                component = comp_cls.from_json(    # type: ignore[attr-defined]
+                    component_json
+                )
+            components.append(component)
+
+        data_dict['components'] = components
+
+        return cls(**data_dict)
+
+    def to_json(self, is_top_level: bool = True) -> _JSONDictT:
+        """Encode this frame to a JSON object.
+
+        Parameters
+        ----------
+        is_top_level : bool, optional
+            This flag indicates that this object is the top-most object
+            and should have the global metadata (e.g. category). This
+            should be set to `False` when calling `to_json` on attribute
+            instances to avoid duplication of said global metadata.
+        """
+        data_dict: _JSONDictT = {
+            'entity': self.__class__.__name__,
+            'name': self.name,
+            'dom': self.dom.to_json(is_top_level=False),
+            'cod': self.cod.to_json(is_top_level=False),
+            'z': self.z,
+            'components': [component.to_json(is_top_level=False)
+                           for component in self.components]
+        }
+
+        if is_top_level:
+            data_dict['category'] = self.category.name
+
+        return data_dict
+
+
+@dataclass
+class DaggeredFrame(Frame):
+    """A daggered frame.
+
+    Parameters
+    ----------
+    frame : Frame
+        The frame to be daggered.
+
+    """
+
+    frame: Frame
+    name: str = field(init=False)
+    dom: Ty = field(init=False)
+    cod: Ty = field(init=False)
+    z: int = field(init=False)
+    components: list[Diagrammable] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.name = self.frame.name + '†'
+        self.dom = self.frame.cod
+        self.cod = self.frame.dom
+        self.z = self.frame.z
+        self.components = [c.dagger() for c in self.frame.components]
+
+    def rotate(self, z: int) -> Self:
+        """Rotate the daggered frame."""
+        return type(self)(self.frame.rotate(z))
+
+    def dagger(self) -> Frame:
+        return self.frame
+
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
+    @classmethod
+    def from_json(cls, data: _JSONDictT | str) -> DaggeredFrame:
+        data_dict = json.loads(data) if isinstance(data, str) else data
+        _, _ = data_dict.pop('category', None), data_dict.pop('entity')
+        frame_cls = cls.category.Diagram.special_boxes['frame']
+        frame = frame_cls.from_json(     # type: ignore[attr-defined]
+            data_dict['frame']
+        )
+
+        return frame.dagger()   # type: ignore[no-any-return]
+
+    def to_json(self, is_top_level: bool = True) -> _JSONDictT:
+        data_dict: _JSONDictT = {
+            'entity': self.__class__.__name__,
+            'frame': self.frame.to_json(is_top_level=False),
+        }
+
+        if is_top_level:
+            data_dict['category'] = self.category.name
+
+        return data_dict
