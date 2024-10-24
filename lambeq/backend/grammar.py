@@ -101,6 +101,8 @@ class Category:
             'Spider': Spider,
             'Swap': Swap,
             'Word': Word,
+            'Frame': Frame,
+            'DaggeredFrame': DaggeredFrame,
             'Ty': self.Ty,
             'Box': self.Box,
             'Layer': self.Layer,
@@ -373,6 +375,13 @@ class Diagrammable(Protocol):
     def __rshift__(self, rhs: Diagrammable) -> Diagrammable:
         """Implements composition `>>` with another diagram."""
 
+    @classmethod
+    def from_json(cls, data: _JSONDictT | str) -> Diagrammable:
+        """Create diagrammable from JSON data."""
+
+    def to_json(self, is_top_level: bool = True) -> _JSONDictT | str:
+        """Create JSON encoding for diagrammable."""
+
 
 @grammar
 @dataclass
@@ -582,6 +591,8 @@ class Layer(Entity):
             'Spider': Spider,
             'Swap': Swap,
             'Word': Word,
+            'Frame': Frame,
+            'DaggeredFrame': DaggeredFrame,
             'Box': cls.category.Box,
         }
         box_cls = _entity_mapping[data_dict['box']['entity']]
@@ -597,7 +608,7 @@ class Layer(Entity):
 
         Parameters
         ----------
-        is_top_level : bool, optional
+        is_top_level : bool, optional (default=True)
             This flag indicates that this object is the top-most object
             and should have the global metadata (e.g. category). This
             should be set to `False` when calling `to_json` on attribute
@@ -2050,6 +2061,68 @@ class Frame(Box):
     def __hash__(self) -> int:
         return hash(repr(self))
 
+    @classmethod
+    def from_json(cls, data: _JSONDictT | str) -> Self:
+        """Decode a JSON object or string into a
+        :py:class:`~lambeq.backend.Frame`.
+
+        Returns
+        -------
+        :py:class:`~lambeq.backend.Frame`
+            The frame generated from the JSON data.
+        """
+        data_dict = json.loads(data) if isinstance(data, str) else data
+        _, _ = data_dict.pop('category', None), data_dict.pop('entity')
+        data_dict['dom'] = cls.category.Ty.from_json(data_dict['dom'])
+        data_dict['cod'] = cls.category.Ty.from_json(data_dict['cod'])
+        components = []
+        for component_json in data_dict['components']:
+            component_entity = component_json['entity']
+            if component_entity == 'Diagram':
+                component = cls.category.Diagram.from_json(component_json)
+            else:
+                comp_cls = cls.category.Diagram.special_boxes[
+                    component_entity.lower()
+                ]
+                component = comp_cls.from_json(    # type: ignore[attr-defined]
+                    component_json
+                )
+            components.append(component)
+
+        data_dict['components'] = components
+
+        return cls(**data_dict)
+
+    def to_json(self, is_top_level: bool = True) -> _JSONDictT:
+        """Encode this frame to a JSON object.
+
+        Parameters
+        ----------
+        is_top_level : bool, optional
+            This flag indicates that this object is the top-most object
+            and should have the global metadata (e.g. category). This
+            should be set to `False` when calling `to_json` on attribute
+            instances to avoid duplication of said global metadata.
+        """
+        data_dict: _JSONDictT = {
+            'entity': self.__class__.__name__,
+            'name': self.name,
+            'dom': self.dom.to_json(is_top_level=False),
+            'cod': self.cod.to_json(is_top_level=False),
+            'z': self.z,
+            'components': [component.to_json(is_top_level=False)
+                           for component in self.components]
+        }
+        for component in self.components:
+            print(f'{component = }')
+            print(json.dumps(component.to_json(is_top_level=False)))
+            print('*' * 100)
+
+        if is_top_level:
+            data_dict['category'] = self.category.name
+
+        return data_dict
+
 
 @dataclass
 class DaggeredFrame(Frame):
@@ -2085,3 +2158,25 @@ class DaggeredFrame(Frame):
 
     def __hash__(self) -> int:
         return hash(repr(self))
+
+    @classmethod
+    def from_json(cls, data: _JSONDictT | str) -> DaggeredFrame:
+        data_dict = json.loads(data) if isinstance(data, str) else data
+        _, _ = data_dict.pop('category', None), data_dict.pop('entity')
+        frame_cls = cls.category.Diagram.special_boxes['frame']
+        frame = frame_cls.from_json(     # type: ignore[attr-defined]
+            data_dict['frame']
+        )
+
+        return frame.dagger()   # type: ignore[no-any-return]
+
+    def to_json(self, is_top_level: bool = True) -> _JSONDictT:
+        data_dict: _JSONDictT = {
+            'entity': self.__class__.__name__,
+            'frame': self.frame.to_json(is_top_level=False),
+        }
+
+        if is_top_level:
+            data_dict['category'] = self.category.name
+
+        return data_dict
