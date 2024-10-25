@@ -1,6 +1,9 @@
 from pytest import raises
 
+from lambeq import BobcatParser, SpacyTokeniser
 from lambeq.backend.grammar import *
+from lambeq.backend.pregroup_tree import PregroupTreeNode
+
 
 def test_Ty():
     a , b  = map(Ty, 'ab')
@@ -32,9 +35,11 @@ def test_Ty():
     with raises(TypeError):
         a >> 'b'
 
+
 def test_Cup_init():
     t = Ty('n')
     assert Cup(Ty(), Ty()) == Diagram.id()
+
 
 def test_Box():
     a , b  = map(Ty, 'ab')
@@ -46,6 +51,7 @@ def test_Box():
     assert A.rotate(42).z == 42
     assert A.rotate(42).unwind() == A
     assert A.dagger() >> Id(a)
+
 
 def test_Box_magics():
     a , b  = map(Ty, 'ab')
@@ -70,6 +76,7 @@ def test_Box_magics():
         Layer(box=A, left=Ty(), right=Ty()),
         Layer(box=B, left=Ty(), right=Ty())])
 
+
 def test_Word():
     n = Ty('n')
     word = Word('bob', n)
@@ -79,6 +86,7 @@ def test_Word():
     assert word.dagger().dagger() == word
     assert word.l.r == word.r.l == word
     assert word.dagger().r.dagger().l == word == word.l.dagger().r.dagger()
+
 
 def test_pregroup():
     s, n, x = Ty('s'), Ty('n'), Ty('x')
@@ -92,6 +100,7 @@ def test_pregroup():
 
     assert sentence.is_pregroup
     assert not diagram.is_pregroup
+
 
 def test_Cap():
     a, b = map(Ty, 'ab')
@@ -139,6 +148,7 @@ def test_Spider():
     assert spider.r.l == spider
     assert spider.dagger().dagger() == spider
 
+
 def test_Swap():
     a, b = map(Ty, 'ab')
     ab = a @ b
@@ -146,6 +156,7 @@ def test_Swap():
     swap = Swap(a, b)
     assert swap.dagger().dagger() == swap
     assert swap.l.r == swap
+
 
 def test_Layer():
     a, b, c, d = map(Ty, 'abcd')
@@ -156,6 +167,7 @@ def test_Layer():
     assert layer.extend() == layer
     assert layer.extend(left=c, right=d) == Layer(box=box, left=c, right=d)
 
+
 def test_Id():
     a, b = map(Ty, 'ab')
     box = Box('dimitri', a, b)
@@ -164,6 +176,7 @@ def test_Id():
     assert box @ Id(b) >> Id(b) @ box.dagger() == box @ box.dagger()
     assert Id().is_id == True
     assert Id().dagger() == Id()
+
 
 def test_Diagram():
     n, s = Ty('n'), Ty('s')
@@ -182,12 +195,14 @@ def test_Diagram():
     assert diagram.rotate(5).cod == diagram.cod.rotate(5)
     assert diagram.rotate(5).rotate(-5) == diagram
 
+
 def test_Pregroup_Diagram():
     n, s = Ty('n'), Ty('s')
     words = [Word('she', n), Word('goes', n.r @ s @ n.l), Word('home', n)]
     morphisms = [(Cup, 0, 1), (Cup, 3, 4)]
     diagram = Diagram.create_pregroup_diagram(words, morphisms)
     assert diagram == words[0] @ words[1] @ words[2] >> Cup(n, n.r) @ Id(s) @ Cup(n.l, n)
+
 
 def test_Diagram_NotImplemented():
 
@@ -213,11 +228,13 @@ def test_Diagram_NotImplemented():
     with raises(ValueError):
         diagram >> Box('thomas', Ty('something wrong'), Ty())
 
+
 def test_Dagger():
     n, s = Ty('n'), Ty('s')
     box = Box('bob', n, s)
 
     assert box.l.dagger().r.dagger() == box.dagger().l.dagger().r == box
+
 
 def test_register_special_box():
 
@@ -242,6 +259,7 @@ def test_Functor_on_type():
     assert func(p.r) == func(p).r == q.r
     assert func(p @ p.r) == q @ q.r
 
+
 def test_permutation():
 
     a,b,c,d = map(Ty, 'abcd')
@@ -257,6 +275,7 @@ def test_permutation():
         Diagram.permutation(a@b, [0,1,2])
     with raises(ValueError):
         diag.permuted([0,1,2])
+
 
 def test_Functor_on_box():
     a, b, c, z = Ty('a'), Ty('b'), Ty('c'), Ty('z')
@@ -288,6 +307,7 @@ def test_Functor_on_box():
     with raises(TypeError):
         func_bad(Box('box', a, b))
 
+
 def test_special_boxes():
     q, p = Ty('q'), Ty('p')
 
@@ -306,6 +326,7 @@ def test_special_boxes():
     assert func2(Spider(p, 2, 2)) == (Id(q@p@q@p).permuted([0,2,1,3])
                                       >> Spider(q, 2, 2) @Spider(p, 2, 2)
                                       >> Id(q@q@p@p).permuted([0,2,1,3]))
+
 
 def test_deepcopy():
     from copy import deepcopy
@@ -510,3 +531,58 @@ def test_frame_functor():
 
     assert f_id(d) == d
     assert f_rename_boxes(d) == rename_d
+
+
+def test_to_pregroup_tree():
+    tokeniser = SpacyTokeniser()
+    bobcat_parser = BobcatParser(verbose='suppress')
+    n, s = map(Ty, 'ns')
+
+    s1 = tokeniser.tokenise_sentence(
+        "Last year's figures include a one-time loss of $12 million for restructuring and unusual items"
+    )
+    s2 = tokeniser.tokenise_sentence("Do your homework")
+    s3 = tokeniser.tokenise_sentence("I like but Mary dislikes reading")
+
+    s1_diag = bobcat_parser.sentence2diagram(s1, tokenised=True)
+    s2_diag = bobcat_parser.sentence2diagram(s2, tokenised=True)
+    s3_diag = bobcat_parser.sentence2diagram(s3, tokenised=True)
+
+    t1_n1 = PregroupTreeNode(word='year', typ=n, ind=1)
+    t1_n3 = PregroupTreeNode(word='figures', typ=n, ind=3)
+    t1_n8 = PregroupTreeNode(word='loss', typ=n, ind=8)
+    t1_n12 = PregroupTreeNode(word='million', typ=n, ind=12)
+    t1_n14 = PregroupTreeNode(word='restructuring', typ=n, ind=14)
+    t1_n17 = PregroupTreeNode(word='items', typ=n, ind=17)
+    t1_n0 = PregroupTreeNode(word='Last', typ=n, ind=0, children=[t1_n1])
+    t1_n2 = PregroupTreeNode(word="'s", typ=n, ind=2, children=[t1_n0, t1_n3])
+    t1_n7 = PregroupTreeNode(word='time', typ=n, ind=7, children=[t1_n8])
+    t1_n6 = PregroupTreeNode(word='one', typ=n, ind=6, children=[t1_n7])
+    t1_n5 = PregroupTreeNode(word='a', typ=n, ind=5, children=[t1_n6])
+    t1_n11 = PregroupTreeNode(word='12', typ=n, ind=11, children=[t1_n12])
+    t1_n10 = PregroupTreeNode(word='$', typ=n, ind=10, children=[t1_n11])
+    t1_n16 = PregroupTreeNode(word='unusual', typ=n, ind=16, children=[t1_n17])
+    t1_n15 = PregroupTreeNode(word='and', typ=n, ind=15, children=[t1_n14, t1_n16])
+    t1_n9 = PregroupTreeNode(word='of', typ=n, ind=9, children=[t1_n5, t1_n10])
+    t1_n13 = PregroupTreeNode(word='for', typ=n, ind=13, children=[t1_n9, t1_n15])
+    t1_n4 = PregroupTreeNode(word='include', typ=s, ind=4, children=[t1_n2, t1_n13])
+    t1 = t1_n4
+
+    t2_n2 = PregroupTreeNode(word='homework', typ=n, ind=2)
+    t2_n1 = PregroupTreeNode(word='your', typ=n, ind=1, children=[t2_n2])
+    t2_n0 = PregroupTreeNode(word='Do', typ=n.r @ s, ind=0, children=[t2_n1])
+    t2 = t2_n0
+
+    t3_n0 = PregroupTreeNode(word='I', typ=n, ind=0)
+    t3_n1 = PregroupTreeNode(word='like', typ=n.r @ s @ n.l, ind=1)
+    t3_n4 = PregroupTreeNode(word='dislikes', typ=n.r @ s, ind=4)
+    t3_n4_2 = PregroupTreeNode(word='dislikes', typ=n.l, ind=4)
+    t3_n5 = PregroupTreeNode(word='reading', typ=n, ind=5)
+    t3_n3 = PregroupTreeNode(word='Mary', typ=n.r @ s, ind=3, children=[t3_n4])
+    t3_n2 = PregroupTreeNode(word='but', typ=s, ind=2,
+                            children=[t3_n0, t3_n1, t3_n3, t3_n4_2, t3_n5])
+    t3 = t3_n2
+
+    assert s1_diag.to_pregroup_tree() == t1
+    assert s2_diag.to_pregroup_tree() == t2
+    assert s3_diag.to_pregroup_tree() == t3

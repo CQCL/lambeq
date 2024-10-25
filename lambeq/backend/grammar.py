@@ -34,6 +34,7 @@ from typing_extensions import Self
 
 if TYPE_CHECKING:
     import discopy
+    from lambeq.backend.pregroup_tree import PregroupTreeNode
 
 
 @dataclass
@@ -1304,6 +1305,16 @@ class Diagram(Entity):
         """
         from lambeq.backend.converters.discopy import from_discopy
         return from_discopy(diagram)
+
+    def to_pregroup_tree(self, **kwargs) -> 'PregroupTreeNode':
+        """Convert this diagram into a pregroup tree.
+        Parameters
+        ----------
+        **kwargs : dict
+            Keyword arguments to be passed to the `diagram2tree` call.
+        """
+        from lambeq.text2diagram.pregroup_tree_converter import diagram2tree
+        return diagram2tree(self, **kwargs)
 
 
 @Diagram.register_special_box('cap')
