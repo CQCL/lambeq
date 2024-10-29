@@ -17,6 +17,7 @@ __all__ = ['Box',
            'Category',
            'Cup',
            'Diagram',
+           'Frame',
            'Functor',
            'Id',
            'Spider',
@@ -30,7 +31,7 @@ __all__ = ['Box',
            'draw_equation',
            'to_gif']
 
-from lambeq.backend.grammar import (Box, Cap, Category, Cup, Diagram, Functor,
-                                    Id, Spider, Swap, Ty, Word)
+from lambeq.backend.grammar import (Box, Cap, Category, Cup, Diagram,
+                                    Frame, Functor, Id, Spider, Swap, Ty, Word)
 from lambeq.backend.pregroup_tree import PregroupTreeNode
 from lambeq.backend.drawing import draw, draw_equation, to_gif
