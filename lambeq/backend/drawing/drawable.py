@@ -20,9 +20,11 @@ Utilities to convert a grammar diagram into a drawable form.
 
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass, field
 from enum import Enum
 import sys
+from typing import Optional
 
 from typing_extensions import Self
 
@@ -34,6 +36,7 @@ X_SPACING = 2.5  # Minimum space between adjacent wires
 LEDGE = 0.5  # Space from last wire to right box edge
 BOX_HEIGHT = 0.5
 HALF_BOX_HEIGHT = 0.25
+FRAME_COMPONENTS_SPACING = 1.5 * LEDGE
 
 
 class WireEndpointType(Enum):
@@ -121,10 +124,12 @@ class BoxNode:
 
     """
 
-    obj: grammar.Box
+    obj: grammar.Box | grammar.Diagram | grammar.Frame
 
     x: float
     y: float
+    h: Optional[float] = None
+    w: Optional[float] = None
 
     dom_wires: list[int] = field(default_factory=list)
     cod_wires: list[int] = field(default_factory=list)
@@ -171,16 +176,47 @@ class BoxNode:
 
         """
 
-        all_wires_pos = [drawable_diagram.wire_endpoints[wire].x
-                         for wire in self.cod_wires + self.dom_wires]
+        if self.w is None:
+            all_wires_pos = [drawable_diagram.wire_endpoints[wire].x
+                             for wire in self.cod_wires + self.dom_wires]
 
-        if not all_wires_pos:  # scalar box
-            all_wires_pos = [self.x]
+            if not all_wires_pos:  # scalar box
+                all_wires_pos = [self.x]
 
-        left = min(all_wires_pos) - LEDGE
-        right = max(all_wires_pos) + LEDGE
+            left = min(all_wires_pos) - LEDGE
+            right = max(all_wires_pos) + LEDGE
+        else:
+            left = self.x - self.w / 2
+            right = self.x + self.w / 2
 
         return left, right
+
+    def get_y_lims(self,
+                   drawable_diagram: DrawableDiagram) -> tuple[float, float]:
+        """
+        Get top and bottom limits of the box.
+
+        Parameters
+        ----------
+        drawable_diagram : DrawableDiagram
+            `DrawableDiagram` with which this box is associated.
+
+        """
+
+        if self.h is None:
+            all_wires_pos = [drawable_diagram.wire_endpoints[wire].y
+                             for wire in self.cod_wires + self.dom_wires]
+
+            if not all_wires_pos:  # scalar box
+                all_wires_pos = [self.y]
+
+            top = max(all_wires_pos) + LEDGE
+            bottom = min(all_wires_pos) - LEDGE
+        else:
+            top = self.y + self.h / 2
+            bottom = self.y - self.h / 2
+
+        return top, bottom
 
 
 @dataclass
@@ -229,12 +265,12 @@ class DrawableDiagram:
                  box: grammar.Box,
                  off: int,
                  x_pos: float,
-                 y_pos: float) -> list[int]:
+                 y_pos: float) -> tuple[list[int], int]:
         """Add a box to the graph, creating necessary wire endpoints."""
 
         node = BoxNode(box, x_pos, y_pos)
 
-        self._add_boxnode(node)
+        box_ind = self._add_boxnode(node)
 
         # Create a node representing each element in the box's domain
         for i, obj in enumerate(box.dom):
@@ -271,7 +307,7 @@ class DrawableDiagram:
             node.add_cod_wire(wire_idx)
 
         # Replace node's dom with its cod in scan
-        return scan[:off] + scan_insert + scan[off + len(box.dom):]
+        return scan[:off] + scan_insert + scan[off + len(box.dom):], box_ind
 
     def _find_box_edges(self,
                         box: grammar.Box,
@@ -301,7 +337,8 @@ class DrawableDiagram:
     def _make_space(self,
                     scan: list[int],
                     box: grammar.Box,
-                    off: int) -> tuple[float, float]:
+                    off: int,
+                    foliated: bool) -> tuple[float, float]:
         """Determines x and y coords for a new box.
         Modifies x coordinates of existing nodes to make space."""
 
@@ -346,11 +383,64 @@ class DrawableDiagram:
         for upstream_box in self.boxes:
             bl, br = upstream_box.get_x_lims(self)
 
-            if not (bl > right_edge or br < left_edge):
+            if not (bl > right_edge or br < left_edge) or foliated:
                 # Boxes overlap
-                y = min(y, upstream_box.y - 1.0)
+                upstream_box_h = upstream_box.h or BOX_HEIGHT
+                y = min(
+                    y,
+                    upstream_box.y - 0.5 * upstream_box_h - 1.5 * BOX_HEIGHT
+                )
 
         return x, y
+
+    def _make_space_for_frame(self,
+                              scan: list[int],
+                              box: grammar.Box,
+                              off: int,
+                              outer_box: BoxNode,
+                              foliated: bool) -> None:
+        """Shift x and y coords for a new box.
+        Modifies x coordinates of existing nodes to make space."""
+
+        assert outer_box.w is not None
+
+        left_frame_end = outer_box.x - (outer_box.w / 2)
+        if off and (self.wire_endpoints[scan[off - 1]].x
+                    > left_frame_end - X_SPACING):
+            limit = self.wire_endpoints[scan[off - 1]].x
+            pad = limit - left_frame_end + X_SPACING
+
+            for node in self.boxes + self.wire_endpoints:
+                if node.x <= limit:
+                    node.x -= pad
+
+        right_frame_end = outer_box.x + (outer_box.w / 2)
+        if (off + len(box.dom) < len(scan)
+                and (self.wire_endpoints[scan[off + len(box.dom)]].x
+                     < right_frame_end + X_SPACING)):
+            limit = self.wire_endpoints[scan[off + len(box.dom)]].x
+            pad = right_frame_end + X_SPACING - limit
+
+            for node in self.boxes + self.wire_endpoints:
+                if node.x >= limit:
+                    node.x += pad
+
+        left_edge, right_edge = (
+            (outer_box.x - outer_box.w / 2),
+            (outer_box.x + outer_box.w / 2)
+        )
+        y = 0.0
+
+        for upstream_box in self.boxes:
+            bl, br = upstream_box.get_x_lims(self)
+
+            if not (bl > right_edge or br < left_edge) or foliated:
+                # Boxes overlap
+                upstream_box_h = upstream_box.h or BOX_HEIGHT
+                y = min(
+                    y,
+                    upstream_box.y - 0.5 * upstream_box_h - 1.5 * BOX_HEIGHT
+                )
 
     def _move_to_origin(self) -> None:
         """Set the min x and middle-y coordinates of the diagram to 0.
@@ -372,6 +462,24 @@ class DrawableDiagram:
             node.x -= min_x
             node.y -= mid_y
 
+    def calculate_bounds(self) -> tuple[float, float, float, float]:
+        """Calculate the bounding box of the drawable.
+
+        Returns
+        -------
+        tuple of (min_x, min_y, max_x, max_y)
+            The bounds of the drawable.
+        """
+
+        # Iterate over boxes
+        all_xs = [wire.x for wire in self.wire_endpoints]
+        all_ys = [obj.y for obj in self.wire_endpoints]
+        for box in self.boxes:
+            all_xs.extend(box.get_x_lims(self))
+            all_ys.extend(box.get_y_lims(self))
+
+        return min(all_xs), min(all_ys), max(all_xs), max(all_ys)
+
     @classmethod
     def from_diagram(cls,
                      diagram: grammar.Diagram,
@@ -382,7 +490,7 @@ class DrawableDiagram:
 
         Parameters
         ----------
-        diagram : grammar Diagram
+        diagram : grammar.Diagram
             A lambeq diagram.
         foliated : bool, default: False
             If true, each box of the diagram is drawn in a separate
@@ -410,27 +518,231 @@ class DrawableDiagram:
             scan.append(wire_end_idx)
 
         min_y = 1.0
+        max_box_half_height = 0
 
-        for depth, (box, off) in enumerate(zip(diagram.boxes,
-                                               diagram.offsets)):
+        for _, (box, off) in enumerate(zip(diagram.boxes,
+                                           diagram.offsets)):
+            # TODO: Debug issues with y coord
+            x, y = drawable._make_space(scan, box, off, foliated=foliated)
 
-            x, y = drawable._make_space(scan, box, off)
-            y = -depth if foliated else y
-
-            scan = drawable._add_box(scan, box, off, x, y)
+            scan, box_ind = drawable._add_box(scan, box, off, x, y)
+            box_height = BOX_HEIGHT
+            # Add drawables for the inside of the frame
+            if isinstance(box, grammar.Frame):
+                x, y, box_height = drawable._add_components_inside_frame(
+                    scan, box, off, x, y,
+                    foliated=foliated,
+                )
+            max_box_half_height = max(max_box_half_height, (box_height / 2))
             min_y = min(min_y, y)
 
         for i, obj in enumerate(diagram.cod):
-            wire_end = WireEndpoint(WireEndpointType.OUTPUT,
-                                    obj=obj,
-                                    x=drawable.wire_endpoints[scan[i]].x,
-                                    y=min_y - 1)
+            wire_end = WireEndpoint(
+                WireEndpointType.OUTPUT,
+                obj=obj,
+                x=drawable.wire_endpoints[scan[i]].x,
+                y=min_y - max_box_half_height - 1.5 * BOX_HEIGHT
+            )
             wire_end_idx = drawable._add_wire_end(wire_end)
             drawable._add_wire(scan[i], wire_end_idx)
 
         drawable._move_to_origin()
 
         return drawable
+
+    def _add_components_inside_frame(
+        self,
+        scan: list[int],
+        frame: grammar.Frame,
+        off: int,
+        x_pos: float,
+        y_pos: float,
+        foliated: bool = False
+    ) -> tuple[float, float, float]:
+        """
+        Add the drawable components (boxes, wire endpoints, etc.) that
+        come from the frame components to the drawable components in
+        `self`.
+
+        Parameters
+        ----------
+        frame : grammar.Frame
+            A lambeq frame.
+        off : int
+        x_pos : float
+            The x-coordinate of the placeholder box node for
+            the full frame.
+        y_pos : float
+            The y-coordinate of the placeholder box node for
+            the full frame.
+        foliated : bool, default: False
+            If true, each box of the diagram is drawn in a separate
+            layer. By default boxes are compressed upwards into
+            available space.
+
+        Returns
+        -------
+        tuple of 2 floats
+            The x- and y-coordinates of the new outermost box of the frame
+            after considerinng all the drawables inside it.
+
+        """
+
+        # We've just added this box - this is the box
+        # where the dom and cod wires of the frame originate from
+        frame_outer_box = self.boxes[-1]
+
+        component_x_offset = 0
+        component_y_offset = 2 * LEDGE
+
+        def _calculate_box_pos_and_size(
+            drawable: 'DrawableDiagram'
+        ) -> tuple[float, float, float, float]:
+            bl_x, bl_y, tr_x, tr_y = drawable.calculate_bounds()
+            w = tr_x - bl_x
+            h = tr_y - bl_y
+            x = bl_x + w / 2
+            y = bl_y + h / 2
+
+            return (x, y, h, w)
+
+        # Create an empty drawable that would contain all the components
+        # inside the frame
+        frame_drawable = self.__class__()
+        for component in frame.components:
+            # Create a drawable for each component
+            component_drawable = self.__class__.from_diagram(
+                component.to_diagram(), foliated=foliated
+            )
+
+            # Assume first that the following is the final
+            # position and size of the box
+            (component_x,
+             component_y,
+             component_h,
+             component_w) = _calculate_box_pos_and_size(component_drawable)
+
+            # Give some horizontal breathing room
+            component_w += 2 * LEDGE
+
+            # Add space when component doesn't have dom, cod wires
+            if not component.dom:
+                component_h += LEDGE
+                component_y += LEDGE / 2
+            if not component.cod:
+                component_h += LEDGE
+                component_y -= LEDGE / 2
+
+            # Create wrapper box for the component
+            component_wrapper_box = BoxNode(
+                obj=component,
+                x=component_x, y=component_y,
+                h=component_h, w=component_w,
+            )
+            # Put wrapper box to head of list so that it gets
+            # rendered first because boxes are opaque
+            component_drawable.boxes = ([component_wrapper_box]
+                                        + component_drawable.boxes)
+            component_bounds = component_drawable.calculate_bounds()
+            if component_bounds[0] < 0:
+                # Apply offset so that leftmost edge of component
+                # drawable sits at x=0 in its local coordinates,
+                # otherwise, it will overlap with the component
+                # to its left
+                component_drawable._apply_drawing_offset((
+                    -component_bounds[0], 0
+                ))
+
+            # Apply horizontal offset
+            component_drawable._apply_drawing_offset(
+                (component_x_offset, component_y_offset),
+            )
+
+            # Compute new offset
+            component_bounds = component_drawable.calculate_bounds()
+            component_x_offset = (component_bounds[2]
+                                  + FRAME_COMPONENTS_SPACING)
+
+            # Add this drawable to the main drawable
+            frame_drawable._merge_with(component_drawable)
+
+        # Create a box node for the entire frame drawable
+        frame_drawable._move_to_origin()
+        (frame_x,
+         frame_y,
+         frame_h,
+         frame_w) = _calculate_box_pos_and_size(frame_drawable)
+        frame_w += 2 * LEDGE
+        # Extra vertical clearance for the name of the frame
+        frame_h += 4 * LEDGE
+
+        (frame_outer_box_left,
+         frame_outer_box_right) = frame_outer_box.get_x_lims(self)
+        frame_wire_based_width = frame_outer_box_right - frame_outer_box_left
+        frame_outer_box_y_offset = -(frame_h - BOX_HEIGHT) / 2
+        # We follow the bigger width between
+        # 1) the width computed after considering all
+        #    the wires connected to the frame, vs
+        # 2) the width computed for the tightest box
+        #    that can contain all the components
+        frame_w = max(frame_w, frame_wire_based_width)
+        frame_drawable_x_offset = (frame_outer_box_left
+                                   + frame_wire_based_width / 2 - frame_x)
+
+        # Adjust size of the outer box based on the above data
+        frame_outer_box.w, frame_outer_box.h = frame_w, frame_h
+        frame_outer_box.y += frame_outer_box_y_offset
+        frame_components_offset = (
+            frame_drawable_x_offset,
+            frame_outer_box.y - frame_y,
+        )
+        frame_drawable._apply_drawing_offset(frame_components_offset)
+        # Update y values of cod wires connected to frame_outer_box
+        for i in range(len(frame_outer_box.cod_wires)):
+            self.wire_endpoints[-(i + 1)].y += frame_outer_box_y_offset * 2
+
+        # Adjust spacing around frame before merging
+        self._make_space_for_frame(scan, frame, off, frame_outer_box,
+                                   foliated=foliated)
+
+        # Merge frame to calling diagram
+        self._merge_with(frame_drawable)
+
+        return frame_outer_box.x, frame_outer_box.y, frame_outer_box.h
+
+    def _apply_drawing_offset(self,
+                              offset: tuple[float, float]) -> None:
+        """Apply the offset to all the components inside the drawable.
+
+        Parameters
+        ----------
+        offset : tuple[float, float]
+            The x and y offsets to be applied.
+        """
+
+        for obj in self.boxes + self.wire_endpoints:
+            obj.x += offset[0]
+            obj.y += offset[1]
+
+    def _merge_with(self, drawable: 'DrawableDiagram') -> None:
+        last_wire_endpoint = len(self.wire_endpoints)
+
+        for wire_endpoint in drawable.wire_endpoints:
+            self.wire_endpoints.append(wire_endpoint)
+
+        for box in drawable.boxes:
+            box_copy = copy.deepcopy(box)
+            box_copy.dom_wires = [dom_wire + last_wire_endpoint
+                                  for dom_wire in box_copy.dom_wires]
+            box_copy.cod_wires = [cod_wire + last_wire_endpoint
+                                  for cod_wire in box_copy.cod_wires]
+            self.boxes.append(box_copy)
+
+        for wire in drawable.wires:
+            self.wires.append(
+                (wire[0] + last_wire_endpoint,
+                 wire[1] + last_wire_endpoint)
+            )
 
     def scale_and_pad(self,
                       scale: tuple[float, float],
@@ -457,13 +769,15 @@ class DrawableDiagram:
             box.x = min_x + (box.x - min_x) * scale[0] + pad[0]
             box.y = min_y + (box.y - min_y) * scale[1] + pad[1]
 
+            half_box_height = (box.h / 2 if box.h is not None
+                               else HALF_BOX_HEIGHT)
             for wire_end_idx in box.dom_wires:
                 self.wire_endpoints[wire_end_idx].y = (
-                    box.y + HALF_BOX_HEIGHT * scale[1])
+                    box.y + half_box_height * scale[1])
 
             for wire_end_idx in box.cod_wires:
                 self.wire_endpoints[wire_end_idx].y = (
-                    box.y - HALF_BOX_HEIGHT * scale[1])
+                    box.y - half_box_height * scale[1])
 
 
 class PregroupError(Exception):
@@ -506,7 +820,7 @@ class DrawablePregroup(DrawableDiagram):
 
         Parameters
         ----------
-        diagram : grammar Diagram
+        diagram : grammar.Diagram
             A lambeq diagram.
         foliated : bool, default: False
             This parameter is not used for pregroup diagrams, which are
