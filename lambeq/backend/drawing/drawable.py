@@ -33,6 +33,7 @@ from lambeq.backend.quantum import quantum
 
 
 X_SPACING = 2.5  # Minimum space between adjacent wires
+BOX_SPACING = 0.5   # Minimum space between adjacent boxes
 LEDGE = 0.5  # Space from last wire to right box edge
 BOX_HEIGHT = 0.5
 HALF_BOX_HEIGHT = 0.25
@@ -95,6 +96,8 @@ class WireEndpoint:
     x: float
     y: float
 
+    parent: Optional['BoxNode'] = None
+
     @property
     def coordinates(self) -> tuple[float, float]:
         return (self.x, self.y)
@@ -133,6 +136,11 @@ class BoxNode:
 
     dom_wires: list[int] = field(default_factory=list)
     cod_wires: list[int] = field(default_factory=list)
+
+    child_boxes: list[Self] = field(default_factory=list)
+    child_wire_endpoints: list[WireEndpoint] = field(default_factory=list)
+    child_wires: list[tuple[int, int]] = field(default_factory=list)
+    parent: Optional[Self] = None
 
     @property
     def coordinates(self):
@@ -364,8 +372,19 @@ class DrawableDiagram:
             pad = limit - x + half_width
 
             for node in self.boxes + self.wire_endpoints:
-                if node.x <= limit:
-                    node.x -= pad
+                if node.parent is None and node.x <= limit:
+                    # print(f'{node = }')
+                    # print(f'{node.parent = }')
+                    # print('***')
+                    if isinstance(node, BoxNode) and node.child_boxes:
+                        # print('modifying')
+                        # print(f'{node = }')
+                        # print('w/ children')
+                        # print(f'{node.child_boxes = }')
+                        node.w += abs(pad)
+                        node.x -= pad / 2
+                    else:
+                        node.x -= pad
 
         if (off + len(box.dom) < len(scan)
                 and (self.wire_endpoints[scan[off + len(box.dom)]].x
@@ -374,8 +393,19 @@ class DrawableDiagram:
             pad = x + half_width - limit
 
             for node in self.boxes + self.wire_endpoints:
-                if node.x >= limit:
-                    node.x += pad
+                if node.parent is None and node.x >= limit:
+                    # print(f'{node = }')
+                    # print(f'{node.parent = }')
+                    # print('***')
+                    if isinstance(node, BoxNode) and node.child_boxes:
+                        # print('modifying')
+                        # print(f'{node = }')
+                        # print('w/ children')
+                        # print(f'{node.child_boxes = }')
+                        node.w += abs(pad)
+                        node.x += pad / 2
+                    else:
+                        node.x += pad
 
         left_edge, right_edge = self._find_box_edges(box, x, off, scan)
         y = 0.0
@@ -404,26 +434,52 @@ class DrawableDiagram:
 
         assert outer_box.w is not None
 
-        left_frame_end = outer_box.x - (outer_box.w / 2)
-        if off and (self.wire_endpoints[scan[off - 1]].x
-                    > left_frame_end - X_SPACING):
-            limit = self.wire_endpoints[scan[off - 1]].x
-            pad = limit - left_frame_end + X_SPACING
+        components_to_left = self._get_components_connected_to_top(scan[:off])
+        # components_to_left = [obj for obj in components_to_left
+        #                       if obj.parent is None]
 
+        if components_to_left:
+            # Get rightmost edge
+            rightmost_edge = float('-inf')
+            for obj in components_to_left:
+                if obj.parent is None:
+                    if isinstance(obj, WireEndpoint):
+                        obj_right = obj.x
+                    else:
+                        obj_right = obj.get_x_lims(self)[1]
+                    rightmost_edge = max(rightmost_edge, obj_right)
+            print(f'{rightmost_edge = }')
+
+
+            left_frame_end = outer_box.x - (outer_box.w / 2)
+            pad = rightmost_edge + BOX_SPACING - left_frame_end
             for node in self.boxes + self.wire_endpoints:
-                if node.x <= limit:
-                    node.x -= pad
-
-        right_frame_end = outer_box.x + (outer_box.w / 2)
-        if (off + len(box.dom) < len(scan)
-                and (self.wire_endpoints[scan[off + len(box.dom)]].x
-                     < right_frame_end + X_SPACING)):
-            limit = self.wire_endpoints[scan[off + len(box.dom)]].x
-            pad = right_frame_end + X_SPACING - limit
-
-            for node in self.boxes + self.wire_endpoints:
-                if node.x >= limit:
+                if node.parent is None and node not in components_to_left:
                     node.x += pad
+                    # Update child components
+                    if isinstance(node, BoxNode):
+                        for child in node.child_boxes + node.child_wire_endpoints:
+                            child.x += pad
+
+        # if off and (self.wire_endpoints[scan[off - 1]].x
+        #             > left_frame_end - X_SPACING):
+        #     limit = self.wire_endpoints[scan[off - 1]].x
+        #     pad = limit - left_frame_end + X_SPACING
+
+        #     for node in self.boxes + self.wire_endpoints:
+        #         if node.x <= limit:
+        #             node.x -= pad
+
+        # right_frame_end = outer_box.x + (outer_box.w / 2)
+        # if (off + len(box.dom) < len(scan)
+        #         and (self.wire_endpoints[scan[off + len(box.dom)]].x
+        #              < right_frame_end + X_SPACING)):
+        #     limit = self.wire_endpoints[scan[off + len(box.dom)]].x
+        #     pad = right_frame_end + X_SPACING - limit
+
+        #     for node in self.boxes + self.wire_endpoints:
+        #         if node.x >= limit:
+        #             node.x += pad
 
         left_edge, right_edge = (
             (outer_box.x - outer_box.w / 2),
@@ -504,6 +560,7 @@ class DrawableDiagram:
             necessary to draw it.
 
         """
+        from .drawing import draw
 
         drawable = cls()
 
@@ -530,11 +587,16 @@ class DrawableDiagram:
             # Add drawables for the inside of the frame
             if isinstance(box, grammar.Frame):
                 x, y, box_height = drawable._add_components_inside_frame(
-                    scan, box, off, x, y,
+                    scan, box, box_ind, off, x, y,
                     foliated=foliated,
                 )
             max_box_half_height = max(max_box_half_height, (box_height / 2))
             min_y = min(min_y, y)
+
+        #     draw(diagram=diagram, drawable=drawable)
+
+        # print('drawable before diagram cod')
+        # draw(diagram=diagram, drawable=drawable)
 
         for i, obj in enumerate(diagram.cod):
             wire_end = WireEndpoint(
@@ -548,12 +610,16 @@ class DrawableDiagram:
 
         drawable._move_to_origin()
 
+        # print('final drawable')
+        # draw(diagram=diagram, drawable=drawable)
+
         return drawable
 
     def _add_components_inside_frame(
         self,
         scan: list[int],
         frame: grammar.Frame,
+        box_ind: int,
         off: int,
         x_pos: float,
         y_pos: float,
@@ -587,10 +653,11 @@ class DrawableDiagram:
             after considerinng all the drawables inside it.
 
         """
+        from .drawing import draw
 
         # We've just added this box - this is the box
         # where the dom and cod wires of the frame originate from
-        frame_outer_box = self.boxes[-1]
+        frame_outer_box = self.boxes[box_ind]
 
         component_x_offset = 0
         component_y_offset = 2 * LEDGE
@@ -614,6 +681,12 @@ class DrawableDiagram:
             component_drawable = self.__class__.from_diagram(
                 component.to_diagram(), foliated=foliated
             )
+            for obj in component_drawable.boxes + component_drawable.wire_endpoints:
+                obj.parent = None
+                if isinstance(obj, BoxNode):
+                    obj.child_boxes = []
+                    obj.child_wire_endpoints = []
+                    obj.child_wires = []
 
             # Assume first that the following is the final
             # position and size of the box
@@ -696,7 +769,19 @@ class DrawableDiagram:
             frame_drawable_x_offset,
             frame_outer_box.y - frame_y,
         )
+
         frame_drawable._apply_drawing_offset(frame_components_offset)
+
+        # Assign parent, child relationship
+        frame_outer_box.child_boxes = frame_drawable.boxes
+        frame_outer_box.child_wire_endpoints = frame_drawable.wire_endpoints
+        frame_outer_box.child_wires = frame_drawable.wires
+        for obj in frame_outer_box.child_boxes + frame_outer_box.child_wire_endpoints:
+            obj.parent = frame_outer_box
+        # print('===')
+        # draw(diagram=frame_outer_box.obj.to_diagram(), drawable=frame_drawable)
+        # print('===')
+
         # Update y values of cod wires connected to frame_outer_box
         for i in range(len(frame_outer_box.cod_wires)):
             self.wire_endpoints[-(i + 1)].y += frame_outer_box_y_offset * 2
@@ -707,8 +792,70 @@ class DrawableDiagram:
 
         # Merge frame to calling diagram
         self._merge_with(frame_drawable)
+        # for box in self.boxes:
+        #     print(f'{box}\n---')
 
         return frame_outer_box.x, frame_outer_box.y, frame_outer_box.h
+
+    def _get_components_connected_to_top(
+        self,
+        scan: list[int],
+    ) -> list[BoxNode | WireEndpoint]:
+        """Returns all the boxes and wire endpoints connected to
+        the provided box from the top. This is used to determine the boxes
+        and wire endpoints that shouldn't be moved when making space for
+        a frame.
+
+        Parameters
+        ----------
+        scan : list of int
+            The wire endpoints to start with.
+
+        Returns
+        -------
+        list of BoxNode or WireEndpoint
+        """
+
+        list_of_components = []
+        # These are wire indices
+        curr_scan = list(scan)
+        new_scan = []
+        while curr_scan:
+            # print(f'{curr_scan = }')
+            for obj in curr_scan:
+                # If wire index:
+                if isinstance(obj, int):
+                    we = self.wire_endpoints[obj]
+                    if we.parent is None:
+                        # Update output with actual wire endpoint object
+                        list_of_components.append(we)
+                        if we.kind == WireEndpointType.DOM:
+                            # Add other end of wire (just the index) to `new_scan`
+                            for start, end in self.wires:
+                                if start == obj and self.wire_endpoints[end].y > we.y:
+                                    new_scan.append(end)
+                                    break
+                                elif end == obj and self.wire_endpoints[start].y > we.y:
+                                    new_scan.append(start)
+                                    break
+                        elif we.kind == WireEndpointType.COD:
+                            # Check boxes that have the wire as cod
+                            for bx in self.boxes:
+                                # print('checking boxes with cod')
+                                # print(bx.obj)
+                                # print(bx.parent)
+                                # print('***')
+                                if bx.parent is None and obj in bx.cod_wires:
+                                    new_scan.append(bx)
+                elif isinstance(obj, BoxNode) and obj.parent is None:
+                    # Add dom
+                    list_of_components.append(obj)
+                    new_scan.extend(obj.dom_wires)
+
+            curr_scan = new_scan
+            new_scan = []
+
+        return list_of_components
 
     def _apply_drawing_offset(self,
                               offset: tuple[float, float]) -> None:
@@ -721,8 +868,16 @@ class DrawableDiagram:
         """
 
         for obj in self.boxes + self.wire_endpoints:
-            obj.x += offset[0]
-            obj.y += offset[1]
+            # print(f'{offset = }: {obj = }')
+            if obj.parent is None:
+                obj.x += offset[0]
+                obj.y += offset[1]
+
+            # Update child components
+            if isinstance(obj, BoxNode):
+                for child in obj.child_boxes + obj.child_wire_endpoints:
+                    child.x += offset[0]
+                    child.y += offset[1]
 
     def _merge_with(self, drawable: 'DrawableDiagram') -> None:
         last_wire_endpoint = len(self.wire_endpoints)
