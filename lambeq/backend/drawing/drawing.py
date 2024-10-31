@@ -32,6 +32,7 @@ from PIL import Image
 from lambeq.backend import grammar, quantum
 from lambeq.backend.drawing.drawable import (BOX_HEIGHT, BoxNode,
                                              DrawableDiagram,
+                                             DrawableDiagramWithFrames,
                                              DrawablePregroup,
                                              LEDGE,
                                              WireEndpointType)
@@ -96,9 +97,11 @@ def draw(diagram: Diagram, **params) -> None:
         'asymmetry', .25 * needs_asymmetry(diagram))
 
     drawable = params.pop('drawable', None)
+    drawable_cls = (DrawableDiagramWithFrames if diagram.has_frames
+                    else DrawableDiagram)
     if drawable is None:
-        drawable = DrawableDiagram.from_diagram(diagram,
-                                                params.get('foliated', False))
+        drawable = drawable_cls.from_diagram(diagram,
+                                             params.get('foliated', False))
     # TODO: Need to revisit this function as it assumes
     # all the boxes have the same height
     drawable.scale_and_pad(params.get('scale', (1, 1)),
