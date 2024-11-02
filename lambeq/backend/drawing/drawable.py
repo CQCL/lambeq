@@ -1042,10 +1042,52 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         drawable._move_to_origin()
 
+        # Push top-level floating boxes, i.e. boxes without
+        # any wires to the right.
+        drawable._relocate_floating_boxes(scan)
+
         # print('final drawable')
         # draw(diagram=diagram, drawable=drawable)
 
         return drawable
+
+    def _relocate_floating_boxes(self,
+                                 diagram_output: list[int]) -> None:
+        """Push floating boxes to rightmost side of diagram."""
+
+        connected_components = self._get_components_connected_to_top(
+            diagram_output,
+        )
+
+        rightmost_edge = None
+        if connected_components:
+            rightmost_edge = float('-inf')
+            for obj in connected_components:
+                if obj.parent is None:
+                    if isinstance(obj, WireEndpoint):
+                        obj_right = obj.x
+                    else:
+                        obj_right = obj.get_x_lims(self)[1]
+                    rightmost_edge = max(rightmost_edge, obj_right)
+
+        floating_boxes = []
+        for box in self.boxes:
+            if box.parent is None and not (box.dom_wires or box.cod_wires):
+                floating_boxes.append(box)
+
+        floating_boxes = sorted(
+            floating_boxes,
+            key=lambda b: b.get_x_lims(self)[0]
+        )
+        box_start = (rightmost_edge + BOX_SPACING
+                     if rightmost_edge is not None
+                     else floating_boxes[0].get_x_lims(self)[0])
+
+        for i, box in enumerate(floating_boxes):
+            pad = (box_start - box.get_x_lims(self)[0] +
+                   (BOX_SPACING if i else 0))
+            box._apply_drawing_offset((pad, 0))
+            box_start = box.get_x_lims(self)[1]
 
     def _add_components_inside_frame(
         self,
