@@ -20,7 +20,6 @@ Utilities to convert a grammar diagram into a drawable form.
 
 from __future__ import annotations
 
-import copy
 from dataclasses import dataclass, field
 from enum import Enum
 import sys
@@ -115,6 +114,7 @@ class WireEndpoint:
         # print(f'{offset = }: offsetting {self = }')
         self.x += offset[0]
         self.y += offset[1]
+
 
 @dataclass
 class BoxNode:
@@ -786,8 +786,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         if not scan:
             return 0, 0
-
-        scan_x = [self.wire_endpoints[sc].x for sc in scan]
+        # scan_x = [self.wire_endpoints[sc].x for sc in scan]
         # print(f'{scan_x = }')
 
         half_width = X_SPACING * (len(box.cod[:-1]) / 2 + 1)
@@ -807,7 +806,8 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         # print(f'{x = }')
 
-        if off and self.wire_endpoints[scan[off - 1]].x > x - half_width:
+        if (off
+            and self.wire_endpoints[scan[off - 1]].x > x - half_width):
             limit = self.wire_endpoints[scan[off - 1]].x
             pad = limit - x + half_width
             # print(f'{limit = }, {pad = }')
@@ -890,6 +890,17 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             # print(f'{rightmost_edge = }')
 
             left_frame_end = outer_box.x - (outer_box.w / 2)
+            components_connected_to_outer_box = self._get_components_connected_to_top(
+                outer_box.dom_wires,
+            )
+            for obj in components_connected_to_outer_box:
+                if obj.parent is None:
+                    if isinstance(obj, WireEndpoint):
+                        obj_left = obj.x
+                    else:
+                        obj_left = obj.get_x_lims(self)[0]
+                    left_frame_end = min(left_frame_end, obj_left)
+
             pad = rightmost_edge + BOX_SPACING - left_frame_end
             for node in self.boxes + self.wire_endpoints:
                 if node.parent is None and node not in components_to_left:
@@ -1294,16 +1305,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         """
 
         for obj in self.boxes + self.wire_endpoints:
-            # print(f'{offset = }: {obj = }')
-            if obj.parent is None:
-                obj.x += offset[0]
-                obj.y += offset[1]
-
-            # Update child components
-            if isinstance(obj, BoxNode):
-                for child in obj.child_boxes + obj.child_wire_endpoints:
-                    child.x += offset[0]
-                    child.y += offset[1]
+            obj._apply_drawing_offset(offset)
 
     def _merge_with(self, drawable: 'DrawableDiagram') -> None:
         last_wire_endpoint = len(self.wire_endpoints)
