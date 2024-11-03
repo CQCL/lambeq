@@ -1055,10 +1055,53 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         # any wires to the right.
         drawable._relocate_floating_boxes(scan)
 
+        # Center top-level frames on its dom/cod wires
+        drawable._center_frames_on_wires()
+
         # print('final drawable')
         # draw(diagram=diagram, drawable=drawable)
 
         return drawable
+
+    def _center_frames_on_wires(self) -> None:
+        for box in self.boxes:
+            if box.parent is None and isinstance(box.obj, grammar.Frame):
+                # New width
+                dom_width = 0
+                if box.dom_wires:
+                    dom_width = (
+                        self.wire_endpoints[box.dom_wires[-1]].x
+                        - self.wire_endpoints[box.dom_wires[0]].x
+                        + 2 * LEDGE
+                    )
+
+                cod_width = 0
+                if box.cod_wires:
+                    cod_width = (
+                        self.wire_endpoints[box.cod_wires[-1]].x
+                        - self.wire_endpoints[box.cod_wires[0]].x
+                        + 2 * LEDGE
+                    )
+
+                candidate_width = dom_width
+                ref_wires = box.dom_wires
+                if cod_width > candidate_width:
+                    candidate_width = cod_width
+                    ref_wires = box.cod_wires
+
+                if candidate_width > box.w:
+                    box.w = candidate_width
+
+                # Also shift the box
+                if ref_wires:
+                    ref_wires_center = self.wire_endpoints[ref_wires[0]].x
+                    ref_wires_center += (
+                        self.wire_endpoints[ref_wires[-1]].x
+                        - self.wire_endpoints[ref_wires[0]].x
+                    ) / 2
+                    box._apply_drawing_offset(
+                        (ref_wires_center - box.x, 0)
+                    )
 
     def _relocate_floating_boxes(self,
                                  diagram_output: list[int]) -> None:
