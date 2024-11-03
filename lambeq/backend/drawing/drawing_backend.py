@@ -29,6 +29,16 @@ DEFAULT_MARGINS = (.05, .1)
 DEFAULT_ASPECT = 'equal'
 
 
+FRAME_COLORS: list[str] = [
+    '#fbe8e7', '#fee1ba', '#fff9e5', '#e8f8ea', '#dcfbf5', '#d3fef4',
+    '#e2effe', '#dfdefe', '#f0e8fc', '#f8e6f6', '#ffd0df',
+    '#f4bbb6', '#fecd8c', '#fdeebd', '#d2f7d6', '#9ef0e2', '#9dfff1',
+    '#cee3fb', '#c1bdfd', '#e4d3fb', '#fbcbf8', '#facfdb',
+    '#fc988e', '#feb95e', '#fce393', '#b5f7bd', '#cafef5', '#a5feee',
+    '#8ac0fb', '#a4a0fc', '#e0bffb', '#fcc0f6', '#fbafc2',
+]
+
+
 COLORS: dict[str, str] = {
     'white': '#ffffff',
     'red': '#e8a5a5',
@@ -37,6 +47,8 @@ COLORS: dict[str, str] = {
     'yellow': '#f7f700',
     'black': '#000000',
 }
+for color in FRAME_COLORS:
+    COLORS[color] = color
 
 
 SHAPES: dict[str, str] = {

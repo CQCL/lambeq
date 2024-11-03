@@ -24,6 +24,7 @@ from __future__ import annotations
 
 from math import sqrt
 import os
+import random
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 from typing import TYPE_CHECKING
 
@@ -38,7 +39,8 @@ from lambeq.backend.drawing.drawable import (BOX_HEIGHT, BoxNode,
                                              WireEndpointType)
 from lambeq.backend.drawing.drawing_backend import (DEFAULT_ASPECT,
                                                     DEFAULT_MARGINS,
-                                                    DrawingBackend)
+                                                    DrawingBackend,
+                                                    FRAME_COLORS)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
 from lambeq.backend.drawing.mat_backend import MatBackend
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
@@ -413,7 +415,11 @@ def _draw_box(backend: DrawingBackend,
     else:
         points[2][0] += asymmetry
 
-    backend.draw_polygon(*points)
+    color = 'white'
+    if (isinstance(drawable_diagram, DrawableDiagramWithFrames)
+            and hasattr(box, 'name') and box.name):
+        color = random.choice(FRAME_COLORS)
+    backend.draw_polygon(*points, color=color)
 
     if params.get('draw_box_labels', True) and hasattr(box, 'name'):
         y = drawable_box.y
