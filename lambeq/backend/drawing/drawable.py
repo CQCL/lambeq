@@ -101,6 +101,9 @@ class WireEndpoint:
     def coordinates(self) -> tuple[float, float]:
         return (self.x, self.y)
 
+    def __hash__(self) -> int:
+        return hash(repr(self))
+
     def _apply_drawing_offset(self,
                               offset: tuple[float, float]) -> None:
         """Apply the offset to all the components inside the drawable.
@@ -158,6 +161,9 @@ class BoxNode:
     @property
     def coordinates(self):
         return (self.x, self.y)
+
+    def __hash__(self) -> int:
+        return hash(repr(self))
 
     def add_dom_wire(self, idx: int) -> None:
         """
@@ -893,13 +899,16 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             components_connected_to_outer_box = self._get_components_connected_to_top(
                 outer_box.dom_wires,
             )
-            for obj in components_connected_to_outer_box:
-                if obj.parent is None:
-                    if isinstance(obj, WireEndpoint):
-                        obj_left = obj.x
-                    else:
-                        obj_left = obj.get_x_lims(self)[0]
-                    left_frame_end = min(left_frame_end, obj_left)
+            if not set(components_to_left).intersection(
+                set(components_connected_to_outer_box)
+                ):
+                for obj in components_connected_to_outer_box:
+                    if obj.parent is None:
+                        if isinstance(obj, WireEndpoint):
+                            obj_left = obj.x
+                        else:
+                            obj_left = obj.get_x_lims(self)[0]
+                        left_frame_end = min(left_frame_end, obj_left)
 
             pad = rightmost_edge + BOX_SPACING - left_frame_end
             for node in self.boxes + self.wire_endpoints:
