@@ -78,8 +78,10 @@ class MatBackend(DrawingBackend):
                 head_width=.02, color='black')
         else:
             if is_leg:
-                mid = ((target[0], source[1]) if bend_out
-                       else (source[0], target[1]))
+                mid = (target[0], source[1])
+                if not bend_out:
+                    mid = (source[0], target[1])
+
                 path = Path([source, mid, target],
                             [Path.MOVETO, Path.CURVE3, Path.CURVE3])
             else:
