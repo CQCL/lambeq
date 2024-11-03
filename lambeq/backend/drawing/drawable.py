@@ -141,7 +141,7 @@ class BoxNode:
 
     """
 
-    obj: grammar.Box | grammar.Diagram | grammar.Frame
+    obj: grammar.Diagrammable
 
     x: float
     y: float
@@ -949,7 +949,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             scan.append(wire_end_idx)
 
         min_y = 1.0
-        max_box_half_height = 0
+        max_box_half_height = 0.
 
         for _, (box, off) in enumerate(zip(diagram.boxes,
                                            diagram.offsets)):
@@ -993,7 +993,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         for box in self.boxes:
             if box.parent is None and isinstance(box.obj, grammar.Frame):
                 # New width
-                dom_width = 0
+                dom_width = 0.
                 if box.dom_wires:
                     dom_width = (
                         self.wire_endpoints[box.dom_wires[-1]].x
@@ -1001,7 +1001,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
                         + 2 * LEDGE
                     )
 
-                cod_width = 0
+                cod_width = 0.
                 if box.cod_wires:
                     cod_width = (
                         self.wire_endpoints[box.cod_wires[-1]].x
@@ -1015,7 +1015,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
                     candidate_width = cod_width
                     ref_wires = box.cod_wires
 
-                if candidate_width > box.w:
+                if box.w is not None and candidate_width > box.w:
                     box.w = candidate_width
 
                 # Also shift the box
@@ -1126,8 +1126,8 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         # where the dom and cod wires of the frame originate from
         frame_outer_box = self.boxes[box_ind]
 
-        component_x_offset = 0
-        component_y_offset = 2 * LEDGE
+        component_x_offset = 0.
+        component_y_offset = 2. * LEDGE
 
         # Create an empty drawable that would contain all the components
         # inside the frame
@@ -1270,10 +1270,10 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             The objects reachable from the starting wire endpoints.
         """
 
-        list_of_components = []
+        list_of_components: list[BoxNode | WireEndpoint] = []
         # These are wire indices
-        curr_scan = list(scan)
-        new_scan = []
+        curr_scan: list[int | BoxNode] = list(scan)
+        new_scan: list[int | BoxNode] = []
         while curr_scan:
             for obj in curr_scan:
                 # If wire index:
