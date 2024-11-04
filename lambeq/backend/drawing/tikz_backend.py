@@ -54,7 +54,7 @@ class TikzBackend(DrawingBackend):
                  options: str | None = None) -> int:
         """ Add a node to the tikz picture, return its unique id. """
 
-        node = len(self.nodes) + 1
+        node = max(self.nodes.values()) + 1 if self.nodes else 1
         text = '' if text is None else text
 
         self.nodelayer.append(

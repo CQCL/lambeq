@@ -191,30 +191,30 @@ tikz_outputs = [
 """\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
-\\node [] (1) at (1.25, 1.0) {};
-\\node [] (2) at (1.25, 0.25) {};
-\\node [style=none, fill=white, right] (3) at (1.35, 1.0) {s};
-\\node [] (4) at (0.0, -0.25) {};
-\\node [] (5) at (0.0, -1.0) {};
-\\node [style=none, fill=white, right] (6) at (0.1, -0.35) {s};
-\\node [] (7) at (2.5, -0.25) {};
-\\node [] (8) at (2.5, -1.0) {};
-\\node [style=none, fill=white, right] (9) at (2.6, -0.35) {s};
-\\node [] (10) at (5.0, 1.0) {};
-\\node [] (11) at (5.0, -1.0) {};
-\\node [style=none, fill=white, right] (12) at (5.1, 1.0) {s};
-\\node [] (13) at (-0.5, -0.25) {};
-\\node [] (14) at (3.0, -0.25) {};
-\\node [] (15) at (3.0, 0.25) {};
-\\node [] (16) at (-0.5, 0.25) {};
-\\node [style=none, fill=white] (17) at (1.25, 0.0) {BX1};
+\\node [] (1) at (-0.5, -0.25) {};
+\\node [] (2) at (3.0, -0.25) {};
+\\node [] (3) at (3.0, 0.25) {};
+\\node [] (4) at (-0.5, 0.25) {};
+\\node [style=none, fill=white] (5) at (1.25, 0.0) {BX1};
+\\node [] (6) at (1.25, 1.0) {};
+\\node [] (7) at (1.25, 0.25) {};
+\\node [style=none, fill=white, right] (8) at (1.35, 1.0) {s};
+\\node [] (9) at (0.0, -0.25) {};
+\\node [] (10) at (0.0, -1.0) {};
+\\node [style=none, fill=white, right] (11) at (0.1, -0.35) {s};
+\\node [] (12) at (2.5, -0.25) {};
+\\node [] (13) at (2.5, -1.0) {};
+\\node [style=none, fill=white, right] (14) at (2.6, -0.35) {s};
+\\node [] (15) at (5.0, 1.0) {};
+\\node [] (16) at (5.0, -1.0) {};
+\\node [style=none, fill=white, right] (17) at (5.1, 1.0) {s};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [in=90, out=-90] (1.center) to (2.center);
-\\draw [in=90, out=-90] (4.center) to (5.center);
-\\draw [in=90, out=-90] (7.center) to (8.center);
-\\draw [in=90, out=-90] (10.center) to (11.center);
-\\draw [-, fill={white}] (13.center) to (14.center) to (15.center) to (16.center) to (13.center);
+\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90] (6.center) to (7.center);
+\\draw [in=90, out=-90] (9.center) to (10.center);
+\\draw [in=90, out=-90] (12.center) to (13.center);
+\\draw [in=90, out=-90] (15.center) to (16.center);
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
@@ -222,36 +222,36 @@ tikz_outputs = [
 """\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
-\\node [] (1) at (1.25, 1.5) {};
-\\node [] (2) at (1.25, 0.75) {};
-\\node [style=none, fill=white, right] (3) at (1.35, 1.5) {s};
-\\node [] (4) at (0.0, 0.25) {};
-\\node [] (5) at (0.0, -0.25) {};
-\\node [style=none, fill=white, right] (6) at (0.1, 0.15) {s};
-\\node [] (7) at (2.5, 0.25) {};
-\\node [] (8) at (2.5, -0.25) {};
-\\node [style=none, fill=white, right] (9) at (2.6, 0.15) {s};
-\\node [] (10) at (1.25, -0.75) {};
-\\node [] (11) at (1.25, -1.5) {};
-\\node [style=none, fill=white, right] (12) at (1.35, -0.85) {s};
-\\node [] (13) at (-0.5, 0.25) {};
-\\node [] (14) at (3.0, 0.25) {};
-\\node [] (15) at (3.25, 0.75) {};
-\\node [] (16) at (-0.5, 0.75) {};
-\\node [style=none, fill=white] (17) at (1.25, 0.5) {BX1};
-\\node [] (18) at (-0.5, -0.75) {};
-\\node [] (19) at (3.25, -0.75) {};
-\\node [] (20) at (3.0, -0.25) {};
-\\node [] (21) at (-0.5, -0.25) {};
-\\node [style=none, fill=white] (22) at (1.25, -0.5) {BX1†};
+\\node [] (1) at (-0.5, 0.25) {};
+\\node [] (2) at (3.0, 0.25) {};
+\\node [] (3) at (3.25, 0.75) {};
+\\node [] (4) at (-0.5, 0.75) {};
+\\node [style=none, fill=white] (5) at (1.25, 0.5) {BX1};
+\\node [] (6) at (-0.5, -0.75) {};
+\\node [] (7) at (3.25, -0.75) {};
+\\node [] (8) at (3.0, -0.25) {};
+\\node [] (9) at (-0.5, -0.25) {};
+\\node [style=none, fill=white] (10) at (1.25, -0.5) {BX1†};
+\\node [] (11) at (1.25, 1.5) {};
+\\node [] (12) at (1.25, 0.75) {};
+\\node [style=none, fill=white, right] (13) at (1.35, 1.5) {s};
+\\node [] (14) at (0.0, 0.25) {};
+\\node [] (15) at (0.0, -0.25) {};
+\\node [style=none, fill=white, right] (16) at (0.1, 0.15) {s};
+\\node [] (17) at (2.5, 0.25) {};
+\\node [] (18) at (2.5, -0.25) {};
+\\node [style=none, fill=white, right] (19) at (2.6, 0.15) {s};
+\\node [] (20) at (1.25, -0.75) {};
+\\node [] (21) at (1.25, -1.5) {};
+\\node [style=none, fill=white, right] (22) at (1.35, -0.85) {s};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [in=90, out=-90] (1.center) to (2.center);
-\\draw [in=90, out=-90] (4.center) to (5.center);
-\\draw [in=90, out=-90] (7.center) to (8.center);
-\\draw [in=90, out=-90] (10.center) to (11.center);
-\\draw [-, fill={white}] (13.center) to (14.center) to (15.center) to (16.center) to (13.center);
-\\draw [-, fill={white}] (18.center) to (19.center) to (20.center) to (21.center) to (18.center);
+\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [-, fill={white}] (6.center) to (7.center) to (8.center) to (9.center) to (6.center);
+\\draw [in=90, out=-90] (11.center) to (12.center);
+\\draw [in=90, out=-90] (14.center) to (15.center);
+\\draw [in=90, out=-90] (17.center) to (18.center);
+\\draw [in=90, out=-90] (20.center) to (21.center);
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
@@ -259,33 +259,33 @@ tikz_outputs = [
 """\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
-\\node [] (1) at (1.25, 1.5) {};
-\\node [] (2) at (1.25, 0.75) {};
-\\node [style=none, fill=white, right] (3) at (1.35, 1.5) {s};
-\\node [] (4) at (2.5, 0.25) {};
-\\node [] (5) at (2.5, -0.25) {};
-\\node [style=none, fill=white, right] (6) at (2.6, 0.15) {s};
-\\node [] (7) at (5.0, 1.5) {};
-\\node [] (8) at (5.0, -0.25) {};
-\\node [style=none, fill=white, right] (9) at (5.1, 1.5) {s.r};
-\\node [] (10) at (0.0, 0.25) {};
-\\node [] (11) at (0.0, -1.5) {};
-\\node [style=none, fill=white, right] (12) at (0.1, 0.15) {s};
-\\node [] (13) at (3.75, -0.5) {};
-\\node [] (14) at (-0.5, 0.25) {};
-\\node [] (15) at (3.0, 0.25) {};
-\\node [] (16) at (3.0, 0.75) {};
-\\node [] (17) at (-0.5, 0.75) {};
-\\node [style=none, fill=white] (18) at (1.25, 0.5) {BX1};
+\\node [] (1) at (-0.5, 0.25) {};
+\\node [] (2) at (3.0, 0.25) {};
+\\node [] (3) at (3.0, 0.75) {};
+\\node [] (4) at (-0.5, 0.75) {};
+\\node [style=none, fill=white] (5) at (1.25, 0.5) {BX1};
+\\node [] (6) at (1.25, 1.5) {};
+\\node [] (7) at (1.25, 0.75) {};
+\\node [style=none, fill=white, right] (8) at (1.35, 1.5) {s};
+\\node [] (9) at (2.5, 0.25) {};
+\\node [] (10) at (2.5, -0.25) {};
+\\node [style=none, fill=white, right] (11) at (2.6, 0.15) {s};
+\\node [] (12) at (5.0, 1.5) {};
+\\node [] (13) at (5.0, -0.25) {};
+\\node [style=none, fill=white, right] (14) at (5.1, 1.5) {s.r};
+\\node [] (15) at (0.0, 0.25) {};
+\\node [] (16) at (0.0, -1.5) {};
+\\node [style=none, fill=white, right] (17) at (0.1, 0.15) {s};
+\\node [] (18) at (3.75, -0.5) {};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [in=90, out=-90] (1.center) to (2.center);
-\\draw [in=90, out=-90] (4.center) to (5.center);
-\\draw [in=90, out=-90] (7.center) to (8.center);
-\\draw [in=90, out=-90] (10.center) to (11.center);
-\\draw [in=180, out=-90, looseness=0.4118] (5.center) to (13.center);
-\\draw [in=0, out=-90, looseness=0.4118] (8.center) to (13.center);
-\\draw [-, fill={white}] (14.center) to (15.center) to (16.center) to (17.center) to (14.center);
+\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90] (6.center) to (7.center);
+\\draw [in=90, out=-90] (9.center) to (10.center);
+\\draw [in=90, out=-90] (12.center) to (13.center);
+\\draw [in=90, out=-90] (15.center) to (16.center);
+\\draw [in=180, out=-90, looseness=0.4118] (10.center) to (18.center);
+\\draw [in=0, out=-90, looseness=0.4118] (13.center) to (18.center);
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
@@ -293,51 +293,51 @@ tikz_outputs = [
 """\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
-\\node [] (1) at (1.25, 2.0) {};
-\\node [] (2) at (1.25, 1.25) {};
-\\node [style=none, fill=white, right] (3) at (1.35, 2.0) {s};
-\\node [] (4) at (2.5, 0.75) {};
-\\node [] (5) at (2.5, 0.25) {};
-\\node [style=none, fill=white, right] (6) at (2.6, 0.65) {s.r};
-\\node [] (7) at (5.0, 2.0) {};
-\\node [] (8) at (5.0, 0.25) {};
-\\node [style=none, fill=white, right] (9) at (5.1, 2.0) {s.r};
-\\node [] (10) at (7.5, 2.0) {};
-\\node [] (11) at (7.5, 0.25) {};
-\\node [style=none, fill=white, right] (12) at (7.6, 2.0) {s.r};
-\\node [] (13) at (0.0, 0.75) {};
-\\node [] (14) at (0.0, -0.75) {};
-\\node [style=none, fill=white, right] (15) at (0.1, 0.65) {s};
-\\node [] (16) at (3.75, -0.25) {};
-\\node [] (17) at (3.75, -0.75) {};
-\\node [style=none, fill=white, right] (18) at (3.85, -0.35) {s.r};
-\\node [] (19) at (6.25, -0.25) {};
-\\node [] (20) at (6.25, -2.0) {};
-\\node [style=none, fill=white, right] (21) at (6.35, -0.35) {s.r};
-\\node [circle, fill=black, scale=0.365] (22) at (5.0, 0.0) {};
-\\node [] (23) at (1.875, -1.0) {};
-\\node [] (24) at (-0.5, 0.75) {};
-\\node [] (25) at (3.0, 0.75) {};
-\\node [] (26) at (3.0, 1.25) {};
-\\node [] (27) at (-0.5, 1.25) {};
-\\node [style=none, fill=white] (28) at (1.25, 1.0) {BX2};
+\\node [] (1) at (-0.5, 0.75) {};
+\\node [] (2) at (3.0, 0.75) {};
+\\node [] (3) at (3.0, 1.25) {};
+\\node [] (4) at (-0.5, 1.25) {};
+\\node [style=none, fill=white] (5) at (1.25, 1.0) {BX2};
+\\node [] (6) at (1.25, 2.0) {};
+\\node [] (7) at (1.25, 1.25) {};
+\\node [style=none, fill=white, right] (8) at (1.35, 2.0) {s};
+\\node [] (9) at (2.5, 0.75) {};
+\\node [] (10) at (2.5, 0.25) {};
+\\node [style=none, fill=white, right] (11) at (2.6, 0.65) {s.r};
+\\node [] (12) at (5.0, 2.0) {};
+\\node [] (13) at (5.0, 0.25) {};
+\\node [style=none, fill=white, right] (14) at (5.1, 2.0) {s.r};
+\\node [] (15) at (7.5, 2.0) {};
+\\node [] (16) at (7.5, 0.25) {};
+\\node [style=none, fill=white, right] (17) at (7.6, 2.0) {s.r};
+\\node [] (18) at (0.0, 0.75) {};
+\\node [] (19) at (0.0, -0.75) {};
+\\node [style=none, fill=white, right] (20) at (0.1, 0.65) {s};
+\\node [] (21) at (3.75, -0.25) {};
+\\node [] (22) at (3.75, -0.75) {};
+\\node [style=none, fill=white, right] (23) at (3.85, -0.35) {s.r};
+\\node [] (24) at (6.25, -0.25) {};
+\\node [] (25) at (6.25, -2.0) {};
+\\node [style=none, fill=white, right] (26) at (6.35, -0.35) {s.r};
+\\node [circle, fill=black, scale=0.365] (27) at (5.0, 0.0) {};
+\\node [] (28) at (1.875, -1.0) {};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [in=90, out=-90] (1.center) to (2.center);
-\\draw [in=90, out=-90] (4.center) to (5.center);
-\\draw [in=90, out=-90] (7.center) to (8.center);
-\\draw [in=90, out=-90] (10.center) to (11.center);
-\\draw [in=90, out=-90] (13.center) to (14.center);
-\\draw [in=90, out=-90] (16.center) to (17.center);
-\\draw [in=90, out=-90] (19.center) to (20.center);
-\\draw [in=90, out=180, looseness=0.4118] (22.center) to (16.center);
-\\draw [in=90, out=0, looseness=0.4118] (22.center) to (19.center);
-\\draw [in=180, out=-90, looseness=0.209] (5.center) to (22.center);
-\\draw [in=90, out=-90] (8.center) to (22.center);
-\\draw [in=0, out=-90, looseness=0.209] (11.center) to (22.center);
-\\draw [in=180, out=-90, looseness=0.2775] (14.center) to (23.center);
-\\draw [in=0, out=-90, looseness=0.2775] (17.center) to (23.center);
-\\draw [-, fill={white}] (24.center) to (25.center) to (26.center) to (27.center) to (24.center);
+\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90] (6.center) to (7.center);
+\\draw [in=90, out=-90] (9.center) to (10.center);
+\\draw [in=90, out=-90] (12.center) to (13.center);
+\\draw [in=90, out=-90] (15.center) to (16.center);
+\\draw [in=90, out=-90] (18.center) to (19.center);
+\\draw [in=90, out=-90] (21.center) to (22.center);
+\\draw [in=90, out=-90] (24.center) to (25.center);
+\\draw [in=90, out=180, looseness=0.4118] (27.center) to (21.center);
+\\draw [in=90, out=0, looseness=0.4118] (27.center) to (24.center);
+\\draw [in=180, out=-90, looseness=0.209] (10.center) to (27.center);
+\\draw [in=90, out=-90] (13.center) to (27.center);
+\\draw [in=0, out=-90, looseness=0.209] (16.center) to (27.center);
+\\draw [in=180, out=-90, looseness=0.2775] (19.center) to (28.center);
+\\draw [in=0, out=-90, looseness=0.2775] (22.center) to (28.center);
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
@@ -345,44 +345,44 @@ tikz_outputs = [
 """\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
-\\node [] (1) at (1.25, 0.75) {};
-\\node [] (2) at (1.25, 0.25) {};
-\\node [style=none, fill=white, right] (3) at (1.35, 0.65) {s};
-\\node [] (4) at (2.5, -0.25) {};
-\\node [] (5) at (2.5, -0.75) {};
-\\node [style=none, fill=white, right] (6) at (2.6, -0.35) {s};
-\\node [] (7) at (0.0, -0.25) {};
-\\node [] (8) at (0.0, -0.75) {};
-\\node [style=none, fill=white, right] (9) at (0.1, -0.35) {s};
-\\node [] (10) at (0.75, 0.75) {};
-\\node [] (11) at (1.75, 0.75) {};
-\\node [] (12) at (2.0, 1.25) {};
-\\node [] (13) at (0.75, 1.25) {};
-\\node [style=none, fill=white] (14) at (1.25, 1.0) {BX3};
-\\node [] (15) at (-0.5, -0.25) {};
-\\node [] (16) at (3.0, -0.25) {};
-\\node [] (17) at (3.25, 0.25) {};
-\\node [] (18) at (-0.5, 0.25) {};
-\\node [style=none, fill=white] (19) at (1.25, 0.0) {BX1};
-\\node [] (20) at (2.0, -1.25) {};
-\\node [] (21) at (3.25, -1.25) {};
-\\node [] (22) at (3.0, -0.75) {};
-\\node [] (23) at (2.0, -0.75) {};
-\\node [style=none, fill=white] (24) at (2.5, -1.0) {BX3†};
-\\node [] (25) at (-0.5, -1.25) {};
-\\node [] (26) at (0.75, -1.25) {};
-\\node [] (27) at (0.5, -0.75) {};
-\\node [] (28) at (-0.5, -0.75) {};
-\\node [style=none, fill=white] (29) at (0.0, -1.0) {BX3†};
+\\node [] (1) at (0.75, 0.75) {};
+\\node [] (2) at (1.75, 0.75) {};
+\\node [] (3) at (2.0, 1.25) {};
+\\node [] (4) at (0.75, 1.25) {};
+\\node [style=none, fill=white] (5) at (1.25, 1.0) {BX3};
+\\node [] (6) at (-0.5, -0.25) {};
+\\node [] (7) at (3.0, -0.25) {};
+\\node [] (8) at (3.25, 0.25) {};
+\\node [] (9) at (-0.5, 0.25) {};
+\\node [style=none, fill=white] (10) at (1.25, 0.0) {BX1};
+\\node [] (11) at (2.0, -1.25) {};
+\\node [] (12) at (3.25, -1.25) {};
+\\node [] (13) at (3.0, -0.75) {};
+\\node [] (14) at (2.0, -0.75) {};
+\\node [style=none, fill=white] (15) at (2.5, -1.0) {BX3†};
+\\node [] (16) at (-0.5, -1.25) {};
+\\node [] (17) at (0.75, -1.25) {};
+\\node [] (18) at (0.5, -0.75) {};
+\\node [] (19) at (-0.5, -0.75) {};
+\\node [style=none, fill=white] (20) at (0.0, -1.0) {BX3†};
+\\node [] (21) at (1.25, 0.75) {};
+\\node [] (22) at (1.25, 0.25) {};
+\\node [style=none, fill=white, right] (23) at (1.35, 0.65) {s};
+\\node [] (24) at (2.5, -0.25) {};
+\\node [] (25) at (2.5, -0.75) {};
+\\node [style=none, fill=white, right] (26) at (2.6, -0.35) {s};
+\\node [] (27) at (0.0, -0.25) {};
+\\node [] (28) at (0.0, -0.75) {};
+\\node [style=none, fill=white, right] (29) at (0.1, -0.35) {s};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [in=90, out=-90] (1.center) to (2.center);
-\\draw [in=90, out=-90] (4.center) to (5.center);
-\\draw [in=90, out=-90] (7.center) to (8.center);
-\\draw [-, fill={white}] (10.center) to (11.center) to (12.center) to (13.center) to (10.center);
-\\draw [-, fill={white}] (15.center) to (16.center) to (17.center) to (18.center) to (15.center);
-\\draw [-, fill={white}] (20.center) to (21.center) to (22.center) to (23.center) to (20.center);
-\\draw [-, fill={white}] (25.center) to (26.center) to (27.center) to (28.center) to (25.center);
+\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [-, fill={white}] (6.center) to (7.center) to (8.center) to (9.center) to (6.center);
+\\draw [-, fill={white}] (11.center) to (12.center) to (13.center) to (14.center) to (11.center);
+\\draw [-, fill={white}] (16.center) to (17.center) to (18.center) to (19.center) to (16.center);
+\\draw [in=90, out=-90] (21.center) to (22.center);
+\\draw [in=90, out=-90] (24.center) to (25.center);
+\\draw [in=90, out=-90] (27.center) to (28.center);
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
@@ -486,7 +486,7 @@ def test_foliated_drawable_generation(diagram, foliated, drawable):
     for dd_wep, dr_wep in zip(dd.wire_endpoints, drawable.wire_endpoints):
         assert dd_wep.kind == dr_wep.kind
         assert dd_wep.obj == dr_wep.obj
-        assert dd_wep.coordinates == pytest.approx(dr_wep.coordinates)    
+        assert dd_wep.coordinates == pytest.approx(dr_wep.coordinates)
 
 
 @pytest.mark.parametrize('diagram, tikz', zip(diagrams, tikz_outputs))
@@ -501,95 +501,95 @@ def test_tikz_drawing(diagram, tikz, capsys):
 expected_equation_tikz = """\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
-\\node [] (1) at (1.25, 2.0) {};
-\\node [] (2) at (1.25, 1.25) {};
-\\node [style=none, fill=white, right] (3) at (1.35, 2.0) {s};
-\\node [] (4) at (2.5, 0.75) {};
-\\node [] (5) at (2.5, 0.25) {};
-\\node [style=none, fill=white, right] (6) at (2.6, 0.65) {s.r};
-\\node [] (7) at (5.0, 2.0) {};
-\\node [] (8) at (5.0, 0.25) {};
-\\node [style=none, fill=white, right] (9) at (5.1, 2.0) {s.r};
-\\node [] (10) at (7.5, 2.0) {};
-\\node [] (11) at (7.5, 0.25) {};
-\\node [style=none, fill=white, right] (12) at (7.6, 2.0) {s.r};
-\\node [] (13) at (0.0, 0.75) {};
-\\node [] (14) at (0.0, -0.75) {};
-\\node [style=none, fill=white, right] (15) at (0.1, 0.65) {s};
-\\node [] (16) at (3.75, -0.25) {};
-\\node [] (17) at (3.75, -0.75) {};
-\\node [style=none, fill=white, right] (18) at (3.85, -0.35) {s.r};
-\\node [] (19) at (6.25, -0.25) {};
-\\node [] (20) at (6.25, -2.0) {};
-\\node [style=none, fill=white, right] (21) at (6.35, -0.35) {s.r};
-\\node [circle, fill=black, scale=0.365] (22) at (5.0, 0.0) {};
-\\node [] (23) at (1.875, -1.0) {};
-\\node [] (24) at (-0.5, 0.75) {};
-\\node [] (25) at (3.0, 0.75) {};
-\\node [] (26) at (3.25, 1.25) {};
-\\node [] (27) at (-0.5, 1.25) {};
-\\node [style=none, fill=white] (28) at (1.25, 1.0) {BX2};
+\\node [] (1) at (-0.5, 0.75) {};
+\\node [] (2) at (3.0, 0.75) {};
+\\node [] (3) at (3.25, 1.25) {};
+\\node [] (4) at (-0.5, 1.25) {};
+\\node [style=none, fill=white] (5) at (1.25, 1.0) {BX2};
+\\node [] (6) at (1.25, 2.0) {};
+\\node [] (7) at (1.25, 1.25) {};
+\\node [style=none, fill=white, right] (8) at (1.35, 2.0) {s};
+\\node [] (9) at (2.5, 0.75) {};
+\\node [] (10) at (2.5, 0.25) {};
+\\node [style=none, fill=white, right] (11) at (2.6, 0.65) {s.r};
+\\node [] (12) at (5.0, 2.0) {};
+\\node [] (13) at (5.0, 0.25) {};
+\\node [style=none, fill=white, right] (14) at (5.1, 2.0) {s.r};
+\\node [] (15) at (7.5, 2.0) {};
+\\node [] (16) at (7.5, 0.25) {};
+\\node [style=none, fill=white, right] (17) at (7.6, 2.0) {s.r};
+\\node [] (18) at (0.0, 0.75) {};
+\\node [] (19) at (0.0, -0.75) {};
+\\node [style=none, fill=white, right] (20) at (0.1, 0.65) {s};
+\\node [] (21) at (3.75, -0.25) {};
+\\node [] (22) at (3.75, -0.75) {};
+\\node [style=none, fill=white, right] (23) at (3.85, -0.35) {s.r};
+\\node [] (24) at (6.25, -0.25) {};
+\\node [] (25) at (6.25, -2.0) {};
+\\node [style=none, fill=white, right] (26) at (6.35, -0.35) {s.r};
+\\node [circle, fill=black, scale=0.365] (27) at (5.0, 0.0) {};
+\\node [] (28) at (1.875, -1.0) {};
 \\node [style=none, fill=white] (29) at (8.6, 0) {=};
-\\node [] (30) at (13.35, 0.75) {};
-\\node [] (31) at (13.35, 0.25) {};
-\\node [style=none, fill=white, right] (32) at (13.45, 0.65) {s.r};
-\\node [] (33) at (15.85, 2.0) {};
-\\node [] (34) at (15.85, 0.25) {};
-\\node [style=none, fill=white, right] (35) at (15.95, 2.0) {s.r};
-\\node [] (36) at (9.6, 0.75) {};
-\\node [] (37) at (9.6, -0.75) {};
-\\node [style=none, fill=white, right] (38) at (9.7, 0.65) {s};
-\\node [] (39) at (12.1, -0.25) {};
-\\node [] (40) at (12.1, -0.75) {};
-\\node [style=none, fill=white, right] (41) at (12.2, -0.35) {s.r};
-\\node [] (42) at (10.85, -1.25) {};
-\\node [] (43) at (10.85, -2.0) {};
-\\node [style=none, fill=white, right] (44) at (10.95, -1.35) {s};
-\\node [] (45) at (14.6, -0.25) {};
-\\node [] (46) at (14.6, -2.0) {};
-\\node [style=none, fill=white, right] (47) at (14.7, -0.35) {s.r};
-\\node [] (48) at (17.1, -0.25) {};
-\\node [] (49) at (17.1, -2.0) {};
-\\node [style=none, fill=white, right] (50) at (17.200000000000003, -0.35) {s.r};
-\\node [] (51) at (12.1, 1.0) {};
-\\node [circle, fill=black, scale=0.242] (52) at (14.6, 0.0) {};
-\\node [] (53) at (9.1, -1.25) {};
-\\node [] (54) at (12.85, -1.25) {};
-\\node [] (55) at (12.6, -0.75) {};
-\\node [] (56) at (9.1, -0.75) {};
-\\node [style=none, fill=white] (57) at (10.85, -1.0) {BX2†};
+\\node [] (30) at (9.1, -1.25) {};
+\\node [] (31) at (12.85, -1.25) {};
+\\node [] (32) at (12.6, -0.75) {};
+\\node [] (33) at (9.1, -0.75) {};
+\\node [style=none, fill=white] (34) at (10.85, -1.0) {BX2†};
+\\node [] (35) at (13.35, 0.75) {};
+\\node [] (36) at (13.35, 0.25) {};
+\\node [style=none, fill=white, right] (37) at (13.45, 0.65) {s.r};
+\\node [] (38) at (15.85, 2.0) {};
+\\node [] (39) at (15.85, 0.25) {};
+\\node [style=none, fill=white, right] (40) at (15.95, 2.0) {s.r};
+\\node [] (41) at (9.6, 0.75) {};
+\\node [] (42) at (9.6, -0.75) {};
+\\node [style=none, fill=white, right] (43) at (9.7, 0.65) {s};
+\\node [] (44) at (12.1, -0.25) {};
+\\node [] (45) at (12.1, -0.75) {};
+\\node [style=none, fill=white, right] (46) at (12.2, -0.35) {s.r};
+\\node [] (47) at (10.85, -1.25) {};
+\\node [] (48) at (10.85, -2.0) {};
+\\node [style=none, fill=white, right] (49) at (10.95, -1.35) {s};
+\\node [] (50) at (14.6, -0.25) {};
+\\node [] (51) at (14.6, -2.0) {};
+\\node [style=none, fill=white, right] (52) at (14.7, -0.35) {s.r};
+\\node [] (53) at (17.1, -0.25) {};
+\\node [] (54) at (17.1, -2.0) {};
+\\node [style=none, fill=white, right] (55) at (17.200000000000003, -0.35) {s.r};
+\\node [] (56) at (12.1, 1.0) {};
+\\node [circle, fill=black, scale=0.242] (57) at (14.6, 0.0) {};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [in=90, out=-90] (1.center) to (2.center);
-\\draw [in=90, out=-90] (4.center) to (5.center);
-\\draw [in=90, out=-90] (7.center) to (8.center);
-\\draw [in=90, out=-90] (10.center) to (11.center);
-\\draw [in=90, out=-90] (13.center) to (14.center);
-\\draw [in=90, out=-90] (16.center) to (17.center);
-\\draw [in=90, out=-90] (19.center) to (20.center);
-\\draw [in=90, out=180, looseness=0.4118] (22.center) to (16.center);
-\\draw [in=90, out=0, looseness=0.4118] (22.center) to (19.center);
-\\draw [in=180, out=-90, looseness=0.209] (5.center) to (22.center);
-\\draw [in=90, out=-90] (8.center) to (22.center);
-\\draw [in=0, out=-90, looseness=0.209] (11.center) to (22.center);
-\\draw [in=180, out=-90, looseness=0.2775] (14.center) to (23.center);
-\\draw [in=0, out=-90, looseness=0.2775] (17.center) to (23.center);
-\\draw [-, fill={white}] (24.center) to (25.center) to (26.center) to (27.center) to (24.center);
-\\draw [in=90, out=-90] (30.center) to (31.center);
-\\draw [in=90, out=-90] (33.center) to (34.center);
-\\draw [in=90, out=-90] (36.center) to (37.center);
-\\draw [in=90, out=-90] (39.center) to (40.center);
-\\draw [in=90, out=-90] (42.center) to (43.center);
-\\draw [in=90, out=-90] (45.center) to (46.center);
-\\draw [in=90, out=-90] (48.center) to (49.center);
-\\draw [in=90, out=180, looseness=0.209] (51.center) to (36.center);
-\\draw [in=90, out=0, looseness=0.4118] (51.center) to (30.center);
-\\draw [in=90, out=180, looseness=0.209] (52.center) to (39.center);
-\\draw [in=90, out=-90] (52.center) to (45.center);
-\\draw [in=90, out=0, looseness=0.209] (52.center) to (48.center);
-\\draw [in=180, out=-90, looseness=0.4118] (31.center) to (52.center);
-\\draw [in=0, out=-90, looseness=0.4118] (34.center) to (52.center);
-\\draw [-, fill={white}] (53.center) to (54.center) to (55.center) to (56.center) to (53.center);
+\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90] (6.center) to (7.center);
+\\draw [in=90, out=-90] (9.center) to (10.center);
+\\draw [in=90, out=-90] (12.center) to (13.center);
+\\draw [in=90, out=-90] (15.center) to (16.center);
+\\draw [in=90, out=-90] (18.center) to (19.center);
+\\draw [in=90, out=-90] (21.center) to (22.center);
+\\draw [in=90, out=-90] (24.center) to (25.center);
+\\draw [in=90, out=180, looseness=0.4118] (27.center) to (21.center);
+\\draw [in=90, out=0, looseness=0.4118] (27.center) to (24.center);
+\\draw [in=180, out=-90, looseness=0.209] (10.center) to (27.center);
+\\draw [in=90, out=-90] (13.center) to (27.center);
+\\draw [in=0, out=-90, looseness=0.209] (16.center) to (27.center);
+\\draw [in=180, out=-90, looseness=0.2775] (19.center) to (28.center);
+\\draw [in=0, out=-90, looseness=0.2775] (22.center) to (28.center);
+\\draw [-, fill={white}] (30.center) to (31.center) to (32.center) to (33.center) to (30.center);
+\\draw [in=90, out=-90] (35.center) to (36.center);
+\\draw [in=90, out=-90] (38.center) to (39.center);
+\\draw [in=90, out=-90] (41.center) to (42.center);
+\\draw [in=90, out=-90] (44.center) to (45.center);
+\\draw [in=90, out=-90] (47.center) to (48.center);
+\\draw [in=90, out=-90] (50.center) to (51.center);
+\\draw [in=90, out=-90] (53.center) to (54.center);
+\\draw [in=90, out=180, looseness=0.209] (56.center) to (41.center);
+\\draw [in=90, out=0, looseness=0.4118] (56.center) to (35.center);
+\\draw [in=90, out=180, looseness=0.209] (57.center) to (44.center);
+\\draw [in=90, out=-90] (57.center) to (50.center);
+\\draw [in=90, out=0, looseness=0.209] (57.center) to (53.center);
+\\draw [in=180, out=-90, looseness=0.4118] (36.center) to (57.center);
+\\draw [in=0, out=-90, looseness=0.4118] (39.center) to (57.center);
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
@@ -855,5 +855,3 @@ def test_pregroup_drawable_generation(diagram, drawable, err):
         dr_prgrp = DrawablePregroup.from_diagram(diagram)
 
         assert dr_prgrp == drawable
-
-

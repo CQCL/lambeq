@@ -625,8 +625,10 @@ def _draw_measure(backend: DrawingBackend,
                         **params)
 
     i, j = drawable_box.x, drawable_box.y
-    backend.draw_wire((i - .15, j - .1), (i, j + .1), bend_in=True)
-    backend.draw_wire((i, j + .1), (i + .15, j - .1), bend_out=True)
+    backend.draw_wire((i - .15, j - .1), (i, j + .1), bend_in=True,
+                      is_leg=True)
+    backend.draw_wire((i, j + .1), (i + .15, j - .1), bend_out=True,
+                      is_leg=True)
     backend.draw_wire((i, j - .1), (i + .05, j + .15), style='->')
     return backend
 
