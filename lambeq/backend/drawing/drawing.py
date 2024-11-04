@@ -297,9 +297,11 @@ def to_gif(diagrams: list[Diagram],
         if loop:
             frames = frames + frames[::-1]
 
-        frames[0].save(path, format='GIF', append_images=frames[1:],
-                       save_all=True, duration=timestep,
-                       **{'loop': 0} if loop else {})
+        frames[0].save(
+            path, format='GIF', append_images=frames[1:],
+            save_all=True, duration=timestep,
+            **{'loop': 0} if loop else {}   # type: ignore[arg-type]
+        )
 
         try:
             from IPython.display import HTML
