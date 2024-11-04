@@ -121,6 +121,7 @@ class DrawingBackend(ABC):
                   target: tuple[float, float],
                   bend_out: bool = False,
                   bend_in: bool = False,
+                  is_leg: bool = False,
                   style: str | None = None) -> None:
         """
         Draws a wire from source to target, possibly with a curve
@@ -136,6 +137,9 @@ class DrawingBackend(ABC):
             Default is False.
         bend_in: bool, optional
             Whether to apply a bezier curve to the input of the wire.
+            Default is False.
+        is_leg: bool, optional
+            Whether the wire is a leg of a spider or swap.
             Default is False.
         style: str, optional
             Style of wire marker.

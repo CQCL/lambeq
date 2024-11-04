@@ -387,7 +387,8 @@ class DrawableDiagram:
     def _make_space(self,
                     scan: list[int],
                     box: grammar.Box,
-                    off: int) -> tuple[float, float]:
+                    off: int,
+                    foliated: bool) -> tuple[float, float]:
         """Determines x and y coords for a new box.
         Modifies x coordinates of existing nodes to make space.
 
@@ -505,7 +506,7 @@ class DrawableDiagram:
         for depth, (box, off) in enumerate(zip(diagram.boxes,
                                                diagram.offsets)):
 
-            x, y = drawable._make_space(scan, box, off)
+            x, y = drawable._make_space(scan, box, off, foliated)
             y = -depth if foliated else y
 
             scan, _ = drawable._add_box(scan, box, off, x, y)

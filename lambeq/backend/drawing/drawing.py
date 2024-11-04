@@ -299,7 +299,7 @@ def to_gif(diagrams: list[Diagram],
 
         frames[0].save(path, format='GIF', append_images=frames[1:],
                        save_all=True, duration=timestep,
-                       **{'loop': 0} if loop else {})  # type: ignore[arg-type]
+                       **{'loop': 0} if loop else {})
 
         try:
             from IPython.display import HTML
@@ -464,9 +464,10 @@ def _draw_pregroup_state(backend: DrawingBackend,
               [left, height + BOX_HEIGHT]]
 
     backend.draw_polygon(*points)
-    backend.draw_text(box.name, drawable_box.x + 1, drawable_box.y,
-                      ha='center', va='center',
-                      fontsize=params.get('fontsize', None))
+    if hasattr(box, 'name'):
+        backend.draw_text(box.name, drawable_box.x + 1, drawable_box.y,
+                          ha='center', va='center',
+                          fontsize=params.get('fontsize', None))
 
     return backend
 
