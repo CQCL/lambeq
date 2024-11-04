@@ -31,11 +31,11 @@ DEFAULT_ASPECT = 'equal'
 
 
 FRAME_COLORS: list[str] = [
-    '#fbe8e7', '#fee1ba', '#fff9e5', '#e8f8ea', '#dcfbf5', '#d3fef4',
+    '#fbe8e7', '#fee1ba', '#fff9e5', '#e8f8ea', '#dcfbf5',
     '#e2effe', '#dfdefe', '#f0e8fc', '#f8e6f6', '#ffd0df',
-    '#f4bbb6', '#fecd8c', '#fdeebd', '#d2f7d6', '#9ef0e2', '#9dfff1',
+    '#f4bbb6', '#fecd8c', '#fdeebd', '#d2f7d6', '#cafef5',
     '#cee3fb', '#c1bdfd', '#e4d3fb', '#fbcbf8', '#facfdb',
-    '#fc988e', '#feb95e', '#fce393', '#b5f7bd', '#cafef5', '#a5feee',
+    '#fc988e', '#feb95e', '#fce393', '#b5f7bd', '#9ef0e2',
     '#8ac0fb', '#a4a0fc', '#e0bffb', '#fcc0f6', '#fbafc2',
 ]
 FRAME_COLORS_GENERATOR = itertools.cycle(FRAME_COLORS)
