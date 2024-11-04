@@ -1324,17 +1324,21 @@ class DrawableDiagramWithFrames(DrawableDiagram):
                             # to `new_scan`
                             for start, end in self.wires:
                                 if (start == obj
-                                        and self.wire_endpoints[end].y > we.y):
+                                        and self.wire_endpoints[end].y > we.y
+                                        and end not in new_scan):
                                     new_scan.append(end)
                                     break
-                                elif (end == obj and (
-                                        self.wire_endpoints[start].y > we.y)):
+                                elif (end == obj
+                                        and self.wire_endpoints[start].y > we.y
+                                        and start not in new_scan):
                                     new_scan.append(start)
                                     break
                         elif we.kind == WireEndpointType.COD:
                             # Check boxes that have the wire as cod
                             for bx in self.boxes:
-                                if bx.parent is None and obj in bx.cod_wires:
+                                if (bx.parent is None
+                                        and obj in bx.cod_wires
+                                        and bx not in new_scan):
                                     new_scan.append(bx)
                 elif isinstance(obj, BoxNode) and obj.parent is None:
                     if obj.has_wires:
@@ -1346,7 +1350,9 @@ class DrawableDiagramWithFrames(DrawableDiagram):
                         list_of_components.append(we)
 
                     # Add dom to next scan
-                    new_scan.extend(obj.dom_wires)
+                    for wire_ind in obj.dom_wires:
+                        if wire_ind not in new_scan:
+                            new_scan.append(wire_ind)
 
             curr_scan = new_scan
             new_scan = []
