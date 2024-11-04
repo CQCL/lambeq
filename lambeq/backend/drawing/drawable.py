@@ -22,6 +22,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+import math
 import sys
 from typing import Optional
 
@@ -101,6 +102,19 @@ class WireEndpoint:
     def coordinates(self) -> tuple[float, float]:
         return (self.x, self.y)
 
+    def __eq__(self, other: object) -> bool:
+        """Check if these are the same instances, excluding
+        the parent to avoid recursion."""
+        if not isinstance(other, WireEndpoint):
+            return NotImplemented
+        else:
+            return all([
+                self.kind == other.kind,
+                self.obj == other.obj,
+                math.isclose(self.x, other.x),
+                math.isclose(self.y, other.y),
+            ])
+
     def __hash__(self) -> int:
         return hash(repr(self))
 
@@ -159,6 +173,29 @@ class BoxNode:
     @property
     def coordinates(self):
         return (self.x, self.y)
+
+    def __eq__(self, other: object) -> bool:
+        """Check if these are the same instances, excluding
+        the parent to avoid recursion."""
+        if not isinstance(other, BoxNode):
+            return NotImplemented
+        else:
+            return all([
+                self.obj == other.obj,
+                math.isclose(self.x, other.x),
+                math.isclose(self.y, other.y),
+                math.isclose(
+                    self.h if self.h else float('inf'),
+                    other.h if other.h else float('inf'),
+                ),
+                math.isclose(
+                    self.w if self.w else float('inf'),
+                    other.w if other.w else float('inf'),
+                ),
+                self.child_boxes == other.child_boxes,
+                self.child_wire_endpoints == other.child_wire_endpoints,
+                self.child_wires == other.child_wires,
+            ])
 
     @property
     def has_wires(self):
@@ -754,7 +791,6 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             return 0, 0
 
         half_width = X_SPACING * (len(box.cod[:-1]) / 2 + 1)
-        # print(f'{half_width = }')
 
         if not box.dom:
             if not off:
@@ -1166,7 +1202,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
             # Create wrapper box for the component
             component_wrapper_box = BoxNode(
-                obj=component,
+                obj=component.to_diagram(),
                 x=component_x, y=component_y,
                 h=component_h, w=component_w,
             )

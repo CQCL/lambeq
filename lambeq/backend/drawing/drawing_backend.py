@@ -21,6 +21,7 @@ Abstract base class for drawing backend.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+import itertools
 
 from lambeq.backend.drawing.drawable import DrawableDiagram
 
@@ -37,6 +38,7 @@ FRAME_COLORS: list[str] = [
     '#fc988e', '#feb95e', '#fce393', '#b5f7bd', '#cafef5', '#a5feee',
     '#8ac0fb', '#a4a0fc', '#e0bffb', '#fcc0f6', '#fbafc2',
 ]
+FRAME_COLORS_GENERATOR = itertools.cycle(FRAME_COLORS)
 
 
 COLORS: dict[str, str] = {

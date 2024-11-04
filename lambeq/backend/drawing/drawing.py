@@ -24,7 +24,6 @@ from __future__ import annotations
 
 from math import sqrt
 import os
-import random
 from tempfile import NamedTemporaryFile, TemporaryDirectory
 from typing import TYPE_CHECKING
 
@@ -40,7 +39,7 @@ from lambeq.backend.drawing.drawable import (BOX_HEIGHT, BoxNode,
 from lambeq.backend.drawing.drawing_backend import (DEFAULT_ASPECT,
                                                     DEFAULT_MARGINS,
                                                     DrawingBackend,
-                                                    FRAME_COLORS)
+                                                    FRAME_COLORS_GENERATOR)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
 from lambeq.backend.drawing.mat_backend import MatBackend
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
@@ -70,6 +69,9 @@ def draw(diagram: Diagram, **params) -> None:
         Whether to draw type labels, default is `True`.
     draw_box_labels : bool, optional
         Whether to draw box labels, default is `True`.
+    color_boxes : bool, optional
+        Whether to color boxes when drawable has frames.
+        Default is `True`.
     aspect : string, optional
         Aspect ratio, one of `['auto', 'equal']`.
     margins : tuple, optional
@@ -101,6 +103,9 @@ def draw(diagram: Diagram, **params) -> None:
     drawable = params.pop('drawable', None)
     drawable_cls = (DrawableDiagramWithFrames if diagram.has_frames
                     else DrawableDiagram)
+    params['color_boxes'] = params.get(
+        'color_boxes', diagram.has_frames,
+    )
     if drawable is None:
         drawable = drawable_cls.from_diagram(diagram,
                                              params.get('foliated', False))
@@ -418,9 +423,10 @@ def _draw_box(backend: DrawingBackend,
         points[2][0] += asymmetry
 
     color = 'white'
-    if (isinstance(drawable_diagram, DrawableDiagramWithFrames)
+    if (params['color_boxes']
+            and isinstance(drawable_diagram, DrawableDiagramWithFrames)
             and hasattr(box, 'name') and box.name):
-        color = random.choice(FRAME_COLORS)
+        color = next(FRAME_COLORS_GENERATOR)
     backend.draw_polygon(*points, color=color)
 
     if params.get('draw_box_labels', True) and hasattr(box, 'name'):
