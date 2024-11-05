@@ -70,16 +70,42 @@ class MatBackend(DrawingBackend):
                   target: tuple[float, float],
                   bend_out: bool = False,
                   bend_in: bool = False,
+                  is_leg: bool = False,
                   style: str | None = None) -> None:
         if style == '->':
             self.axis.arrow(
                 *(source + (target[0] - source[0], target[1] - source[1])),
                 head_width=.02, color='black')
         else:
-            mid = ((target[0], source[1]) if bend_out
-                   else (source[0], target[1]))
-            path = Path([source, mid, target],
-                        [Path.MOVETO, Path.CURVE3, Path.CURVE3])
+            if is_leg:
+                mid = (target[0], source[1])
+                if not bend_out:
+                    mid = (source[0], target[1])
+
+                path = Path([source, mid, target],
+                            [Path.MOVETO, Path.CURVE3, Path.CURVE3])
+            else:
+                # Assumes target[1] < source[1],
+                # i.e. lines are drawn top to bottom
+                mid_y = (target[1] + source[1]) / 2
+                mid_x = (target[0] + source[0]) / 2
+                control1 = (source[0], mid_y)
+                control2 = (target[0], mid_y)
+
+                path = Path([
+                    source,
+                    control1,
+                    (mid_x, mid_y),
+                    control2,
+                    target,
+                ], [
+                    Path.MOVETO,
+                    Path.CURVE3,
+                    Path.CURVE3,
+                    Path.CURVE3,
+                    Path.CURVE3,
+                ])
+
             self.axis.add_patch(PathPatch(
                 path, facecolor='none', linewidth=self.linewidth))
 
@@ -94,11 +120,13 @@ class MatBackend(DrawingBackend):
             for wire in node.cod_wires:
                 self.draw_wire(node.coordinates,
                                drawable.wire_endpoints[wire].coordinates,
-                               bend_out=True)
+                               bend_out=True,
+                               is_leg=True)
             for wire in node.dom_wires:
                 self.draw_wire(drawable.wire_endpoints[wire].coordinates,
                                node.coordinates,
-                               bend_in=True)
+                               bend_in=True,
+                               is_leg=True)
 
     def output(self,
                path: str | None = None,

@@ -30,7 +30,7 @@ def needs_asymmetry(diagram) -> bool:
         for box in diagram.boxes)
 
 
-def drawn_as_spider(box: grammar.Box) -> bool:
+def drawn_as_spider(box: grammar.Diagrammable) -> bool:
     """Determine of a grammar box is drawn as a spider."""
 
     return (isinstance(box, grammar.Spider)

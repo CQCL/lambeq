@@ -32,17 +32,19 @@ from PIL import Image
 from lambeq.backend import grammar, quantum
 from lambeq.backend.drawing.drawable import (BOX_HEIGHT, BoxNode,
                                              DrawableDiagram,
+                                             DrawableDiagramWithFrames,
                                              DrawablePregroup,
                                              LEDGE,
                                              WireEndpointType)
 from lambeq.backend.drawing.drawing_backend import (DEFAULT_ASPECT,
                                                     DEFAULT_MARGINS,
-                                                    DrawingBackend)
+                                                    DrawingBackend,
+                                                    FRAME_COLORS_GENERATOR)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
 from lambeq.backend.drawing.mat_backend import MatBackend
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
 from lambeq.backend.drawing.tikz_backend import TikzBackend
-from lambeq.backend.grammar import Diagram
+from lambeq.backend.grammar import Box, Diagram
 
 
 if TYPE_CHECKING:
@@ -67,6 +69,9 @@ def draw(diagram: Diagram, **params) -> None:
         Whether to draw type labels, default is `True`.
     draw_box_labels : bool, optional
         Whether to draw box labels, default is `True`.
+    color_boxes : bool, optional
+        Whether to color boxes when drawable has frames.
+        Default is `True`.
     aspect : string, optional
         Aspect ratio, one of `['auto', 'equal']`.
     margins : tuple, optional
@@ -95,8 +100,17 @@ def draw(diagram: Diagram, **params) -> None:
     params['asymmetry'] = params.get(
         'asymmetry', .25 * needs_asymmetry(diagram))
 
-    drawable = DrawableDiagram.from_diagram(diagram,
-                                            params.get('foliated', False))
+    drawable = params.pop('drawable', None)
+    drawable_cls = (DrawableDiagramWithFrames if diagram.has_frames
+                    else DrawableDiagram)
+    params['color_boxes'] = params.get(
+        'color_boxes', diagram.has_frames,
+    )
+    if drawable is None:
+        drawable = drawable_cls.from_diagram(diagram,
+                                             params.get('foliated', False))
+    # TODO: Need to revisit this function as it assumes
+    # all the boxes have the same height
     drawable.scale_and_pad(params.get('scale', (1, 1)),
                            params.get('pad', (0, 0)))
 
@@ -115,9 +129,6 @@ def draw(diagram: Diagram, **params) -> None:
 
     params['nodesize'] = round(params.get('nodesize', 1.) / sqrt(max_v), 3)
 
-    backend = _draw_wires(backend, drawable, **params)
-    backend.draw_spiders(drawable, **params)
-
     for node in drawable.boxes:
         if isinstance(node.obj, (quantum.Ket, quantum.Bra,  quantum.Bit)):
             backend = _draw_brakets(backend, drawable, node, **params)
@@ -130,6 +141,9 @@ def draw(diagram: Diagram, **params) -> None:
         elif not drawn_as_spider(node.obj):
             backend = _draw_box(backend, drawable, node, **params)
 
+    # Draw boxes first since they are filled
+    backend = _draw_wires(backend, drawable, **params)
+    backend.draw_spiders(drawable, **params)
     backend.output(
         path=params.get('path', None),
         baseline=0,
@@ -288,9 +302,11 @@ def to_gif(diagrams: list[Diagram],
         if loop:
             frames = frames + frames[::-1]
 
-        frames[0].save(path, format='GIF', append_images=frames[1:],
-                       save_all=True, duration=timestep,
-                       **{'loop': 0} if loop else {})  # type: ignore[arg-type]
+        frames[0].save(
+            path, format='GIF', append_images=frames[1:],
+            save_all=True, duration=timestep,
+            **{'loop': 0} if loop else {}   # type: ignore[arg-type]
+        )
 
         try:
             from IPython.display import HTML
@@ -382,17 +398,18 @@ def _draw_box(backend: DrawingBackend,
     """
 
     box = drawable_box.obj
-
     if not box.dom and not box.cod:
         left, right = drawable_box.x, drawable_box.x
 
     left, right = drawable_box.get_x_lims(drawable_diagram)
-    height = drawable_box.y - BOX_HEIGHT / 2
+    box_height = drawable_box.h or BOX_HEIGHT
+    height = drawable_box.y - box_height / 2
 
     points = [[left, height], [right, height],
-              [right, height + BOX_HEIGHT], [left, height + BOX_HEIGHT]]
+              [right, height + box_height], [left, height + box_height]]
 
-    conjd = bool(box.z)
+    # TODO: Conjugated diagrams?
+    conjd = bool(box.z) if isinstance(box, Box) else 0
     daggd = isinstance(box, grammar.Daggered)
     trand = conjd and daggd
 
@@ -405,10 +422,18 @@ def _draw_box(backend: DrawingBackend,
     else:
         points[2][0] += asymmetry
 
-    backend.draw_polygon(*points)
+    color = 'white'
+    if (params['color_boxes']
+            and isinstance(drawable_diagram, DrawableDiagramWithFrames)
+            and hasattr(box, 'name') and box.name):
+        color = next(FRAME_COLORS_GENERATOR)
+    backend.draw_polygon(*points, color=color)
 
-    if params.get('draw_box_labels', True):
-        backend.draw_text(box.name, drawable_box.x, drawable_box.y,
+    if params.get('draw_box_labels', True) and hasattr(box, 'name'):
+        y = drawable_box.y
+        if isinstance(box, grammar.Frame) and drawable_box.h is not None:
+            y = drawable_box.y + drawable_box.h / 2 - BOX_HEIGHT
+        backend.draw_text(box.name, drawable_box.x, y,
                           ha='center', va='center',
                           fontsize=params.get('fontsize', None))
 
@@ -447,9 +472,10 @@ def _draw_pregroup_state(backend: DrawingBackend,
               [left, height + BOX_HEIGHT]]
 
     backend.draw_polygon(*points)
-    backend.draw_text(box.name, drawable_box.x + 1, drawable_box.y,
-                      ha='center', va='center',
-                      fontsize=params.get('fontsize', None))
+    if hasattr(box, 'name'):
+        backend.draw_text(box.name, drawable_box.x + 1, drawable_box.y,
+                          ha='center', va='center',
+                          fontsize=params.get('fontsize', None))
 
     return backend
 
@@ -605,8 +631,10 @@ def _draw_measure(backend: DrawingBackend,
                         **params)
 
     i, j = drawable_box.x, drawable_box.y
-    backend.draw_wire((i - .15, j - .1), (i, j + .1), bend_in=True)
-    backend.draw_wire((i, j + .1), (i + .15, j - .1), bend_out=True)
+    backend.draw_wire((i - .15, j - .1), (i, j + .1), bend_in=True,
+                      is_leg=True)
+    backend.draw_wire((i, j + .1), (i + .15, j - .1), bend_out=True,
+                      is_leg=True)
     backend.draw_wire((i, j - .1), (i + .05, j + .15), style='->')
     return backend
 
@@ -705,8 +733,8 @@ def _draw_controlled_gate(backend: DrawingBackend,
         # Create a new box node for the controlled box
         controlled_box_node = BoxNode(box.controlled,
                                       *controlled_middle_coordinates,
-                                      new_dom_wires,
-                                      new_cod_wires)
+                                      dom_wires=new_dom_wires,
+                                      cod_wires=new_cod_wires)
 
         if isinstance(box.controlled, quantum.Controlled):  # nested control
             backend = _draw_controlled_gate(

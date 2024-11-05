@@ -54,7 +54,7 @@ class TikzBackend(DrawingBackend):
                  options: str | None = None) -> int:
         """ Add a node to the tikz picture, return its unique id. """
 
-        node = len(self.nodes) + 1
+        node = max(self.nodes.values()) + 1 if self.nodes else 1
         text = '' if text is None else text
 
         self.nodelayer.append(
@@ -121,6 +121,7 @@ class TikzBackend(DrawingBackend):
                   target: tuple[float, float],
                   bend_out: bool = False,
                   bend_in: bool = False,
+                  is_leg: bool = False,
                   style: str | None = None) -> None:
         out = (-90 if not bend_out or source[0] == target[0]
                else (180 if source[0] > target[0] else 0))
