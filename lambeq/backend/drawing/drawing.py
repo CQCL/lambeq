@@ -453,9 +453,9 @@ def _get_box_color(box: grammar.Diagrammable,
         if isinstance(box, grammar.Frame) and hasattr(box, 'name'):
             frame_attr = getattr(box, f'frame_{coloring_mode}')
             if coloring_mode == ColoringMode.TYPE:
-                frame_attr += (len(FRAME_COLORS) // 7) * box.frame_order
+                frame_attr += (len(FRAME_COLORS) // 7) * (box.frame_order - 1)
 
-            color = FRAME_COLORS[frame_attr % len(FRAME_COLORS)]
+            color = FRAME_COLORS[(frame_attr - 1) % len(FRAME_COLORS)]
 
     return color
 
