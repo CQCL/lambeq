@@ -21,6 +21,7 @@ Abstract base class for drawing backend.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from enum import Enum
 import itertools
 
 from lambeq.backend.drawing.drawable import DrawableDiagram
@@ -48,6 +49,7 @@ COLORS: dict[str, str] = {
     'blue': '#776ff3',
     'yellow': '#f7f700',
     'black': '#000000',
+    'gray': '#e0e0e0'
 }
 for color in FRAME_COLORS:
     COLORS[color] = color
@@ -60,6 +62,26 @@ SHAPES: dict[str, str] = {
     'circle': 'o',
     'plus': '+',
 }
+
+
+class ColoringMode(str, Enum):
+    """An enumeration for the coloring modes when coloring is used.
+
+    Frames can be colored by:
+
+    .. glossary::
+
+        TYPE
+            The number of holes in the frame
+
+        ORDER
+            The level of nesting of the frame, increasing from
+            the inside going outward.
+
+    """
+
+    TYPE = 'type'
+    ORDER = 'order'
 
 
 class DrawingBackend(ABC):
