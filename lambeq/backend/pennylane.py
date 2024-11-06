@@ -50,7 +50,10 @@ from pytket import OpType
 import sympy
 import torch
 
-from lambeq.backend.quantum import Scalar, is_circuital, to_circuital, circuital_to_dict
+from lambeq.backend.quantum import (Scalar,
+                                    is_circuital,
+                                    to_circuital,
+                                    circuital_to_dict)
 
 if TYPE_CHECKING:
     from lambeq.backend.quantum import Diagram
@@ -73,7 +76,9 @@ OP_MAP_COMPOSED = {
     'CRx': qml.CRX,
     'CRy': qml.CRY,
     'CRz': qml.CRZ,
-    'CU1': lambda a, wires: qml.ctrl(qml.U1(a, wires=wires[1]), control=wires[0]),
+    'CU1': lambda a, wires: qml.ctrl(qml.U1(a,
+                                            wires=wires[1]),
+                                     control=wires[0]),
     'Swap': qml.SWAP,
     'noop': qml.Identity,
 }
@@ -145,12 +150,12 @@ def tk_op_to_pennylane(tk_op):
     return OP_MAP[tk_op.op.type], remapped_params, symbols, wires
 
 
-def extract_ops_from_circuital(circuit_dict):
-    print(circuit_dict)
+def extract_ops_from_circuital(circuit_dict: dict):
 
-    ops =    [OP_MAP_COMPOSED[x["type"]] for x in circuit_dict["gates"]]
+    ops = [OP_MAP_COMPOSED[x["type"]] for x in circuit_dict["gates"]]
     qubits = [x["qubits"] for x in circuit_dict["gates"]]
-    params = [x["phase"] if "phase" in x else [] for x in circuit_dict["gates"]]
+    params = [x["phase"] if "phase" in x else []
+              for x in circuit_dict["gates"]]
 
     symbols = set()
 
@@ -168,7 +173,6 @@ def extract_ops_from_circuital(circuit_dict):
 
         remapped_params.append([param])
 
-    #return OP_MAP[tk_op.op.type], remapped_params, symbols, wires
     return ops, remapped_params, symbols, qubits
 
 
@@ -218,8 +222,8 @@ def to_pennylane(diagram: Diagram, probabilities=False,
 
     # Get post selection bits
     post_selection = {}
-    for measure in circuit_dict["measures"] :
-        post_selection[measure["qubit"]] = measure["qubit"]
+    for postselect in circuit_dict["measurements"]["post"] :
+        post_selection[postselect["qubit"]] = postselect["bit"]
 
     scalar = 1
     for gate in circuit_dict["gates"]:
@@ -233,7 +237,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
                             probabilities,
                             post_selection,
                             scalar,
-                            circuit_dict["qubits"],
+                            circuit_dict["qubits"]["total"],
                             backend_config,
                             diff_method)
 
@@ -297,9 +301,8 @@ def get_post_selection_dict(tk_circ):
     return q_post_sels
 
 
-
 def to_pennylane_old(lambeq_circuit: Diagram, probabilities=False,
-                 backend_config=None, diff_method='best'):
+                     backend_config=None, diff_method='best'):
     """
     Return a PennyLaneCircuit equivalent to the input lambeq
     circuit. `probabilities` determines whether the PennyLaneCircuit

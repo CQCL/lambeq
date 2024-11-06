@@ -203,6 +203,31 @@ class Ty(Entity):
         else:
             return self._fromiter(objects[index])
 
+    def insert(self, other: Self, index: int) -> Self:
+        """Insert a type at the specified index in the complex type list.
+
+        Parameters
+        ----------
+        other : Ty
+            The type to insert. Can be atomic or complex.
+        index : int
+            The position where the type should be inserted.
+        """
+        if not (index <= len(self)):
+            raise IndexError(f'Index {index} out of bounds for '
+                             f'type {self} with length {len(self)}.')
+
+        if self.is_empty:
+            return other
+        else:
+            if index == 0:
+                return other @ self
+            elif index == len(self):
+                return self @ other
+            objects = self.objects.copy()
+            objects = objects[:index] + [*other] + objects[index:]
+            return self._fromiter(objects)
+
     @classmethod
     def _fromiter(cls, objects: Iterable[Self]) -> Self:
         """Create a Ty from an iterable of atomic objects."""
@@ -970,8 +995,10 @@ class Diagram(Entity):
         cod = self.cod
         for n, diagram in enumerate(diags):
             if diagram.dom != cod:
-                raise ValueError(f'Diagram {n} (cod={cod}) does not compose '
-                                 f'with diagram {n+1} (dom={diagram.dom})')
+                raise ValueError(f'Diagram {n} '
+                                 f'(cod={cod.__repr__()}) '
+                                 f'does not compose with diagram {n+1} '
+                                 f'(dom={diagram.dom.__repr__()})')
             cod = diagram.cod
 
             layers.extend(diagram.layers)

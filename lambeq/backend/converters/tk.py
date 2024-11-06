@@ -35,7 +35,9 @@ from lambeq.backend import Functor, Symbol
 from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ, Controlled, CRx,
                                     CRy, CRz, Daggered, Diagram, Discard,
                                     GATES, Id, Ket, Measure, quantum, qubit,
-                                    Rx, Ry, Rz, Scalar, Swap, X, Y, Z, is_circuital, circuital_to_dict, to_circuital)
+                                    Rx, Ry, Rz, Scalar, Swap, X, Y, Z,
+                                    is_circuital, circuital_to_dict,
+                                    to_circuital)
 
 OPTYPE_MAP = {'H': OpType.H,
               'X': OpType.X,
@@ -369,7 +371,8 @@ def to_tk(diagram):
 
     circuit_dict = circuital_to_dict(diagram)
 
-    circuit = Circuit(circuit_dict["qubits"], circuit_dict["qubits"])
+    circuit = Circuit(circuit_dict["qubits"]["total"],
+                      len(circuit_dict["qubits"]["bitmap"]))
 
     for gate in circuit_dict["gates"]:
 
@@ -385,14 +388,13 @@ def to_tk(diagram):
             op = op.dagger
 
         qubits = gate["qubits"]
-
         circuit.add_gate(op, qubits)
 
-    for measure in circuit_dict["measures"]:
-        if measure["type"] == "Measure":
-            circuit.Measure(measure["qubit"], measure["qubit"])
-        elif measure["type"] == "Bra":
-            circuit.post_select({measure["qubit"]: measure["qubit"]})
+    for measure in circuit_dict["measurements"]["measure"]:
+        circuit.Measure(measure["qubit"], measure["bit"])
+
+    for postselect in circuit_dict["measurements"]["post"]:
+        circuit.post_select({postselect["qubit"]: postselect["bit"]})
 
     return circuit
 
