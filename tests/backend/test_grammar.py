@@ -465,6 +465,16 @@ def test_frame():
     )
     assert f.name == 'f1'
     assert len(f.components) == 4
+    assert f.frame_type == 4
+    assert f.frame_order == 1
+
+    f2 = Frame('f2', n, n, components=[f, f])
+    f3 = Frame('f3', n @ n, n @ n, components=[f2])
+
+    assert f2.frame_type == 2
+    assert f2.frame_order == 2
+    assert f3.frame_type == 1
+    assert f3.frame_order == 3
 
 
 def test_diagram_has_frame():

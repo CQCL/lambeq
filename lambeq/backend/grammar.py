@@ -2072,6 +2072,19 @@ class Frame(Box):
     def __hash__(self) -> int:
         return hash(repr(self))
 
+    @property
+    def frame_type(self):
+        """The number of holes in the frame."""
+        return len(self.components)
+
+    @property
+    def frame_order(self):
+        """The level of nesting in the frame increasing from the inside
+        going outward."""
+        component_frame_orders = [c.frame_order if isinstance(c, Frame) else 0
+                                  for c in self.components]
+        return max(component_frame_orders) + 1
+
     @classmethod
     def from_json(cls, data: _JSONDictT | str) -> Self:
         """Decode a JSON object or string into a

@@ -36,10 +36,11 @@ from lambeq.backend.drawing.drawable import (BOX_HEIGHT, BoxNode,
                                              DrawablePregroup,
                                              LEDGE,
                                              WireEndpointType)
-from lambeq.backend.drawing.drawing_backend import (DEFAULT_ASPECT,
+from lambeq.backend.drawing.drawing_backend import (ColoringMode,
+                                                    DEFAULT_ASPECT,
                                                     DEFAULT_MARGINS,
                                                     DrawingBackend,
-                                                    FRAME_COLORS_GENERATOR)
+                                                    FRAME_COLORS)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
 from lambeq.backend.drawing.mat_backend import MatBackend
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
@@ -105,6 +106,9 @@ def draw(diagram: Diagram, **params) -> None:
                     else DrawableDiagram)
     params['color_boxes'] = params.get(
         'color_boxes', diagram.has_frames,
+    )
+    params['coloring_mode'] = params.get(
+        'coloring_mode', ColoringMode.TYPE,
     )
     if drawable is None:
         drawable = drawable_cls.from_diagram(diagram,
@@ -422,11 +426,9 @@ def _draw_box(backend: DrawingBackend,
     else:
         points[2][0] += asymmetry
 
-    color = 'white'
-    if (params['color_boxes']
-            and isinstance(drawable_diagram, DrawableDiagramWithFrames)
-            and hasattr(box, 'name') and box.name):
-        color = next(FRAME_COLORS_GENERATOR)
+    color = _get_box_color(box,
+                           color_boxes=params['color_boxes'],
+                           coloring_mode=params['coloring_mode'])
     backend.draw_polygon(*points, color=color)
 
     if params.get('draw_box_labels', True) and hasattr(box, 'name'):
@@ -438,6 +440,24 @@ def _draw_box(backend: DrawingBackend,
                           fontsize=params.get('fontsize', None))
 
     return backend
+
+
+def _get_box_color(box: grammar.Diagrammable,
+                   color_boxes: bool = False,
+                   coloring_mode: ColoringMode = ColoringMode.TYPE):
+    color = 'white'
+    if color_boxes:
+        if hasattr(box, 'name'):
+            color = 'gray'
+
+        if isinstance(box, grammar.Frame) and hasattr(box, 'name'):
+            frame_attr = getattr(box, f'frame_{coloring_mode}')
+            if coloring_mode == ColoringMode.TYPE:
+                frame_attr += (len(FRAME_COLORS) // 7) * box.frame_order
+
+            color = FRAME_COLORS[frame_attr % len(FRAME_COLORS)]
+
+    return color
 
 
 def _draw_pregroup_state(backend: DrawingBackend,
