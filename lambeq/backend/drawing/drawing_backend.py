@@ -30,6 +30,15 @@ from lambeq.backend.drawing.drawable import DrawableDiagram
 DEFAULT_MARGINS = (.05, .1)
 DEFAULT_ASPECT = 'equal'
 
+WIRE_COLORS = [
+    "#A22417", "#D17800", "#F4A940", "#49A141", "#007765",
+    "#398889", "#0252A1", "#3831A0","#A629B3", "#B60539",
+    "#73190E", "#BE660F", "#F29A3B", "#3C8331", "#01594C",
+    "#2F7173", "#013B73", "#292372", "#271296", "#9526AF",
+    "#960131", "#450D06", "#9C540E", "#F07E33", "#003C33",
+    "#205356", "#002B54", "#201B5B", "#1D0B66", "#751FA5"
+]
+
 
 FRAME_COLORS: list[str] = [
     '#fbe8e7', '#fee1ba', '#fff9e5', '#e8f8ea', '#dcfbf5',
@@ -146,7 +155,8 @@ class DrawingBackend(ABC):
                   bend_out: bool = False,
                   bend_in: bool = False,
                   is_leg: bool = False,
-                  style: str | None = None) -> None:
+                  style: str | None = None,
+                  color: str = 'black') -> None:
         """
         Draws a wire from source to target, possibly with a curve
 
@@ -179,6 +189,22 @@ class DrawingBackend(ABC):
         ----------
         drawable: DrawableDiagram
             Diagram from which to draw all spiders.
+        params: any
+            Additional parameters.
+
+        """
+
+    @abstractmethod
+    def draw_spider(self, node, wire_drawings, **params) -> None:
+        """
+        Draws the spider node with the list of wires.
+
+        Parameters
+        ----------
+        node: DrawableDiagram
+            the node to be drawn.
+        wire_drawings: list of wires
+            list of wires in the spider
         params: any
             Additional parameters.
 

@@ -71,11 +71,12 @@ class MatBackend(DrawingBackend):
                   bend_out: bool = False,
                   bend_in: bool = False,
                   is_leg: bool = False,
-                  style: str | None = None) -> None:
+                  style: str | None = None,
+                  color: str = 'black') -> None:
         if style == '->':
             self.axis.arrow(
                 *(source + (target[0] - source[0], target[1] - source[1])),
-                head_width=.02, color='black')
+                head_width=.02, color=color)
         else:
             if is_leg:
                 mid = (target[0], source[1])
@@ -107,7 +108,7 @@ class MatBackend(DrawingBackend):
                 ])
 
             self.axis.add_patch(PathPatch(
-                path, facecolor='none', linewidth=self.linewidth))
+                path, facecolor='none', linewidth=self.linewidth, edgecolor=color))
 
         self.max_width = max(self.max_width, source[0], target[0])
 
@@ -127,6 +128,20 @@ class MatBackend(DrawingBackend):
                                node.coordinates,
                                bend_in=True,
                                is_leg=True)
+
+    def draw_spider(self, node, wire_drawings, **params) -> None:
+        if isinstance(node.obj, Spider):
+            self.draw_node(*node.coordinates, **params)
+
+        for wire in wire_drawings:
+            self.draw_wire(
+                wire['start'],
+                wire['end'],
+                bend_out=wire.get('bend_out', False),
+                bend_in=wire.get('bend_in', False),
+                is_leg=wire['is_leg'],
+                color=wire['color']
+            )
 
     def output(self,
                path: str | None = None,
