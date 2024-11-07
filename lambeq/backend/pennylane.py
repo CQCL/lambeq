@@ -218,7 +218,8 @@ def to_pennylane(diagram: Diagram, probabilities=False,
 
     circuit_dict = circuital_to_dict(diagram)
 
-    op_list, params_list, symbols_set, wires_list = extract_ops_from_circuital(circuit_dict)
+    ex_ops = extract_ops_from_circuital(circuit_dict)
+    op_list, params_list, symbols_set, wires_list = ex_ops
 
     # Get post selection bits
     post_selection = {}

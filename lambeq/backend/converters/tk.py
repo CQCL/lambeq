@@ -376,7 +376,10 @@ def to_tk(diagram):
 
     for gate in circuit_dict["gates"]:
 
-        if not gate["type"] in OPTYPE_MAP:
+        if gate["type"] == "Scalar":
+            circuit.scale(abs(gate["phase"])**2)
+            continue
+        elif not gate["type"] in OPTYPE_MAP:
             raise NotImplementedError(f"Gate {gate} not supported")
 
         if "phase" in gate:
