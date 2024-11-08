@@ -31,12 +31,12 @@ DEFAULT_MARGINS = (.05, .1)
 DEFAULT_ASPECT = 'equal'
 
 WIRE_COLORS = [
-    "#A22417", "#D17800", "#F4A940", "#49A141", "#007765",
-    "#398889", "#0252A1", "#3831A0","#A629B3", "#B60539",
-    "#73190E", "#BE660F", "#F29A3B", "#3C8331", "#01594C",
-    "#2F7173", "#013B73", "#292372", "#271296", "#9526AF",
-    "#960131", "#450D06", "#9C540E", "#F07E33", "#003C33",
-    "#205356", "#002B54", "#201B5B", "#1D0B66", "#751FA5"
+    '#9c540e', '#f07e33', '#1d0b66', '#751fa5', '#740127',
+    '#a22417', '#d03b2d', '#fe9100', '#f8c84b', '#5ac358',
+    '#018c76', '#450d06', '#066ee2', '#574cfa', '#7446f2',
+    '#c330b9', '#e2074c', '#d17800', '#f4a940', '#49a141',
+    '#007765', '#398889', '#0252a1', '#3831a0', '#271296',
+    '#a629b3', '#b60539' '#3c8331', '#fea431', '#73b8fd'
 ]
 
 
@@ -156,7 +156,8 @@ class DrawingBackend(ABC):
                   bend_in: bool = False,
                   is_leg: bool = False,
                   style: str | None = None,
-                  color: str = 'black') -> None:
+                  color_id: int = 0,
+                  **params)-> None:
         """
         Draws a wire from source to target, possibly with a curve
 
@@ -194,21 +195,16 @@ class DrawingBackend(ABC):
 
         """
 
-    @abstractmethod
-    def draw_spider(self, node, wire_drawings, **params) -> None:
+    def _get_wire_color(self, wire_id, **params):
         """
-        Draws the spider node with the list of wires.
-
-        Parameters
-        ----------
-        node: DrawableDiagram
-            the node to be drawn.
-        wire_drawings: list of wires
-            list of wires in the spider
-        params: any
-            Additional parameters.
 
         """
+        print('wire_id-->', wire_id)
+        if not params.get('color_wires') or  wire_id == 0:
+            return '#000000'
+        else:
+            wire_color = WIRE_COLORS[(wire_id - 1) % len(WIRE_COLORS)]
+            return wire_color
 
     @abstractmethod
     def output(self,

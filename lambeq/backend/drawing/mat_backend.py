@@ -72,7 +72,9 @@ class MatBackend(DrawingBackend):
                   bend_in: bool = False,
                   is_leg: bool = False,
                   style: str | None = None,
-                  color: str = 'black') -> None:
+                  color_id: int = 0,
+                  **params) -> None:
+        color = self._get_wire_color(color_id, **params)
         if style == '->':
             self.axis.arrow(
                 *(source + (target[0] - source[0], target[1] - source[1])),
@@ -116,32 +118,22 @@ class MatBackend(DrawingBackend):
 
         nodes = [node for node in drawable.boxes if drawn_as_spider(node.obj)]
         for node in nodes:
-            if isinstance(node.obj, Spider):
-                self.draw_node(*node.coordinates, **params)
+
             for wire in node.cod_wires:
                 self.draw_wire(node.coordinates,
                                drawable.wire_endpoints[wire].coordinates,
                                bend_out=True,
-                               is_leg=True)
+                               is_leg=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id, **params)
             for wire in node.dom_wires:
+                print('wire->', drawable.wire_endpoints[wire].noun_id)
                 self.draw_wire(drawable.wire_endpoints[wire].coordinates,
                                node.coordinates,
                                bend_in=True,
-                               is_leg=True)
-
-    def draw_spider(self, node, wire_drawings, **params) -> None:
-        if isinstance(node.obj, Spider):
-            self.draw_node(*node.coordinates, **params)
-
-        for wire in wire_drawings:
-            self.draw_wire(
-                wire['start'],
-                wire['end'],
-                bend_out=wire.get('bend_out', False),
-                bend_in=wire.get('bend_in', False),
-                is_leg=wire['is_leg'],
-                color=wire['color']
-            )
+                               is_leg=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id, **params)
+            if isinstance(node.obj, Spider):
+                self.draw_node(*node.coordinates, **params)
 
     def output(self,
                path: str | None = None,

@@ -148,11 +148,10 @@ def draw(diagram: Diagram, **params) -> None:
             backend = _draw_controlled_gate(backend, drawable, node, **params)
         elif not drawn_as_spider(node.obj):
             backend = _draw_box(backend, drawable, node, **params)
-        else:
-            wire_drawings = compute_spider_wires(node, drawable, **params)
-            backend.draw_spider(node,wire_drawings,**params)
+
     # Draw boxes first since they are filled
     backend = _draw_wires(backend, drawable, **params)
+    backend.draw_spiders(drawable, **params)
     backend.output(
         path=params.get('path', None),
         baseline=0,
@@ -160,44 +159,6 @@ def draw(diagram: Diagram, **params) -> None:
         show=params.get('show', True),
         margins=params.get('margins', DEFAULT_MARGINS))
 
-def compute_spider_wires(node, drawable, **params)-> list:
-        """
-        Compute the wire drawing requirements for spider.
-
-         Computes all the wires (dom and cod) that need to be drawn for spider
-        and returns a list of wires.
-        """
-        wire_color = 'black'
-        wire_drawings = []
-        # Compute wires for cod_wires (outgoing wires)
-        for wire in node.cod_wires:
-            start_coordinates = node.coordinates
-            end_coordinates = drawable.wire_endpoints[wire].coordinates
-            if params['color_wires']:
-                wire_color = WIRE_COLORS[(drawable.wire_endpoints[wire].color - 1) % len(WIRE_COLORS)]
-            wire_drawings.append({
-                'start': start_coordinates,
-                'end': end_coordinates,
-                'bend_out': True,
-                'is_leg': True,
-                'color': wire_color
-            })
-
-        # Compute wires for dom_wires (incoming wires)
-        for wire in node.dom_wires:
-            start_coordinates = drawable.wire_endpoints[wire].coordinates
-            end_coordinates = node.coordinates
-            if params['color_wires']:
-                wire_color = WIRE_COLORS[(drawable.wire_endpoints[wire].color - 1) % len(WIRE_COLORS)]
-            wire_drawings.append({
-                'start': start_coordinates,
-                'end': end_coordinates,
-                'bend_in': True,
-                'is_leg': True,
-                'color': wire_color
-            })
-
-        return wire_drawings
 
 def draw_pregroup(diagram: Diagram, **params) -> None:
     """ Draw a pregroup grammar diagram.
@@ -501,9 +462,13 @@ def _get_box_color(box: grammar.Diagrammable,
             color = FRAME_COLORS[(frame_attr - 1) % len(FRAME_COLORS)]
 
     return color
+
 def _get_wire_color(wire_id):
-    wire_color = WIRE_COLORS[(wire_id - 1) % len(WIRE_COLORS)]
-    return wire_color
+    if wire_id == 0:
+        return '#000000'
+    else:
+        wire_color = WIRE_COLORS[(wire_id - 1) % len(WIRE_COLORS)]
+        return wire_color
 
 def _draw_pregroup_state(backend: DrawingBackend,
                          drawable_box: BoxNode,
@@ -569,16 +534,16 @@ def _draw_wires(backend: DrawingBackend,
     for src_idx, tgt_idx in drawable_diagram.wires:
         source = drawable_diagram.wire_endpoints[src_idx]
         target = drawable_diagram.wire_endpoints[tgt_idx]
-        wire_color = 'black'
-        if params['color_wires']:
+        wire_color_id = 0
+        if params.get('color_wires'):
             # Determine the color based on the type of the source
             if source.kind in {WireEndpointType.INPUT}:
-                wire_color_id = source.color
+                wire_color_id = source.noun_id
             else:
-                wire_color_id = target.color
-            wire_color = _get_wire_color(wire_color_id)
+                wire_color_id = target.noun_id
+        # print('wire', wire_color_id)
         backend.draw_wire(
-            source.coordinates, target.coordinates, color=wire_color)
+            source.coordinates, target.coordinates, color_id=wire_color_id, **params)
 
         if (params.get('draw_type_labels', True) and source.kind in
                 {WireEndpointType.INPUT, WireEndpointType.COD}):

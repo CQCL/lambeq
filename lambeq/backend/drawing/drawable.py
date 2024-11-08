@@ -95,7 +95,7 @@ class WireEndpoint:
 
     x: float
     y: float
-    color: int = 0 # New attribute for wire noun
+    noun_id: int = 0 # New attribute for wire noun
     parent: Optional['BoxNode'] = None
 
     @property
@@ -381,7 +381,7 @@ class DrawableDiagram:
                                     obj=obj,
                                     x=self.wire_endpoints[nbr_idx].x,
                                     y=y_pos + HALF_BOX_HEIGHT,
-                                    color=noun_id)
+                                    noun_id=noun_id)
 
             wire_idx = self._add_wire_end(wire_end)
             node.add_dom_wire(wire_idx)
@@ -428,7 +428,7 @@ class DrawableDiagram:
                                     obj=obj,
                                     x=x,
                                     y=y,
-                                    color=noun_id)
+                                    noun_id=noun_id)
 
             wire_idx = self._add_wire_end(wire_end)
             scan_insert.append(wire_idx)
@@ -820,7 +820,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
     """
     #add counter for Nouns
-    noun_id_counter = 0
+    noun_id_counter = 1
     def _make_space(self,
                     scan: list[int],
                     box: grammar.Box,
@@ -1039,7 +1039,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
                                     obj=obj,
                                     x=X_SPACING * i,
                                     y=1,
-                                    color=input_nouns[i])
+                                    noun_id=input_nouns[i])
             wire_end_idx = drawable._add_wire_end(wire_end)
             scan.append(wire_end_idx)
 
@@ -1079,7 +1079,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
                 obj=obj,
                 x=drawable.wire_endpoints[scan[i]].x,
                 y=min_y - max_box_half_height - 1.5 * BOX_HEIGHT,
-                color=input_nouns[i]
+                noun_id=input_nouns[i]
             )
             wire_end_idx = drawable._add_wire_end(wire_end)
             drawable._add_wire(scan[i], wire_end_idx)
@@ -1454,6 +1454,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         last_wire_endpoint = len(self.wire_endpoints)
 
         for wire_endpoint in drawable.wire_endpoints:
+            # wire_endpoint.noun_id = 0
             self.wire_endpoints.append(wire_endpoint)
 
         for box in drawable.boxes:
