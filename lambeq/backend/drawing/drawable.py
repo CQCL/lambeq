@@ -95,7 +95,7 @@ class WireEndpoint:
 
     x: float
     y: float
-    noun_id: int = 0 # New attribute for wire noun
+    noun_id: int = 0  # New attribute for wire noun
     parent: Optional['BoxNode'] = None
 
     @property
@@ -340,13 +340,15 @@ class DrawableDiagram:
         self.boxes.append(box)
         return len(self.boxes) - 1
 
-    def _add_box(self,
-                 scan: list[int],
-                 box: grammar.Box,
-                 off: int,
-                 x_pos: float,
-                 y_pos: float,
-                 input_nouns: list[str]=None) -> tuple[list[int], int, list[str]]:
+    def _add_box(
+            self,
+            scan: list[int],
+            box: grammar.Box,
+            off: int,
+            x_pos: float,
+            y_pos: float,
+            input_nouns: list[str] = None
+    ) -> tuple[list[int], int, list[str]]:
         """Add a box to the graph, creating necessary wire endpoints.
 
         Returns
@@ -374,8 +376,10 @@ class DrawableDiagram:
         for i, obj in enumerate(box.dom):
             idx = off + i
             nbr_idx = scan[off + i]
-            noun_id = input_nouns[idx] if input_nouns and idx < len(
-                input_nouns) else DrawableDiagramWithFrames.get_noun_id() # Default to black if no input color available
+            noun_id = (input_nouns[idx] if input_nouns
+                       and idx < len(input_nouns)
+                       else DrawableDiagramWithFrames.get_noun_id()
+                       )  # generate new noun id if needed
 
             wire_end = WireEndpoint(WireEndpointType.DOM,
                                     obj=obj,
@@ -393,16 +397,25 @@ class DrawableDiagram:
             if input_nouns and len(box.dom) > 1:
                 dom_idx_1 = off
                 dom_idx_2 = off + 1
-                input_nouns[dom_idx_1], input_nouns[dom_idx_2] = input_nouns[dom_idx_2], input_nouns[dom_idx_1]
+                input_nouns[dom_idx_1], input_nouns[dom_idx_2] \
+                    = (input_nouns[dom_idx_2], input_nouns[dom_idx_1])
         # if Spider, expand or shrink the noun_ids based on type
         elif isinstance(node.obj, grammar.Spider):
             if len(box.dom) == 1 and len(box.cod) > 1:
-                dom_noun = input_nouns[off] if input_nouns and off < len(input_nouns) else DrawableDiagramWithFrames.get_noun_id()
+                dom_noun = (input_nouns[off] if input_nouns
+                            and off < len(input_nouns)
+                            else DrawableDiagramWithFrames.get_noun_id()
+                            )
                 expanded_colors = [dom_noun] * len(box.cod)
-                input_nouns = input_nouns[:off] + expanded_colors + input_nouns[off + len(box.dom):]
+                input_nouns = (input_nouns[:off] + expanded_colors
+                               + input_nouns[off + len(box.dom):])
             elif len(box.dom) > 1 and len(box.cod) == 1:
-                cod_noun = input_nouns[off] if input_nouns and off < len(input_nouns) else DrawableDiagramWithFrames.get_noun_id()
-                input_nouns = input_nouns[:off] + [cod_noun] + input_nouns[off + len(box.dom):]
+                cod_noun = (input_nouns[off] if input_nouns
+                            and off < len(input_nouns)
+                            else DrawableDiagramWithFrames.get_noun_id()
+                            )
+                input_nouns = (input_nouns[:off] + [cod_noun]
+                               + input_nouns[off + len(box.dom):])
 
         num_output = off+len(box.cod)
         for i in range(num_output):
@@ -423,7 +436,9 @@ class DrawableDiagram:
                 x = x_pos + X_SPACING * (i - len(box.cod[1:]) / 2)
             y = y_pos - HALF_BOX_HEIGHT
             idx = off + i
-            noun_id = input_nouns[idx] if input_nouns and idx < len(input_nouns) else DrawableDiagramWithFrames.get_noun_id()
+            noun_id = (input_nouns[idx] if input_nouns
+                       and idx < len(input_nouns)
+                       else DrawableDiagramWithFrames.get_noun_id())
             wire_end = WireEndpoint(WireEndpointType.COD,
                                     obj=obj,
                                     x=x,
@@ -435,7 +450,8 @@ class DrawableDiagram:
             node.add_cod_wire(wire_idx)
 
         # Replace node's dom with its cod in scan
-        return scan[:off] + scan_insert + scan[off + len(box.dom):], box_ind, input_nouns
+        return (scan[:off] + scan_insert + scan[off + len(box.dom):],
+                box_ind, input_nouns)
 
     def _find_box_edges(self,
                         box: grammar.Box,
@@ -819,8 +835,9 @@ class DrawableDiagramWithFrames(DrawableDiagram):
     frame, carrying all information necessary to render it.
 
     """
-    #add counter for Nouns
+    # add counter for Nouns
     noun_id_counter = 1
+
     def _make_space(self,
                     scan: list[int],
                     box: grammar.Box,
@@ -991,7 +1008,6 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         return min(all_xs), min(all_ys), max(all_xs), max(all_ys)
 
-
     @staticmethod
     def get_noun_id() -> int:
         """Generate a new numerical ID for the noun box/wire."""
@@ -1031,8 +1047,8 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         num_input = len(diagram.dom)
         input_nouns = []
         for i in range(num_input):
-                new_color = drawable.get_noun_id()
-                input_nouns.append(new_color)
+            new_color = drawable.get_noun_id()
+            input_nouns.append(new_color)
 
         for i, obj in enumerate(diagram.dom):
             wire_end = WireEndpoint(WireEndpointType.INPUT,
@@ -1051,7 +1067,8 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             # TODO: Debug issues with y coord
             x, y = drawable._make_space(scan, box, off, foliated=foliated)
 
-            scan, box_ind, input_nouns = drawable._add_box(scan, box, off, x, y, input_nouns)
+            scan, box_ind, input_nouns = drawable._add_box(scan, box, off,
+                                                           x, y, input_nouns)
             box_height = BOX_HEIGHT
             # Add drawables for the inside of the frame
             if isinstance(box, grammar.Frame):
@@ -1063,7 +1080,6 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             min_y = min(min_y, y)
 
         num_output = len(diagram.cod)
-        output_nouns = []
         # Match output nouns with input nouns as much as possible
         for i in range(num_output):
             if i < len(input_nouns):
@@ -1454,7 +1470,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         last_wire_endpoint = len(self.wire_endpoints)
 
         for wire_endpoint in drawable.wire_endpoints:
-            # wire_endpoint.noun_id = 0
+            wire_endpoint.noun_id = 0
             self.wire_endpoints.append(wire_endpoint)
 
         for box in drawable.boxes:

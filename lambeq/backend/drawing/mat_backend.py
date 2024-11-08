@@ -109,8 +109,9 @@ class MatBackend(DrawingBackend):
                     Path.CURVE3,
                 ])
 
-            self.axis.add_patch(PathPatch(
-                path, facecolor='none', linewidth=self.linewidth, edgecolor=color))
+            self.axis.add_patch(PathPatch(path, facecolor='none',
+                                          linewidth=self.linewidth,
+                                          edgecolor=color))
 
         self.max_width = max(self.max_width, source[0], target[0])
 
@@ -124,14 +125,16 @@ class MatBackend(DrawingBackend):
                                drawable.wire_endpoints[wire].coordinates,
                                bend_out=True,
                                is_leg=True,
-                               color_id=drawable.wire_endpoints[wire].noun_id, **params)
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
             for wire in node.dom_wires:
                 print('wire->', drawable.wire_endpoints[wire].noun_id)
                 self.draw_wire(drawable.wire_endpoints[wire].coordinates,
                                node.coordinates,
                                bend_in=True,
                                is_leg=True,
-                               color_id=drawable.wire_endpoints[wire].noun_id, **params)
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
             if isinstance(node.obj, Spider):
                 self.draw_node(*node.coordinates, **params)
 

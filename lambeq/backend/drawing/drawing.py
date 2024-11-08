@@ -463,12 +463,14 @@ def _get_box_color(box: grammar.Diagrammable,
 
     return color
 
+
 def _get_wire_color(wire_id):
     if wire_id == 0:
         return '#000000'
     else:
         wire_color = WIRE_COLORS[(wire_id - 1) % len(WIRE_COLORS)]
         return wire_color
+
 
 def _draw_pregroup_state(backend: DrawingBackend,
                          drawable_box: BoxNode,
@@ -542,8 +544,8 @@ def _draw_wires(backend: DrawingBackend,
             else:
                 wire_color_id = target.noun_id
         # print('wire', wire_color_id)
-        backend.draw_wire(
-            source.coordinates, target.coordinates, color_id=wire_color_id, **params)
+        backend.draw_wire(source.coordinates, target.coordinates,
+                          color_id=wire_color_id, **params)
 
         if (params.get('draw_type_labels', True) and source.kind in
                 {WireEndpointType.INPUT, WireEndpointType.COD}):
