@@ -230,7 +230,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
     # Get post selection bits
     post_selection = {}
     for postselect in circuit_dict['measurements']['post'] :
-        post_selection[postselect['qubit']] = postselect['bit']
+        post_selection[postselect['qubit']] = postselect['phase']
 
     return PennyLaneCircuit(op_list,
                             list(symbols_set),
@@ -488,7 +488,7 @@ class PennyLaneCircuit:
         wires = (qml.draw(self._circuit)
                  (self._concrete_params).split('\n'))
         for k, v in self._post_selection.items():
-            wires[k] = wires[k].split('┤')[0] + '┤' + str(v) + '⟩'
+            wires[k] = wires[k].split('┤')[0] + '┤' + str(v) + '>'
 
         print('\n'.join(wires))
 
