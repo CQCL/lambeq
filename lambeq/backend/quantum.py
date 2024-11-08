@@ -1426,7 +1426,7 @@ def to_circuital(circuit: Diagram):
 
     layers = circuit.layers
 
-    for layer in layers:
+    for i, layer in enumerate(layers):
 
         if isinstance(layer.box, Ket):
             qubits, gates = add_qubit(qubits,
