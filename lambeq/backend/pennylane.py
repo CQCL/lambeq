@@ -51,9 +51,9 @@ import sympy
 import torch
 
 from lambeq.backend.quantum import (Scalar,
+                                    circuital_to_dict,
                                     is_circuital,
-                                    to_circuital,
-                                    circuital_to_dict)
+                                    to_circuital)
 
 if TYPE_CHECKING:
     from lambeq.backend.quantum import Diagram
@@ -152,10 +152,10 @@ def tk_op_to_pennylane(tk_op):
 
 def extract_ops_from_circuital(circuit_dict: dict):
 
-    ops = [OP_MAP_COMPOSED[x["type"]] for x in circuit_dict["gates"]]
-    qubits = [x["qubits"] for x in circuit_dict["gates"]]
-    params = [x["phase"] if "phase" in x else []
-              for x in circuit_dict["gates"]]
+    ops = [OP_MAP_COMPOSED[x['type']] for x in circuit_dict['gates']]
+    qubits = [x['qubits'] for x in circuit_dict['gates']]
+    params = [x['phase'] if 'phase' in x else []
+              for x in circuit_dict['gates']]
 
     symbols = set()
 
@@ -218,18 +218,19 @@ def to_pennylane(diagram: Diagram, probabilities=False,
 
     circuit_dict = circuital_to_dict(diagram)
 
+    scalar = 1
+    for gate in circuit_dict['gates']:
+        if gate['type'] == 'Scalar':
+            scalar *= gate['phase']
+            circuit_dict['gates'].remove(gate)
+
     ex_ops = extract_ops_from_circuital(circuit_dict)
     op_list, params_list, symbols_set, wires_list = ex_ops
 
     # Get post selection bits
     post_selection = {}
-    for postselect in circuit_dict["measurements"]["post"] :
-        post_selection[postselect["qubit"]] = postselect["bit"]
-
-    scalar = 1
-    for gate in circuit_dict["gates"]:
-        if gate["type"] == "Scalar":
-            scalar *= gate["array"]
+    for postselect in circuit_dict['measurements']['post'] :
+        post_selection[postselect['qubit']] = postselect['bit']
 
     return PennyLaneCircuit(op_list,
                             list(symbols_set),
@@ -238,7 +239,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
                             probabilities,
                             post_selection,
                             scalar,
-                            circuit_dict["qubits"]["total"],
+                            circuit_dict['qubits']['total'],
                             backend_config,
                             diff_method)
 

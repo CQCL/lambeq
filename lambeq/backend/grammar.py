@@ -203,6 +203,37 @@ class Ty(Entity):
         else:
             return self._fromiter(objects[index])
 
+    def replace(self, other: Self, index: int) -> Self:
+        """Replace a type at the specified index in the complex type list.
+
+        Parameters
+        ----------
+        other : Ty
+            The type to insert. Can be atomic or complex.
+        index : int
+            The position where the type should be inserted.
+        """
+        if not (index <= len(self) and index >= 0):
+            raise IndexError(f'Index {index} out of bounds for '
+                             f'type {self} with length {len(self)}.')
+
+        if self.is_empty:
+            return other
+        else:
+            objects = self.objects.copy()
+
+            if len(objects) == 1:
+                return other
+
+            if index == 0:
+                objects = [*other] + objects[1:]
+            elif index == len(self):
+                objects = objects[:-1] + [*other]
+            else:
+                objects = objects[:index] + [*other] + objects[index+1:]
+
+            return self._fromiter(objects)
+
     def insert(self, other: Self, index: int) -> Self:
         """Insert a type at the specified index in the complex type list.
 

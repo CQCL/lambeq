@@ -32,15 +32,15 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast, Dict
 import copy
+from typing import cast, Dict
 
 import numpy as np
 import tensornetwork as tn
 from typing_extensions import Any, Self
 
 
-from lambeq.backend import grammar, tensor, Functor, Symbol
+from lambeq.backend import Functor, grammar, Symbol, tensor
 from lambeq.backend.numerical_backend import backend, get_backend
 from lambeq.backend.symbol import lambdify
 
@@ -1255,23 +1255,6 @@ def to_circuital(circuit: Diagram):
 
         return qubits, pull_qubit_through(offset, gates)[0]
 
-    def pull_bit(offset, gates):
-
-        for gate_layer in gates:
-            if offset < len(gate_layer.left):
-                gate_layer.left = gate_layer.replace(qubit, offset)
-            elif offset < (len(gate_layer.left)
-                           + len(gate_layer.box.dom)):
-                gate_layer.box.dom = gate_layer.box.dom.replace(qubit, offset - len(gate_layer.left))
-            elif offset < (len(gate_layer.left)
-                           + len(gate_layer.box.dom)
-                           + len(gate_layer.right)):
-                gate_layer.right = gate_layer.right.replace(qubit, offset - len(gate_layer.left) - len(gate_layer.right))
-            else:
-                raise IndexError("list index out of range")
-
-        return gates
-
     def construct_measurements(last_layer, post_selects):
 
         total_qubits = (len(last_layer.left)
@@ -1295,6 +1278,44 @@ def to_circuital(circuit: Diagram):
 
         return new_postselects
 
+    def pull_bit_through(q_idx: int, gates: list[Layer]) -> list[Layer]:
+        """
+            Inserts a qubit type into every layer at the appropriate index
+            q_idx: idx - index of where to insert the gate.
+        """
+
+        for gate_layer in gates:
+
+            l_size = len(gate_layer.left)
+            c_size = len(gate_layer.box.cod)
+            d_size = len(gate_layer.box.dom)
+
+            # Inserting to the left is always trivial
+            if q_idx <= l_size:
+                gate_layer.left = gate_layer.left.replace(qubit, q_idx)
+            # Qubit on right of gate. Handles 1 qubit gates by l(dom) = 1
+            elif q_idx > l_size + len(gate_layer.box.dom) - 1:
+
+                # Index relative to the 1st qubit on right
+                r_rel = q_idx - (l_size + len(gate_layer.box.dom))
+
+                # Insert on right. Update relative index from the left
+                gate_layer.right = gate_layer.right.replace(qubit, r_rel)
+
+                q_idx = r_rel + l_size + len(gate_layer.box.cod)
+
+            elif c_size == d_size:
+                # Initial control qubit box
+                box = gate_layer.box
+                box.dom = box.dom.replace(qubit, q_idx - l_size)
+                box.cod = box.cod.replace(qubit, q_idx - l_size)
+
+            else:
+                raise NotImplementedError('Cannot pull bit through '
+                                          f'box {gate_layer}')
+
+        return gates, q_idx
+
     def pull_qubit_through(q_idx: int, gates: list[Layer]) -> list[Layer]:
         """
             Inserts a qubit type into every layer at the appropriate index
@@ -1303,18 +1324,21 @@ def to_circuital(circuit: Diagram):
 
         for gate_layer in gates:
 
-            # Index relative to the right, first qubit in the right = 0 idx
-            right_rel = q_idx - (len(gate_layer.left) + len(gate_layer.box.dom))
+            l_size = len(gate_layer.left)
 
             # Inserting to the left is always trivial
-            if q_idx <= len(gate_layer.left) :
+            if q_idx <= l_size:
                 gate_layer.left = gate_layer.left.insert(qubit, q_idx)
-            # Qubit is on the right of the gate. Also handles 1 qubit gates because l(dom) = 1
-            elif q_idx > len(gate_layer.left) + len(gate_layer.box.dom) - 1:
-                # Insert on the right and update the relative index from the left
-                gate_layer.right = gate_layer.right.insert(qubit, right_rel)
+            # Qubit on right of gate. Handles 1 qubit gates by l(dom) = 1
+            elif q_idx > l_size + len(gate_layer.box.dom) - 1:
 
-                q_idx = right_rel + len(gate_layer.left) + len(gate_layer.box.cod)  # Or q + cod - dom
+                # Index relative to the 1st qubit on right
+                r_rel = q_idx - (l_size + len(gate_layer.box.dom))
+
+                # Insert on right. Update relative index from the left
+                gate_layer.right = gate_layer.right.insert(qubit, r_rel)
+
+                q_idx = r_rel + l_size + len(gate_layer.box.cod)
 
             else:
                 if isinstance(gate_layer.box, Controlled):
@@ -1343,8 +1367,10 @@ def to_circuital(circuit: Diagram):
                         prev_pos = curr_pos
                         curr_box = curr_box.controlled
 
-                    gate_layer.box.dom = gate_layer.box.dom.insert(qubit, q_idx - gate_qubits[0])
-                    gate_layer.box.cod = gate_layer.box.cod.insert(qubit, q_idx - gate_qubits[0])
+                    box = gate_layer.box
+
+                    box.dom = box.dom.insert(qubit, q_idx - l_size)
+                    box.cod = box.cod.insert(qubit, q_idx - l_size)
 
                 if isinstance(gate_layer.box, Swap):
 
@@ -1363,19 +1389,45 @@ def to_circuital(circuit: Diagram):
 
         return gates, q_idx
 
+    def build_left_right(q_idx, layer, layers):
+        """
+        We assume that the left and right are constructable
+        from the last gate
+        and the left position of the bra.
+        (We avoid type checking until the end.)
+        Rebuild left and right based on the last layer
+        """
+        if len(layers) == 0:
+            return layer
+
+        gate_layer = layers[-1]
+
+        # Inserting to the left is always trivial
+        total_layer = ([*gate_layer.left] + [*gate_layer.box.cod]
+                       + [*gate_layer.right])
+        # Assumes you're only inserting one qubit at a time
+        total_layer[q_idx] = layer.box.cod
+
+        if q_idx == 0 or not total_layer[:q_idx-1]:
+            layer.left = Ty()
+        else:
+            layer.left = layer.left._fromiter(total_layer[:q_idx-1])
+
+        if q_idx == len(total_layer) - 1 or not total_layer[q_idx+1:]:
+            layer.right = Ty()
+        else:
+            layer.right = layer.right._fromiter(total_layer[q_idx+1:])
+
+        return layer
+
     circuit = Functor(target_category=quantum,  # type: ignore [assignment]
                       ob=lambda _, x: x,
                       ar=remove_ket1)(circuit)  # type: ignore [arg-type]
 
     layers = circuit.layers
 
-    # Remove measurements to the end
     for layer in layers:
-        if isinstance(layer.box, Measure):
-            measures.append(layer)
-            layers.remove(layer)
 
-    for i, layer in enumerate(layers):
         if isinstance(layer.box, Ket):
             qubits, gates = add_qubit(qubits,
                                       layer,
@@ -1384,21 +1436,26 @@ def to_circuital(circuit: Diagram):
 
         elif isinstance(layer.box, (Bra, Discard)):
 
-            layers[i+1:], q_idx = pull_qubit_through(len(layer.left), layers[i+1:])
+            q_idx = len(layer.left)
 
-            # We assume that the left and right are constructable from the last gate
-            # and the left position of the bra. (We avoid type checking until the end.)
-            layer.left = Ty()
-            if q_idx > 0:
-                layer.left = qubit ** q_idx
-
-            r_len = len(gates[-1].right) + len(gates[-1].box.cod) + len(gates[-1].left) - q_idx - 1
-
-            layer.right = Ty()
-            if r_len > 0:
-                layer.right = qubit ** r_len
+            layers[i+1:], q_idx = pull_qubit_through(q_idx, layers[i+1:])
+            layer = build_left_right(q_idx, layer, layers[i+1 :])
 
             postselect.insert(0, layer)
+
+        elif isinstance(layer.box, Measure):
+
+            q_idx = len(layer.left)
+            layers[i+1:], q_idx = pull_bit_through(q_idx, layers[i+1:])
+            layer = build_left_right(q_idx, layer, layers[i+1:])
+
+            q_idx = len(layer.left)
+
+            if postselect:
+                postselect, q_idx = pull_bit_through(q_idx, postselect)
+                layer = build_left_right(q_idx, layer, postselect)
+
+            measures.insert(0, layer)
 
         else:
             gates.append(layer)
@@ -1431,6 +1488,7 @@ def circuital_to_dict(diagram):
                                     'measure': []}
     circuit_dict['qubits'] = {'total': num_qubits, 'bitmap': {},
                               'post': [], 'discard': [], 'measure': []}
+    bitmap = {}
 
     for i, layer in enumerate(layers):
 
@@ -1440,7 +1498,7 @@ def circuital_to_dict(diagram):
             pass
         elif isinstance(layer.box, Measure):
             available_qubits.remove(qi)
-            circuit_dict['qubits']['bitmap'][qi] = len(circuit_dict['qubits']['bitmap'])
+            bitmap[qi] = len(bitmap)
             circuit_dict['qubits']['measure'].append(qi)
             circuit_dict['measurements']['measure'].append(
                 {'type': 'Measure', 'qubit': qi,
@@ -1448,7 +1506,7 @@ def circuital_to_dict(diagram):
             )
         elif isinstance(layer.box, Bra):
             available_qubits.remove(qi)
-            circuit_dict['qubits']['bitmap'][qi] = len(circuit_dict['qubits']['bitmap'])
+            bitmap[qi] = len(bitmap)
             circuit_dict['qubits']['post'].append(qi)
             circuit_dict['measurements']['post'].append(
                 {'type': 'Bra', 'qubit': qi,
@@ -1462,6 +1520,8 @@ def circuital_to_dict(diagram):
             circuit_dict['qubits']['discard'].append(qi)
         else:
             circuit_dict['gates'].append(gate_to_dict(layer.box, qi))
+
+    circuit_dict['qubits']['bitmap'] = bitmap
 
     return circuit_dict
 

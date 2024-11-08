@@ -32,12 +32,14 @@ import sympy
 from typing_extensions import Self
 
 from lambeq.backend import Functor, Symbol
-from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ, Controlled, CRx,
-                                    CRy, CRz, Daggered, Diagram, Discard,
-                                    GATES, Id, Ket, Measure, quantum, qubit,
-                                    Rx, Ry, Rz, Scalar, Swap, X, Y, Z,
-                                    is_circuital, circuital_to_dict,
-                                    to_circuital)
+from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ,
+                                    circuital_to_dict,
+                                    Controlled, CRx, CRy, CRz, Daggered,
+                                    Diagram, Discard, GATES, Id,
+                                    is_circuital, Ket, Measure, quantum,
+                                    qubit, Rx, Ry, Rz, Scalar, Swap,
+                                    to_circuital, X, Y, Z
+                                    )
 
 OPTYPE_MAP = {'H': OpType.H,
               'X': OpType.X,
@@ -365,39 +367,51 @@ def _tk_to_lmbq_param(theta):
 
 
 def to_tk(diagram):
+    """Convert diagram to t|ket>.
+
+    Returns
+    -------
+    tk_circuit : lambeq.backend.converters.tk.Circuit
+        A :class:`lambeq.backend.converters.tk.Circuit`.
+
+    Note
+    ----
+    * Converts to circuital.
+    * Copies the diagram to avoid modifying the original.
+    """
 
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
 
     circuit_dict = circuital_to_dict(diagram)
 
-    circuit = Circuit(circuit_dict["qubits"]["total"],
-                      len(circuit_dict["qubits"]["bitmap"]))
+    circuit = Circuit(circuit_dict['qubits']['total'],
+                      len(circuit_dict['qubits']['bitmap']))
 
-    for gate in circuit_dict["gates"]:
+    for gate in circuit_dict['gates']:
 
-        if gate["type"] == "Scalar":
-            circuit.scale(abs(gate["phase"])**2)
+        if gate['type'] == 'Scalar':
+            circuit.scale(abs(gate['phase'])**2)
             continue
-        elif not gate["type"] in OPTYPE_MAP:
-            raise NotImplementedError(f"Gate {gate} not supported")
+        elif not gate['type'] in OPTYPE_MAP:
+            raise NotImplementedError(f'Gate {gate} not supported')
 
-        if "phase" in gate:
-            op = Op.create(OPTYPE_MAP[gate["type"]], 2 * gate["phase"])
+        if 'phase' in gate:
+            op = Op.create(OPTYPE_MAP[gate['type']], 2 * gate['phase'])
         else:
-            op = Op.create(OPTYPE_MAP[gate["type"]])
+            op = Op.create(OPTYPE_MAP[gate['type']])
 
-        if gate["dagger"]:
+        if gate['dagger']:
             op = op.dagger
 
-        qubits = gate["qubits"]
+        qubits = gate['qubits']
         circuit.add_gate(op, qubits)
 
-    for measure in circuit_dict["measurements"]["measure"]:
-        circuit.Measure(measure["qubit"], measure["bit"])
+    for measure in circuit_dict['measurements']['measure']:
+        circuit.Measure(measure['qubit'], measure['bit'])
 
-    for postselect in circuit_dict["measurements"]["post"]:
-        circuit.post_select({postselect["qubit"]: postselect["bit"]})
+    for postselect in circuit_dict['measurements']['post']:
+        circuit.post_select({postselect['qubit']: postselect['bit']})
 
     return circuit
 
