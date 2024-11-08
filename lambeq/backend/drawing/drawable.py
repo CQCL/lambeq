@@ -397,8 +397,8 @@ class DrawableDiagram:
             if input_nouns and len(box.dom) > 1:
                 dom_idx_1 = off
                 dom_idx_2 = off + 1
-                input_nouns[dom_idx_1], input_nouns[dom_idx_2] \
-                    = (input_nouns[dom_idx_2], input_nouns[dom_idx_1])
+                input_nouns[dom_idx_1], input_nouns[dom_idx_2] = (
+                    input_nouns[dom_idx_2], input_nouns[dom_idx_1])
         # if Spider, expand or shrink the noun_ids based on type
         elif isinstance(node.obj, grammar.Spider):
             if len(box.dom) == 1 and len(box.cod) > 1:
@@ -1046,7 +1046,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         # Generate unique noun_ids for input wires
         num_input = len(diagram.dom)
         input_nouns = []
-        for i in range(num_input):
+        for _ in range(num_input):
             new_color = drawable.get_noun_id()
             input_nouns.append(new_color)
 
