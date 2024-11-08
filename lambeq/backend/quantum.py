@@ -1502,7 +1502,7 @@ def circuital_to_dict(diagram):
             circuit_dict['qubits']['measure'].append(qi)
             circuit_dict['measurements']['measure'].append(
                 {'type': 'Measure', 'qubit': qi,
-                 'bit': circuit_dict['qubits']['bitmap'][qi]}
+                 'bit': bitmap[qi]}
             )
         elif isinstance(layer.box, Bra):
             available_qubits.remove(qi)
@@ -1510,7 +1510,7 @@ def circuital_to_dict(diagram):
             circuit_dict['qubits']['post'].append(qi)
             circuit_dict['measurements']['post'].append(
                 {'type': 'Bra', 'qubit': qi,
-                 'bit': circuit_dict['qubits']['bitmap'][qi]}
+                 'bit': bitmap[qi]}
             )
         elif isinstance(layer.box, Discard):
             available_qubits.remove(qi)
