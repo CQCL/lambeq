@@ -31,12 +31,12 @@ DEFAULT_MARGINS = (.05, .1)
 DEFAULT_ASPECT = 'equal'
 
 WIRE_COLORS = [
-    '#9c540e', '#f07e33', '#1d0b66', '#751fa5', '#740127',
-    '#a22417', '#d03b2d', '#fe9100', '#f8c84b', '#5ac358',
-    '#018c76', '#450d06', '#066ee2', '#574cfa', '#7446f2',
-    '#c330b9', '#e2074c', '#d17800', '#f4a940', '#49a141',
-    '#007765', '#398889', '#0252a1', '#3831a0', '#271296',
-    '#a629b3', '#b60539' '#3c8331', '#fea431', '#73b8fd'
+    '#9c540e', '#d03b2d', '#066ee2', '#f4a940', '#271296',
+    '#f07e33', '#fe9100', '#574cfa', '#49a141', '#a629b3',
+    '#1d0b66', '#f8c84b', '#7446f2', '#007765', '#b60539',
+    '#751fa5', '#5ac358', '#c330b9', '#398889', '#3c8331',
+    '#740127', '#018c76', '#e2074c', '#0252a1', '#fea431',
+    '#a22417', '#450d06', '#d17800', '#3831a0', '#73b8fd'
 ]
 
 
@@ -157,7 +157,7 @@ class DrawingBackend(ABC):
                   is_leg: bool = False,
                   style: str | None = None,
                   color_id: int = 0,
-                  **params)-> None:
+                  **params) -> None:
         """
         Draws a wire from source to target, possibly with a curve
 
