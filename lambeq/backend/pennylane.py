@@ -50,9 +50,9 @@ from pytket import OpType
 import sympy
 import torch
 
-from lambeq.backend.quantum import (Scalar,
-                                    circuital_to_dict,
+from lambeq.backend.quantum import (circuital_to_dict,
                                     is_circuital,
+                                    Scalar,
                                     to_circuital)
 
 if TYPE_CHECKING:

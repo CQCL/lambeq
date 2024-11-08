@@ -30,9 +30,9 @@ composition of gates using the tensornetwork library easier.
 from __future__ import annotations
 
 from collections.abc import Callable
+import copy
 from dataclasses import dataclass, field, replace
 from functools import partial
-import copy
 from typing import cast, Dict
 
 import numpy as np
@@ -1490,7 +1490,7 @@ def circuital_to_dict(diagram):
                               'post': [], 'discard': [], 'measure': []}
     bitmap = {}
 
-    for i, layer in enumerate(layers):
+    for layer in layers:
 
         qi = available_qubits[len(layer.left)]
 
