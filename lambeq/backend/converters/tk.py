@@ -390,9 +390,6 @@ def to_tk(diagram):
 
     for gate in circuit_dict['gates']:
 
-        if gate['dagger']:
-            op = op.dagger
-
         if gate['type'] == 'Scalar':
             circuit.scale(abs(gate['phase'])**2)
             continue
@@ -403,6 +400,9 @@ def to_tk(diagram):
             op = Op.create(OPTYPE_MAP[gate['type']], 2 * gate['phase'])
         else:
             op = Op.create(OPTYPE_MAP[gate['type']])
+
+        if gate['dagger']:
+            op = op.dagger
 
         qubits = gate['qubits']
         circuit.add_gate(op, qubits)
