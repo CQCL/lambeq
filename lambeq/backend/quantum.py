@@ -33,7 +33,7 @@ from collections.abc import Callable
 import copy
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast, Dict, List, Tuple
+from typing import cast, Dict, Tuple
 
 import numpy as np
 import tensornetwork as tn
@@ -1278,7 +1278,8 @@ def to_circuital(circuit: Diagram):
 
         return new_postselects
 
-    def pull_bit_through(q_idx: int, gates: list[Layer]) -> tuple[list[Layer], int]:
+    def pull_bit_through(q_idx: int,
+                         gates: list[Layer]) -> tuple[list[Layer], int]:
         """
             Inserts a qubit type into every layer at the appropriate index
             q_idx: idx - index of where to insert the gate.
@@ -1316,7 +1317,8 @@ def to_circuital(circuit: Diagram):
 
         return gates, q_idx
 
-    def pull_qubit_through(q_idx: int, gates: list[Layer]) -> tuple[list[Layer], int]:
+    def pull_qubit_through(q_idx: int,
+                           gates: list[Layer]) -> tuple[list[Layer], int]:  # noqa: E501
         """
             Inserts a qubit type into every layer at the appropriate index
             q_idx: idx - index of where to insert the gate.
@@ -1463,7 +1465,7 @@ def to_circuital(circuit: Diagram):
     postselect = construct_measurements(gates[-1], postselect)
 
     # Rebuild the diagram
-    diags = [Diagram(dom=layer.dom, cod=layer.cod, layers=[layer]) # type: ignore [arg-type]
+    diags = [Diagram(dom=layer.dom, cod=layer.cod, layers=[layer])  # type: ignore [arg-type] # noqa: E501
              for layer in qubits + gates + postselect + measures]
 
     layerD = diags[0]
@@ -1528,7 +1530,7 @@ def circuital_to_dict(diagram):
 
 def gate_to_dict(box: Box, offset: int) -> Dict:
 
-    gdict:Dict = {}
+    gdict: Dict = {}
     gdict['name'] = box.name
     gdict['type'] = box.name.split('(')[0]
     gdict['qubits'] = [offset + j for j in range(len(box.dom))]
@@ -1539,7 +1541,6 @@ def gate_to_dict(box: Box, offset: int) -> Dict:
         box = box.dagger()
         gdict['dagger'] = True
         gdict['type'] = box.name.split('(')[0]
-
 
     if isinstance(box, (Rx, Ry, Rz)):
         phase = box.phase
