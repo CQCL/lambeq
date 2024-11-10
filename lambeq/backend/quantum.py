@@ -33,7 +33,7 @@ from collections.abc import Callable
 import copy
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast, Dict
+from typing import cast, Dict, List, Tuple
 
 import numpy as np
 import tensornetwork as tn
@@ -1223,10 +1223,10 @@ def to_circuital(circuit: Diagram):
     # Necessary to ensure editing boxes is localized.
     circuit = copy.deepcopy(circuit)
 
-    qubits = []
-    gates = []
-    measures = []
-    postselect = []
+    qubits: list[Layer] = []
+    gates: list[Layer] = []
+    measures: list[Layer] = []
+    postselect: list[Layer] = []
     circuit = circuit.init_and_discard()
 
     #  Cleans up any '1' kets and converts them to X|0> -> |1>
@@ -1235,10 +1235,10 @@ def to_circuital(circuit: Diagram):
         ob_map = {Ket(1): Ket(0) >> X}  # type: ignore[dict-item]
         return ob_map.get(box, box)
 
-    def add_qubit(qubits: list[int],
+    def add_qubit(qubits: list[Layer],
                   layer: Layer,
                   offset: int,
-                  gates) -> list[int]:
+                  gates: list[Layer]) -> Tuple[list[Layer], list[Layer]]:
 
         # Adds a qubit to the qubit list
         # Appends shifts all the gates
@@ -1278,7 +1278,7 @@ def to_circuital(circuit: Diagram):
 
         return new_postselects
 
-    def pull_bit_through(q_idx: int, gates: list[Layer]) -> list[Layer]:
+    def pull_bit_through(q_idx: int, gates: list[Layer]) -> tuple[list[Layer], int]:
         """
             Inserts a qubit type into every layer at the appropriate index
             q_idx: idx - index of where to insert the gate.
@@ -1316,7 +1316,7 @@ def to_circuital(circuit: Diagram):
 
         return gates, q_idx
 
-    def pull_qubit_through(q_idx: int, gates: list[Layer]) -> list[Layer]:
+    def pull_qubit_through(q_idx: int, gates: list[Layer]) -> tuple[list[Layer], int]:
         """
             Inserts a qubit type into every layer at the appropriate index
             q_idx: idx - index of where to insert the gate.
@@ -1354,7 +1354,7 @@ def to_circuital(circuit: Diagram):
                         curr_box = curr_box.controlled
 
                     prev_pos = -1 * min(dists) + gate_qubits[0]
-                    curr_box: Box | Controlled = gate_layer.box
+                    curr_box = gate_layer.box
 
                     while isinstance(curr_box, Controlled):
                         curr_pos = prev_pos + curr_box.distance
@@ -1462,13 +1462,13 @@ def to_circuital(circuit: Diagram):
 
     postselect = construct_measurements(gates[-1], postselect)
 
-    diags = [Diagram(dom=layer.dom, cod=layer.cod, layers=[layer])
+    # Rebuild the diagram
+    diags = [Diagram(dom=layer.dom, cod=layer.cod, layers=[layer]) # type: ignore [arg-type]
              for layer in qubits + gates + postselect + measures]
 
-    # Ensure type checking
     layerD = diags[0]
-    for layer in diags[1:]:
-        layerD = layerD >> layer
+    for diagram in diags[1:]:
+        layerD = layerD >> diagram
 
     return layerD
 
@@ -1510,7 +1510,7 @@ def circuital_to_dict(diagram):
             circuit_dict['qubits']['post'].append(qi)
             circuit_dict['measurements']['post'].append(
                 {'type': 'Bra', 'qubit': qi,
-                'bit': bitmap[qi], 'phase': layer.box.bit }
+                 'bit': bitmap[qi], 'phase': layer.box.bit}
             )
         elif isinstance(layer.box, Discard):
             available_qubits.remove(qi)
@@ -1528,18 +1528,18 @@ def circuital_to_dict(diagram):
 
 def gate_to_dict(box: Box, offset: int) -> Dict:
 
-    gdict = {}
+    gdict:Dict = {}
     gdict['name'] = box.name
     gdict['type'] = box.name.split('(')[0]
     gdict['qubits'] = [offset + j for j in range(len(box.dom))]
+    gdict['phase'] = 0
+    gdict['dagger'] = False
 
-    is_dagger = False
     if isinstance(box, Daggered):
         box = box.dagger()
-        is_dagger = True
+        gdict['dagger'] = True
         gdict['type'] = box.name.split('(')[0]
 
-    gdict['dagger'] = is_dagger
 
     if isinstance(box, (Rx, Ry, Rz)):
         phase = box.phase

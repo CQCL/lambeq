@@ -43,7 +43,7 @@ from __future__ import annotations
 
 from itertools import product
 import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 import pennylane as qml
 from pytket import OpType
@@ -159,7 +159,7 @@ def extract_ops_from_circuital(circuit_dict: dict):
 
     symbols = set()
 
-    remapped_params = []
+    remapped_params: list[Union[sympy.Expr, torch.Tensor]] = []
     for param in params:
 
         # Check if the param contains a symbol
