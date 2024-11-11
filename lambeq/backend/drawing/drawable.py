@@ -843,14 +843,14 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         return x, y
 
-    def _add_box(
+    def _add_box_with_nouns(
             self,
             scan: list[int],
             box: grammar.Box,
             off: int,
             x_pos: float,
             y_pos: float,
-            input_nouns: list[int] = None
+            input_nouns: list[int] = []
     ) -> tuple[list[int], int, list[int]]:
         """Add a box to the graph, creating necessary wire endpoints.
 
@@ -1103,7 +1103,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         # Generate unique noun_ids for input wires
         num_input = len(diagram.dom)
         input_nouns = []
-        for i in range(num_input):
+        for _ in range(num_input):
             new_color = drawable.get_noun_id()
             input_nouns.append(new_color)
 
@@ -1124,8 +1124,8 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             # TODO: Debug issues with y coord
             x, y = drawable._make_space(scan, box, off, foliated=foliated)
 
-            scan, box_ind, input_nouns = drawable._add_box(scan, box, off,
-                                                           x, y, input_nouns)
+            scan, box_ind, input_nouns = drawable._add_box_with_nouns(
+                                            scan, box, off, x, y, input_nouns)
             box_height = BOX_HEIGHT
             # Add drawables for the inside of the frame
             if isinstance(box, grammar.Frame):
