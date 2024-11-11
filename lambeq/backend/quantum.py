@@ -1239,12 +1239,16 @@ def to_circuital(circuit: Diagram):
         # No bits
 
         for qubit_layer in qubits:
-            from_left = qubit_layer.left.count(qubit)
+            from_left = len(qubit_layer.left)
             if from_left >= offset:
                 qubit_layer.left = qubit_layer.left.insert(layer.box.cod,
                                                            offset)
 
         layer.right = Ty()
+        if offset > 0:
+            layer.left = qubit ** offset
+        else:
+            layer.left = Ty()
         qubits.insert(offset, layer)
 
         return qubits, pull_qubit_through(offset, gates, dom=layer.box.cod)[0]
@@ -1439,7 +1443,7 @@ def to_circuital(circuit: Diagram):
         if isinstance(layer.box, Ket):
             qubits, gates = add_qubit(qubits,
                                       layer,
-                                      layer.left.count(qubit),
+                                      len(layer.left),
                                       gates)
 
         elif isinstance(layer.box, (Bra, Discard)):
