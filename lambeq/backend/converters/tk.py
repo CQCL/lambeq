@@ -389,7 +389,6 @@ def to_tk(diagram):
                       len(circuit_dict['qubits']['bitmap']))
 
     for gate in circuit_dict['gates']:
-        print("Gate: ", gate)
 
         if gate['type'] == 'Scalar':
             circuit.scale(abs(gate['phase'])**2)

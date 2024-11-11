@@ -1284,7 +1284,7 @@ def to_circuital(circuit: Diagram):
             q_idx: idx - index of where to insert the gate.
         """
 
-        for i, gate_layer in enumerate(gates): # noqa: B007
+        for i, gate_layer in enumerate(gates):  # noqa: B007
 
             l_size = len(gate_layer.left)
             c_size = len(gate_layer.box.cod)
