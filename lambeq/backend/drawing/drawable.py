@@ -856,11 +856,11 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         Returns
         -------
-        list[int]
+        list : int
             The new scan of wire endpoints after adding the box
         box_ind : int
             The index of the newly added `BoxNode`
-        list[int]
+        input_nouns : list[int]
             The new order of input_nouns after adding the box
         """
         node = BoxNode(box, x_pos, y_pos)
@@ -1067,7 +1067,14 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
     @staticmethod
     def get_noun_id() -> int:
-        """Generate a new numerical ID for the noun box/wire."""
+        """Generate a new numerical ID for the noun box/wire.
+
+        Returns
+        -------
+        noun_id : int
+            returns a unique identifier for the noun wire/box
+        """
+
         # Increment and return the next available ID
         noun_id = DrawableDiagramWithFrames.noun_id_counter
         DrawableDiagramWithFrames.noun_id_counter += 1

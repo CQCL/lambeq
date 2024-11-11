@@ -195,8 +195,21 @@ class DrawingBackend(ABC):
 
         """
 
-    def _get_wire_color(self, wire_id, **params):
+    def _get_wire_color(self, wire_id : int, **params) -> str:
         """
+         Retrieves a color that uniquely represent a given wire ID.
+
+        Parameters
+        ----------
+        wire_id : int
+            The noun identifier of the wire for which the color is
+            being retrieved.
+        **params:
+            Additional parameters.
+
+        Returns:
+        wire_color : str
+            The Hex color of the wire, represented as a string.
 
         """
         if not params.get('color_wires') or wire_id == 0:
