@@ -126,7 +126,7 @@ class TikzBackend(DrawingBackend):
                   color_id: int = 0,
                   **params) -> None:
 
-        color = self._get_wire_color(color_id, **params)
+        # color = self._get_wire_color(color_id, **params)
         out = (-90 if not bend_out or source[0] == target[0]
                else (180 if source[0] > target[0] else 0))
         inp = (90 if not bend_in or source[0] == target[0]

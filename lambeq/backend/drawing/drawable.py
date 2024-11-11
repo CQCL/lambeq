@@ -850,8 +850,8 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             off: int,
             x_pos: float,
             y_pos: float,
-            input_nouns: list[str] = None
-    ) -> tuple[list[int], int, list[str]]:
+            input_nouns: list[int] = None
+    ) -> tuple[list[int], int, list[int]]:
         """Add a box to the graph, creating necessary wire endpoints.
 
         Returns
@@ -956,7 +956,6 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         # Replace node's dom with its cod in scan
         return (scan[:off] + scan_insert + scan[off + len(box.dom):],
                 box_ind, input_nouns)
-
 
     def _make_space_for_frame(self,
                               scan: list[int],
