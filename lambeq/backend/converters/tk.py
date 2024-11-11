@@ -56,7 +56,7 @@ OPTYPE_MAP = {'H': OpType.H,
               'CRy': OpType.CRy,
               'CRz': OpType.CRz,
               'CCX': OpType.CCX,
-              'Swap': OpType.SWAP}
+              'SWAP': OpType.SWAP}
 
 
 class Circuit(tk.Circuit):
@@ -389,6 +389,7 @@ def to_tk(diagram):
                       len(circuit_dict['qubits']['bitmap']))
 
     for gate in circuit_dict['gates']:
+        print("Gate: ", gate)
 
         if gate['type'] == 'Scalar':
             circuit.scale(abs(gate['phase'])**2)
@@ -396,7 +397,7 @@ def to_tk(diagram):
         elif not gate['type'] in OPTYPE_MAP:
             raise NotImplementedError(f'Gate {gate} not supported')
 
-        if 'phase' in gate:
+        if 'phase' in gate and gate['phase']:
             op = Op.create(OPTYPE_MAP[gate['type']], 2 * gate['phase'])
         else:
             op = Op.create(OPTYPE_MAP[gate['type']])
@@ -412,6 +413,7 @@ def to_tk(diagram):
 
     for postselect in circuit_dict['measurements']['post']:
         circuit.post_select({postselect['qubit']: postselect['phase']})
+        circuit.Measure(postselect['qubit'], postselect['bit'])
 
     return circuit
 
