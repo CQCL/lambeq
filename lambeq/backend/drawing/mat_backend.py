@@ -128,7 +128,6 @@ class MatBackend(DrawingBackend):
                                color_id=drawable.wire_endpoints[wire].noun_id,
                                **params)
             for wire in node.dom_wires:
-                print('wire->', drawable.wire_endpoints[wire].noun_id)
                 self.draw_wire(drawable.wire_endpoints[wire].coordinates,
                                node.coordinates,
                                bend_in=True,

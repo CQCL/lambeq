@@ -543,7 +543,6 @@ def _draw_wires(backend: DrawingBackend,
                 wire_color_id = source.noun_id
             else:
                 wire_color_id = target.noun_id
-        # print('wire', wire_color_id)
         backend.draw_wire(source.coordinates, target.coordinates,
                           color_id=wire_color_id, **params)
 

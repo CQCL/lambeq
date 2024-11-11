@@ -199,7 +199,6 @@ class DrawingBackend(ABC):
         """
 
         """
-        print('wire_id-->', wire_id)
         if not params.get('color_wires') or wire_id == 0:
             return '#000000'
         else:
