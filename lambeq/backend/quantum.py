@@ -1284,7 +1284,7 @@ def to_circuital(circuit: Diagram):
             q_idx: idx - index of where to insert the gate.
         """
 
-        for i, gate_layer in enumerate(gates):
+        for i, gate_layer in enumerate(gates): # noqa: B007
 
             l_size = len(gate_layer.left)
             c_size = len(gate_layer.box.cod)
@@ -1565,7 +1565,7 @@ def gate_to_dict(box: Box, offset: int) -> Dict:
                 right_most_idx = max(rel_idx)
                 rel_idx.insert(-1, right_most_idx - dist)
 
-        i_qubits = [gdict["qubits"][i] for i in rel_idx]
+        i_qubits = [gdict['qubits'][i] for i in rel_idx]
 
         gdict['qubits'] = i_qubits
         gdict['control'] = sorted(gdict['qubits'][:-1])
