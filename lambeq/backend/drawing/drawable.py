@@ -340,15 +340,12 @@ class DrawableDiagram:
         self.boxes.append(box)
         return len(self.boxes) - 1
 
-    def _add_box(
-            self,
-            scan: list[int],
-            box: grammar.Box,
-            off: int,
-            x_pos: float,
-            y_pos: float,
-            input_nouns: list[str] = None
-    ) -> tuple[list[int], int, list[str]]:
+    def _add_box(self,
+                 scan: list[int],
+                 box: grammar.Box,
+                 off: int,
+                 x_pos: float,
+                 y_pos: float) -> tuple[list[int], int]:
         """Add a box to the graph, creating necessary wire endpoints.
 
         Returns
@@ -357,74 +354,25 @@ class DrawableDiagram:
             The new scan of wire endpoints after adding the box
         box_ind : int
             The index of the newly added `BoxNode`
-        list[int]
-            The new order of input_nouns after adding the box
         """
         node = BoxNode(box, x_pos, y_pos)
 
         box_ind = self._add_boxnode(node)
-        num_input = len(box.dom)
-        for i in range(num_input):
-            if i < len(input_nouns):
-                pass
-            else:
-                # If we run out of input nouns, generate new ones
-                new_color = self.get_noun_id()
-                input_nouns.append(new_color)
 
         # Create a node representing each element in the box's domain
         for i, obj in enumerate(box.dom):
-            idx = off + i
             nbr_idx = scan[off + i]
-            noun_id = (input_nouns[idx] if input_nouns
-                       and idx < len(input_nouns)
-                       else DrawableDiagramWithFrames.get_noun_id()
-                       )  # generate new noun id if needed
-
             wire_end = WireEndpoint(WireEndpointType.DOM,
                                     obj=obj,
                                     x=self.wire_endpoints[nbr_idx].x,
-                                    y=y_pos + HALF_BOX_HEIGHT,
-                                    noun_id=noun_id)
+                                    y=y_pos + HALF_BOX_HEIGHT)
 
             wire_idx = self._add_wire_end(wire_end)
             node.add_dom_wire(wire_idx)
             self._add_wire(nbr_idx, wire_idx)
 
         scan_insert = []
-        # if Swap, exchange the noun_ids
-        if isinstance(box, grammar.Swap):
-            if input_nouns and len(box.dom) > 1:
-                dom_idx_1 = off
-                dom_idx_2 = off + 1
-                input_nouns[dom_idx_1], input_nouns[dom_idx_2] = (
-                    input_nouns[dom_idx_2], input_nouns[dom_idx_1])
-        # if Spider, expand or shrink the noun_ids based on type
-        elif isinstance(node.obj, grammar.Spider):
-            if len(box.dom) == 1 and len(box.cod) > 1:
-                dom_noun = (input_nouns[off] if input_nouns
-                            and off < len(input_nouns)
-                            else DrawableDiagramWithFrames.get_noun_id()
-                            )
-                expanded_colors = [dom_noun] * len(box.cod)
-                input_nouns = (input_nouns[:off] + expanded_colors
-                               + input_nouns[off + len(box.dom):])
-            elif len(box.dom) > 1 and len(box.cod) == 1:
-                cod_noun = (input_nouns[off] if input_nouns
-                            and off < len(input_nouns)
-                            else DrawableDiagramWithFrames.get_noun_id()
-                            )
-                input_nouns = (input_nouns[:off] + [cod_noun]
-                               + input_nouns[off + len(box.dom):])
 
-        num_output = off+len(box.cod)
-        for i in range(num_output):
-            if i < len(input_nouns):
-                pass
-            else:
-                # If we run out of input nouns, generate new ones
-                new_color = self.get_noun_id()
-                input_nouns.append(new_color)
         # Create a node representing each element in the box's codomain
         for i, obj in enumerate(box.cod):
 
@@ -435,23 +383,18 @@ class DrawableDiagram:
             else:
                 x = x_pos + X_SPACING * (i - len(box.cod[1:]) / 2)
             y = y_pos - HALF_BOX_HEIGHT
-            idx = off + i
-            noun_id = (input_nouns[idx] if input_nouns
-                       and idx < len(input_nouns)
-                       else DrawableDiagramWithFrames.get_noun_id())
+
             wire_end = WireEndpoint(WireEndpointType.COD,
                                     obj=obj,
                                     x=x,
-                                    y=y,
-                                    noun_id=noun_id)
+                                    y=y)
 
             wire_idx = self._add_wire_end(wire_end)
             scan_insert.append(wire_idx)
             node.add_cod_wire(wire_idx)
 
         # Replace node's dom with its cod in scan
-        return (scan[:off] + scan_insert + scan[off + len(box.dom):],
-                box_ind, input_nouns)
+        return scan[:off] + scan_insert + scan[off + len(box.dom):], box_ind
 
     def _find_box_edges(self,
                         box: grammar.Box,
@@ -900,6 +843,121 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         return x, y
 
+    def _add_box(
+            self,
+            scan: list[int],
+            box: grammar.Box,
+            off: int,
+            x_pos: float,
+            y_pos: float,
+            input_nouns: list[str] = None
+    ) -> tuple[list[int], int, list[str]]:
+        """Add a box to the graph, creating necessary wire endpoints.
+
+        Returns
+        -------
+        list[int]
+            The new scan of wire endpoints after adding the box
+        box_ind : int
+            The index of the newly added `BoxNode`
+        list[int]
+            The new order of input_nouns after adding the box
+        """
+        node = BoxNode(box, x_pos, y_pos)
+
+        box_ind = self._add_boxnode(node)
+        num_input = len(box.dom)
+        input_nouns = input_nouns or []
+        for i in range(num_input):
+            if i < len(input_nouns):
+                pass
+            else:
+                # If we run out of input nouns, generate new ones
+                new_color = self.get_noun_id()
+                input_nouns.append(new_color)
+
+        # Create a node representing each element in the box's domain
+        for i, obj in enumerate(box.dom):
+            idx = off + i
+            nbr_idx = scan[off + i]
+            noun_id = (input_nouns[idx] if input_nouns
+                       and idx < len(input_nouns)
+                       else DrawableDiagramWithFrames.get_noun_id()
+                       )  # generate new noun id if needed
+
+            wire_end = WireEndpoint(WireEndpointType.DOM,
+                                    obj=obj,
+                                    x=self.wire_endpoints[nbr_idx].x,
+                                    y=y_pos + HALF_BOX_HEIGHT,
+                                    noun_id=noun_id)
+
+            wire_idx = self._add_wire_end(wire_end)
+            node.add_dom_wire(wire_idx)
+            self._add_wire(nbr_idx, wire_idx)
+
+        scan_insert = []
+        # if Swap, exchange the noun_ids
+        if isinstance(box, grammar.Swap):
+            if input_nouns and len(box.dom) > 1:
+                dom_idx_1 = off
+                dom_idx_2 = off + 1
+                input_nouns[dom_idx_1], input_nouns[dom_idx_2] = (
+                    input_nouns[dom_idx_2], input_nouns[dom_idx_1])
+        # if Spider, expand or shrink the noun_ids based on type
+        elif isinstance(node.obj, grammar.Spider):
+            if len(box.dom) == 1 and len(box.cod) > 1:
+                dom_noun = (input_nouns[off] if input_nouns
+                            and off < len(input_nouns)
+                            else DrawableDiagramWithFrames.get_noun_id()
+                            )
+                expanded_colors = [dom_noun] * len(box.cod)
+                input_nouns = (input_nouns[:off] + expanded_colors
+                               + input_nouns[off + len(box.dom):])
+            elif len(box.dom) > 1 and len(box.cod) == 1:
+                cod_noun = (input_nouns[off] if input_nouns
+                            and off < len(input_nouns)
+                            else DrawableDiagramWithFrames.get_noun_id()
+                            )
+                input_nouns = (input_nouns[:off] + [cod_noun]
+                               + input_nouns[off + len(box.dom):])
+
+        num_output = off+len(box.cod)
+        for i in range(num_output):
+            if i < len(input_nouns):
+                pass
+            else:
+                # If we run out of input nouns, generate new ones
+                new_color = self.get_noun_id()
+                input_nouns.append(new_color)
+        # Create a node representing each element in the box's codomain
+        for i, obj in enumerate(box.cod):
+
+            # If the box is a quantum gate, retain x coordinate of wires
+            if box.category == quantum and len(box.dom) == len(box.cod):
+                nbr_idx = scan[off + i]
+                x = self.wire_endpoints[nbr_idx].x
+            else:
+                x = x_pos + X_SPACING * (i - len(box.cod[1:]) / 2)
+            y = y_pos - HALF_BOX_HEIGHT
+            idx = off + i
+            noun_id = (input_nouns[idx] if input_nouns
+                       and idx < len(input_nouns)
+                       else DrawableDiagramWithFrames.get_noun_id())
+            wire_end = WireEndpoint(WireEndpointType.COD,
+                                    obj=obj,
+                                    x=x,
+                                    y=y,
+                                    noun_id=noun_id)
+
+            wire_idx = self._add_wire_end(wire_end)
+            scan_insert.append(wire_idx)
+            node.add_cod_wire(wire_idx)
+
+        # Replace node's dom with its cod in scan
+        return (scan[:off] + scan_insert + scan[off + len(box.dom):],
+                box_ind, input_nouns)
+
+
     def _make_space_for_frame(self,
                               scan: list[int],
                               off: int,
@@ -1046,7 +1104,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         # Generate unique noun_ids for input wires
         num_input = len(diagram.dom)
         input_nouns = []
-        for _ in range(num_input):
+        for i in range(num_input):
             new_color = drawable.get_noun_id()
             input_nouns.append(new_color)
 
