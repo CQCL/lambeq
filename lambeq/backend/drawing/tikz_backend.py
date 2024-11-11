@@ -122,7 +122,11 @@ class TikzBackend(DrawingBackend):
                   bend_out: bool = False,
                   bend_in: bool = False,
                   is_leg: bool = False,
-                  style: str | None = None) -> None:
+                  style: str | None = None,
+                  color_id: int = 0,
+                  **params) -> None:
+
+        color = self._get_wire_color(color_id, **params)
         out = (-90 if not bend_out or source[0] == target[0]
                else (180 if source[0] > target[0] else 0))
         inp = (90 if not bend_in or source[0] == target[0]
@@ -178,11 +182,15 @@ class TikzBackend(DrawingBackend):
             for wire in node.cod_wires:
                 self.draw_wire(node.coordinates,
                                drawable.wire_endpoints[wire].coordinates,
-                               bend_out=True)
+                               bend_out=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
             for wire in node.dom_wires:
                 self.draw_wire(drawable.wire_endpoints[wire].coordinates,
                                node.coordinates,
-                               bend_in=True)
+                               bend_in=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
 
     def output(self, path=None, show=True, **params) -> None:
         baseline = params.get('baseline', 0)
