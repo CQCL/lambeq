@@ -154,7 +154,7 @@ def extract_ops_from_circuital(circuit_dict: dict):
 
     ops = [OP_MAP_COMPOSED[x['type']] for x in circuit_dict['gates']]
     qubits = [x['qubits'] for x in circuit_dict['gates']]
-    params = [x['phase'] if 'phase' in x else []
+    params = [x['phase'] if 'phase' in x and x['phase'] else []
               for x in circuit_dict['gates']]
 
     symbols = set()
