@@ -882,7 +882,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             nbr_idx = scan[off + i]
             noun_id = (input_nouns[idx] if input_nouns
                        and idx < len(input_nouns)
-                       else DrawableDiagramWithFrames.get_noun_id()
+                       else self.get_noun_id()
                        )  # generate new noun id if needed
 
             wire_end = WireEndpoint(WireEndpointType.DOM,
@@ -908,7 +908,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             if len(box.dom) == 1 and len(box.cod) > 1:
                 dom_noun = (input_nouns[off] if input_nouns
                             and off < len(input_nouns)
-                            else DrawableDiagramWithFrames.get_noun_id()
+                            else self.get_noun_id()
                             )
                 expanded_colors = [dom_noun] * len(box.cod)
                 input_nouns = (input_nouns[:off] + expanded_colors
@@ -916,7 +916,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             elif len(box.dom) > 1 and len(box.cod) == 1:
                 cod_noun = (input_nouns[off] if input_nouns
                             and off < len(input_nouns)
-                            else DrawableDiagramWithFrames.get_noun_id()
+                            else self.get_noun_id()
                             )
                 input_nouns = (input_nouns[:off] + [cod_noun]
                                + input_nouns[off + len(box.dom):])
@@ -942,7 +942,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             idx = off + i
             noun_id = (input_nouns[idx] if input_nouns
                        and idx < len(input_nouns)
-                       else DrawableDiagramWithFrames.get_noun_id())
+                       else self.get_noun_id())
             wire_end = WireEndpoint(WireEndpointType.COD,
                                     obj=obj,
                                     x=x,
@@ -1065,8 +1065,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
 
         return min(all_xs), min(all_ys), max(all_xs), max(all_ys)
 
-    @staticmethod
-    def get_noun_id() -> int:
+    def get_noun_id(self) -> int:
         """Generate a new numerical ID for the noun box/wire.
 
         Returns
@@ -1076,8 +1075,8 @@ class DrawableDiagramWithFrames(DrawableDiagram):
         """
 
         # Increment and return the next available ID
-        noun_id = DrawableDiagramWithFrames.noun_id_counter
-        DrawableDiagramWithFrames.noun_id_counter += 1
+        noun_id = self.noun_id_counter
+        self.noun_id_counter += 1
         return noun_id
 
     @classmethod
