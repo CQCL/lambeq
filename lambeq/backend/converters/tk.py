@@ -385,8 +385,12 @@ def to_tk(diagram):
 
     circuit_dict = circuital_to_dict(diagram)
 
+    post_select = {postselect['qubit']: postselect['phase'] for postselect in circuit_dict['measurements']['post']}
+
     circuit = Circuit(circuit_dict['qubits']['total'],
-                      len(circuit_dict['qubits']['bitmap']))
+                      len(circuit_dict['qubits']['bitmap']),
+                      post_selection=post_select
+                      )
 
     for gate in circuit_dict['gates']:
 
@@ -411,7 +415,6 @@ def to_tk(diagram):
         circuit.Measure(measure['qubit'], measure['bit'])
 
     for postselect in circuit_dict['measurements']['post']:
-        circuit.post_select({postselect['qubit']: postselect['phase']})
         circuit.Measure(postselect['qubit'], postselect['bit'])
 
     return circuit
