@@ -26,17 +26,17 @@ from typing import cast
 
 import numpy as np
 import pytket as tk
-from pytket.circuit import (Bit, Command, Op, OpType, Qubit)
+from pytket.circuit import (Bit, Command, Op, OpType)
 from pytket.utils import probs_from_counts
 import sympy
 from typing_extensions import Self
 
-from lambeq.backend import Functor, Symbol
+from lambeq.backend import Symbol
 from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ,
                                     circuital_to_dict,
-                                    Controlled, CRx, CRy, CRz, Daggered,
+                                    Controlled, CRx, CRy, CRz,
                                     Diagram, Discard, GATES, Id,
-                                    is_circuital, Ket, Measure, quantum,
+                                    is_circuital, Ket, Measure,
                                     qubit, Rx, Ry, Rz, Scalar, Swap,
                                     to_circuital, X, Y, Z
                                     )
@@ -196,161 +196,6 @@ class Circuit(tk.Circuit):
         return counts
 
 
-def to_tk_old(circuit: Diagram):
-    """
-    Takes a :py:class:`lambeq.quantum.Diagram`, returns
-    a :py:class:`Circuit`.
-    """
-    # bits and qubits are lists of register indices, at layer i we want
-    # len(bits) == circuit[:i].cod.count(bit) and same for qubits
-    tk_circ = Circuit()
-    bits: list[int] = []
-    qubits: list[int] = []
-    circuit = circuit.init_and_discard()
-
-    def remove_ketbra1(_, box: Box) -> Diagram | Box:
-        ob_map: dict[Box, Diagram]
-        ob_map = {Ket(1): Ket(0) >> X,  # type: ignore[dict-item]
-                  Bra(1): X >> Bra(0)}  # type: ignore[dict-item]
-        return ob_map.get(box, box)
-
-    def prepare_qubits(qubits: list[int],
-                       box: Box,
-                       offset: int) -> list[int]:
-        renaming = dict()
-        start = (tk_circ.n_qubits if not qubits else 0
-                 if not offset else qubits[offset - 1] + 1)
-        for i in range(start, tk_circ.n_qubits):
-            old = Qubit('q', i)
-            new = Qubit('q', i + len(box.cod))
-            renaming.update({old: new})
-        tk_circ.rename_units(renaming)
-        tk_circ.add_blank_wires(len(box.cod))
-        return (qubits[:offset] + list(range(start, start + len(box.cod)))
-                + [i + len(box.cod) for i in qubits[offset:]])
-
-    def measure_qubits(qubits: list[int],
-                       bits: list[int],
-                       box: Box,
-                       bit_offset: int,
-                       qubit_offset: int) -> tuple[list[int], list[int]]:
-        if isinstance(box, Bra):
-            tk_circ.post_select({len(tk_circ.bits): box.bit})
-        for j, _ in enumerate(box.dom):
-            i_bit, i_qubit = len(tk_circ.bits), qubits[qubit_offset + j]
-            offset = len(bits) if isinstance(box, Measure) else None
-            tk_circ.add_bit(Bit(i_bit), offset=offset)
-            tk_circ.Measure(i_qubit, i_bit)
-            if isinstance(box, Measure):
-                bits = bits[:bit_offset + j] + [i_bit] + bits[bit_offset + j:]
-        # remove measured qubits
-        qubits = (qubits[:qubit_offset]
-                  + qubits[qubit_offset + len(box.dom):])
-        return bits, qubits
-
-    def swap(i: int, j: int, unit_factory=Qubit) -> None:
-        old, tmp, new = (
-            unit_factory(i), unit_factory('tmp', 0), unit_factory(j))
-        tk_circ.rename_units({old: tmp})
-        tk_circ.rename_units({new: old})
-        tk_circ.rename_units({tmp: new})
-
-    def add_gate(qubits: list[int], box: Box, offset: int) -> None:
-
-        is_dagger = False
-        if isinstance(box, Daggered):
-            box = box.dagger()
-            is_dagger = True
-
-        i_qubits = [qubits[offset + j] for j in range(len(box.dom))]
-
-        if isinstance(box, (Rx, Ry, Rz)):
-            phase = box.phase
-            if isinstance(box.phase, Symbol):
-                # Tket uses sympy, lambeq uses custom symbol
-                phase = box.phase.to_sympy()
-            op = Op.create(OPTYPE_MAP[box.name[:2]], 2 * phase)
-        elif isinstance(box, Controlled):
-            # The following works only for controls on single qubit gates
-
-            # reverse the distance order
-            dists = []
-            curr_box: Box | Controlled = box
-            while isinstance(curr_box, Controlled):
-                dists.append(curr_box.distance)
-                curr_box = curr_box.controlled
-            dists.reverse()
-
-            # Index of the controlled qubit is the last entry in rel_idx
-            rel_idx = [0]
-            for dist in dists:
-                if dist > 0:
-                    # Add control to the left, offset by distance
-                    rel_idx = [0] + [i + dist for i in rel_idx]
-                else:
-                    # Add control to the right, don't offset
-                    right_most_idx = max(rel_idx)
-                    rel_idx.insert(-1, right_most_idx - dist)
-
-            i_qubits = [i_qubits[i] for i in rel_idx]
-
-            name = box.name.split('(')[0]
-            if box.name in ('CX', 'CZ', 'CCX'):
-                op = Op.create(OPTYPE_MAP[name])
-            elif name in ('CRx', 'CRz'):
-                phase = box.phase
-                if isinstance(box.phase, Symbol):
-                    # Tket uses sympy, lambeq uses custom symbol
-                    phase = box.phase.to_sympy()
-
-                op = Op.create(OPTYPE_MAP[name], 2 * phase)
-            elif name in ('CCX'):
-                op = Op.create(OPTYPE_MAP[name])
-        elif box.name in OPTYPE_MAP:
-            op = Op.create(OPTYPE_MAP[box.name])
-        else:
-            raise NotImplementedError(box)
-
-        if is_dagger:
-            op = op.dagger
-
-        tk_circ.add_gate(op, i_qubits)
-
-    circuit = Functor(target_category=quantum,  # type: ignore [assignment]
-                      ob=lambda _, x: x,
-                      ar=remove_ketbra1)(circuit)  # type: ignore [arg-type]
-    for left, box, _ in circuit:
-        if isinstance(box, Ket):
-            qubits = prepare_qubits(qubits, box, left.count(qubit))
-        elif isinstance(box, (Measure, Bra)):
-            bits, qubits = measure_qubits(
-                qubits, bits, box, left.count(bit), left.count(qubit))
-        elif isinstance(box, Discard):
-            qubits = (qubits[:left.count(qubit)]
-                      + qubits[left.count(qubit) + box.dom.count(qubit):])
-        elif isinstance(box, Swap):
-            if box == Swap(qubit, qubit):
-                off = left.count(qubit)
-                swap(qubits[off], qubits[off + 1])
-            elif box == Swap(bit, bit):
-                off = left.count(bit)
-                if tk_circ.post_processing:
-                    right = Id(tk_circ.post_processing.cod[off + 2:])
-                    tk_circ.post_process(
-                        Id(bit ** off) @ Swap(bit, bit) @ right)
-                else:
-                    swap(bits[off], bits[off + 1], unit_factory=Bit)
-            else:  # pragma: no cover
-                continue  # bits and qubits live in different registers.
-        elif isinstance(box, Scalar):
-            tk_circ.scale(abs(box.array) ** 2)
-        elif isinstance(box, Box):
-            add_gate(qubits, box, left.count(qubit))
-        else:  # pragma: no cover
-            raise NotImplementedError
-    return tk_circ
-
-
 def _tk_to_lmbq_param(theta):
     if not isinstance(theta, sympy.Expr):
         return theta
@@ -366,12 +211,15 @@ def _tk_to_lmbq_param(theta):
         raise ValueError('Parameter must be a (possibly scaled) sympy Symbol')
 
 
-def to_tk(diagram):
-    """Convert diagram to t|ket>.
+def to_tk(diagram: Diagram):
+    """
+    Takes a :py:class:`lambeq.quantum.Diagram`, returns
+    a :class:`lambeq.backend.converters.tk.Circuit`
+    for t|ket>.
 
     Returns
     -------
-    tk_circuit : lambeq.backend.converters.tk.Circuit
+    tk_circuit : lambeq.backend.quantum
         A :class:`lambeq.backend.converters.tk.Circuit`.
 
     Note

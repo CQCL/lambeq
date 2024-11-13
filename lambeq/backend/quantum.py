@@ -1205,10 +1205,17 @@ def is_circuital(diagram: Diagram) -> bool:
 def to_circuital(circuit: Diagram):
     """
     Takes a :py:class:`lambeq.quantum.Diagram`, returns
-    a :py:class:`Circuit`.
+    a modified :py:class:`lambeq.quantum.Diagram`.
+
     The returned circuit diagram has all qubits at the top
     with layer depth equal to qubit index,
-    followed by gates, and then measurements at the bottom.
+    followed by gates, and then post-selection
+    measurements at the bottom.
+
+    Returns
+    -------
+    :py:class:`lambeq.quantum.Diagram`
+        Circuital diagram.
     """
 
     # bits and qubits are lists of register indices, at layer i we want
@@ -1472,7 +1479,29 @@ def to_circuital(circuit: Diagram):
     return layerD
 
 
-def circuital_to_dict(diagram):
+def circuital_to_dict(diagram: Diagram):
+    """
+    Takes a :py:class:`lambeq.quantum.Diagram`, returns
+    a dictionary for converting to a circuit.
+
+    Returns
+    -------
+    Dict:
+        d['gates']    : list of gates
+        d['gates'][:] : {'name': 'name',
+                        'type': 'repr(lambeq.quantum.Parameterized)',
+                        'qubits': All qubits for box [q_i, q_{i+1}, ...],
+                        'dagger': bool,
+                        'phase': (Optional) float for parameter values,
+                                post-selection bits, etc.
+                        'control': (Optional) control qubits
+                        'gate_q' : (Optional) gate qubit if control gate
+                        }
+
+        d['measurements'] : Dictionary storing discard, post-selection,
+                            and measurement information.
+        d['qubits'] : Dictionary containing qubit information.
+    """
 
     assert is_circuital(diagram)
 
@@ -1481,13 +1510,13 @@ def circuital_to_dict(diagram):
     num_qubits = sum([1 for layer in layers if isinstance(layer.box, Ket)])
     available_qubits = list(range(num_qubits))
 
-    circuit_dict = {}
+    circuit_dict: dict = {}
     circuit_dict['gates'] = []
     circuit_dict['measurements'] = {'post': [], 'discard': [],
                                     'measure': []}
     circuit_dict['qubits'] = {'total': num_qubits, 'bitmap': {},
                               'post': [], 'discard': [], 'measure': []}
-    bitmap = {}
+    bitmap: dict = {}
 
     for layer in layers:
         if isinstance(layer.box, Ket):
