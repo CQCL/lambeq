@@ -850,7 +850,7 @@ class DrawableDiagramWithFrames(DrawableDiagram):
             off: int,
             x_pos: float,
             y_pos: float,
-            input_nouns: Optional[list[int]]
+            input_nouns: list[int]
     ) -> tuple[list[int], int, list[int]]:
         """Add a box to the graph, creating necessary wire endpoints.
 
