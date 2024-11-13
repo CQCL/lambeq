@@ -128,7 +128,8 @@ def draw(diagram: Diagram, **params) -> None:
         backend = TikzBackend(
             use_tikzstyles=params.get('use_tikzstyles', None))
     else:
-        backend = MatBackend(figsize=params.get('figsize', None))
+        backend = MatBackend(figsize=params.get('figsize', None),
+                             wires_linewidth=params.get('wires_width', 1.25))
 
     min_size = 0.01
     max_v = max([v for point in ([point.coordinates for point in

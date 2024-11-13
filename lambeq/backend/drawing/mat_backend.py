@@ -37,10 +37,12 @@ class MatBackend(DrawingBackend):
     def __init__(self,
                  axis: plt.Axes | None = None,
                  figsize: tuple | None = None,
-                 linewidth: float = 1):
+                 box_linewidth: float = 1,
+                 wires_linewidth: float = 1.25):
         self.axis = axis or plt.subplots(figsize=figsize, facecolor='white')[1]
         self.default_aspect = 'equal' if figsize is None else 'auto'
-        self.linewidth = linewidth
+        self.box_linewidth = box_linewidth
+        self.wires_linewidth = wires_linewidth
         self.max_width: float = 0
 
     def draw_text(self, text: str, x: float, y: float, **params) -> None:
@@ -63,7 +65,7 @@ class MatBackend(DrawingBackend):
         codes += len(points[1:]) * [Path.LINETO] + [Path.CLOSEPOLY]
         path = Path(points + points[:1], codes)
         self.axis.add_patch(PathPatch(
-            path, facecolor=COLORS[color], linewidth=self.linewidth))
+            path, facecolor=COLORS[color], linewidth=self.box_linewidth))
 
     def draw_wire(self,
                   source: tuple[float, float],
@@ -110,7 +112,7 @@ class MatBackend(DrawingBackend):
                 ])
 
             self.axis.add_patch(PathPatch(path, facecolor='none',
-                                          linewidth=self.linewidth,
+                                          linewidth=self.wires_linewidth,
                                           edgecolor=color))
 
         self.max_width = max(self.max_width, source[0], target[0])
