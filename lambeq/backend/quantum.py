@@ -1262,7 +1262,6 @@ def to_circuital(circuit: Diagram):
 
     def construct_measurements(last_layer, post_selects):
         # Change to accommodate measurements before
-
         total_qubits = (len(last_layer.left)
                         + len(last_layer.box.cod)
                         + len(last_layer.right))
@@ -1421,16 +1420,16 @@ def to_circuital(circuit: Diagram):
 
         gate_layer = layers[-1]
 
-        # Inserting to the left is always trivial
         total_layer = ([*gate_layer.left] + [*gate_layer.box.cod]
                        + [*gate_layer.right])
+
         # Assumes you're only inserting one qubit at a time
         total_layer[q_idx] = layer.box.cod
 
-        if q_idx == 0 or not total_layer[:q_idx-1]:
+        if q_idx == 0 or not total_layer[:q_idx]:
             layer.left = Ty()
         else:
-            layer.left = layer.left._fromiter(total_layer[:q_idx-1])
+            layer.left = layer.left._fromiter(total_layer[:q_idx])
 
         if q_idx == len(total_layer) - 1 or not total_layer[q_idx+1:]:
             layer.right = Ty()
@@ -1456,7 +1455,6 @@ def to_circuital(circuit: Diagram):
         elif isinstance(layer.box, (Bra, Discard)):
 
             q_idx = len(layer.left)
-
             layers[i+1:], q_idx = pull_qubit_through(q_idx, layers[i+1:])
             layer = build_left_right(q_idx, layer, layers[i+1 :])
 
