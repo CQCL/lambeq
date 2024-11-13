@@ -125,8 +125,7 @@ class PregroupTreeNode:
         if not isinstance(other, PregroupTreeNode):
             return NotImplemented
         return (self.word == other.word
-                and self.ind == other.ind
-                and self.typ == other.typ)
+                and self.ind == other.ind)
 
     @cached_property
     def _tree_repr(self) -> str:
@@ -371,3 +370,20 @@ class PregroupTreeNode:
             else:
                 print('Cannot perform merge when parent and child '
                       + "types don't match or tokens are not consecutive.")
+
+    def remove_self_cycles(self) -> None:
+        """Removes the children of this node that is the same token,
+        i.e. self-cycles.
+
+        This is used before breaking cycles.
+        """
+
+        new_children = []
+        for c in self.children:
+            if self.is_same_word(c):
+                c.parent = None
+            else:
+                new_children.append(c)
+        self.children = new_children
+        for c in self.children:
+            c.remove_self_cycles()

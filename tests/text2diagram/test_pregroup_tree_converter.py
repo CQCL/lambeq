@@ -10,7 +10,7 @@ from lambeq.text2diagram.pregroup_tree_converter import (
 
 tokeniser = SpacyTokeniser()
 bobcat_parser = BobcatParser(verbose='suppress')
-n, s = map(Ty, 'ns')
+n, s, p = map(Ty, 'nsp')
 
 s1 = tokeniser.tokenise_sentence(
     "Last year's figures include a one-time loss of $12 million for restructuring and unusual items"
@@ -98,6 +98,10 @@ s10_diag = Diagram.create_pregroup_diagram(
         (Cup, 1, 6),
         (Cup, 7, 12),
     ]
+)
+s11_diag = bobcat_parser.sentence2diagram(
+    'When an event puts Errol in danger and the case in jeopardy',
+    tokenised=False
 )
 
 t1_n1 = PregroupTreeNode(word='year', typ=n, ind=1)
@@ -191,6 +195,22 @@ t10_n1 = PregroupTreeNode(word='1', typ=n, ind=1, children=[t10_n2])
 t10_n0 = PregroupTreeNode(word='0', typ=s, ind=0, children=[t10_n1])
 t10_no_cycle = t10_n0
 
+t11_n11 = PregroupTreeNode(word='jeopardy', typ=n, ind=11)
+t11_n9 = PregroupTreeNode(word='case', typ=n, ind=9)
+t11_n6 = PregroupTreeNode(word='danger', typ=n, ind=6)
+t11_n4 = PregroupTreeNode(word='Errol', typ=n, ind=4)
+t11_n3 = PregroupTreeNode(word='puts', typ=n.r @ s @ p.l @ n.l, ind=3)
+t11_n2 = PregroupTreeNode(word='event', typ=n, ind=2)
+t11_n10 = PregroupTreeNode(word='in', typ=p, ind=10, children=[t11_n11])
+t11_n8 = PregroupTreeNode(word='the', typ=n, ind=8, children=[t11_n9])
+t11_n5 = PregroupTreeNode(word='in', typ=p, ind=5, children=[t11_n6])
+t11_n1 = PregroupTreeNode(word='an', typ=n, ind=1, children=[t11_n2])
+t11_n7 = PregroupTreeNode(word='and', typ=s, ind=7,
+                          children=[t11_n1, t11_n3, t11_n4,
+                                    t11_n5, t11_n8, t11_n10])
+t11_n0 = PregroupTreeNode(word='When', typ=s, ind=0, children=[t11_n7])
+t11_no_cycle = t11_n0
+
 
 def test_diagram2tree():
     s1_tree = diagram2tree(s1_diag)
@@ -228,6 +248,11 @@ def test_diagram2tree_no_cycles():
     s10_tree.draw()
     t10_no_cycle.draw()
     assert s10_tree == t10_no_cycle
+
+    s11_tree = diagram2tree(s11_diag, break_cycles=True)
+    s11_tree.draw()
+    t11_no_cycle.draw()
+    assert s11_tree == t11_no_cycle
 
 
 def test_tree2diagram():

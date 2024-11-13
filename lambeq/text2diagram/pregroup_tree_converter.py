@@ -234,7 +234,12 @@ def remove_cycles(root: PregroupTreeNode) -> None:
     root_word_idx = root.ind
     nodes = root.get_nodes()
     assert len(nodes[root_word_idx]) == 1
+
     root_node = nodes[root_word_idx][0]
+
+    # Remove nodes that cycles to itself
+    # (see https://github.com/CQCL/lambeq/issues/180)
+    root_node.remove_self_cycles()
 
     for _, nodes_for_idx in enumerate(nodes):
         if len(nodes_for_idx) > 1:
