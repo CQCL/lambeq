@@ -342,7 +342,9 @@ class DisCoCircReader(Reader):
             tree = self._sentence2tree(sentence, break_cycles)
 
             tree_toks = tree.get_words()
-            reidxr = self._calculate_reindices(sentence, tree_toks)
+            tree_toks_indxs = tree.get_word_indices()
+            reidxr = self._calculate_reindices(sentence, tree_toks,
+                                               tree_toks_indxs)
             reidxr[None] = None
 
             tree = rewriter(tree)
@@ -400,10 +402,11 @@ class DisCoCircReader(Reader):
 
     def _calculate_reindices(self,
                              orig_toks,
-                             parsed_toks):
+                             parsed_toks,
+                             parsed_toks_indxs):
         reindexer = {}
         j = 0
-        for i, otok in enumerate(parsed_toks):
+        for i, otok in zip(parsed_toks_indxs, parsed_toks):
             while j < len(orig_toks) and orig_toks[j] != otok:
                 j += 1
             reindexer[i] = j
