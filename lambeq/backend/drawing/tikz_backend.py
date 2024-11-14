@@ -40,9 +40,39 @@ class TikzBackend(DrawingBackend):
         self.edgelayer: list[str] = []
         self.max_width: float = 0
 
-    @staticmethod
-    def format_color(color: str) -> str:
+    def format_color(self, color: str) -> str:
+        """
+         Returns RGB value for the Hex.
+
+        Parameters
+        ----------
+        color : str
+            The Hex color code, represented as a string.
+
+        Returns
+        ----------
+        rgb-color: str
+            The RGB color format, represented as a string.
+
+        """
         hexcode = COLORS[color]
+        return self.get_rgb_for_hex(hexcode=hexcode)
+
+    def get_rgb_for_hex(self, hexcode: str) -> str:
+        """
+         Helper method to convert Hex to RGB
+
+        Parameters
+        ----------
+        hexcode : str
+            The Hex color, represented as a string.
+
+        Returns
+        ----------
+        rgb-color: str
+            The RGB color, represented as a string.
+
+        """
         rgb = [
             int(hex, 16) for hex in [hexcode[1:3], hexcode[3:5], hexcode[5:]]]
         return f'{{rgb,255: red,{rgb[0]}; green,{rgb[1]}; blue,{rgb[2]}}}'
@@ -127,7 +157,7 @@ class TikzBackend(DrawingBackend):
                   color_id: int = 0,
                   **params) -> None:
 
-        # color = self._get_wire_color(color_id, **params)
+        color = self._get_wire_color(color_id, **params)
         out = (-90 if not bend_out or source[0] == target[0]
                else (180 if source[0] > target[0] else 0))
         inp = (90 if not bend_in or source[0] == target[0]
@@ -145,6 +175,24 @@ class TikzBackend(DrawingBackend):
                 style = ''
             style += f'looseness={looseness}'
 
+        if self.use_tikzstyles:
+            # TikZ style for the wire color
+            color_name = color.lstrip('#')
+            wire_style_name = (f'{color_name}_wire'
+                               if color != '#000000' else 'black_wire')
+            wire_style = (f'\\tikzstyle{{{wire_style_name}}}='
+                          f'[-, draw={self.get_rgb_for_hex(color)}]\n')
+            if wire_style not in self.edge_styles:
+                self.edge_styles.append(wire_style)
+            wire_options = f'style={wire_style_name}'
+
+            # Concatenate additional styles like looseness if present
+            if style:
+                wire_options += f', {style}'
+
+        else:
+            wire_options = f'-, draw={{{color}}}'
+
         cmd = (
             '\\draw [in={}, out={}{}] '
             '({}.center) to ({}.center);\n')
@@ -156,7 +204,7 @@ class TikzBackend(DrawingBackend):
 
         self.edgelayer.append(cmd.format(
             inp, out,
-            f', {style}' if style is not None else '',
+            f', {wire_options}' if wire_options is not None else '',
             self.nodes[source], self.nodes[target]))
 
     def draw_spiders(self, drawable: DrawableDiagram, **params) -> None:
