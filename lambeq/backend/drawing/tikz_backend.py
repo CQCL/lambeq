@@ -104,7 +104,8 @@ class TikzBackend(DrawingBackend):
         nodes.append(nodes[0])
 
         if self.use_tikzstyles:
-            style_name = 'box' if color == 'white' else f'{color}_box'
+            color_name = color.lstrip('#')
+            style_name = 'box' if color == 'white' else f'{color_name}_box'
             style = (f'\\tikzstyle{{{style_name}}}='
                      f'[-, fill={self.format_color(color)}]\n')
             if style not in self.edge_styles:
