@@ -46,6 +46,12 @@ t4_n1 = PregroupTreeNode(word='1', typ=n, ind=1, children=[t4_n2])
 t4_n0 = PregroupTreeNode(word='0', typ=s, ind=0, children=[t4_n1, t4_n2_2])
 t4 = t4_n0
 
+t5_n2 = PregroupTreeNode(word='and', typ=n.r @ s @ n.r.r.r @ s.r.r, ind=2)
+t5_n1 = PregroupTreeNode(word='an', typ=n, ind=1)
+t5_n2_2 = PregroupTreeNode(word='and', typ=s, ind=2, children=[t5_n1, t5_n2])
+t5_n0 = PregroupTreeNode(word='when', typ=s, ind=0, children=[t5_n2_2])
+t5 = t5_n0
+
 
 def test_get_nodes():
     assert t1.get_nodes() == [
@@ -228,3 +234,9 @@ def test_merge():
     assert t3_n2.typ == n.r @ s
     assert t3_n2.ind == 2
     assert len(t3_n2.children) == 1
+
+
+def test_remove_self_cycles():
+    t5.remove_self_cycles()
+    assert t5_n2.parent is None
+    assert t5_n2_2.children == [t5_n1]
