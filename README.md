@@ -37,6 +37,12 @@ To install lambeq with optional dependencies for extra features, run:
 pip install lambeq[extras]
 ```
 
+To install lambeq with optional dependencies for experimental features, run:
+
+```bash
+pip install lambeq[experimental]
+```
+
 To enable DepCCG support, you will need to install the external parser separately.
 
 ---
