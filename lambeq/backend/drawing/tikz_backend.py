@@ -38,6 +38,7 @@ class TikzBackend(DrawingBackend):
         self.nodes: dict[tuple[float, float], int] = {}
         self.nodelayer: list[str] = []
         self.edgelayer: list[str] = []
+        self.label_layer: list[str] = []
         self.max_width: float = 0
 
     def format_color(self, color: str) -> str:
@@ -80,15 +81,21 @@ class TikzBackend(DrawingBackend):
     def add_node(self,
                  x: float,
                  y: float,
+                 is_label : bool = False,
                  text: str | None = None,
                  options: str | None = None) -> int:
         """ Add a node to the tikz picture, return its unique id. """
 
         node = max(self.nodes.values()) + 1 if self.nodes else 1
         text = '' if text is None else text
-
-        self.nodelayer.append(
-            f'\\node [{options or ""}] ({node}) at ({x}, {y}) {{{text}}};\n')
+        if is_label:
+            self.label_layer.append(
+                f'\\node [{options or ""}] ({node}) '
+                f'at ({x}, {y}) {{{text}}};\n')
+        else:
+            self.nodelayer.append(
+                f'\\node [{options or ""}] ({node}) '
+                f'at ({x}, {y}) {{{text}}};\n')
         self.nodes.update({(x, y): node})
 
         self.max_width = max(self.max_width, x)
@@ -107,14 +114,14 @@ class TikzBackend(DrawingBackend):
         if 'color' in params:
             options.append(params['color'])
 
-        self.add_node(x, y, text, options=', '.join(options))
+        self.add_node(x, y, text=text, options=', '.join(options))
 
     def draw_text(self,
                   text: str,
                   x: float,
                   y: float,
                   **params) -> None:
-        options = 'style=none, fill=white'
+        options = 'style=none'
 
         if params.get('horizontalalignment', 'center') == 'left':
             options += ', anchor=west'
@@ -123,7 +130,7 @@ class TikzBackend(DrawingBackend):
         if 'fontsize' in params and params['fontsize'] is not None:
             options += f', scale={params["fontsize"]}'
 
-        self.add_node(x, y, text, options)
+        self.add_node(x, y, text=text, options=options, is_label=True)
 
     def draw_polygon(self, *points: list[float], color: str = 'white') -> None:
         nodes: list[int] = []
@@ -142,7 +149,7 @@ class TikzBackend(DrawingBackend):
                 self.edge_styles.append(style)
             options = f'style={style_name}'
         else:
-            options = f'-, fill={{{color}}}'
+            options = f'-, fill={{{self.format_color(color)}}}'
 
         str_connections = ' to '.join(f'({node}.center)' for node in nodes)
         self.edgelayer.append(f'\\draw [{options}] {str_connections};\n')
@@ -226,7 +233,7 @@ class TikzBackend(DrawingBackend):
                 if params.get('nodesize', 1) != 1:
                     options += f', scale={params.get("nodesize")}'
 
-                self.add_node(i, j, '', options)
+                self.add_node(i, j, is_label=False, text='', options=options)
 
             for wire in node.cod_wires:
                 self.draw_wire(node.coordinates,
@@ -254,8 +261,17 @@ class TikzBackend(DrawingBackend):
                  + self.nodelayer + ['\\end{pgfonlayer}\n'])
         edges = (['\\begin{pgfonlayer}{edgelayer}\n'] + self.edgelayer
                  + ['\\end{pgfonlayer}\n'])
+        labels = (['\\begin{pgfonlayer}{labellayer}\n'] + self.label_layer
+                  + ['\\end{pgfonlayer}\n'])
         end = ['\\end{tikzpicture}\n']
-
+        tex_comments = (
+            "% When embedding into a *.tex file, uncomment and include "
+            "the following lines:\n"
+            "% \\pgfdeclarelayer{nodelayer}\n"
+            "% \\pgfdeclarelayer{edgelayer}\n"
+            "% \\pgfdeclarelayer{labellayer}\n"
+            "% \\pgfsetlayers{nodelayer, edgelayer, labellayer}\n"
+        )
         if path is not None:
             if output_tikzstyle:
                 style_path = '.'.join(path.split('.')[:-1]) + '.tikzstyles'
@@ -263,9 +279,14 @@ class TikzBackend(DrawingBackend):
                     file.writelines(['% Node styles\n'] + self.node_styles)
                     file.writelines(['% Edge styles\n'] + self.edge_styles)
             with open(path, 'w+') as file:
-                file.writelines(begin + nodes + edges + end)
+                file.writelines([tex_comments] + begin + nodes + edges
+                                + labels + end)
 
         elif show:
+            tex_output = tex_comments
+
             if output_tikzstyle:
-                print(''.join(self.node_styles + self.edge_styles))
-            print(''.join(begin + nodes + edges + end))
+                tex_output += ''.join(self.node_styles + self.edge_styles)
+
+            tex_output += ''.join(begin + nodes + edges + labels + end)
+            print(tex_output)
