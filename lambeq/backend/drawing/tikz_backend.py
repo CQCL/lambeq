@@ -191,7 +191,7 @@ class TikzBackend(DrawingBackend):
                 wire_options += f', {style}'
 
         else:
-            wire_options = f'-, draw={{{color}}}'
+            wire_options = f'-, draw={self.get_rgb_for_hex(color)}'
 
         cmd = (
             '\\draw [in={}, out={}{}] '
