@@ -212,10 +212,16 @@ def _tk_to_lmbq_param(theta):
 
 
 def to_tk(diagram: Diagram):
-    """
-    Takes a :py:class:`lambeq.quantum.Diagram`, returns
+    """Takes a :py:class:`lambeq.quantum.Diagram`, returns
     a :class:`lambeq.backend.converters.tk.Circuit`
     for t|ket>.
+
+
+    Parameters
+    ----------
+    diagram : :py:class:`~lambeq.backend.quantum.Diagram`
+        The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
+        to be converted to a tket circuit.
 
     Returns
     -------

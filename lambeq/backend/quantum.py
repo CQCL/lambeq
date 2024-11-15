@@ -1170,9 +1170,10 @@ def is_circuital(diagram: Diagram) -> bool:
     """
     Takes a :py:class:`lambeq.quantum.Diagram`,
     checks if a diagram is a quantum 'circuital' diagram.
-    A circuital diagram is a diagram with qubits at the top,
-    followed by gates,
-    and then measurements at the bottom.
+    A circuital diagram is a diagram with qubits at the top.
+
+    Used to check for measurements and post-selection
+    at the bottom but there are too many edge cases.
 
     Returns
     -------
@@ -1186,7 +1187,7 @@ def is_circuital(diagram: Diagram) -> bool:
 
     layers = diagram.layers
 
-    # Check if the first and last layers are all qubits and measurements
+    # Check if the first layers are all qubits and measurements
     num_qubits = sum([1 for layer in layers
                       if isinstance(layer.box, Ket)])
 
@@ -1199,13 +1200,31 @@ def is_circuital(diagram: Diagram) -> bool:
         if len(qubit_layer.right):
             return False
 
+    # Check there are no gates in between post-selections.
+    measure_idx = [i for i, layer in enumerate(layers[num_qubits:])
+                   if isinstance(layer.box, (Discard, Bra))]
+    if not measure_idx:
+        return True
+    mmax = max(measure_idx)
+    mmin = min(measure_idx)
+    for i, gate in enumerate(layers[num_qubits:]):
+        if not isinstance(gate.box, (Discard, Bra, Measure)):
+            if i > mmin and i < mmax:
+                return False
+
     return True
 
 
-def to_circuital(circuit: Diagram):
-    """
-    Takes a :py:class:`lambeq.quantum.Diagram`, returns
-    a modified :py:class:`lambeq.quantum.Diagram`.
+def to_circuital(diagram: Diagram):
+    """Takes a :py:class:`lambeq.quantum.Diagram`, returns
+    a modified :py:class:`lambeq.quantum.Diagram` which
+    is easier to convert to tket and other circuit simulators
+
+    Parameters
+    ----------
+    diagram : :py:class:`~lambeq.backend.quantum.Diagram`
+        The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
+        to be converted to a tket circuit.
 
     The returned circuit diagram has all qubits at the top
     with layer depth equal to qubit index,
@@ -1215,13 +1234,13 @@ def to_circuital(circuit: Diagram):
     Returns
     -------
     :py:class:`lambeq.quantum.Diagram`
-        Circuital diagram.
+        Circuital diagram compatible with circuital_to_dict.
     """
 
     # bits and qubits are lists of register indices, at layer i we want
     # len(bits) == circuit[:i].cod.count(bit) and same for qubits
     # Necessary to ensure editing boxes is localized.
-    circuit = copy.deepcopy(circuit)
+    circuit = copy.deepcopy(diagram)
 
     qubits: list[Layer] = []
     gates: list[Layer] = []
@@ -1478,9 +1497,15 @@ def to_circuital(circuit: Diagram):
 
 
 def circuital_to_dict(diagram: Diagram):
-    """
-    Takes a :py:class:`lambeq.quantum.Diagram`, returns
+    """Takes a circuital :py:class:`lambeq.quantum.Diagram`, returns
     a dictionary for converting to a circuit.
+    Will check if the diagram is circuital before converting.
+
+    Parameters
+    ----------
+    diagram : :py:class:`~lambeq.backend.quantum.Diagram`
+        The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
+        to be converted to dictionary.
 
     Returns
     -------
