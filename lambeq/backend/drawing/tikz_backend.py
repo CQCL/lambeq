@@ -265,12 +265,12 @@ class TikzBackend(DrawingBackend):
                   + ['\\end{pgfonlayer}\n'])
         end = ['\\end{tikzpicture}\n']
         tex_comments = (
-            "% When embedding into a *.tex file, uncomment and include "
-            "the following lines:\n"
-            "% \\pgfdeclarelayer{nodelayer}\n"
-            "% \\pgfdeclarelayer{edgelayer}\n"
-            "% \\pgfdeclarelayer{labellayer}\n"
-            "% \\pgfsetlayers{nodelayer, edgelayer, labellayer}\n"
+            '% When embedding into a *.tex file, uncomment and include '
+            'the following lines:\n'
+            '% \\pgfdeclarelayer{nodelayer}\n'
+            '% \\pgfdeclarelayer{edgelayer}\n'
+            '% \\pgfdeclarelayer{labellayer}\n'
+            '% \\pgfsetlayers{nodelayer, edgelayer, labellayer}\n'
         )
         if path is not None:
             if output_tikzstyle:
