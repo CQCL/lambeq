@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from abc import ABC, abstractmethod
+import re
 
 import spacy
 
@@ -47,6 +48,9 @@ class CoreferenceResolver(ABC):
             in `text`.
 
         """
+
+    def _clean_text(self, text: str) -> str:
+        return re.sub('[\\s\\n]+', ' ', text)
 
     def dict_from_corefs(self,
                          corefs: list[list[list[int]]]
@@ -87,6 +91,7 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
                               exclude=('span_resolver', 'span_cleaner'))
 
     def tokenise_and_coref(self, text):
+        text = self._clean_text(text)
         doc = self.nlp(text)
         coreferences = []
 
