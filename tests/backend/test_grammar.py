@@ -27,6 +27,7 @@ def test_Ty():
     assert a**1 == a
     assert a**2 == a @ a
     assert a**3 == a @ a @ a
+    assert c @ a == a @ c == a
 
     with raises(TypeError):
         a @ 'b'
@@ -151,7 +152,6 @@ def test_Spider():
 
 def test_Swap():
     a, b = map(Ty, 'ab')
-    ab = a @ b
 
     swap = Swap(a, b)
     assert swap.dagger().dagger() == swap
@@ -170,12 +170,16 @@ def test_Layer():
 
 def test_Id():
     a, b = map(Ty, 'ab')
+    c = Ty()
     box = Box('dimitri', a, b)
 
     assert box @ Id() == box.to_diagram()
     assert box @ Id(b) >> Id(b) @ box.dagger() == box @ box.dagger()
     assert Id().is_id == True
     assert Id().dagger() == Id()
+    assert Id(a) @ c == Id(a)
+    assert c @ Id(a) == Id(a)
+    assert a @ b @ Id(b) == Id(a @ b @ b)
 
 
 def test_Diagram():
