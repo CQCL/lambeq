@@ -605,7 +605,7 @@ def test_drawable_generation(diagram, drawable):
 @pytest.mark.parametrize('diagram, tikz', zip(diagrams, tikz_outputs))
 def test_tikz_drawing(diagram, tikz, capsys):
 
-    diagram.draw(backend=TikzBackend(), color_boxes=False)
+    diagram.draw(backend=TikzBackend(), color_boxes=False,  draw_type_labels=True)
     tikz_op, _ = capsys.readouterr()
 
     assert tikz_op == tikz
@@ -614,7 +614,7 @@ def test_tikz_drawing(diagram, tikz, capsys):
 @pytest.mark.parametrize('diagram, tikz', zip(diagrams, colored_tikz_outputs))
 def test_tikz_colored_drawing(diagram, tikz, capsys):
 
-    diagram.draw(backend=TikzBackend(), color_boxes=True)
+    diagram.draw(backend=TikzBackend(), color_boxes=True, draw_type_labels=True)
     tikz_op, _ = capsys.readouterr()
 
     assert tikz_op == tikz
