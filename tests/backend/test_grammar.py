@@ -152,7 +152,6 @@ def test_Spider():
 
 def test_Swap():
     a, b = map(Ty, 'ab')
-    ab = a @ b
 
     swap = Swap(a, b)
     assert swap.dagger().dagger() == swap
@@ -180,6 +179,7 @@ def test_Id():
     assert Id().dagger() == Id()
     assert Id(a) @ c == Id(a)
     assert c @ Id(a) == Id(a)
+    assert a @ b @ Id(b) == Id(a @ b @ b)
 
 
 def test_Diagram():
