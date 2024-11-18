@@ -63,8 +63,8 @@ jobs:
       run: python -c 'import lambeq'
     - name: Install extra dependencies and tester
       run: pip install .[extras] .[test]
-    - name: Install torchquantum for tq tests
-      run: pip install .[tq]
+    - name: Install torchquantum ignoring dependencies to preserve qiskit 1.x
+      run: pip install --no-deps "torchquantum >= 0.1.8"
     - name: Locate bobcat pre-trained model cache
       id: loc-bobcat-cache
       run: echo "dir=$(python -c 'from lambeq.text2diagram.model_downloader import ModelDownloader; print(ModelDownloader("bert").model_dir)')" >> $GITHUB_OUTPUT
