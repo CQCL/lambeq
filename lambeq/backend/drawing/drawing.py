@@ -100,9 +100,9 @@ def draw(diagram: Diagram, **params) -> None:
 
     params['asymmetry'] = params.get(
         'asymmetry', .25 * needs_asymmetry(diagram))
-    default_label_flag = not diagram.has_frames
+
     params['draw_type_labels'] = params.get('draw_type_labels',
-                                            default_label_flag)
+                                            not diagram.has_frames)
 
     drawable = params.pop('drawable', None)
     drawable_cls = (DrawableDiagramWithFrames if diagram.has_frames
