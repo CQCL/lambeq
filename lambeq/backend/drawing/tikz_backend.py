@@ -149,7 +149,7 @@ class TikzBackend(DrawingBackend):
                 self.edge_styles.append(style)
             options = f'style={style_name}'
         else:
-            options = f'-, fill={{{self.format_color(color)}}}'
+            options = f'-, fill={self.format_color(color)}'
 
         str_connections = ' to '.join(f'({node}.center)' for node in nodes)
         self.edgelayer.append(f'\\draw [{options}] {str_connections};\n')
