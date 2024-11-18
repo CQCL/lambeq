@@ -47,6 +47,8 @@ jobs:
     if: ${{ always() && needs.lint.outputs.error-check == 'success' }}
     runs-on: ubuntu-latest
     strategy:
+      # Failure on specific versions is valuable information, which async failures may mask
+      fail-fast: false
       matrix:
         python-version: [ "3.10", "3.11", "3.12" ]
     steps:

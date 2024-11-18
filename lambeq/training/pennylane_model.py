@@ -33,7 +33,7 @@ from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
 if TYPE_CHECKING:
-    from lambeq.backend.pennylane import PennyLaneCircuit
+    from lambeq.backend.converters.pennylane import PennyLaneCircuit
 
 
 class PennyLaneModel(Model, torch.nn.Module):

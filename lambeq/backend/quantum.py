@@ -414,10 +414,24 @@ class Diagram(tensor.Diagram):
         :class:`lambeq.backend.pennylane.PennylaneCircuit`
 
         """
-        from lambeq.backend.pennylane import to_pennylane
+        from lambeq.backend.converters.pennylane import to_pennylane
         return to_pennylane(self, probabilities=probabilities,
                             backend_config=backend_config,
                             diff_method=diff_method)
+
+    def to_tq(self):
+        """Convert a lambeq quantum diagram to a torchquantum circuit.
+
+        Returns
+        -------
+        :class:`lambeq.backend.converters.torchquantum.TorchQuantumCircuit`
+            `TorchQuantumCircuit` object representing the circuit,
+            allowing simulation as a part of a pytorch module.
+
+        """
+
+        from lambeq.backend.converters.torchquantum import to_tq
+        return to_tq(self)
 
     def to_tn(self, mixed=False):
         """Send a diagram to a mixed :code:`tensornetwork`.
