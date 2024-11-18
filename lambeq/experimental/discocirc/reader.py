@@ -183,7 +183,8 @@ class DisCoCircReader(Reader):
              c_noun_inds,
              candidate_noun) = self._tree2sandwiches_rec(child,
                                                          noun_cursor,
-                                                         pruned_ids)
+                                                         pruned_ids,
+                                                         foliated_frame_labels)
 
             noun_cursor = (candidate_noun if child.typ == NOUN
                            else noun_cursor)
@@ -289,6 +290,7 @@ class DisCoCircReader(Reader):
                      sandwich: bool = False,
                      break_cycles: bool = True,
                      pruned_nouns: Iterable[str] = (),
+                     min_noun_freq: int = 0,
                      rewrite_rules: (
                          Iterable[TreeRewriteRule | str] | None
                      ) = ('determiner', 'auxiliary'),
