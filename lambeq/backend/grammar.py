@@ -232,7 +232,7 @@ class Ty(Entity):
 
         # Diagrams are iterable - the identity diagram has
         # an empty list for its layers but may still contain types
-        if isinstance(other, self.category.Diagram) and other.is_id:
+        if getattr(other, 'is_id', False):
             return NotImplemented
 
         if any(not isinstance(ty, type(self))
