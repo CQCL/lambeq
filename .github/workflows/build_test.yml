@@ -63,6 +63,8 @@ jobs:
       run: python -c 'import lambeq'
     - name: Install extra dependencies and tester
       run: pip install .[extras] .[test]
+    - name: Install torchquantum for tq tests
+      run: pip install .[tq]
     - name: Locate bobcat pre-trained model cache
       id: loc-bobcat-cache
       run: echo "dir=$(python -c 'from lambeq.text2diagram.model_downloader import ModelDownloader; print(ModelDownloader("bert").model_dir)')" >> $GITHUB_OUTPUT
@@ -78,7 +80,6 @@ jobs:
         --module pytest -vvv ${{ env.TEST_DIR }}
         --durations=50
         --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py
-        --ignore=${{ env.TEST_DIR }}/training/test_torchquantum_model.py
     - name: Coverage report
       run: coverage report -m
   type_check:
