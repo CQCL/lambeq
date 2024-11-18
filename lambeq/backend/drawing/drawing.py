@@ -100,7 +100,7 @@ def draw(diagram: Diagram, **params) -> None:
 
     params['asymmetry'] = params.get(
         'asymmetry', .25 * needs_asymmetry(diagram))
-    default_label_flag = False if diagram.has_frames else True
+    default_label_flag = not diagram.has_frames
     params['draw_type_labels'] = params.get('draw_type_labels',
                                             default_label_flag)
 
