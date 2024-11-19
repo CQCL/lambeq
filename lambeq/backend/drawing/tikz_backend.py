@@ -43,16 +43,16 @@ class TikzBackend(DrawingBackend):
 
     def format_color(self, color: str) -> str:
         """
-         Returns RGB value for the Hex.
+        Returns RGB value for the hex.
 
         Parameters
         ----------
         color : str
-            The Hex color code, represented as a string.
+            The hex color code, represented as a string.
 
         Returns
-        ----------
-        rgb-color: str
+        -------
+        rgb-color : str
             The RGB color format, represented as a string.
 
         """
@@ -61,16 +61,16 @@ class TikzBackend(DrawingBackend):
 
     def get_rgb_for_hex(self, hexcode: str) -> str:
         """
-         Helper method to convert Hex to RGB
+        Helper method to convert hex to RGB
 
         Parameters
         ----------
         hexcode : str
-            The Hex color, represented as a string.
+            The hex color, represented as a string.
 
         Returns
-        ----------
-        rgb-color: str
+        -------
+        rgb-color : str
             The RGB color, represented as a string.
 
         """

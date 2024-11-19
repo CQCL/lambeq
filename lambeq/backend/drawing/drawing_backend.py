@@ -30,7 +30,7 @@ from lambeq.backend.drawing.drawable import DrawableDiagram
 DEFAULT_MARGINS = (.05, .1)
 DEFAULT_ASPECT = 'equal'
 
-WIRE_COLORS = [
+WIRE_COLORS: list[str] = [
     '#9c540e', '#f4a940', '#066ee2', '#d03b2d', '#7fd68b',
     '#574cfa', '#49a141', '#a629b3', '#271296', '#ff6347',
     '#adff2f', '#7446f2', '#007765', '#b60539', '#ff00ff',
@@ -196,7 +196,7 @@ class DrawingBackend(ABC):
 
     def _get_wire_color(self, wire_id : int, **params) -> str:
         """
-         Retrieves a color that uniquely represent a given wire ID.
+        Retrieves a color that uniquely represent a given wire ID.
 
         Parameters
         ----------
@@ -206,9 +206,10 @@ class DrawingBackend(ABC):
         **params:
             Additional parameters.
 
-        Returns:
+        Returns
+        -------
         wire_color : str
-            The Hex color of the wire, represented as a string.
+            The hex color of the wire, represented as a string.
 
         """
         if not params.get('color_wires') or wire_id == 0:
