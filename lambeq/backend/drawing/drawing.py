@@ -48,6 +48,8 @@ from lambeq.backend.drawing.text_printer import PregroupTextPrinter
 from lambeq.backend.drawing.tikz_backend import TikzBackend
 from lambeq.backend.grammar import Box, Diagram
 
+WIRES_DEFAULT_WIDTH_MAT = 1.25
+WIRES_DEFAULT_WIDTH_TIKZ = 1.25 * 0.4  # Tikz default standard is 0.4pt
 
 if TYPE_CHECKING:
     from IPython.core.display import HTML as HTML_ty
@@ -126,10 +128,14 @@ def draw(diagram: Diagram, **params) -> None:
         backend: DrawingBackend = params.pop('backend')
     elif params.get('to_tikz', False):
         backend = TikzBackend(
-            use_tikzstyles=params.get('use_tikzstyles', None))
+            use_tikzstyles=params.get('use_tikzstyles', None),
+            wires_linewidth=params.get('wires_linewidth',
+                                       WIRES_DEFAULT_WIDTH_TIKZ))
     else:
-        backend = MatBackend(figsize=params.get('figsize', None),
-                             wires_linewidth=params.get('wires_width', 1.25))
+        backend = (
+            MatBackend(figsize=params.get('figsize', None),
+                       wires_linewidth=params.get('wires_linewidth',
+                                                  WIRES_DEFAULT_WIDTH_MAT)))
 
     min_size = 0.01
     max_v = max([v for point in ([point.coordinates for point in

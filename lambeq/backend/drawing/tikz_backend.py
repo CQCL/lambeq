@@ -23,7 +23,8 @@ from __future__ import annotations
 from math import sqrt
 
 from lambeq.backend.drawing.drawable import DrawableDiagram
-from lambeq.backend.drawing.drawing_backend import COLORS, DrawingBackend
+from lambeq.backend.drawing.drawing_backend import (COLORS, WIRE_COLORS_NAMES,
+                                                    DrawingBackend)
 from lambeq.backend.drawing.helpers import drawn_as_spider
 from lambeq.backend.grammar import Spider
 
@@ -31,7 +32,8 @@ from lambeq.backend.grammar import Spider
 class TikzBackend(DrawingBackend):
     """ Tikz drawing backend. """
 
-    def __init__(self, use_tikzstyles: bool = False):
+    def __init__(self, use_tikzstyles: bool = False,
+                 wires_linewidth: float = 0.4):
         self.use_tikzstyles = use_tikzstyles
         self.node_styles: list[str] = []
         self.edge_styles: list[str] = []
@@ -40,31 +42,11 @@ class TikzBackend(DrawingBackend):
         self.edgelayer: list[str] = []
         self.label_layer: list[str] = []
         self.max_width: float = 0
-
-    def format_color(self, color: str) -> str:
-        """
-        Returns RGB value for the hex.
+        self.wires_linewidth = wires_linewidth
 
     @staticmethod
     def format_color(color: str) -> str:
         hexcode = COLORS[color]
-        return self.get_rgb_for_hex(hexcode=hexcode)
-
-    def get_rgb_for_hex(self, hexcode: str) -> str:
-        """
-        Helper method to convert hex to RGB
-
-        Parameters
-        ----------
-        hexcode : str
-            The hex color, represented as a string.
-
-        Returns
-        -------
-        rgb-color : str
-            The RGB color, represented as a string.
-
-        """
         rgb = [
             int(hex, 16) for hex in [hexcode[1:3], hexcode[3:5], hexcode[5:]]]
         return f'{{rgb,255: red,{rgb[0]}; green,{rgb[1]}; blue,{rgb[2]}}}'
@@ -186,18 +168,22 @@ class TikzBackend(DrawingBackend):
             wire_style_name = (f'{color_name}_wire'
                                if color != '#000000' else 'black_wire')
             wire_style = (f'\\tikzstyle{{{wire_style_name}}}='
-                          f'[-, draw={self.get_rgb_for_hex(color)}]\n')
+                          f'[-, draw={self.format_wire_color(color)}')
+
+            # Concatenate additional styles like looseness if present
+            if style:
+                wire_style += f', {style}'
+            wire_style += f', line width={self.wires_linewidth}]\n'
+
             if wire_style not in self.edge_styles:
                 self.edge_styles.append(wire_style)
             wire_options = f'style={wire_style_name}'
 
-            # Concatenate additional styles like looseness if present
+        else:
+            wire_options = f'-, draw={self.format_wire_color(color)}'
+            wire_options += f', line width={self.wires_linewidth}'
             if style:
                 wire_options += f', {style}'
-
-        else:
-            wire_options = f'-, draw={self.get_rgb_for_hex(color)}'
-
         cmd = (
             '\\draw [in={}, out={}{}] '
             '({}.center) to ({}.center);\n')
