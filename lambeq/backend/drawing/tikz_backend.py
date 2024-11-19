@@ -45,17 +45,8 @@ class TikzBackend(DrawingBackend):
         """
         Returns RGB value for the hex.
 
-        Parameters
-        ----------
-        color : str
-            The hex color code, represented as a string.
-
-        Returns
-        -------
-        rgb-color : str
-            The RGB color format, represented as a string.
-
-        """
+    @staticmethod
+    def format_color(color: str) -> str:
         hexcode = COLORS[color]
         return self.get_rgb_for_hex(hexcode=hexcode)
 
@@ -74,6 +65,13 @@ class TikzBackend(DrawingBackend):
             The RGB color, represented as a string.
 
         """
+        rgb = [
+            int(hex, 16) for hex in [hexcode[1:3], hexcode[3:5], hexcode[5:]]]
+        return f'{{rgb,255: red,{rgb[0]}; green,{rgb[1]}; blue,{rgb[2]}}}'
+
+    @staticmethod
+    def format_wire_color(color: str) -> str:
+        hexcode = WIRE_COLORS_NAMES[color]
         rgb = [
             int(hex, 16) for hex in [hexcode[1:3], hexcode[3:5], hexcode[5:]]]
         return f'{{rgb,255: red,{rgb[0]}; green,{rgb[1]}; blue,{rgb[2]}}}'

@@ -38,6 +38,12 @@ WIRE_COLORS: list[str] = [
     '#740127', '#e2074c', '#0252a1', '#fea431', '#205356',
     '#450d06', '#d17800', '#3831a0', '#ff4500', '#d8bfd8'
 ]
+WIRE_COLORS_NAMES: dict[str, str] = {
+    '#ffffff' : '#ffffff',
+    '#000000' : '#000000'
+}
+for color in WIRE_COLORS:
+    WIRE_COLORS_NAMES[color] = color
 
 FRAME_COLORS: list[str] = [
     '#fbe8e7', '#fee1ba', '#fff9e5', '#e8f8ea', '#dcfbf5',
