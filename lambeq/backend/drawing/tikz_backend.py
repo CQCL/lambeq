@@ -23,8 +23,9 @@ from __future__ import annotations
 from math import sqrt
 
 from lambeq.backend.drawing.drawable import DrawableDiagram
-from lambeq.backend.drawing.drawing_backend import (COLORS, WIRE_COLORS_NAMES,
-                                                    DrawingBackend)
+from lambeq.backend.drawing.drawing_backend import (COLORS, DrawingBackend,
+                                                    WIRE_COLORS_NAMES
+                                                    )
 from lambeq.backend.drawing.helpers import drawn_as_spider
 from lambeq.backend.grammar import Spider
 
