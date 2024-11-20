@@ -230,6 +230,11 @@ class Ty(Entity):
         except TypeError:
             return NotImplemented
 
+        # Diagrams are iterable - the identity diagram has
+        # an empty list for its layers but may still contain types
+        if getattr(other, 'is_id', False):
+            return NotImplemented
+
         if any(not isinstance(ty, type(self))
                or self.category != ty.category for ty in tys):
             return NotImplemented

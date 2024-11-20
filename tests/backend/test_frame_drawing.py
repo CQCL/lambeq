@@ -620,6 +620,7 @@ def test_drawable_generation(diagram, drawable):
 def test_tikz_drawing(diagram, tikz, capsys):
 
     diagram.draw(backend=TikzBackend(use_tikzstyles=False, wires_linewidth= 1.25 * 0.4 ), color_wires=False, color_boxes=False)
+
     tikz_op, _ = capsys.readouterr()
 
     assert tikz_op == tikz
@@ -629,6 +630,7 @@ def test_tikz_drawing(diagram, tikz, capsys):
 def test_tikz_colored_drawing(diagram, tikz, capsys):
 
     diagram.draw(backend=TikzBackend(use_tikzstyles=False, wires_linewidth= 1.25 * 0.4 ), color_wires=True, color_boxes=True)
+
     tikz_op, _ = capsys.readouterr()
 
     assert tikz_op == tikz
