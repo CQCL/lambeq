@@ -133,12 +133,14 @@ def draw(diagram: Diagram, **params) -> None:
         backend = TikzBackend(
             use_tikzstyles=params.get('use_tikzstyles', None),
             wires_linewidth=params.get('wires_linewidth',
-                                       WIRES_DEFAULT_WIDTH_TIKZ))
+                                       WIRES_DEFAULT_WIDTH_TIKZ)
+        )
     else:
-        backend = (
-            MatBackend(figsize=params.get('figsize', None),
-                       wires_linewidth=params.get('wires_linewidth',
-                                                  WIRES_DEFAULT_WIDTH_MAT)))
+        backend = MatBackend(
+            figsize=params.get('figsize', None),
+            wires_linewidth=params.get('wires_linewidth',
+                                       WIRES_DEFAULT_WIDTH_MAT)
+        )
 
     min_size = 0.01
     max_v = max([v for point in ([point.coordinates for point in
