@@ -31,22 +31,27 @@ from lambeq.backend.drawing.helpers import drawn_as_spider
 from lambeq.backend.grammar import Spider
 
 
+BOX_LINEWIDTH = 1.0
+WIRE_LINEWIDTH = BOX_LINEWIDTH * 1.25
+FONTSIZE = 12
+
+
 class MatBackend(DrawingBackend):
     """ Matplotlib drawing backend. """
 
     def __init__(self,
                  axis: plt.Axes | None = None,
                  figsize: tuple | None = None,
-                 box_linewidth: float = 1,
-                 wires_linewidth: float = 1.25):
+                 box_linewidth: float = BOX_LINEWIDTH,
+                 wire_linewidth: float = WIRE_LINEWIDTH):
         self.axis = axis or plt.subplots(figsize=figsize, facecolor='white')[1]
         self.default_aspect = 'equal' if figsize is None else 'auto'
         self.box_linewidth = box_linewidth
-        self.wires_linewidth = wires_linewidth
+        self.wire_linewidth = wire_linewidth
         self.max_width: float = 0
 
     def draw_text(self, text: str, x: float, y: float, **params) -> None:
-        params['fontsize'] = params.get('fontsize', 12)
+        params['fontsize'] = params.get('fontsize', FONTSIZE)
         self.axis.text(x, y, text, **params)
         self.max_width = max(self.max_width, x)
 
@@ -112,7 +117,7 @@ class MatBackend(DrawingBackend):
                 ])
 
             self.axis.add_patch(PathPatch(path, facecolor='none',
-                                          linewidth=self.wires_linewidth,
+                                          linewidth=self.wire_linewidth,
                                           edgecolor=color))
 
         self.max_width = max(self.max_width, source[0], target[0])

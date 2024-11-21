@@ -30,11 +30,15 @@ from lambeq.backend.drawing.helpers import drawn_as_spider
 from lambeq.backend.grammar import Spider
 
 
+BOX_LINEWIDTH = 0.4
+WIRE_LINEWIDTH = BOX_LINEWIDTH * 1.25
+
+
 class TikzBackend(DrawingBackend):
     """ Tikz drawing backend. """
 
     def __init__(self, use_tikzstyles: bool = False,
-                 wires_linewidth: float = 0.4):
+                 wire_linewidth: float = WIRE_LINEWIDTH):
         self.use_tikzstyles = use_tikzstyles
         self.node_styles: list[str] = []
         self.edge_styles: list[str] = []
@@ -43,7 +47,7 @@ class TikzBackend(DrawingBackend):
         self.edgelayer: list[str] = []
         self.label_layer: list[str] = []
         self.max_width: float = 0
-        self.wires_linewidth = wires_linewidth
+        self.wire_linewidth = wire_linewidth
 
     @staticmethod
     def format_color(color: str) -> str:
@@ -174,7 +178,7 @@ class TikzBackend(DrawingBackend):
             # Concatenate additional styles like looseness if present
             if style:
                 wire_style += f', {style}'
-            wire_style += f', line width={self.wires_linewidth}]\n'
+            wire_style += f', line width={self.wire_linewidth}]\n'
 
             if wire_style not in self.edge_styles:
                 self.edge_styles.append(wire_style)
@@ -182,7 +186,7 @@ class TikzBackend(DrawingBackend):
 
         else:
             wire_options = f'-, draw={self.format_wire_color(color)}'
-            wire_options += f', line width={self.wires_linewidth}'
+            wire_options += f', line width={self.wire_linewidth}'
             if style:
                 wire_options += f', {style}'
         cmd = (

@@ -43,13 +43,15 @@ from lambeq.backend.drawing.drawing_backend import (ColoringMode,
                                                     FRAME_COLORS,
                                                     WIRE_COLORS)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
-from lambeq.backend.drawing.mat_backend import MatBackend
+from lambeq.backend.drawing.mat_backend import (
+    MatBackend, WIRE_LINEWIDTH as MAT_WIRE_LINEWIDTH
+)
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
-from lambeq.backend.drawing.tikz_backend import TikzBackend
+from lambeq.backend.drawing.tikz_backend import (
+    TikzBackend, WIRE_LINEWIDTH as TIKZ_WIRE_LINEWIDTH
+)
 from lambeq.backend.grammar import Box, Diagram
 
-WIRES_DEFAULT_WIDTH_MAT = 1.25
-WIRES_DEFAULT_WIDTH_TIKZ = 1.25 * 0.4  # Tikz default standard is 0.4pt
 
 if TYPE_CHECKING:
     from IPython.core.display import HTML as HTML_ty
@@ -132,14 +134,14 @@ def draw(diagram: Diagram, **params) -> None:
     elif params.get('to_tikz', False):
         backend = TikzBackend(
             use_tikzstyles=params.get('use_tikzstyles', None),
-            wires_linewidth=params.get('wires_linewidth',
-                                       WIRES_DEFAULT_WIDTH_TIKZ)
+            wire_linewidth=params.get('wire_linewidth',
+                                      TIKZ_WIRE_LINEWIDTH)
         )
     else:
         backend = MatBackend(
             figsize=params.get('figsize', None),
-            wires_linewidth=params.get('wires_linewidth',
-                                       WIRES_DEFAULT_WIDTH_MAT)
+            wire_linewidth=params.get('wire_linewidth',
+                                      MAT_WIRE_LINEWIDTH)
         )
 
     min_size = 0.01
