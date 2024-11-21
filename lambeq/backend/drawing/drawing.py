@@ -48,8 +48,8 @@ from lambeq.backend.drawing.mat_backend import (
 )
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
 from lambeq.backend.drawing.tikz_backend import (
-    TikzBackend, WIRE_LINEWIDTH as TIKZ_WIRE_LINEWIDTH,
-    BOX_LINEWIDTH as TIKZ_BOX_LINEWIDTH
+    BOX_LINEWIDTH as TIKZ_BOX_LINEWIDTH, TikzBackend,
+    WIRE_LINEWIDTH as TIKZ_WIRE_LINEWIDTH
 )
 from lambeq.backend.grammar import Box, Diagram
 
