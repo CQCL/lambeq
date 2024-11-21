@@ -188,201 +188,236 @@ expected_drawables = [
 
 
 tikz_outputs = [
-"""\\begin{tikzpicture}[baseline=(0.base)]
+"""% When embedding into a *.tex file, uncomment and include the following lines:
+% \pgfdeclarelayer{nodelayer}
+% \pgfdeclarelayer{edgelayer}
+% \pgfdeclarelayer{labellayer}
+% \pgfsetlayers{nodelayer, edgelayer, labellayer}
+\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
 \\node [] (1) at (-0.5, -0.25) {};
 \\node [] (2) at (3.0, -0.25) {};
 \\node [] (3) at (3.0, 0.25) {};
 \\node [] (4) at (-0.5, 0.25) {};
-\\node [style=none, fill=white] (5) at (1.25, 0.0) {BX1};
 \\node [] (6) at (1.25, 1.0) {};
 \\node [] (7) at (1.25, 0.25) {};
-\\node [style=none, fill=white, right] (8) at (1.35, 1.0) {s};
 \\node [] (9) at (0.0, -0.25) {};
 \\node [] (10) at (0.0, -1.0) {};
-\\node [style=none, fill=white, right] (11) at (0.1, -0.35) {s};
 \\node [] (12) at (2.5, -0.25) {};
 \\node [] (13) at (2.5, -1.0) {};
-\\node [style=none, fill=white, right] (14) at (2.6, -0.35) {s};
 \\node [] (15) at (5.0, 1.0) {};
 \\node [] (16) at (5.0, -1.0) {};
-\\node [style=none, fill=white, right] (17) at (5.1, 1.0) {s};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
-\\draw [in=90, out=-90] (6.center) to (7.center);
-\\draw [in=90, out=-90] (9.center) to (10.center);
-\\draw [in=90, out=-90] (12.center) to (13.center);
-\\draw [in=90, out=-90] (15.center) to (16.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (6.center) to (7.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (9.center) to (10.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (12.center) to (13.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (15.center) to (16.center);
+\\end{pgfonlayer}
+\\begin{pgfonlayer}{labellayer}
+\\node [style=none] (5) at (1.25, 0.0) {BX1};
+\\node [style=none, right] (8) at (1.35, 1.0) {s};
+\\node [style=none, right] (11) at (0.1, -0.35) {s};
+\\node [style=none, right] (14) at (2.6, -0.35) {s};
+\\node [style=none, right] (17) at (5.1, 1.0) {s};
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
 """,
-"""\\begin{tikzpicture}[baseline=(0.base)]
+"""% When embedding into a *.tex file, uncomment and include the following lines:
+% \pgfdeclarelayer{nodelayer}
+% \pgfdeclarelayer{edgelayer}
+% \pgfdeclarelayer{labellayer}
+% \pgfsetlayers{nodelayer, edgelayer, labellayer}
+\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
 \\node [] (1) at (-0.5, 0.25) {};
 \\node [] (2) at (3.0, 0.25) {};
 \\node [] (3) at (3.25, 0.75) {};
 \\node [] (4) at (-0.5, 0.75) {};
-\\node [style=none, fill=white] (5) at (1.25, 0.5) {BX1};
 \\node [] (6) at (-0.5, -0.75) {};
 \\node [] (7) at (3.25, -0.75) {};
 \\node [] (8) at (3.0, -0.25) {};
 \\node [] (9) at (-0.5, -0.25) {};
-\\node [style=none, fill=white] (10) at (1.25, -0.5) {BX1†};
 \\node [] (11) at (1.25, 1.5) {};
 \\node [] (12) at (1.25, 0.75) {};
-\\node [style=none, fill=white, right] (13) at (1.35, 1.5) {s};
 \\node [] (14) at (0.0, 0.25) {};
 \\node [] (15) at (0.0, -0.25) {};
-\\node [style=none, fill=white, right] (16) at (0.1, 0.15) {s};
 \\node [] (17) at (2.5, 0.25) {};
 \\node [] (18) at (2.5, -0.25) {};
-\\node [style=none, fill=white, right] (19) at (2.6, 0.15) {s};
 \\node [] (20) at (1.25, -0.75) {};
 \\node [] (21) at (1.25, -1.5) {};
-\\node [style=none, fill=white, right] (22) at (1.35, -0.85) {s};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
-\\draw [-, fill={white}] (6.center) to (7.center) to (8.center) to (9.center) to (6.center);
-\\draw [in=90, out=-90] (11.center) to (12.center);
-\\draw [in=90, out=-90] (14.center) to (15.center);
-\\draw [in=90, out=-90] (17.center) to (18.center);
-\\draw [in=90, out=-90] (20.center) to (21.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (6.center) to (7.center) to (8.center) to (9.center) to (6.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (11.center) to (12.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (14.center) to (15.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (17.center) to (18.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (20.center) to (21.center);
+\\end{pgfonlayer}
+\\begin{pgfonlayer}{labellayer}
+\\node [style=none] (5) at (1.25, 0.5) {BX1};
+\\node [style=none] (10) at (1.25, -0.5) {BX1†};
+\\node [style=none, right] (13) at (1.35, 1.5) {s};
+\\node [style=none, right] (16) at (0.1, 0.15) {s};
+\\node [style=none, right] (19) at (2.6, 0.15) {s};
+\\node [style=none, right] (22) at (1.35, -0.85) {s};
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
 """,
-"""\\begin{tikzpicture}[baseline=(0.base)]
+"""% When embedding into a *.tex file, uncomment and include the following lines:
+% \pgfdeclarelayer{nodelayer}
+% \pgfdeclarelayer{edgelayer}
+% \pgfdeclarelayer{labellayer}
+% \pgfsetlayers{nodelayer, edgelayer, labellayer}
+\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
 \\node [] (1) at (-0.5, 0.25) {};
 \\node [] (2) at (3.0, 0.25) {};
 \\node [] (3) at (3.0, 0.75) {};
 \\node [] (4) at (-0.5, 0.75) {};
-\\node [style=none, fill=white] (5) at (1.25, 0.5) {BX1};
 \\node [] (6) at (1.25, 1.5) {};
 \\node [] (7) at (1.25, 0.75) {};
-\\node [style=none, fill=white, right] (8) at (1.35, 1.5) {s};
 \\node [] (9) at (2.5, 0.25) {};
 \\node [] (10) at (2.5, -0.25) {};
-\\node [style=none, fill=white, right] (11) at (2.6, 0.15) {s};
 \\node [] (12) at (5.0, 1.5) {};
 \\node [] (13) at (5.0, -0.25) {};
-\\node [style=none, fill=white, right] (14) at (5.1, 1.5) {s.r};
 \\node [] (15) at (0.0, 0.25) {};
 \\node [] (16) at (0.0, -1.5) {};
-\\node [style=none, fill=white, right] (17) at (0.1, 0.15) {s};
 \\node [] (18) at (3.75, -0.5) {};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
-\\draw [in=90, out=-90] (6.center) to (7.center);
-\\draw [in=90, out=-90] (9.center) to (10.center);
-\\draw [in=90, out=-90] (12.center) to (13.center);
-\\draw [in=90, out=-90] (15.center) to (16.center);
-\\draw [in=180, out=-90, looseness=0.4118] (10.center) to (18.center);
-\\draw [in=0, out=-90, looseness=0.4118] (13.center) to (18.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (6.center) to (7.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (9.center) to (10.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (12.center) to (13.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (15.center) to (16.center);
+\\draw [in=180, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (10.center) to (18.center);
+\\draw [in=0, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (13.center) to (18.center);
+\\end{pgfonlayer}
+\\begin{pgfonlayer}{labellayer}
+\\node [style=none] (5) at (1.25, 0.5) {BX1};
+\\node [style=none, right] (8) at (1.35, 1.5) {s};
+\\node [style=none, right] (11) at (2.6, 0.15) {s};
+\\node [style=none, right] (14) at (5.1, 1.5) {s.r};
+\\node [style=none, right] (17) at (0.1, 0.15) {s};
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
 """,
-"""\\begin{tikzpicture}[baseline=(0.base)]
+"""% When embedding into a *.tex file, uncomment and include the following lines:
+% \pgfdeclarelayer{nodelayer}
+% \pgfdeclarelayer{edgelayer}
+% \pgfdeclarelayer{labellayer}
+% \pgfsetlayers{nodelayer, edgelayer, labellayer}
+\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
 \\node [] (1) at (-0.5, 0.75) {};
 \\node [] (2) at (3.0, 0.75) {};
 \\node [] (3) at (3.0, 1.25) {};
 \\node [] (4) at (-0.5, 1.25) {};
-\\node [style=none, fill=white] (5) at (1.25, 1.0) {BX2};
 \\node [] (6) at (1.25, 2.0) {};
 \\node [] (7) at (1.25, 1.25) {};
-\\node [style=none, fill=white, right] (8) at (1.35, 2.0) {s};
 \\node [] (9) at (2.5, 0.75) {};
 \\node [] (10) at (2.5, 0.25) {};
-\\node [style=none, fill=white, right] (11) at (2.6, 0.65) {s.r};
 \\node [] (12) at (5.0, 2.0) {};
 \\node [] (13) at (5.0, 0.25) {};
-\\node [style=none, fill=white, right] (14) at (5.1, 2.0) {s.r};
 \\node [] (15) at (7.5, 2.0) {};
 \\node [] (16) at (7.5, 0.25) {};
-\\node [style=none, fill=white, right] (17) at (7.6, 2.0) {s.r};
 \\node [] (18) at (0.0, 0.75) {};
 \\node [] (19) at (0.0, -0.75) {};
-\\node [style=none, fill=white, right] (20) at (0.1, 0.65) {s};
 \\node [] (21) at (3.75, -0.25) {};
 \\node [] (22) at (3.75, -0.75) {};
-\\node [style=none, fill=white, right] (23) at (3.85, -0.35) {s.r};
 \\node [] (24) at (6.25, -0.25) {};
 \\node [] (25) at (6.25, -2.0) {};
-\\node [style=none, fill=white, right] (26) at (6.35, -0.35) {s.r};
 \\node [circle, fill=black, scale=0.365] (27) at (5.0, 0.0) {};
 \\node [] (28) at (1.875, -1.0) {};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
-\\draw [in=90, out=-90] (6.center) to (7.center);
-\\draw [in=90, out=-90] (9.center) to (10.center);
-\\draw [in=90, out=-90] (12.center) to (13.center);
-\\draw [in=90, out=-90] (15.center) to (16.center);
-\\draw [in=90, out=-90] (18.center) to (19.center);
-\\draw [in=90, out=-90] (21.center) to (22.center);
-\\draw [in=90, out=-90] (24.center) to (25.center);
-\\draw [in=90, out=180, looseness=0.4118] (27.center) to (21.center);
-\\draw [in=90, out=0, looseness=0.4118] (27.center) to (24.center);
-\\draw [in=180, out=-90, looseness=0.209] (10.center) to (27.center);
-\\draw [in=90, out=-90] (13.center) to (27.center);
-\\draw [in=0, out=-90, looseness=0.209] (16.center) to (27.center);
-\\draw [in=180, out=-90, looseness=0.2775] (19.center) to (28.center);
-\\draw [in=0, out=-90, looseness=0.2775] (22.center) to (28.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (6.center) to (7.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (9.center) to (10.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (12.center) to (13.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (15.center) to (16.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (18.center) to (19.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (21.center) to (22.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (24.center) to (25.center);
+\\draw [in=90, out=180, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (27.center) to (21.center);
+\\draw [in=90, out=0, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (27.center) to (24.center);
+\\draw [in=180, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.209] (10.center) to (27.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (13.center) to (27.center);
+\\draw [in=0, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.209] (16.center) to (27.center);
+\\draw [in=180, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.2775] (19.center) to (28.center);
+\\draw [in=0, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.2775] (22.center) to (28.center);
+\\end{pgfonlayer}
+\\begin{pgfonlayer}{labellayer}
+\\node [style=none] (5) at (1.25, 1.0) {BX2};
+\\node [style=none, right] (8) at (1.35, 2.0) {s};
+\\node [style=none, right] (11) at (2.6, 0.65) {s.r};
+\\node [style=none, right] (14) at (5.1, 2.0) {s.r};
+\\node [style=none, right] (17) at (7.6, 2.0) {s.r};
+\\node [style=none, right] (20) at (0.1, 0.65) {s};
+\\node [style=none, right] (23) at (3.85, -0.35) {s.r};
+\\node [style=none, right] (26) at (6.35, -0.35) {s.r};
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
 """,
-"""\\begin{tikzpicture}[baseline=(0.base)]
+"""% When embedding into a *.tex file, uncomment and include the following lines:
+% \pgfdeclarelayer{nodelayer}
+% \pgfdeclarelayer{edgelayer}
+% \pgfdeclarelayer{labellayer}
+% \pgfsetlayers{nodelayer, edgelayer, labellayer}
+\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
 \\node [] (1) at (0.75, 0.75) {};
 \\node [] (2) at (1.75, 0.75) {};
 \\node [] (3) at (2.0, 1.25) {};
 \\node [] (4) at (0.75, 1.25) {};
-\\node [style=none, fill=white] (5) at (1.25, 1.0) {BX3};
 \\node [] (6) at (-0.5, -0.25) {};
 \\node [] (7) at (3.0, -0.25) {};
 \\node [] (8) at (3.25, 0.25) {};
 \\node [] (9) at (-0.5, 0.25) {};
-\\node [style=none, fill=white] (10) at (1.25, 0.0) {BX1};
 \\node [] (11) at (2.0, -1.25) {};
 \\node [] (12) at (3.25, -1.25) {};
 \\node [] (13) at (3.0, -0.75) {};
 \\node [] (14) at (2.0, -0.75) {};
-\\node [style=none, fill=white] (15) at (2.5, -1.0) {BX3†};
 \\node [] (16) at (-0.5, -1.25) {};
 \\node [] (17) at (0.75, -1.25) {};
 \\node [] (18) at (0.5, -0.75) {};
 \\node [] (19) at (-0.5, -0.75) {};
-\\node [style=none, fill=white] (20) at (0.0, -1.0) {BX3†};
 \\node [] (21) at (1.25, 0.75) {};
 \\node [] (22) at (1.25, 0.25) {};
-\\node [style=none, fill=white, right] (23) at (1.35, 0.65) {s};
 \\node [] (24) at (2.5, -0.25) {};
 \\node [] (25) at (2.5, -0.75) {};
-\\node [style=none, fill=white, right] (26) at (2.6, -0.35) {s};
 \\node [] (27) at (0.0, -0.25) {};
 \\node [] (28) at (0.0, -0.75) {};
-\\node [style=none, fill=white, right] (29) at (0.1, -0.35) {s};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
-\\draw [-, fill={white}] (6.center) to (7.center) to (8.center) to (9.center) to (6.center);
-\\draw [-, fill={white}] (11.center) to (12.center) to (13.center) to (14.center) to (11.center);
-\\draw [-, fill={white}] (16.center) to (17.center) to (18.center) to (19.center) to (16.center);
-\\draw [in=90, out=-90] (21.center) to (22.center);
-\\draw [in=90, out=-90] (24.center) to (25.center);
-\\draw [in=90, out=-90] (27.center) to (28.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (6.center) to (7.center) to (8.center) to (9.center) to (6.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (11.center) to (12.center) to (13.center) to (14.center) to (11.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (16.center) to (17.center) to (18.center) to (19.center) to (16.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (21.center) to (22.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (24.center) to (25.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (27.center) to (28.center);
+\\end{pgfonlayer}
+\\begin{pgfonlayer}{labellayer}
+\\node [style=none] (5) at (1.25, 1.0) {BX3};
+\\node [style=none] (10) at (1.25, 0.0) {BX1};
+\\node [style=none] (15) at (2.5, -1.0) {BX3†};
+\\node [style=none] (20) at (0.0, -1.0) {BX3†};
+\\node [style=none, right] (23) at (1.35, 0.65) {s};
+\\node [style=none, right] (26) at (2.6, -0.35) {s};
+\\node [style=none, right] (29) at (0.1, -0.35) {s};
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
@@ -498,98 +533,105 @@ def test_tikz_drawing(diagram, tikz, capsys):
     assert tikz_op == tikz
 
 
-expected_equation_tikz = """\\begin{tikzpicture}[baseline=(0.base)]
+expected_equation_tikz = """% When embedding into a *.tex file, uncomment and include the following lines:
+% \pgfdeclarelayer{nodelayer}
+% \pgfdeclarelayer{edgelayer}
+% \pgfdeclarelayer{labellayer}
+% \pgfsetlayers{nodelayer, edgelayer, labellayer}
+\\begin{tikzpicture}[baseline=(0.base)]
 \\begin{pgfonlayer}{nodelayer}
 \\node (0) at (0, 0) {};
 \\node [] (1) at (-0.5, 0.75) {};
 \\node [] (2) at (3.0, 0.75) {};
 \\node [] (3) at (3.25, 1.25) {};
 \\node [] (4) at (-0.5, 1.25) {};
-\\node [style=none, fill=white] (5) at (1.25, 1.0) {BX2};
 \\node [] (6) at (1.25, 2.0) {};
 \\node [] (7) at (1.25, 1.25) {};
-\\node [style=none, fill=white, right] (8) at (1.35, 2.0) {s};
 \\node [] (9) at (2.5, 0.75) {};
 \\node [] (10) at (2.5, 0.25) {};
-\\node [style=none, fill=white, right] (11) at (2.6, 0.65) {s.r};
 \\node [] (12) at (5.0, 2.0) {};
 \\node [] (13) at (5.0, 0.25) {};
-\\node [style=none, fill=white, right] (14) at (5.1, 2.0) {s.r};
 \\node [] (15) at (7.5, 2.0) {};
 \\node [] (16) at (7.5, 0.25) {};
-\\node [style=none, fill=white, right] (17) at (7.6, 2.0) {s.r};
 \\node [] (18) at (0.0, 0.75) {};
 \\node [] (19) at (0.0, -0.75) {};
-\\node [style=none, fill=white, right] (20) at (0.1, 0.65) {s};
 \\node [] (21) at (3.75, -0.25) {};
 \\node [] (22) at (3.75, -0.75) {};
-\\node [style=none, fill=white, right] (23) at (3.85, -0.35) {s.r};
 \\node [] (24) at (6.25, -0.25) {};
 \\node [] (25) at (6.25, -2.0) {};
-\\node [style=none, fill=white, right] (26) at (6.35, -0.35) {s.r};
 \\node [circle, fill=black, scale=0.365] (27) at (5.0, 0.0) {};
 \\node [] (28) at (1.875, -1.0) {};
-\\node [style=none, fill=white] (29) at (8.6, 0) {=};
 \\node [] (30) at (9.1, -1.25) {};
 \\node [] (31) at (12.85, -1.25) {};
 \\node [] (32) at (12.6, -0.75) {};
 \\node [] (33) at (9.1, -0.75) {};
-\\node [style=none, fill=white] (34) at (10.85, -1.0) {BX2†};
 \\node [] (35) at (13.35, 0.75) {};
 \\node [] (36) at (13.35, 0.25) {};
-\\node [style=none, fill=white, right] (37) at (13.45, 0.65) {s.r};
 \\node [] (38) at (15.85, 2.0) {};
 \\node [] (39) at (15.85, 0.25) {};
-\\node [style=none, fill=white, right] (40) at (15.95, 2.0) {s.r};
 \\node [] (41) at (9.6, 0.75) {};
 \\node [] (42) at (9.6, -0.75) {};
-\\node [style=none, fill=white, right] (43) at (9.7, 0.65) {s};
 \\node [] (44) at (12.1, -0.25) {};
 \\node [] (45) at (12.1, -0.75) {};
-\\node [style=none, fill=white, right] (46) at (12.2, -0.35) {s.r};
 \\node [] (47) at (10.85, -1.25) {};
 \\node [] (48) at (10.85, -2.0) {};
-\\node [style=none, fill=white, right] (49) at (10.95, -1.35) {s};
 \\node [] (50) at (14.6, -0.25) {};
 \\node [] (51) at (14.6, -2.0) {};
-\\node [style=none, fill=white, right] (52) at (14.7, -0.35) {s.r};
 \\node [] (53) at (17.1, -0.25) {};
 \\node [] (54) at (17.1, -2.0) {};
-\\node [style=none, fill=white, right] (55) at (17.200000000000003, -0.35) {s.r};
 \\node [] (56) at (12.1, 1.0) {};
 \\node [circle, fill=black, scale=0.242] (57) at (14.6, 0.0) {};
 \\end{pgfonlayer}
 \\begin{pgfonlayer}{edgelayer}
-\\draw [-, fill={white}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
-\\draw [in=90, out=-90] (6.center) to (7.center);
-\\draw [in=90, out=-90] (9.center) to (10.center);
-\\draw [in=90, out=-90] (12.center) to (13.center);
-\\draw [in=90, out=-90] (15.center) to (16.center);
-\\draw [in=90, out=-90] (18.center) to (19.center);
-\\draw [in=90, out=-90] (21.center) to (22.center);
-\\draw [in=90, out=-90] (24.center) to (25.center);
-\\draw [in=90, out=180, looseness=0.4118] (27.center) to (21.center);
-\\draw [in=90, out=0, looseness=0.4118] (27.center) to (24.center);
-\\draw [in=180, out=-90, looseness=0.209] (10.center) to (27.center);
-\\draw [in=90, out=-90] (13.center) to (27.center);
-\\draw [in=0, out=-90, looseness=0.209] (16.center) to (27.center);
-\\draw [in=180, out=-90, looseness=0.2775] (19.center) to (28.center);
-\\draw [in=0, out=-90, looseness=0.2775] (22.center) to (28.center);
-\\draw [-, fill={white}] (30.center) to (31.center) to (32.center) to (33.center) to (30.center);
-\\draw [in=90, out=-90] (35.center) to (36.center);
-\\draw [in=90, out=-90] (38.center) to (39.center);
-\\draw [in=90, out=-90] (41.center) to (42.center);
-\\draw [in=90, out=-90] (44.center) to (45.center);
-\\draw [in=90, out=-90] (47.center) to (48.center);
-\\draw [in=90, out=-90] (50.center) to (51.center);
-\\draw [in=90, out=-90] (53.center) to (54.center);
-\\draw [in=90, out=180, looseness=0.209] (56.center) to (41.center);
-\\draw [in=90, out=0, looseness=0.4118] (56.center) to (35.center);
-\\draw [in=90, out=180, looseness=0.209] (57.center) to (44.center);
-\\draw [in=90, out=-90] (57.center) to (50.center);
-\\draw [in=90, out=0, looseness=0.209] (57.center) to (53.center);
-\\draw [in=180, out=-90, looseness=0.4118] (36.center) to (57.center);
-\\draw [in=0, out=-90, looseness=0.4118] (39.center) to (57.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (1.center) to (2.center) to (3.center) to (4.center) to (1.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (6.center) to (7.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (9.center) to (10.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (12.center) to (13.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (15.center) to (16.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (18.center) to (19.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (21.center) to (22.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (24.center) to (25.center);
+\\draw [in=90, out=180, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (27.center) to (21.center);
+\\draw [in=90, out=0, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (27.center) to (24.center);
+\\draw [in=180, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.209] (10.center) to (27.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (13.center) to (27.center);
+\\draw [in=0, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.209] (16.center) to (27.center);
+\\draw [in=180, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.2775] (19.center) to (28.center);
+\\draw [in=0, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.2775] (22.center) to (28.center);
+\\draw [-, fill={rgb,255: red,255; green,255; blue,255}] (30.center) to (31.center) to (32.center) to (33.center) to (30.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (35.center) to (36.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (38.center) to (39.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (41.center) to (42.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (44.center) to (45.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (47.center) to (48.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (50.center) to (51.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (53.center) to (54.center);
+\\draw [in=90, out=180, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.209] (56.center) to (41.center);
+\\draw [in=90, out=0, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (56.center) to (35.center);
+\\draw [in=90, out=180, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.209] (57.center) to (44.center);
+\\draw [in=90, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5] (57.center) to (50.center);
+\\draw [in=90, out=0, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.209] (57.center) to (53.center);
+\\draw [in=180, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (36.center) to (57.center);
+\\draw [in=0, out=-90, -, draw={rgb,255: red,0; green,0; blue,0}, line width=0.5, looseness=0.4118] (39.center) to (57.center);
+\\end{pgfonlayer}
+\\begin{pgfonlayer}{labellayer}
+\\node [style=none] (5) at (1.25, 1.0) {BX2};
+\\node [style=none, right] (8) at (1.35, 2.0) {s};
+\\node [style=none, right] (11) at (2.6, 0.65) {s.r};
+\\node [style=none, right] (14) at (5.1, 2.0) {s.r};
+\\node [style=none, right] (17) at (7.6, 2.0) {s.r};
+\\node [style=none, right] (20) at (0.1, 0.65) {s};
+\\node [style=none, right] (23) at (3.85, -0.35) {s.r};
+\\node [style=none, right] (26) at (6.35, -0.35) {s.r};
+\\node [style=none] (29) at (8.6, 0) {=};
+\\node [style=none] (34) at (10.85, -1.0) {BX2†};
+\\node [style=none, right] (37) at (13.45, 0.65) {s.r};
+\\node [style=none, right] (40) at (15.95, 2.0) {s.r};
+\\node [style=none, right] (43) at (9.7, 0.65) {s};
+\\node [style=none, right] (46) at (12.2, -0.35) {s.r};
+\\node [style=none, right] (49) at (10.95, -1.35) {s};
+\\node [style=none, right] (52) at (14.7, -0.35) {s.r};
+\\node [style=none, right] (55) at (17.200000000000003, -0.35) {s.r};
 \\end{pgfonlayer}
 \\end{tikzpicture}
 
