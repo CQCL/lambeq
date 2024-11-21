@@ -38,7 +38,8 @@ class TikzBackend(DrawingBackend):
     """ Tikz drawing backend. """
 
     def __init__(self, use_tikzstyles: bool = False,
-                 wire_linewidth: float = WIRE_LINEWIDTH):
+                 wire_linewidth: float = WIRE_LINEWIDTH,
+                 box_linewidth: float = BOX_LINEWIDTH):
         self.use_tikzstyles = use_tikzstyles
         self.node_styles: list[str] = []
         self.edge_styles: list[str] = []
@@ -48,6 +49,7 @@ class TikzBackend(DrawingBackend):
         self.label_layer: list[str] = []
         self.max_width: float = 0
         self.wire_linewidth = wire_linewidth
+        self.box_linewidth = box_linewidth
 
     @staticmethod
     def format_color(color: str) -> str:
@@ -129,12 +131,14 @@ class TikzBackend(DrawingBackend):
             color_name = color.lstrip('#')
             style_name = 'box' if color == 'white' else f'{color_name}_box'
             style = (f'\\tikzstyle{{{style_name}}}='
-                     f'[-, fill={self.format_color(color)}]\n')
+                     f'[-, fill={self.format_color(color)}')
+            style += f', line width={self.box_linewidth}pt]\n'
             if style not in self.edge_styles:
                 self.edge_styles.append(style)
             options = f'style={style_name}'
         else:
             options = f'-, fill={self.format_color(color)}'
+            options += f', line width={self.box_linewidth}pt'
 
         str_connections = ' to '.join(f'({node}.center)' for node in nodes)
         self.edgelayer.append(f'\\draw [{options}] {str_connections};\n')
@@ -178,7 +182,7 @@ class TikzBackend(DrawingBackend):
             # Concatenate additional styles like looseness if present
             if style:
                 wire_style += f', {style}'
-            wire_style += f', line width={self.wire_linewidth}]\n'
+            wire_style += f', line width={self.wire_linewidth}pt]\n'
 
             if wire_style not in self.edge_styles:
                 self.edge_styles.append(wire_style)
@@ -186,7 +190,7 @@ class TikzBackend(DrawingBackend):
 
         else:
             wire_options = f'-, draw={self.format_wire_color(color)}'
-            wire_options += f', line width={self.wire_linewidth}'
+            wire_options += f', line width={self.wire_linewidth}pt'
             if style:
                 wire_options += f', {style}'
         cmd = (

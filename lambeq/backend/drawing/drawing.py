@@ -48,7 +48,8 @@ from lambeq.backend.drawing.mat_backend import (
 )
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
 from lambeq.backend.drawing.tikz_backend import (
-    TikzBackend, WIRE_LINEWIDTH as TIKZ_WIRE_LINEWIDTH
+    TikzBackend, WIRE_LINEWIDTH as TIKZ_WIRE_LINEWIDTH,
+    BOX_LINEWIDTH as TIKZ_BOX_LINEWIDTH
 )
 from lambeq.backend.grammar import Box, Diagram
 
@@ -135,7 +136,8 @@ def draw(diagram: Diagram, **params) -> None:
         backend = TikzBackend(
             use_tikzstyles=params.get('use_tikzstyles', None),
             wire_linewidth=params.get('wire_linewidth',
-                                      TIKZ_WIRE_LINEWIDTH)
+                                      TIKZ_WIRE_LINEWIDTH),
+            box_linewidth=params.get('box_linewidth', TIKZ_BOX_LINEWIDTH)
         )
     else:
         backend = MatBackend(
