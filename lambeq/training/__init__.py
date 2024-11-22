@@ -21,6 +21,7 @@ __all__ = ['Checkpoint',
            'PytorchModel',
            'QuantumModel',
            'TketModel',
+           'TorchQuantumModel',
 
            'Optimizer',
            'NelderMeadOptimizer',
@@ -46,6 +47,7 @@ from lambeq.training.pennylane_model import PennyLaneModel
 from lambeq.training.pytorch_model import PytorchModel
 from lambeq.training.quantum_model import QuantumModel
 from lambeq.training.tket_model import TketModel
+from lambeq.training.torchquantum_model import TorchQuantumModel
 
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.nelder_mead_optimizer import NelderMeadOptimizer
