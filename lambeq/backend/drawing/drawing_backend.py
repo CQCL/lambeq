@@ -30,6 +30,20 @@ from lambeq.backend.drawing.drawable import DrawableDiagram
 DEFAULT_MARGINS = (.05, .1)
 DEFAULT_ASPECT = 'equal'
 
+WIRE_COLORS: list[str] = [
+    '#9c540e', '#f4a940', '#066ee2', '#d03b2d', '#7fd68b',
+    '#574cfa', '#49a141', '#a629b3', '#271296', '#ff6347',
+    '#adff2f', '#7446f2', '#007765', '#b60539', '#ff00ff',
+    '#c330b9', '#73b8fd', '#ff1493', '#00bfff', '#ffb6c1',
+    '#740127', '#e2074c', '#0252a1', '#fea431', '#205356',
+    '#450d06', '#d17800', '#3831a0', '#ff4500', '#d8bfd8'
+]
+WIRE_COLORS_NAMES: dict[str, str] = {
+    '#ffffff' : '#ffffff',
+    '#000000' : '#000000'
+}
+for color in WIRE_COLORS:
+    WIRE_COLORS_NAMES[color] = color
 
 FRAME_COLORS: list[str] = [
     '#fbe8e7', '#fee1ba', '#fff9e5', '#e8f8ea', '#dcfbf5',
@@ -146,7 +160,9 @@ class DrawingBackend(ABC):
                   bend_out: bool = False,
                   bend_in: bool = False,
                   is_leg: bool = False,
-                  style: str | None = None) -> None:
+                  style: str | None = None,
+                  color_id: int = 0,
+                  **params) -> None:
         """
         Draws a wire from source to target, possibly with a curve
 
@@ -183,6 +199,30 @@ class DrawingBackend(ABC):
             Additional parameters.
 
         """
+
+    def _get_wire_color(self, wire_id : int, **params) -> str:
+        """
+        Retrieves a color that uniquely represent a given wire ID.
+
+        Parameters
+        ----------
+        wire_id : int
+            The noun identifier of the wire for which the color is
+            being retrieved.
+        **params:
+            Additional parameters.
+
+        Returns
+        -------
+        wire_color : str
+            The hex color of the wire, represented as a string.
+
+        """
+        if not params.get('color_wires') or wire_id == 0:
+            return '#000000'
+        else:
+            wire_color = WIRE_COLORS[(wire_id - 1) % len(WIRE_COLORS)]
+            return wire_color
 
     @abstractmethod
     def output(self,

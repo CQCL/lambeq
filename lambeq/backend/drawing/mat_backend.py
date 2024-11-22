@@ -31,20 +31,27 @@ from lambeq.backend.drawing.helpers import drawn_as_spider
 from lambeq.backend.grammar import Spider
 
 
+BOX_LINEWIDTH = 1.0
+WIRE_LINEWIDTH = BOX_LINEWIDTH * 1.25
+FONTSIZE = 12
+
+
 class MatBackend(DrawingBackend):
     """ Matplotlib drawing backend. """
 
     def __init__(self,
                  axis: plt.Axes | None = None,
                  figsize: tuple | None = None,
-                 linewidth: float = 1):
+                 box_linewidth: float = BOX_LINEWIDTH,
+                 wire_linewidth: float = WIRE_LINEWIDTH):
         self.axis = axis or plt.subplots(figsize=figsize, facecolor='white')[1]
         self.default_aspect = 'equal' if figsize is None else 'auto'
-        self.linewidth = linewidth
+        self.box_linewidth = box_linewidth
+        self.wire_linewidth = wire_linewidth
         self.max_width: float = 0
 
     def draw_text(self, text: str, x: float, y: float, **params) -> None:
-        params['fontsize'] = params.get('fontsize', 12)
+        params['fontsize'] = params.get('fontsize', FONTSIZE)
         self.axis.text(x, y, text, **params)
         self.max_width = max(self.max_width, x)
 
@@ -63,7 +70,7 @@ class MatBackend(DrawingBackend):
         codes += len(points[1:]) * [Path.LINETO] + [Path.CLOSEPOLY]
         path = Path(points + points[:1], codes)
         self.axis.add_patch(PathPatch(
-            path, facecolor=COLORS[color], linewidth=self.linewidth))
+            path, facecolor=COLORS[color], linewidth=self.box_linewidth))
 
     def draw_wire(self,
                   source: tuple[float, float],
@@ -71,11 +78,14 @@ class MatBackend(DrawingBackend):
                   bend_out: bool = False,
                   bend_in: bool = False,
                   is_leg: bool = False,
-                  style: str | None = None) -> None:
+                  style: str | None = None,
+                  color_id: int = 0,
+                  **params) -> None:
+        color = self._get_wire_color(color_id, **params)
         if style == '->':
             self.axis.arrow(
                 *(source + (target[0] - source[0], target[1] - source[1])),
-                head_width=.02, color='black')
+                head_width=.02, color=color)
         else:
             if is_leg:
                 mid = (target[0], source[1])
@@ -106,8 +116,9 @@ class MatBackend(DrawingBackend):
                     Path.CURVE3,
                 ])
 
-            self.axis.add_patch(PathPatch(
-                path, facecolor='none', linewidth=self.linewidth))
+            self.axis.add_patch(PathPatch(path, facecolor='none',
+                                          linewidth=self.wire_linewidth,
+                                          edgecolor=color))
 
         self.max_width = max(self.max_width, source[0], target[0])
 
@@ -115,18 +126,23 @@ class MatBackend(DrawingBackend):
 
         nodes = [node for node in drawable.boxes if drawn_as_spider(node.obj)]
         for node in nodes:
-            if isinstance(node.obj, Spider):
-                self.draw_node(*node.coordinates, **params)
+
             for wire in node.cod_wires:
                 self.draw_wire(node.coordinates,
                                drawable.wire_endpoints[wire].coordinates,
                                bend_out=True,
-                               is_leg=True)
+                               is_leg=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
             for wire in node.dom_wires:
                 self.draw_wire(drawable.wire_endpoints[wire].coordinates,
                                node.coordinates,
                                bend_in=True,
-                               is_leg=True)
+                               is_leg=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
+            if isinstance(node.obj, Spider):
+                self.draw_node(*node.coordinates, **params)
 
     def output(self,
                path: str | None = None,

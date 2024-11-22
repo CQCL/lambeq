@@ -40,11 +40,18 @@ from lambeq.backend.drawing.drawing_backend import (ColoringMode,
                                                     DEFAULT_ASPECT,
                                                     DEFAULT_MARGINS,
                                                     DrawingBackend,
-                                                    FRAME_COLORS)
+                                                    FRAME_COLORS,
+                                                    WIRE_COLORS)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
-from lambeq.backend.drawing.mat_backend import MatBackend
+from lambeq.backend.drawing.mat_backend import (
+    BOX_LINEWIDTH as MAT_BOX_LINEWIDTH, MatBackend,
+    WIRE_LINEWIDTH as MAT_WIRE_LINEWIDTH
+)
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
-from lambeq.backend.drawing.tikz_backend import TikzBackend
+from lambeq.backend.drawing.tikz_backend import (
+    BOX_LINEWIDTH as TIKZ_BOX_LINEWIDTH, TikzBackend,
+    WIRE_LINEWIDTH as TIKZ_WIRE_LINEWIDTH
+)
 from lambeq.backend.grammar import Box, Diagram
 
 
@@ -113,6 +120,9 @@ def draw(diagram: Diagram, **params) -> None:
     params['coloring_mode'] = params.get(
         'coloring_mode', ColoringMode.TYPE.value,
     )
+    params['color_wires'] = params.get(
+        'color_wires', diagram.has_frames,
+    )
     if drawable is None:
         drawable = drawable_cls.from_diagram(diagram,
                                              params.get('foliated', False))
@@ -125,9 +135,18 @@ def draw(diagram: Diagram, **params) -> None:
         backend: DrawingBackend = params.pop('backend')
     elif params.get('to_tikz', False):
         backend = TikzBackend(
-            use_tikzstyles=params.get('use_tikzstyles', None))
+            use_tikzstyles=params.get('use_tikzstyles', None),
+            box_linewidth=params.get('box_linewidth', TIKZ_BOX_LINEWIDTH),
+            wire_linewidth=params.get('wire_linewidth',
+                                      TIKZ_WIRE_LINEWIDTH),
+        )
     else:
-        backend = MatBackend(figsize=params.get('figsize', None))
+        backend = MatBackend(
+            figsize=params.get('figsize', None),
+            box_linewidth=params.get('box_linewidth', MAT_BOX_LINEWIDTH),
+            wire_linewidth=params.get('wire_linewidth',
+                                      MAT_WIRE_LINEWIDTH),
+        )
 
     min_size = 0.01
     max_v = max([v for point in ([point.coordinates for point in
@@ -463,6 +482,14 @@ def _get_box_color(box: grammar.Diagrammable,
     return color
 
 
+def _get_wire_color(wire_id):
+    if wire_id == 0:
+        return '#000000'
+    else:
+        wire_color = WIRE_COLORS[(wire_id - 1) % len(WIRE_COLORS)]
+        return wire_color
+
+
 def _draw_pregroup_state(backend: DrawingBackend,
                          drawable_box: BoxNode,
                          **params) -> DrawingBackend:
@@ -527,9 +554,15 @@ def _draw_wires(backend: DrawingBackend,
     for src_idx, tgt_idx in drawable_diagram.wires:
         source = drawable_diagram.wire_endpoints[src_idx]
         target = drawable_diagram.wire_endpoints[tgt_idx]
-
-        backend.draw_wire(
-            source.coordinates, target.coordinates)
+        wire_color_id = 0
+        if params.get('color_wires'):
+            # Determine the color based on the type of the source
+            if source.kind in {WireEndpointType.INPUT}:
+                wire_color_id = source.noun_id
+            else:
+                wire_color_id = target.noun_id
+        backend.draw_wire(source.coordinates, target.coordinates,
+                          color_id=wire_color_id, **params)
 
         if (params.get('draw_type_labels', True) and source.kind in
                 {WireEndpointType.INPUT, WireEndpointType.COD}):

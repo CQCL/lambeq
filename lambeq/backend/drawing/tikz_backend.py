@@ -23,22 +23,33 @@ from __future__ import annotations
 from math import sqrt
 
 from lambeq.backend.drawing.drawable import DrawableDiagram
-from lambeq.backend.drawing.drawing_backend import COLORS, DrawingBackend
+from lambeq.backend.drawing.drawing_backend import (
+    COLORS, DrawingBackend, WIRE_COLORS_NAMES
+)
 from lambeq.backend.drawing.helpers import drawn_as_spider
 from lambeq.backend.grammar import Spider
+
+
+BOX_LINEWIDTH = 0.4
+WIRE_LINEWIDTH = BOX_LINEWIDTH * 1.25
 
 
 class TikzBackend(DrawingBackend):
     """ Tikz drawing backend. """
 
-    def __init__(self, use_tikzstyles: bool = False):
+    def __init__(self, use_tikzstyles: bool = False,
+                 box_linewidth: float = BOX_LINEWIDTH,
+                 wire_linewidth: float = WIRE_LINEWIDTH):
         self.use_tikzstyles = use_tikzstyles
         self.node_styles: list[str] = []
         self.edge_styles: list[str] = []
         self.nodes: dict[tuple[float, float], int] = {}
         self.nodelayer: list[str] = []
         self.edgelayer: list[str] = []
+        self.label_layer: list[str] = []
         self.max_width: float = 0
+        self.wire_linewidth = wire_linewidth
+        self.box_linewidth = box_linewidth
 
     @staticmethod
     def format_color(color: str) -> str:
@@ -47,18 +58,31 @@ class TikzBackend(DrawingBackend):
             int(hex, 16) for hex in [hexcode[1:3], hexcode[3:5], hexcode[5:]]]
         return f'{{rgb,255: red,{rgb[0]}; green,{rgb[1]}; blue,{rgb[2]}}}'
 
+    @staticmethod
+    def format_wire_color(color: str) -> str:
+        hexcode = WIRE_COLORS_NAMES[color]
+        rgb = [
+            int(hex, 16) for hex in [hexcode[1:3], hexcode[3:5], hexcode[5:]]]
+        return f'{{rgb,255: red,{rgb[0]}; green,{rgb[1]}; blue,{rgb[2]}}}'
+
     def add_node(self,
                  x: float,
                  y: float,
+                 is_label : bool = False,
                  text: str | None = None,
                  options: str | None = None) -> int:
         """ Add a node to the tikz picture, return its unique id. """
 
         node = max(self.nodes.values()) + 1 if self.nodes else 1
         text = '' if text is None else text
-
-        self.nodelayer.append(
-            f'\\node [{options or ""}] ({node}) at ({x}, {y}) {{{text}}};\n')
+        if is_label:
+            self.label_layer.append(
+                f'\\node [{options or ""}] ({node}) '
+                f'at ({x}, {y}) {{{text}}};\n')
+        else:
+            self.nodelayer.append(
+                f'\\node [{options or ""}] ({node}) '
+                f'at ({x}, {y}) {{{text}}};\n')
         self.nodes.update({(x, y): node})
 
         self.max_width = max(self.max_width, x)
@@ -77,14 +101,14 @@ class TikzBackend(DrawingBackend):
         if 'color' in params:
             options.append(params['color'])
 
-        self.add_node(x, y, text, options=', '.join(options))
+        self.add_node(x, y, text=text, options=', '.join(options))
 
     def draw_text(self,
                   text: str,
                   x: float,
                   y: float,
                   **params) -> None:
-        options = 'style=none, fill=white'
+        options = 'style=none'
 
         if params.get('horizontalalignment', 'center') == 'left':
             options += ', anchor=west'
@@ -93,7 +117,7 @@ class TikzBackend(DrawingBackend):
         if 'fontsize' in params and params['fontsize'] is not None:
             options += f', scale={params["fontsize"]}'
 
-        self.add_node(x, y, text, options)
+        self.add_node(x, y, text=text, options=options, is_label=True)
 
     def draw_polygon(self, *points: list[float], color: str = 'white') -> None:
         nodes: list[int] = []
@@ -104,14 +128,17 @@ class TikzBackend(DrawingBackend):
         nodes.append(nodes[0])
 
         if self.use_tikzstyles:
-            style_name = 'box' if color == 'white' else f'{color}_box'
+            color_name = color.lstrip('#')
+            style_name = 'box' if color == 'white' else f'{color_name}_box'
             style = (f'\\tikzstyle{{{style_name}}}='
-                     f'[-, fill={self.format_color(color)}]\n')
+                     f'[-, fill={self.format_color(color)}')
+            style += f', line width={self.box_linewidth}pt]\n'
             if style not in self.edge_styles:
                 self.edge_styles.append(style)
             options = f'style={style_name}'
         else:
-            options = f'-, fill={{{color}}}'
+            options = f'-, fill={self.format_color(color)}'
+            options += f', line width={self.box_linewidth}pt'
 
         str_connections = ' to '.join(f'({node}.center)' for node in nodes)
         self.edgelayer.append(f'\\draw [{options}] {str_connections};\n')
@@ -122,7 +149,11 @@ class TikzBackend(DrawingBackend):
                   bend_out: bool = False,
                   bend_in: bool = False,
                   is_leg: bool = False,
-                  style: str | None = None) -> None:
+                  style: str | None = None,
+                  color_id: int = 0,
+                  **params) -> None:
+
+        color = self._get_wire_color(color_id, **params)
         out = (-90 if not bend_out or source[0] == target[0]
                else (180 if source[0] > target[0] else 0))
         inp = (90 if not bend_in or source[0] == target[0]
@@ -140,6 +171,28 @@ class TikzBackend(DrawingBackend):
                 style = ''
             style += f'looseness={looseness}'
 
+        if self.use_tikzstyles:
+            # TikZ style for the wire color
+            color_name = color.lstrip('#')
+            wire_style_name = (f'{color_name}_wire'
+                               if color != '#000000' else 'black_wire')
+            wire_style = (f'\\tikzstyle{{{wire_style_name}}}='
+                          f'[-, draw={self.format_wire_color(color)}')
+
+            # Concatenate additional styles like looseness if present
+            if style:
+                wire_style += f', {style}'
+            wire_style += f', line width={self.wire_linewidth}pt]\n'
+
+            if wire_style not in self.edge_styles:
+                self.edge_styles.append(wire_style)
+            wire_options = f'style={wire_style_name}'
+
+        else:
+            wire_options = f'-, draw={self.format_wire_color(color)}'
+            wire_options += f', line width={self.wire_linewidth}pt'
+            if style:
+                wire_options += f', {style}'
         cmd = (
             '\\draw [in={}, out={}{}] '
             '({}.center) to ({}.center);\n')
@@ -151,7 +204,7 @@ class TikzBackend(DrawingBackend):
 
         self.edgelayer.append(cmd.format(
             inp, out,
-            f', {style}' if style is not None else '',
+            f', {wire_options}' if wire_options is not None else '',
             self.nodes[source], self.nodes[target]))
 
     def draw_spiders(self, drawable: DrawableDiagram, **params) -> None:
@@ -173,16 +226,20 @@ class TikzBackend(DrawingBackend):
                 if params.get('nodesize', 1) != 1:
                     options += f', scale={params.get("nodesize")}'
 
-                self.add_node(i, j, '', options)
+                self.add_node(i, j, is_label=False, text='', options=options)
 
             for wire in node.cod_wires:
                 self.draw_wire(node.coordinates,
                                drawable.wire_endpoints[wire].coordinates,
-                               bend_out=True)
+                               bend_out=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
             for wire in node.dom_wires:
                 self.draw_wire(drawable.wire_endpoints[wire].coordinates,
                                node.coordinates,
-                               bend_in=True)
+                               bend_in=True,
+                               color_id=drawable.wire_endpoints[wire].noun_id,
+                               **params)
 
     def output(self, path=None, show=True, **params) -> None:
         baseline = params.get('baseline', 0)
@@ -197,8 +254,17 @@ class TikzBackend(DrawingBackend):
                  + self.nodelayer + ['\\end{pgfonlayer}\n'])
         edges = (['\\begin{pgfonlayer}{edgelayer}\n'] + self.edgelayer
                  + ['\\end{pgfonlayer}\n'])
+        labels = (['\\begin{pgfonlayer}{labellayer}\n'] + self.label_layer
+                  + ['\\end{pgfonlayer}\n'])
         end = ['\\end{tikzpicture}\n']
-
+        tex_comments = (
+            '% When embedding into a *.tex file, uncomment and include '
+            'the following lines:\n'
+            '% \\pgfdeclarelayer{nodelayer}\n'
+            '% \\pgfdeclarelayer{edgelayer}\n'
+            '% \\pgfdeclarelayer{labellayer}\n'
+            '% \\pgfsetlayers{nodelayer, edgelayer, labellayer}\n'
+        )
         if path is not None:
             if output_tikzstyle:
                 style_path = '.'.join(path.split('.')[:-1]) + '.tikzstyles'
@@ -206,9 +272,14 @@ class TikzBackend(DrawingBackend):
                     file.writelines(['% Node styles\n'] + self.node_styles)
                     file.writelines(['% Edge styles\n'] + self.edge_styles)
             with open(path, 'w+') as file:
-                file.writelines(begin + nodes + edges + end)
+                file.writelines([tex_comments] + begin + nodes + edges
+                                + labels + end)
 
         elif show:
+            tex_output = tex_comments
+
             if output_tikzstyle:
-                print(''.join(self.node_styles + self.edge_styles))
-            print(''.join(begin + nodes + edges + end))
+                tex_output += ''.join(self.node_styles + self.edge_styles)
+
+            tex_output += ''.join(begin + nodes + edges + labels + end)
+            print(tex_output)
