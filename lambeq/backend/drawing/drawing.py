@@ -44,7 +44,8 @@ from lambeq.backend.drawing.drawing_backend import (ColoringMode,
                                                     WIRE_COLORS)
 from lambeq.backend.drawing.helpers import drawn_as_spider, needs_asymmetry
 from lambeq.backend.drawing.mat_backend import (
-    MatBackend, WIRE_LINEWIDTH as MAT_WIRE_LINEWIDTH
+    BOX_LINEWIDTH as MAT_BOX_LINEWIDTH, MatBackend,
+    WIRE_LINEWIDTH as MAT_WIRE_LINEWIDTH
 )
 from lambeq.backend.drawing.text_printer import PregroupTextPrinter
 from lambeq.backend.drawing.tikz_backend import (
@@ -135,15 +136,16 @@ def draw(diagram: Diagram, **params) -> None:
     elif params.get('to_tikz', False):
         backend = TikzBackend(
             use_tikzstyles=params.get('use_tikzstyles', None),
+            box_linewidth=params.get('box_linewidth', TIKZ_BOX_LINEWIDTH),
             wire_linewidth=params.get('wire_linewidth',
                                       TIKZ_WIRE_LINEWIDTH),
-            box_linewidth=params.get('box_linewidth', TIKZ_BOX_LINEWIDTH)
         )
     else:
         backend = MatBackend(
             figsize=params.get('figsize', None),
+            box_linewidth=params.get('box_linewidth', MAT_BOX_LINEWIDTH),
             wire_linewidth=params.get('wire_linewidth',
-                                      MAT_WIRE_LINEWIDTH)
+                                      MAT_WIRE_LINEWIDTH),
         )
 
     min_size = 0.01

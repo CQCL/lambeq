@@ -23,9 +23,9 @@ from __future__ import annotations
 from math import sqrt
 
 from lambeq.backend.drawing.drawable import DrawableDiagram
-from lambeq.backend.drawing.drawing_backend import (COLORS, DrawingBackend,
-                                                    WIRE_COLORS_NAMES
-                                                    )
+from lambeq.backend.drawing.drawing_backend import (
+    COLORS, DrawingBackend, WIRE_COLORS_NAMES
+)
 from lambeq.backend.drawing.helpers import drawn_as_spider
 from lambeq.backend.grammar import Spider
 
@@ -38,8 +38,8 @@ class TikzBackend(DrawingBackend):
     """ Tikz drawing backend. """
 
     def __init__(self, use_tikzstyles: bool = False,
-                 wire_linewidth: float = WIRE_LINEWIDTH,
-                 box_linewidth: float = BOX_LINEWIDTH):
+                 box_linewidth: float = BOX_LINEWIDTH,
+                 wire_linewidth: float = WIRE_LINEWIDTH):
         self.use_tikzstyles = use_tikzstyles
         self.node_styles: list[str] = []
         self.edge_styles: list[str] = []
