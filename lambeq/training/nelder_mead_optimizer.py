@@ -35,12 +35,14 @@ to non-stationary points or sub-optimal solutions.
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Mapping
-from typing import Any
+from typing import Any, Set
 import warnings
 
 import numpy as np
 from numpy.typing import ArrayLike
+from sympy import Symbol as SympySymbol
 
+from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.core.utils import flatten
 from lambeq.training.optimizer import Optimizer
@@ -284,8 +286,9 @@ class NelderMeadOptimizer(Optimizer):
         parameters = self.model.symbols
 
         # try to extract the relevant parameters from the diagrams
-        relevant_params = set.union(*[diag.free_symbols for diag in diags_gen
-                                      if isinstance(diag, Diagram)])
+        diags = [diag.free_symbols
+                 for diag in diags_gen if isinstance(diag, Diagram)]
+        relevant_params: Set[SympySymbol] | Set[Symbol] = set.union(*diags)
         if not relevant_params:
             relevant_params = set(parameters)
         mask = np.array([int(sym in relevant_params) for sym in parameters])

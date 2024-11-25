@@ -14,9 +14,9 @@
 
 __all__ = ['BaseAnsatz', 'CircuitAnsatz', 'IQPAnsatz', 'MPSAnsatz',
            'Sim14Ansatz', 'Sim15Ansatz', 'Sim4Ansatz', 'SpiderAnsatz',
-           'StronglyEntanglingAnsatz', 'Symbol', 'TensorAnsatz']
+           'StronglyEntanglingAnsatz', 'TensorAnsatz']
 
-from lambeq.ansatz.base import BaseAnsatz, Symbol
+from lambeq.ansatz.base import BaseAnsatz
 from lambeq.ansatz.circuit import (CircuitAnsatz, IQPAnsatz,
                                    Sim14Ansatz, Sim15Ansatz, Sim4Ansatz,
                                    StronglyEntanglingAnsatz)

@@ -1,10 +1,10 @@
 from pytest import raises
 
 import torch
-import sympy
 import numpy as np
 
 from lambeq.backend.quantum import *
+from lambeq.backend.symbol import Symbol
 
 
 
@@ -47,10 +47,11 @@ def test_circuit_to_pennylane(capsys):
     assert np.allclose(p_no_open_snake_prob.eval().numpy(),
                        no_open_snake.eval())
 
-    x, y, z = sympy.symbols('x y z')
+    x, y, z = [Symbol(x) for x in 'xyz']
     symbols = [x, y, z]
+    sym_symbols = [sym.unscaled.to_sympy() for sym in symbols]
     weights = [torch.tensor(1.), torch.tensor(2.), torch.tensor(3.)]
-    symbol_weight_map = dict(zip(symbols, weights))
+    symbol_weight_map = dict(zip(sym_symbols, weights))
 
     var_circ = (Ket(0) >> Rx(0.552) >> Rz(x) >> Rx(0.917) >> Ket(0, 0, 0) @ qubit >>
                 H @ qubit @ qubit @ qubit >> qubit @ H @ qubit @ qubit >>
@@ -162,7 +163,7 @@ def test_pennylane_devices():
 
 
 def test_pennylane_uninitialized():
-    x, y, z = sympy.symbols('x y z')
+    x, y, z = [Symbol(x) for x in 'xyz']
     var_circ = (Ket(0) >> Rx(0.552) >> Rz(x) >> Rx(0.917) >> Ket(0, 0, 0) @ qubit >>
                 H @ qubit @ qubit @ qubit >> qubit @ H @ qubit @ qubit >>
                 qubit @ qubit @ H @ qubit >> CRz(0.18) @ qubit @ qubit >>
@@ -182,9 +183,9 @@ def test_pennylane_uninitialized():
 
 
 def test_pennylane_parameter_reference():
-    x = sympy.symbols('x')
+    x = Symbol('x')
     p = torch.nn.Parameter(torch.tensor(1.))
-    symbol_weight_map = {x: p}
+    symbol_weight_map = {x.unscaled.to_sympy(): p}
 
     circ = Rx(x)
     p_circ = circ.to_pennylane()
@@ -202,8 +203,9 @@ def test_pennylane_parameter_reference():
 
 
 def test_pennylane_gradient_methods():
-    x, y, z = sympy.symbols('x y z')
+    x, y, z = [Symbol(x) for x in 'xyz']
     symbols = [x, y, z]
+    sympy_symbols = [sym.unscaled.to_sympy() for sym in symbols]
 
     var_circ = (Ket(0) >> Rx(0.552) >> Rz(x) >> Rx(0.917) >> Ket(0, 0, 0) @ qubit >>
                 H @ qubit @ qubit @ qubit >> qubit @ H @ qubit @ qubit >>
@@ -220,7 +222,7 @@ def test_pennylane_gradient_methods():
         weights = [torch.tensor(1., requires_grad=True),
                    torch.tensor(2., requires_grad=True),
                    torch.tensor(3., requires_grad=True)]
-        symbol_weight_map = dict(zip(symbols, weights))
+        symbol_weight_map = dict(zip(sympy_symbols, weights))
 
         p_var_circ = var_circ.to_pennylane(probabilities=True,
                                            diff_method=diff_method)
@@ -235,7 +237,7 @@ def test_pennylane_gradient_methods():
         weights = [torch.tensor(1., requires_grad=True),
                    torch.tensor(2., requires_grad=True),
                    torch.tensor(3., requires_grad=True)]
-        symbol_weight_map = dict(zip(symbols, weights))
+        symbol_weight_map = dict(zip(sympy_symbols, weights))
 
         p_var_circ = var_circ.to_pennylane(probabilities=False,
                                            diff_method=diff_method)

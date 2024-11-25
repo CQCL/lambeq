@@ -29,12 +29,12 @@ import math
 from typing import Mapping
 
 import numpy as np
-import sympy
 import tensornetwork as tn
 from typing_extensions import Any, Self
 
 from lambeq.backend import grammar
-from lambeq.backend.numerical_backend import get_backend
+from lambeq.backend.numerical_backend import backend, get_backend
+from lambeq.backend.symbol import lambdify, Symbol
 
 
 tensor = grammar.Category('tensor')
@@ -127,7 +127,7 @@ class Box(grammar.Box):
         the array itself, or a symbolic array.
     array : np.array or float
         Tensor which the box represents.
-    free_symbols : set of sympy.Symbol
+    free_symbols : set of lambeq.backend.symbol.Symbol
         In case of a symbolic tensor, set of symbols in the box's data.
 
     """
@@ -166,6 +166,12 @@ class Box(grammar.Box):
         self.data = data
         self.z = z
 
+    def __eq__(self, other):
+        return (self.name == other.name
+                and self.dom == other.dom
+                and self.cod == other.cod
+                and np.equal(self.data, other.data).all())
+
     @property
     def array(self):
         if self.data is not None:
@@ -184,17 +190,19 @@ class Box(grammar.Box):
         source = range(len(self.dom @ self.cod))
         target = [i + len(self.cod) if i < len(self.dom) else
                   i - len(self.dom) for i in range(len(self.dom @ self.cod))]
-
-        return np.conjugate(np.moveaxis(arr, source, target))
+        with backend() as np:
+            return np.conjugate(np.moveaxis(arr, source, target))
 
     def _conjugate_array(self):
         """Returns the diagrammtic conjugate of the box's data"""
 
         dom, cod = self.dom, self.cod
-        array = np.moveaxis(self.data,
-                            range(len(dom @ cod)),
-                            [len(dom) - i - 1 for i in range(len(dom @ cod))])
-        return np.conjugate(array)
+        with backend() as np:
+            array = np.moveaxis(self.data,
+                                range(len(dom @ cod)),
+                                [len(dom) - i - 1
+                                    for i in range(len(dom @ cod))])
+            return np.conjugate(array)
 
     def dagger(self):
         """Get the dagger (adjoint) of the box.
@@ -229,17 +237,18 @@ class Box(grammar.Box):
                        z=(self.z + z) % 2)
 
     @cached_property
-    def free_symbols(self) -> set[sympy.Symbol]:
-        def recursive_free_symbols(data) -> set[sympy.Symbol]:
+    def free_symbols(self) -> set[Symbol]:
+        def recursive_free_symbols(data) -> set[Symbol]:
             if isinstance(data, Mapping):
                 data = data.values()
             if isinstance(data, Iterable):
                 if not hasattr(data, 'shape') or data.shape != ():
                     return set().union(*map(recursive_free_symbols, data))
-            return getattr(data, 'free_symbols', set())
+            # Remove scale before adding to set
+            return {data.unscaled} if isinstance(data, Symbol) else set()
         return recursive_free_symbols(self.data)
 
-    def lambdify(self, *symbols: 'sympy.Symbol', **kwargs) -> Callable:
+    def lambdify(self, *symbols: 'Symbol', **kwargs) -> Callable:
         """Get a lambdified version of a symbolic box.
 
         Returns a function which when provided appropriate parameters,
@@ -247,11 +256,11 @@ class Box(grammar.Box):
 
         Parameters
         ----------
-        symbols : list of sympy.Symbols
+        symbols : list of Symbols
             List of symbols in the box in the order in which their
             assigned values will appear in the concretisation call.
         kwargs:
-            Additional parameters to pass to `sympy.lambdify`.
+            Additional parameters to pass to `lambdify`.
 
         Returns
         -------
@@ -266,7 +275,7 @@ class Box(grammar.Box):
 
         return lambda *xs: type(self)(
             self.name, self.dom, self.cod,
-            sympy.lambdify(symbols, self.data, **kwargs)(*xs))
+            lambdify(symbols, self.data)(*xs))
 
     def __repr__(self) -> str:
         return (f'[{self.name}{".l"*(-self.z)}{".r"*self.z}; '
@@ -314,7 +323,7 @@ class Diagram(grammar.Diagram):
         return lambda_diagram
 
     @cached_property
-    def free_symbols(self) -> set[sympy.Symbol]:
+    def free_symbols(self) -> set[Symbol]:
         return set().union(*(box.free_symbols for box in self.boxes))
 
     def eval(self, contractor=tn.contractors.auto, dtype: type | None = None):

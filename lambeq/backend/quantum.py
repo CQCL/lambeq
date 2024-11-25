@@ -32,7 +32,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast
+from typing import cast, Dict
 
 import numpy as np
 import tensornetwork as tn
@@ -40,6 +40,7 @@ from typing_extensions import Any, Self
 
 from lambeq.backend import grammar, tensor
 from lambeq.backend.numerical_backend import backend, get_backend
+from lambeq.backend.symbol import lambdify
 
 
 quantum = grammar.Category('quantum')
@@ -48,6 +49,7 @@ quantum = grammar.Category('quantum')
 @quantum
 class Ty(tensor.Dim):
     """A type in the quantum category."""
+
     def __init__(self,
                  name: str | None = None,
                  objects: list[Self] | None = None):
@@ -158,12 +160,6 @@ class Box(tensor.Box):
 
         return Daggered(self)
 
-    def __eq__(self, other):
-        return (self.name == other.name
-                and self.dom == other.dom
-                and self.cod == other.cod
-                and np.equal(self.data, other.data).all())
-
     def __hash__(self) -> int:
         return super().__hash__()
 
@@ -214,7 +210,7 @@ class Diagram(tensor.Diagram):
             gate = GATES[name]
             if callable(gate):
                 return partial(self.apply_parametrized_gate, gate)
-            return partial(self.apply_gate, gate)   # type: ignore[arg-type]
+            return partial(self.apply_gate, gate)
         except KeyError:
             return super().__getattr__(name)  # type: ignore[misc]
 
@@ -797,17 +793,16 @@ class Parametrized(Box):
 
     def lambdify(self, *symbols, **kwargs):
         """Return a lambda function that evaluates the box."""
-        from sympy import lambdify
 
-        data = lambdify(symbols, self.data, dict(kwargs, modules=np))
-
-        return lambda *xs: type(self)(data(*xs))
+        return lambda *xs: type(self)(lambdify(
+                                        symbols, self.data)(*xs))
 
     @property
     def modules(self):
         if self.free_symbols:
-            import sympy
-            return sympy
+            raise RuntimeError(
+                'Attempting to access modules for a symbolic expression. '
+                + 'Eval of a symbolic expression is not supported.')
         else:
             return get_backend()
 
@@ -834,7 +829,7 @@ class Rx(AntiConjugate, Rotation):
     @property
     def array(self):
         with backend() as np:
-            half_theta = np.pi * self.data
+            half_theta = np.pi * self.phase
             sin = self.modules.sin(half_theta)
             cos = self.modules.cos(half_theta)
 
@@ -847,7 +842,7 @@ class Ry(SelfConjugate, Rotation):
     @property
     def array(self):
         with backend() as np:
-            half_theta = np.pi * self.data
+            half_theta = np.pi * self.phase
             sin = self.modules.sin(half_theta)
             cos = self.modules.cos(half_theta)
 
@@ -860,7 +855,7 @@ class Rz(AntiConjugate, Rotation):
     @property
     def array(self):
         with backend() as np:
-            half_theta = self.modules.pi * self.data
+            half_theta = self.modules.pi * self.phase
             exp1 = np.e ** (-1j * half_theta)
             exp2 = np.e ** (1j * half_theta)
 
@@ -973,6 +968,7 @@ class Controlled(Parametrized):
 class MixedState(SelfConjugate):
     """A mixed state is a state with a density matrix proportional to the
     identity matrix."""
+
     def __init__(self):
         super().__init__('MixedState', Ty(), qubit, is_mixed=True)
 
@@ -982,6 +978,7 @@ class MixedState(SelfConjugate):
 
 class Discard(SelfConjugate):
     """Discard a qubit. This is a measurement without post-selection."""
+
     def __init__(self):
         super().__init__('Discard', qubit, Ty(), is_mixed=True)
 
@@ -991,6 +988,7 @@ class Discard(SelfConjugate):
 
 class Measure(SelfConjugate):
     """Measure a qubit and return a classical information bit."""
+
     def __init__(self):
         super().__init__('Measure', qubit, bit, is_mixed=True)
 
@@ -1000,6 +998,7 @@ class Measure(SelfConjugate):
 
 class Encode(SelfConjugate):
     """Encode a classical information bit into a qubit."""
+
     def __init__(self):
         super().__init__('Encode', bit, qubit, is_mixed=True)
 
@@ -1138,11 +1137,12 @@ CY = Controlled(Y)
 CZ = Controlled(Z)
 CCX = Controlled(CX)
 CCZ = Controlled(CZ)
-CRx = lambda phi, distance = 1: Controlled(Rx(phi), distance)  # noqa: E731
-CRy = lambda phi, distance = 1: Controlled(Ry(phi), distance)  # noqa: E731
-CRz = lambda phi, distance = 1: Controlled(Rz(phi), distance)  # noqa: E731
+def CRx(phi, distance=1): return Controlled(Rx(phi), distance)  # noqa: E731
+def CRy(phi, distance=1): return Controlled(Ry(phi), distance)  # noqa: E731
+def CRz(phi, distance=1): return Controlled(Rz(phi), distance)  # noqa: E731
 
-GATES = {
+
+GATES: Dict[str, Box | Callable[[Any], Parametrized]] = {
     'SWAP': SWAP,
     'H': H,
     'S': S,

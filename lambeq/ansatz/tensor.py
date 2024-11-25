@@ -24,8 +24,8 @@ __all__ = ['TensorAnsatz', 'MPSAnsatz', 'SpiderAnsatz']
 
 from collections.abc import Mapping
 
-from lambeq.ansatz import BaseAnsatz, Symbol
-from lambeq.backend import grammar, tensor
+from lambeq.ansatz import BaseAnsatz
+from lambeq.backend import grammar, Symbol, tensor
 from lambeq.backend.grammar import Cup, Spider, Ty, Word
 from lambeq.backend.tensor import Dim
 

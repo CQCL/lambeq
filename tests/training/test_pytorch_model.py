@@ -52,14 +52,14 @@ def test_forward():
 
 def test_initialise_weights():
     model = CustomPytorchModel()
-    model.symbols = [Symbol('phi', size=2), Symbol('theta', size=2)]
+    model.symbols = [Symbol('phi', directed_dom=2), Symbol('theta', directed_dom=2)]
     tmp_w = pickle.loads(pickle.dumps(model.fcc.weight))
     model.initialise_weights()
     assert model.weights
     assert not torch.equal(model.fcc.weight, tmp_w)
 
 def test_pickling():
-    phi = Symbol('phi', size=123)
+    phi = Symbol('phi', directed_dom=123)
     diagram = (
         tensor.Box("box1", Dim(2), Dim(2), data=phi)
         >> tensor.Spider(Dim(2), 1, 2)

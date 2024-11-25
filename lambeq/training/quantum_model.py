@@ -26,10 +26,9 @@ import pickle
 from typing import Any, TYPE_CHECKING
 
 import numpy as np
-from numpy.typing import ArrayLike
-from sympy import lambdify
 
 from lambeq.backend import numerical_backend
+from lambeq.backend.symbol import lambdify
 from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
@@ -59,7 +58,7 @@ class QuantumModel(Model):
         super().__init__()
 
         self._training = False
-        self._train_predictions : list[Any] = []
+        self._train_predictions: list[Any] = []
 
     def _log_prediction(self, y: Any) -> None:
         """Log a prediction of the model."""
@@ -133,7 +132,7 @@ class QuantumModel(Model):
 
     def _fast_subs(self,
                    diagrams: list[Diagram],
-                   weights: Iterable[ArrayLike]) -> list[Diagram]:
+                   weights: Iterable) -> list[Diagram]:
         """Substitute weights into a list of parameterised circuit."""
         parameters = {k: v for k, v in zip(self.symbols, weights)}
         diagrams = pickle.loads(pickle.dumps(diagrams))  # does fast deepcopy
@@ -152,7 +151,6 @@ class QuantumModel(Model):
                                 f'Unknown symbol: {repr(sym)}'
                             ) from e
                     b.data = lambdify(syms, b.data)(*values)  # type: ignore[attr-defined] # noqa: E501
-                    # The name of this box isnt updated correctly
                     del b.free_symbols
         return diagrams
 

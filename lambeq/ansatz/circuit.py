@@ -35,7 +35,6 @@ from itertools import cycle
 from typing import Type
 
 import numpy as np
-from sympy import Symbol, symbols
 
 from lambeq.ansatz import BaseAnsatz
 from lambeq.backend.grammar import Box, Diagram, Functor, Ty
@@ -52,6 +51,7 @@ from lambeq.backend.quantum import (
     Rotation,
     Rx, Ry, Rz
 )
+from lambeq.backend.symbol import Symbol
 
 computational_basis = Id(qubit)
 
@@ -132,14 +132,15 @@ class CircuitAnsatz(BaseAnsatz):
         if n_qubits == 0:
             circuit = Id()
         elif n_qubits == 1:
-            syms = symbols(f'{label}_0:{self.n_single_qubit_params}',
-                           cls=Symbol)
+            syms = [Symbol(f'{label}_{i}')
+                    for i in range(self.n_single_qubit_params)]
             circuit = Id(qubit)
             for rot, sym in zip(cycle(self.single_qubit_rotations), syms):
                 circuit >>= rot(sym)
         else:
             params_shape = self.params_shape(n_qubits)
-            syms = symbols(f'{label}_0:{np.prod(params_shape)}', cls=Symbol)
+            syms = [Symbol(f'{label}_{i}')
+                    for i in range(np.prod(params_shape))]
             params: np.ndarray = np.array(syms).reshape(params_shape)
             circuit = self.circuit(n_qubits, params)
 

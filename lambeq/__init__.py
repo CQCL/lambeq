@@ -33,6 +33,7 @@ __all__ = [
         'SpiderAnsatz',
         'StronglyEntanglingAnsatz',
         'Symbol',
+        'lambdify',
         'TensorAnsatz',
 
         'CCGType',
@@ -104,10 +105,11 @@ __all__ = [
         'MSELoss',
 ]
 
+from lambeq.backend import Symbol, lambdify
 from lambeq import ansatz, core, rewrite, text2diagram, tokeniser, training
 from lambeq.ansatz import (BaseAnsatz, CircuitAnsatz, IQPAnsatz, MPSAnsatz,
                            Sim14Ansatz, Sim15Ansatz, Sim4Ansatz, SpiderAnsatz,
-                           StronglyEntanglingAnsatz, Symbol, TensorAnsatz)
+                           StronglyEntanglingAnsatz, TensorAnsatz)
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.types import AtomicType
 from lambeq.rewrite import (CoordinationRewriteRule, CurryRewriteRule,

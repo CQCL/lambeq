@@ -243,9 +243,10 @@ class PennyLaneModel(Model, torch.nn.Module):
                     diff_method=diff_method, backend_config=backend_config,
                     **kwargs)
 
-        model.symbols = sorted(
-            {sym for circ in diagrams for sym in circ.free_symbols},
-            key=default_sort_key)
+        model.symbols = sorted({sym.unscaled.to_sympy()
+                                for circ in diagrams
+                                for sym in circ.free_symbols},
+                               key=default_sort_key)
         for circ in diagrams:
             assert isinstance(circ, Circuit)
             p_circ = circ.to_pennylane(probabilities=model._probabilities,

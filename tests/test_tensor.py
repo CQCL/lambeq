@@ -3,7 +3,6 @@ import pytest
 from lambeq.backend.grammar import Diagram, Id, Ty, Word
 from lambeq.backend.tensor import Dim
 import numpy as np
-from sympy.core.compatibility import default_sort_key
 import tensornetwork as tn
 
 from lambeq import MPSAnsatz, SpiderAnsatz, TensorAnsatz
@@ -20,7 +19,7 @@ def test_tensor_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(2) for t in 'abcd'}
     ansatz = TensorAnsatz(ob_map)
     tensor = ansatz(diagram)
-    syms = sorted(tensor.free_symbols, key=default_sort_key)
+    syms = sorted(tensor.free_symbols)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)
     result = subbed_diagram.eval(contractor=tn.contractors.auto)
@@ -47,7 +46,7 @@ def test_mps_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(4) for t in 'abcd'}
     ansatz = MPSAnsatz(ob_map, bond_dim=1)
     tensor = ansatz(diagram)
-    syms = sorted(tensor.free_symbols, key=default_sort_key)
+    syms = sorted(tensor.free_symbols)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)
     result = subbed_diagram.eval(contractor=tn.contractors.auto)
@@ -71,7 +70,7 @@ def test_spider_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(4) for t in 'abcd'}
     ansatz = SpiderAnsatz(ob_map)
     tensor = ansatz(diagram)
-    syms = sorted(tensor.free_symbols, key=default_sort_key)
+    syms = sorted(tensor.free_symbols)
     values = [np.ones(k.size) for k in syms]
     subbed_diagram = tensor.lambdify(*syms)(*values)
     result = subbed_diagram.eval(contractor=tn.contractors.auto)

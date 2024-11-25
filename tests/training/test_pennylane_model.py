@@ -5,6 +5,7 @@ from unittest.mock import mock_open, patch
 
 import numpy as np
 from qiskit_ibm_provider.exceptions import IBMAccountError
+from sympy import default_sort_key
 import torch
 from torch import Size
 from torch.nn import Parameter
@@ -55,7 +56,7 @@ def test_normalize():
         ansatz(Word('Alice', N) @ Word('cooks', N.r  @ S @ N.l) @ Word('food', N) >> \
                               Cup(N, N.r) @ S @ Cup(N.l, N))
     ]
-
+    sorted_symbols = sorted(set.union(*[d.free_symbols for d in diagrams]), key=lambda sym: default_sort_key(sym.unscaled.to_sympy()))
     for i in range(len(diagrams)):
         for b in [True, False]:
             backend_config = {'backend': 'default.qubit'}
@@ -66,8 +67,8 @@ def test_normalize():
 
             p_pred = instance.forward(diagrams)[i]
             d = (diagrams[i] >> Measure()) if b else diagrams[i]
-            d_pred = (d.lambdify(*instance.symbols)
-                     (*[x.item() for x in instance.weights]).eval())
+
+            d_pred = (d.lambdify(*sorted_symbols)(*[x.item() for x in instance.weights]).eval())
 
             assert np.allclose(p_pred.detach().numpy(), d_pred, atol=1e-5)
 

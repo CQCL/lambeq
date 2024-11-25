@@ -95,9 +95,9 @@ def tk_op_to_pennylane(tk_op):
     :class:`qml.operation.Operation`
         The PennyLane operation equivalent to the input pytket Op.
     list of (:class:`torch.FloatTensor` or
-             :class:`sympy.core.symbol.Symbol`)
+             :class:`lambeq.backend.symbol.Symbol`)
         The parameters of the operation.
-    list of :class:`sympy.core.symbol.Symbol`
+    list of :class:`lambeq.backend.symbol.Symbol`
         The free symbols in the parameters of the operation.
     list of int
         The wires/qubits to apply the operation to.
@@ -137,11 +137,11 @@ def extract_ops_from_tk(tk_circ):
     list of :class:`qml.operation.Operation`
         The PennyLane operations extracted from the pytket circuit.
     list of list of (:class:`torch.FloatTensor` or
-                     :class:`sympy.core.symbol.Symbol`)
+                     :class:`lambeq.backend.symbol.Symbol`)
         The corresponding parameters of the operations.
     list of list of int
         The corresponding wires of the operations.
-    set of :class:`sympy.core.symbol.Symbol`
+    set of :class:`lambeq.backend.symbol.Symbol`
         The free symbols in the parameters of the tket circuit.
 
     """
@@ -250,6 +250,7 @@ STATE_DEVICES = ['aer_simulator_statevector', 'statevector_simulator']
 
 class PennyLaneCircuit:
     """Implement a pennylane circuit with post-selection."""
+
     def __init__(self, ops, symbols, params, wires, probabilities,
                  post_selection, scale, n_qubits, backend_config,
                  diff_method):
@@ -343,7 +344,7 @@ class PennyLaneCircuit:
 
         Parameters
         ----------
-        symbols : list of :class:`sympy.core.symbol.Symbol`, default: None
+        symbols : list of :class:`lambeq.Symbol`, default: None
             The symbols from the original lambeq circuit.
         weights : list of :class:`torch.FloatTensor`, default: None
             The weights to substitute for the symbols.
@@ -468,7 +469,7 @@ class PennyLaneCircuit:
 
         Parameters
         ----------
-        symbols : list of :class:`sympy.core.symbol.Symbol`, default: None
+        symbols : list of :class:`lambeq.Symbol`, default: None
             The symbols from the original lambeq circuit.
         weights : list of :class:`torch.FloatTensor`, default: None
             The weights to substitute for the symbols.
