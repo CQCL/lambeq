@@ -1,10 +1,10 @@
 import pytest
 
 import numpy as np
-import sympy
 
 import lambeq.backend.grammar as grammar
 from lambeq.backend.tensor import *
+from lambeq.backend import Symbol
 
 
 def test_Ty():
@@ -73,15 +73,17 @@ def test_functors():
 
 def test_lambdify():
 
-    a,b,c,d = sympy.symbols("a,b,c,d")
-    arr1 = [[a, b], [c, d]]
-    arr2 = [[a, b], [b, a]]
+    arr1 = Symbol('a', directed_dom=2, directed_cod=2)
+    arr2 = Symbol('b', directed_dom=2, directed_cod=2)
+
+    conc_arr1 = np.array([[1, 2], [3, 4]])
+    conc_arr2 = np.array([[1, 2], [2, 1]])
 
     bx1 = Box("A", Dim(2), Dim(2), arr1)
-    bx1_concrete = Box("A", Dim(2), Dim(2), [[1, 2], [3, 4]])
+    bx1_concrete = Box("A", Dim(2), Dim(2), np.array([[1, 2], [3, 4]]))
 
     bx2 = Box("B", Dim(2), Dim(2), arr2)
     bx2_concrete = Box("B", Dim(2), Dim(2), [[1, 2], [2, 1]])
 
-    assert bx1.lambdify(a,b,c,d)(1,2,3,4) == bx1_concrete
-    assert (bx1 >> bx2).lambdify(a,b,c,d)(1,2,3,4) == bx1_concrete >> bx2_concrete
+    assert bx1.lambdify(arr1)(conc_arr1) == bx1_concrete
+    assert (bx1 >> bx2).lambdify(arr1, arr2)(conc_arr1, conc_arr2) == bx1_concrete >> bx2_concrete

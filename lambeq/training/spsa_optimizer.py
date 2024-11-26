@@ -22,11 +22,13 @@ Approximation optimizer.
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, Mapping
-from typing import Any
+from typing import Any, Set
 
 import numpy as np
 from numpy.typing import ArrayLike
+from sympy import Symbol as SympySymbol
 
+from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.core.utils import flatten
 from lambeq.training.optimizer import Optimizer
@@ -137,12 +139,13 @@ class SPSAOptimizer(Optimizer):
         diags_gen = flatten(diagrams)
 
         # the symbolic parameters
-        parameters = self.model.symbols
+        parameters: list[SympySymbol] | list[Symbol] = self.model.symbols
         x = self.model.weights
 
         # try to extract the relevant parameters from the diagrams
-        relevant_params = set.union(*[diag.free_symbols for diag in diags_gen
-                                      if isinstance(diag, Diagram)])
+        relevant_params: Set[SympySymbol] | Set[Symbol] = set.union(
+            *[diag.free_symbols for diag in diags_gen
+              if isinstance(diag, Diagram)])
         if not relevant_params:
             relevant_params = set(parameters)
         mask = np.array([1 if sym in relevant_params else 0

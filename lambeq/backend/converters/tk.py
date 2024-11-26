@@ -28,9 +28,10 @@ import numpy as np
 import pytket as tk
 from pytket.circuit import (Bit, Command, Op, OpType, Qubit)
 from pytket.utils import probs_from_counts
+import sympy
 from typing_extensions import Self
 
-from lambeq.backend import Functor
+from lambeq.backend import Functor, Symbol
 from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ, Controlled, CRx,
                                     CRy, CRz, Daggered, Diagram, Discard,
                                     GATES, Id, Ket, Measure, quantum, qubit,
@@ -259,7 +260,11 @@ def to_tk(circuit: Diagram):
         i_qubits = [qubits[offset + j] for j in range(len(box.dom))]
 
         if isinstance(box, (Rx, Ry, Rz)):
-            op = Op.create(OPTYPE_MAP[box.name[:2]], 2 * box.phase)
+            phase = box.phase
+            if isinstance(box.phase, Symbol):
+                # Tket uses sympy, lambeq uses custom symbol
+                phase = box.phase.to_sympy()
+            op = Op.create(OPTYPE_MAP[box.name[:2]], 2 * phase)
         elif isinstance(box, Controlled):
             # The following works only for controls on single qubit gates
 
@@ -287,8 +292,13 @@ def to_tk(circuit: Diagram):
             name = box.name.split('(')[0]
             if box.name in ('CX', 'CZ', 'CCX'):
                 op = Op.create(OPTYPE_MAP[name])
-            elif name in ('CRx', 'CRz'):  # TODO Controlled rotations
-                op = Op.create(OPTYPE_MAP[name], 2 * box.phase)
+            elif name in ('CRx', 'CRz'):
+                phase = box.phase
+                if isinstance(box.phase, Symbol):
+                    # Tket uses sympy, lambeq uses custom symbol
+                    phase = box.phase.to_sympy()
+
+                op = Op.create(OPTYPE_MAP[name], 2 * phase)
             elif name in ('CCX'):
                 op = Op.create(OPTYPE_MAP[name])
         elif box.name in OPTYPE_MAP:
@@ -336,6 +346,21 @@ def to_tk(circuit: Diagram):
     return tk_circ
 
 
+def _tk_to_lmbq_param(theta):
+    if not isinstance(theta, sympy.Expr):
+        return theta
+    elif isinstance(theta, sympy.Symbol):
+        return Symbol(theta.name)
+    elif isinstance(theta, sympy.Mul):
+        scale, symbol = theta.as_coeff_Mul()
+        if not isinstance(symbol, sympy.Symbol):
+            raise ValueError('Parameter must be a (possibly scaled) sympy'
+                             'Symbol')
+        return Symbol(symbol.name, scale=scale)
+    else:
+        raise ValueError('Parameter must be a (possibly scaled) sympy Symbol')
+
+
 def from_tk(tk_circuit: tk.Circuit) -> Diagram:
     """Translates from tket to a lambeq Diagram."""
     tk_circ: Circuit = Circuit.upgrade(tk_circuit)
@@ -354,11 +379,11 @@ def from_tk(tk_circuit: tk.Circuit) -> Diagram:
 
         if len(tk_gate.args) == 1:  # single qubit gate
             if name == 'Rx':
-                box = Rx(tk_gate.op.params[0] / 2)
+                box = Rx(_tk_to_lmbq_param(tk_gate.op.params[0]) * 0.5)
             elif name == 'Ry':
-                box = Ry(tk_gate.op.params[0] / 2)
+                box = Ry(_tk_to_lmbq_param(tk_gate.op.params[0]) * 0.5)
             elif name == 'Rz':
-                box = Rz(tk_gate.op.params[0] / 2)
+                box = Rz(_tk_to_lmbq_param(tk_gate.op.params[0]) * 0.5)
             elif name in GATES:
                 box = cast(Box, GATES[name])
 
@@ -370,11 +395,14 @@ def from_tk(tk_circuit: tk.Circuit) -> Diagram:
                 offset += distance
 
             if name == 'CRx':
-                box = CRx(tk_gate.op.params[0] / 2, distance)
+                box = CRx(
+                    _tk_to_lmbq_param(tk_gate.op.params[0]) * 0.5, distance)
             elif name == 'CRy':
-                box = CRy(tk_gate.op.params[0] / 2, distance)
+                box = CRy(
+                    _tk_to_lmbq_param(tk_gate.op.params[0]) * 0.5, distance)
             elif name == 'CRz':
-                box = CRz(tk_gate.op.params[0] / 2, distance)
+                box = CRz(
+                    _tk_to_lmbq_param(tk_gate.op.params[0]) * 0.5, distance)
             elif name == 'SWAP':
                 distance = abs(distance)
                 idx = list(range(distance + 1))

@@ -5,7 +5,7 @@ from lambeq.backend.quantum import (Bra, Diagram as Circuit, Controlled, CRx,
                                     CRz, CX, Discard, H, Ket, qubit, Rx, Ry,
                                     Rz, Sqrt, X, Id)
 from lambeq.backend.converters.tk import from_tk
-from sympy import Symbol as sym
+from lambeq import Symbol as sym
 
 from lambeq import (AtomicType, IQPAnsatz, Sim14Ansatz, Sim15Ansatz,
                     Sim4Ansatz, StronglyEntanglingAnsatz)

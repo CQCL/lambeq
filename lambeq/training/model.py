@@ -24,7 +24,7 @@ from abc import ABC, abstractmethod
 from collections.abc import Collection
 from typing import Any
 
-from sympy import default_sort_key, Symbol as SymPySymbol
+from sympy import Symbol as SymPySymbol
 
 from lambeq.ansatz.base import Symbol
 from lambeq.backend.tensor import Diagram
@@ -48,7 +48,7 @@ class Model(ABC):
 
     def __init__(self) -> None:
         """Initialise an instance of :py:class:`Model` base class."""
-        self.symbols: list[Symbol | SymPySymbol] = []
+        self.symbols: list[Symbol] | list[SymPySymbol] = []
         self.weights: Collection = []
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
@@ -178,6 +178,6 @@ class Model(ABC):
         """
         model = cls(**kwargs)
         model.symbols = sorted(
-            {sym for circ in diagrams for sym in circ.free_symbols},
-            key=default_sort_key)
+            {sym for circ in diagrams for sym in circ.free_symbols}
+            )
         return model

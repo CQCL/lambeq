@@ -2,10 +2,10 @@ import pytest
 
 import numpy as np
 from pytket.extensions.qiskit import AerBackend
-import sympy
 
 from lambeq.backend.quantum import *
 import lambeq.backend.grammar as grammar
+from lambeq.backend import Symbol
 
 def test_Ty():
 
@@ -75,7 +75,7 @@ def test_conjugate():
 
 def test_lambdify():
 
-    a = sympy.symbols("a")
+    a = Symbol("a")
 
     bx1 = Rx(a)
     bx2 = Ry(-a)

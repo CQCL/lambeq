@@ -24,72 +24,9 @@ __all__ = ['BaseAnsatz', 'Symbol']
 
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
-from typing import Any, Literal
-
-import sympy
 
 from lambeq.backend import grammar, tensor
-
-
-class Symbol(sympy.Symbol):
-    """A sympy symbol augmented with extra information.
-
-    Attributes
-    ----------
-    directed_dom : int
-        The size of the domain of the tensor-box that this symbol
-        represents.
-    directed_cod : int
-        The size of the codomain of the tensor-box that this symbol
-        represents.
-    size : int
-        The total size of the tensor that this symbol represents
-        (directed_dom * directed_cod).
-
-    """
-    directed_dom: int
-    directed_cod: int
-
-    def __new__(cls,
-                name: str,
-                directed_dom: int = 1,
-                directed_cod: int = 1,
-                **assumptions: bool) -> Symbol:
-        """Initialise a symbol.
-
-        Parameters
-        ----------
-        directed_dom : int, default: 1
-            The size of the domain of the tensor-box that this symbol
-            represents.
-        directed_cod : int, default: 1
-            The size of the codomain of the tensor-box that this symbol
-            represents.
-
-        """
-        cls._sanitize(assumptions, cls)
-
-        obj: Symbol = sympy.Symbol.__xnew__(cls, name, **assumptions)
-        obj.directed_dom = directed_dom
-        obj.directed_cod = directed_cod
-        return obj
-
-    def __getnewargs_ex__(self) -> tuple[tuple[str, int], dict[str, bool]]:
-        return (self.name, self.size), self.assumptions0
-
-    @property
-    def size(self) -> int:
-        return self.directed_dom * self.directed_cod
-
-    @sympy.cacheit
-    def sort_key(self, order: Literal[None] = None) -> tuple[Any, ...]:
-        return (self.class_key(),
-                (2, (self.name, self.size)),
-                sympy.S.One.sort_key(),
-                sympy.S.One)
-
-    def _hashable_content(self) -> tuple[Any, ...]:
-        return (*super()._hashable_content(), self.size)
+from lambeq.backend.symbol import Symbol
 
 
 class BaseAnsatz(ABC):
