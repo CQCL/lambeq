@@ -49,7 +49,7 @@ from pytket import OpType
 import sympy
 import torch
 
-from lambeq.backend.quantum import Scalar, Measure
+from lambeq.backend.quantum import Measure, Scalar
 
 if TYPE_CHECKING:
     from lambeq.backend.quantum import Diagram
@@ -218,8 +218,8 @@ def to_pennylane(lambeq_circuit: Diagram, probabilities=False,
     """
 
     if any(isinstance(box, Measure) for box in lambeq_circuit.boxes):
-        raise ValueError("Only pure circuits, or circuits with discards"
-                          " are currently supported.")
+        raise ValueError('Only pure circuits, or circuits with discards'
+                         ' are currently supported.')
 
     tk_circ = lambeq_circuit.to_tk()
     op_list, params_list, wires_list, symbols_set = (
