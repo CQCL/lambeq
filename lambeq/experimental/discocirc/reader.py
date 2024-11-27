@@ -329,10 +329,16 @@ class DisCoCircReader(Reader):
         """
 
         sentences, corefs = self.coref_resolver.tokenise_and_coref(text)
+        corefd = self.coref_resolver.dict_from_corefs(corefs)
+
+        noun_counts = Counter(corefd.values())
+        freq_pruned_ids = [nid for nid, count in noun_counts.items()
+                           if count < min_noun_freq]
+
+        pruned_nouns = set(pruned_nouns).union(
+                        {sentences[i][j] for (i, j) in freq_pruned_ids})
 
         pruned_ids = self._prune_indices(sentences, corefs, pruned_nouns)
-
-        corefd = self.coref_resolver.dict_from_corefs(corefs)
 
         rewriter = TreeRewriter(rewrite_rules)
 
