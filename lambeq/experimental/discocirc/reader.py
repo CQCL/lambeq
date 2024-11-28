@@ -290,7 +290,7 @@ class DisCoCircReader(Reader):
                      sandwich: bool = False,
                      break_cycles: bool = True,
                      pruned_nouns: Iterable[str] = (),
-                     min_noun_freq: int = 0,
+                     min_noun_freq: int = 1,
                      rewrite_rules: (
                          Iterable[TreeRewriteRule | str] | None
                      ) = ('determiner', 'auxiliary'),
@@ -313,6 +313,9 @@ class DisCoCircReader(Reader):
             If any of the nouns in this list are present in the diagram,
             the corresponding state and wire are removed from the
             diagram.
+        min_noun_freq: int, default: 1
+            Mininum number of times a noun needs to be referenced to
+            appear in the circuit.
         rewrite_rules : list of `TreeRewriteRule` or str
             List of rewrite rules to apply to the pregroup tree
             before conversion to a circuit.
