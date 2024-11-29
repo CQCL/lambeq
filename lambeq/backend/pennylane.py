@@ -42,6 +42,7 @@ associated weights should be passed to `eval()` as `symbols=` and
 from __future__ import annotations
 
 from itertools import product
+import sys
 from typing import TYPE_CHECKING
 
 import pennylane as qml
@@ -220,6 +221,12 @@ def to_pennylane(lambeq_circuit: Diagram, probabilities=False,
     if any(isinstance(box, Measure) for box in lambeq_circuit.boxes):
         raise ValueError('Only pure circuits, or circuits with discards'
                          ' are currently supported.')
+
+    if lambeq_circuit.is_mixed and lambeq_circuit.cod:
+        # Some qubits discarded, some left open
+        print('Warning: Circuit includes both discards and open codomain'
+              ' wires. All open wires will be discarded during conversion',
+              file=sys.stderr)
 
     tk_circ = lambeq_circuit.to_tk()
     op_list, params_list, wires_list, symbols_set = (

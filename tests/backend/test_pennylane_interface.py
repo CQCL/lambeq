@@ -98,6 +98,16 @@ def test_pennylane_circuit_mixed_error():
         snake.to_pennylane()
 
 
+def test_pennylane_circuit_mixed_warning(capsys):
+    bell_state = Diagram.caps(qubit, qubit)
+    bell_discarded = bell_state >> Discard() @ Id(qubit)
+    _ = bell_discarded.to_pennylane()
+    captured = capsys.readouterr()
+    assert captured.err == ('Warning: Circuit includes both discards and open '
+                            'codomain wires. All open wires will be discarded '
+                            'during conversion\n')
+
+
 def test_pennylane_circuit_draw(capsys):
     bell_state = Diagram.caps(qubit, qubit)
     bell_effect = bell_state[::-1]
