@@ -42,6 +42,7 @@ associated weights should be passed to `eval()` as `symbols=` and
 from __future__ import annotations
 
 from itertools import product
+import sys
 from typing import TYPE_CHECKING
 
 import pennylane as qml
@@ -49,7 +50,7 @@ from pytket import OpType
 import sympy
 import torch
 
-from lambeq.backend.quantum import Scalar
+from lambeq.backend.quantum import Measure, Scalar
 
 if TYPE_CHECKING:
     from lambeq.backend.quantum import Diagram
@@ -216,9 +217,16 @@ def to_pennylane(lambeq_circuit: Diagram, probabilities=False,
         The PennyLane circuit equivalent to the input lambeq circuit.
 
     """
-    if lambeq_circuit.is_mixed:
-        raise ValueError('Only pure quantum circuits are currently '
-                         'supported.')
+
+    if any(isinstance(box, Measure) for box in lambeq_circuit.boxes):
+        raise ValueError('Only pure circuits, or circuits with discards'
+                         ' are currently supported.')
+
+    if lambeq_circuit.is_mixed and lambeq_circuit.cod:
+        # Some qubits discarded, some left open
+        print('Warning: Circuit includes both discards and open codomain'
+              ' wires. All open wires will be discarded during conversion',
+              file=sys.stderr)
 
     tk_circ = lambeq_circuit.to_tk()
     op_list, params_list, wires_list, symbols_set = (
@@ -238,6 +246,7 @@ def to_pennylane(lambeq_circuit: Diagram, probabilities=False,
                             wires_list,
                             probabilities,
                             post_selection,
+                            lambeq_circuit.is_mixed,
                             scalar,
                             tk_circ.n_qubits,
                             backend_config,
@@ -252,7 +261,7 @@ class PennyLaneCircuit:
     """Implement a pennylane circuit with post-selection."""
 
     def __init__(self, ops, symbols, params, wires, probabilities,
-                 post_selection, scale, n_qubits, backend_config,
+                 post_selection, mixed, scale, n_qubits, backend_config,
                  diff_method):
         self._ops = ops
         self._symbols = symbols
@@ -260,6 +269,7 @@ class PennyLaneCircuit:
         self._wires = wires
         self._probabilities = probabilities
         self._post_selection = post_selection
+        self._mixed = mixed
         self._scale = scale
         self._n_qubits = n_qubits
         self._backend_config = backend_config
@@ -400,6 +410,8 @@ class PennyLaneCircuit:
             for op, params, wires in zip(self._ops, circ_params, self._wires):
                 op(*[2 * torch.pi * p for p in params], wires=wires)
 
+            if self._mixed:
+                return qml.density_matrix(self._post_selection.keys())
             if self._probabilities:
                 return qml.probs(wires=range(self._n_qubits))
             else:
@@ -423,6 +435,10 @@ class PennyLaneCircuit:
             The post-selected output of the circuit.
         """
         states = self._circuit(params)
+
+        if self._mixed:
+            # Select the all-zeros subsystem
+            return states[0][0]
 
         open_wires = self._n_qubits - len(self._post_selection)
         post_selected_states = states[self._valid_states]

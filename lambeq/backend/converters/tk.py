@@ -204,9 +204,10 @@ def to_tk(circuit: Diagram):
     qubits: list[int] = []
     circuit = circuit.init_and_discard()
 
-    def remove_ket1(_, box: Box) -> Diagram | Box:
+    def remove_ketbra1(_, box: Box) -> Diagram | Box:
         ob_map: dict[Box, Diagram]
-        ob_map = {Ket(1): Ket(0) >> X}  # type: ignore[dict-item]
+        ob_map = {Ket(1): Ket(0) >> X,  # type: ignore[dict-item]
+                  Bra(1): X >> Bra(0)}  # type: ignore[dict-item]
         return ob_map.get(box, box)
 
     def prepare_qubits(qubits: list[int],
@@ -313,7 +314,7 @@ def to_tk(circuit: Diagram):
 
     circuit = Functor(target_category=quantum,  # type: ignore [assignment]
                       ob=lambda _, x: x,
-                      ar=remove_ket1)(circuit)  # type: ignore [arg-type]
+                      ar=remove_ketbra1)(circuit)  # type: ignore [arg-type]
     for left, box, _ in circuit:
         if isinstance(box, Ket):
             qubits = prepare_qubits(qubits, box, left.count(qubit))
