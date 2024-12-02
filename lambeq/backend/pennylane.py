@@ -42,7 +42,6 @@ associated weights should be passed to `eval()` as `symbols=` and
 from __future__ import annotations
 
 from itertools import product
-import sys
 from typing import TYPE_CHECKING, Union
 
 import pennylane as qml
