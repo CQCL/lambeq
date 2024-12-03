@@ -1251,8 +1251,8 @@ def to_circuital(diagram: Diagram):
     #  Cleans up any '1' kets and converts them to X|0> -> |1>
     def remove_ketbra1(_, box: Box) -> Diagram | Box:
         ob_map: dict[Box, Diagram]
-        ob_map = {Ket(1): Ket(0) >> X,
-                  Bra(1): X >> Ket(0)}  # type: ignore[dict-item]
+        ob_map = {Ket(1): Ket(0) >> X,  # type: ignore[dict-item]
+                  Bra(1): X >> Bra(0)}  # type: ignore[dict-item]
         return ob_map.get(box, box)
 
     def add_qubit(qubits: list[Layer],
