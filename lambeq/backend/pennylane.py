@@ -165,9 +165,6 @@ def to_pennylane(diagram: Diagram, probabilities=False,
         The PennyLane circuit equivalent to the input lambeq circuit.
 
     """
-    if diagram.is_mixed:
-        raise ValueError('Only pure quantum circuits are currently '
-                         'supported.')
 
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
@@ -194,6 +191,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
                             wires_list,
                             probabilities,
                             post_selection,
+                            diagram.is_mixed,
                             scalar,
                             circuit_dict['qubits']['total'],
                             backend_config,
