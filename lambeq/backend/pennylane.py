@@ -50,7 +50,7 @@ import torch
 import sys
 
 from lambeq.backend.quantum import (circuital_to_dict,
-                                    is_circuital,
+                                    is_circuital, Measure,
                                     to_circuital)
 
 if TYPE_CHECKING:
