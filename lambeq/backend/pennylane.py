@@ -47,6 +47,7 @@ from typing import TYPE_CHECKING, Union
 import pennylane as qml
 import sympy
 import torch
+import sys
 
 from lambeq.backend.quantum import (circuital_to_dict,
                                     is_circuital,
@@ -165,6 +166,15 @@ def to_pennylane(diagram: Diagram, probabilities=False,
         The PennyLane circuit equivalent to the input lambeq circuit.
 
     """
+    if any(isinstance(box, Measure) for box in diagram.boxes):
+        raise ValueError('Only pure circuits, or circuits with discards'
+                         ' are currently supported.')
+
+    if diagram.is_mixed and diagram.cod:
+        # Some qubits discarded, some left open
+        print('Warning: Circuit includes both discards and open codomain'
+              ' wires. All open wires will be discarded during conversion',
+              file=sys.stderr)
 
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
