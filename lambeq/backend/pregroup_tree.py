@@ -45,28 +45,28 @@ class PregroupTreeNode:
     and the branches of the tree represent cups identifying
     input wires (cups) to the parent node.
 
-    Example
-    -------
+    Examples
+    --------
     Consider the sentence "John gave Mary a flower", with the
     following pregroup diagram:
 
-    ```
-    John       gave      Mary    a    flower
-    ────  ─────────────  ────  ─────  ──────
-     n    n.r·s·n.l·n.l   n    n·n.l    n
-     ╰────╯   │  │   ╰────╯    │  ╰─────╯
-              │  ╰─────────────╯
-    ```
+    .. code-block:: console
+
+        John       gave      Mary    a    flower
+        ────  ─────────────  ────  ─────  ──────
+         n    n.r·s·n.l·n.l   n    n·n.l    n
+         ╰────╯   │  │   ╰────╯    │  ╰─────╯
+                  │  ╰─────────────╯
 
     The tree for this diagram becomes:
 
-    ```
-    gave_1 (s)
-      ├ John_0 (n)
-      ├ Mary_2 (n)
-      └ a_3 (n)
-        └ flower_4 (n)
-    ```
+    .. code-block:: console
+
+        gave_1 (s)
+        ├ John_0 (n)
+        ├ Mary_2 (n)
+        └ a_3 (n)
+            └ flower_4 (n)
 
     where the numbers after the underscore indicate the order of each
     word in the sentence. This representation is sufficient for
