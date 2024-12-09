@@ -30,15 +30,17 @@ composition of gates using the tensornetwork library easier.
 from __future__ import annotations
 
 from collections.abc import Callable
+import copy
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast, Dict
+from typing import cast, Dict, Tuple
 
 import numpy as np
 import tensornetwork as tn
 from typing_extensions import Any, Self
 
-from lambeq.backend import grammar, tensor
+
+from lambeq.backend import Functor, grammar, Symbol, tensor
 from lambeq.backend.numerical_backend import backend, get_backend
 from lambeq.backend.symbol import lambdify
 
@@ -1162,3 +1164,479 @@ GATES: Dict[str, Box | Callable[[Any], Parametrized]] = {
     'CRy': CRy,
     'CRz': CRz,
 }
+
+
+def is_circuital(diagram: Diagram) -> bool:
+    """
+    Takes a :py:class:`lambeq.quantum.Diagram`,
+    checks if a diagram is a quantum 'circuital' diagram.
+    A circuital diagram is a diagram with qubits at the top.
+
+    Used to check for measurements and post-selection
+    at the bottom but there are too many edge cases.
+
+    Returns
+    -------
+    bool
+        Whether the diagram is a circuital diagram.
+
+    """
+
+    if diagram.dom:
+        return False
+
+    layers = diagram.layers
+
+    # Check if the first layers are all qubits and measurements
+    num_qubits = sum([1 for layer in layers
+                      if isinstance(layer.box, Ket)])
+
+    qubit_layers = layers[:num_qubits]
+
+    if not all([isinstance(layer.box, Ket) for layer in qubit_layers]):
+        return False
+
+    for qubit_layer in qubit_layers:
+        if len(qubit_layer.right):
+            return False
+
+    # Check there are no gates in between post-selections.
+    measure_idx = [i for i, layer in enumerate(layers[num_qubits:])
+                   if isinstance(layer.box, (Discard, Bra))]
+    if not measure_idx:
+        return True
+    mmax = max(measure_idx)
+    mmin = min(measure_idx)
+    for i, gate in enumerate(layers[num_qubits:]):
+        if not isinstance(gate.box, (Discard, Bra, Measure)):
+            if i > mmin and i < mmax:
+                return False
+
+    return True
+
+
+def to_circuital(diagram: Diagram):
+    """Takes a :py:class:`lambeq.quantum.Diagram`, returns
+    a modified :py:class:`lambeq.quantum.Diagram` which
+    is easier to convert to tket and other circuit simulators
+
+    Parameters
+    ----------
+    diagram : :py:class:`~lambeq.backend.quantum.Diagram`
+        The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
+        to be converted to a tket circuit.
+
+    The returned circuit diagram has all qubits at the top
+    with layer depth equal to qubit index,
+    followed by gates, and then post-selection
+    measurements at the bottom.
+
+    Returns
+    -------
+    :py:class:`lambeq.quantum.Diagram`
+        Circuital diagram compatible with circuital_to_dict.
+    """
+
+    # bits and qubits are lists of register indices, at layer i we want
+    # len(bits) == circuit[:i].cod.count(bit) and same for qubits
+    # Necessary to ensure editing boxes is localized.
+    circuit = copy.deepcopy(diagram)
+
+    qubits: list[Layer] = []
+    gates: list[Layer] = []
+    measures: list[Layer] = []
+    postselect: list[Layer] = []
+    circuit = circuit.init_and_discard()
+
+    #  Cleans up any '1' kets and converts them to X|0> -> |1>
+    def remove_ketbra1(_, box: Box) -> Diagram | Box:
+        ob_map: dict[Box, Diagram]
+        ob_map = {Ket(1): Ket(0) >> X,  # type: ignore[dict-item]
+                  Bra(1): X >> Bra(0)}  # type: ignore[dict-item]
+        return ob_map.get(box, box)
+
+    def add_qubit(qubits: list[Layer],
+                  layer: Layer,
+                  offset: int,
+                  gates: list[Layer]) -> Tuple[list[Layer], list[Layer]]:
+
+        # Adds a qubit to the qubit list
+        # Appends shifts all the gates
+        # Assumes we only add one qubit at a time.
+        # No bits
+
+        for qubit_layer in qubits:
+            from_left = len(qubit_layer.left)
+            if from_left >= offset:
+                qubit_layer.left = qubit_layer.left.insert(layer.box.cod,
+                                                           offset)
+
+        layer.right = Ty()
+        if offset > 0:
+            layer.left = qubit ** offset
+        else:
+            layer.left = Ty()
+        qubits.insert(offset, layer)
+
+        return qubits, pull_qubit_through(offset, gates, dom=layer.box.cod)[0]
+
+    def construct_measurements(last_layer, post_selects):
+        # Change to accommodate measurements before
+        total_qubits = (len(last_layer.left)
+                        + len(last_layer.box.cod)
+                        + len(last_layer.right))
+
+        bit_idx = list(range(total_qubits))
+        q_idx = {}
+        for layer in post_selects:
+            # Find the qubit for each post selection
+            q_idx[bit_idx[len(layer.left)]] = layer
+            bit_idx.remove(bit_idx[len(layer.left)])
+
+        # Inserting to the left is always trivial
+        total_layer = ([*last_layer.left] + [*last_layer.box.cod]
+                       + [*last_layer.right])
+
+        new_postselects = []
+        for key in sorted(q_idx.keys()):
+            bits_left = sum([1 for i in bit_idx if i < key])
+            q_idx[key].left = bit ** bits_left
+            q_idx[key].right = q_idx[key].right._fromiter(total_layer[key+1:])
+            new_postselects.append(q_idx[key])
+
+        return new_postselects
+
+    def pull_bit_through(q_idx: int,
+                         gates: list[Layer],
+                         layer: Layer) -> tuple[list[Layer], int]:
+        """
+            Inserts a qubit type into every layer at the appropriate index
+            q_idx: idx - index of where to insert the gate.
+        """
+
+        for i, gate_layer in enumerate(gates):  # noqa: B007
+
+            l_size = len(gate_layer.left)
+            c_size = len(gate_layer.box.cod)
+            d_size = len(gate_layer.box.dom)
+
+            # Inserting to the left is always trivial
+            if q_idx == l_size:
+                break
+            elif q_idx < l_size:
+                gate_layer.left = gate_layer.left.replace(qubit, q_idx)
+            # Qubit on right of gate. Handles 1 qubit gates by l(dom) = 1
+            elif q_idx > l_size + len(gate_layer.box.dom) - 1:
+
+                # Index relative to the 1st qubit on right
+                r_rel = q_idx - (l_size + len(gate_layer.box.dom))
+
+                # Insert on right. Update relative index from the left
+                gate_layer.right = gate_layer.right.replace(qubit, r_rel)
+
+                q_idx = r_rel + l_size + len(gate_layer.box.cod)
+
+            elif c_size == d_size:
+                # Initial control qubit box
+                box = gate_layer.box
+                box.dom = box.dom.replace(qubit, q_idx - l_size)
+                box.cod = box.cod.replace(qubit, q_idx - l_size)
+
+            else:
+                raise NotImplementedError('Cannot pull bit through '
+                                          f'box {gate_layer}')
+
+        # Insert layer back into list and remove from the original
+        layer = build_left_right(q_idx, layer, [gates[i-1]])
+        gates.insert(i, layer)
+
+        return gates, q_idx
+
+    def pull_qubit_through(q_idx: int,
+                           gates: list[Layer],
+                           dom: Ty = qubit) -> tuple[list[Layer], int]:  # noqa: E501
+        """
+            Inserts a qubit type into every layer at the appropriate index
+            q_idx: idx - index of where to insert the gate.
+        """
+
+        for gate_layer in gates:
+
+            l_size = len(gate_layer.left)
+
+            # Inserting to the left is always trivial
+            if q_idx <= l_size:
+                gate_layer.left = gate_layer.left.insert(dom, q_idx)
+            # Qubit on right of gate. Handles 1 qubit gates by l(dom) = 1
+            elif q_idx > l_size + len(gate_layer.box.dom) - 1:
+
+                # Index relative to the 1st qubit on right
+                r_rel = q_idx - (l_size + len(gate_layer.box.dom))
+
+                # Insert on right. Update relative index from the left
+                gate_layer.right = gate_layer.right.insert(dom, r_rel)
+
+                q_idx = r_rel + l_size + len(gate_layer.box.cod)
+
+            else:
+                if isinstance(gate_layer.box, Controlled):
+                    gate_qubits = [len(gate_layer.left) + j
+                                   for j in range(len(gate_layer.box.dom))]
+
+                    # Initial control qubit box
+                    dists = [0]
+                    curr_box: Box | Controlled = gate_layer.box
+                    while isinstance(curr_box, Controlled):
+                        # Compute relative index control qubits
+                        dists.append(curr_box.distance + sum(dists))
+                        curr_box = curr_box.controlled
+
+                    prev_pos = -1 * min(dists) + gate_qubits[0]
+                    curr_box = gate_layer.box
+
+                    while isinstance(curr_box, Controlled):
+                        curr_pos = prev_pos + curr_box.distance
+                        if prev_pos < q_idx and q_idx <= curr_pos:
+                            curr_box.distance = curr_box.distance + 1
+
+                        elif q_idx <= prev_pos and q_idx > curr_pos:
+                            curr_box.distance = curr_box.distance - 1
+
+                        prev_pos = curr_pos
+                        curr_box = curr_box.controlled
+
+                    box = gate_layer.box
+
+                    box.dom = box.dom.insert(dom, q_idx - l_size)
+                    box.cod = box.cod.insert(dom, q_idx - l_size)
+
+                if isinstance(gate_layer.box, Swap):
+
+                    # Replace single swap with a series of swaps
+                    # Swaps are 2 wide, so if a qubit is pulled through we
+                    # have to use the pulled qubit as an temp ancillary.
+                    gates.append(Layer(gate_layer.left,
+                                       Swap(qubit, qubit),
+                                       dom >> gate_layer.right))
+                    gates.append(Layer(dom >> gate_layer.left,
+                                       Swap(qubit, qubit),
+                                       gate_layer.right))
+                    gates.append(Layer(gate_layer.left,
+                                       Swap(qubit, qubit),
+                                       dom >> gate_layer.right))
+
+        return gates, q_idx
+
+    def build_left_right(q_idx, layer, layers):
+        """
+        We assume that the left and right are constructable
+        from the last gate
+        and the left position of the bra.
+        (We type check at the end.)
+        Rebuild left and right based on the last layer
+        """
+        if len(layers) == 0:
+            return layer
+
+        gate_layer = layers[-1]
+
+        total_layer = ([*gate_layer.left] + [*gate_layer.box.cod]
+                       + [*gate_layer.right])
+
+        # Assumes you're only inserting one qubit at a time
+        total_layer[q_idx] = layer.box.cod
+
+        if q_idx == 0 or not total_layer[:q_idx]:
+            layer.left = Ty()
+        else:
+            layer.left = layer.left._fromiter(total_layer[:q_idx])
+
+        if q_idx == len(total_layer) - 1 or not total_layer[q_idx+1:]:
+            layer.right = Ty()
+        else:
+            layer.right = layer.right._fromiter(total_layer[q_idx+1:])
+
+        return layer
+
+    circuit = Functor(target_category=quantum,  # type: ignore [assignment]
+                      ob=lambda _, x: x,
+                      ar=remove_ketbra1)(circuit)  # type: ignore [arg-type]
+
+    layers = circuit.layers
+
+    for i, layer in enumerate(layers):
+
+        if isinstance(layer.box, Ket):
+            qubits, gates = add_qubit(qubits,
+                                      layer,
+                                      len(layer.left),
+                                      gates)
+
+        elif isinstance(layer.box, (Bra, Discard)):
+
+            q_idx = len(layer.left)
+            layers[i+1:], q_idx = pull_qubit_through(q_idx, layers[i+1:])
+            layer = build_left_right(q_idx, layer, layers[i+1 :])
+
+            postselect.insert(0, layer)
+
+        else:
+            gates.append(layer)
+
+    if gates:
+        postselect = construct_measurements(gates[-1], postselect)
+
+    # Rebuild the diagram
+    diags = [Diagram(dom=layer.dom, cod=layer.cod, layers=[layer])  # type: ignore [arg-type] # noqa: E501
+             for layer in qubits + gates + postselect + measures]
+
+    layerD = diags[0]
+    for diagram in diags[1:]:
+        layerD = layerD >> diagram
+
+    return layerD
+
+
+def circuital_to_dict(diagram: Diagram):
+    """Takes a circuital :py:class:`lambeq.quantum.Diagram`, returns
+    a dictionary for converting to a circuit.
+    Will check if the diagram is circuital before converting.
+
+    Parameters
+    ----------
+    diagram : :py:class:`~lambeq.backend.quantum.Diagram`
+        The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
+        to be converted to dictionary.
+
+    Returns
+    -------
+    Dict:
+        d['gates']    : list of gates
+        d['gates'][:] : {'name': 'name',
+                        'type': 'repr(lambeq.quantum.Parameterized)',
+                        'qubits': All qubits for box [q_i, q_{i+1}, ...],
+                        'dagger': bool,
+                        'phase': (Optional) float for parameter values,
+                                post-selection bits, etc.
+                        'control': (Optional) control qubits
+                        'gate_q' : (Optional) gate qubit if control gate
+                        }
+
+        d['measurements'] : Dictionary storing discard, post-selection,
+                            and measurement information.
+        d['qubits'] : Dictionary containing qubit information.
+    """
+
+    assert is_circuital(diagram)
+
+    layers = diagram.layers
+
+    num_qubits = sum([1 for layer in layers if isinstance(layer.box, Ket)])
+    available_qubits = list(range(num_qubits))
+
+    circuit_dict: dict = {}
+    circuit_dict['gates'] = []
+    circuit_dict['measurements'] = {'post': [], 'discard': [],
+                                    'measure': []}
+    circuit_dict['qubits'] = {'total': num_qubits, 'bitmap': {},
+                              'post': [], 'discard': [], 'measure': []}
+    bitmap: dict = {}
+
+    for layer in layers:
+        if isinstance(layer.box, Ket):
+            pass
+        elif isinstance(layer.box, Measure):
+            qi = available_qubits[layer.left.count(qubit)]
+            available_qubits.remove(qi)
+            bitmap[qi] = len(bitmap)
+            circuit_dict['qubits']['measure'].append(qi)
+            circuit_dict['measurements']['measure'].append(
+                {'type': 'Measure', 'qubit': qi,
+                 'bit': bitmap[qi]}
+            )
+        elif isinstance(layer.box, Bra):
+            qi = available_qubits[layer.left.count(qubit)]
+            available_qubits.remove(qi)
+            bitmap[qi] = len(bitmap)
+            circuit_dict['qubits']['post'].append(qi)
+            circuit_dict['measurements']['post'].append(
+                {'type': 'Bra', 'qubit': qi,
+                 'bit': bitmap[qi], 'phase': layer.box.bit}
+            )
+        elif isinstance(layer.box, Discard):
+            qi = available_qubits[layer.left.count(qubit)]
+            available_qubits.remove(qi)
+            circuit_dict['measurements']['discard'].append(
+                {'type': 'Discard', 'qubit': qi}
+            )
+            circuit_dict['qubits']['discard'].append(qi)
+        else:
+            qi = len(layer.left)
+            circuit_dict['gates'].append(gate_to_dict(layer.box, qi))
+
+    circuit_dict['qubits']['bitmap'] = bitmap
+
+    return circuit_dict
+
+
+def gate_to_dict(box: Box, offset: int) -> Dict:
+
+    gdict: Dict = {}
+    gdict['name'] = box.name
+    gdict['type'] = box.name.split('(')[0]
+    gdict['qubits'] = [offset + j for j in range(len(box.dom))]
+    gdict['phase'] = 0
+    gdict['dagger'] = False
+
+    if isinstance(box, Daggered):
+        box = box.dagger()
+        gdict['dagger'] = True
+        gdict['type'] = box.name.split('(')[0]
+
+    if isinstance(box, (Rx, Ry, Rz)):
+        phase = box.phase
+        if isinstance(box.phase, Symbol):
+            # Tket uses sympy, lambeq uses custom symbol
+            phase = box.phase.to_sympy()
+
+        gdict['phase'] = phase
+
+    elif isinstance(box, Controlled):
+
+        # reverse the distance order
+        dists = []
+        curr_box: Box | Controlled = box
+        while isinstance(curr_box, Controlled):
+            dists.append(curr_box.distance)
+            curr_box = curr_box.controlled
+        dists.reverse()
+
+        # Index of the controlled qubit is the last entry in rel_idx
+        rel_idx = [0]
+        for dist in dists:
+            if dist > 0:
+                # Add control to the left, offset by distance
+                rel_idx = [0] + [i + dist for i in rel_idx]
+            else:
+                # Add control to the right, don't offset
+                right_most_idx = max(rel_idx)
+                rel_idx.insert(-1, right_most_idx - dist)
+
+        i_qubits = [gdict['qubits'][i] for i in rel_idx]
+
+        gdict['qubits'] = i_qubits
+        gdict['control'] = sorted(gdict['qubits'][:-1])
+        gdict['gate_q'] = gdict['qubits'][-1]
+
+        if gdict['type'] in ('CRx', 'CRz'):
+            gdict['phase'] = box.phase
+            if isinstance(box.phase, Symbol):
+                # Tket uses sympy, lambeq uses custom symbol
+                gdict['phase'] = box.phase.to_sympy()
+
+    elif isinstance(box, Scalar):
+        gdict['type'] = 'Scalar'
+        # Just a placeholder
+        gdict['phase'] = box.array
+
+    return gdict
