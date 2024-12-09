@@ -176,6 +176,8 @@ def to_pennylane(diagram: Diagram, probabilities=False,
               ' wires. All open wires will be discarded during conversion',
               file=sys.stderr)
 
+    is_mixed = diagram.is_mixed
+
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
 
@@ -201,7 +203,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
                             wires_list,
                             probabilities,
                             post_selection,
-                            False,
+                            is_mixed,
                             scalar,
                             circuit_dict['qubits']['total'],
                             backend_config,
