@@ -1359,7 +1359,7 @@ def to_circuital(diagram: Diagram):
             Inserts a qubit type into every layer at the appropriate index
             q_idx: idx - index of where to insert the gate.
         """
-
+        new_gates = []
         for gate_layer in gates:
 
             l_size = len(gate_layer.left)
@@ -1367,6 +1367,7 @@ def to_circuital(diagram: Diagram):
             # Inserting to the left is always trivial
             if q_idx <= l_size:
                 gate_layer.left = gate_layer.left.insert(dom, q_idx)
+                new_gates.append(gate_layer)
             # Qubit on right of gate. Handles 1 qubit gates by l(dom) = 1
             elif q_idx > l_size + len(gate_layer.box.dom) - 1:
 
@@ -1377,6 +1378,7 @@ def to_circuital(diagram: Diagram):
                 gate_layer.right = gate_layer.right.insert(dom, r_rel)
 
                 q_idx = r_rel + l_size + len(gate_layer.box.cod)
+                new_gates.append(gate_layer)
 
             else:
                 if isinstance(gate_layer.box, Controlled):
@@ -1409,23 +1411,24 @@ def to_circuital(diagram: Diagram):
 
                     box.dom = box.dom.insert(dom, q_idx - l_size)
                     box.cod = box.cod.insert(dom, q_idx - l_size)
+                    new_gates.append(gate_layer)
 
                 if isinstance(gate_layer.box, Swap):
 
                     # Replace single swap with a series of swaps
                     # Swaps are 2 wide, so if a qubit is pulled through we
                     # have to use the pulled qubit as an temp ancillary.
-                    gates.append(Layer(gate_layer.left,
-                                       Swap(qubit, qubit),
-                                       dom >> gate_layer.right))
-                    gates.append(Layer(dom >> gate_layer.left,
-                                       Swap(qubit, qubit),
-                                       gate_layer.right))
-                    gates.append(Layer(gate_layer.left,
-                                       Swap(qubit, qubit),
-                                       dom >> gate_layer.right))
+                    new_gates.append(Layer(gate_layer.left,
+                                     Swap(qubit, qubit),
+                                     dom >> gate_layer.right))
+                    new_gates.append(Layer(dom >> gate_layer.left,
+                                     Swap(qubit, qubit),
+                                     gate_layer.right))
+                    new_gates.append(Layer(gate_layer.left,
+                                     Swap(qubit, qubit),
+                                     dom >> gate_layer.right))
 
-        return gates, q_idx
+        return new_gates, q_idx
 
     def build_left_right(q_idx, layer, layers):
         """

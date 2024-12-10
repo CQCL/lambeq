@@ -77,7 +77,7 @@ OP_MAP = {
     'CU1': lambda a, wires: qml.ctrl(qml.U1(a,
                                             wires=wires[1]),
                                      control=wires[0]),
-    'Swap': qml.SWAP,
+    'SWAP': qml.SWAP,
     'noop': qml.Identity,
 }
 
