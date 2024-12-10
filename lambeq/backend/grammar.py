@@ -1914,14 +1914,14 @@ class Functor:
     >>> diag.draw(
     ...     figsize=(2, 2), path='./snake.png')
 
-    .. image:: ./_static/images/snake.png
+    .. image:: ../_static/images/snake.png
         :align: center
 
     >>> F = Functor(grammar, lambda _, ty : ty @ ty)
     >>> F(diag).draw(
     ...     figsize=(2, 2), path='./snake-2.png')
 
-    .. image:: ./_static/images/snake-2.png
+    .. image:: ../_static/images/snake-2.png
         :align: center
 
     """
