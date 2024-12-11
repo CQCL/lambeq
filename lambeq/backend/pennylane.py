@@ -43,53 +43,55 @@ from __future__ import annotations
 
 from itertools import product
 import sys
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Union
 
 import pennylane as qml
-from pytket import OpType
 import sympy
 import torch
 
-from lambeq.backend.quantum import Measure, Scalar
+from lambeq.backend.quantum import (circuital_to_dict,
+                                    is_circuital, Measure,
+                                    to_circuital)
 
 if TYPE_CHECKING:
     from lambeq.backend.quantum import Diagram
 
 OP_MAP = {
-    OpType.X: qml.PauliX,
-    OpType.Y: qml.PauliY,
-    OpType.Z: qml.PauliZ,
-    OpType.S: qml.S,
-    OpType.Sdg: lambda wires: qml.S(wires=wires).inv(),
-    OpType.T: qml.T,
-    OpType.Tdg: lambda wires: qml.T(wires=wires).inv(),
-    OpType.H: qml.Hadamard,
-    OpType.Rx: qml.RX,
-    OpType.Ry: qml.RY,
-    OpType.Rz: qml.RZ,
-    OpType.CX: qml.CNOT,
-    OpType.CY: qml.CY,
-    OpType.CZ: qml.CZ,
-    OpType.CRx: qml.CRX,
-    OpType.CRy: qml.CRY,
-    OpType.CRz: qml.CRZ,
-    OpType.CU1: lambda a, wires: qml.ctrl(qml.U1(a, wires=wires[1]),
-                                          control=wires[0]),
-    OpType.SWAP: qml.SWAP,
-    OpType.noop: qml.Identity,
+    'H': qml.Hadamard,
+    'X': qml.PauliX,
+    'Y': qml.PauliY,
+    'Z': qml.PauliZ,
+    'S': qml.S,
+    'Sdg': lambda wires: qml.S(wires=wires).inv(),
+    'T': qml.T,
+    'Tdg': lambda wires: qml.T(wires=wires).inv(),
+    'Rx': qml.RX,
+    'Ry': qml.RY,
+    'Rz': qml.RZ,
+    'CX': qml.CNOT,
+    'CY': qml.CY,
+    'CZ': qml.CZ,
+    'CRx': qml.CRX,
+    'CRy': qml.CRY,
+    'CRz': qml.CRZ,
+    'CU1': lambda a, wires: qml.ctrl(qml.U1(a,
+                                            wires=wires[1]),
+                                     control=wires[0]),
+    'SWAP': qml.SWAP,
+    'noop': qml.Identity,
 }
 
 
-def tk_op_to_pennylane(tk_op):
+def extract_ops_from_circuital(circuit_dict: dict):
     """
     Extract the operation, parameters and wires from
-    a pytket :class:`Op`, and return the corresponding PennyLane
+    a circuital diagram dictionary, and return the corresponding PennyLane
     operation.
 
     Parameters
     ----------
-    tk_op : :class:`pytket.circuit.Op`
-        The pytket :class:`Op` to convert.
+    circuit_dict : :class:`Dict`
+        The circuital dictionary to convert.
 
     Returns
     -------
@@ -104,84 +106,31 @@ def tk_op_to_pennylane(tk_op):
         The wires/qubits to apply the operation to.
 
     """
-    wires = [x.index[0] for x in tk_op.qubits]
-    params = tk_op.op.params
+    ops = [OP_MAP[x['type']] for x in circuit_dict['gates']]
+    qubits = [x['qubits'] for x in circuit_dict['gates']]
+    params = [x['phase'] if 'phase' in x and x['phase'] else []
+              for x in circuit_dict['gates']]
+
     symbols = set()
 
-    remapped_params = []
+    remapped_params: list[Union[sympy.Expr, torch.Tensor]] = []
     for param in params:
-        # scale rotation from [0, 2) to [0, 1) (rescale to [0, 2pi) later)
-        param /= 2
-        if not isinstance(param, sympy.Expr):
+
+        # Check if the param contains a symbol
+        if isinstance(param, list) and len(param) == 0:
+            remapped_params.append([])
+            continue
+        elif not isinstance(param, sympy.Expr):
             param = torch.tensor(param)
         else:
             symbols.update(param.free_symbols)
 
-        remapped_params.append(param)
+        remapped_params.append([param])
 
-    return OP_MAP[tk_op.op.type], remapped_params, symbols, wires
-
-
-def extract_ops_from_tk(tk_circ):
-    """
-    Extract the operations, and corresponding parameters and wires,
-    from a pytket Circuit. Return these as lists to use in
-    constructing PennyLane circuit.
-
-    Parameters
-    ----------
-    tk_circ : :class:`lambeq.backend.converters.tk.Circuit`
-        The pytket circuit to extract the operations from.
-
-    Returns
-    -------
-    list of :class:`qml.operation.Operation`
-        The PennyLane operations extracted from the pytket circuit.
-    list of list of (:class:`torch.FloatTensor` or
-                     :class:`lambeq.backend.symbol.Symbol`)
-        The corresponding parameters of the operations.
-    list of list of int
-        The corresponding wires of the operations.
-    set of :class:`lambeq.backend.symbol.Symbol`
-        The free symbols in the parameters of the tket circuit.
-
-    """
-    op_list, params_list, wires_list = [], [], []
-    symbols_set = set()
-
-    for op in tk_circ.__iter__():
-        if op.op.type != OpType.Measure:
-            op, params, symbols, wires = tk_op_to_pennylane(op)
-            op_list.append(op)
-            params_list.append(params)
-            wires_list.append(wires)
-            symbols_set.update(symbols)
-
-    return op_list, params_list, wires_list, symbols_set
+    return ops, remapped_params, symbols, qubits
 
 
-def get_post_selection_dict(tk_circ):
-    """
-    Return post-selections based on qubit indices.
-
-    Parameters
-    ----------
-    tk_circ : :class:`lambeq.backend.converters.tk.Circuit`
-        The pytket circuit to extract the post-selections from.
-
-    Returns
-    -------
-    dict of int
-        A mapping from qubit indices to pytket classical indices.
-
-    """
-    q_post_sels = {}
-    for q, c in tk_circ.qubit_to_bit_map.items():
-        q_post_sels[q.index[0]] = tk_circ.post_selection[c.index[0]]
-    return q_post_sels
-
-
-def to_pennylane(lambeq_circuit: Diagram, probabilities=False,
+def to_pennylane(diagram: Diagram, probabilities=False,
                  backend_config=None, diff_method='best'):
     """
     Return a PennyLaneCircuit equivalent to the input lambeq
@@ -217,28 +166,36 @@ def to_pennylane(lambeq_circuit: Diagram, probabilities=False,
         The PennyLane circuit equivalent to the input lambeq circuit.
 
     """
-
-    if any(isinstance(box, Measure) for box in lambeq_circuit.boxes):
+    if any(isinstance(box, Measure) for box in diagram.boxes):
         raise ValueError('Only pure circuits, or circuits with discards'
                          ' are currently supported.')
 
-    if lambeq_circuit.is_mixed and lambeq_circuit.cod:
+    if diagram.is_mixed and diagram.cod:
         # Some qubits discarded, some left open
         print('Warning: Circuit includes both discards and open codomain'
               ' wires. All open wires will be discarded during conversion',
               file=sys.stderr)
 
-    tk_circ = lambeq_circuit.to_tk()
-    op_list, params_list, wires_list, symbols_set = (
-        extract_ops_from_tk(tk_circ)
-    )
+    is_mixed = diagram.is_mixed
 
-    post_selection = get_post_selection_dict(tk_circ)
+    if not is_circuital(diagram):
+        diagram = to_circuital(diagram)
+
+    circuit_dict = circuital_to_dict(diagram)
 
     scalar = 1
-    for box in lambeq_circuit.boxes:
-        if isinstance(box, Scalar):
-            scalar *= box.array
+    for gate in circuit_dict['gates']:
+        if gate['type'] == 'Scalar':
+            scalar *= gate['phase']
+            circuit_dict['gates'].remove(gate)
+
+    ex_ops = extract_ops_from_circuital(circuit_dict)
+    op_list, params_list, symbols_set, wires_list = ex_ops
+
+    # Get post selection bits
+    post_selection = {}
+    for postselect in circuit_dict['measurements']['post'] :
+        post_selection[postselect['qubit']] = postselect['phase']
 
     return PennyLaneCircuit(op_list,
                             list(symbols_set),
@@ -246,9 +203,9 @@ def to_pennylane(lambeq_circuit: Diagram, probabilities=False,
                             wires_list,
                             probabilities,
                             post_selection,
-                            lambeq_circuit.is_mixed,
+                            is_mixed,
                             scalar,
-                            tk_circ.n_qubits,
+                            circuit_dict['qubits']['total'],
                             backend_config,
                             diff_method)
 
