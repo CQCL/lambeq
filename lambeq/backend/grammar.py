@@ -1026,10 +1026,8 @@ class Diagram(Entity):
         cod = self.cod
         for n, diagram in enumerate(diags):
             if diagram.dom != cod:
-                raise ValueError(f'Diagram {n} '
-                                 f'(cod={cod.__repr__()}) '
-                                 f'does not compose with diagram {n+1} '
-                                 f'(dom={diagram.dom.__repr__()})')
+                raise ValueError(f'Diagram {n} (cod={cod}) does not compose '
+                                 f'with diagram {n+1} (dom={diagram.dom})')
             cod = diagram.cod
 
             layers.extend(diagram.layers)
@@ -1972,14 +1970,14 @@ class Functor:
     >>> diag.draw(
     ...     figsize=(2, 2), path='./docs/_static/images/snake.png')
 
-    .. image:: ./_static/images/snake.png
+    .. image:: ../_static/images/snake.png
         :align: center
 
     >>> F = Functor(grammar, lambda _, ty : ty @ ty)
     >>> F(diag).draw(
-    ...     figsize=(2, 2), path='./docs/_static/images/snake-2.png')
+    ...     figsize=(2, 2), path='./snake-2.png')
 
-    .. image:: ./_static/images/snake-2.png
+    .. image:: ../_static/images/snake-2.png
         :align: center
 
     """
