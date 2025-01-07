@@ -32,13 +32,12 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast, Dict, Tuple, Union, Optional
+from typing import cast, Dict, Optional, Tuple, Union
+import pickle
 
 import numpy as np
-import pickle
 import tensornetwork as tn
 from typing_extensions import Any, Self
-
 
 from lambeq.backend import Functor, grammar, Symbol, tensor
 from lambeq.backend.numerical_backend import backend, get_backend
@@ -1462,7 +1461,7 @@ def to_circuital(diagram: Diagram):
 
         return layer
 
-    circuit = Functor(target_category=quantum,  # type: ignore [assignment]
+    circuit = Functor(target_category=quantum,
                       ob=lambda _, x: x,
                       ar=remove_ketbra1)(circuit)  # type: ignore [arg-type]
 

@@ -108,8 +108,10 @@ def extract_ops_from_circuital(gates: list[Gate]):
     """
     ops = [OP_MAP[x.gtype] for x in gates]
     qubits = [x.qubits for x in gates]
-    params: list[Union[sympy.Expr, float, int, list]] = [x.phase if x.phase else []
-              for x in gates]
+    params: list[Union[sympy.Expr, float, int, list]] = [x.phase
+                                                         if x.phase
+                                                         else []
+                                                         for x in gates]
 
     symbols = set()
 
@@ -185,7 +187,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
 
     scalar = 1.0
     for gate in circuitInfo.gates:
-        if gate.gtype == 'Scalar' and not gate.phase is None:
+        if gate.gtype == 'Scalar' and gate.phase is not None:
             scalar *= gate.phase
             circuitInfo.gates.remove(gate)
 

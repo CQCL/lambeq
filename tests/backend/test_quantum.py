@@ -213,8 +213,11 @@ def test_eval_w_aer_backend():
 def test_to_circuital():
     circ = to_circuital((Ket(0) >> H >> Measure()))
     assert is_circuital(circ)
-    cdict = circuital_to_dict(circ)
-    assert cdict['gates'] == [{'name': 'H', 'qubits': [0], 'type': 'H', 'phase': 0.0, 'dagger': False},]
+    cdict = readoff_circuital(circ)
+    assert cdict.gates[0].gtype == 'H'
+    assert cdict.gates[0].qubits == [0]
+    assert cdict.gates[0].phase == None
+    assert cdict.gates[0].dagger == False
 
 
 def test_is_circuital():
