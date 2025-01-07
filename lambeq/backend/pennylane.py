@@ -49,8 +49,8 @@ import pennylane as qml
 import sympy
 import torch
 
-from lambeq.backend.quantum import (circuital_to_dict,
-                                    is_circuital, Measure,
+from lambeq.backend.quantum import (Gate, is_circuital, Measure,
+                                    readoff_circuital,
                                     to_circuital)
 
 if TYPE_CHECKING:
@@ -82,7 +82,7 @@ OP_MAP = {
 }
 
 
-def extract_ops_from_circuital(circuit_dict: dict):
+def extract_ops_from_circuital(gates: list[Gate]):
     """
     Extract the operation, parameters and wires from
     a circuital diagram dictionary, and return the corresponding PennyLane
@@ -106,10 +106,10 @@ def extract_ops_from_circuital(circuit_dict: dict):
         The wires/qubits to apply the operation to.
 
     """
-    ops = [OP_MAP[x['type']] for x in circuit_dict['gates']]
-    qubits = [x['qubits'] for x in circuit_dict['gates']]
-    params = [x['phase'] if 'phase' in x and x['phase'] else []
-              for x in circuit_dict['gates']]
+    ops = [OP_MAP[x.gtype] for x in gates]
+    qubits = [x.qubits for x in gates]
+    params: list[Union[sympy.Expr, float, int, list]] = [x.phase if x.phase else []
+              for x in gates]
 
     symbols = set()
 
@@ -140,7 +140,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
 
     Parameters
     ----------
-    lambeq_circuit : :class:`lambeq.backend.quantum.Diagram`
+    diagram : :class:`lambeq.backend.quantum.Diagram`
         The lambeq circuit to convert to PennyLane.
     probabilities : bool, default: False
         Determines whether the PennyLane
@@ -181,21 +181,19 @@ def to_pennylane(diagram: Diagram, probabilities=False,
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
 
-    circuit_dict = circuital_to_dict(diagram)
+    circuitInfo = readoff_circuital(diagram)
 
-    scalar = 1
-    for gate in circuit_dict['gates']:
-        if gate['type'] == 'Scalar':
-            scalar *= gate['phase']
-            circuit_dict['gates'].remove(gate)
+    scalar = 1.0
+    for gate in circuitInfo.gates:
+        if gate.gtype == 'Scalar' and not gate.phase is None:
+            scalar *= gate.phase
+            circuitInfo.gates.remove(gate)
 
-    ex_ops = extract_ops_from_circuital(circuit_dict)
+    ex_ops = extract_ops_from_circuital(circuitInfo.gates)
     op_list, params_list, symbols_set, wires_list = ex_ops
 
     # Get post selection bits
-    post_selection = {}
-    for postselect in circuit_dict['measurements']['post'] :
-        post_selection[postselect['qubit']] = postselect['phase']
+    post_selection = circuitInfo.postmap
 
     return PennyLaneCircuit(op_list,
                             list(symbols_set),
@@ -205,7 +203,7 @@ def to_pennylane(diagram: Diagram, probabilities=False,
                             post_selection,
                             is_mixed,
                             scalar,
-                            circuit_dict['qubits']['total'],
+                            circuitInfo.totalQubits,
                             backend_config,
                             diff_method)
 

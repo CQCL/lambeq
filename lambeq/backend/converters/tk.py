@@ -33,11 +33,11 @@ from typing_extensions import Self
 
 from lambeq.backend import Symbol
 from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ,
-                                    circuital_to_dict,
                                     Controlled, CRx, CRy, CRz,
                                     Diagram, Discard, GATES, Id,
                                     is_circuital, Ket, Measure,
-                                    qubit, Rx, Ry, Rz, Scalar, Swap,
+                                    qubit, readoff_circuital,
+                                    Rx, Ry, Rz, Scalar, Swap,
                                     to_circuital, X, Y, Z
                                     )
 
@@ -237,41 +237,34 @@ def to_tk(diagram: Diagram):
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
 
-    circuit_dict = circuital_to_dict(diagram)
+    circuitInfo = readoff_circuital(diagram)
 
-    post_select = {postselect['qubit']: postselect['phase']
-                   for postselect in
-                   circuit_dict['measurements']['post']}
-
-    circuit = Circuit(circuit_dict['qubits']['total'],
-                      len(circuit_dict['qubits']['bitmap']),
-                      post_selection=post_select
+    circuit = Circuit(circuitInfo.totalQubits,
+                      len(circuitInfo.bitmap),
+                      post_selection=circuitInfo.postmap
                       )
 
-    for gate in circuit_dict['gates']:
+    for gate in circuitInfo.gates:
 
-        if gate['type'] == 'Scalar':
-            circuit.scale(abs(gate['phase'])**2)
+        if gate.gtype == 'Scalar':
+            circuit.scale(abs(gate.phase)**2)
             continue
-        elif not gate['type'] in OPTYPE_MAP:
-            raise NotImplementedError(f'Gate {gate} not supported')
+        elif gate.gtype not in OPTYPE_MAP:
+            raise NotImplementedError(f'Gate {gate.gtype} not supported')
 
-        if 'phase' in gate and gate['phase']:
-            op = Op.create(OPTYPE_MAP[gate['type']], 2 * gate['phase'])
+        if gate.phase:
+            op = Op.create(OPTYPE_MAP[gate.gtype], 2 * gate.phase)
         else:
-            op = Op.create(OPTYPE_MAP[gate['type']])
+            op = Op.create(OPTYPE_MAP[gate.gtype])
 
-        if gate['dagger']:
+        if gate.dagger:
             op = op.dagger
 
-        qubits = gate['qubits']
+        qubits = gate.qubits
         circuit.add_gate(op, qubits)
 
-    for measure in circuit_dict['measurements']['measure']:
-        circuit.Measure(measure['qubit'], measure['bit'])
-
-    for postselect in circuit_dict['measurements']['post']:
-        circuit.Measure(postselect['qubit'], postselect['bit'])
+    for mq, bi in circuitInfo.bitmap.items():
+        circuit.Measure(mq, bi)
 
     return circuit
 

@@ -30,12 +30,12 @@ composition of gates using the tensornetwork library easier.
 from __future__ import annotations
 
 from collections.abc import Callable
-import copy
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast, Dict, Tuple
+from typing import cast, Dict, Tuple, Union, Optional
 
 import numpy as np
+import pickle
 import tensornetwork as tn
 from typing_extensions import Any, Self
 
@@ -1240,7 +1240,8 @@ def to_circuital(diagram: Diagram):
     # bits and qubits are lists of register indices, at layer i we want
     # len(bits) == circuit[:i].cod.count(bit) and same for qubits
     # Necessary to ensure editing boxes is localized.
-    circuit = copy.deepcopy(diagram)
+    serializedcircuit = pickle.dumps(diagram)
+    circuit = pickle.loads(serializedcircuit)
 
     qubits: list[Layer] = []
     gates: list[Layer] = []
@@ -1500,109 +1501,65 @@ def to_circuital(diagram: Diagram):
     return layerD
 
 
-def circuital_to_dict(diagram: Diagram):
-    """Takes a circuital :py:class:`lambeq.quantum.Diagram`, returns
-    a dictionary for converting to a circuit.
-    Will check if the diagram is circuital before converting.
+@dataclass
+class Gate:
+    """Gate information for backend circuit construction.
 
     Parameters
     ----------
-    diagram : :py:class:`~lambeq.backend.quantum.Diagram`
-        The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
-        to be converted to dictionary.
-
-    Returns
-    -------
-    Dict:
-        d['gates']    : list of gates
-        d['gates'][:] : {'name': 'name',
-                        'type': 'repr(lambeq.quantum.Parameterized)',
-                        'qubits': All qubits for box [q_i, q_{i+1}, ...],
-                        'dagger': bool,
-                        'phase': (Optional) float for parameter values,
-                                post-selection bits, etc.
-                        'control': (Optional) control qubits
-                        'gate_q' : (Optional) gate qubit if control gate
-                        }
-
-        d['measurements'] : Dictionary storing discard, post-selection,
-                            and measurement information.
-        d['qubits'] : Dictionary containing qubit information.
+    name : str
+        Arbitrary name / id
+    gtype : str
+        Type for backend conversion, e.g., 'Rx', 'X', etc.
+    qubits : list[int]
+        List of qubits the gate acts on.
+    phase : Union[float, Symbol, None] = 0
+        Phase parameter for gate.
+    dagger : bool = False
+        Whether to dagger the gate.
+    control : Optional[list[int]] = None
+        For control gates, list of all the control qubits.
+    gate_q : Optional[int] = None
+        For control gates, the gates being controlled.
     """
-
-    assert is_circuital(diagram)
-
-    layers = diagram.layers
-
-    num_qubits = sum([1 for layer in layers if isinstance(layer.box, Ket)])
-    available_qubits = list(range(num_qubits))
-
-    circuit_dict: dict = {}
-    circuit_dict['gates'] = []
-    circuit_dict['measurements'] = {'post': [], 'discard': [],
-                                    'measure': []}
-    circuit_dict['qubits'] = {'total': num_qubits, 'bitmap': {},
-                              'post': [], 'discard': [], 'measure': []}
-    bitmap: dict = {}
-
-    for layer in layers:
-        if isinstance(layer.box, Ket):
-            pass
-        elif isinstance(layer.box, Measure):
-            qi = available_qubits[layer.left.count(qubit)]
-            available_qubits.remove(qi)
-            bitmap[qi] = len(bitmap)
-            circuit_dict['qubits']['measure'].append(qi)
-            circuit_dict['measurements']['measure'].append(
-                {'type': 'Measure', 'qubit': qi,
-                 'bit': bitmap[qi]}
-            )
-        elif isinstance(layer.box, Bra):
-            qi = available_qubits[layer.left.count(qubit)]
-            available_qubits.remove(qi)
-            bitmap[qi] = len(bitmap)
-            circuit_dict['qubits']['post'].append(qi)
-            circuit_dict['measurements']['post'].append(
-                {'type': 'Bra', 'qubit': qi,
-                 'bit': bitmap[qi], 'phase': layer.box.bit}
-            )
-        elif isinstance(layer.box, Discard):
-            qi = available_qubits[layer.left.count(qubit)]
-            available_qubits.remove(qi)
-            circuit_dict['measurements']['discard'].append(
-                {'type': 'Discard', 'qubit': qi}
-            )
-            circuit_dict['qubits']['discard'].append(qi)
-        else:
-            qi = len(layer.left)
-            circuit_dict['gates'].append(gate_to_dict(layer.box, qi))
-
-    circuit_dict['qubits']['bitmap'] = bitmap
-
-    return circuit_dict
+    name: str
+    gtype: str
+    qubits: list[int]
+    phase: Union[float, Symbol, None] = 0
+    dagger: bool = False
+    control: Optional[list[int]] = None
+    gate_q: Optional[int] = None
 
 
-def gate_to_dict(box: Box, offset: int) -> Dict:
+def gateFromBox(box: Box, offset: int) -> Gate:
+    """Constructs Gate for backend circuit construction
+    from a Box.
 
-    gdict: Dict = {}
-    gdict['name'] = box.name
-    gdict['type'] = box.name.split('(')[0]
-    gdict['qubits'] = [offset + j for j in range(len(box.dom))]
-    gdict['phase'] = 0
-    gdict['dagger'] = False
+    Parameters
+    ----------
+    box : Box
+        Box to convert to a Gate.
+    offset : int
+        Qubit index on the leftmost part of the Gate.
+    """
+    name = box.name
+    gtype = box.name.split('(')[0]
+    qubits = [offset + j for j in range(len(box.dom))]
+    phase = None
+    dagger = False
+    control = None
+    gate_q = None
 
     if isinstance(box, Daggered):
         box = box.dagger()
-        gdict['dagger'] = True
-        gdict['type'] = box.name.split('(')[0]
+        dagger = True
+        gtype = box.name.split('(')[0]
 
     if isinstance(box, (Rx, Ry, Rz)):
         phase = box.phase
         if isinstance(box.phase, Symbol):
             # Tket uses sympy, lambeq uses custom symbol
             phase = box.phase.to_sympy()
-
-        gdict['phase'] = phase
 
     elif isinstance(box, Controlled):
 
@@ -1625,21 +1582,113 @@ def gate_to_dict(box: Box, offset: int) -> Dict:
                 right_most_idx = max(rel_idx)
                 rel_idx.insert(-1, right_most_idx - dist)
 
-        i_qubits = [gdict['qubits'][i] for i in rel_idx]
+        i_qubits = [qubits[i] for i in rel_idx]
 
-        gdict['qubits'] = i_qubits
-        gdict['control'] = sorted(gdict['qubits'][:-1])
-        gdict['gate_q'] = gdict['qubits'][-1]
+        qubits = i_qubits
+        control = sorted(qubits[:-1])
+        gate_q = qubits[-1]
 
-        if gdict['type'] in ('CRx', 'CRz'):
-            gdict['phase'] = box.phase
+        if gtype in ('CRx', 'CRz'):
+            phase = box.phase
             if isinstance(box.phase, Symbol):
                 # Tket uses sympy, lambeq uses custom symbol
-                gdict['phase'] = box.phase.to_sympy()
+                phase = box.phase.to_sympy()
 
     elif isinstance(box, Scalar):
-        gdict['type'] = 'Scalar'
+        gtype = 'Scalar'
         # Just a placeholder
-        gdict['phase'] = box.array
+        phase = box.array
 
-    return gdict
+    return Gate(
+        name,
+        gtype,
+        qubits,
+        phase,
+        dagger,
+        control,
+        gate_q
+    )
+
+
+@dataclass
+class CircuitInfo:
+    """Info for constructing circuits with backends.
+
+    Parameters
+    ----------
+    totalQubits : int
+        Total number of qubits in the circuit.
+    gates : list[:py:class:`~lambeq.backend.quantum.Gate`]
+        List containing gates, in topological ordering.
+    bitmap: dict[int, int]
+        Dictionary mapping qubit index to bit index for
+        measurements, postselection, etc.
+    postmap: dict[int, int]
+        Dictionary mapping qubit index to post selection value.
+    discards: list[int]
+        List of discarded qubit indeces.
+    """
+
+    totalQubits: int
+    gates: list[Gate]
+    bitmap: dict[int, int]
+    postmap: dict[int, int]
+    discards: list[int]
+
+
+def readoff_circuital(diagram: Diagram) -> CircuitInfo:
+    """Takes a circuital :py:class:`lambeq.quantum.Diagram`, returns
+    a :py:class:`~lambeq.backend.quantum.CircuitInfo` which
+    is used by quantum backends to construct circuits.
+    Will check if the diagram is circuital before converting.
+
+    Parameters
+    ----------
+    diagram : :py:class:`~lambeq.backend.quantum.Diagram`
+        The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
+        to be converted to dictionary.
+
+    Returns
+    -------
+    :py:class:`~lambeq.backend.quantum.CircuitInfo`
+    """
+
+    assert is_circuital(diagram)
+
+    layers = diagram.layers
+
+    totalQubits = sum([1 for layer in layers if isinstance(layer.box, Ket)])
+    available_qubits = list(range(totalQubits))
+
+    gates: list[Gate] = []
+    bitmap: dict = {}
+    postmap: dict = {}
+    discards: list[int] = []
+
+    for layer in layers:
+        if isinstance(layer.box, Ket):
+            pass
+        elif isinstance(layer.box, Measure):
+            qi = available_qubits[layer.left.count(qubit)]
+            available_qubits.remove(qi)
+            bitmap[qi] = len(bitmap)
+
+        elif isinstance(layer.box, Bra):
+            qi = available_qubits[layer.left.count(qubit)]
+            available_qubits.remove(qi)
+            bitmap[qi] = len(bitmap)
+            postmap[qi] = layer.box.bit
+
+        elif isinstance(layer.box, Discard):
+            qi = available_qubits[layer.left.count(qubit)]
+            available_qubits.remove(qi)
+            discards.append(qi)
+        else:
+            qi = len(layer.left)
+            gates.append(gateFromBox(layer.box, qi))
+
+    return CircuitInfo(totalQubits,
+                       gates,
+                       bitmap,
+                       postmap,
+                       discards)
