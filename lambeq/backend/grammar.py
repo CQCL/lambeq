@@ -280,20 +280,20 @@ class Ty(Entity):
     @overload
     def tensor(self, other: Self, *rest: Self) -> Self: ...
 
-    def tensor(self, other: Self | Iterable[Self], *rest: Self) -> Self | Any:
+    def tensor(self, other: Self | Iterable[Self], *rest: Self) -> Self:
         try:
             tys = [*other, *rest]
         except TypeError:
-            return NotImplemented
+            raise NotImplementedError
 
         # Diagrams are iterable - the identity diagram has
         # an empty list for its layers but may still contain types
         if getattr(other, 'is_id', False):
-            return NotImplemented
+            raise NotImplementedError
 
         if any(not isinstance(ty, type(self))
                or self.category != ty.category for ty in tys):
-            return NotImplemented
+            raise NotImplementedError
 
         return self._fromiter(ob for ty in (self, *tys) for ob in ty)
 
@@ -957,11 +957,11 @@ class Diagram(Entity):
 
         return diags  # type: ignore[return-value]
 
-    def tensor(self, *diagrams: Diagrammable | Ty) -> Self | Any:
+    def tensor(self, *diagrams: Diagrammable | Ty) -> Self:
         try:
             diags = self.lift([self, *diagrams])
         except ValueError:
-            return NotImplemented
+            raise NotImplementedError
 
         right = dom = self.dom.tensor(*[
             diagram.to_diagram().dom for diagram in diagrams
@@ -1016,11 +1016,11 @@ class Diagram(Entity):
             return self[key:key + 1]
         raise TypeError
 
-    def then(self, *diagrams: Diagrammable) -> Self | Any:
+    def then(self, *diagrams: Diagrammable) -> Self:
         try:
             diags = self.lift(diagrams)
         except ValueError:
-            return NotImplemented
+            raise NotImplementedError
 
         layers = [*self.layers]
         cod = self.cod

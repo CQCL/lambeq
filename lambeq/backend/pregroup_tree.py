@@ -116,14 +116,14 @@ class PregroupTreeNode:
                      == (other.parent.ind if other.parent else None))
                 and self.children == other.children)
 
-    def is_same_word(self, other: object) -> bool:
+    def is_same_word(self, other: object) -> bool:  # type : [no-any-return]
         """Check if these words are the same words in the sentence.
 
         This is a relaxed version of the `__eq__` function
         which doesn't check equality of the children - essentially,
         this just checks if `other` is the same token."""
         if not isinstance(other, PregroupTreeNode):
-            return NotImplemented
+            raise NotImplementedError
         return (self.word == other.word
                 and self.ind == other.ind)
 

@@ -43,7 +43,7 @@ from __future__ import annotations
 
 from itertools import product
 import sys
-from typing import List, TYPE_CHECKING, Union, Set, Tuple
+from typing import List, Set, Tuple, TYPE_CHECKING, Union
 
 import pennylane as qml
 import sympy
