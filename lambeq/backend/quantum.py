@@ -1169,10 +1169,12 @@ def is_circuital(diagram: Diagram) -> bool:
     """
     Takes a :py:class:`lambeq.quantum.Diagram`,
     checks if a diagram is a quantum 'circuital' diagram.
-    A circuital diagram is a diagram with qubits at the top.
 
-    Used to check for measurements and post-selection
-    at the bottom but there are too many edge cases.
+    Circuital means:
+        1. All initial layers are qubits
+        2. All post selections are at the end
+
+    Allows for mixed_circuit measurements
 
     Returns
     -------
@@ -1186,7 +1188,6 @@ def is_circuital(diagram: Diagram) -> bool:
 
     layers = diagram.layers
 
-    # Check if the first layers are all qubits and measurements
     num_qubits = sum([1 for layer in layers
                       if isinstance(layer.box, Ket)])
 
@@ -1214,7 +1215,7 @@ def is_circuital(diagram: Diagram) -> bool:
     return True
 
 
-def to_circuital(diagram: Diagram):
+def to_circuital(diagram: Diagram) -> Diagram:
     """Takes a :py:class:`lambeq.quantum.Diagram`, returns
     a modified :py:class:`lambeq.quantum.Diagram` which
     is easier to convert to tket and other circuit simulators
@@ -1259,11 +1260,11 @@ def to_circuital(diagram: Diagram):
                   layer: Layer,
                   offset: int,
                   gates: list[Layer]) -> Tuple[list[Layer], list[Layer]]:
-
-        # Adds a qubit to the qubit list
-        # Appends shifts all the gates
-        # Assumes we only add one qubit at a time.
-        # No bits
+        """
+            Adds a qubit to the qubit list.
+            Shifts all the gates to accommodate new qubit.
+            Assumes we only add one qubit at a time.
+        """
 
         for qubit_layer in qubits:
             from_left = len(qubit_layer.left)
@@ -1280,7 +1281,8 @@ def to_circuital(diagram: Diagram):
 
         return qubits, pull_qubit_through(offset, gates, dom=layer.box.cod)[0]
 
-    def construct_measurements(last_layer, post_selects):
+    def construct_measurements(last_layer: Layer,
+                               post_selects: list[Layer]) -> list[Layer]:
         # Change to accommodate measurements before
         total_qubits = (len(last_layer.left)
                         + len(last_layer.box.cod)
@@ -1415,9 +1417,11 @@ def to_circuital(diagram: Diagram):
 
                 if isinstance(gate_layer.box, Swap):
 
-                    # Replace single swap with a series of swaps
-                    # Swaps are 2 wide, so if a qubit is pulled through we
-                    # have to use the pulled qubit as an temp ancillary.
+                    """
+                    Replace single swap with a series of swaps
+                    Swaps are 2 wide, so if a qubit is pulled through we
+                    have to use the pulled qubit as an temp ancillary.
+                    """
                     new_gates.append(Layer(gate_layer.left,
                                      Swap(qubit, qubit),
                                      dom >> gate_layer.right))
@@ -1430,7 +1434,9 @@ def to_circuital(diagram: Diagram):
 
         return new_gates, q_idx
 
-    def build_left_right(q_idx, layer, layers):
+    def build_left_right(q_idx: int,
+                         layer: Layer,
+                         layers: list[Layer]) -> Layer:
         """
         We assume that the left and right are constructable
         from the last gate
@@ -1595,7 +1601,6 @@ def gateFromBox(box: Box, offset: int) -> Gate:
 
     elif isinstance(box, Scalar):
         gtype = 'Scalar'
-        # Just a placeholder
         phase = box.array
 
     return Gate(

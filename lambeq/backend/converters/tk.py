@@ -211,7 +211,7 @@ def _tk_to_lmbq_param(theta):
         raise ValueError('Parameter must be a (possibly scaled) sympy Symbol')
 
 
-def to_tk(diagram: Diagram):
+def to_tk(diagram: Diagram) -> Circuit:
     """Takes a :py:class:`lambeq.quantum.Diagram`, returns
     a :class:`lambeq.backend.converters.tk.Circuit`
     for t|ket>.
@@ -250,7 +250,7 @@ def to_tk(diagram: Diagram):
             if gate.phase is None:
                 raise ValueError(f'Scalar gate {gate} has phase type None')
             else:
-                circuit.scale(abs(gate.phase)**2)
+                circuit.scale(abs(gate.phase)**2)  # type: ignore [arg-type]
                 continue
         elif gate.gtype not in OPTYPE_MAP:
             raise NotImplementedError(f'Gate {gate.gtype} not supported')

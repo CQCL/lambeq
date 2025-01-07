@@ -280,7 +280,7 @@ class Ty(Entity):
     @overload
     def tensor(self, other: Self, *rest: Self) -> Self: ...
 
-    def tensor(self, other: Self | Iterable[Self], *rest: Self) -> Self:
+    def tensor(self, other: Self | Iterable[Self], *rest: Self) -> Self | Any:
         try:
             tys = [*other, *rest]
         except TypeError:
@@ -957,7 +957,7 @@ class Diagram(Entity):
 
         return diags  # type: ignore[return-value]
 
-    def tensor(self, *diagrams: Diagrammable | Ty) -> Self:
+    def tensor(self, *diagrams: Diagrammable | Ty) -> Self | Any:
         try:
             diags = self.lift([self, *diagrams])
         except ValueError:
@@ -1016,7 +1016,7 @@ class Diagram(Entity):
             return self[key:key + 1]
         raise TypeError
 
-    def then(self, *diagrams: Diagrammable) -> Self:
+    def then(self, *diagrams: Diagrammable) -> Self | Any:
         try:
             diags = self.lift(diagrams)
         except ValueError:

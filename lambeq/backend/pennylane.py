@@ -43,12 +43,13 @@ from __future__ import annotations
 
 from itertools import product
 import sys
-from typing import TYPE_CHECKING, Union
+from typing import List, TYPE_CHECKING, Union, Set, Tuple
 
 import pennylane as qml
 import sympy
 import torch
 
+from lambeq.backend import Symbol
 from lambeq.backend.quantum import (Gate, is_circuital, Measure,
                                     readoff_circuital,
                                     to_circuital)
@@ -82,7 +83,14 @@ OP_MAP = {
 }
 
 
-def extract_ops_from_circuital(gates: list[Gate]):
+def extract_ops_from_circuital(
+    gates: List['Gate']
+) -> Tuple[
+        List[qml.operation.Operation],
+        List[Union[torch.Tensor, Symbol]],
+        Set[Symbol],
+        List[List[int]]
+]:
     """
     Extract the operation, parameters and wires from
     a circuital diagram dictionary, and return the corresponding PennyLane
@@ -95,14 +103,14 @@ def extract_ops_from_circuital(gates: list[Gate]):
 
     Returns
     -------
-    :class:`qml.operation.Operation`
+    list of :class:`qml.operation.Operation`
         The PennyLane operation equivalent to the input pytket Op.
     list of (:class:`torch.FloatTensor` or
              :class:`lambeq.backend.symbol.Symbol`)
         The parameters of the operation.
     list of :class:`lambeq.backend.symbol.Symbol`
         The free symbols in the parameters of the operation.
-    list of int
+    list of lists of int
         The wires/qubits to apply the operation to.
 
     """
@@ -132,8 +140,10 @@ def extract_ops_from_circuital(gates: list[Gate]):
     return ops, remapped_params, symbols, qubits
 
 
-def to_pennylane(diagram: Diagram, probabilities=False,
-                 backend_config=None, diff_method='best'):
+def to_pennylane(diagram: Diagram,
+                 probabilities=False,
+                 backend_config=None,
+                 diff_method='best') -> PennyLaneCircuit:
     """
     Return a PennyLaneCircuit equivalent to the input lambeq
     circuit. `probabilities` determines whether the PennyLaneCircuit
