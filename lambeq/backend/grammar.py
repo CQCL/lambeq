@@ -284,16 +284,16 @@ class Ty(Entity):
         try:
             tys = [*other, *rest]
         except TypeError:
-            raise NotImplementedError
+            return NotImplemented
 
         # Diagrams are iterable - the identity diagram has
         # an empty list for its layers but may still contain types
         if getattr(other, 'is_id', False):
-            raise NotImplementedError
+            return NotImplemented
 
         if any(not isinstance(ty, type(self))
                or self.category != ty.category for ty in tys):
-            raise NotImplementedError
+            return NotImplemented
 
         return self._fromiter(ob for ty in (self, *tys) for ob in ty)
 
@@ -961,7 +961,7 @@ class Diagram(Entity):
         try:
             diags = self.lift([self, *diagrams])
         except ValueError:
-            raise NotImplementedError
+            return NotImplemented
 
         right = dom = self.dom.tensor(*[
             diagram.to_diagram().dom for diagram in diagrams
@@ -1020,7 +1020,7 @@ class Diagram(Entity):
         try:
             diags = self.lift(diagrams)
         except ValueError:
-            raise NotImplementedError
+            return NotImplemented
 
         layers = [*self.layers]
         cod = self.cod
