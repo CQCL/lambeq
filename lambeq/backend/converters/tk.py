@@ -247,11 +247,11 @@ def to_tk(diagram: Diagram):
     for gate in circuitInfo.gates:
 
         if gate.gtype == 'Scalar':
-            if isinstance(gate.phase, (int, float)):
+            if gate.phase is None:
+                raise ValueError(f'Scalar gate {gate} has phase type None')
+            else:
                 circuit.scale(abs(gate.phase)**2)
                 continue
-            else:
-                raise ValueError(f'Scalar gate {gate} has phase type None')
         elif gate.gtype not in OPTYPE_MAP:
             raise NotImplementedError(f'Gate {gate.gtype} not supported')
 

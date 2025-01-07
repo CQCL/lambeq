@@ -32,8 +32,8 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from functools import partial
-from typing import cast, Dict, Optional, Tuple, Union
 import pickle
+from typing import cast, Dict, Optional, Tuple, Union
 
 import numpy as np
 import tensornetwork as tn
