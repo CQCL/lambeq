@@ -123,7 +123,7 @@ class PregroupTreeNode:
         which doesn't check equality of the children - essentially,
         this just checks if `other` is the same token."""
         if not isinstance(other, PregroupTreeNode):
-            return NotImplemented
+            return NotImplemented   # type: ignore[no-any-return]
         return (self.word == other.word
                 and self.ind == other.ind)
 
