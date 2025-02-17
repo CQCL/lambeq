@@ -25,11 +25,10 @@ import torch
 
 from lambeq.ansatz.base import Symbol
 from lambeq.backend.numerical_backend import backend
-from lambeq.backend.tensor import Diagram
-
-from lambeq.training.quantum_model import QuantumModel
-from lambeq.training.pytorch_model import PytorchModel
 from lambeq.backend.quantum import Diagram as Circuit
+from lambeq.backend.tensor import Diagram
+from lambeq.training.pytorch_model import PytorchModel
+from lambeq.training.quantum_model import QuantumModel
 
 
 class PytorchQuantumModel(PytorchModel, QuantumModel):
