@@ -601,7 +601,7 @@ class Daggered(grammar.Daggered, Box):
         if __name == 'data':
             self.box.data = __value
         return super().__setattr__(__name, __value)
-    
+
     def lambdify(self, *symbols: 'Symbol', **kwargs) -> Callable:
         b_fn = self.box.lambdify(*symbols, **kwargs)
         return lambda *xs: b_fn(*xs).dagger()
