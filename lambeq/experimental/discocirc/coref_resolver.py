@@ -78,7 +78,8 @@ class CoreferenceResolver(ABC):
                        for scrf in scoref]
 
             for scoref in scorefs:
-                corefd[scoref] = scorefs[0]
+                if scoref not in corefd:
+                    corefd[scoref] = scorefs[0]
 
         return corefd
 
@@ -87,14 +88,21 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
     """Corefence resolution and tokenisation based on spaCy."""
 
     def __init__(self):
-        self.nlp = spacy.load('en_coreference_web_trf',
-                              exclude=('span_resolver', 'span_cleaner'))
+        # Create basic tokenisation pipeline, for POS
+        self.nlp = spacy.load('en_core_web_sm')
+
+        # Add coreference resolver pipe stage
+        coref_stage = spacy.load('en_coreference_web_trf',
+                                 exclude=('span_resolver', 'span_cleaner'))
+        self.nlp.add_pipe('transformer', source=coref_stage)
+        self.nlp.add_pipe('coref', source=coref_stage)
 
     def tokenise_and_coref(self, text):
         text = self._clean_text(text)
         doc = self.nlp(text)
         coreferences = []
 
+        # Add all coreference instances
         for cluster in doc.spans.values():
             sent_clusters = [[] for _ in doc.sents]
             for span in cluster:
@@ -103,5 +111,15 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
                         sent_cluster.append(span.start - sent.start)
                         break
             coreferences.append(sent_clusters)
+
+        # Add trivial coreferences for all nouns, determined by spacy POS
+        spacy_noun_pos = {'NOUN', 'PROPN', 'PRON'}
+
+        for i, sent in enumerate(doc.sents):
+            for tok in sent:
+                if tok.pos_ in spacy_noun_pos:
+                    sent_clusters = [[] for _ in doc.sents]
+                    sent_clusters[i] = [tok.i - sent.start]
+                    coreferences.append(sent_clusters)
 
         return [[str(w) for w in s] for s in doc.sents], coreferences

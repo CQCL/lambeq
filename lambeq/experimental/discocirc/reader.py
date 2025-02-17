@@ -290,7 +290,7 @@ class DisCoCircReader(Reader):
                      sandwich: bool = False,
                      break_cycles: bool = True,
                      pruned_nouns: Iterable[str] = (),
-                     min_noun_freq: int = 0,
+                     min_noun_freq: int = 1,
                      rewrite_rules: (
                          Iterable[TreeRewriteRule | str] | None
                      ) = ('determiner', 'auxiliary'),
@@ -313,6 +313,9 @@ class DisCoCircReader(Reader):
             If any of the nouns in this list are present in the diagram,
             the corresponding state and wire are removed from the
             diagram.
+        min_noun_freq: int, default: 1
+            Mininum number of times a noun needs to be referenced to
+            appear in the circuit.
         rewrite_rules : list of `TreeRewriteRule` or str
             List of rewrite rules to apply to the pregroup tree
             before conversion to a circuit.
@@ -329,10 +332,16 @@ class DisCoCircReader(Reader):
         """
 
         sentences, corefs = self.coref_resolver.tokenise_and_coref(text)
+        corefd = self.coref_resolver.dict_from_corefs(corefs)
+
+        noun_counts = Counter(corefd.values())
+        freq_pruned_ids = [nid for nid, count in noun_counts.items()
+                           if count < min_noun_freq]
+
+        pruned_nouns = set(pruned_nouns).union(
+                        {sentences[i][j] for (i, j) in freq_pruned_ids})
 
         pruned_ids = self._prune_indices(sentences, corefs, pruned_nouns)
-
-        corefd = self.coref_resolver.dict_from_corefs(corefs)
 
         rewriter = TreeRewriter(rewrite_rules)
 
