@@ -6,7 +6,7 @@ from unittest.mock import mock_open, patch
 import numpy as np
 import torch
 from lambeq.backend.grammar import Cup, Id, Word
-from lambeq.backend.quantum import CRz, CX, H, Ket, Measure, SWAP
+from lambeq.backend.quantum import CRz, CX, H, Ket, Measure, SWAP, Discard, qubit
 
 from lambeq import AtomicType, IQPAnsatz, PytorchQuantumModel, Symbol
 
@@ -32,6 +32,19 @@ def test_forward():
     model.initialise_weights()
     pred = model.forward(diagrams)
     assert pred.shape == (len(diagrams), s_dim)
+
+def test_forward_mixed():
+    N = AtomicType.NOUN
+    S = AtomicType.SENTENCE
+
+    density_matrix_dim = (2, 2, 2, 2)
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S))) >> (Discard() @ qubit @ qubit)]
+    model = PytorchQuantumModel.from_diagrams(diagrams)
+    model.initialise_weights()
+    pred = model.forward(diagrams)
+    assert pred.shape == (len(diagrams), *density_matrix_dim)
+    
 
 def test_backward():
     N = AtomicType.NOUN
