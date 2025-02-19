@@ -66,7 +66,7 @@ jobs:
       run: echo "dir=$(python -c 'from lambeq.text2diagram.model_downloader import ModelDownloader; print(ModelDownloader("bert").model_dir)')" >> $GITHUB_OUTPUT
     - name: Restore bobcat pre-trained model from cache
       id: bobcat-cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: ${{ steps.loc-bobcat-cache.outputs.dir }}
         key: bobcat-bert-v1
