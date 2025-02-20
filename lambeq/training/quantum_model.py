@@ -34,7 +34,7 @@ from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
 
-Tensor = Any
+AnyTensor = Any
 
 
 class QuantumModel(Model):
@@ -45,9 +45,10 @@ class QuantumModel(Model):
     symbols : list of symbols
         A sorted list of all :py:class:`Symbols <.Symbol>` occurring in
         the data.
-    weights : Tensor
+    weights : AnyTensor
         A data structure containing the numeric values of the model
-        parameters. This could be a `torch.Tensor` or an `np.ndarray`.
+        parameters. This could be a `torch.Tensor`, `np.ndarray`, or
+        one from a different backend.
 
     """
 
@@ -56,9 +57,9 @@ class QuantumModel(Model):
         super().__init__()
 
         self._training = False
-        self._train_predictions: list[Tensor] = []
+        self._train_predictions: list[AnyTensor] = []
 
-    def _log_prediction(self, y: Tensor) -> None:
+    def _log_prediction(self, y: AnyTensor) -> None:
         """Log a prediction of the model."""
         self._train_predictions.append(y)
 
@@ -66,7 +67,7 @@ class QuantumModel(Model):
         """Clear the logged predictions of the model."""
         self._train_predictions = []
 
-    def _normalise_vector(self, predictions: Tensor) -> Tensor:
+    def _normalise_vector(self, predictions: AnyTensor) -> AnyTensor:
         """Normalise the vector input.
 
         Special cases:
@@ -75,7 +76,7 @@ class QuantumModel(Model):
         """
 
         backend = numerical_backend.get_backend()
-        ret: Tensor = backend.abs(predictions)
+        ret: AnyTensor = backend.abs(predictions)
 
         if predictions.shape:
             # Prevent division by 0
@@ -156,7 +157,7 @@ class QuantumModel(Model):
     def get_diagram_output(
         self,
         diagrams: list[Diagram]
-    ) -> Tensor:
+    ) -> AnyTensor:
         """Return the diagram prediction.
 
         Parameters
@@ -167,14 +168,14 @@ class QuantumModel(Model):
 
         """
 
-    def __call__(self, *args: Any, **kwargs: Any) -> Tensor:
+    def __call__(self, *args: Any, **kwargs: Any) -> AnyTensor:
         out = self.forward(*args, **kwargs)
         if self._training:
             self._log_prediction(out)
         return out
 
     @abstractmethod
-    def forward(self, x: list[Diagram]) -> Tensor:
+    def forward(self, x: list[Diagram]) -> AnyTensor:
         """Compute the forward pass of the model using
         `get_model_output`
 
