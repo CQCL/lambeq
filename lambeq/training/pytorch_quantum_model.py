@@ -35,7 +35,7 @@ class PytorchQuantumModel(QuantumModel, torch.nn.Module):
     """A lambeq model for the quantum pipeline using PyTorch
     with automatic gradient tracking."""
 
-    weights: torch.nn.Parameter
+    weights: torch.nn.Parameter     # type: ignore[assignment]
     symbols: list[Symbol]
 
     def __init__(self) -> None:
