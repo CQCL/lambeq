@@ -21,7 +21,7 @@ Module containing the base class for a lambeq model.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Collection
+from collections.abc import MutableSequence
 from typing import Any
 
 from sympy import Symbol as SymPySymbol
@@ -33,14 +33,14 @@ from lambeq.typing import StrPathT
 
 
 class Model(ABC):
-    """Model base class.
+    """Model abstract base class.
 
     Attributes
     ----------
     symbols : list of symbols
         A sorted list of all :py:class:`Symbols <.Symbol>` occuring in
         the data.
-    weights : Collection
+    weights : MutableSequence
         A data structure containing the numeric values of
         the model's parameters.
 
@@ -49,7 +49,7 @@ class Model(ABC):
     def __init__(self) -> None:
         """Initialise an instance of :py:class:`Model` base class."""
         self.symbols: list[Symbol] | list[SymPySymbol] = []
-        self.weights: Collection = []
+        self.weights: MutableSequence = []
 
     def __call__(self, *args: Any, **kwds: Any) -> Any:
         return self.forward(*args, **kwds)
