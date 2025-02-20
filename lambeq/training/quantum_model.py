@@ -32,9 +32,7 @@ from lambeq.backend.symbol import lambdify
 from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
-
-
-AnyTensor = Any
+from lambeq.typing import AnyTensor
 
 
 class QuantumModel(Model):
@@ -51,6 +49,8 @@ class QuantumModel(Model):
         one from a different backend.
 
     """
+
+    weights: AnyTensor
 
     def __init__(self) -> None:
         """Initialise a :py:class:`QuantumModel`."""

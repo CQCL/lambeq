@@ -26,8 +26,8 @@ from typing import Any
 import numpy as np
 from numpy.typing import ArrayLike
 
-from lambeq.training.numpy_model import NumpyModel
 from lambeq.training.optimizer import Optimizer
+from lambeq.training.quantum_model import QuantumModel
 
 
 class RotosolveOptimizer(Optimizer):
@@ -48,11 +48,11 @@ class RotosolveOptimizer(Optimizer):
     details.
 
     """
-    model: NumpyModel
+    model: QuantumModel
 
     def __init__(self,
                  *,
-                 model: NumpyModel,
+                 model: QuantumModel,
                  loss_fn: Callable[[Any, Any], float],
                  hyperparams: dict[str, float] | None = None,
                  bounds: ArrayLike | None = None) -> None:
@@ -60,7 +60,7 @@ class RotosolveOptimizer(Optimizer):
 
         Parameters
         ----------
-        model : :py:class:`.NumpyModel`
+        model : :py:class:`.QuantumModel`
             A lambeq numpy model.
         loss_fn : callable
             A loss function of the form `loss(prediction, labels)`.

@@ -31,8 +31,8 @@ from sympy import Symbol as SympySymbol
 from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.core.utils import flatten
-from lambeq.training.numpy_model import NumpyModel
 from lambeq.training.optimizer import Optimizer
+from lambeq.training.quantum_model import QuantumModel
 
 
 class SPSAOptimizer(Optimizer):
@@ -42,11 +42,11 @@ class SPSAOptimizer(Optimizer):
     See https://ieeexplore.ieee.org/document/705889 for details.
 
     """
-    model: NumpyModel
+    model: QuantumModel
 
     def __init__(self,
                  *,
-                 model: NumpyModel,
+                 model: QuantumModel,
                  loss_fn: Callable[[Any, Any], float],
                  hyperparams: dict[str, Any] | None,
                  bounds: ArrayLike | None = None) -> None:
@@ -64,7 +64,7 @@ class SPSAOptimizer(Optimizer):
 
         Parameters
         ----------
-        model : :py:class:`.NumpyModel`
+        model : :py:class:`.QuantumModel`
             A lambeq numpy model.
         loss_fn : Callable
             A loss function of form `loss(prediction, labels)`.

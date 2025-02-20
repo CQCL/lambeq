@@ -37,6 +37,8 @@ class TketModel(QuantumModel):
 
     """
 
+    weights: np.ndarray
+
     def __init__(self, backend_config: dict[str, Any]) -> None:
         """Initialise TketModel based on the `t|ket>` backend.
 
