@@ -23,7 +23,7 @@ from __future__ import annotations
 from abc import abstractmethod
 from collections.abc import Iterable
 import pickle
-from typing import Any, TYPE_CHECKING
+from typing import Any
 
 import numpy as np
 
@@ -34,8 +34,7 @@ from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 
 
-if TYPE_CHECKING:
-    from jax import numpy as jnp
+Tensor = Any
 
 
 class QuantumModel(Model):
@@ -46,21 +45,20 @@ class QuantumModel(Model):
     symbols : list of symbols
         A sorted list of all :py:class:`Symbols <.Symbol>` occurring in
         the data.
-    weights : array
+    weights : Tensor
         A data structure containing the numeric values of the model
-        parameters
+        parameters. This could be a `torch.Tensor` or an `np.ndarray`.
 
     """
-    weights: np.ndarray
 
     def __init__(self) -> None:
         """Initialise a :py:class:`QuantumModel`."""
         super().__init__()
 
         self._training = False
-        self._train_predictions: list[Any] = []
+        self._train_predictions: list[Tensor] = []
 
-    def _log_prediction(self, y: Any) -> None:
+    def _log_prediction(self, y: Tensor) -> None:
         """Log a prediction of the model."""
         self._train_predictions.append(y)
 
@@ -68,7 +66,7 @@ class QuantumModel(Model):
         """Clear the logged predictions of the model."""
         self._train_predictions = []
 
-    def _normalise_vector(self, predictions: np.ndarray) -> np.ndarray:
+    def _normalise_vector(self, predictions: Tensor) -> Tensor:
         """Normalise the vector input.
 
         Special cases:
@@ -77,11 +75,11 @@ class QuantumModel(Model):
         """
 
         backend = numerical_backend.get_backend()
-        ret: np.ndarray = backend.abs(predictions)
+        ret: Tensor = backend.abs(predictions)
 
         if predictions.shape:
             # Prevent division by 0
-            l1_norm = backend.maximum(1e-9, ret.sum())
+            l1_norm = backend.maximum(backend.array(1e-9), ret.sum())
             ret = ret / l1_norm
 
         return ret
@@ -158,7 +156,7 @@ class QuantumModel(Model):
     def get_diagram_output(
         self,
         diagrams: list[Diagram]
-    ) -> jnp.ndarray | np.ndarray:
+    ) -> Tensor:
         """Return the diagram prediction.
 
         Parameters
@@ -169,14 +167,14 @@ class QuantumModel(Model):
 
         """
 
-    def __call__(self, *args: Any, **kwargs: Any) -> Any:
+    def __call__(self, *args: Any, **kwargs: Any) -> Tensor:
         out = self.forward(*args, **kwargs)
         if self._training:
             self._log_prediction(out)
         return out
 
     @abstractmethod
-    def forward(self, x: list[Diagram]) -> Any:
+    def forward(self, x: list[Diagram]) -> Tensor:
         """Compute the forward pass of the model using
         `get_model_output`
 

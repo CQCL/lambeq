@@ -29,7 +29,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable
 from typing import Any, TYPE_CHECKING
 
-import numpy
+import numpy as np
 from numpy.typing import ArrayLike
 
 from lambeq.backend import numerical_backend
@@ -45,6 +45,8 @@ if TYPE_CHECKING:
 class NumpyModel(QuantumModel):
     """A lambeq model for an exact classical simulation of a
     quantum pipeline."""
+
+    weights: np.ndarray
 
     def __init__(self, use_jit: bool = False) -> None:
         """Initialise an NumpyModel.
@@ -86,7 +88,8 @@ class NumpyModel(QuantumModel):
                 assert isinstance(sub_circuit, Circuit)
                 if not sub_circuit.is_mixed:
                     result = backend.abs(result) ** 2
-                return self._normalise_vector(result)
+                normalised_result: ArrayLike = self._normalise_vector(result)
+                return normalised_result
 
         self.lambdas[diagram] = jit(diagram_output)
         return self.lambdas[diagram]
@@ -94,7 +97,7 @@ class NumpyModel(QuantumModel):
     def get_diagram_output(
         self,
         diagrams: list[Diagram]
-    ) -> jnp.ndarray | numpy.ndarray:
+    ) -> jnp.ndarray | np.ndarray:
         """Return the exact prediction for each diagram.
 
         Parameters
@@ -141,9 +144,9 @@ class NumpyModel(QuantumModel):
             result = tn.contractors.auto(*d.to_tn()).tensor
             # square amplitudes to get probabilties for pure circuits
             if not d.is_mixed:
-                result = numpy.abs(result) ** 2
+                result = np.abs(result) ** 2
             results.append(self._normalise_vector(result))
-        return numpy.array(results)
+        return np.array(results)
 
     def forward(self, x: list[Diagram]) -> Any:
         """Perform default forward pass of a lambeq model.

@@ -45,8 +45,8 @@ from sympy import Symbol as SympySymbol
 from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.core.utils import flatten
+from lambeq.training.numpy_model import NumpyModel
 from lambeq.training.optimizer import Optimizer
-from lambeq.training.quantum_model import QuantumModel
 
 
 class NelderMeadOptimizer(Optimizer):
@@ -56,12 +56,12 @@ class NelderMeadOptimizer(Optimizer):
     <https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html>`_.
 
     """
-    model: QuantumModel
+    model: NumpyModel
     bounds: np.ndarray | None
 
     def __init__(self,
                  *,
-                 model: QuantumModel,
+                 model: NumpyModel,
                  loss_fn: Callable[[Any, Any], float],
                  hyperparams: dict[str, float] | None = None,
                  bounds: ArrayLike | None = None) -> None:
@@ -93,8 +93,8 @@ class NelderMeadOptimizer(Optimizer):
 
         Parameters
         ----------
-        model : :py:class:`.QuantumModel`
-            A lambeq quantum model.
+        model : :py:class:`.NumpyModel`
+            A lambeq numpy model.
         hyperparams : dict of str to float
             A dictionary containing the models hyperparameters.
         loss_fn : Callable[[ArrayLike, ArrayLike], float]]
