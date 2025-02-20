@@ -65,7 +65,7 @@ class SPSAOptimizer(Optimizer):
         Parameters
         ----------
         model : :py:class:`.QuantumModel`
-            A lambeq numpy model.
+            A lambeq quantum model.
         loss_fn : Callable
             A loss function of form `loss(prediction, labels)`.
         hyperparams : dict of str to float.

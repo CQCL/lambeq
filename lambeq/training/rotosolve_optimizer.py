@@ -61,7 +61,7 @@ class RotosolveOptimizer(Optimizer):
         Parameters
         ----------
         model : :py:class:`.QuantumModel`
-            A lambeq numpy model.
+            A lambeq quantum model.
         loss_fn : callable
             A loss function of the form `loss(prediction, labels)`.
         hyperparams : dict of str to float, optional

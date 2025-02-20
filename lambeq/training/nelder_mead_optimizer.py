@@ -94,7 +94,7 @@ class NelderMeadOptimizer(Optimizer):
         Parameters
         ----------
         model : :py:class:`.QuantumModel`
-            A lambeq numpy model.
+            A lambeq quantum model.
         hyperparams : dict of str to float
             A dictionary containing the models hyperparameters.
         loss_fn : Callable[[ArrayLike, ArrayLike], float]]
