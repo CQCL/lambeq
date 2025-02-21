@@ -833,7 +833,10 @@ class Rx(AntiConjugate, Rotation):
             sin = self.modules.sin(half_theta)
             cos = self.modules.cos(half_theta)
 
-            return np.array([[cos, -1j * sin], [-1j * sin, cos]])
+            I_arr = np.eye(2)
+            X_arr = np.array([[0, 1], [1, 0]])
+
+            return cos * I_arr - 1j * sin * X_arr
 
 
 class Ry(SelfConjugate, Rotation):
@@ -846,7 +849,10 @@ class Ry(SelfConjugate, Rotation):
             sin = self.modules.sin(half_theta)
             cos = self.modules.cos(half_theta)
 
-            return np.array([[cos, sin], [-sin, cos]])
+            I_arr = np.eye(2)
+            Y_arr = np.array([[0, 1j], [-1j, 0]])
+
+            return cos * I_arr - 1j * sin * Y_arr
 
 
 class Rz(AntiConjugate, Rotation):
@@ -859,7 +865,10 @@ class Rz(AntiConjugate, Rotation):
             exp1 = np.e ** (-1j * half_theta)
             exp2 = np.e ** (1j * half_theta)
 
-            return np.array([[exp1, 0], [0, exp2]])
+            P_0 = np.array([[1, 0], [0, 0]])
+            P_1 = np.array([[0, 0], [0, 1]])
+
+            return exp1 * P_0 + exp2 * P_1
 
 
 class Controlled(Parametrized):
