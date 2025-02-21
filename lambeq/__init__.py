@@ -92,6 +92,7 @@ __all__ = [
         'NumpyModel',
         'PennyLaneModel',
         'PytorchModel',
+        'PytorchQuantumModel',
         'QuantumModel',
         'TketModel',
 
@@ -131,7 +132,8 @@ from lambeq.tokeniser import Tokeniser, SpacyTokeniser
 from lambeq.training import (Checkpoint, Dataset, Optimizer,
                              NelderMeadOptimizer, RotosolveOptimizer,
                              SPSAOptimizer, Model, NumpyModel,
-                             PennyLaneModel, PytorchModel, QuantumModel,
+                             PennyLaneModel, PytorchModel,
+                             PytorchQuantumModel, QuantumModel,
                              TketModel, Trainer, PytorchTrainer,
                              QuantumTrainer, BinaryCrossEntropyLoss,
                              CrossEntropyLoss, LossFunction, MSELoss)

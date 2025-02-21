@@ -19,6 +19,7 @@ __all__ = ['Checkpoint',
            'NumpyModel',
            'PennyLaneModel',
            'PytorchModel',
+           'PytorchQuantumModel',
            'QuantumModel',
            'TketModel',
 
@@ -44,6 +45,7 @@ from lambeq.training.model import Model
 from lambeq.training.numpy_model import NumpyModel
 from lambeq.training.pennylane_model import PennyLaneModel
 from lambeq.training.pytorch_model import PytorchModel
+from lambeq.training.pytorch_quantum_model import PytorchQuantumModel
 from lambeq.training.quantum_model import QuantumModel
 from lambeq.training.tket_model import TketModel
 

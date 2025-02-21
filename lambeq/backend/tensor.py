@@ -602,9 +602,14 @@ class Daggered(grammar.Daggered, Box):
             self.box.data = __value
         return super().__setattr__(__name, __value)
 
+    def lambdify(self, *symbols: 'Symbol', **kwargs) -> Callable:
+        b_fn = self.box.lambdify(*symbols, **kwargs)
+        return lambda *xs: b_fn(*xs).dagger()
+
     @property
     def array(self):
         return self.box._adjoint_array()
 
     __hash__ = Box.__hash__
     __repr__ = Box.__repr__
+    __eq__ = grammar.Daggered.__eq__

@@ -37,6 +37,8 @@ class TketModel(QuantumModel):
 
     """
 
+    weights: np.ndarray
+
     def __init__(self, backend_config: dict[str, Any]) -> None:
         """Initialise TketModel based on the `t|ket>` backend.
 
@@ -105,7 +107,7 @@ class TketModel(QuantumModel):
         # lambeq evals a single diagram into a single result
         # and not a list of results
         if len(diagrams) == 1:
-            result = self._normalise_vector(tensors)
+            result: np.ndarray = self._normalise_vector(tensors)
             return result.reshape(1, *result.shape)
         return np.array([self._normalise_vector(t) for t in tensors])
 

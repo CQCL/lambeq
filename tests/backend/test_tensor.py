@@ -87,3 +87,12 @@ def test_lambdify():
 
     assert bx1.lambdify(arr1)(conc_arr1) == bx1_concrete
     assert (bx1 >> bx2).lambdify(arr1, arr2)(conc_arr1, conc_arr2) == bx1_concrete >> bx2_concrete
+
+    dg1 = Daggered(bx1)
+    dg1_concrete = Daggered(bx1_concrete)
+
+    dg2 = Daggered(bx2)
+    dg2_concrete = Daggered(bx2_concrete)
+    
+    assert dg1.lambdify(arr1)(conc_arr1) == dg1_concrete
+    assert (dg1 >> dg2).lambdify(arr1, arr2)(conc_arr1, conc_arr2) == dg1_concrete >> dg2_concrete
