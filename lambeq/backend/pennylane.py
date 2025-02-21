@@ -215,7 +215,7 @@ def to_pennylane(diagram: Diagram,
                             post_selection,
                             is_mixed,
                             scalar,
-                            circuitInfo.totalQubits,
+                            circuitInfo.total_qubits,
                             backend_config,
                             diff_method)
 

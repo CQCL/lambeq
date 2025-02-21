@@ -216,7 +216,6 @@ def to_tk(diagram: Diagram) -> Circuit:
     a :class:`lambeq.backend.converters.tk.Circuit`
     for t|ket>.
 
-
     Parameters
     ----------
     diagram : :py:class:`~lambeq.backend.quantum.Diagram`
@@ -228,8 +227,8 @@ def to_tk(diagram: Diagram) -> Circuit:
     tk_circuit : lambeq.backend.quantum
         A :class:`lambeq.backend.converters.tk.Circuit`.
 
-    Note
-    ----
+    Notes
+    -----
     * Converts to circuital.
     * Copies the diagram to avoid modifying the original.
     """
@@ -237,15 +236,13 @@ def to_tk(diagram: Diagram) -> Circuit:
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
 
-    circuitInfo = readoff_circuital(diagram)
+    circuit_info = readoff_circuital(diagram)
 
-    circuit = Circuit(circuitInfo.totalQubits,
-                      len(circuitInfo.bitmap),
-                      post_selection=circuitInfo.postmap
-                      )
+    circuit = Circuit(circuit_info.total_qubits,
+                      len(circuit_info.bitmap),
+                      post_selection=circuit_info.postmap)
 
-    for gate in circuitInfo.gates:
-
+    for gate in circuit_info.gates:
         if gate.gtype == 'Scalar':
             if gate.phase is None:
                 raise ValueError(f'Scalar gate {gate} has phase type None')
@@ -266,7 +263,7 @@ def to_tk(diagram: Diagram) -> Circuit:
         qubits = gate.qubits
         circuit.add_gate(op, qubits)
 
-    for mq, bi in circuitInfo.bitmap.items():
+    for mq, bi in circuit_info.bitmap.items():
         circuit.Measure(mq, bi)
 
     return circuit

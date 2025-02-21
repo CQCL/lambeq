@@ -340,8 +340,8 @@ class Diagram(tensor.Diagram):
         tk_circuit : lambeq.backend.converters.tk.Circuit
             A :class:`lambeq.backend.converters.tk.Circuit`.
 
-        Note
-        ----
+        Notes
+        -----
         * No measurements are performed.
         * SWAP gates are treated as logical swaps.
         * If the circuit contains scalars or a :class:`Bra`,
@@ -368,15 +368,14 @@ class Diagram(tensor.Diagram):
         >>> circuit2 = X @ Id(qubit ** 2) \\
         ...     >> Id(qubit) @ SWAP >> CX @ Id(qubit) >> Id(qubit) @ SWAP
         >>> circuit2.to_tk()
-        tk.Circuit(3).X(0).CX(0, 2)
+        tk.Circuit(3).X(0).SWAP(1, 2).CX(0, 1).SWAP(1, 2)
 
         >>> circuit3 = Ket(0, 0)\\
         ...     >> H @ Id(qubit)\\
         ...     >> CX\\
         ...     >> Id(qubit) @ Bra(0)
-        >>> print(repr(circuit3.to_tk()))
-        tk.Circuit(2, 1).H(0).CX(0, 1).Measure(1, 0).post_select({0: 0})
-
+        >>> circuit3.to_tk()
+        tk.Circuit(2, 1).H(0).CX(0, 1).Measure(1, 0).post_select({1: 0})
         """
         from lambeq.backend.converters.tk import to_tk
         return to_tk(self)
@@ -1544,83 +1543,82 @@ class Gate:
     control: Optional[list[int]] = None
     gate_q: Optional[int] = None
 
+    @classmethod
+    def from_box(cls, box: Box, offset: int) -> Gate:
+        """Constructs Gate for backend circuit construction
+        from a Box.
 
-def gateFromBox(box: Box, offset: int) -> Gate:
-    """Constructs Gate for backend circuit construction
-    from a Box.
-
-    Parameters
-    ----------
-    box : Box
-        Box to convert to a Gate.
-    offset : int
-        Qubit index on the leftmost part of the Gate.
-    """
-    name = box.name
-    gtype = box.name.split('(')[0]
-    qubits = [offset + j for j in range(len(box.dom))]
-    phase = None
-    dagger = False
-    control = None
-    gate_q = None
-
-    if isinstance(box, Daggered):
-        box = box.dagger()
-        dagger = True
+        Parameters
+        ----------
+        box : Box
+            Box to convert to a Gate.
+        offset : int
+            Qubit index on the leftmost part of the Gate.
+        """
+        name = box.name
         gtype = box.name.split('(')[0]
+        qubits = [offset + j for j in range(len(box.dom))]
+        phase = None
+        dagger = False
+        control = None
+        gate_q = None
 
-    if isinstance(box, (Rx, Ry, Rz)):
-        phase = box.phase
-        if isinstance(box.phase, Symbol):
-            # Tket uses sympy, lambeq uses custom symbol
-            phase = box.phase.to_sympy()
+        if isinstance(box, Daggered):
+            box = box.dagger()
+            dagger = True
+            gtype = box.name.split('(')[0]
 
-    elif isinstance(box, Controlled):
-
-        # reverse the distance order
-        dists = []
-        curr_box: Box | Controlled = box
-        while isinstance(curr_box, Controlled):
-            dists.append(curr_box.distance)
-            curr_box = curr_box.controlled
-        dists.reverse()
-
-        # Index of the controlled qubit is the last entry in rel_idx
-        rel_idx = [0]
-        for dist in dists:
-            if dist > 0:
-                # Add control to the left, offset by distance
-                rel_idx = [0] + [i + dist for i in rel_idx]
-            else:
-                # Add control to the right, don't offset
-                right_most_idx = max(rel_idx)
-                rel_idx.insert(-1, right_most_idx - dist)
-
-        i_qubits = [qubits[i] for i in rel_idx]
-
-        qubits = i_qubits
-        control = sorted(qubits[:-1])
-        gate_q = qubits[-1]
-
-        if gtype in ('CRx', 'CRz'):
+        if isinstance(box, (Rx, Ry, Rz)):
             phase = box.phase
             if isinstance(box.phase, Symbol):
                 # Tket uses sympy, lambeq uses custom symbol
                 phase = box.phase.to_sympy()
+        elif isinstance(box, Controlled):
+            # reverse the distance order
+            dists = []
+            curr_box: Box | Controlled = box
 
-    elif isinstance(box, Scalar):
-        gtype = 'Scalar'
-        phase = box.array
+            while isinstance(curr_box, Controlled):
+                dists.append(curr_box.distance)
+                curr_box = curr_box.controlled
+            dists.reverse()
 
-    return Gate(
-        name,
-        gtype,
-        qubits,
-        phase,
-        dagger,
-        control,
-        gate_q
-    )
+            # Index of the controlled qubit is the last entry in rel_idx
+            rel_idx = [0]
+            for dist in dists:
+                if dist > 0:
+                    # Add control to the left, offset by distance
+                    rel_idx = [0] + [i + dist for i in rel_idx]
+                else:
+                    # Add control to the right, don't offset
+                    right_most_idx = max(rel_idx)
+                    rel_idx.insert(-1, right_most_idx - dist)
+
+            i_qubits = [qubits[i] for i in rel_idx]
+
+            qubits = i_qubits
+            control = sorted(qubits[:-1])
+            gate_q = qubits[-1]
+
+            if gtype in ('CRx', 'CRz'):
+                phase = box.phase
+                if isinstance(box.phase, Symbol):
+                    # Tket uses sympy, lambeq uses custom symbol
+                    phase = box.phase.to_sympy()
+
+        elif isinstance(box, Scalar):
+            gtype = 'Scalar'
+            phase = box.array
+
+        return Gate(
+            name,
+            gtype,
+            qubits,
+            phase,
+            dagger,
+            control,
+            gate_q
+        )
 
 
 @dataclass
@@ -1629,7 +1627,7 @@ class CircuitInfo:
 
     Parameters
     ----------
-    totalQubits : int
+    total_qubits : int
         Total number of qubits in the circuit.
     gates : list[:py:class:`~lambeq.backend.quantum.Gate`]
         List containing gates, in topological ordering.
@@ -1642,7 +1640,7 @@ class CircuitInfo:
         List of discarded qubit indeces.
     """
 
-    totalQubits: int
+    total_qubits: int
     gates: list[Gate]
     bitmap: dict[int, int]
     postmap: dict[int, int]
@@ -1652,8 +1650,8 @@ class CircuitInfo:
 def readoff_circuital(diagram: Diagram) -> CircuitInfo:
     """Takes a circuital :py:class:`lambeq.quantum.Diagram`, returns
     a :py:class:`~lambeq.backend.quantum.CircuitInfo` which
-    is used by quantum backends to construct circuits.
-    Will check if the diagram is circuital before converting.
+    is used by quantum backends to construct circuits. This checks if
+    the diagram is circuital before converting.
 
     Parameters
     ----------
@@ -1670,8 +1668,8 @@ def readoff_circuital(diagram: Diagram) -> CircuitInfo:
 
     layers = diagram.layers
 
-    totalQubits = sum([1 for layer in layers if isinstance(layer.box, Ket)])
-    available_qubits = list(range(totalQubits))
+    total_qubits = sum([1 for layer in layers if isinstance(layer.box, Ket)])
+    available_qubits = list(range(total_qubits))
 
     gates: list[Gate] = []
     bitmap: dict = {}
@@ -1685,22 +1683,20 @@ def readoff_circuital(diagram: Diagram) -> CircuitInfo:
             qi = available_qubits[layer.left.count(qubit)]
             available_qubits.remove(qi)
             bitmap[qi] = len(bitmap)
-
         elif isinstance(layer.box, Bra):
             qi = available_qubits[layer.left.count(qubit)]
             available_qubits.remove(qi)
             bitmap[qi] = len(bitmap)
             postmap[qi] = layer.box.bit
-
         elif isinstance(layer.box, Discard):
             qi = available_qubits[layer.left.count(qubit)]
             available_qubits.remove(qi)
             discards.append(qi)
         else:
             qi = len(layer.left)
-            gates.append(gateFromBox(layer.box, qi))
+            gates.append(Gate.from_box(layer.box, qi))
 
-    return CircuitInfo(totalQubits,
+    return CircuitInfo(total_qubits,
                        gates,
                        bitmap,
                        postmap,
