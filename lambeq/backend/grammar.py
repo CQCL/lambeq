@@ -1970,7 +1970,7 @@ class Functor:
     >>> n = Ty('n')
     >>> diag = Cap(n, n.l) @ Id(n) >> Id(n) @ Cup(n.l, n)
     >>> diag.draw(
-    ...     figsize=(2, 2), path='./docs/_static/images/snake.png')
+    ...     figsize=(2, 2), path='./snake.png')
 
     .. image:: ../_static/images/snake.png
         :align: center
