@@ -73,10 +73,10 @@ jobs:
     - name: Test with pytest
       run: >
         coverage run --source=${{ env.SRC_DIR }}
-        --module pytest -vvv ${{ env.TEST_DIR }}
+        --module pytest ${{ env.SRC_DIR }} ${{ env.TEST_DIR }}
+        --doctest-modules
         --durations=50
         --ignore=${{ env.TEST_DIR }}/text2diagram/test_depccg_parser.py
-        --ignore=${{ env.TEST_DIR }}/training/test_torchquantum_model.py
     - name: Coverage report
       run: coverage report -m
   type_check:
