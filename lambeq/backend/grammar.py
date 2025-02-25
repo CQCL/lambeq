@@ -26,6 +26,7 @@ from collections.abc import Callable, Iterable, Iterator
 from copy import deepcopy
 from dataclasses import dataclass, field, InitVar, replace
 import json
+import pickle
 from typing import Any, ClassVar, Dict, Protocol, Type, TypeVar
 from typing import cast, overload, TYPE_CHECKING
 
@@ -2026,7 +2027,10 @@ class Functor:
     def ob_with_cache(self, ob: Ty) -> Ty:
         """Apply the functor to a type, caching the result."""
         try:
-            return deepcopy(self.ob_cache[ob])
+            # Faster deepcopy
+            return pickle.loads(    # type: ignore[no-any-return]
+                pickle.dumps(self.ob_cache[ob])
+            )
         except KeyError:
             pass
 
@@ -2041,7 +2045,10 @@ class Functor:
     def ar_with_cache(self, ar: Diagrammable) -> Diagrammable:
         """Apply the functor to a diagrammable, caching the result."""
         try:
-            return deepcopy(self.ar_cache[ar])
+            # Faster deepcopy
+            return pickle.loads(    # type: ignore[no-any-return]
+                pickle.dumps(self.ar_cache[ar])
+            )
         except KeyError:
             pass
 
