@@ -43,10 +43,11 @@ from __future__ import annotations
 
 from itertools import product
 import sys
-from typing import List, Never, Set, Tuple, TYPE_CHECKING, Union
+from typing import List, Set, Tuple, TYPE_CHECKING, Union
 
 import pennylane as qml
 import torch
+from typing_extensions import Never
 
 from lambeq.backend.quantum import (Gate, is_circuital, Measure,
                                     readoff_circuital,
