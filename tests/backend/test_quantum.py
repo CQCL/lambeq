@@ -215,7 +215,7 @@ def test_eval_w_aer_backend():
 
 def test_to_circuital():
     circ = to_circuital((Ket(0) >> H >> Measure()))
-    assert is_circuital(circ)
+    assert circ.is_circuital
     cdict = readoff_circuital(circ)
     assert cdict.gates[0].gtype == 'H'
     assert cdict.gates[0].qubits == [0]
@@ -225,7 +225,7 @@ def test_to_circuital():
 
 def test_is_circuital():
     circ = (Ket(0) >> H >> Measure())
-    assert is_circuital(circ)
+    assert circ.is_circuital
 
     circ = (Ket(0) >> H) @ (Ket(0) >> H )
-    assert not is_circuital(circ)
+    assert not circ.is_circuital
