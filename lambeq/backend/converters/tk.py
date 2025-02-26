@@ -232,7 +232,7 @@ def to_tk(diagram: Diagram) -> Circuit:
     * Copies the diagram to avoid modifying the original.
     """
 
-    if diagram.is_circuital:
+    if not diagram.is_circuital:
         diagram = to_circuital(diagram)
 
     circuit_info = readoff_circuital(diagram, use_sympy=True)
