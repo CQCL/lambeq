@@ -49,7 +49,7 @@ def test_circuit_to_pennylane(capsys):
 
     x, y, z = [Symbol(x) for x in 'xyz']
     symbols = [x, y, z]
-    sym_symbols = [sym.unscaled.to_sympy() for sym in symbols]
+    sym_symbols = [sym.unscaled for sym in symbols]
     weights = [torch.tensor(1.), torch.tensor(2.), torch.tensor(3.)]
     symbol_weight_map = dict(zip(sym_symbols, weights))
 
@@ -195,11 +195,13 @@ def test_pennylane_uninitialized():
 def test_pennylane_parameter_reference():
     x = Symbol('x')
     p = torch.nn.Parameter(torch.tensor(1.))
-    symbol_weight_map = {x.unscaled.to_sympy(): p}
+    symbol_weight_map = {x.unscaled: p}
 
     circ = Rx(x)
     p_circ = circ.to_pennylane()
     p_circ.initialise_concrete_params(symbol_weight_map)
+
+    assert p is p_circ._concrete_params[0][0]
 
     with torch.no_grad():
         p.add_(1.)
@@ -215,7 +217,7 @@ def test_pennylane_parameter_reference():
 def test_pennylane_gradient_methods():
     x, y, z = [Symbol(x) for x in 'xyz']
     symbols = [x, y, z]
-    sympy_symbols = [sym.unscaled.to_sympy() for sym in symbols]
+    sympy_symbols = [sym.unscaled for sym in symbols]
 
     var_circ = (Ket(0) >> Rx(0.552) >> Rz(x) >> Rx(0.917) >> Ket(0, 0, 0) @ qubit >>
                 H @ qubit @ qubit @ qubit >> qubit @ H @ qubit @ qubit >>

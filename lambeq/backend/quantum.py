@@ -1544,7 +1544,7 @@ class Gate:
     gate_q: Optional[int] = None
 
     @classmethod
-    def from_box(cls, box: Box, offset: int) -> Gate:
+    def from_box(cls, box: Box, offset: int, use_sympy: bool = False) -> Gate:
         """Constructs Gate for backend circuit construction
         from a Box.
 
@@ -1554,6 +1554,9 @@ class Gate:
             Box to convert to a Gate.
         offset : int
             Qubit index on the leftmost part of the Gate.
+        use_sympy : bool
+            Use `sympy.Symbol` for the gate params, otherwise use
+            `lambeq.backend.Symbol`.
         """
         name = box.name
         gtype = box.name.split('(')[0]
@@ -1570,7 +1573,7 @@ class Gate:
 
         if isinstance(box, (Rx, Ry, Rz)):
             phase = box.phase
-            if isinstance(box.phase, Symbol):
+            if use_sympy and isinstance(box.phase, Symbol):
                 # Tket uses sympy, lambeq uses custom symbol
                 phase = box.phase.to_sympy()
         elif isinstance(box, Controlled):
@@ -1602,7 +1605,7 @@ class Gate:
 
             if gtype in ('CRx', 'CRz'):
                 phase = box.phase
-                if isinstance(box.phase, Symbol):
+                if use_sympy and isinstance(box.phase, Symbol):
                     # Tket uses sympy, lambeq uses custom symbol
                     phase = box.phase.to_sympy()
 
@@ -1647,7 +1650,8 @@ class CircuitInfo:
     discards: list[int]
 
 
-def readoff_circuital(diagram: Diagram) -> CircuitInfo:
+def readoff_circuital(diagram: Diagram,
+                      use_sympy: bool = False) -> CircuitInfo:
     """Takes a circuital :py:class:`lambeq.quantum.Diagram`, returns
     a :py:class:`~lambeq.backend.quantum.CircuitInfo` which
     is used by quantum backends to construct circuits. This checks if
@@ -1658,6 +1662,9 @@ def readoff_circuital(diagram: Diagram) -> CircuitInfo:
     diagram : :py:class:`~lambeq.backend.quantum.Diagram`
         The :py:class:`Circuits <lambeq.backend.quantum.Diagram>`
         to be converted to dictionary.
+    use_sympy : bool, default=False
+        Flag to use `sympy.Symbol` instead of `lambeq.backend.Symbol`
+        for the parameters.
 
     Returns
     -------
@@ -1694,7 +1701,8 @@ def readoff_circuital(diagram: Diagram) -> CircuitInfo:
             discards.append(qi)
         else:
             qi = len(layer.left)
-            gates.append(Gate.from_box(layer.box, qi))
+            gates.append(Gate.from_box(layer.box, qi,
+                                       use_sympy=use_sympy))
 
     return CircuitInfo(total_qubits,
                        gates,

@@ -236,7 +236,7 @@ def to_tk(diagram: Diagram) -> Circuit:
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
 
-    circuit_info = readoff_circuital(diagram)
+    circuit_info = readoff_circuital(diagram, use_sympy=True)
 
     circuit = Circuit(circuit_info.total_qubits,
                       len(circuit_info.bitmap),

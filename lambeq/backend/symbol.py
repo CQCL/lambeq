@@ -108,4 +108,4 @@ def lambdify(symbol: Sequence[Symbol],
         return lambda *_lx: expr
 
     idx = symbol.index(expr.unscaled)
-    return lambda *lx: expr.scale * lx[idx]
+    return lambda *lx: expr.scale * lx[idx] if expr.scale != 1 else lx[idx]

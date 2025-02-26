@@ -43,19 +43,20 @@ from __future__ import annotations
 
 from itertools import product
 import sys
-from typing import List, Set, Tuple, TYPE_CHECKING, Union
+from typing import List, Never, Set, Tuple, TYPE_CHECKING, Union
 
 import pennylane as qml
-import sympy
 import torch
 
-from lambeq.backend import Symbol
 from lambeq.backend.quantum import (Gate, is_circuital, Measure,
                                     readoff_circuital,
                                     to_circuital)
+from lambeq.backend.symbol import lambdify, Symbol
+
 
 if TYPE_CHECKING:
     from lambeq.backend.quantum import Diagram
+
 
 OP_MAP = {
     'H': qml.Hadamard,
@@ -87,7 +88,7 @@ def extract_ops_from_circuital(
     gates: List['Gate']
 ) -> Tuple[
         List[qml.operation.Operation],
-        List[Union[torch.Tensor, Symbol]],
+        List[List[Union[torch.Tensor, Symbol, Never]]],
         Set[Symbol],
         List[List[int]]
 ]:
@@ -116,24 +117,25 @@ def extract_ops_from_circuital(
     """
     ops = [OP_MAP[x.gtype] for x in gates]
     qubits = [x.qubits for x in gates]
-    params: list[Union[sympy.Expr, float, int, list]] = [x.phase
-                                                         if x.phase
-                                                         else []
-                                                         for x in gates]
+    params: list[Union[Symbol, float, int,
+                       list, torch.Tensor]] = [x.phase
+                                               if x.phase
+                                               else []
+                                               for x in gates]
 
     symbols = set()
 
-    remapped_params: list[Union[sympy.Expr, torch.Tensor]] = []
+    remapped_params: list[list[Union[Symbol, torch.Tensor, Never]]] = []
     for param in params:
 
         # Check if the param contains a symbol
         if isinstance(param, list) and len(param) == 0:
             remapped_params.append([])
             continue
-        elif not isinstance(param, sympy.Expr):
+        elif not isinstance(param, Symbol):
             param = torch.tensor(param)
         else:
-            symbols.update(param.free_symbols)
+            symbols.add(param)
 
         remapped_params.append([param])
 
@@ -193,19 +195,19 @@ def to_pennylane(diagram: Diagram,
     if not is_circuital(diagram):
         diagram = to_circuital(diagram)
 
-    circuitInfo = readoff_circuital(diagram)
+    circuit_info = readoff_circuital(diagram)
 
     scalar = 1.0
-    for gate in circuitInfo.gates:
+    for gate in circuit_info.gates:
         if gate.gtype == 'Scalar' and gate.phase is not None:
             scalar *= gate.phase
-            circuitInfo.gates.remove(gate)
+            circuit_info.gates.remove(gate)
 
-    ex_ops = extract_ops_from_circuital(circuitInfo.gates)
+    ex_ops = extract_ops_from_circuital(circuit_info.gates)
     op_list, params_list, symbols_set, wires_list = ex_ops
 
     # Get post selection bits
-    post_selection = circuitInfo.postmap
+    post_selection = circuit_info.postmap
 
     return PennyLaneCircuit(op_list,
                             list(symbols_set),
@@ -215,7 +217,7 @@ def to_pennylane(diagram: Diagram,
                             post_selection,
                             is_mixed,
                             scalar,
-                            circuitInfo.total_qubits,
+                            circuit_info.total_qubits,
                             backend_config,
                             diff_method)
 
@@ -242,8 +244,8 @@ class PennyLaneCircuit:
         self._backend_config = backend_config
         self.diff_method = diff_method
 
-        self._contains_sympy = self.contains_sympy()
-        if self._contains_sympy:
+        self._contains_symbols = self.contains_symbols()
+        if self._contains_symbols:
             self._concrete_params = None
         else:
             self._concrete_params = params
@@ -291,7 +293,7 @@ class PennyLaneCircuit:
                                        else {**self._backend_config})
         self._circuit = self.make_circuit()
 
-    def contains_sympy(self):
+    def contains_symbols(self):
         """
         Determine if the circuit parameters are
         concrete or contain SymPy symbols.
@@ -301,7 +303,7 @@ class PennyLaneCircuit:
         bool
             Whether the circuit parameters contain SymPy symbols.
         """
-        return any(isinstance(expr, sympy.Expr) for expr_list in
+        return any(isinstance(expr, Symbol) for expr_list in
                    self._params for expr in expr_list)
 
     def initialise_concrete_params(self, symbol_weight_map):
@@ -310,7 +312,7 @@ class PennyLaneCircuit:
         the symbols for the values to obtain concrete parameters, via
         the `param_substitution` method.
         """
-        if self._contains_sympy:
+        if self._contains_symbols:
             weights = [symbol_weight_map[symbol] for symbol in self._symbols]
             self._concrete_params = self.param_substitution(weights)
 
@@ -419,7 +421,7 @@ class PennyLaneCircuit:
 
     def param_substitution(self, weights):
         """
-        Substitute symbolic parameters (SymPy symbols) with floats.
+        Substitute symbolic parameters (`lambeq.Symbol`s) with floats.
 
         Parameters
         ----------
@@ -427,7 +429,7 @@ class PennyLaneCircuit:
             The weights to substitute for the symbols.
 
         Returns
-        -------
+        -------e
         :class:`torch.FloatTensor`
             The concrete (non-symbolic) parameters for the
             circuit.
@@ -436,9 +438,9 @@ class PennyLaneCircuit:
         for expr_list in self._params:
             concrete_list = []
             for expr in expr_list:
-                if isinstance(expr, sympy.Expr):
-                    f_expr = sympy.lambdify([self._symbols], expr)
-                    expr = f_expr(weights)
+                if isinstance(expr, Symbol):
+                    f_expr = lambdify(self._symbols, expr)
+                    expr = f_expr(*weights)
                 concrete_list.append(expr)
             concrete_params.append(concrete_list)
 
