@@ -35,11 +35,10 @@ from lambeq.backend import Symbol
 from lambeq.backend.quantum import (bit, Box, Bra, CCX, CCZ,
                                     Controlled, CRx, CRy, CRz,
                                     Diagram, Discard, GATES, Id,
-                                    is_circuital, Ket, Measure,
-                                    qubit, readoff_circuital,
+                                    Ket, Measure, qubit,
+                                    readoff_circuital,
                                     Rx, Ry, Rz, Scalar, Swap,
-                                    to_circuital, X, Y, Z
-                                    )
+                                    to_circuital, X, Y, Z)
 
 OPTYPE_MAP = {'H': OpType.H,
               'X': OpType.X,
@@ -233,7 +232,7 @@ def to_tk(diagram: Diagram) -> Circuit:
     * Copies the diagram to avoid modifying the original.
     """
 
-    if not is_circuital(diagram):
+    if diagram.is_circuital:
         diagram = to_circuital(diagram)
 
     circuit_info = readoff_circuital(diagram, use_sympy=True)

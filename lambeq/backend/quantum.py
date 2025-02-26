@@ -267,6 +267,54 @@ class Diagram(tensor.Diagram):
 
         return mixed_boundary or any(box.is_mixed for box in self.boxes)
 
+    @property
+    def is_circuital(self) -> bool:
+        """Checks if this diagram is a 'circuital' quantum diagram.
+
+        Circuital means:
+            1. All initial layers are qubits
+            2. All post selections are at the end
+
+        Allows for mixed_circuit measurements.
+
+        Returns
+        -------
+        bool
+            Whether this diagram is a circuital diagram.
+
+        """
+
+        if self.dom:
+            return False
+
+        layers = self.layers
+
+        num_qubits = sum([1 for layer in layers
+                          if isinstance(layer.box, Ket)])
+
+        qubit_layers = layers[:num_qubits]
+
+        if not all([isinstance(layer.box, Ket) for layer in qubit_layers]):
+            return False
+
+        for qubit_layer in qubit_layers:
+            if len(qubit_layer.right):
+                return False
+
+        # Check there are no gates in between post-selections.
+        measure_idx = [i for i, layer in enumerate(layers[num_qubits:])
+                       if isinstance(layer.box, (Discard, Bra))]
+        if not measure_idx:
+            return True
+        mmax = max(measure_idx)
+        mmin = min(measure_idx)
+        for i, gate in enumerate(layers[num_qubits:]):
+            if not isinstance(gate.box, (Discard, Bra, Measure)):
+                if i > mmin and i < mmax:
+                    return False
+
+        return True
+
     def eval(self,
              *others,
              backend=None,
@@ -1173,56 +1221,6 @@ GATES: Dict[str, Box | Callable[[Any], Parametrized]] = {
 }
 
 
-def is_circuital(diagram: Diagram) -> bool:
-    """
-    Takes a :py:class:`lambeq.quantum.Diagram`,
-    checks if a diagram is a quantum 'circuital' diagram.
-
-    Circuital means:
-        1. All initial layers are qubits
-        2. All post selections are at the end
-
-    Allows for mixed_circuit measurements
-
-    Returns
-    -------
-    bool
-        Whether the diagram is a circuital diagram.
-
-    """
-
-    if diagram.dom:
-        return False
-
-    layers = diagram.layers
-
-    num_qubits = sum([1 for layer in layers
-                      if isinstance(layer.box, Ket)])
-
-    qubit_layers = layers[:num_qubits]
-
-    if not all([isinstance(layer.box, Ket) for layer in qubit_layers]):
-        return False
-
-    for qubit_layer in qubit_layers:
-        if len(qubit_layer.right):
-            return False
-
-    # Check there are no gates in between post-selections.
-    measure_idx = [i for i, layer in enumerate(layers[num_qubits:])
-                   if isinstance(layer.box, (Discard, Bra))]
-    if not measure_idx:
-        return True
-    mmax = max(measure_idx)
-    mmin = min(measure_idx)
-    for i, gate in enumerate(layers[num_qubits:]):
-        if not isinstance(gate.box, (Discard, Bra, Measure)):
-            if i > mmin and i < mmax:
-                return False
-
-    return True
-
-
 def to_circuital(diagram: Diagram) -> Diagram:
     """Takes a :py:class:`lambeq.quantum.Diagram`, returns
     a modified :py:class:`lambeq.quantum.Diagram` which
@@ -1671,7 +1669,7 @@ def readoff_circuital(diagram: Diagram,
     :py:class:`~lambeq.backend.quantum.CircuitInfo`
     """
 
-    assert is_circuital(diagram)
+    assert diagram.is_circuital
 
     layers = diagram.layers
 

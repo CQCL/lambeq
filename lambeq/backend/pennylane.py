@@ -49,7 +49,7 @@ import pennylane as qml
 import torch
 from typing_extensions import Never
 
-from lambeq.backend.quantum import (Gate, is_circuital, Measure,
+from lambeq.backend.quantum import (Gate, Measure,
                                     readoff_circuital,
                                     to_circuital)
 from lambeq.backend.symbol import lambdify, Symbol
@@ -193,7 +193,7 @@ def to_pennylane(diagram: Diagram,
 
     is_mixed = diagram.is_mixed
 
-    if not is_circuital(diagram):
+    if not diagram.is_circuital:
         diagram = to_circuital(diagram)
 
     circuit_info = readoff_circuital(diagram)
