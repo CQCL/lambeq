@@ -108,6 +108,14 @@ class TensorAnsatz(BaseAnsatz):
 
     def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
         """Convert a diagram into a tensor."""
+
+        if diagram.has_frames:
+            raise RuntimeError('Attempting to apply an ansatz to a diagram '
+                               'with frame. Try using `sandwich=True` when '
+                               'calling `DisCoCircReader.text2circuit()` '
+                               'or applying a custom functor that converts '
+                               'frames to boxes before applying an ansatz.')
+
         return self.functor(diagram)  # type: ignore[return-value]
 
 
@@ -170,6 +178,13 @@ class MPSAnsatz(TensorAnsatz):
                 >> grammar.Id().tensor(*cups[:-1]))  # type: ignore[arg-type]
 
     def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
+        if diagram.has_frames:
+            raise RuntimeError('Attempting to apply an ansatz to a diagram '
+                               'with frame. Try using `sandwich=True` when '
+                               'calling `DisCoCircReader.text2circuit()` '
+                               'or applying a custom functor that converts '
+                               'frames to boxes before applying an ansatz.')
+
         return self.functor(
             self.split_functor(diagram)
         )  # type: ignore[return-value]
@@ -222,6 +237,13 @@ class SpiderAnsatz(TensorAnsatz):
                 >> grammar.Id().tensor(*spiders))
 
     def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
+        if diagram.has_frames:
+            raise RuntimeError('Attempting to apply an ansatz to a diagram '
+                               'with frame. Try using `sandwich=True` when '
+                               'calling `DisCoCircReader.text2circuit()` '
+                               'or applying a custom functor that converts '
+                               'frames to boxes before applying an ansatz.')
+
         return self.functor(
             self.split_functor(diagram)
         )  # type: ignore[return-value]

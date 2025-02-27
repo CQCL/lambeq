@@ -1,18 +1,32 @@
-import pytest
-
-from lambeq.backend.grammar import Diagram, Id, Ty, Word
-from lambeq.backend.tensor import Dim
 import numpy as np
+import pytest
 import tensornetwork as tn
 
 from lambeq import MPSAnsatz, SpiderAnsatz, TensorAnsatz
+from lambeq.backend.grammar import Box, Diagram, Frame, Id, Ty, Word
+from lambeq.backend.tensor import Dim
 
 
 @pytest.fixture
 def diagram():
     cod = Ty(objects=list(map(Ty, 'abcd')))
-    return ((Word('big', cod.l) @ Word('words', cod @ Ty('a'))) >>
-            (Diagram.cups(cod.l, cod) @ Id(Ty('a'))))
+    return ((Word('big', cod.l) @ Word('words', cod @ Ty('a')))
+            >> (Diagram.cups(cod.l, cod) @ Id(Ty('a'))))
+
+
+@pytest.fixture
+def diagram_with_frame():
+    n = Ty('n')
+    return Frame(
+        'reads',
+        dom=Ty(),
+        cod=n @ n,
+        components=[
+            Box('Alice', dom=Ty(), cod=n),
+            Frame('mystery', dom=Ty(), cod=n,
+                  components=[Box('novels', dom=Ty(), cod=n)]),
+        ]
+    )
 
 
 def test_tensor_ansatz_eval(diagram):
@@ -75,3 +89,11 @@ def test_spider_ansatz_eval(diagram):
     subbed_diagram = tensor.lambdify(*syms)(*values)
     result = subbed_diagram.eval(contractor=tn.contractors.auto)
     assert np.all(result == np.array([256] * 4))
+
+
+def test_ansatz_raises_exception_when_diagram_has_frames(diagram_with_frame):
+    ob_map = {Ty(t): Dim(4) for t in 'ns'}
+    ansatz = SpiderAnsatz(ob_map)
+
+    with pytest.raises(RuntimeError):
+        ansatz(diagram_with_frame)

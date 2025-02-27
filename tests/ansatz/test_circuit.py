@@ -1,156 +1,155 @@
 import pytest
 
-from lambeq.backend.grammar import Box, Cup, Ty, Word
-from lambeq.backend.quantum import (Bra, Diagram as Circuit, Controlled, CRx,
-                                    CRz, CX, Discard, H, Ket, qubit, Rx, Ry,
-                                    Rz, Sqrt, X, Id)
-from lambeq.backend.converters.tk import from_tk
-from lambeq import Symbol as sym
-
 from lambeq import (AtomicType, IQPAnsatz, Sim14Ansatz, Sim15Ansatz,
-                    Sim4Ansatz, StronglyEntanglingAnsatz)
+                    Sim4Ansatz, StronglyEntanglingAnsatz,
+                    Symbol as sym)
+from lambeq.backend.converters.tk import from_tk
+from lambeq.backend.grammar import Box, Cup, Frame, Ty, Word
+from lambeq.backend.quantum import (Bra, Controlled, CRx, CRz, CX,
+                                    Discard, H, Id, Ket, qubit,
+                                    Rx, Ry, Rz, Sqrt, X)
+
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
 
 
-def test_iqp_ansatz():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
+@pytest.fixture
+def diagram():
+    diagram = ((Word('Alice', N) @ Word('runs', N >> S))
+               >> (Cup(N, N.r) @ S))
+    return diagram
+
+
+def test_iqp_ansatz(diagram):
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
 
-    expected_circuit = (Ket(0) >>
-                        Rx(sym('Alice__n_0')) >>
-                        Rz(sym('Alice__n_1')) >>
-                        Rx(sym('Alice__n_2')) >>
-                        Id(1) @ Ket(0, 0) >> Id(1) @ H @ Id(1) >>
-                        Id(2) @ H >>
-                        Id(1) @ CRz(sym('runs__n.r@s_0')) >>
-                        Id(1) @ H @ Id(1) >>
-                        Id(2) @ H >>
-                        CX @ Id(1) >>
-                        H @ Sqrt(2) @ Id(2) >>
-                        Bra(0, 0) @ Id(1))
+    expected_circuit = (Ket(0)
+                        >> Rx(sym('Alice__n_0'))
+                        >> Rz(sym('Alice__n_1'))
+                        >> Rx(sym('Alice__n_2'))
+                        >> (Id(1) @ Ket(0, 0))
+                        >> (Id(1) @ H @ Id(1))
+                        >> (Id(2) @ H)
+                        >> (Id(1) @ CRz(sym('runs__n.r@s_0')))
+                        >> (Id(1) @ H @ Id(1))
+                        >> (Id(2) @ H)
+                        >> (CX @ Id(1))
+                        >> (H @ Sqrt(2) @ Id(2))
+                        >> (Bra(0, 0) @ Id(1)))
     assert ansatz(diagram) == expected_circuit
 
 
-def test_sim14_ansatz():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
-
+def test_sim14_ansatz(diagram):
     ansatz = Sim14Ansatz({N: 1, S: 1}, n_layers=1)
-    expected_circuit = (Ket(0) >>
-                        Rx(sym('Alice__n_0')) >>
-                        Rz(sym('Alice__n_1')) >>
-                        Rx(sym('Alice__n_2')) >>
-                        Id(1) @ Ket(0, 0) >>
-                        Id(1) @ Ry(sym('runs__n.r@s_0')) @ Id(1) >>
-                        Id(2) @ Ry(sym('runs__n.r@s_1')) >>
-                        Id(1) @ CRx(sym('runs__n.r@s_2')) >>
-                        Id(1) @ Controlled(Rx(sym('runs__n.r@s_3')), distance=-1) >>
-                        Id(1) @ Ry(sym('runs__n.r@s_4')) @ Id(1) >>
-                        Id(2) @ Ry(sym('runs__n.r@s_5')) >>
-                        Id(1) @ CRx(sym('runs__n.r@s_6')) >>
-                        Id(1) @ Controlled(Rx(sym('runs__n.r@s_7')), distance=-1) >>
-                        CX @ Id(1) >> H @ Sqrt(2) @ Id(2) >>
-                        Bra(0, 0) @ Id(1))
+    expected_circuit = (Ket(0)
+                        >> Rx(sym('Alice__n_0'))
+                        >> Rz(sym('Alice__n_1'))
+                        >> Rx(sym('Alice__n_2'))
+                        >> Id(1) @ Ket(0, 0)
+                        >> Id(1) @ Ry(sym('runs__n.r@s_0')) @ Id(1)
+                        >> Id(2) @ Ry(sym('runs__n.r@s_1'))
+                        >> Id(1) @ CRx(sym('runs__n.r@s_2'))
+                        >> (Id(1) @ Controlled(
+                                Rx(sym('runs__n.r@s_3')), distance=-1
+                            ))
+                        >> Id(1) @ Ry(sym('runs__n.r@s_4')) @ Id(1)
+                        >> Id(2) @ Ry(sym('runs__n.r@s_5'))
+                        >> Id(1) @ CRx(sym('runs__n.r@s_6'))
+                        >> (Id(1) @ Controlled(
+                                Rx(sym('runs__n.r@s_7')), distance=-1
+                            ))
+                        >> CX @ Id(1)
+                        >> H @ Sqrt(2) @ Id(2)
+                        >> Bra(0, 0) @ Id(1))
 
     assert ansatz(diagram) == expected_circuit
 
 
-def test_sim15_ansatz():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
-
+def test_sim15_ansatz(diagram):
     ansatz = Sim15Ansatz({N: 1, S: 1}, n_layers=1)
-    expected_circuit = (Ket(0) >>
-                        Rx(sym('Alice__n_0')) >>
-                        Rz(sym('Alice__n_1')) >>
-                        Rx(sym('Alice__n_2')) >>
-                        Id(1) @ Ket(0, 0) >>
-                        Id(1) @ Ry(sym('runs__n.r@s_0')) @ Id(1) >>
-                        Id(2) @ Ry(sym('runs__n.r@s_1')) >>
-                        Id(1) @ CX >> Id(1) @ Controlled(X, distance=-1) >>
-                        Id(1) @ Ry(sym('runs__n.r@s_2')) @ Id(1) >>
-                        Id(2) @ Ry(sym('runs__n.r@s_3')) >>
-                        Id(1) @ CX >> Id(1) @ Controlled(X, distance=-1) >>
-                        CX @ Id(1) >> H @ Sqrt(2) @ Id(2) >>
-                        Bra(0, 0) @ Id(1))
+    expected_circuit = (Ket(0)
+                        >> Rx(sym('Alice__n_0'))
+                        >> Rz(sym('Alice__n_1'))
+                        >> Rx(sym('Alice__n_2'))
+                        >> Id(1) @ Ket(0, 0)
+                        >> Id(1) @ Ry(sym('runs__n.r@s_0')) @ Id(1)
+                        >> Id(2) @ Ry(sym('runs__n.r@s_1'))
+                        >> Id(1) @ CX
+                        >> Id(1) @ Controlled(X, distance=-1)
+                        >> Id(1) @ Ry(sym('runs__n.r@s_2')) @ Id(1)
+                        >> Id(2) @ Ry(sym('runs__n.r@s_3'))
+                        >> Id(1) @ CX
+                        >> Id(1) @ Controlled(X, distance=-1)
+                        >> CX @ Id(1)
+                        >> H @ Sqrt(2) @ Id(2)
+                        >> Bra(0, 0) @ Id(1))
 
     assert ansatz(diagram) == expected_circuit
 
 
-def test_sim4_ansatz():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
-
+def test_sim4_ansatz(diagram):
     ansatz = Sim4Ansatz({N: 1, S: 1}, n_layers=1)
-    expected_circuit = (Ket(0) >>
-                        Rx(sym('Alice__n_0')) >>
-                        Rz(sym('Alice__n_1')) >>
-                        Rx(sym('Alice__n_2')) >>
-                        Id(1) @ Ket(0, 0) >>
-                        Id(1) @ Rx(sym('runs__n.r@s_0')) @ Id(1) >>
-                        Id(2) @ Rx(sym('runs__n.r@s_1')) >>
-                        Id(1) @ Rz(sym('runs__n.r@s_2')) @ Id(1) >>
-                        Id(2) @ Rz(sym('runs__n.r@s_3')) >>
-                        Id(1) @ CRx(sym('runs__n.r@s_4')) >>
-                        CX @ Id(1) >> H @ Sqrt(2) @ Id(2) >>
-                        Bra(0, 0) @ Id(1))
+    expected_circuit = (Ket(0)
+                        >> Rx(sym('Alice__n_0'))
+                        >> Rz(sym('Alice__n_1'))
+                        >> Rx(sym('Alice__n_2'))
+                        >> Id(1) @ Ket(0, 0)
+                        >> Id(1) @ Rx(sym('runs__n.r@s_0')) @ Id(1)
+                        >> Id(2) @ Rx(sym('runs__n.r@s_1'))
+                        >> Id(1) @ Rz(sym('runs__n.r@s_2')) @ Id(1)
+                        >> Id(2) @ Rz(sym('runs__n.r@s_3'))
+                        >> Id(1) @ CRx(sym('runs__n.r@s_4'))
+                        >> CX @ Id(1)
+                        >> H @ Sqrt(2) @ Id(2)
+                        >> Bra(0, 0) @ Id(1))
 
     assert ansatz(diagram) == expected_circuit
 
 
 def test_iqp_ansatz_inverted():
-    d = Box("inverted", S, Ty())
+    d = Box('inverted', S, Ty())
     ansatz = IQPAnsatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(d) == Id()
 
 
 def test_s14_ansatz_inverted():
-    d = Box("inverted", S, Ty())
+    d = Box('inverted', S, Ty())
     ansatz = Sim14Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(d) == Id()
 
 
 def test_s15_ansatz_inverted():
-    d = Box("inverted", S, Ty())
+    d = Box('inverted', S, Ty())
     ansatz = Sim15Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(d) == Id()
 
 
 def test_s4_ansatz_inverted():
-    d = Box("inverted", S, Ty())
+    d = Box('inverted', S, Ty())
     ansatz = Sim4Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(d) == Id()
 
 
-def test_iqp_ansatz_empty():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
+def test_iqp_ansatz_empty(diagram):
     ansatz = IQPAnsatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(diagram) == Id()
 
 
-def test_s14_ansatz_empty():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
+def test_s14_ansatz_empty(diagram):
     ansatz = Sim14Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(diagram) == Id()
 
 
-def test_s15_ansatz_empty():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
+def test_s15_ansatz_empty(diagram):
     ansatz = Sim15Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(diagram) == Id()
 
 
-def test_s4_ansatz_empty():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
+def test_s4_ansatz_empty(diagram):
     ansatz = Sim4Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(diagram) == Id()
+
 
 def test_discard():
     ansatz = IQPAnsatz({S: 2}, n_layers=0, discard=True)
@@ -166,9 +165,11 @@ def test_s15_discard():
     ansatz = Sim15Ansatz({S: 2}, n_layers=0, discard=True)
     assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
 
+
 def test_s4_discard():
     ansatz = Sim4Ansatz({S: 2}, n_layers=0, discard=True)
     assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
+
 
 def test_postselection():
     ansatz_s15 = Sim15Ansatz({N: 1}, n_layers=1)
@@ -179,14 +180,14 @@ def test_postselection():
     assert ansatz_iqp(b)
     assert ansatz_s15(b)
 
-def test_strongly_entangling_ansatz():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
+
+def test_strongly_entangling_ansatz(diagram):
     ansatz = StronglyEntanglingAnsatz({N: 1, S: 1}, n_layers=1)
 
     expected_circuit = Id()
 
-    boxes=[Ket(0),
+    boxes = [
+        Ket(0),
         Rz(sym('Alice__n_0')),
         Ry(sym('Alice__n_1')),
         Rz(sym('Alice__n_2')),
@@ -202,44 +203,49 @@ def test_strongly_entangling_ansatz():
         CX,
         H,
         Sqrt(2),
-        Bra(0, 0)]
-    offsets=[0, 0, 0, 0, 1, 1, 1, 1, 2,
-            2, 2, 1, 1, 0, 0, 1, 0]
+        Bra(0, 0)
+    ]
+    offsets = [0, 0, 0, 0, 1, 1, 1, 1, 2,
+               2, 2, 1, 1, 0, 0, 1, 0]
 
     for box, idx in zip(boxes, offsets):
         expected_circuit = expected_circuit.then_at(box, idx)
-    # ansatz(diagram).draw()
 
     assert ansatz(diagram) == expected_circuit
 
 
 def test_strongly_entangling_ansatz_inverted():
-    d = Box("inverted", S, Ty())
+    d = Box('inverted', S, Ty())
     ansatz = StronglyEntanglingAnsatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(d) == Id()
 
-def test_strongly_entangling_ansatz_empty():
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
+
+def test_strongly_entangling_ansatz_empty(diagram):
     ansatz = StronglyEntanglingAnsatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(diagram) == Id()
+
 
 def test_strongly_entangling_ansatz_discard():
     ansatz = StronglyEntanglingAnsatz({S: 2}, n_layers=0, discard=True)
     assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
 
+
 def test_strongly_entangling_ansatz_one_qubit():
     q = Ty('q')
     ansatz = StronglyEntanglingAnsatz({q: 1}, n_layers=5)
-    assert ansatz(Box('X', q, q)) == Rz(sym('X_q_q_0')) >> Ry(sym('X_q_q_1')) >> Rz(sym('X_q_q_2'))
+    assert ansatz(Box('X', q, q)) == (Rz(sym('X_q_q_0'))
+                                      >> Ry(sym('X_q_q_1'))
+                                      >> Rz(sym('X_q_q_2')))
+
 
 def test_strongly_entangling_ansatz_ranges():
     q = Ty('q')
     diagram = Box('X', q, q)
-    ansatz = StronglyEntanglingAnsatz({q: 3}, 3, ranges=[1,1,2])
+    ansatz = StronglyEntanglingAnsatz({q: 3}, 3, ranges=[1, 1, 2])
 
     expected_circuit = Id(qubit ** 3)
-    boxes=[Rz(sym('X_q_q_0')),
+    boxes = [
+        Rz(sym('X_q_q_0')),
         Ry(sym('X_q_q_1')),
         Rz(sym('X_q_q_2')),
         Rz(sym('X_q_q_3')),
@@ -274,20 +280,23 @@ def test_strongly_entangling_ansatz_ranges():
         Rz(sym('X_q_q_26')),
         Controlled(X, distance=2),
         Controlled(X, distance=-1),
-        Controlled(X, distance=-1)]
-    offsets=[0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0,
-            0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0, 0,
-            0, 1, 1, 1, 2, 2, 2, 0, 0, 1]
+        Controlled(X, distance=-1)
+    ]
+    offsets = [0, 0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0,
+               0, 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 0, 0,
+               0, 1, 1, 1, 2, 2, 2, 0, 0, 1]
 
     for box, idx in zip(boxes, offsets):
         expected_circuit = expected_circuit.then_at(box, idx)
 
     assert ansatz(diagram) == expected_circuit
 
+
 def test_strongly_entangling_ansatz_ranges_error():
     q = Ty('q')
     with pytest.raises(ValueError):
-        ansatz = StronglyEntanglingAnsatz({q: 3}, 3, ranges=[1,1,2,2])
+        StronglyEntanglingAnsatz({q: 3}, 3, ranges=[1, 1, 2, 2])
+
 
 def test_strongly_entangling_ansatz_ranges_error2():
     q = Ty('q')
@@ -296,17 +305,21 @@ def test_strongly_entangling_ansatz_ranges_error2():
         ansatz = StronglyEntanglingAnsatz({q: 2}, 3, ranges=[1, 1, 2])
         ansatz(box)
 
+
 def test_lambeq_tket_conversion():
     word1, word2 = Word('Alice', N), Word('Bob', N.r)
-    sentence = word1 @ word2 >> Cup(N, N.r)
+    sentence = (word1 @ word2) >> Cup(N, N.r)
     ansatz = IQPAnsatz({N: 1}, n_layers=1)
     circuit = ansatz(sentence)
     circuit_converted = from_tk(circuit.to_tk())
     assert circuit.free_symbols == circuit_converted.free_symbols
 
+
 n_ty = Ty('n')
 comma_ty = Ty(',')
 space_ty = Ty(' ')
+
+
 @pytest.mark.parametrize('box, expected_sym_count', [
     (Box('A', n_ty, n_ty), 4),
     (Box('A', comma_ty, n_ty), 4),
@@ -316,10 +329,11 @@ space_ty = Ty(' ')
     (Box('[,]', comma_ty @ space_ty, n_ty @ comma_ty), 8),
     (Box('[, ]', comma_ty @ space_ty, n_ty @ comma_ty), 8),
     (Box(' ,: ', comma_ty, n_ty @ comma_ty), 8),
-    ])
+])
 def test_special_characters(box, expected_sym_count):
-    ansatz = Sim15Ansatz({n_ty: 2, comma_ty: 2, space_ty: 2}, n_layers=1)
-    assert(len(ansatz(box).free_symbols) == expected_sym_count)
+    ansatz = Sim15Ansatz({n_ty: 2, comma_ty: 2, space_ty: 2},
+                         n_layers=1)
+    assert len(ansatz(box).free_symbols) == expected_sym_count
 
 
 def test_ansatz_is_dagger_functor():
@@ -329,11 +343,26 @@ def test_ansatz_is_dagger_functor():
     circuit2 = ansatz(diagram.dagger())
     assert circuit1 == circuit2
 
-def test_ansatz_is_dagger_functor_sentence():
-    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = (Word('Alice', N) @ Word('runs', N >> S) >>
-               Cup(N, N.r) @ S)
 
+def test_ansatz_is_dagger_functor_sentence(diagram):
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
     circuit1 = ansatz(diagram).dagger().normal_form()
     circuit2 = ansatz(diagram.dagger()).normal_form()
     assert circuit1 == circuit2
+
+
+def test_ansatz_raises_exception_when_diagram_has_frames():
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    diagram = Frame(
+        'reads',
+        dom=Ty(),
+        cod=N @ N,
+        components=[
+            Box('Alice', dom=Ty(), cod=N),
+            Frame('mystery', dom=Ty(), cod=N,
+                  components=[Box('novels', dom=Ty(), cod=N)]),
+        ]
+    )
+
+    with pytest.raises(RuntimeError):
+        ansatz(diagram)
