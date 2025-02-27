@@ -27,7 +27,7 @@ diagrams = [
 
 tket_circuits = [
     Circuit(3).H(0).CX(0,1).CX(1,2),
-    Circuit(4, 4).CX(0, 3).CX(1, 2).Measure(2, 1).Measure(3, 3).H(0).H(1).Measure(1, 0).Measure(0, 2).post_select({0: 0, 1: 0, 2: 0, 3: 0}),
+    Circuit(4, 4).CX(0, 3).CX(1, 2).Measure(2, 2).Measure(3, 3).H(0).H(1).Measure(0, 0).Measure(1, 1).post_select({0: 0, 1: 0, 2: 0, 3: 0}),
     Circuit(3).CCX(0, 1, 2).CCX(0, 2, 1).CCX(1, 2, 0),
     Circuit(4, 4).S(0).X(1).Y(2).Z(3).Rx(0.6, 0).Ry(0.4, 1).Rz(0.2, 2).H(3).T(0).Tdg(1).H(2).H(3).Measure(0, 0).Measure(1, 1).Measure(2, 2).Measure(3, 3).post_select({0: 0, 1: 0, 2: 0, 3: 0}).scale(0.25)
 ]
@@ -55,7 +55,7 @@ reverse_conversions = [
 @pytest.mark.parametrize('diagram, tket_circuit', zip(diagrams, tket_circuits))
 def test_tp_tk(diagram, tket_circuit):
 
-    tket_diag  = to_tk(diagram)
+    tket_diag = to_tk(diagram)
     assert tket_diag == tket_circuit
 
 @pytest.mark.parametrize('tket_circuit, reverse_conversion', zip(tket_circuits, reverse_conversions))
@@ -75,13 +75,13 @@ def test_hybrid_circs():
         '.H(1)'\
         '.CX(1, 2)'\
         '.CX(0, 1)'\
-        '.Measure(1, 0)'\
+        '.Measure(1, 1)'\
         '.H(0)'\
-        '.Measure(0, 1)'\
+        '.Measure(0, 0)'\
         '.post_select({0: 0, 1: 0})'\
         '.scale(4)'
-    assert repr((CX >> Measure() @ Measure() >> Swap(bit, bit)).to_tk())\
-        == "tk.Circuit(2, 2).CX(0, 1).Measure(1, 0).Measure(0, 1)"
+    assert repr(((CX >> Measure() @ Measure()) >> Swap(bit, bit)).to_tk())\
+        == "tk.Circuit(2, 2).CX(0, 1).SWAP(0, 1).Measure(0, 0).Measure(1, 1)"
 
 
 def test_back_n_forth():

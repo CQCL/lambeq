@@ -14,7 +14,7 @@
 
 """
 PytorchQuantumModel
-============
+===================
 Module implementing a basic lambeq model based on a Pytorch backend
 for training quantum circuits with Pytorch automatic gradients.
 

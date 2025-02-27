@@ -26,6 +26,7 @@ from collections.abc import Callable, Iterable, Iterator
 from copy import deepcopy
 from dataclasses import dataclass, field, InitVar, replace
 import json
+import pickle
 from typing import Any, ClassVar, Dict, Protocol, Type, TypeVar
 from typing import cast, overload, TYPE_CHECKING
 
@@ -202,6 +203,62 @@ class Ty(Entity):
             return objects[index]
         else:
             return self._fromiter(objects[index])
+
+    def replace(self, other: Self, index: int) -> Self:
+        """Replace a type at the specified index in the complex type list.
+
+        Parameters
+        ----------
+        other : Ty
+            The type to insert. Can be atomic or complex.
+        index : int
+            The position where the type should be inserted.
+        """
+        if not (index <= len(self) and index >= 0):
+            raise IndexError(f'Index {index} out of bounds for '
+                             f'type {self} with length {len(self)}.')
+
+        if self.is_empty:
+            return other
+        else:
+            objects = self.objects.copy()
+
+            if len(objects) == 1:
+                return other
+
+            if index == 0:
+                objects = [*other] + objects[1:]
+            elif index == len(self):
+                objects = objects[:-1] + [*other]
+            else:
+                objects = objects[:index] + [*other] + objects[index+1:]
+
+            return self._fromiter(objects)
+
+    def insert(self, other: Self, index: int) -> Self:
+        """Insert a type at the specified index in the complex type list.
+
+        Parameters
+        ----------
+        other : Ty
+            The type to insert. Can be atomic or complex.
+        index : int
+            The position where the type should be inserted.
+        """
+        if not (index <= len(self)):
+            raise IndexError(f'Index {index} out of bounds for '
+                             f'type {self} with length {len(self)}.')
+
+        if self.is_empty:
+            return other
+        else:
+            if index == 0:
+                return other @ self
+            elif index == len(self):
+                return self @ other
+            objects = self.objects.copy()
+            objects = objects[:index] + [*other] + objects[index:]
+            return self._fromiter(objects)
 
     @classmethod
     def _fromiter(cls, objects: Iterable[Self]) -> Self:
@@ -1970,7 +2027,10 @@ class Functor:
     def ob_with_cache(self, ob: Ty) -> Ty:
         """Apply the functor to a type, caching the result."""
         try:
-            return deepcopy(self.ob_cache[ob])
+            # Faster deepcopy
+            return pickle.loads(    # type: ignore[no-any-return]
+                pickle.dumps(self.ob_cache[ob])
+            )
         except KeyError:
             pass
 
@@ -1985,7 +2045,10 @@ class Functor:
     def ar_with_cache(self, ar: Diagrammable) -> Diagrammable:
         """Apply the functor to a diagrammable, caching the result."""
         try:
-            return deepcopy(self.ar_cache[ar])
+            # Faster deepcopy
+            return pickle.loads(    # type: ignore[no-any-return]
+                pickle.dumps(self.ar_cache[ar])
+            )
         except KeyError:
             pass
 

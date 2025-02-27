@@ -7,6 +7,7 @@ from lambeq.backend.quantum import *
 import lambeq.backend.grammar as grammar
 from lambeq.backend import Symbol
 
+
 def test_Ty():
 
     bqb = bit @ qubit
@@ -24,6 +25,46 @@ def test_Ty():
     assert qubit.r == qubit
     assert qubit ** 0 == Ty()
     assert qubit ** 3 == qubit @ qubit @ qubit
+
+def test_insert():
+    # Define some atomic and complex types for testing
+    tensor = qubit @ qubit  # A complex type with two 'qubit'
+
+    # Insert an atomic type into a complex type
+    result = tensor.insert(bit, 1)
+    expected = Ty('qubit') @ Ty('bit') @ Ty('qubit')
+    assert result == expected
+
+    # Insert a complex type into another complex type
+    complex_type = qubit @ bit  # A new complex type
+    result = tensor.insert(complex_type, 1)
+    expected = Ty('qubit') @ Ty('qubit') @ Ty('bit') @ Ty('qubit')
+    assert result == expected
+
+    # Insert at the start of the complex type
+    result = tensor.insert(bit, 0)
+    expected = Ty('bit') @ Ty('qubit') @ Ty('qubit')
+    assert result == expected
+
+    # Insert at the end of the complex type
+    result = tensor.insert(bit, 2)
+    expected = Ty('qubit') @ Ty('qubit') @ Ty('bit')
+    assert result == expected
+
+    # Insert into an empty type
+    empty_type = Ty()
+    result = empty_type.insert(bit, 0)
+    expected = bit
+    assert result == expected
+
+    # Test inserting at an index out of bounds
+    with pytest.raises(IndexError):
+        tensor.insert(bit, 5)
+
+    # Test inserting with a negative index
+    result = tensor.insert(bit, -1)
+    expected = Ty('qubit') @ Ty('bit') @ Ty('qubit')
+    assert result == expected
 
 
 def test_dagger():
@@ -170,3 +211,21 @@ def test_eval_w_aer_backend():
     backend = AerBackend()
 
     assert ((Ket(0) >> Measure()) @ (Ket(1) >> Measure())).eval(backend=backend) == pytest.approx(np.array([[0, 1], [0, 0]]))
+
+
+def test_to_circuital():
+    circ = to_circuital((Ket(0) >> H >> Measure()))
+    assert circ.is_circuital
+    cdict = readoff_circuital(circ)
+    assert cdict.gates[0].gtype == 'H'
+    assert cdict.gates[0].qubits == [0]
+    assert cdict.gates[0].phase == None
+    assert cdict.gates[0].dagger == False
+
+
+def test_is_circuital():
+    circ = (Ket(0) >> H >> Measure())
+    assert circ.is_circuital
+
+    circ = (Ket(0) >> H) @ (Ket(0) >> H )
+    assert not circ.is_circuital

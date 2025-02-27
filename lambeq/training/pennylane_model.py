@@ -24,10 +24,10 @@ from __future__ import annotations
 import copy
 from typing import Any, TYPE_CHECKING
 
-from sympy import default_sort_key, Symbol
 import torch
 
 from lambeq.backend.quantum import Diagram as Circuit
+from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
@@ -243,10 +243,9 @@ class PennyLaneModel(Model, torch.nn.Module):
                     diff_method=diff_method, backend_config=backend_config,
                     **kwargs)
 
-        model.symbols = sorted({sym.unscaled.to_sympy()
+        model.symbols = sorted({sym.unscaled
                                 for circ in diagrams
-                                for sym in circ.free_symbols},
-                               key=default_sort_key)
+                                for sym in circ.free_symbols})
         for circ in diagrams:
             assert isinstance(circ, Circuit)
             p_circ = circ.to_pennylane(probabilities=model._probabilities,
