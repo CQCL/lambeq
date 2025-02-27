@@ -36,7 +36,7 @@ from typing import Type
 
 import numpy as np
 
-from lambeq.ansatz import BaseAnsatz
+from lambeq.ansatz import AnsatzWithFramesRuntimeError, BaseAnsatz
 from lambeq.backend.grammar import Box, Diagram, Functor, Ty
 from lambeq.backend.quantum import (
     Bra,
@@ -113,11 +113,7 @@ class CircuitAnsatz(BaseAnsatz):
         """Convert a lambeq diagram into a lambeq circuit."""
 
         if diagram.has_frames:
-            raise RuntimeError('Attempting to apply an ansatz to a diagram '
-                               'with frame. Try using `sandwich=True` when '
-                               'calling `DisCoCircReader.text2circuit()` '
-                               'or applying a custom functor that converts '
-                               'frames to boxes before applying an ansatz.')
+            raise AnsatzWithFramesRuntimeError
 
         return self.functor(diagram)  # type: ignore[return-value]
 

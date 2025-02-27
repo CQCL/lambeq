@@ -21,6 +21,21 @@ def diagram():
     return diagram
 
 
+@pytest.fixture
+def diagram_with_frame():
+    n = Ty('n')
+    return Frame(
+        'reads',
+        dom=Ty(),
+        cod=n @ n,
+        components=[
+            Box('Alice', dom=Ty(), cod=n),
+            Frame('mystery', dom=Ty(), cod=n,
+                  components=[Box('novels', dom=Ty(), cod=n)]),
+        ]
+    )
+
+
 def test_iqp_ansatz(diagram):
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
 
@@ -351,18 +366,15 @@ def test_ansatz_is_dagger_functor_sentence(diagram):
     assert circuit1 == circuit2
 
 
-def test_ansatz_raises_exception_when_diagram_has_frames():
-    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
-    diagram = Frame(
-        'reads',
-        dom=Ty(),
-        cod=N @ N,
-        components=[
-            Box('Alice', dom=Ty(), cod=N),
-            Frame('mystery', dom=Ty(), cod=N,
-                  components=[Box('novels', dom=Ty(), cod=N)]),
-        ]
-    )
+@pytest.mark.parametrize('ansatz, diagram_w_frame', [
+    (IQPAnsatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
+    (Sim14Ansatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
+    (Sim15Ansatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
+    (Sim4Ansatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
+    (StronglyEntanglingAnsatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
+])
+def test_circuitansatz_raises_exception(ansatz, diagram_w_frame, request):
+    diagram_with_frame = request.getfixturevalue(diagram_w_frame)
 
     with pytest.raises(RuntimeError):
-        ansatz(diagram)
+        ansatz(diagram_with_frame)

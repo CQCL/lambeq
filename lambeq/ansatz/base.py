@@ -20,13 +20,22 @@ An ansatz is used to convert a DisCoCat diagram into a quantum circuit.
 """
 from __future__ import annotations
 
-__all__ = ['BaseAnsatz', 'Symbol']
+__all__ = ['AnsatzWithFramesRuntimeError', 'BaseAnsatz', 'Symbol']
 
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
 
 from lambeq.backend import grammar, tensor
 from lambeq.backend.symbol import Symbol
+
+
+AnsatzWithFramesRuntimeError = RuntimeError(
+    'Attempting to apply an ansatz to a diagram '
+    'with frames. Try using `sandwich=True` when '
+    'calling `DisCoCircReader.text2circuit()` '
+    'or applying a custom functor that converts '
+    'frames to boxes before applying an ansatz.'
+)
 
 
 class BaseAnsatz(ABC):

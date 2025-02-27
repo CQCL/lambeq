@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['BaseAnsatz', 'CircuitAnsatz', 'IQPAnsatz', 'MPSAnsatz',
+__all__ = ['AnsatzWithFramesRuntimeError', 'BaseAnsatz',
+           'CircuitAnsatz', 'IQPAnsatz', 'MPSAnsatz',
            'Sim14Ansatz', 'Sim15Ansatz', 'Sim4Ansatz', 'SpiderAnsatz',
            'StronglyEntanglingAnsatz', 'TensorAnsatz']
 
-from lambeq.ansatz.base import BaseAnsatz
+from lambeq.ansatz.base import AnsatzWithFramesRuntimeError, BaseAnsatz
 from lambeq.ansatz.circuit import (CircuitAnsatz, IQPAnsatz,
                                    Sim14Ansatz, Sim15Ansatz, Sim4Ansatz,
                                    StronglyEntanglingAnsatz)

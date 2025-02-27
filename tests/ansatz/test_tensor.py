@@ -91,9 +91,16 @@ def test_spider_ansatz_eval(diagram):
     assert np.all(result == np.array([256] * 4))
 
 
-def test_ansatz_raises_exception_when_diagram_has_frames(diagram_with_frame):
-    ob_map = {Ty(t): Dim(4) for t in 'ns'}
-    ansatz = SpiderAnsatz(ob_map)
+ob_map = {Ty(t): Dim(4) for t in 'ns'}
+
+
+@pytest.mark.parametrize('ansatz, diagram_w_frame', [
+    (TensorAnsatz(ob_map), 'diagram_with_frame'),
+    (MPSAnsatz(ob_map, bond_dim=1), 'diagram_with_frame'),
+    (SpiderAnsatz(ob_map), 'diagram_with_frame')
+])
+def test_tensoransatz_raises_exception(ansatz, diagram_w_frame, request):
+    diagram_with_frame = request.getfixturevalue(diagram_w_frame)
 
     with pytest.raises(RuntimeError):
         ansatz(diagram_with_frame)
