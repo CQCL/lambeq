@@ -36,7 +36,7 @@ from typing import Type
 
 import numpy as np
 
-from lambeq.ansatz import AnsatzWithFramesRuntimeError, BaseAnsatz
+from lambeq.ansatz.base import AnsatzWithFramesRuntimeError, BaseAnsatz
 from lambeq.backend.grammar import Box, Diagram, Functor, Ty
 from lambeq.backend.quantum import (
     Bra,

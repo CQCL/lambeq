@@ -20,13 +20,12 @@ An ansatz is used to convert a DisCoCat diagram into a quantum circuit.
 """
 from __future__ import annotations
 
-__all__ = ['AnsatzWithFramesRuntimeError', 'BaseAnsatz', 'Symbol']
+__all__ = ['BaseAnsatz']
 
 from abc import ABC, abstractmethod
 from collections.abc import Mapping
 
 from lambeq.backend import grammar, tensor
-from lambeq.backend.symbol import Symbol
 
 
 AnsatzWithFramesRuntimeError = RuntimeError(
