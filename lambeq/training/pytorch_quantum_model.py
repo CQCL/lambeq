@@ -23,9 +23,9 @@ from __future__ import annotations
 
 import torch
 
-from lambeq.ansatz.base import Symbol
 from lambeq.backend.numerical_backend import backend
 from lambeq.backend.quantum import Diagram as Circuit
+from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.quantum_model import QuantumModel

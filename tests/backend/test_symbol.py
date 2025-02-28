@@ -16,6 +16,7 @@ def test_symbol_pickling():
     x2 = Symbol('x', 2, 2)
     assert pickle.loads(pickle.dumps(x2)) == x2
 
+
 def test_symbol_creation():
     s = Symbol('x', 2, 3, 0.5)
     assert s.name == 'x'
@@ -93,4 +94,3 @@ def test_lambdify():
 
     np.testing.assert_array_equal(expr1(*vals), np.array([1, 2]))
     np.testing.assert_array_equal(expr2(*vals), np.array([1, 2]))
-

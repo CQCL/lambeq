@@ -22,9 +22,10 @@ from __future__ import annotations
 
 __all__ = ['TensorAnsatz', 'MPSAnsatz', 'SpiderAnsatz']
 
+from abc import abstractmethod
 from collections.abc import Mapping
 
-from lambeq.ansatz import BaseAnsatz
+from lambeq.ansatz.base import AnsatzWithFramesRuntimeError, BaseAnsatz
 from lambeq.backend import grammar, Symbol, tensor
 from lambeq.backend.grammar import Cup, Spider, Ty, Word
 from lambeq.backend.tensor import Dim
@@ -108,10 +109,33 @@ class TensorAnsatz(BaseAnsatz):
 
     def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
         """Convert a diagram into a tensor."""
+
+        if diagram.has_frames:
+            raise AnsatzWithFramesRuntimeError
+
         return self.functor(diagram)  # type: ignore[return-value]
 
 
-class MPSAnsatz(TensorAnsatz):
+class SplitTensorAnsatz(TensorAnsatz):
+    """Base class for tensor network ansatzes that splits large boxes
+    into smaller units."""
+
+    split_functor: grammar.Functor
+
+    @abstractmethod
+    def _split_ar(self, _: grammar.Functor, ar: Word) -> grammar.Diagrammable:
+        """Split large boxes into smaller units."""
+
+    def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
+        if diagram.has_frames:
+            raise AnsatzWithFramesRuntimeError
+
+        return self.functor(
+            self.split_functor(diagram)
+        )  # type: ignore[return-value]
+
+
+class MPSAnsatz(SplitTensorAnsatz):
     """Split large boxes into matrix product states."""
 
     BOND_TYPE: Ty = Ty('B')
@@ -169,13 +193,8 @@ class MPSAnsatz(TensorAnsatz):
         return (grammar.Id().tensor(*boxes)
                 >> grammar.Id().tensor(*cups[:-1]))  # type: ignore[arg-type]
 
-    def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
-        return self.functor(
-            self.split_functor(diagram)
-        )  # type: ignore[return-value]
 
-
-class SpiderAnsatz(TensorAnsatz):
+class SpiderAnsatz(SplitTensorAnsatz):
     """Split large boxes into spiders."""
 
     def __init__(self,
@@ -220,8 +239,3 @@ class SpiderAnsatz(TensorAnsatz):
 
         return (grammar.Id().tensor(*boxes)
                 >> grammar.Id().tensor(*spiders))
-
-    def __call__(self, diagram: grammar.Diagram) -> tensor.Diagram:
-        return self.functor(
-            self.split_functor(diagram)
-        )  # type: ignore[return-value]

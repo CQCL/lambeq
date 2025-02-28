@@ -25,8 +25,8 @@ import pickle
 
 import torch
 
-from lambeq.ansatz.base import Symbol
 from lambeq.backend.numerical_backend import backend
+from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model

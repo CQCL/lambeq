@@ -26,7 +26,7 @@ from typing import Any
 
 from sympy import Symbol as SymPySymbol
 
-from lambeq.ansatz.base import Symbol
+from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.typing import StrPathT

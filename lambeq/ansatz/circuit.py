@@ -36,7 +36,7 @@ from typing import Type
 
 import numpy as np
 
-from lambeq.ansatz import BaseAnsatz
+from lambeq.ansatz.base import AnsatzWithFramesRuntimeError, BaseAnsatz
 from lambeq.backend.grammar import Box, Diagram, Functor, Ty
 from lambeq.backend.quantum import (
     Bra,
@@ -111,6 +111,10 @@ class CircuitAnsatz(BaseAnsatz):
 
     def __call__(self, diagram: Diagram) -> Circuit:
         """Convert a lambeq diagram into a lambeq circuit."""
+
+        if diagram.has_frames:
+            raise AnsatzWithFramesRuntimeError
+
         return self.functor(diagram)  # type: ignore[return-value]
 
     def ob_size(self, pg_type: Ty) -> int:

@@ -430,7 +430,7 @@ class PennyLaneCircuit:
             The weights to substitute for the symbols.
 
         Returns
-        -------e
+        -------
         :class:`torch.FloatTensor`
             The concrete (non-symbolic) parameters for the
             circuit.
