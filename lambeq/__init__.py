@@ -30,6 +30,8 @@ __all__ = [
         'Sim14Ansatz',
         'Sim15Ansatz',
         'Sim4Ansatz',
+        'Sim9Ansatz',
+        'Sim9CxAnsatz',
         'SpiderAnsatz',
         'StronglyEntanglingAnsatz',
         'Symbol',
@@ -112,7 +114,8 @@ from lambeq.backend import Symbol, lambdify
 from lambeq import ansatz, core, rewrite, text2diagram, tokeniser, training
 from lambeq.ansatz import (BaseAnsatz, CircuitAnsatz, IQPAnsatz, MPSAnsatz,
                            Sim14Ansatz, Sim15Ansatz, Sim4Ansatz, SpiderAnsatz,
-                           StronglyEntanglingAnsatz, TensorAnsatz)
+                           StronglyEntanglingAnsatz, TensorAnsatz, Sim9Ansatz,
+                           Sim9CxAnsatz)
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.types import AtomicType
 from lambeq.rewrite import (CoordinationRewriteRule, CurryRewriteRule,
