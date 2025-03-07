@@ -9,6 +9,7 @@ from lambeq.backend.grammar import Cup, Id, Word
 from lambeq.backend.quantum import CRz, CX, H, Ket, Measure, SWAP, Discard, qubit
 
 from lambeq import AtomicType, IQPAnsatz, PytorchQuantumModel, Symbol
+from lambeq.training.saved_tn_optimizer import SavedTnOptimizer
 
 
 def test_init():
@@ -48,6 +49,20 @@ def test_forward_mixed():
     pred = model.forward(diagrams)
     assert pred.shape == (len(diagrams), *density_matrix_dim)
 
+def test_contraction_path_is_cached():
+    N = AtomicType.NOUN
+    S = AtomicType.SENTENCE
+
+    ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
+    diagrams = [ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))]
+    model = PytorchQuantumModel.from_diagrams(diagrams, tn_optimizer=SavedTnOptimizer())
+    model.initialise_weights()
+    assert isinstance(model.tn_optimizer, SavedTnOptimizer)
+    assert len(model.tn_optimizer.saved_paths.keys()) == 0
+    model.forward(diagrams)
+    assert len(model.tn_optimizer.saved_paths.keys()) == 1
+    model.forward(diagrams)
+    assert len(model.tn_optimizer.saved_paths.keys()) == 1
 
 def test_backward():
     N = AtomicType.NOUN
@@ -79,21 +94,22 @@ def test_get_diagram_output_error():
         model = PytorchQuantumModel()
         model.get_diagram_output([diagram])
 
-
-def test_checkpoint_loading():
+def test_checkpoint_roundtrip():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
     ansatz = IQPAnsatz({N: 1, S: 1}, n_layers=1)
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
-    model = PytorchQuantumModel.from_diagrams([diagram])
+    model = PytorchQuantumModel.from_diagrams([diagram], tn_optimizer=SavedTnOptimizer())
     model.initialise_weights()
+    model.forward([diagram])
+    assert isinstance(model.tn_optimizer, SavedTnOptimizer)
 
-    checkpoint = {'model_weights': model.weights,
-                  'model_symbols': model.symbols,
-                  'model_state_dict': model.state_dict()}
+    checkpoint = model._make_checkpoint()
     with patch('lambeq.training.checkpoint.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
             patch('lambeq.training.checkpoint.os.path.exists', lambda x: True) as p:
-        model_new = PytorchQuantumModel.from_checkpoint('model.lt')
+        model_new = PytorchQuantumModel.from_checkpoint('model.lt', tn_optimizer=SavedTnOptimizer())
+        assert isinstance(model_new.tn_optimizer, SavedTnOptimizer)
+        assert model.tn_optimizer.saved_paths == model_new.tn_optimizer.saved_paths
         assert len(model_new.weights) == len(model.weights)
         assert model_new.symbols == model.symbols
         assert torch.allclose(model([diagram]), model_new([diagram]))
