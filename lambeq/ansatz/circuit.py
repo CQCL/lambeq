@@ -515,7 +515,7 @@ class Sim9CxAnsatz(CircuitAnsatz):
                  n_layers: int,
                  n_single_qubit_params: int = 3,
                  discard: bool = False) -> None:
-        """Instantiate a Sim 9 ansatz with CZ gates replaced with CX gates.
+        """Instantiate a Sim9 ansatz with CZ gates replaced with CX gates.
         Parameters
         ----------
         ob_map : dict

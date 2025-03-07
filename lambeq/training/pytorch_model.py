@@ -22,7 +22,10 @@ from __future__ import annotations
 
 from math import sqrt
 import pickle
+from typing import Sequence
 
+from tensornetwork import AbstractNode
+from tensornetwork import Edge
 import torch
 
 from lambeq.backend.numerical_backend import backend
@@ -30,7 +33,9 @@ from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
-from lambeq.training.saved_tn_optimizer import TnOptimizer, SavedTnOptimizer, custom_contractor
+from lambeq.training.saved_tn_optimizer import (
+    custom_contractor, SavedTnOptimizer, TnOptimizer
+)
 
 
 class PytorchModel(Model, torch.nn.Module):
@@ -44,9 +49,15 @@ class PytorchModel(Model, torch.nn.Module):
         """Initialise a PytorchModel."""
         Model.__init__(self)
         torch.nn.Module.__init__(self)
-        self.tn_optimizer = tn_optimizer or SavedTnOptimizer()
+        self.tn_optimizer = (tn_optimizer
+                             or SavedTnOptimizer())
 
-    def _tn_contract(self, nodes, output_edge_order=None, ignore_edge_order=None):
+    def _tn_contract(
+            self,
+            nodes: list[AbstractNode],
+            output_edge_order: Sequence[Edge] | None = None,
+            ignore_edge_order: bool | None = None
+    ):
         return custom_contractor(
             nodes,
             self.tn_optimizer,
@@ -157,7 +168,9 @@ class PytorchModel(Model, torch.nn.Module):
                         ) from e
 
         with backend('pytorch'), tn.DefaultBackend('pytorch'):
-            return torch.stack([self._tn_contract(*d.to_tn()).tensor for d in diagrams])
+            return torch.stack(
+                [self._tn_contract(*d.to_tn()).tensor for d in diagrams]
+            )
 
     def forward(self, x: list[Diagram]) -> torch.Tensor:
         """Perform default forward pass by contracting tensors.

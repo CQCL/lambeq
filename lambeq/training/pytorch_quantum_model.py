@@ -26,9 +26,9 @@ import torch
 from lambeq.backend.numerical_backend import backend
 from lambeq.backend.quantum import Diagram as Circuit
 from lambeq.backend.tensor import Diagram
-from lambeq.training.quantum_model import QuantumModel
-from lambeq.training.saved_tn_optimizer import TnOptimizer, SavedTnOptimizer, custom_contractor
 from lambeq.training.pytorch_model import PytorchModel
+from lambeq.training.quantum_model import QuantumModel
+from lambeq.training.saved_tn_optimizer import TnOptimizer
 
 
 class PytorchQuantumModel(PytorchModel, QuantumModel):
