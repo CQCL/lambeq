@@ -25,33 +25,32 @@ import torch
 
 from lambeq.backend.numerical_backend import backend
 from lambeq.backend.quantum import Diagram as Circuit
-from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
-from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.quantum_model import QuantumModel
+from lambeq.training.saved_tn_optimizer import TnOptimizer, SavedTnOptimizer, custom_contractor
+from lambeq.training.pytorch_model import PytorchModel
 
 
-class PytorchQuantumModel(QuantumModel, torch.nn.Module):
+class PytorchQuantumModel(PytorchModel, QuantumModel):
     """A lambeq model for the quantum pipeline using PyTorch
     with automatic gradient tracking."""
 
     weights: torch.nn.Parameter     # type: ignore[assignment]
-    symbols: list[Symbol]
 
-    def __init__(self) -> None:
+    def __init__(self, tn_optimizer: TnOptimizer | None = None) -> None:
         """Initialise a PytorchQuantumModel."""
+        PytorchModel.__init__(self, tn_optimizer)
         QuantumModel.__init__(self)
-        torch.nn.Module.__init__(self)
-
-    def _reinitialise_modules(self) -> None:
-        """Reinitialise all modules in the model."""
-        for module in self.modules():
-            try:
-                module.reset_parameters()  # type: ignore[operator]
-            except (AttributeError, TypeError):
-                pass
 
     def initialise_weights(self) -> None:
+        """Initialise the weights of the model.
+
+        Raises
+        ------
+        ValueError
+            If `model.symbols` are not initialised.
+
+        """
         self._reinitialise_modules()
         if not self.symbols:
             raise ValueError('Symbols not initialised. Instantiate through '
@@ -59,39 +58,26 @@ class PytorchQuantumModel(QuantumModel, torch.nn.Module):
 
         self.weights = torch.nn.Parameter(torch.rand(len(self.symbols)))
 
-    def _load_checkpoint(self, checkpoint: Checkpoint) -> None:
-        """Load the model weights and symbols from a lambeq
-        :py:class:`.Checkpoint`.
+    def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
+        """Contract diagrams using tensornetwork.
 
         Parameters
         ----------
-        checkpoint : :py:class:`.Checkpoint`
-            Checkpoint containing the model weights,
-            symbols and additional information.
+        diagrams : list of :py:class:`~lambeq.backend.tensor.Diagram`
+            The :py:class:`Diagrams <lambeq.backend.tensor.Diagram>` to be
+            evaluated.
 
-        """
-
-        self.symbols = checkpoint['model_symbols']
-        self.weights = checkpoint['model_weights']
-        self.load_state_dict(checkpoint['model_state_dict'])
-
-    def _make_checkpoint(self) -> Checkpoint:
-        """Create checkpoint that contains the model weights and symbols.
+        Raises
+        ------
+        ValueError
+            If `model.weights` or `model.symbols` are not initialised.
 
         Returns
         -------
-        :py:class:`.Checkpoint`
-            Checkpoint containing the model weights, symbols and
-            additional information.
+        torch.Tensor
+            Resulting tensor.
 
         """
-        checkpoint = Checkpoint()
-        checkpoint.add_many({'model_symbols': self.symbols,
-                             'model_weights': self.weights,
-                             'model_state_dict': self.state_dict()})
-        return checkpoint
-
-    def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
         import tensornetwork as tn
 
         diagrams = self._fast_subs(diagrams, self.weights)
@@ -110,7 +96,7 @@ class PytorchQuantumModel(QuantumModel, torch.nn.Module):
                     if node.tensor.dtype != dominant_dtype:
                         node.tensor = node.tensor.to(dominant_dtype)
 
-                result = tn.contractors.auto(nodes, edges).tensor
+                result = self._tn_contract(nodes, edges).tensor
                 if not d.is_mixed:
                     result = torch.square(torch.abs(result))
                 results.append(self._normalise_vector(result))
