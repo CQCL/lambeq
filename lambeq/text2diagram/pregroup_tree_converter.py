@@ -12,6 +12,7 @@
 # implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
+from copy import deepcopy
 from typing import Any, Optional
 
 import networkx as nx
@@ -20,6 +21,10 @@ from lambeq.backend.grammar import Cap, Cup, Diagram, Swap, Ty, Word
 from lambeq.backend.pregroup_tree import (
     PregroupTreeNode, ROOT_INDEX,
 )
+
+
+WordComponentsDictsType = list[dict[int, list[int]]]
+WordComponentsType = list[list[tuple[int, Ty]]]
 
 
 def diagram2tree(diagram: Diagram,
@@ -626,6 +631,59 @@ def generate_tree(
     return root_nodes, nodes
 
 
+def _fix_auxiliary_types(
+        word_components_dicts_orig: WordComponentsDictsType,
+        word_components_orig: WordComponentsType
+        ) -> tuple[WordComponentsDictsType, WordComponentsType]:
+    """
+    Modifies `word_components_dicts_orig` and `word_components_orig`
+    to return the correct type for auxiliary verbs.
+
+    """
+
+    word_components_dicts = deepcopy(word_components_dicts_orig)
+    word_components = deepcopy(word_components_orig)
+
+    # Checks for the type `n.r @ s @ ...` for a word and
+    # preserves that ordering for the atomic types
+    for i, word_component in enumerate(word_components):
+        if len(word_component) == 2 and i < len(word_components) - 1:
+            # Conditions
+            conditions = [
+                # 2nd half of compound type is 'n.r @ s'
+                str(word_component[1][1] == 'n.r @ s'),
+                # 1st half of compound type connects
+                # to the right of the word
+                word_component[0][0] > i,
+                # There's a next word and is connected to this word
+                # through the 'n.r @ s' type
+                (len(word_components[i + 1]) > 0
+                 and word_components[i + 1][0][0] == i
+                 and str(word_components[i + 1][0][1]) == 's.r @ n.r.r'),
+            ]
+            if all(conditions):
+                word_component[0], word_component[1] = (
+                    word_component[1], word_component[0]
+                )
+                word_components[i] = word_component
+
+                word_components_dict = {}
+                assert len(word_components_dicts[i]) == 2
+                start_ind = min([min(inds)
+                                 for inds
+                                 in word_components_dicts[i].values()])
+                for component in word_components[i]:
+                    end_ind = start_ind + len(component[1])
+                    word_components_dict[component[0]] = list(range(
+                        start_ind, end_ind
+                    ))
+                    start_ind = end_ind
+
+                word_components_dicts[i] = word_components_dict
+
+    return word_components_dicts, word_components
+
+
 def tree2diagram(
     root: PregroupTreeNode,
     tokens: list[str],
@@ -660,7 +718,7 @@ def tree2diagram(
     curr_nodes = [root]
     next_nodes = []
 
-    word_components: list[list[tuple[int, Ty]]] = [
+    word_components: WordComponentsType = [
         [] for _ in range(len(tokens))
     ]
     word_components[root.ind] = [(-1, root.typ)]
@@ -720,7 +778,7 @@ def tree2diagram(
         next_nodes = []
 
     # Derive morphisms from `word_components`
-    word_components_dicts: list[dict[int, list[int]]] = [
+    word_components_dicts: WordComponentsDictsType = [
         {} for _ in range(len(tokens))
     ]
     ty_global_index = 0
@@ -740,42 +798,12 @@ def tree2diagram(
             if other_node_ind == -1:
                 free_wires = list(subword_ty_global_inds)
 
-    # Checks for the type `n.r @ s @ ...` for a word and
-    # preserves that ordering for the atomic types
-    for i, word_component in enumerate(word_components):
-        if len(word_component) == 2 and i < len(word_components) - 1:
-            # Conditions
-            conditions = [
-                # 2nd half of compound type is 'n.r @ s'
-                str(word_component[1][1] == 'n.r @ s'),
-                # 1st half of compound type connects
-                # to the right of the word
-                word_component[0][0] > i,
-                # There's a next word and is connected to this word
-                # through the 'n.r @ s' type
-                (len(word_components[i + 1]) > 0
-                 and word_components[i + 1][0][0] == i
-                 and str(word_components[i + 1][0][1]) == 's.r @ n.r.r'),
-            ]
-            if all(conditions):
-                word_component[0], word_component[1] = (
-                    word_component[1], word_component[0]
-                )
-                word_components[i] = word_component
-
-                word_components_dict = {}
-                assert len(word_components_dicts[i]) == 2
-                start_ind = min([min(inds)
-                                 for inds
-                                 in word_components_dicts[i].values()])
-                for component in word_components[i]:
-                    end_ind = start_ind + len(component[1])
-                    word_components_dict[component[0]] = list(range(
-                        start_ind, end_ind
-                    ))
-                    start_ind = end_ind
-
-                word_components_dicts[i] = word_components_dict
+    # Perform type-related surgery before deriving
+    # the final set of morphisms
+    word_components_dicts, word_components = _fix_auxiliary_types(
+        word_components_dicts,
+        word_components,
+    )
 
     morphisms = []
     for (start_word_ind, end_word_ind) in compound_cups:
