@@ -53,6 +53,21 @@ t5_n0 = PregroupTreeNode(word='when', typ=s, ind=0, children=[t5_n2_2])
 t5 = t5_n0
 
 
+def test_eq():
+    t1_n1 = PregroupTreeNode(word='t1', typ=Ty(), ind=1)
+    t1_n2 = PregroupTreeNode(word='t2', typ=Ty(), ind=2)
+    t1_n0 = PregroupTreeNode(word='t0', typ=Ty(), ind=0,
+                              children=[t1_n1, t1_n2])
+    t1 = t1_n0
+
+    t2_n1 = PregroupTreeNode(word='t1', typ=Ty(), ind=1)
+    t2_n2 = PregroupTreeNode(word='t2', typ=Ty(), ind=2)
+    t2_n0 = PregroupTreeNode(word='t0', typ=Ty(), ind=0,
+                              children=[t2_n2, t2_n1])
+    t2 = t2_n0
+    assert t1 == t2
+
+
 def test_get_nodes():
     assert t1.get_nodes() == [
         [t1_n0],
