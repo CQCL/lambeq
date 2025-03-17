@@ -4,7 +4,7 @@ from copy import deepcopy
 from unittest.mock import mock_open, patch
 
 import numpy as np
-from qiskit_ibm_provider.exceptions import IBMAccountError
+from qiskit_ibm_runtime.exceptions import IBMAccountError
 from sympy import default_sort_key
 import torch
 from torch import Size
