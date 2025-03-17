@@ -770,9 +770,9 @@ def tree2diagram(
                                  in word_components_dicts[i].values()])
                 for component in word_components[i]:
                     end_ind = start_ind + len(component[1])
-                    word_components_dict[component[0]] = range(
+                    word_components_dict[component[0]] = list(range(
                         start_ind, end_ind
-                    )
+                    ))
                     start_ind = end_ind
 
                 word_components_dicts[i] = word_components_dict
