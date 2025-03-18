@@ -107,6 +107,9 @@ class PregroupTreeNode:
     def __lt__(self, other: 'PregroupTreeNode') -> bool:
         return self.ind < other.ind
 
+    def __gt__(self, other: 'PregroupTreeNode') -> bool:
+        return self.ind > other.ind
+
     def __eq__(self, other: object) -> bool:
         """Check if these are the same instances, including
         the children and parent."""
