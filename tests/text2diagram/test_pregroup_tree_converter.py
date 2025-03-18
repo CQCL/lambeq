@@ -17,6 +17,8 @@ s1 = tokeniser.tokenise_sentence(
 )
 s2 = tokeniser.tokenise_sentence('Do your homework')
 s3 = tokeniser.tokenise_sentence('I like but Mary dislikes reading')
+s12 = tokeniser.tokenise_sentence("i don't like it")
+s13 = tokeniser.tokenise_sentence("i haven't seen it")
 
 s1_diag = bobcat_parser.sentence2diagram(s1, tokenised=True)
 s2_diag = bobcat_parser.sentence2diagram(s2, tokenised=True)
@@ -103,6 +105,8 @@ s11_diag = bobcat_parser.sentence2diagram(
     'When an event puts Errol in danger and the case in jeopardy',
     tokenised=False
 )
+s12_diag = bobcat_parser.sentence2diagram(s12, tokenised=True)
+s13_diag = bobcat_parser.sentence2diagram(s13, tokenised=True)
 
 t1_n1 = PregroupTreeNode(word='year', typ=n, ind=1)
 t1_n3 = PregroupTreeNode(word='figures', typ=n, ind=3)
@@ -211,6 +215,20 @@ t11_n7 = PregroupTreeNode(word='and', typ=s, ind=7,
 t11_n0 = PregroupTreeNode(word='When', typ=s, ind=0, children=[t11_n7])
 t11_no_cycle = t11_n0
 
+t12_n4 = PregroupTreeNode(word='it', typ=n, ind=4)
+t12_n0 = PregroupTreeNode(word='i', typ=n, ind=0)
+t12_n3 = PregroupTreeNode(word='like', typ=n.r @ s, ind=3, children=[t12_n4])
+t12_n1 = PregroupTreeNode(word='do', typ=n.r @ s, ind=1, children=[t12_n3])
+t12_n2 = PregroupTreeNode(word="n't", typ=s, ind=2, children=[t12_n0, t12_n1])
+t12 = t12_n2
+
+t13_n4 = PregroupTreeNode(word='it', typ=n, ind=4)
+t13_n0 = PregroupTreeNode(word='i', typ=n, ind=0)
+t13_n3 = PregroupTreeNode(word='seen', typ=n.r @ s, ind=3, children=[t13_n4])
+t13_n1 = PregroupTreeNode(word='have', typ=n.r @ s, ind=1, children=[t13_n3])
+t13_n2 = PregroupTreeNode(word="n't", typ=s, ind=2, children=[t13_n0, t13_n1])
+t13 = t13_n2
+
 
 def test_diagram2tree():
     s1_tree = diagram2tree(s1_diag)
@@ -263,7 +281,8 @@ def test_tree2diagram():
     assert tree2diagram(t5, t5.get_words()).pregroup_normal_form() == s5_diag.pregroup_normal_form()
     assert tree2diagram(t6, t6.get_words()).pregroup_normal_form() == s6_diag.pregroup_normal_form()
     assert tree2diagram(t7, t7.get_words()).pregroup_normal_form() == s6_diag.pregroup_normal_form()
-
+    assert tree2diagram(t12, t12.get_words()).pregroup_normal_form() == s12_diag.pregroup_normal_form()
+    assert tree2diagram(t13, t13.get_words()).pregroup_normal_form() == s13_diag.pregroup_normal_form()
 
 def test_generate_tree():
     # valid diagram

@@ -20,11 +20,12 @@ A module containing a Dataset class for training lambeq models.
 """
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator, Mapping
 from math import ceil
 import random
 from typing import Any
 
+from lambeq.backend.grammar import Diagram
 from lambeq.backend.numerical_backend import get_backend
 
 
@@ -132,3 +133,27 @@ class Dataset:
         random.shuffle(joint_list)
         data_tuple, targets_tuple = zip(*joint_list)
         return list(data_tuple), list(targets_tuple)
+
+
+def flatten(diagrams: Iterable[Any]) -> Iterator[Diagram]:
+    """Flatten a nested iterator of diagrams into a single iterator.
+
+    Parameters
+    ----------
+    diagrams : Iterable
+        Nested iterator containing diagrams.
+
+    Yields
+    ------
+    iterator of Diagram
+        Iterator where each element is a single diagram.
+
+    """
+
+    for d in diagrams:
+        if isinstance(d, Diagram):
+            yield d
+        elif isinstance(d, Mapping):
+            yield from flatten(d.values())
+        elif isinstance(d, Iterable):
+            yield from flatten(d)

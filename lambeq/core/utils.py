@@ -14,11 +14,10 @@
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator, Mapping
 from math import floor
+import pickle
 from typing import Any, List, Union
 
-from lambeq.backend.grammar import Diagram
 
 SentenceType = Union[str, List[str]]
 SentenceBatchType = Union[List[str], List[List[str]]]
@@ -37,30 +36,6 @@ def untokenised_batch_type_check(sentence: SentenceBatchType) -> bool:
 def tokenised_batch_type_check(batch: SentenceBatchType) -> bool:
     return isinstance(batch, list) and all(
             tokenised_sentence_type_check(s) for s in batch)
-
-
-def flatten(diagrams: Iterable[Any]) -> Iterator[Diagram]:
-    """Flatten a nested iterator of diagrams into a single iterator.
-
-    Parameters
-    ----------
-    diagrams : Iterable
-        Nested iterator containing diagrams.
-
-    Yields
-    ------
-    iterator of Diagram
-        Iterator where each element is a single diagram.
-
-    """
-
-    for d in diagrams:
-        if isinstance(d, Diagram):
-            yield d
-        elif isinstance(d, Mapping):
-            yield from flatten(d.values())
-        elif isinstance(d, Iterable):
-            yield from flatten(d)
 
 
 def normalise_duration(duration_secs: float | None) -> str:
@@ -112,3 +87,8 @@ def normalise_duration(duration_secs: float | None) -> str:
         out.append(f'{secs:.2f}s')
 
     return ''.join(out)
+
+
+def fast_deepcopy(obj: Any) -> Any:
+    """Fast deepcopy (faster than `copy.deepcopy`)."""
+    return pickle.loads(pickle.dumps(obj))

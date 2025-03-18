@@ -22,7 +22,6 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Iterable
-import pickle
 from typing import Any
 
 import numpy as np
@@ -30,6 +29,7 @@ import numpy as np
 from lambeq.backend import numerical_backend
 from lambeq.backend.symbol import lambdify
 from lambeq.backend.tensor import Diagram
+from lambeq.core.utils import fast_deepcopy
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 from lambeq.typing import AnyTensor
@@ -134,7 +134,7 @@ class QuantumModel(Model):
                    weights: Iterable) -> list[Diagram]:
         """Substitute weights into a list of parameterised circuit."""
         parameters = {k: v for k, v in zip(self.symbols, weights)}
-        diagrams = pickle.loads(pickle.dumps(diagrams))  # does fast deepcopy
+        diagrams = fast_deepcopy(diagrams)
         for diagram in diagrams:
             for b in diagram.boxes:
                 if b.free_symbols:

@@ -26,11 +26,12 @@ from collections.abc import Callable, Iterable, Iterator
 from copy import deepcopy
 from dataclasses import dataclass, field, InitVar, replace
 import json
-import pickle
 from typing import Any, ClassVar, Dict, Protocol, Type, TypeVar
 from typing import cast, overload, TYPE_CHECKING
 
 from typing_extensions import Self
+
+from lambeq.core.utils import fast_deepcopy
 
 
 if TYPE_CHECKING:
@@ -2028,8 +2029,8 @@ class Functor:
         """Apply the functor to a type, caching the result."""
         try:
             # Faster deepcopy
-            return pickle.loads(    # type: ignore[no-any-return]
-                pickle.dumps(self.ob_cache[ob])
+            return fast_deepcopy(    # type: ignore[no-any-return]
+                self.ob_cache[ob]
             )
         except KeyError:
             pass
@@ -2046,8 +2047,8 @@ class Functor:
         """Apply the functor to a diagrammable, caching the result."""
         try:
             # Faster deepcopy
-            return pickle.loads(    # type: ignore[no-any-return]
-                pickle.dumps(self.ar_cache[ar])
+            return fast_deepcopy(    # type: ignore[no-any-return]
+                self.ar_cache[ar]
             )
         except KeyError:
             pass

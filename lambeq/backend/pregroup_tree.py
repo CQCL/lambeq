@@ -104,6 +104,12 @@ class PregroupTreeNode:
         """Return the string representation of the node."""
         return f'{self.word}_{self.ind} ({self.typ})'
 
+    def __lt__(self, other: 'PregroupTreeNode') -> bool:
+        return self.ind < other.ind
+
+    def __gt__(self, other: 'PregroupTreeNode') -> bool:
+        return self.ind > other.ind
+
     def __eq__(self, other: object) -> bool:
         """Check if these are the same instances, including
         the children and parent."""
@@ -114,7 +120,7 @@ class PregroupTreeNode:
                 and self.typ == other.typ
                 and ((self.parent.ind if self.parent else None)
                      == (other.parent.ind if other.parent else None))
-                and self.children == other.children)
+                and sorted(self.children) == sorted(other.children))
 
     def is_same_word(self, other: object) -> bool:
         """Check if these words are the same words in the sentence.
