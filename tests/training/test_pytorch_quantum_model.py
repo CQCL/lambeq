@@ -10,6 +10,7 @@ from lambeq.backend.quantum import CRz, CX, H, Ket, Measure, SWAP, Discard, qubi
 
 from lambeq import AtomicType, IQPAnsatz, PytorchQuantumModel, Symbol
 
+
 def test_init():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
@@ -20,6 +21,7 @@ def test_init():
     model.initialise_weights()
     assert len(model.weights) == 4
     assert isinstance(model.weights, torch.nn.Parameter)
+
 
 def test_forward():
     N = AtomicType.NOUN
@@ -33,6 +35,7 @@ def test_forward():
     pred = model.forward(diagrams)
     assert pred.shape == (len(diagrams), s_dim)
 
+
 def test_forward_mixed():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
@@ -44,7 +47,7 @@ def test_forward_mixed():
     model.initialise_weights()
     pred = model.forward(diagrams)
     assert pred.shape == (len(diagrams), *density_matrix_dim)
-    
+
 
 def test_backward():
     N = AtomicType.NOUN
@@ -66,6 +69,7 @@ def test_initialise_weights_error():
         model = PytorchQuantumModel()
         model.initialise_weights()
 
+
 def test_get_diagram_output_error():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
@@ -74,6 +78,7 @@ def test_get_diagram_output_error():
     with pytest.raises(KeyError):
         model = PytorchQuantumModel()
         model.get_diagram_output([diagram])
+
 
 def test_checkpoint_loading():
     N = AtomicType.NOUN
@@ -94,6 +99,7 @@ def test_checkpoint_loading():
         assert torch.allclose(model([diagram]), model_new([diagram]))
         m.assert_called_with('model.lt', 'rb')
 
+
 def test_checkpoint_loading_errors():
     checkpoint = {'model_weights': np.array([1,2,3])}
     with patch('lambeq.training.checkpoint.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
@@ -101,6 +107,7 @@ def test_checkpoint_loading_errors():
         with pytest.raises(KeyError):
             _ = PytorchQuantumModel.from_checkpoint('model.lt')
         m.assert_called_with('model.lt', 'rb')
+
 
 def test_checkpoint_loading_file_not_found_errors():
     with patch('lambeq.training.checkpoint.open', mock_open(read_data='Not a valid checkpoint.')) as m, \
@@ -125,6 +132,7 @@ def test_pickling():
     assert diagram != pickled_diagram
     assert deepcopied_diagram != pickled_diagram
 
+
 def test_normalise():
     model = PytorchQuantumModel()
     input1 = np.linspace(-10, 10, 21)
@@ -134,6 +142,7 @@ def test_normalise():
     assert abs(normalised1.sum() - 1.0) < 1e-8
     assert abs(normalised2 - 0.5) < 1e-8
     assert np.all(normalised1 >= 0)
+
 
 def test_fast_subs_error():
     with pytest.raises(KeyError):

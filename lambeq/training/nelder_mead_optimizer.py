@@ -44,7 +44,7 @@ from sympy import Symbol as SympySymbol
 
 from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
-from lambeq.core.utils import flatten
+from lambeq.training.dataset import flatten
 from lambeq.training.optimizer import Optimizer
 from lambeq.training.quantum_model import QuantumModel
 
