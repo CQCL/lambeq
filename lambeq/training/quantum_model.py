@@ -134,7 +134,7 @@ class QuantumModel(Model):
                    weights: Iterable) -> list[Diagram]:
         """Substitute weights into a list of parameterised circuit."""
         parameters = {k: v for k, v in zip(self.symbols, weights)}
-        diagrams = fast_deepcopy(diagrams)      # does fast deepcopy
+        diagrams = fast_deepcopy(diagrams)
         for diagram in diagrams:
             for b in diagram.boxes:
                 if b.free_symbols:

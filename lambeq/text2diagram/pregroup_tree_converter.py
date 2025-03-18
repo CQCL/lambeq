@@ -12,7 +12,6 @@
 # implied. See the License for the specific language governing
 # permissions and limitations under the License.
 
-from copy import deepcopy
 from typing import Any, Optional
 
 import networkx as nx
@@ -21,7 +20,7 @@ from lambeq.backend.grammar import Cap, Cup, Diagram, Swap, Ty, Word
 from lambeq.backend.pregroup_tree import (
     PregroupTreeNode, ROOT_INDEX,
 )
-
+from lambeq.core.utils import fast_deepcopy
 
 WordComponentsDictsType = list[dict[int, list[int]]]
 WordComponentsType = list[list[tuple[int, Ty]]]
@@ -641,8 +640,8 @@ def _fix_auxiliary_types(
 
     """
 
-    word_components_dicts = deepcopy(word_components_dicts_orig)
-    word_components = deepcopy(word_components_orig)
+    word_components_dicts = fast_deepcopy(word_components_dicts_orig)
+    word_components = fast_deepcopy(word_components_orig)
 
     # Checks for the type `n.r @ s @ ...` for a word and
     # preserves that ordering for the atomic types
