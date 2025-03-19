@@ -35,7 +35,11 @@ __all__ = ['CCGType',
            'cups_reader',
            'spiders_reader',
            'stairs_reader',
-           'word_sequence_reader']
+           'word_sequence_reader',
+
+           'diagram2tree',
+           'generate_tree',
+           'tree2diagram']
 
 from lambeq.text2diagram.ccg_rule import CCGRule, CCGRuleUseError
 from lambeq.text2diagram.ccg_tree import CCGTree
@@ -55,3 +59,7 @@ from lambeq.text2diagram.linear_reader import (LinearReader,
 from lambeq.text2diagram.spiders_reader import (bag_of_words_reader,
                                                 spiders_reader)
 from lambeq.text2diagram.tree_reader import TreeReader, TreeReaderMode
+
+from lambeq.text2diagram.pregroup_tree_converter import (diagram2tree,
+                                                         generate_tree,
+                                                         tree2diagram)

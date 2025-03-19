@@ -22,6 +22,7 @@ from lambeq.backend.pregroup_tree import (
 )
 from lambeq.core.utils import fast_deepcopy
 
+
 WordComponentsDictsType = list[dict[int, list[int]]]
 WordComponentsType = list[list[tuple[int, Ty]]]
 
