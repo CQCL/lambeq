@@ -1223,6 +1223,17 @@ class Diagram(Entity):
     rigid_normal_form = normal_form
 
     def remove_snakes(self, left: bool = False) -> Diagram:
+        """
+        Simplifies the diagram by removing all snakes using the snake
+        equation. A snake is a pair of a Cup and a Cap in the form
+        ``Id @ Cap >> Cup @ Id`` or ``Cap @ Id >> Id @ Cup``, which can
+        be straightened into an ``Id``.
+
+        Parameters
+        ----------
+        left : bool, optional
+            If True, applies left interchangers during the process.
+        """
         from lambeq.backend.snake_removal import snake_removal
         diagram = self
         for _diagram in snake_removal(self, left=left):
