@@ -1220,6 +1220,8 @@ class Diagram(Entity):
             cache.add(diagram)
         return diagram
 
+    rigid_normal_form = normal_form
+
     def remove_snakes(self, left: bool = False) -> Diagram:
         from lambeq.backend.snake_removal import snake_removal
         diagram = self
