@@ -327,6 +327,18 @@ class UncurryRewriteRule(RewriteRule):
     by uncurrying.
     """
     def __init__(self, left: bool = True) -> None:
+        """Instantiate a UncurryRewriteRule.
+        This rules uncurries all the inputs of a box to create
+        a domain-less box. This rule can be used prior to
+        applying an ansatz that works only on domain-less boxes.
+
+        Parameters
+        ----------
+        left : bool, default: True
+            If True, the uncurrying cups are placed on the left-hand
+            side. If False, they are placed on the right-hand side.
+
+        """
         self.left = left
 
     def matches(self, box: Box) -> bool:

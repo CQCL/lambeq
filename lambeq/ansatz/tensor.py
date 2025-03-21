@@ -126,6 +126,19 @@ class SplitTensorAnsatz(TensorAnsatz):
 
     def __init__(self, ob_map: Mapping[grammar.Ty, tensor.Dim],
                  uncurry_left: bool) -> None:
+        """Instantiate a split tensor network ansatz.
+
+        Parameters
+        ----------
+        ob_map : dict
+            A mapping from :py:class:`lambeq.backend.grammar.Ty` to the
+            dimension space it uses in a tensor network.
+        uncurry_left: bool
+            If True, the uncurrying cups are placed on the left-hand
+            side. If False, they are placed on the right-hand side.
+
+        """
+
         super().__init__(ob_map)
         self.uncurry = UncurryRewriteRule(left=uncurry_left)
 
