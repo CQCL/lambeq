@@ -241,7 +241,7 @@ class SpiderAnsatz(SplitTensorAnsatz):
         self.split_functor = grammar.Functor(
             grammar.grammar,
             ob=lambda _, ob: ob,
-            ar=self._split_ar  # type: ignore[arg-type]
+            ar=self._split_ar
         )
 
     def _split_ar(self, _: grammar.Functor,
