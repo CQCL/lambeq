@@ -321,6 +321,33 @@ class CurryRewriteRule(RewriteRule):
         return new_box
 
 
+class UncurryRewriteRule(RewriteRule):
+    """
+    A rewrite rule that convert boxes into domain-less boxes
+    by uncurrying.
+    """
+    def __init__(self, left: bool = True) -> None:
+        self.left = left
+
+    def matches(self, box: Box) -> bool:
+        return bool(box.dom)
+
+    def rewrite(self, box: Box) -> Diagrammable:
+        Cup = box.category.Diagram.special_boxes['cup']
+        Id = box.category.Diagram.id
+
+        if self.left:
+            new_box = Box(box.name, Ty(), box.dom.r @ box.cod)
+            first_layer = Id(box.dom) @ new_box
+            second_layer = Cup(box.dom, box.dom.r) @ Id(box.cod)
+            return first_layer.then(second_layer)
+        else:
+            new_box = Box(box.name, Ty(), box.cod @ box.dom.l)
+            first_layer = new_box @ Id(box.dom)
+            second_layer = Id(box.cod) @ box.cups(box.dom.l, box.dom)
+            return first_layer.then(second_layer)
+
+
 class Rewriter:
     """Class that rewrites diagrams.
 

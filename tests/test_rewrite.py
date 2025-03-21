@@ -6,7 +6,7 @@ from lambeq.backend.grammar import (Box, Cap, Cup, Diagram, Id, Spider,
 from lambeq import (AtomicType, Rewriter, CoordinationRewriteRule,
                     CurryRewriteRule, RemoveCupsRewriter,
                     RemoveSwapsRewriter, SimpleRewriteRule, stairs_reader,
-                    UnifyCodomainRewriter, UnknownWordsRewriteRule)
+                    UncurryRewriteRule, UnifyCodomainRewriter, UnknownWordsRewriteRule)
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -466,3 +466,20 @@ def test_unknown_words_stairs():
     ])
 
     assert rewrite_unknown_words(diagram) == diagram
+
+
+def test_uncurry():
+    uncurry = UncurryRewriteRule()
+    dom = Ty(objects=list(map(Ty, 'abcd')))
+    cod = Ty(objects=list(map(Ty, 'wxyz')))
+    box = Box('box', dom, cod)
+    assert uncurry.matches(box)
+    diag = uncurry.rewrite(box)
+
+    assert diag.dom == box.dom
+    assert diag.cod == box.cod
+
+    num_cups = sum(1 for box in diag.boxes if isinstance(box, Cup))
+    assert num_cups == len(dom)
+
+

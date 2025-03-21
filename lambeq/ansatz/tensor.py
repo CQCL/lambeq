@@ -29,6 +29,7 @@ from lambeq.ansatz.base import AnsatzWithFramesRuntimeError, BaseAnsatz
 from lambeq.backend import grammar, Symbol, tensor
 from lambeq.backend.grammar import Cup, Spider, Ty, Word
 from lambeq.backend.tensor import Dim
+from lambeq.rewrite import UncurryRewriteRule
 
 
 class TensorAnsatz(BaseAnsatz):
@@ -121,6 +122,14 @@ class SplitTensorAnsatz(TensorAnsatz):
     into smaller units."""
 
     split_functor: grammar.Functor
+    uncurry_left: bool
+    uncurry: UncurryRewriteRule
+
+    def __init__(self, ob_map: Mapping[grammar.Ty, tensor.Dim],
+                 uncurry_left: bool) -> None:
+        super().__init__(ob_map)
+        self.uncurry_left = uncurry_left
+        self.uncurry = UncurryRewriteRule(left=uncurry_left)
 
     @abstractmethod
     def _split_ar(self, _: grammar.Functor, ar: Word) -> grammar.Diagrammable:
@@ -143,7 +152,8 @@ class MPSAnsatz(SplitTensorAnsatz):
     def __init__(self,
                  ob_map: Mapping[Ty, Dim],
                  bond_dim: int,
-                 max_order: int = 3) -> None:
+                 max_order: int = 3,
+                 uncurry_left: bool = True) -> None:
         """Instantiate a matrix product state ansatz.
 
         Parameters
@@ -156,6 +166,9 @@ class MPSAnsatz(SplitTensorAnsatz):
         max_order: int
             The maximum order of each tensor in the matrix product
             state, which must be at least 3.
+        uncurry_left: bool
+            If True, the uncurrying cups are placed on the left-hand
+            side. If False, they are placed on the right-hand side.
 
         """
         if max_order < 3:
@@ -165,21 +178,25 @@ class MPSAnsatz(SplitTensorAnsatz):
         ob_map = dict(ob_map)
         ob_map[self.BOND_TYPE] = Dim(bond_dim)
 
-        super().__init__(ob_map)
+        super().__init__(ob_map, uncurry_left)
 
         self.bond_dim = bond_dim
         self.max_order = max_order
         self.split_functor = grammar.Functor(
             grammar.grammar,
             ob=lambda _, ob: ob,
-            ar=self._split_ar  # type: ignore[arg-type]
+            ar=self._split_ar
         )
 
-    def _split_ar(self, _: grammar.Functor, ar: Word) -> grammar.Diagrammable:
-        bond = self.BOND_TYPE
-        if len(ar.cod) <= self.max_order:
-            return Word(f'{ar.name}_0', ar.cod)
+    def _split_ar(self, _: grammar.Functor,
+                  ar: grammar.Box) -> grammar.Diagrammable:
+        if len(ar.dom) + len(ar.cod) <= self.max_order:
+            return grammar.Box(f'{ar.name}_0', ar.dom, ar.cod, z=ar.z)
 
+        if self.uncurry.matches(ar):
+            return self.split_functor(self.uncurry.rewrite(ar))
+
+        bond = self.BOND_TYPE
         boxes = []
         cups = []
         step_size = self.max_order - 2
@@ -199,7 +216,8 @@ class SpiderAnsatz(SplitTensorAnsatz):
 
     def __init__(self,
                  ob_map: Mapping[Ty, Dim],
-                 max_order: int = 2) -> None:
+                 max_order: int = 2,
+                 uncurry_left: bool = True) -> None:
         """Instantiate a spider ansatz.
 
         Parameters
@@ -209,12 +227,15 @@ class SpiderAnsatz(SplitTensorAnsatz):
             dimension space it uses in a tensor network.
         max_order: int
             The maximum order of each tensor, which must be at least 2.
+        uncurry_left: bool
+            If True, the uncurrying cups are placed on the left-hand
+            side. If False, they are placed on the right-hand side.
 
         """
         if max_order < 2:
             raise ValueError('`max_order` must be at least 2')
 
-        super().__init__(ob_map)
+        super().__init__(ob_map, uncurry_left)
 
         self.max_order = max_order
         self.split_functor = grammar.Functor(
@@ -223,9 +244,13 @@ class SpiderAnsatz(SplitTensorAnsatz):
             ar=self._split_ar  # type: ignore[arg-type]
         )
 
-    def _split_ar(self, _: grammar.Functor, ar: Word) -> grammar.Diagrammable:
-        if len(ar.cod) <= self.max_order:
-            return Word(f'{ar.name}_0', ar.cod)
+    def _split_ar(self, _: grammar.Functor,
+                  ar: grammar.Box) -> grammar.Diagrammable:
+        if len(ar.dom) + len(ar.cod) <= self.max_order:
+            return grammar.Box(f'{ar.name}_0', ar.dom, ar.cod, z=ar.z)
+
+        if self.uncurry.matches(ar):
+            return self.split_functor(self.uncurry.rewrite(ar))
 
         boxes = []
         spiders = [grammar.Id(ar.cod[:1])]
