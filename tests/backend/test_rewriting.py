@@ -27,7 +27,7 @@ def test_diagram_snake_removal():
     in_diagram = g @ cap >> f.dagger() @ Id(n.r) @ f >> cup @ h
     out_diagram = g >> f.dagger() >> f >> h
 
-    assert in_diagram.normal_form() == out_diagram
+    assert in_diagram.remove_snakes() == out_diagram
 
 
 def test_spiral():
