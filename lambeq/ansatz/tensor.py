@@ -122,13 +122,11 @@ class SplitTensorAnsatz(TensorAnsatz):
     into smaller units."""
 
     split_functor: grammar.Functor
-    uncurry_left: bool
     uncurry: UncurryRewriteRule
 
     def __init__(self, ob_map: Mapping[grammar.Ty, tensor.Dim],
                  uncurry_left: bool) -> None:
         super().__init__(ob_map)
-        self.uncurry_left = uncurry_left
         self.uncurry = UncurryRewriteRule(left=uncurry_left)
 
     @abstractmethod
