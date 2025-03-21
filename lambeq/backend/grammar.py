@@ -1211,13 +1211,20 @@ class Diagram(Entity):
             Whenever :code:`normalizer` yields the same rewrite steps
             twice.
         """
-        from lambeq.backend.snake_removal import snake_removal
-        diagram, cache = self, set()
-        for _diagram in snake_removal(diagram, left=left):
+        from lambeq.backend.snake_removal import normalize
+        diagram, cache = self.remove_snakes(left=left), set()
+        for _diagram in normalize(diagram, left=left):
             if _diagram in cache:
                 raise NotImplementedError(f'{str(self)} is not connected.')
             diagram = _diagram
             cache.add(diagram)
+        return diagram
+
+    def remove_snakes(self, left: bool = False) -> Diagram:
+        from lambeq.backend.snake_removal import snake_removal
+        diagram = self
+        for _diagram in snake_removal(self, left=left):
+            diagram = _diagram
         return diagram
 
     def draw(self, draw_as_pregroup=True, **kwargs: Any) -> None:
