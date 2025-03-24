@@ -29,6 +29,13 @@ def diagram_with_frame():
     )
 
 
+@pytest.fixture
+def diagram_with_box():
+    cod = Ty(objects=list(map(Ty, 'abcd')))
+    return ((Word('big', cod.l) @ Word('words', cod @ Ty('a')))
+            >> Box('box', cod.l @ cod @ Ty('a'), cod @ cod))
+
+
 def test_tensor_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(2) for t in 'abcd'}
     ansatz = TensorAnsatz(ob_map)
@@ -56,6 +63,15 @@ def test_mps_ansatz_split(diagram):
             assert len(box.cod) <= i
 
 
+def test_mps_ansatz_split_with_box(diagram_with_box):
+    ob_map = {Ty(t): Dim(4) for t in 'abcd'}
+    for i in range(3, 5):
+        ansatz = MPSAnsatz(ob_map, max_order=i, bond_dim=1)
+        split_diagram = ansatz(diagram_with_box)
+        for box in split_diagram.boxes:
+            assert len(box.dom) + len(box.cod) <= i
+
+
 def test_mps_ansatz_eval(diagram):
     ob_map = {Ty(t): Dim(4) for t in 'abcd'}
     ansatz = MPSAnsatz(ob_map, bond_dim=1)
@@ -78,6 +94,18 @@ def test_spider_splitter(diagram):
         tensor = ansatz(diagram)
         for box in tensor.boxes:
             assert len(box.cod) <= i
+
+
+def test_spider_splitter_with_box(diagram_with_box):
+    from lambeq.backend.grammar import Spider
+    ob_map = {Ty(t): Dim(4) for t in 'abcd'}
+
+    for i in range(2, 5):
+        ansatz = SpiderAnsatz(ob_map, max_order=i)
+        tensor = ansatz(diagram_with_box)
+        for box in tensor.boxes:
+            if not isinstance(box, Spider):
+                assert len(box.dom) + len(box.cod) <= i
 
 
 def test_spider_ansatz_eval(diagram):
