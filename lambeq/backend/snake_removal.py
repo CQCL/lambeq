@@ -167,8 +167,6 @@ def snake_removal(diagram: Diagram, left: bool = False) -> Iterator[Diagram]:
         for _diagram in unsnake(diagram, *yankable):
             yield _diagram
             diagram = _diagram
-    for _diagram in normalize(diagram, left=left):
-        yield _diagram
 
 
 def interchange(diagram: Diagram,
