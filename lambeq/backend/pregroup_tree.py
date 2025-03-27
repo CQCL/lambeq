@@ -219,11 +219,6 @@ class PregroupTreeNode:
             [n.parent.ind if n.parent else -1 for n in nodes]
             for nodes in nodes_list
         ]
-        min_ind = min([min(ps) for ps in parents_list])
-        if min_ind != -1:
-            # We're returning for a subtree - need to offset
-            parents_list = [[p - min_ind - 1 for p in ps]
-                            for ps in parents_list]
 
         return parents_list
 
