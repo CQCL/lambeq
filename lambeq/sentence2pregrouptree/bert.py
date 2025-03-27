@@ -17,13 +17,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-ROOT_TOKEN = "[ROOT]"
-UNK_TYPE = "unk"
+ROOT_TOKEN = '[ROOT]'
+UNK_TYPE = 'unk'
 
 
 def prepare_type_logits_mask(input_ids,
                              token_word_source,
-                             config: "SentenceToTreeBertConfig",
+                             config: 'SentenceToTreeBertConfig',
                              return_tensor: bool = True):
     mask = []
     type_choices_inds_cache = {}
@@ -32,7 +32,8 @@ def prepare_type_logits_mask(input_ids,
         words = []
         if token_word_source is None:
             # Need to reconstruct the words where the token came from
-            tokens = [config.id2token[id] for id in input_ids_r.tolist()]
+            tokens = [config.id2token[id]
+                      for id in input_ids_r.tolist()]
             words = []
             n_subtokens = 0
             for token in tokens:
@@ -57,15 +58,19 @@ def prepare_type_logits_mask(input_ids,
 
         mask_r = []
         for _, word in enumerate(words):
-            mask_type = torch.ones(config.num_types, dtype=torch.int64, device=device)
+            mask_type = torch.ones(config.num_types,
+                                   dtype=torch.int64,
+                                   device=device)
             type_choices = config.token_types.get(word, None)
             if type_choices is not None:
                 type_choices_inds = type_choices_inds_cache.get(word, None)
                 if type_choices_inds is None:
-                    type_choices_inds = [config.type2id[ty] for ty in type_choices]
+                    type_choices_inds = [config.type2id[ty]
+                                         for ty in type_choices]
                     type_choices_inds_cache[word] = type_choices_inds
                 mask_type = mask_type * -torch.inf
-                mask_type.index_fill_(0, torch.tensor(type_choices_inds, device=device), 1)
+                mask_type.index_fill_(0, torch.tensor(type_choices_inds,
+                                                      device=device), 1)
             mask_r.append(mask_type)
 
         mask_r = torch.stack(mask_r)
@@ -89,13 +94,9 @@ def prepare_parent_logits_mask(input_ids,
         word_ids = torch.tensor(word_ids, dtype=torch.int64)
 
     emb_len = input_ids.shape[-1]
-    logger.debug(f'{input_ids = }, {input_ids.shape = }')
-    logger.debug(f'{n_tokens = }, {n_tokens.shape = }')
-    logger.debug(f'{word_ids = }, {word_ids.shape = }')
     device = input_ids.device
     dtype = input_ids.dtype
     for n_token, word_ids_ls in zip(n_tokens, word_ids):
-        logger.debug(f'{n_token = }, {word_ids_ls = }')
         mask_rs = []
         for pos_word_id in word_ids_ls.tolist():
             mask_r = torch.inf * torch.ones(emb_len, dtype=dtype, device=device)
@@ -107,7 +108,6 @@ def prepare_parent_logits_mask(input_ids,
             mask_rs.append(mask_r)
 
         mask_r = torch.stack(mask_rs)
-
         mask.append(mask_r)
 
     mask = torch.stack(mask)
@@ -443,7 +443,6 @@ class BertForSentenceToTree(BertPreTrainedModel):
         return_dict: Optional[bool] = None,
     ) -> Union[Tuple[torch.Tensor], SentenceToTreeOutput]:
 
-        logger.debug(f'{parent_logits_mask = }, {parent_logits_mask.shape if parent_logits_mask is not None else None}')
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
 
         type_encoder_outputs = self.get_type_prediction_outputs(
@@ -483,7 +482,7 @@ class BertForSentenceToTree(BertPreTrainedModel):
             embeddings = self.LayerNorm(embeddings)
             embeddings = self.embedding_dropout(embeddings)
 
-            device = input_ids.device if input_ids is not None else input_embeds.device
+            device = input_ids.device if input_ids is not None else inputs_embeds.device
             if attention_mask is None:
                 attention_mask = torch.ones(((batch_size, seq_length + past_key_values_length)), device=device)
             extended_attention_mask: torch.Tensor = self.get_extended_attention_mask(attention_mask, input_shape)
@@ -504,7 +503,10 @@ class BertForSentenceToTree(BertPreTrainedModel):
             parent_logits = self.parent_outputs(parent_encoder_output)
             # Restrict parent predictions based on number of tokens
             parent_logits = self.restrict_parent_options(
-                parent_logits, parent_logits_mask, n_tokens, word_ids,
+                parent_logits,
+                parent_logits_mask,
+                n_tokens,
+                word_ids,
             )
 
             parent_hidden_states = parent_encoder_outputs.hidden_states
@@ -523,8 +525,6 @@ class BertForSentenceToTree(BertPreTrainedModel):
         if not return_dict:
             # TODO: Might need to fix this
             raise NotImplementedError('`return_dict` parameter not yet handled.')
-            # output = (type_logits, parent_logits) + outputs[2:]
-            # return ((total_loss,) + output) if total_loss is not None else output
 
         return SentenceToTreeOutput(
             loss=total_loss,
