@@ -17,12 +17,12 @@ Opt-Einsum contractor for reusing previously computed paths.
 """
 
 import functools
+from pathlib import Path
+import pickle
 from typing import (
     Collection, Iterable, Sequence, TypeVar
 )
 
-import pickle
-from pathlib import Path
 import opt_einsum as oe  # type: ignore[import-untyped]
 from tensornetwork import (
     AbstractNode, contract_between, contract_parallel,

@@ -31,11 +31,11 @@ import torch
 from lambeq.backend.numerical_backend import backend
 from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
+from lambeq.training.cached_tn_path_optimizer import (
+    CachedTnPathOptimizer, ordered_nodes_contractor, TnPathOptimizer
+)
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
-from lambeq.training.cached_tn_path_optimizer import (
-    ordered_nodes_contractor, CachedTnPathOptimizer, TnPathOptimizer
-)
 
 
 class PytorchModel(Model, torch.nn.Module):
@@ -45,18 +45,22 @@ class PytorchModel(Model, torch.nn.Module):
     symbols: list[Symbol]
     tn_path_optimizer: TnPathOptimizer
 
-    def __init__(self, tn_path_optimizer: TnPathOptimizer | None = None) -> None:
+    def __init__(
+            self,
+            tn_path_optimizer: TnPathOptimizer | None = None
+    ) -> None:
         """Initialise a PytorchModel."""
         Model.__init__(self)
         torch.nn.Module.__init__(self)
-        self.tn_path_optimizer = (tn_path_optimizer
-                             or CachedTnPathOptimizer())
+        self.tn_path_optimizer = (
+            tn_path_optimizer or CachedTnPathOptimizer()
+        )
 
     def _tn_contract(
             self,
             nodes: list[AbstractNode],
             output_edge_order: Sequence[Edge] | None = None,
-            ignore_edge_order: bool | None = None
+            ignore_edge_order: bool = False
     ):
         return ordered_nodes_contractor(
             nodes,
@@ -114,7 +118,7 @@ class PytorchModel(Model, torch.nn.Module):
         self.symbols = checkpoint['model_symbols']
         self.weights = checkpoint['model_weights']
         self.load_state_dict(checkpoint['model_state_dict'])
-        self.tn_optimizer.load_checkpoint(checkpoint)
+        self.tn_path_optimizer.load_checkpoint(checkpoint)
 
     def _make_checkpoint(self) -> Checkpoint:
         """Create checkpoint that contains the model weights and symbols.
@@ -130,7 +134,7 @@ class PytorchModel(Model, torch.nn.Module):
         checkpoint.add_many({'model_symbols': self.symbols,
                              'model_weights': self.weights,
                              'model_state_dict': self.state_dict()})
-        checkpoint = self.tn_optimizer.make_checkpoint(checkpoint)
+        checkpoint = self.tn_path_optimizer.make_checkpoint(checkpoint)
         return checkpoint
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
