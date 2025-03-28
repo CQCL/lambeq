@@ -28,7 +28,7 @@ from lambeq.backend.quantum import Diagram as Circuit
 from lambeq.backend.tensor import Diagram
 from lambeq.training.pytorch_model import PytorchModel
 from lambeq.training.quantum_model import QuantumModel
-from lambeq.training.saved_tn_optimizer import TnOptimizer
+from lambeq.training.cached_tn_path_optimizer import TnPathOptimizer
 
 
 class PytorchQuantumModel(PytorchModel, QuantumModel):
@@ -37,9 +37,9 @@ class PytorchQuantumModel(PytorchModel, QuantumModel):
 
     weights: torch.nn.Parameter     # type: ignore[assignment]
 
-    def __init__(self, tn_optimizer: TnOptimizer | None = None) -> None:
+    def __init__(self, tn_path_optimizer: TnPathOptimizer | None = None) -> None:
         """Initialise a PytorchQuantumModel."""
-        PytorchModel.__init__(self, tn_optimizer)
+        PytorchModel.__init__(self, tn_path_optimizer)
         QuantumModel.__init__(self)
 
     def initialise_weights(self) -> None:
