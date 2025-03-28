@@ -21,7 +21,9 @@ from typing import (
     Collection, Iterable, Sequence, TypeVar
 )
 
-import opt_einsum as oe  # type: ignore
+import pickle
+from pathlib import Path
+import opt_einsum as oe  # type: ignore[import-untyped]
 from tensornetwork import (
     AbstractNode, contract_between, contract_parallel,
     Edge, get_all_edges, get_subgraph_dangling
@@ -53,7 +55,7 @@ def _dedup(seq: Iterable[T]) -> list[T]:
     return [x for x in seq if not (x in seen or seen_add(x))]
 
 
-class TnOptimizer(oe.paths.PathOptimizer):
+class TnPathOptimizer(oe.paths.PathOptimizer):
     """Opt-einsum custom optimizer."""
     _optimizer: functools.partial[ContractionPath]
     memory_limit: int | None
@@ -102,8 +104,10 @@ class TnOptimizer(oe.paths.PathOptimizer):
     def make_checkpoint(self, checkpoint: Checkpoint) -> Checkpoint:
         return checkpoint
 
-    @classmethod
     def load_checkpoint(self, checkpoint: Checkpoint):
+        """Load any information saved to a checkpoint.
+        We do not expect to recover init kwargs from the checkpoint -
+        the TnPathOptimizer should be initialised separately."""
         pass
 
     def __call__(
@@ -112,7 +116,7 @@ class TnOptimizer(oe.paths.PathOptimizer):
             output: set[Edge],
             size_dict: dict[Edge, int],
             memory_limit: int | None = None,
-            edge_list: list[Edge] = None
+            edge_list: list[Edge] | None = None
     ):
         return self._optimizer(
             inputs,
@@ -122,14 +126,22 @@ class TnOptimizer(oe.paths.PathOptimizer):
         )
 
 
-class SavedTnOptimizer(TnOptimizer):
+class CachedTnPathOptimizer(TnPathOptimizer):
     """
     Opt-einsum custom optimizer.
     Cache computed paths for quick path lookup.
     """
-    saved_paths: dict[ContractionKey, ContractionPath]
+    cached_paths: dict[ContractionKey, ContractionPath]
+    filepath: Path | None
+    save_checkpoints: bool
 
-    def __init__(self, algorithm: str = 'auto-hq', **kwargs):
+    def __init__(
+        self,
+        algorithm: str = 'auto-hq',
+        save_file: Path | None = None,
+        save_checkpoints: bool = False,
+        **kwargs
+    ):
         """
         parameters
         ----------
@@ -145,6 +157,12 @@ class SavedTnOptimizer(TnOptimizer):
               faster than auto-hq and finds better paths than auto.
               Preferred option for larger networks where auto-hq
               is too slow.
+        save_file: :py:class:`Path` or :py:class:`None`
+            (optional) filepath to save the cached paths to.
+            File contents is updated with each new path.
+        save_checkpoints: :py:class:`bool`
+            Whether to include the cached paths in the checkpoints.
+            Default False.
 
         kwargs: extra keyword arguments to pass to the fallback
             algorithm initializer. These will depend on the chosen
@@ -165,25 +183,21 @@ class SavedTnOptimizer(TnOptimizer):
               that many processes at once, otherwise use all
               available CPU cores.
         """
-        TnOptimizer.__init__(self, algorithm, **kwargs)
-        self.saved_paths = {}
+        TnPathOptimizer.__init__(self, algorithm, **kwargs)
+        self.cached_paths = {}
+        self.filepath = save_file
+        self.save_checkpoints = save_checkpoints
 
-    def load_paths(self, new_paths):
-        """Append new paths to the current cache."""
-        self.saved_paths = {
-            **self.saved_paths,
-            **new_paths
-        }
-
-    def make_checkpoint(self, checkpoint: Checkpoint) -> Checkpoint:
-        checkpoint = super().make_checkpoint(checkpoint)
-        checkpoint.add_many({
-            'tn_optimizer_saved_paths': self.saved_paths,
-        })
-        return checkpoint
-
-    def load_checkpoint(self, checkpoint: Checkpoint):
-        self.saved_paths = checkpoint['tn_optimizer_saved_paths']
+        if self.filepath is not None:
+            try:
+                with open(self.filepath, 'rb') as f:
+                    self.cached_paths = pickle.load(f)
+            except FileNotFoundError:
+                # Make sure the path exists for future use.
+                self.filepath.mkdir(parents=True, exist_ok=True)
+            except EOFError:
+                # No previous paths present; continue.
+                pass
 
     def __call__(
             self,
@@ -191,8 +205,8 @@ class SavedTnOptimizer(TnOptimizer):
             output: set[Edge],
             size_dict: dict[Edge, int],
             memory_limit: int | None = None,
-            edge_list: list[Edge] = None
-    ):
+            edge_list: list[Edge] | None = None
+    ) -> ContractionPath:
         if edge_list is None:
             raise ValueError(
                 'Edge list must be supplied in order to cache paths.'
@@ -217,20 +231,42 @@ class SavedTnOptimizer(TnOptimizer):
         output_tuple = tuple(sorted(edge_map[e] for e in output))
         key = (input_tuples, output_tuple, sizes)
 
-        if key not in self.saved_paths:
+        if key not in self.cached_paths:
             # Couldn't find a saved path.
             # Use fallback and save it for next time.
             path = super().__call__(
                 inputs, output, size_dict, memory_limit, edge_list
             )
-            self.saved_paths[key] = path
+            self.add_paths({key: path})
 
-        return self.saved_paths[key]
+        return self.cached_paths[key]
+
+    def add_paths(self, new_paths: dict[ContractionKey, ContractionPath]):
+        """Append new paths to the current cache."""
+        self.cached_paths = {
+            **self.cached_paths,
+            **new_paths
+        }
+        if self.filepath is not None:
+            with open(self.filepath, 'wb') as f:
+                pickle.dump(self.cached_paths, f)
+
+    def make_checkpoint(self, checkpoint: Checkpoint) -> Checkpoint:
+        checkpoint = super().make_checkpoint(checkpoint)
+        if self.save_checkpoints:
+            checkpoint.add_many({
+                'tn_path_optimizer_cached_paths': self.cached_paths,
+            })
+        return checkpoint
+
+    def load_checkpoint(self, checkpoint: Checkpoint):
+        if self.save_checkpoints:
+            self.cached_paths = checkpoint['tn_path_optimizer_cached_paths']
 
 
-def custom_contractor(
+def ordered_nodes_contractor(
     nodes: list[AbstractNode],
-    algorithm: TnOptimizer,
+    algorithm: TnPathOptimizer,
     output_edge_order: Sequence[Edge] | None = None,
     ignore_edge_order: bool = False
 ) -> AbstractNode:
@@ -292,7 +328,7 @@ def custom_contractor(
         return list(nodes_set)[0].reorder_edges(output_edge_order)
 
     # Then apply `opt_einsum`'s algorithm
-    path, nodes = _get_path(
+    path, nodes = _get_path_with_ordered_nodes(
         _dedup([n for n in nodes if n in nodes_set]),
         algorithm
     )
@@ -312,10 +348,10 @@ def custom_contractor(
     return final_node
 
 
-def _get_path(
-    nodes: Iterable[AbstractNode],
-    algorithm: TnOptimizer
-) -> tuple[Collection[tuple[int, ...]], Iterable[AbstractNode]]:
+def _get_path_with_ordered_nodes(
+    nodes: list[AbstractNode],
+    algorithm: TnPathOptimizer
+) -> tuple[Collection[tuple[int, ...]], list[AbstractNode]]:
     """Calculates the contraction paths using `opt_einsum`
     methods. A copy of the tensornetwork implementation,
     that uses a consistent node ordering.
