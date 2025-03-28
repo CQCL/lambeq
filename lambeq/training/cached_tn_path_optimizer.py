@@ -135,6 +135,8 @@ class CachedTnPathOptimizer(TnPathOptimizer):
     filepath: Path | None
     save_checkpoints: bool
 
+    checkpoint_cached_paths_key = 'tn_path_optimizer_cached_paths'
+
     def __init__(
         self,
         algorithm: str = 'auto-hq',
@@ -255,13 +257,13 @@ class CachedTnPathOptimizer(TnPathOptimizer):
         checkpoint = super().make_checkpoint(checkpoint)
         if self.save_checkpoints:
             checkpoint.add_many({
-                'tn_path_optimizer_cached_paths': self.cached_paths,
+                self.checkpoint_cached_paths_key: self.cached_paths,
             })
         return checkpoint
 
     def load_checkpoint(self, checkpoint: Checkpoint):
-        if self.save_checkpoints:
-            self.cached_paths = checkpoint['tn_path_optimizer_cached_paths']
+        if self.checkpoint_cached_paths_key in checkpoint:
+            self.cached_paths = checkpoint[self.checkpoint_cached_paths_key]
 
 
 def ordered_nodes_contractor(
