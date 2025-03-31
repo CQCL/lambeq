@@ -102,6 +102,9 @@ __all__ = [
         'PytorchTrainer',
         'QuantumTrainer',
 
+        'TnPathOptimizer',
+        'CachedTnPathOptimizer',
+
         'BinaryCrossEntropyLoss',
         'CrossEntropyLoss',
         'LossFunction',
@@ -138,6 +141,7 @@ from lambeq.training import (Checkpoint, Dataset, Optimizer,
                              PennyLaneModel, PytorchModel,
                              PytorchQuantumModel, QuantumModel,
                              TketModel, Trainer, PytorchTrainer,
+                             CachedTnPathOptimizer, TnPathOptimizer,
                              QuantumTrainer, BinaryCrossEntropyLoss,
                              CrossEntropyLoss, LossFunction, MSELoss)
 from lambeq.version import (version as __version__,
