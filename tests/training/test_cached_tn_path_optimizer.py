@@ -3,10 +3,7 @@ import pytest
 from unittest.mock import mock_open, patch
 
 from lambeq import Checkpoint
-from lambeq.backend.tensor import Dim
-from lambeq.backend.grammar import Cup, Id, Word
-
-from lambeq.backend.quantum import Bra, CX, H, Ket, Rx, Rz
+from lambeq.backend.quantum import CX, H, Ket, Rx, Rz
 from lambeq.training.cached_tn_path_optimizer import (
     CachedTnPathOptimizer,
     ordered_nodes_contractor
