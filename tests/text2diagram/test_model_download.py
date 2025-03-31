@@ -2,9 +2,11 @@ import pytest
 from unittest import mock
 
 from lambeq import VerbosityLevel
-from lambeq.text2diagram.model_downloader import (ModelDownloader,
-                                                  ModelDownloaderError,
-                                                  MODELS)
+from lambeq.text2diagram.model_based_reader.model_downloader import (
+    ModelDownloader,
+    ModelDownloaderError,
+    MODELS
+)
 
 
 class MockRequestGetResponse:
@@ -47,7 +49,7 @@ def test_invalid_model_name():
 
 
 def test_invalid_url():
-    downloader = ModelDownloader('bert')
+    downloader = ModelDownloader('bobcat')
 
     downloader.model_url += '/incorrect_url_suffix'
 
@@ -62,7 +64,7 @@ def test_invalid_url():
             side_effect=generate_mock_requests_get_fn(**invalid_checksum_params))
 def test_invalid_checksum(mock_get_fn):
 
-    downloader = ModelDownloader('bert')
+    downloader = ModelDownloader('bobcat')
     with pytest.raises(ModelDownloaderError, match='does not match checksum'):
         downloader.download_model(verbose=VerbosityLevel.SUPPRESS.value)
 
@@ -71,7 +73,7 @@ def test_invalid_checksum(mock_get_fn):
             side_effect=generate_mock_requests_get_fn(**invalid_extraction_params))
 def test_invalid_extraction(mock_get_fn):
 
-    downloader = ModelDownloader('bert')
+    downloader = ModelDownloader('bobcat')
     with pytest.raises(ModelDownloaderError, match='Failed to extract'):
         downloader.download_model(verbose=VerbosityLevel.SUPPRESS.value)
 
@@ -82,7 +84,7 @@ def raise_error(*args, **kwargs):
 @mock.patch('requests.get', side_effect=raise_error)
 def test_remote_version_error(mock_get_fn):
 
-    downloader = ModelDownloader('bert')
+    downloader = ModelDownloader('bobcat')
 
     assert downloader.remote_version == None
     assert downloader.model_is_stale() == False
@@ -95,7 +97,7 @@ def test_remote_version_error(mock_get_fn):
 @mock.patch('requests.get', side_effect=raise_error)
 def test_remote_checksum_error(mock_get_fn):
 
-    downloader = ModelDownloader('bert')
+    downloader = ModelDownloader('bobcat')
 
     with pytest.raises(ModelDownloaderError,
                        match='Failed to retrieve remote checksum'):

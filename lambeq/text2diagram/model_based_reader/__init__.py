@@ -11,16 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""Model-based readers for lambeq.
 
+This module contains concrete implementations of model-based readers that
+subclass from :py:class:`ModelBasedReader`.
 """
-Typing
-======
-A set of types used for type-checking lambeq.
 
-"""
-import os
-from typing import Any, TypeVar, Union
+from lambeq.text2diagram.model_based_reader.bobcat_parser import (
+    BobcatParser, BobcatParseError,
+)
 
-AnyTensor = Any
-ModelT = TypeVar('ModelT')
-StrPathT = Union[str, 'os.PathLike[str]']
+
+__all__ = ['BobcatParser', 'BobcatParseError']

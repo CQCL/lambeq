@@ -39,12 +39,12 @@ from lambeq.ansatz.tensor import MPSAnsatz, SpiderAnsatz, TensorAnsatz
 from lambeq.backend import grammar, tensor
 from lambeq.rewrite import RemoveSwapsRewriter
 from lambeq.text2diagram.base import Reader
-from lambeq.text2diagram.bobcat_parser import BobcatParser
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_tree import CCGTree
 from lambeq.text2diagram.depccg_parser import DepCCGParser
 from lambeq.text2diagram.linear_reader import (cups_reader,
                                                stairs_reader)
+from lambeq.text2diagram.model_based_reader import BobcatParser
 from lambeq.text2diagram.spiders_reader import spiders_reader
 from lambeq.text2diagram.tree_reader import TreeReader
 from lambeq.tokeniser import SpacyTokeniser

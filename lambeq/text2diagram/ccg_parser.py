@@ -35,11 +35,13 @@ class CCGParser(Reader):
 
     verbose = VerbosityLevel.SUPPRESS.value
 
-    @abstractmethod
     def __init__(self,
                  root_cats: Iterable[str] | None = None,
                  verbose: str = VerbosityLevel.SUPPRESS.value) -> None:
         """Initialise the CCG parser."""
+
+        Reader.__init__(self, verbose=verbose)
+        self.root_cats = root_cats
 
     @abstractmethod
     def sentences2trees(self,

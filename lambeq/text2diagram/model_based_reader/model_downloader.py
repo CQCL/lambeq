@@ -32,7 +32,7 @@ from lambeq.core.globals import VerbosityLevel
 from lambeq.typing import StrPathT
 
 MODELS_URL = 'https://qnlp.cambridgequantum.com/models'
-MODELS = {'bert'}
+MODELS = {'bobcat'}
 VERSION_FNAME = 'version.txt'
 CHECKSUM_FNAME = 'model_checksum.sha256'
 # The server expects a user-agent header in each request, even if the

@@ -45,7 +45,8 @@ from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
 from lambeq.text2diagram.ccg_type import CCGType
-from lambeq.text2diagram.model_downloader import (ModelDownloader,
+from lambeq.text2diagram.model_based_reader.base import ModelBasedReader
+from lambeq.text2diagram.model_based_reader.model_downloader import (ModelDownloader,
                                                   ModelDownloaderError,
                                                   MODELS)
 from lambeq.typing import StrPathT
@@ -59,11 +60,11 @@ class BobcatParseError(Exception):
         return f'Bobcat failed to parse {self.sentence!r}.'
 
 
-class BobcatParser(CCGParser):
+class BobcatParser(CCGParser, ModelBasedReader[BertForChartClassification]):
     """CCG parser using Bobcat as the backend."""
 
     def __init__(self,
-                 model_name_or_path: str = 'bert',
+                 model_name_or_path: str = 'bobcat',
                  root_cats: Iterable[str] | None = None,
                  device: int = -1,
                  cache_dir: StrPathT | None = None,
@@ -147,60 +148,49 @@ class BobcatParser(CCGParser):
             the tagger.
 
         """
-        self.verbose = verbose
+        CCGParser.__init__(self, root_cats=root_cats, verbose=verbose)
 
-        if not VerbosityLevel.has_value(verbose):
-            raise ValueError(f'`{verbose}` is not a valid verbose value for '
-                             'BobcatParser.')
-        model_dir = Path(model_name_or_path)
-        if not model_dir.is_dir():
-            # Check for updates only if a local model path is not
-            #  specified in `model_name_or_path`
+        ModelBasedReader.__init__(self,
+                                  model_name_or_path=model_name_or_path,
+                                  device=device,
+                                  cache_dir=cache_dir,
+                                  force_download=force_download,
+                                  verbose=verbose,)
+        self.model_kwargs = kwargs
 
-            downloader = ModelDownloader(model_name_or_path, cache_dir)
-            model_dir = downloader.model_dir
-            if (force_download
-                    or not model_dir.is_dir()
-                    or downloader.model_is_stale()):
-                try:
-                    downloader.download_model(verbose)
-                except ModelDownloaderError as e:
-                    local_model_version = downloader.get_local_model_version()
+        # Initialise model
+        self._initialise_model()
 
-                    if (model_dir.is_dir()
-                            and local_model_version is not None):
-                        print('Failed to update model with '
-                              f'exception: {e}')
-                        print('Attempting to continue with version '
-                              f'{local_model_version}')
-                    else:
-                        # No local version to fall back to
-                        raise e
+    def _initialise_model(self) -> None:
+        """Initialise the model and put it into the appropriate device.
 
-        with open(model_dir / 'pipeline_config.json') as f:
+        Also handle required miscellaneous initialisation steps here."""
+
+        with open(self.model_dir / 'pipeline_config.json') as f:
             config = json.load(f)
         for subconfig in config.values():
             for key in subconfig:
                 try:
-                    subconfig[key] = kwargs.pop(key)
+                    subconfig[key] = self.model_kwargs.pop(key)
                 except KeyError:
                     pass
 
-        if kwargs:
+        if self.model_kwargs:
             raise TypeError('BobcatParser got unexpected keyword argument(s): '
-                            f'{", ".join(map(repr, kwargs))}')
+                            f'{", ".join(map(repr, self.model_kwargs))}')
 
-        device_ = torch.device('cpu' if device < 0 else f'cuda:{device}')
-        model = (BertForChartClassification.from_pretrained(model_dir)
+        device_ = torch.device('cpu' if self.device < 0
+                               else f'cuda:{self.device}')
+        model = (BertForChartClassification.from_pretrained(self.model_dir)
                                            .eval()
                                            .to(device_))
-        tokenizer = AutoTokenizer.from_pretrained(model_dir)
+        tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
         self.tagger = Tagger(model, tokenizer, **config['tagger'])
 
-        grammar = Grammar.load(model_dir / 'grammar.json')
+        grammar = Grammar.load(self.model_dir / 'grammar.json')
         self.parser = ChartParser(grammar,
                                   self.tagger.model.config.cats,
-                                  root_cats,
+                                  self.root_cats,
                                   **config['parser'])
 
     @staticmethod
@@ -341,8 +331,3 @@ class BobcatParser(CCGParser):
                        biclosed_type=BobcatParser._to_biclosed(tree.cat),
                        children=children,
                        metadata={'original': tree})
-
-    @staticmethod
-    def available_models() -> list[str]:
-        """List the available models."""
-        return [*MODELS]
