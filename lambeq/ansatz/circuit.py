@@ -552,7 +552,7 @@ class Sim9CxAnsatz(CircuitAnsatz):
                 circuit >>= cxs
 
                 circuit >>= Id().tensor(*map(Rx, thetas))
-        return circuit
+        return circuit   # type: ignore[return-value]
 
 
 class Sim9Ansatz(CircuitAnsatz):
@@ -606,4 +606,4 @@ class Sim9Ansatz(CircuitAnsatz):
                 circuit >>= czs
 
                 circuit >>= Id().tensor(*map(Rx, thetas))
-        return circuit
+        return circuit  # type: ignore[return-value]
