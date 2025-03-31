@@ -545,10 +545,11 @@ class Sim9CxAnsatz(CircuitAnsatz):
             circuit = Id(n_qubits)
 
             for thetas in params:
-                for q in range(n_qubits):
-                    circuit = circuit.H(q)
+                circuit >>= Id().tensor(*(H for _ in range(n_qubits)))
+                cxs = Id(n_qubits)
                 for q in range(n_qubits - 1):
-                    circuit = circuit.CX(q, q + 1)
+                    cxs = cxs.CX(q, q + 1)
+                circuit >>= cxs
 
                 circuit >>= Id().tensor(*map(Rx, thetas))
         return circuit
@@ -598,10 +599,11 @@ class Sim9Ansatz(CircuitAnsatz):
             circuit = Id(n_qubits)
 
             for thetas in params:
-                for q in range(n_qubits):
-                    circuit = circuit.H(q)
+                circuit >>= Id().tensor(*(H for _ in range(n_qubits)))
+                czs = Id(n_qubits)
                 for q in range(n_qubits - 1):
-                    circuit = circuit.CZ(q, q + 1)
+                    czs = czs.CZ(q, q + 1)
+                circuit >>= czs
 
                 circuit >>= Id().tensor(*map(Rx, thetas))
         return circuit
