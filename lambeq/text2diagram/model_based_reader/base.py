@@ -2,7 +2,12 @@ from abc import abstractmethod
 from pathlib import Path
 from typing import Any, Generic
 
+import torch
+
 from lambeq.core.globals import VerbosityLevel
+from lambeq.core.utils import (SentenceBatchType,
+                               tokenised_batch_type_check,
+                               untokenised_batch_type_check)
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.model_based_reader.model_downloader import (
     ModelDownloader,
@@ -12,15 +17,13 @@ from lambeq.text2diagram.model_based_reader.model_downloader import (
 from lambeq.typing import ModelT, StrPathT
 
 
-class ModelBasedReader(Reader, Generic[ModelT]):
+class ModelBasedReader(Reader):
     """Base class for readers that use pre-trained models.
 
     This is an abstract base class that provides common functionality for
     model-based readers. Subclasses must implement the specific model
     initialization and inference logic.
     """
-
-    model_cls: ModelT
 
     def __init__(
         self,
@@ -90,22 +93,70 @@ class ModelBasedReader(Reader, Generic[ModelT]):
                         raise e
 
     @abstractmethod
-    def _initialise_model(self) -> None:
+    def _initialise_model(self, **kwargs: Any) -> None:
         """Initialise the model and put it into the appropriate device.
 
         Also handle required miscellaneous initialisation steps here."""
 
+    def get_device(self) -> torch.device:
+        return torch.device('cpu' if self.device < 0
+                            else f'cuda:{self.device}')
 
-        self.tokenizer = AutoTokenizer.from_pretrained(model_path)
-        self.model = BertForChartClassification.from_pretrained(model_path, **self.model_kwargs)
+    def validate_sentence_batch(
+        self,
+        sentences: SentenceBatchType,
+        tokenised: bool = False,
+        suppress_exceptions: bool = False,
+    ) -> tuple[SentenceBatchType, list[int]]:
+        """Prepare input sentences for parsing.
 
-        if self.device >= 0 and torch.cuda.is_available():
-            self.model = self.model.to(self.device)
-            self.device = torch.device(f'cuda:{self.device}')
+        Parameters
+        ----------
+        sentences : list of str, or list of list of str
+            The sentences to be parsed, passed either as strings or as
+            lists of tokens.
+        suppress_exceptions : bool, default: False
+            Whether to suppress exceptions. If :py:obj:`True`, then if a
+            sentence fails to parse, instead of raising an exception,
+            its return entry is :py:obj:`None`.
+        tokenised : bool, default: False
+            Whether each sentence has been passed as a list of tokens.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
+
+        Returns
+        -------
+        SentenceBatchType
+            List of (tokenised or untokenised) sentences
+        """
+        if tokenised:
+            if not tokenised_batch_type_check(sentences):
+                raise ValueError('`tokenised` set to `True`, but variable '
+                                 '`sentences` does not have type '
+                                 '`List[List[str]]`.')
         else:
-            self.device = torch.device('cpu')
+            if not untokenised_batch_type_check(sentences):
+                raise ValueError('`tokenised` set to `False`, but variable '
+                                 '`sentences` does not have type '
+                                 '`List[str]`.')
+            sent_list: list[str] = [str(s) for s in sentences]
+            sentences = [sentence.split() for sentence in sent_list]
 
+        # Remove empty sentences
+        empty_indices = []
+        for i, sentence in enumerate(sentences):
+            if not sentence:
+                if suppress_exceptions:
+                    empty_indices.append(i)
+                else:
+                    raise ValueError('sentence is empty.')
 
+        for i in reversed(empty_indices):
+            del sentences[i]
+
+        return sentences, empty_indices
 
     @staticmethod
     def available_models() -> list[str]:

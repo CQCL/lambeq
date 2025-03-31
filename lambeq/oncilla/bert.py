@@ -7,7 +7,8 @@ from typing import Any, List, Optional, Tuple, Union
 import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss
-from transformers import BertConfig, BertPreTrainedModel
+from transformers import (BertConfig, BertPreTrainedModel,
+                          PreTrainedModel, PreTrainedTokenizerFast)
 from transformers.modeling_outputs import ModelOutput
 from transformers.models.bert.modeling_bert import BertEncoder
 
@@ -535,3 +536,23 @@ class BertForSentenceToTree(BertPreTrainedModel):
             parent_hidden_states=parent_hidden_states,
             parent_attentions=parent_attentions,
         )
+
+
+class PregroupTreeTagger:
+    def __init__(self,
+                 model: PreTrainedModel,
+                 tokenizer: PreTrainedTokenizerFast,
+                 batch_size: int = 1) -> None:
+
+        if not (batch_size >= 1 and batch_size == int(batch_size)):
+            raise ValueError(f'Invalid `batch_size`: {batch_size}')
+
+        self.model = model
+        self.tokenizer = tokenizer
+        self.batch_size = int(batch_size)
+
+    def __call__(self,
+                 batch_size: int | None = None) -> Any:
+        """Parse a list of sentences."""
+        if batch_size is None:
+            batch_size = self.batch_size

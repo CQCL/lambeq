@@ -34,10 +34,11 @@ from lambeq.core.utils import (SentenceBatchType,
                                untokenised_batch_type_check)
 from lambeq.backend.pregroup_tree import PregroupTreeNode
 from lambeq.oncilla import (BertForSentenceToTree,
-                            SentenceToTreeBertConfig)
+                            PregroupTreeTagger,
+                            SentenceToTreeBertConfig,)
 from lambeq.oncilla.bert import ROOT_TOKEN
-from lambeq.text2diagram import (generate_tree,
-                                 Reader)
+from lambeq.text2diagram import generate_tree
+from lambeq.text2diagram.model_based_reader.base import ModelBasedReader
 from lambeq.typing import StrPathT
 
 
@@ -46,12 +47,12 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
 
-class OncillaParser(Reader):
+class OncillaParser(ModelBasedReader):
     """Parser using Oncilla as the backend."""
 
     def __init__(
         self,
-        model_name_or_path: str,
+        model_name_or_path: str = 'oncilla',
         device: int = -1,
         cache_dir: StrPathT | None = None,
         force_download: bool = False,
@@ -62,7 +63,7 @@ class OncillaParser(Reader):
 
         Parameters
         ----------
-        model_name_or_path : str, default: 'bert'
+        model_name_or_path : str, default: 'oncilla'
             Can be either:
                 - The path to a directory containing an Oncilla model.
                 - The name of a pre-trained model.
@@ -84,11 +85,24 @@ class OncillaParser(Reader):
             Additional keyword arguments to be passed to the underlying
             parsers
         """
-        self.tokenizer = AutoTokenizer.from_pretrained(model_name_or_path)
-        self.model_config = SentenceToTreeBertConfig.from_pretrained(model_name_or_path)
-        self.model = BertForSentenceToTree.from_pretrained(model_name_or_path,
-                                                           config=self.model_config)
-        self.model = self.model.to(device)
+        super().__init__(self,
+                         model_name_or_path=model_name_or_path,
+                         device=device,
+                         cache_dir=cache_dir,
+                         force_download=force_download,
+                         verbose=verbose)
+
+        # Initialise model
+        self._initialise_model(**kwargs)
+
+    def _initialise_model(self, **kwargs: Any) -> None:
+        tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
+        model_config = SentenceToTreeBertConfig.from_pretrained(self.model_dir)
+        model = (BertForSentenceToTree
+                 .from_pretrained(self.model_dir, config=model_config)
+                 .eval()
+                 .to(self.get_device()))
+        self.tagger = PregroupTreeTagger(model, tokenizer)
 
     def sentence2pred(self, sentence: SentenceType) -> tuple[list[list[str]], list[list[int]]]:
         sentence_w_root = [ROOT_TOKEN] + sentence
@@ -142,8 +156,47 @@ class OncillaParser(Reader):
     def sentences2trees(
         self,
         sentences: SentenceBatchType,
+        tokenised: bool = False,
         suppress_exceptions: bool = False,
+        verbose: str | None = None,
     ) -> list[list[PregroupTreeNode] | None]:
+        """Parse multiple sentences into a list of
+         py:class:`.PregroupTreeNode` s.
+
+        Parameters
+        ----------
+        sentences : list of str, or list of list of str
+            The sentences to be parsed, passed either as strings or as
+            lists of tokens.
+        suppress_exceptions : bool, default: False
+            Whether to suppress exceptions. If :py:obj:`True`, then if a
+            sentence fails to parse, instead of raising an exception,
+            its return entry is :py:obj:`None`.
+        tokenised : bool, default: False
+            Whether each sentence has been passed as a list of tokens.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
+
+        Returns
+        -------
+        list of PregroupTreeNode or None
+            The parsed trees. (May contain :py:obj:`None` if exceptions
+            are suppressed)
+
+        """
+        if verbose is None:
+            verbose = self.verbose
+        if not VerbosityLevel.has_value(verbose):
+            raise ValueError(f'`{verbose}` is not a valid verbose value for '
+                             'OncillaParser.')
+
+        sentences, empty_indices = self.validate_sentence_batch(
+            sentences,
+            tokenised=tokenised,
+            suppress_exceptions=suppress_exceptions
+        )
 
         trees: list[list[PregroupTreeNode] | None] = []
 
@@ -152,7 +205,7 @@ class OncillaParser(Reader):
                                  leave=False,
                                  total=len(sentences)):
             type_preds, parent_preds = self.sentence2pred(token_seq)
-            # create tree from type and parent preds
+            # Create tree from type and parent preds
             tree: list[PregroupTreeNode] | None = None
 
             try:

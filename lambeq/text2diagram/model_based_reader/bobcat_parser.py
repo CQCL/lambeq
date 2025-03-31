@@ -25,11 +25,9 @@ __all__ = ['BobcatParser', 'BobcatParseError']
 
 from collections.abc import Iterable
 import json
-from pathlib import Path
 import sys
 from typing import Any
 
-import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer
 
@@ -38,17 +36,12 @@ from lambeq.bobcat import (BertForChartClassification, Category,
                            Sentence, Supertag, Tagger)
 from lambeq.bobcat.tagger import TaggerOutputSentence
 from lambeq.core.globals import VerbosityLevel
-from lambeq.core.utils import (SentenceBatchType,
-                               tokenised_batch_type_check,
-                               untokenised_batch_type_check)
+from lambeq.core.utils import SentenceBatchType
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_rule import CCGRule
 from lambeq.text2diagram.ccg_tree import CCGTree
 from lambeq.text2diagram.ccg_type import CCGType
 from lambeq.text2diagram.model_based_reader.base import ModelBasedReader
-from lambeq.text2diagram.model_based_reader.model_downloader import (ModelDownloader,
-                                                  ModelDownloaderError,
-                                                  MODELS)
 from lambeq.typing import StrPathT
 
 
@@ -60,7 +53,7 @@ class BobcatParseError(Exception):
         return f'Bobcat failed to parse {self.sentence!r}.'
 
 
-class BobcatParser(CCGParser, ModelBasedReader[BertForChartClassification]):
+class BobcatParser(CCGParser, ModelBasedReader):
     """CCG parser using Bobcat as the backend."""
 
     def __init__(self,
@@ -75,11 +68,11 @@ class BobcatParser(CCGParser, ModelBasedReader[BertForChartClassification]):
 
         Parameters
         ----------
-        model_name_or_path : str, default: 'bert'
+        model_name_or_path : str, default: 'bobcat'
             Can be either:
                 - The path to a directory containing a Bobcat model.
                 - The name of a pre-trained model.
-                  By default, it uses the "bert" model.
+                  By default, it uses the "bobcat" model.
                   See also: `BobcatParser.available_models()`
         root_cats : iterable of str, optional
             A list of the categories allowed at the root of the parse
@@ -155,14 +148,16 @@ class BobcatParser(CCGParser, ModelBasedReader[BertForChartClassification]):
                                   device=device,
                                   cache_dir=cache_dir,
                                   force_download=force_download,
-                                  verbose=verbose,)
-        self.model_kwargs = kwargs
+                                  verbose=verbose)
 
         # Initialise model
-        self._initialise_model()
+        self._initialise_model(root_cats=root_cats,
+                               **kwargs)
 
-    def _initialise_model(self) -> None:
-        """Initialise the model and put it into the appropriate device.
+    def _initialise_model(self,
+                          root_cats: Iterable[str] | None = None,
+                          **kwargs) -> None:
+        """Initialise the model and load it into the appropriate device.
 
         Also handle required miscellaneous initialisation steps here."""
 
@@ -171,26 +166,25 @@ class BobcatParser(CCGParser, ModelBasedReader[BertForChartClassification]):
         for subconfig in config.values():
             for key in subconfig:
                 try:
-                    subconfig[key] = self.model_kwargs.pop(key)
+                    subconfig[key] = kwargs.pop(key)
                 except KeyError:
                     pass
 
-        if self.model_kwargs:
+        if kwargs:
             raise TypeError('BobcatParser got unexpected keyword argument(s): '
-                            f'{", ".join(map(repr, self.model_kwargs))}')
+                            f'{", ".join(map(repr, kwargs))}')
 
-        device_ = torch.device('cpu' if self.device < 0
-                               else f'cuda:{self.device}')
-        model = (BertForChartClassification.from_pretrained(self.model_dir)
-                                           .eval()
-                                           .to(device_))
+        model = (BertForChartClassification
+                 .from_pretrained(self.model_dir)
+                 .eval()
+                 .to(self.get_device()))
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
         self.tagger = Tagger(model, tokenizer, **config['tagger'])
 
         grammar = Grammar.load(self.model_dir / 'grammar.json')
         self.parser = ChartParser(grammar,
                                   self.tagger.model.config.cats,
-                                  self.root_cats,
+                                  root_cats,
                                   **config['parser'])
 
     @staticmethod
@@ -240,28 +234,12 @@ class BobcatParser(CCGParser, ModelBasedReader[BertForChartClassification]):
         if not VerbosityLevel.has_value(verbose):
             raise ValueError(f'`{verbose}` is not a valid verbose value for '
                              'BobcatParser.')
-        if tokenised:
-            if not tokenised_batch_type_check(sentences):
-                raise ValueError('`tokenised` set to `True`, but variable '
-                                 '`sentences` does not have type '
-                                 '`List[List[str]]`.')
-        else:
-            if not untokenised_batch_type_check(sentences):
-                raise ValueError('`tokenised` set to `False`, but variable '
-                                 '`sentences` does not have type '
-                                 '`List[str]`.')
-            sent_list: list[str] = [str(s) for s in sentences]
-            sentences = [sentence.split() for sentence in sent_list]
-        empty_indices = []
-        for i, sentence in enumerate(sentences):
-            if not sentence:
-                if suppress_exceptions:
-                    empty_indices.append(i)
-                else:
-                    raise ValueError('sentence is empty.')
 
-        for i in reversed(empty_indices):
-            del sentences[i]
+        sentences, empty_indices = self.validate_sentence_batch(
+            sentences,
+            tokenised=tokenised,
+            suppress_exceptions=suppress_exceptions
+        )
 
         trees: list[CCGTree] = []
         if sentences:
