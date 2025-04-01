@@ -47,12 +47,10 @@ from __future__ import annotations
 __all__ = ['Reader']
 
 from abc import ABC, abstractmethod
-from typing import Generic
 
 from lambeq.backend.grammar import Diagram
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import SentenceBatchType, SentenceType
-from lambeq.typing import ModelT
 
 
 class Reader(ABC):

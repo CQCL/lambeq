@@ -19,8 +19,7 @@ A set of types used for type-checking lambeq.
 
 """
 import os
-from typing import Any, TypeVar, Union
+from typing import Any, Union
 
 AnyTensor = Any
-ModelT = TypeVar('ModelT')
 StrPathT = Union[str, 'os.PathLike[str]']

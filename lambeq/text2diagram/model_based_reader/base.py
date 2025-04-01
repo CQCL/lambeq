@@ -1,12 +1,38 @@
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+"""
+Model-based reader
+==================
+Base class for readers that use pre-trained models, either end-to-end
+or as a step, for creating diagrams.
+
+"""
+
+from __future__ import annotations
+
+__all__ = ['ModelBasedReader']
+
 from abc import abstractmethod
 from pathlib import Path
-from typing import Any, Generic
+from typing import Any
 
 import torch
 
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (SentenceBatchType,
                                tokenised_batch_type_check,
+                               TokenisedSentenceBatchType,
                                untokenised_batch_type_check)
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.model_based_reader.model_downloader import (
@@ -14,7 +40,7 @@ from lambeq.text2diagram.model_based_reader.model_downloader import (
     ModelDownloaderError,
     MODELS
 )
-from lambeq.typing import ModelT, StrPathT
+from lambeq.typing import StrPathT
 
 
 class ModelBasedReader(Reader):
@@ -107,7 +133,7 @@ class ModelBasedReader(Reader):
         sentences: SentenceBatchType,
         tokenised: bool = False,
         suppress_exceptions: bool = False,
-    ) -> tuple[SentenceBatchType, list[int]]:
+    ) -> tuple[TokenisedSentenceBatchType, list[int]]:
         """Prepare input sentences for parsing.
 
         Parameters

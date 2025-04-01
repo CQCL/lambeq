@@ -1,3 +1,17 @@
+# Copyright 2021-2024 Cambridge Quantum Computing Ltd.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from collections.abc import Sequence
 from dataclasses import dataclass
 from functools import cached_property
@@ -7,8 +21,7 @@ from typing import Any, List, Optional, Tuple, Union
 import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss
-from transformers import (BertConfig, BertPreTrainedModel,
-                          PreTrainedModel, PreTrainedTokenizerFast)
+from transformers import BertConfig, BertPreTrainedModel
 from transformers.modeling_outputs import ModelOutput
 from transformers.models.bert.modeling_bert import BertEncoder
 
@@ -536,23 +549,3 @@ class BertForSentenceToTree(BertPreTrainedModel):
             parent_hidden_states=parent_hidden_states,
             parent_attentions=parent_attentions,
         )
-
-
-class PregroupTreeTagger:
-    def __init__(self,
-                 model: PreTrainedModel,
-                 tokenizer: PreTrainedTokenizerFast,
-                 batch_size: int = 1) -> None:
-
-        if not (batch_size >= 1 and batch_size == int(batch_size)):
-            raise ValueError(f'Invalid `batch_size`: {batch_size}')
-
-        self.model = model
-        self.tokenizer = tokenizer
-        self.batch_size = int(batch_size)
-
-    def __call__(self,
-                 batch_size: int | None = None) -> Any:
-        """Parse a list of sentences."""
-        if batch_size is None:
-            batch_size = self.batch_size

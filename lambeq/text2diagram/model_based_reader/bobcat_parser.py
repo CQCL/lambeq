@@ -211,12 +211,12 @@ class BobcatParser(CCGParser, ModelBasedReader):
         sentences : list of str, or list of list of str
             The sentences to be parsed, passed either as strings or as
             lists of tokens.
+        tokenised : bool, default: False
+            Whether each sentence has been passed as a list of tokens.
         suppress_exceptions : bool, default: False
             Whether to suppress exceptions. If :py:obj:`True`, then if a
             sentence fails to parse, instead of raising an exception,
             its return entry is :py:obj:`None`.
-        tokenised : bool, default: False
-            Whether each sentence has been passed as a list of tokens.
         verbose : str, optional
             See :py:class:`VerbosityLevel` for options. If set, takes
             priority over the :py:attr:`verbose` attribute of the
