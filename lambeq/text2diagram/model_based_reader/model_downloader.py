@@ -32,7 +32,7 @@ from lambeq.core.globals import VerbosityLevel
 from lambeq.typing import StrPathT
 
 MODELS_URL = 'https://qnlp.cambridgequantum.com/models'
-MODELS = {'bobcat'}
+MODELS = {'bobcat', 'oncilla'}
 VERSION_FNAME = 'version.txt'
 CHECKSUM_FNAME = 'model_checksum.sha256'
 # The server expects a user-agent header in each request, even if the
@@ -99,7 +99,7 @@ class ModelDownloader:
                                        Path.home() / '.cache'))
         else:
             cache_dir = Path(cache_dir)
-        models_dir = cache_dir / 'lambeq' / 'bobcat'
+        models_dir = cache_dir / 'lambeq' / self.model
         try:
             models_dir.mkdir(parents=True, exist_ok=True)
         except FileExistsError as e:

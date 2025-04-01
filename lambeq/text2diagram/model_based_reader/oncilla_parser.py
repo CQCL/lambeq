@@ -39,8 +39,8 @@ from lambeq.core.utils import (SentenceBatchType,
 from lambeq.oncilla import (BertForSentenceToTree,
                             SentenceToTreeBertConfig)
 from lambeq.oncilla.bert import ROOT_TOKEN
-from lambeq.text2diagram import generate_tree
 from lambeq.text2diagram.model_based_reader.base import ModelBasedReader
+from lambeq.text2diagram.pregroup_tree_converter import generate_tree
 from lambeq.typing import StrPathT
 
 
@@ -95,8 +95,7 @@ class OncillaParser(ModelBasedReader):
             Additional keyword arguments to be passed to the underlying
             parsers
         """
-        super().__init__(self,
-                         model_name_or_path=model_name_or_path,
+        super().__init__(model_name_or_path=model_name_or_path,
                          device=device,
                          cache_dir=cache_dir,
                          force_download=force_download,

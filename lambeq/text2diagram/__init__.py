@@ -28,6 +28,8 @@ __all__ = ['CCGType',
            # Model-based parsers
            'BobcatParseError',
            'BobcatParser',
+           'OncillaParseError',
+           'OncillaParser',
 
            'LinearReader',
            'Reader',
@@ -51,7 +53,10 @@ from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccgbank_parser import CCGBankParseError, CCGBankParser
 from lambeq.text2diagram.depccg_parser import DepCCGParseError, DepCCGParser
-from lambeq.text2diagram.model_based_reader import BobcatParser, BobcatParseError
+from lambeq.text2diagram.model_based_reader import (BobcatParser,
+                                                    BobcatParseError,
+                                                    OncillaParser,
+                                                    OncillaParseError)
 from lambeq.text2diagram.web_parser import WebParseError, WebParser
 
 from lambeq.text2diagram.linear_reader import (LinearReader,
