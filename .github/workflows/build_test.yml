@@ -63,13 +63,22 @@ jobs:
       run: pip install .[extras] .[test]
     - name: Locate bobcat pre-trained model cache
       id: loc-bobcat-cache
-      run: echo "dir=$(python -c 'from lambeq.text2diagram.model_downloader import ModelDownloader; print(ModelDownloader("bert").model_dir)')" >> $GITHUB_OUTPUT
+      run: echo "dir=$(python -c 'from lambeq.text2diagram.model_downloader import ModelDownloader; print(ModelDownloader("bobcat").model_dir)')" >> $GITHUB_OUTPUT
     - name: Restore bobcat pre-trained model from cache
       id: bobcat-cache
       uses: actions/cache@v4
       with:
         path: ${{ steps.loc-bobcat-cache.outputs.dir }}
-        key: bobcat-bert-v1
+        key: bobcat-v1
+    - name: Locate oncilla pre-trained model cache
+      id: loc-oncilla-cache
+      run: echo "dir=$(python -c 'from lambeq.text2diagram.model_downloader import ModelDownloader; print(ModelDownloader("oncilla").model_dir)')" >> $GITHUB_OUTPUT
+    - name: Restore oncilla pre-trained model from cache
+      id: oncilla-cache
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.loc-oncilla-cache.outputs.dir }}
+        key: oncilla-v1
     - name: Test with pytest
       run: >
         coverage run --source=${{ env.SRC_DIR }}
