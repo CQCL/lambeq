@@ -79,12 +79,12 @@ class ModelBasedReader(Reader):
         verbose : str, default: 'progress'
             See :py:class:`VerbosityLevel` for options.
         """
+        super().__init__(verbose=verbose)
 
         self.model_name_or_path = model_name_or_path
         self.device = device
         self.cache_dir = cache_dir
         self.force_download = force_download
-        self.verbose = verbose
         self.model_dir: StrPathT | None = None
 
         # Prepare model artifacts

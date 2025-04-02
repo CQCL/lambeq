@@ -53,7 +53,7 @@ class BobcatParseError(Exception):
         return f'Bobcat failed to parse {self.sentence!r}.'
 
 
-class BobcatParser(CCGParser, ModelBasedReader):
+class BobcatParser(ModelBasedReader, CCGParser):
     """CCG parser using Bobcat as the backend."""
 
     def __init__(self,
@@ -141,14 +141,12 @@ class BobcatParser(CCGParser, ModelBasedReader):
             the tagger.
 
         """
+        super().__init__(model_name_or_path=model_name_or_path,
+                         device=device,
+                         cache_dir=cache_dir,
+                         force_download=force_download,
+                         verbose=verbose)
         CCGParser.__init__(self, root_cats=root_cats, verbose=verbose)
-
-        ModelBasedReader.__init__(self,
-                                  model_name_or_path=model_name_or_path,
-                                  device=device,
-                                  cache_dir=cache_dir,
-                                  force_download=force_download,
-                                  verbose=verbose)
 
         # Initialise model
         self._initialise_model(root_cats=root_cats,

@@ -40,7 +40,7 @@ class CCGParser(Reader):
                  verbose: str = VerbosityLevel.SUPPRESS.value) -> None:
         """Initialise the CCG parser."""
 
-        Reader.__init__(self, verbose=verbose)
+        super().__init__(verbose=verbose)
         self.root_cats = root_cats
 
     @abstractmethod

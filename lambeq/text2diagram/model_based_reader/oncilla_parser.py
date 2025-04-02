@@ -24,8 +24,6 @@ from __future__ import annotations
 
 __all__ = ['OncillaParser', 'OncillaParseError']
 
-from typing import Any
-
 import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer
@@ -67,7 +65,6 @@ class OncillaParser(ModelBasedReader):
         cache_dir: StrPathT | None = None,
         force_download: bool = False,
         verbose: str = VerbosityLevel.PROGRESS.value,
-        **kwargs: Any
     ) -> None:
         """Instantiate an OncillaParser.
 
@@ -91,9 +88,6 @@ class OncillaParser(ModelBasedReader):
             available locally.
         verbose : str, default: 'progress',
             See :py:class:`VerbosityLevel` for options.
-        **kwargs : dict, optional
-            Additional keyword arguments to be passed to the underlying
-            parsers
         """
         super().__init__(model_name_or_path=model_name_or_path,
                          device=device,
@@ -102,9 +96,9 @@ class OncillaParser(ModelBasedReader):
                          verbose=verbose)
 
         # Initialise model
-        self._initialise_model(**kwargs)
+        self._initialise_model()
 
-    def _initialise_model(self, **kwargs: Any) -> None:
+    def _initialise_model(self) -> None:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
         self.model_config = SentenceToTreeBertConfig.from_pretrained(self.model_dir)
         self.model = (BertForSentenceToTree
@@ -212,10 +206,15 @@ class OncillaParser(ModelBasedReader):
         for sentence in tqdm(sentences,
                              desc='Generating diagrams from sentences',
                              leave=False,
-                             total=len(sentences)):
-            type_preds, parent_preds = self._sentence2pred(sentence)
+                             total=len(sentences),
+                             disable=verbose != VerbosityLevel.PROGRESS.value):
+
+            diagram: Diagram | None = None
 
             try:
+                # Predict types and parents
+                type_preds, parent_preds = self._sentence2pred(sentence)
+
                 # Create tree from type and parent preds
                 root_nodes: list[PregroupTreeNode]
                 root_nodes, _ = generate_tree(sentence,
@@ -227,18 +226,17 @@ class OncillaParser(ModelBasedReader):
                         tokens=sentence,
                     )
             except Exception as e:
-                if suppress_exceptions:
-                    diagrams.append(None)
-                else:
+                if not suppress_exceptions:
                     raise OncillaParseError(' '.join(sentence)) from e
             else:
                 if len(root_nodes) > 1:
-                    raise OncillaParseError(
-                        ' '.join(sentence),
-                        reason=f'Got {len(root_nodes)} disjoint diagrams'
-                    )
+                    if not suppress_exceptions:
+                        raise OncillaParseError(
+                            ' '.join(sentence),
+                            reason=f'Got {len(root_nodes)} disjoint diagrams'
+                        )
 
-                diagrams.append(diagram)
+            diagrams.append(diagram)
 
         for i in empty_indices:
             diagrams.insert(i, None)

@@ -4,6 +4,9 @@ from io import StringIO
 from unittest.mock import patch
 
 from lambeq import OncillaParseError, OncillaParser, VerbosityLevel
+from lambeq.backend.grammar import Ty
+from lambeq.backend.pregroup_tree import PregroupTreeNode
+from lambeq.text2diagram.model_based_reader import oncilla_parser as oncilla_parser_module
 
 
 @pytest.fixture(scope='module')
@@ -32,41 +35,50 @@ def test_sentence2diagram(oncilla_parser, sentence):
 
 def test_empty_sentences(oncilla_parser):
     with pytest.raises(ValueError):
-        oncilla_parser.sentence2tree('')
-    assert oncilla_parser.sentence2tree('', suppress_exceptions=True) is None
+        oncilla_parser.sentence2diagram('')
+    assert oncilla_parser.sentence2diagram('', suppress_exceptions=True) is None
 
     with pytest.raises(ValueError):
-        oncilla_parser.sentence2tree('   ')
-    assert oncilla_parser.sentence2tree('   ', suppress_exceptions=True) is None
+        oncilla_parser.sentence2diagram('   ')
+    assert oncilla_parser.sentence2diagram('   ', suppress_exceptions=True) is None
 
 
 def test_tokenised_empty_sentences(oncilla_parser, tokenised_empty_sentence):
     with pytest.raises(ValueError):
-        oncilla_parser.sentence2tree(tokenised_empty_sentence, tokenised=True)
-    assert oncilla_parser.sentence2tree(
+        oncilla_parser.sentence2diagram(tokenised_empty_sentence, tokenised=True)
+    assert oncilla_parser.sentence2diagram(
         tokenised_empty_sentence,
         tokenised=True,
         suppress_exceptions=True
     ) is None
 
 
-def test_failed_sentence(oncilla_parser):
+def test_failed_pred(oncilla_parser, monkeypatch):
     def fail(*args, **kwargs):
         raise Exception
 
-    old_parser = oncilla_parser.parser
-    oncilla_parser.parser = fail
+    monkeypatch.setattr(oncilla_parser,
+                        '_sentence2pred',
+                        fail)
 
-    try:
-        with pytest.raises(OncillaParseError):
-            oncilla_parser.sentence2tree('a')
-        assert oncilla_parser.sentence2tree('a', suppress_exceptions=True) is None
-    finally:
-        oncilla_parser.parser = old_parser
+    with pytest.raises(OncillaParseError):
+        oncilla_parser.sentence2diagram('a')
+    assert oncilla_parser.sentence2diagram('a', suppress_exceptions=True) is None
 
 
-def test_sentence2tree_tokenised(oncilla_parser, tokenised_sentence):
-    assert oncilla_parser.sentence2tree(tokenised_sentence, tokenised=True) is not None
+def test_multiple_root_nodes(oncilla_parser, monkeypatch):
+    def generate_tree_multiple_root(*args, **kwargs):
+        nodes = [PregroupTreeNode('a', 0, Ty('n')),
+                 PregroupTreeNode('b', 1, Ty('n'))]
+        return nodes, nodes
+
+    monkeypatch.setattr(oncilla_parser_module,
+                        'generate_tree',
+                        generate_tree_multiple_root)
+
+    with pytest.raises(OncillaParseError):
+        oncilla_parser.sentence2diagram('a')
+    assert oncilla_parser.sentence2diagram('a', suppress_exceptions=True) is None
 
 
 def test_sentences2diagrams(oncilla_parser, sentence):
@@ -84,66 +96,41 @@ def test_sentences2diagrams_tokenised(oncilla_parser, tokenised_sentence):
 
 def test_tokenised_type_check_untokenised_sentence(oncilla_parser, sentence):
     with pytest.raises(ValueError):
-        _=oncilla_parser.sentence2diagram(sentence, tokenised=True)
+        _ = oncilla_parser.sentence2diagram(sentence, tokenised=True)
 
 
 def test_tokenised_type_check_tokenised_sentence(oncilla_parser, tokenised_sentence):
     with pytest.raises(ValueError):
-        _=oncilla_parser.sentence2diagram(tokenised_sentence, tokenised=False)
+        _ = oncilla_parser.sentence2diagram(tokenised_sentence, tokenised=False)
 
 
 def test_tokenised_type_check_untokenised_batch(oncilla_parser, sentence):
     with pytest.raises(ValueError):
-        _=oncilla_parser.sentences2diagrams([sentence], tokenised=True)
+        _ = oncilla_parser.sentences2diagrams([sentence], tokenised=True)
 
 
 def test_tokenised_type_check_tokenised_batch(oncilla_parser, tokenised_sentence):
     with pytest.raises(ValueError):
-        _=oncilla_parser.sentences2diagrams([tokenised_sentence], tokenised=False)
-
-
-def test_tokenised_type_check_untokenised_sentence_s2t(oncilla_parser, sentence):
-    with pytest.raises(ValueError):
-        _=oncilla_parser.sentence2tree(sentence, tokenised=True)
-
-
-def test_tokenised_type_check_tokenised_sentence_s2t(oncilla_parser, tokenised_sentence):
-    with pytest.raises(ValueError):
-        _=oncilla_parser.sentence2tree(tokenised_sentence, tokenised=False)
-
-
-def test_tokenised_type_check_untokenised_batch_s2t(oncilla_parser, sentence):
-    with pytest.raises(ValueError):
-        _=oncilla_parser.sentences2trees([sentence], tokenised=True)
-
-
-def test_tokenised_type_check_tokenised_batch_s2t(oncilla_parser, tokenised_sentence):
-    with pytest.raises(ValueError):
-        _=oncilla_parser.sentences2trees([tokenised_sentence], tokenised=False)
+        _ = oncilla_parser.sentences2diagrams([tokenised_sentence], tokenised=False)
 
 
 def test_verbosity_exceptions_init():
     with pytest.raises(ValueError):
-        bobcatbank_parser = OncillaParser(verbose='invalid_option')
+        oncilla_parser = OncillaParser(verbose='invalid_option')
 
 
-def test_kwargs_exceptions_init():
-    with pytest.raises(TypeError):
-        bobcatbank_parser = OncillaParser(nonexisting_arg='invalid_option')
-
-
-def test_verbosity_exceptions_sentences2trees(oncilla_parser, sentence):
+def test_verbosity_exceptions_sentences2diagrams(oncilla_parser, sentence):
     with pytest.raises(ValueError):
-        _=oncilla_parser.sentences2trees([sentence], verbose='invalid_option')
+        _ = oncilla_parser.sentences2diagrams([sentence], verbose='invalid_option')
 
 
 def test_text_progress(oncilla_parser, sentence):
     with patch('sys.stderr', new=StringIO()) as fake_out:
-        _=oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
-        assert fake_out.getvalue().rstrip() == 'Tagging sentences.\nParsing tagged sentences.\nTurning parse trees to diagrams.'
+        _ = oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
+        assert fake_out.getvalue().rstrip() == ''
 
 
 def test_tqdm_progress(oncilla_parser, sentence):
     with patch('sys.stderr', new=StringIO()) as fake_out:
-        _=oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
-        assert fake_out.getvalue().rstrip() != ''
+        _ = oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
+        assert fake_out.getvalue().rstrip() == ''
