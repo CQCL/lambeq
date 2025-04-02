@@ -24,6 +24,8 @@ from __future__ import annotations
 
 __all__ = ['OncillaParser', 'OncillaParseError']
 
+from typing import Any
+
 import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer
@@ -98,13 +100,14 @@ class OncillaParser(ModelBasedReader):
         # Initialise model
         self._initialise_model()
 
-    def _initialise_model(self) -> None:
+    def _initialise_model(self, **kwargs: Any) -> None:
         self.tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
-        self.model_config = SentenceToTreeBertConfig.from_pretrained(self.model_dir)
-        self.model = (BertForSentenceToTree
-                 .from_pretrained(self.model_dir, config=self.model_config)
-                 .eval()
-                 .to(self.get_device()))
+        self.model_config = SentenceToTreeBertConfig.from_pretrained(
+            self.model_dir
+        )
+        self.model = BertForSentenceToTree.from_pretrained(
+            self.model_dir, config=self.model_config
+        ).eval().to(self.get_device())
 
     def _sentence2pred(
         self,
@@ -122,7 +125,9 @@ class OncillaParser(ModelBasedReader):
                                 is_split_into_words=True,
                                 truncation=True,
                                 return_tensors='pt')
-        n_tokens = torch.tensor([[len(sentence_w_root)]], dtype=torch.int64)
+        n_tokens = torch.tensor(
+            [[len(sentence_w_root)]], dtype=torch.int64
+        )
         _ = inputs.pop('token_type_ids')
         inputs['n_tokens'] = n_tokens
         word_ids = inputs.word_ids()
@@ -148,7 +153,8 @@ class OncillaParser(ModelBasedReader):
                     true_parent_preds.append(p)
         assert len(true_type_preds) == len(true_parent_preds) == len(sentence)
 
-        true_type_preds = [self.model_config.id2type[t] for t in true_type_preds]
+        true_type_preds = [self.model_config.id2type[t]
+                           for t in true_type_preds]
         true_parent_preds = [p - 1 for p in true_parent_preds]
 
         true_type_preds = [[t] for t in true_type_preds]
@@ -192,8 +198,8 @@ class OncillaParser(ModelBasedReader):
         if verbose is None:
             verbose = self.verbose
         if not VerbosityLevel.has_value(verbose):
-            raise ValueError(f'`{verbose}` is not a valid verbose value for '
-                             'OncillaParser.')
+            raise ValueError(f'`{verbose}` is not a valid verbose value '
+                             ' for `OncillaParser`.')
 
         sentences, empty_indices = self.validate_sentence_batch(
             sentences,
@@ -277,7 +283,7 @@ class OncillaParser(ModelBasedReader):
         """
 
         return self.sentences2diagrams(
-            [sentence],
+            [sentence],     # type: ignore[arg-type]
             tokenised=tokenised,
             suppress_exceptions=suppress_exceptions,
             verbose=verbose

@@ -81,11 +81,15 @@ class ModelBasedReader(Reader):
         """
         super().__init__(verbose=verbose)
 
+        if model_name_or_path is None:
+            raise ValueError(f'Invalid value `{model_name_or_path}`'
+                             ' for argument `model_name_or_path`.')
+
         self.model_name_or_path = model_name_or_path
         self.device = device
         self.cache_dir = cache_dir
         self.force_download = force_download
-        self.model_dir: StrPathT | None = None
+        self.model_dir: Path | None = None
 
         # Prepare model artifacts
         self._prepare_model_artifacts()
@@ -157,22 +161,24 @@ class ModelBasedReader(Reader):
         SentenceBatchType
             List of (tokenised or untokenised) sentences
         """
+        tokenised_sentences: TokenisedSentenceBatchType
         if tokenised:
             if not tokenised_batch_type_check(sentences):
                 raise ValueError('`tokenised` set to `True`, but variable '
                                  '`sentences` does not have type '
                                  '`List[List[str]]`.')
+            tokenised_sentences = sentences     # type: ignore[assignment]
         else:
             if not untokenised_batch_type_check(sentences):
                 raise ValueError('`tokenised` set to `False`, but variable '
                                  '`sentences` does not have type '
                                  '`List[str]`.')
             sent_list: list[str] = [str(s) for s in sentences]
-            sentences = [sentence.split() for sentence in sent_list]
+            tokenised_sentences = [sentence.split() for sentence in sent_list]
 
         # Remove empty sentences
-        empty_indices = []
-        for i, sentence in enumerate(sentences):
+        empty_indices: list[int] = []
+        for i, sentence in enumerate(tokenised_sentences):
             if not sentence:
                 if suppress_exceptions:
                     empty_indices.append(i)
@@ -180,9 +186,9 @@ class ModelBasedReader(Reader):
                     raise ValueError('sentence is empty.')
 
         for i in reversed(empty_indices):
-            del sentences[i]
+            del tokenised_sentences[i]
 
-        return sentences, empty_indices
+        return tokenised_sentences, empty_indices
 
     @staticmethod
     def available_models() -> list[str]:
