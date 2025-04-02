@@ -67,8 +67,8 @@ jobs:
     - name: Restore bobcat pre-trained model from cache
       id: bobcat-cache
       uses: actions/cache@v4
+      path: ${{ steps.loc-bobcat-cache.outputs.dir }}
       with:
-        path: ${{ steps.loc-bobcat-cache.outputs.dir }}
         key: bobcat-v1
     - name: Locate oncilla pre-trained model cache
       id: loc-oncilla-cache
@@ -76,8 +76,8 @@ jobs:
     - name: Restore oncilla pre-trained model from cache
       id: oncilla-cache
       uses: actions/cache@v4
+      path: ${{ steps.loc-oncilla-cache.outputs.dir }}
       with:
-        path: ${{ steps.loc-oncilla-cache.outputs.dir }}
         key: oncilla-v1
     - name: Test with pytest
       run: >
