@@ -76,6 +76,27 @@ def test_multiple_root_nodes(oncilla_parser, monkeypatch):
                         'generate_tree',
                         generate_tree_multiple_root)
 
+
+    with pytest.raises(OncillaParseError):
+        oncilla_parser.sentence2diagram('a')
+    assert oncilla_parser.sentence2diagram('a', suppress_exceptions=True) is None
+
+
+def test_to_diagram_fail(oncilla_parser, monkeypatch):
+    def generate_tree_w_failing_diagram(*args, **kwargs):
+        nodes = [PregroupTreeNode('a', 0, Ty('n'))]
+
+        def fail(*args, **kwargs):
+            raise Exception
+
+        nodes[0].to_diagram = fail
+
+        return nodes, nodes
+
+    monkeypatch.setattr(oncilla_parser_module,
+                        'generate_tree',
+                        generate_tree_w_failing_diagram)
+
     with pytest.raises(OncillaParseError):
         oncilla_parser.sentence2diagram('a')
     assert oncilla_parser.sentence2diagram('a', suppress_exceptions=True) is None
