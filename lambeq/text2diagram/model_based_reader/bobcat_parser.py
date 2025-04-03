@@ -28,6 +28,7 @@ import json
 import sys
 from typing import Any
 
+import torch
 from tqdm.auto import tqdm
 from transformers import AutoTokenizer
 
@@ -59,7 +60,7 @@ class BobcatParser(ModelBasedReader, CCGParser):
     def __init__(self,
                  model_name_or_path: str = 'bobcat',
                  root_cats: Iterable[str] | None = None,
-                 device: int = -1,
+                 device: int | str | torch.device = 'cpu',
                  cache_dir: StrPathT | None = None,
                  force_download: bool = False,
                  verbose: str = VerbosityLevel.PROGRESS.value,
@@ -77,9 +78,13 @@ class BobcatParser(ModelBasedReader, CCGParser):
         root_cats : iterable of str, optional
             A list of the categories allowed at the root of the parse
             tree.
-        device : int, default: -1
-            The GPU device ID on which to run the model, if positive.
-            If negative (the default), run on the CPU.
+        device : int, str, or torch.device, default: 'cpu'
+            Specifies the device on which to run the tagger model.
+            - For CPU, use `'cpu'`.
+            - For CUDA devices, use `'cuda:<device_id>'` or `<device_id>`.
+            - For Apple Silicon (MPS), use `'mps'`.
+            - You may also pass a :py:class:`torch.device` object.
+            - For other devices, refer to the PyTorch documentation.
         cache_dir : str or os.PathLike, optional
             The directory to which a downloaded pre-trained model should
             be cached instead of the standard cache
@@ -175,8 +180,9 @@ class BobcatParser(ModelBasedReader, CCGParser):
         model = (BertForChartClassification
                  .from_pretrained(self.model_dir)
                  .eval()
-                 .to(self.get_device()))
+                 .to(self.device))
         tokenizer = AutoTokenizer.from_pretrained(self.model_dir)
+
         self.tagger = Tagger(model, tokenizer, **config['tagger'])
 
         grammar = Grammar.load(self.model_dir / 'grammar.json')

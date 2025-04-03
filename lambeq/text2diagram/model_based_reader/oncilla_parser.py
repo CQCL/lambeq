@@ -63,7 +63,7 @@ class OncillaParser(ModelBasedReader):
     def __init__(
         self,
         model_name_or_path: str = 'oncilla',
-        device: int = -1,
+        device: int | str | torch.device = 'cpu',
         cache_dir: StrPathT | None = None,
         force_download: bool = False,
         verbose: str = VerbosityLevel.PROGRESS.value,
@@ -78,9 +78,13 @@ class OncillaParser(ModelBasedReader):
                 - The name of a pre-trained model.
                 By default, it uses the "bert" model.
                 See also: `OncillaParser.available_models()`
-        device : int, default: -1
-            The GPU device ID on which to run the model, if positive.
-            If negative (the default), run on the CPU.
+        device : int, str, or torch.device, default: 'cpu'
+            Specifies the device on which to run the tagger model.
+            - For CPU, use `'cpu'`.
+            - For CUDA devices, use `'cuda:<device_id>'` or `<device_id>`.
+            - For Apple Silicon (MPS), use `'mps'`.
+            - You may also pass a :py:class:`torch.device` object.
+            - For other devices, refer to the PyTorch documentation.
         cache_dir : str or os.PathLike, optional
             The directory to which a downloaded pre-trained model should
             be cached instead of the standard cache
@@ -107,7 +111,7 @@ class OncillaParser(ModelBasedReader):
         )
         self.model = BertForSentenceToTree.from_pretrained(
             self.model_dir, config=self.model_config
-        ).eval().to(self.get_device())
+        ).eval().to(self.device)
 
     def _sentence2pred(
         self,
