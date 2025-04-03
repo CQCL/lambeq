@@ -198,10 +198,10 @@ class SentenceToTreeOutput(ModelOutput):
     loss: torch.FloatTensor | None = None
     type_logits: torch.Tensor | None = None
     parent_logits: torch.Tensor | None = None
-    type_hidden_states: tuple[torch.FloatTensor] | None = None
-    type_attentions: tuple[torch.FloatTensor] | None = None
-    parent_hidden_states: tuple[torch.FloatTensor] | None = None
-    parent_attentions: tuple[torch.FloatTensor] | None = None
+    type_hidden_states: tuple[torch.FloatTensor, ...] | None = None
+    type_attentions: tuple[torch.FloatTensor, ...] | None = None
+    parent_hidden_states: tuple[torch.FloatTensor, ...] | None = None
+    parent_attentions: tuple[torch.FloatTensor, ...] | None = None
 
 
 @dataclass
@@ -664,12 +664,23 @@ class BertForSentenceToTree(BertPreTrainedModel):
             output += parent_encoder_output[1:]
             return (total_loss, *output) if total_loss is not None else output
 
+        type_hidden_states = getattr(
+            type_encoder_outputs,
+            'hidden_states',
+            type_encoder_outputs[3] if output_hidden_states else None,
+        )
+        type_attentions = getattr(
+            type_encoder_outputs,
+            'attentions',
+            type_encoder_outputs[4] if output_hidden_states else None,
+        )
+
         return SentenceToTreeOutput(
             loss=total_loss,
             type_logits=type_logits,
             parent_logits=parent_logits,
-            type_hidden_states=type_encoder_outputs.hidden_states,
-            type_attentions=type_encoder_outputs.attentions,
+            type_hidden_states=type_hidden_states,
+            type_attentions=type_attentions,
             parent_hidden_states=parent_hidden_states,
             parent_attentions=parent_attentions,
         )
