@@ -67,23 +67,23 @@ class TnPathOptimizer(oe.paths.PathOptimizer):
         **kwargs
     ):
         """
-        parameters
+        Parameters
         ----------
         algorithm: :py:class:`str`
-            algorithm type to use when the path is not already cached.
+            Algorithm type to use when the path is not already cached.
             recommended options are:
 
-            - ``auto`` (default): fast; decent enough paths.
-            - ``auto-hq``: slow, but finds very high quality paths.
+            - ``auto`` (default): Fast; decent enough paths.
+            - ``auto-hq``: Slow, but finds very high quality paths.
               Not recommended.
-            - ``random-greedy``: highly configurable, usually faster than
+            - ``random-greedy``: Highly configurable, usually faster than
               auto-hq and finds better paths than auto.
         memory_limit: :py:class:`int`
             Limit the memory usage of the intermediate tensors. This is
             not recommended, as it will generally make the path finding
             much slower. If the size is a concern, use the random-greedy
             algorithm with ``minimize='size'`` instead.
-        kwargs: extra keyword arguments to pass to the fallback
+        kwargs: Extra keyword arguments to pass to the fallback
             algorithm initializer. These will depend on the chosen
             fallback algorithm. For random-greedy, the following kwargs
             are available:
@@ -145,28 +145,28 @@ class CachedTnPathOptimizer(TnPathOptimizer):
         **kwargs
     ):
         """
-        parameters
+        Parameters
         ----------
         algorithm: :py:class:`str`
-            fallback algorithm type to use when the path is not
+            Fallback algorithm type to use when the path is not
             already cached. Recommended options are:
 
-            - ``auto``: fast, but paths are not that efficient.
+            - ``auto``: Fast, but paths are not that efficient.
               Use if you do not expect paths to be reused.
-            - ``auto-hq`` (default): slow, but finds very high
+            - ``auto-hq`` (default): Slow, but finds very high
               quality paths.
-            - ``random-greedy``: highly configurable, usually
+            - ``random-greedy``: Highly configurable, usually
               faster than auto-hq and finds better paths than auto.
               Preferred option for larger networks where auto-hq
               is too slow.
         save_file: :py:class:`Path` or :py:class:`None`
-            (optional) filepath to save the cached paths to.
+            (Optional) filepath to save the cached paths to.
             File contents is updated with each new path.
         save_checkpoints: :py:class:`bool`
             Whether to include the cached paths in the checkpoints.
             Default False.
 
-        kwargs: extra keyword arguments to pass to the fallback
+        kwargs: Extra keyword arguments to pass to the fallback
             algorithm initializer. These will depend on the chosen
             fallback algorithm. All options above accept a
             max_memory kwarg:
