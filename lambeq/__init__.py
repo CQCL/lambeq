@@ -75,6 +75,7 @@ __all__ = [
         'Rewriter',
         'RewriteRule',
         'SimpleRewriteRule',
+        'UncurryRewriteRule',
         'UnifyCodomainRewriter',
         'UnknownWordsRewriteRule',
 
@@ -118,8 +119,8 @@ from lambeq.core.types import AtomicType
 from lambeq.rewrite import (CoordinationRewriteRule, CurryRewriteRule,
                             DiagramRewriter, RemoveCupsRewriter,
                             RemoveSwapsRewriter, Rewriter, RewriteRule,
-                            SimpleRewriteRule, UnifyCodomainRewriter,
-                            UnknownWordsRewriteRule)
+                            SimpleRewriteRule, UncurryRewriteRule,
+                            UnifyCodomainRewriter, UnknownWordsRewriteRule)
 from lambeq.text2diagram import (
         CCGType, CCGRule, CCGRuleUseError, CCGTree,
         CCGParser,
