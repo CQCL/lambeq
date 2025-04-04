@@ -747,8 +747,8 @@ class BertForSentenceToTree(BertPreTrainedModel):
         with torch.no_grad():
             out = self.forward(**inputs_cpu)
 
-        type_logits = getattr(out, 'type_logits', out[1])
-        parent_logits = getattr(out, 'parent_logits', out[2])
+        type_logits = getattr(out, 'type_logits', out[0])
+        parent_logits = getattr(out, 'parent_logits', out[1])
         parent_preds = torch.argmax(parent_logits, 2).tolist()[0]
         type_preds = torch.argmax(type_logits, 2).tolist()[0]
         true_type_preds = []
