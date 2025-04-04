@@ -14,8 +14,8 @@
 """
 Model-based reader
 ==================
-Base class for readers that use pre-trained models, either end-to-end
-or as a step, for creating diagrams.
+Base class for readers that use pre-trained models for
+generating diagrams.
 
 """
 

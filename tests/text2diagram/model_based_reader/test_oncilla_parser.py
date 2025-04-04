@@ -57,7 +57,7 @@ def test_failed_pred(oncilla_parser, monkeypatch):
     def fail(*args, **kwargs):
         raise Exception
 
-    monkeypatch.setattr(oncilla_parser,
+    monkeypatch.setattr(oncilla_parser.model,
                         '_sentence2pred',
                         fail)
 

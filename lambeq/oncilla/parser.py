@@ -21,9 +21,13 @@ from typing import Any, Dict, List, Optional, Tuple
 import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss
-from transformers import BertConfig, BertPreTrainedModel
+from transformers import (BertConfig,
+                          BertPreTrainedModel,
+                          PreTrainedTokenizerFast)
 from transformers.modeling_outputs import ModelOutput
 from transformers.models.bert.modeling_bert import BertEncoder
+
+from lambeq.core.utils import TokenisedSentenceType
 
 
 logging.basicConfig()
@@ -246,6 +250,28 @@ class SentenceToTreeBertConfig(BertConfig):
     @cached_property
     def id2token(self) -> dict[int, str]:
         return {i: tkn for tkn, i in self.vocab.items()}
+
+
+@dataclass
+class ParserOutput:
+    """An output for sentence parsing.
+
+    Parameters
+    ----------
+    words : list of str
+        The tokens in the sentence.
+    types : list of list of str
+        The types assigned for each word formatted as a string.
+        Each element is a list to stay consistent with
+        the convention for words with multiple parents.
+    parents : list of list of int
+        The index of the parent word of each word in the pregroup tree.
+        Each element is a list to stay consistent with
+        the convention for words with multiple parents.
+    """
+    words: list[str]
+    types: list[list[str]]
+    parents: list[list[int]]
 
 
 class BertForSentenceToTree(BertPreTrainedModel):
@@ -684,3 +710,61 @@ class BertForSentenceToTree(BertPreTrainedModel):
             parent_hidden_states=parent_hidden_states,
             parent_attentions=parent_attentions,
         )
+
+    def _sentence2pred(
+        self,
+        sentence: TokenisedSentenceType,
+        tokenizer: PreTrainedTokenizerFast,
+    ) -> ParserOutput:
+        """Get the type and parent predictions for each of the tokens
+        in the sentence.
+
+        Parameters
+        ----------
+        sentence : str, or list of str
+            The sentence to be parsed.
+        tokenizer : PreTrainedTokenizerFast
+            The tokenizer that will be used to tokenize the sentences.
+
+        Returns
+        -------
+        """
+        sentence_w_root = [ROOT_TOKEN] + sentence
+        inputs = tokenizer(sentence_w_root,
+                           is_split_into_words=True,
+                           truncation=True,
+                           return_tensors='pt')
+        n_tokens = torch.tensor(
+            [[len(sentence_w_root)]], dtype=torch.int64
+        )
+        _ = inputs.pop('token_type_ids')
+        inputs['n_tokens'] = n_tokens
+        word_ids = inputs.word_ids()
+        inputs['word_ids'] = torch.tensor([
+            [i if i is not None else -1000 for i in word_ids]
+        ], dtype=torch.int64)
+        inputs_cpu = {k: v.to('cpu') for k, v in inputs.items()}
+        with torch.no_grad():
+            out = self.forward(**inputs_cpu)
+
+        type_logits = getattr(out, 'type_logits', out[1])
+        parent_logits = getattr(out, 'parent_logits', out[2])
+        parent_preds = torch.argmax(parent_logits, 2).tolist()[0]
+        type_preds = torch.argmax(type_logits, 2).tolist()[0]
+        true_type_preds = []
+        true_parent_preds = []
+        current_wid = None
+        for wid, t, p in zip(inputs.word_ids(), type_preds, parent_preds):
+            if wid is not None:
+                w = sentence_w_root[wid]
+                if w != ROOT_TOKEN and current_wid != wid:
+                    current_wid = wid
+                    true_type_preds.append(t)
+                    true_parent_preds.append(p)
+        assert len(true_type_preds) == len(true_parent_preds) == len(sentence)
+
+        true_type_preds_str = [[self.config.id2type[t]]
+                               for t in true_type_preds]
+        true_parent_preds = [[p - 1] for p in true_parent_preds]
+
+        return ParserOutput(sentence, true_type_preds_str, true_parent_preds)

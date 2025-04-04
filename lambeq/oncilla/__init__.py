@@ -1,4 +1,4 @@
-from lambeq.oncilla.bert import (
+from lambeq.oncilla.parser import (
     BertForSentenceToTree,
     prepare_parent_logits_mask,
     SentenceToTreeBertConfig,
