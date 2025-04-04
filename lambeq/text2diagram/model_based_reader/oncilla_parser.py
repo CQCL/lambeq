@@ -30,13 +30,13 @@ from tqdm.auto import tqdm
 from transformers import AutoTokenizer
 
 from lambeq.backend.grammar import Diagram
-from lambeq.backend.pregroup_tree import PregroupTreeNode
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.utils import (SentenceBatchType,
                                SentenceType)
 from lambeq.oncilla import (BertForSentenceToTree,
                             SentenceToTreeBertConfig)
 from lambeq.text2diagram.model_based_reader.base import ModelBasedReader
+from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 from lambeq.text2diagram.pregroup_tree_converter import generate_tree
 from lambeq.typing import StrPathT
 

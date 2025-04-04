@@ -17,10 +17,10 @@ from typing import Any, Optional
 import networkx as nx
 
 from lambeq.backend.grammar import Cap, Cup, Diagram, Swap, Ty, Word
-from lambeq.backend.pregroup_tree import (
+from lambeq.core.utils import fast_deepcopy
+from lambeq.text2diagram.pregroup_tree import (
     PregroupTreeNode, ROOT_INDEX,
 )
-from lambeq.core.utils import fast_deepcopy
 
 
 WordComponentsDictsType = list[dict[int, list[int]]]

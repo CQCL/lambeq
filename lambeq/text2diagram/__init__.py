@@ -12,38 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['CCGType',
-           'CCGRule',
-           'CCGRuleUseError',
-           'CCGTree',
+__all__ = [
+    'CCGType',
+    'CCGRule',
+    'CCGRuleUseError',
+    'CCGTree',
 
-           'CCGParser',
-           'CCGBankParseError',
-           'CCGBankParser',
-           'DepCCGParseError',
-           'DepCCGParser',
-           'WebParseError',
-           'WebParser',
+    'CCGParser',
+    'CCGBankParseError',
+    'CCGBankParser',
+    'DepCCGParseError',
+    'DepCCGParser',
+    'WebParseError',
+    'WebParser',
 
-           # Model-based parsers
-           'BobcatParseError',
-           'BobcatParser',
-           'OncillaParseError',
-           'OncillaParser',
+    # Model-based parsers
+    'BobcatParseError',
+    'BobcatParser',
+    'OncillaParseError',
+    'OncillaParser',
 
-           'LinearReader',
-           'Reader',
-           'TreeReader',
-           'TreeReaderMode',
-           'bag_of_words_reader',
-           'cups_reader',
-           'spiders_reader',
-           'stairs_reader',
-           'word_sequence_reader',
+    'LinearReader',
+    'Reader',
+    'TreeReader',
+    'TreeReaderMode',
+    'bag_of_words_reader',
+    'cups_reader',
+    'spiders_reader',
+    'stairs_reader',
+    'word_sequence_reader',
 
-           'diagram2tree',
-           'generate_tree',
-           'tree2diagram']
+    # Pregroup trees
+    'PregroupTreeNode',
+    'diagram2tree',
+    'generate_tree',
+    'tree2diagram'
+]
 
 from lambeq.text2diagram.ccg_rule import CCGRule, CCGRuleUseError
 from lambeq.text2diagram.ccg_tree import CCGTree
@@ -67,6 +71,7 @@ from lambeq.text2diagram.spiders_reader import (bag_of_words_reader,
                                                 spiders_reader)
 from lambeq.text2diagram.tree_reader import TreeReader, TreeReaderMode
 
+from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 from lambeq.text2diagram.pregroup_tree_converter import (diagram2tree,
                                                          generate_tree,
                                                          tree2diagram)

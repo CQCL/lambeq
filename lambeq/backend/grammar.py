@@ -36,7 +36,7 @@ from lambeq.core.utils import fast_deepcopy
 
 if TYPE_CHECKING:
     import discopy
-    from lambeq.backend.pregroup_tree import PregroupTreeNode
+    from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 
 
 @dataclass

@@ -1,5 +1,5 @@
 from lambeq.backend.grammar import Ty
-from lambeq.backend.pregroup_tree import PregroupTreeNode
+from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 
 
 n, s = map(Ty, 'ns')

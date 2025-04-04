@@ -11,6 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+Text-to-pregroup tree model
+===========================
+
+Model for creating pregroup trees from text. This work is based on
+the PyTorch BERT model available in Huggingface transformers
+(https://huggingface.co/transformers) which is released under
+Apache License 2.0.
+"""
 
 from collections.abc import Sequence
 from dataclasses import dataclass

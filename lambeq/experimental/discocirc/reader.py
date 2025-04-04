@@ -21,13 +21,13 @@ from collections.abc import Callable, Iterable
 
 from lambeq import AtomicType
 from lambeq.backend.grammar import Box, Diagram, Frame, Id, Spider, Ty
-from lambeq.backend.pregroup_tree import PregroupTreeNode
 from lambeq.core.utils import SentenceBatchType, SentenceType
 from lambeq.experimental.discocirc import (CoreferenceResolver,
                                            SpacyCoreferenceResolver,
                                            TreeRewriter,
                                            TreeRewriteRule)
 from lambeq.text2diagram import BobcatParser, CCGParser, Reader
+from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 
 
 NOUN = AtomicType.NOUN

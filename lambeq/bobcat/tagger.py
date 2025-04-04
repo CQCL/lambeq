@@ -11,6 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+CCG tagger model
+================
+
+Model for tagging text with CCG tags. This work is based on
+the PyTorch BERT model available in Huggingface transformers
+(https://huggingface.co/transformers) which is released under
+Apache License 2.0.
+"""
 
 from __future__ import annotations
 

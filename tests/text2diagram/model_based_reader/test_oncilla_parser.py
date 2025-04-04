@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 from lambeq import OncillaParseError, OncillaParser, VerbosityLevel
 from lambeq.backend.grammar import Ty
-from lambeq.backend.pregroup_tree import PregroupTreeNode
+from lambeq.text2diagram import PregroupTreeNode
 from lambeq.text2diagram.model_based_reader import oncilla_parser as oncilla_parser_module
 
 
