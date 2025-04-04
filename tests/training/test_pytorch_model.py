@@ -13,6 +13,7 @@ from torch import Size
 from torch.nn import Parameter
 
 from lambeq import AtomicType, PytorchModel, SpiderAnsatz, Symbol
+from lambeq.training.cached_tn_path_optimizer import CachedTnPathOptimizer
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -49,6 +50,23 @@ def test_forward():
     instance.initialise_weights()
     pred = instance.forward(diagrams)
     assert pred.size() == Size([len(diagrams), s_dim])
+
+def test_contraction_path_is_cached():
+    s_dim = 2
+    ansatz = SpiderAnsatz({N: Dim(2), S: Dim(s_dim)})
+    diagrams = [
+        ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
+    ]
+    model = PytorchModel.from_diagrams(
+        diagrams, tn_path_optimizer=CachedTnPathOptimizer()
+    )
+    model.initialise_weights()
+    assert isinstance(model.tn_path_optimizer, CachedTnPathOptimizer)
+    assert len(model.tn_path_optimizer.cached_paths.keys()) == 0
+    model.forward(diagrams)
+    assert len(model.tn_path_optimizer.cached_paths.keys()) == 1
+    model.forward(diagrams)
+    assert len(model.tn_path_optimizer.cached_paths.keys()) == 1
 
 def test_initialise_weights():
     model = CustomPytorchModel()
@@ -100,13 +118,14 @@ def test_checkpoint_loading():
     diagram = ansatz((Word("Alice", N) @ Word("runs", N >> S) >> Cup(N, N.r) @ Id(S)))
     model = PytorchModel.from_diagrams([diagram])
     model.initialise_weights()
-
+    assert isinstance(model.tn_path_optimizer, CachedTnPathOptimizer)
     checkpoint = {'model_weights': model.weights,
                   'model_symbols': model.symbols,
                   'model_state_dict': model.state_dict()}
     with patch('lambeq.training.checkpoint.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
             patch('lambeq.training.checkpoint.os.path.exists', lambda x: True) as p:
         model_new = PytorchModel.from_checkpoint('model.lt')
+        assert isinstance(model_new.tn_path_optimizer, CachedTnPathOptimizer)
         assert len(model_new.weights) == len(model.weights)
         assert model_new.symbols == model.symbols
         assert np.all(model([diagram]).detach().numpy() == model_new([diagram]).detach().numpy())
