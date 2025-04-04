@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from functools import cached_property
 from typing import Optional
 
-from lambeq.backend.grammar import Ty
+from lambeq.backend.grammar import Diagram, Ty
 
 
 ROOT_INDEX = -1
@@ -219,11 +219,6 @@ class PregroupTreeNode:
             [n.parent.ind if n.parent else -1 for n in nodes]
             for nodes in nodes_list
         ]
-        min_ind = min([min(ps) for ps in parents_list])
-        if min_ind != -1:
-            # We're returning for a subtree - need to offset
-            parents_list = [[p - min_ind - 1 for p in ps]
-                            for ps in parents_list]
 
         return parents_list
 
@@ -393,3 +388,16 @@ class PregroupTreeNode:
         self.children = new_children
         for c in self.children:
             c.remove_self_cycles()
+
+    def to_diagram(self, tokens: list[str]) -> Diagram | None:
+        from lambeq.text2diagram.pregroup_tree_converter import tree2diagram
+
+        diagram = None
+        try:
+            diagram = tree2diagram(self, tokens)
+        except Exception as e:
+            raise PregroupTreeNodeError(
+                ' '.join(tokens)
+            ) from e
+
+        return diagram

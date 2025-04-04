@@ -3,8 +3,8 @@ from unittest import mock
 
 from lambeq.text2diagram import CCGParser
 from lambeq.experimental.discocirc import CoreferenceResolver, DisCoCircReader
-from lambeq.backend import PregroupTreeNode
 from lambeq.backend.grammar import Ty, Box, Id, Frame
+from lambeq.text2diagram import PregroupTreeNode
 
 
 n, s = Ty('n'), Ty('s')

@@ -19,8 +19,10 @@ import pickle
 from typing import Any, List, Union
 
 
-SentenceType = Union[str, List[str]]
-SentenceBatchType = Union[List[str], List[List[str]]]
+TokenisedSentenceType = List[str]
+SentenceType = Union[str, TokenisedSentenceType]
+TokenisedSentenceBatchType = List[TokenisedSentenceType]
+SentenceBatchType = Union[List[str], TokenisedSentenceBatchType]
 
 
 def tokenised_sentence_type_check(sentence: SentenceType) -> bool:

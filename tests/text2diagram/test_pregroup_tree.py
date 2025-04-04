@@ -1,5 +1,5 @@
 from lambeq.backend.grammar import Ty
-from lambeq.backend.pregroup_tree import PregroupTreeNode
+from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 
 
 n, s = map(Ty, 'ns')
@@ -10,45 +10,64 @@ t1_n8 = PregroupTreeNode(word='loss', typ=n, ind=8)
 t1_n12 = PregroupTreeNode(word='million', typ=n, ind=12)
 t1_n14 = PregroupTreeNode(word='restructuring', typ=n, ind=14)
 t1_n17 = PregroupTreeNode(word='items', typ=n, ind=17)
-t1_n0 = PregroupTreeNode(word='Last', typ=n, ind=0, children=[t1_n1])
-t1_n2 = PregroupTreeNode(word="'s", typ=n, ind=2, children=[t1_n0, t1_n3])
-t1_n7 = PregroupTreeNode(word='time', typ=n, ind=7, children=[t1_n8])
-t1_n6 = PregroupTreeNode(word='one', typ=n, ind=6, children=[t1_n7])
-t1_n5 = PregroupTreeNode(word='a', typ=n, ind=5, children=[t1_n6])
-t1_n11 = PregroupTreeNode(word='12', typ=n, ind=11, children=[t1_n12])
-t1_n10 = PregroupTreeNode(word='$', typ=n, ind=10, children=[t1_n11])
-t1_n16 = PregroupTreeNode(word='unusual', typ=n, ind=16, children=[t1_n17])
-t1_n15 = PregroupTreeNode(word='and', typ=n, ind=15, children=[t1_n14, t1_n16])
-t1_n9 = PregroupTreeNode(word='of', typ=n, ind=9, children=[t1_n5, t1_n10])
-t1_n13 = PregroupTreeNode(word='for', typ=n, ind=13, children=[t1_n9, t1_n15])
-t1_n4 = PregroupTreeNode(word='include', typ=s, ind=4, children=[t1_n2, t1_n13])
+t1_n0 = PregroupTreeNode(word='Last', typ=n, ind=0,
+                         children=[t1_n1])
+t1_n2 = PregroupTreeNode(word="'s", typ=n, ind=2,
+                         children=[t1_n0, t1_n3])
+t1_n7 = PregroupTreeNode(word='time', typ=n, ind=7,
+                         children=[t1_n8])
+t1_n6 = PregroupTreeNode(word='one', typ=n, ind=6,
+                         children=[t1_n7])
+t1_n5 = PregroupTreeNode(word='a', typ=n, ind=5,
+                         children=[t1_n6])
+t1_n11 = PregroupTreeNode(word='12', typ=n, ind=11,
+                          children=[t1_n12])
+t1_n10 = PregroupTreeNode(word='$', typ=n, ind=10,
+                          children=[t1_n11])
+t1_n16 = PregroupTreeNode(word='unusual', typ=n, ind=16,
+                          children=[t1_n17])
+t1_n15 = PregroupTreeNode(word='and', typ=n, ind=15,
+                          children=[t1_n14, t1_n16])
+t1_n9 = PregroupTreeNode(word='of', typ=n, ind=9,
+                         children=[t1_n5, t1_n10])
+t1_n13 = PregroupTreeNode(word='for', typ=n, ind=13,
+                          children=[t1_n9, t1_n15])
+t1_n4 = PregroupTreeNode(word='include', typ=s, ind=4,
+                         children=[t1_n2, t1_n13])
 t1 = t1_n4
 t1_types = [['n']] * 18
 t1_types[4] = ['s']
-t1_parents = [[2], [0], [4], [2], [-1], [9], [5], [6], [7], [13], [9], [10], [11], [4], [15], [13], [15], [16]]
+t1_parents = [[2], [0], [4], [2], [-1], [9], [5], [6], [7], [13],
+              [9], [10], [11], [4], [15], [13], [15], [16]]
 
 t2_n1 = PregroupTreeNode(word='was', typ=n.r @ s, ind=1)
-t2_n2 = PregroupTreeNode(word='not', typ=n.r @ s, ind=2, children=[t2_n1])
+t2_n2 = PregroupTreeNode(word='not', typ=n.r @ s, ind=2,
+                         children=[t2_n1])
 t2_n0 = PregroupTreeNode(word='root', typ=s, ind=0, children=[t2_n2])
 t2 = t2_n0
 
 t3_n1 = PregroupTreeNode(word='was', typ=n.r @ s, ind=4)
-t3_n2 = PregroupTreeNode(word='not', typ=n.r @ s, ind=2, children=[t3_n1])
+t3_n2 = PregroupTreeNode(word='not', typ=n.r @ s, ind=2,
+                         children=[t3_n1])
 t3_n0 = PregroupTreeNode(word='root', typ=s, ind=0, children=[t3_n2])
 t3 = t3_n0
 
 t4_n4 = PregroupTreeNode(word='4', typ=n, ind=4)
 t4_n4_2 = PregroupTreeNode(word='4', typ=n.r, ind=4)
 t4_n3 = PregroupTreeNode(word='3', typ=n, ind=3, children=[t4_n4])
-t4_n2 = PregroupTreeNode(word='2', typ=n, ind=2, children=[t4_n3, t4_n4_2])
+t4_n2 = PregroupTreeNode(word='2', typ=n, ind=2,
+                         children=[t4_n3, t4_n4_2])
 t4_n2_2 = PregroupTreeNode(word='2', typ=n.r, ind=2)
 t4_n1 = PregroupTreeNode(word='1', typ=n, ind=1, children=[t4_n2])
-t4_n0 = PregroupTreeNode(word='0', typ=s, ind=0, children=[t4_n1, t4_n2_2])
+t4_n0 = PregroupTreeNode(word='0', typ=s, ind=0,
+                         children=[t4_n1, t4_n2_2])
 t4 = t4_n0
 
-t5_n2 = PregroupTreeNode(word='and', typ=n.r @ s @ n.r.r.r @ s.r.r, ind=2)
+t5_n2 = PregroupTreeNode(word='and', typ=n.r @ s @ n.r.r.r @ s.r.r,
+                         ind=2)
 t5_n1 = PregroupTreeNode(word='an', typ=n, ind=1)
-t5_n2_2 = PregroupTreeNode(word='and', typ=s, ind=2, children=[t5_n1, t5_n2])
+t5_n2_2 = PregroupTreeNode(word='and', typ=s, ind=2,
+                           children=[t5_n1, t5_n2])
 t5_n0 = PregroupTreeNode(word='when', typ=s, ind=0, children=[t5_n2_2])
 t5 = t5_n0
 
@@ -57,13 +76,13 @@ def test_eq():
     t1_n1 = PregroupTreeNode(word='t1', typ=Ty(), ind=1)
     t1_n2 = PregroupTreeNode(word='t2', typ=Ty(), ind=2)
     t1_n0 = PregroupTreeNode(word='t0', typ=Ty(), ind=0,
-                              children=[t1_n1, t1_n2])
+                             children=[t1_n1, t1_n2])
     t1 = t1_n0
 
     t2_n1 = PregroupTreeNode(word='t1', typ=Ty(), ind=1)
     t2_n2 = PregroupTreeNode(word='t2', typ=Ty(), ind=2)
     t2_n0 = PregroupTreeNode(word='t0', typ=Ty(), ind=0,
-                              children=[t2_n2, t2_n1])
+                             children=[t2_n2, t2_n1])
     t2 = t2_n0
     assert t1 == t2
 
@@ -123,7 +142,8 @@ def test_get_types():
 def test_get_parents():
     assert t1.get_parents() == t1_parents
     assert t1_n13.get_parents() == [
-        [4], [0], [1], [2], [8], [4], [5], [6], [-1], [10], [8], [10], [11]
+        [9], [5], [6], [7], [13], [9], [10], [11], [4], [15],
+        [13], [15], [16]
     ]
 
 
@@ -135,10 +155,12 @@ def test_get_word_indices():
         5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
     ]
 
+
 def test_get_words():
     assert t1.get_words() == [
-        'Last', 'year', '\'s', 'figures', 'include', 'a', 'one', 'time',
-        'loss', 'of', '$', '12', 'million', 'for', 'restructuring',
+        'Last', 'year', '\'s', 'figures', 'include',    # noqa: Q003
+        'a', 'one', 'time', 'loss', 'of',
+        '$', '12', 'million', 'for', 'restructuring',
         'and', 'unusual', 'items',
     ]
 
@@ -182,7 +204,7 @@ def test_repr():
 def test_tree_repr():
     assert t1._tree_repr == '\n'.join([
         'include_4 (s)',
-        '├ \'s_2 (n)',
+        '├ \'s_2 (n)',  # noqa: Q003
         '│ ├ Last_0 (n)',
         '│ │ └ year_1 (n)',
         '│ └ figures_3 (n)',

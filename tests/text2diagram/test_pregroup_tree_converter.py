@@ -2,7 +2,7 @@ import pytest
 
 from lambeq import BobcatParser, SpacyTokeniser
 from lambeq.backend.grammar import Cup, Diagram, Ty, Word
-from lambeq.backend.pregroup_tree import PregroupTreeNode
+from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 from lambeq.text2diagram.pregroup_tree_converter import (
     diagram2tree, generate_tree, tree2diagram
 )

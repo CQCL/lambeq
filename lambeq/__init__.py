@@ -48,6 +48,8 @@ __all__ = [
         'CCGBankParser',
         'DepCCGParseError',
         'DepCCGParser',
+        'OncillaParseError',
+        'OncillaParser',
         'WebParseError',
         'WebParser',
 
@@ -122,6 +124,7 @@ from lambeq.text2diagram import (
         CCGType, CCGRule, CCGRuleUseError, CCGTree,
         CCGParser,
         BobcatParseError, BobcatParser,
+        OncillaParseError, OncillaParser,
         CCGBankParseError, CCGBankParser,
         DepCCGParseError, DepCCGParser,
         WebParseError, WebParser,

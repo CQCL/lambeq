@@ -39,9 +39,12 @@ ignore_missing_imports = true
 follow_imports = "skip"
 
 [[tool.mypy.overrides]]
-module = ["lambeq.text2diagram.bobcat_parser", "lambeq.bobcat.*"]
+module = [
+    "lambeq.text2diagram.model_based_reader.*",
+    "lambeq.bobcat.*",
+    "lambeq.oncilla.*",
+]
 strict_optional = false
 
 [tool.setuptools_scm]
 write_to = "lambeq/version.py"
-
