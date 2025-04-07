@@ -101,10 +101,10 @@ class TnPathOptimizer(oe.paths.PathOptimizer):
             **kwargs
         )
 
-    def make_checkpoint(self, checkpoint: Checkpoint) -> Checkpoint:
+    def store_to_checkpoint(self, checkpoint: Checkpoint) -> Checkpoint:
         return checkpoint
 
-    def load_checkpoint(self, checkpoint: Checkpoint):
+    def restore_from_checkpoint(self, checkpoint: Checkpoint):
         """Load any information saved to a checkpoint.
         We do not expect to recover init kwargs from the checkpoint -
         the TnPathOptimizer should be initialised separately."""
@@ -253,15 +253,16 @@ class CachedTnPathOptimizer(TnPathOptimizer):
             with open(self.filepath, 'wb') as f:
                 pickle.dump(self.cached_paths, f)
 
-    def make_checkpoint(self, checkpoint: Checkpoint) -> Checkpoint:
-        checkpoint = super().make_checkpoint(checkpoint)
+    def store_to_checkpoint(self, checkpoint: Checkpoint) -> Checkpoint:
+        checkpoint = super().store_to_checkpoint(checkpoint)
         if self.save_checkpoints:
             checkpoint.add_many({
                 self.checkpoint_cached_paths_key: self.cached_paths,
             })
         return checkpoint
 
-    def load_checkpoint(self, checkpoint: Checkpoint):
+    def restore_from_checkpoint(self, checkpoint: Checkpoint):
+        super().restore_from_checkpoint(checkpoint)
         if self.checkpoint_cached_paths_key in checkpoint:
             self.cached_paths = checkpoint[self.checkpoint_cached_paths_key]
 

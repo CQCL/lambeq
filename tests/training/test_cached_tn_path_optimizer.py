@@ -38,11 +38,10 @@ def test_tn_optimizer_checkpoint_loading(save_checkpoints):
     ordered_nodes_contractor(nodes, tn_path_optimizer, out_edges)
     assert len(tn_path_optimizer.cached_paths) == 1
 
-    checkpoint = tn_path_optimizer.make_checkpoint(Checkpoint())
-    print(checkpoint)
+    checkpoint = tn_path_optimizer.store_to_checkpoint(Checkpoint())
 
     path_optimizer_new = CachedTnPathOptimizer()
-    path_optimizer_new.load_checkpoint(checkpoint)
+    path_optimizer_new.restore_from_checkpoint(checkpoint)
     assert isinstance(path_optimizer_new, CachedTnPathOptimizer)
     # If not saving paths to checkpoint, expect new paths to be empty
     if save_checkpoints:

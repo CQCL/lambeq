@@ -118,7 +118,7 @@ class PytorchModel(Model, torch.nn.Module):
         self.symbols = checkpoint['model_symbols']
         self.weights = checkpoint['model_weights']
         self.load_state_dict(checkpoint['model_state_dict'])
-        self.tn_path_optimizer.load_checkpoint(checkpoint)
+        self.tn_path_optimizer.restore_from_checkpoint(checkpoint)
 
     def _make_checkpoint(self) -> Checkpoint:
         """Create checkpoint that contains the model weights and symbols.
@@ -134,7 +134,7 @@ class PytorchModel(Model, torch.nn.Module):
         checkpoint.add_many({'model_symbols': self.symbols,
                              'model_weights': self.weights,
                              'model_state_dict': self.state_dict()})
-        checkpoint = self.tn_path_optimizer.make_checkpoint(checkpoint)
+        checkpoint = self.tn_path_optimizer.store_to_checkpoint(checkpoint)
         return checkpoint
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
