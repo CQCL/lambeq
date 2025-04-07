@@ -23,6 +23,7 @@ from __future__ import annotations
 
 __all__ = ['OncillaParser', 'OncillaParseError']
 
+import sys
 from typing import Any
 
 import torch
@@ -110,6 +111,139 @@ class OncillaParser(ModelBasedReader):
             self.model_dir, config=self.model_config
         ).eval().to(self.device)
 
+    def _sentences2pregrouptrees(
+        self,
+        sentences: SentenceBatchType,
+        tokenised: bool = False,
+        suppress_exceptions: bool = False,
+        verbose: str | None = None,
+    ) -> list[PregroupTreeNode | None]:
+        """Parse multiple sentences into a list of pregroup trees.
+
+        Parameters
+        ----------
+        sentences : list of str, or list of list of str
+            The sentences to be parsed.
+        tokenised : bool, default: False
+            Whether each sentence has been passed as a list of tokens.
+        suppress_exceptions : bool, default: False
+            Whether to suppress exceptions. If :py:obj:`True`, then if a
+            sentence fails to parse, instead of raising an exception,
+            its return entry is :py:obj:`None`.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. Not all parsers
+            implement all three levels of progress reporting, see the
+            respective documentation for each parser. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
+
+        Returns
+        -------
+        list of :py:class:`lambeq.text2diagram.PregroupTreeNode` or None
+            The pregroup trees. May contain :py:obj:`None` if
+            exceptions are suppressed.
+
+        """
+        if verbose is None:
+            verbose = self.verbose
+        if not VerbosityLevel.has_value(verbose):
+            raise ValueError(f'`{verbose}` is not a valid verbose value '
+                             ' for `OncillaParser`.')
+
+        sentences_valid, empty_indices = self.validate_sentence_batch(
+            sentences,
+            tokenised=tokenised,
+            suppress_exceptions=suppress_exceptions
+        )
+
+        pregroup_trees: list[PregroupTreeNode | None] = []
+
+        if sentences_valid:
+            if verbose == VerbosityLevel.TEXT.value:
+                print('Turning sentences to pregroup trees.', file=sys.stderr)
+            for sent in tqdm(sentences_valid,
+                             desc='Turning sentences to pregroup trees',
+                             leave=False,
+                             disable=verbose != VerbosityLevel.PROGRESS.value):
+
+                pregroup_tree: PregroupTreeNode | None = None
+                try:
+                    # Predict types and parents
+                    parse_output = self.model._sentence2pred(sent,
+                                                             self.tokenizer)
+
+                    # Create tree from type and parent preds
+                    root_nodes: list[PregroupTreeNode]
+                    root_nodes, _ = generate_tree(parse_output.words,
+                                                  parse_output.types,
+                                                  parse_output.parents)
+                except Exception as e:
+                    if not suppress_exceptions:
+                        raise OncillaParseError(' '.join(sent)) from e
+                else:
+                    if len(root_nodes) > 1:
+                        if not suppress_exceptions:
+                            raise OncillaParseError(
+                                ' '.join(sent),
+                                reason=f'Got {len(root_nodes)} disjoint trees'
+                            )
+
+                    elif not len(root_nodes):
+                        if not suppress_exceptions:
+                            raise OncillaParseError(
+                                ' '.join(sent),
+                                reason=f'Got {len(root_nodes)} trees'
+                            )
+                    else:
+                        pregroup_tree = root_nodes[0]
+
+                pregroup_trees.append(pregroup_tree)
+
+        for i in empty_indices:
+            pregroup_trees.insert(i, None)
+
+        return pregroup_trees
+
+    def _sentence2pregrouptree(
+        self,
+        sentence: SentenceType,
+        tokenised: bool = False,
+        suppress_exceptions: bool = False,
+        verbose: str | None = None,
+    ) -> PregroupTreeNode | None:
+        """Parse a sentence into a pregroup trees.
+
+        Parameters
+        ----------
+        sentence : str, list[str]
+            The sentence to be parsed, passed either as a string, or as
+            a list of tokens
+        tokenised : bool, default: False
+            Whether each sentence has been passed as a list of tokens.
+        suppress_exceptions : bool, default: False
+            Whether to suppress exceptions. If :py:obj:`True`, then if a
+            sentence fails to parse, instead of raising an exception,
+            its return entry is :py:obj:`None`.
+        verbose : str, optional
+            See :py:class:`VerbosityLevel` for options. Not all parsers
+            implement all three levels of progress reporting, see the
+            respective documentation for each parser. If set, takes
+            priority over the :py:attr:`verbose` attribute of the
+            parser.
+
+        Returns
+        -------
+        :py:class:`lambeq.text2diagram.PregroupTreeNode` or None
+            The pregroup tree, or :py:obj:`None` on failure.
+
+        """
+        return self._sentences2pregrouptrees(
+            [sentence],     # type: ignore[arg-type]
+            tokenised=tokenised,
+            suppress_exceptions=suppress_exceptions,
+            verbose=verbose
+        )[0]
+
     def sentences2diagrams(
         self,
         sentences: SentenceBatchType,
@@ -143,58 +277,36 @@ class OncillaParser(ModelBasedReader):
             exceptions are suppressed.
 
         """
-        if verbose is None:
-            verbose = self.verbose
-        if not VerbosityLevel.has_value(verbose):
-            raise ValueError(f'`{verbose}` is not a valid verbose value '
-                             ' for `OncillaParser`.')
-
-        sentences, empty_indices = self.validate_sentence_batch(
+        pregroup_trees = self._sentences2pregrouptrees(
             sentences,
             tokenised=tokenised,
-            suppress_exceptions=suppress_exceptions
+            suppress_exceptions=suppress_exceptions,
+            verbose=verbose
         )
 
         diagrams: list[Diagram | None] = []
 
-        for sentence in tqdm(sentences,
-                             desc='Generating diagrams from sentences',
-                             leave=False,
-                             total=len(sentences),
-                             disable=verbose != VerbosityLevel.PROGRESS.value):
-
+        if verbose is None:
+            verbose = self.verbose
+        if verbose is VerbosityLevel.TEXT.value:
+            print('Turning pregroup trees to diagrams.', file=sys.stderr)
+        for tree, sentence in tqdm(
+            zip(pregroup_trees, sentences),
+            desc='Turning pregroup trees to diagrams',
+            leave=False,
+            total=len(pregroup_trees),
+            disable=verbose != VerbosityLevel.PROGRESS.value
+        ):
             diagram: Diagram | None = None
 
-            try:
-                # Predict types and parents
-                parse_output = self.model._sentence2pred(sentence,
-                                                         self.tokenizer)
-
-                # Create tree from type and parent preds
-                root_nodes: list[PregroupTreeNode]
-                root_nodes, _ = generate_tree(parse_output.words,
-                                              parse_output.types,
-                                              parse_output.parents)
-
-                if len(root_nodes) == 1:
-                    diagram = root_nodes[0].to_diagram(
-                        tokens=parse_output.words,
-                    )
-            except Exception as e:
-                if not suppress_exceptions:
-                    raise OncillaParseError(' '.join(sentence)) from e
-            else:
-                if len(root_nodes) > 1:
+            if tree is not None:
+                try:
+                    diagram = tree.to_diagram(tokens=sentence)
+                except Exception as e:
                     if not suppress_exceptions:
-                        raise OncillaParseError(
-                            ' '.join(sentence),
-                            reason=f'Got {len(root_nodes)} disjoint diagrams'
-                        )
+                        raise OncillaParseError(' '.join(sentence)) from e
 
             diagrams.append(diagram)
-
-        for i in empty_indices:
-            diagrams.insert(i, None)
 
         return diagrams
 
@@ -230,7 +342,6 @@ class OncillaParser(ModelBasedReader):
             The parsed diagram, or :py:obj:`None` on failure.
 
         """
-
         return self.sentences2diagrams(
             [sentence],     # type: ignore[arg-type]
             tokenised=tokenised,

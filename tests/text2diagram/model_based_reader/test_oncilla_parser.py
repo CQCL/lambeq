@@ -135,6 +135,26 @@ def test_tokenised_type_check_tokenised_batch(oncilla_parser, tokenised_sentence
         _ = oncilla_parser.sentences2diagrams([tokenised_sentence], tokenised=False)
 
 
+def test_tokenised_type_check_untokenised_sentence_s2t(oncilla_parser, sentence):
+    with pytest.raises(ValueError):
+        _ = oncilla_parser._sentence2pregrouptree(sentence, tokenised=True)
+
+
+def test_tokenised_type_check_tokenised_sentence_s2t(oncilla_parser, tokenised_sentence):
+    with pytest.raises(ValueError):
+        _ = oncilla_parser._sentence2pregrouptree(tokenised_sentence, tokenised=False)
+
+
+def test_tokenised_type_check_untokenised_batch_s2t(oncilla_parser, sentence):
+    with pytest.raises(ValueError):
+        _ = oncilla_parser._sentences2pregrouptrees([sentence], tokenised=True)
+
+
+def test_tokenised_type_check_tokenised_batch_s2t(oncilla_parser, tokenised_sentence):
+    with pytest.raises(ValueError):
+        _ = oncilla_parser._sentences2pregrouptrees([tokenised_sentence], tokenised=False)
+
+
 def test_verbosity_exceptions_init():
     with pytest.raises(ValueError):
         oncilla_parser = OncillaParser(verbose='invalid_option')
@@ -148,10 +168,10 @@ def test_verbosity_exceptions_sentences2diagrams(oncilla_parser, sentence):
 def test_text_progress(oncilla_parser, sentence):
     with patch('sys.stderr', new=StringIO()) as fake_out:
         _ = oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
-        assert fake_out.getvalue().rstrip() == ''
+        assert fake_out.getvalue().rstrip() == 'Turning sentences to pregroup trees.\nTurning pregroup trees to diagrams.'
 
 
 def test_tqdm_progress(oncilla_parser, sentence):
     with patch('sys.stderr', new=StringIO()) as fake_out:
-        _ = oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
-        assert fake_out.getvalue().rstrip() == ''
+        _ = oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.PROGRESS.value)
+        assert fake_out.getvalue().rstrip() != ''

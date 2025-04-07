@@ -85,42 +85,42 @@ def test_sentences2diagrams_tokenised(bobcat_parser, tokenised_sentence):
 
 def test_tokenised_type_check_untokenised_sentence(bobcat_parser, sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentence2diagram(sentence, tokenised=True)
+        _ = bobcat_parser.sentence2diagram(sentence, tokenised=True)
 
 
 def test_tokenised_type_check_tokenised_sentence(bobcat_parser, tokenised_sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentence2diagram(tokenised_sentence, tokenised=False)
+        _ = bobcat_parser.sentence2diagram(tokenised_sentence, tokenised=False)
 
 
 def test_tokenised_type_check_untokenised_batch(bobcat_parser, sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentences2diagrams([sentence], tokenised=True)
+        _ = bobcat_parser.sentences2diagrams([sentence], tokenised=True)
 
 
 def test_tokenised_type_check_tokenised_batch(bobcat_parser, tokenised_sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentences2diagrams([tokenised_sentence], tokenised=False)
+        _ = bobcat_parser.sentences2diagrams([tokenised_sentence], tokenised=False)
 
 
 def test_tokenised_type_check_untokenised_sentence_s2t(bobcat_parser, sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentence2tree(sentence, tokenised=True)
+        _ = bobcat_parser.sentence2tree(sentence, tokenised=True)
 
 
 def test_tokenised_type_check_tokenised_sentence_s2t(bobcat_parser, tokenised_sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentence2tree(tokenised_sentence, tokenised=False)
+        _ = bobcat_parser.sentence2tree(tokenised_sentence, tokenised=False)
 
 
 def test_tokenised_type_check_untokenised_batch_s2t(bobcat_parser, sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentences2trees([sentence], tokenised=True)
+        _ = bobcat_parser.sentences2trees([sentence], tokenised=True)
 
 
 def test_tokenised_type_check_tokenised_batch_s2t(bobcat_parser, tokenised_sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentences2trees([tokenised_sentence], tokenised=False)
+        _ = bobcat_parser.sentences2trees([tokenised_sentence], tokenised=False)
 
 
 def test_verbosity_exceptions_init():
@@ -135,18 +135,18 @@ def test_kwargs_exceptions_init():
 
 def test_verbosity_exceptions_sentences2trees(bobcat_parser, sentence):
     with pytest.raises(ValueError):
-        _=bobcat_parser.sentences2trees([sentence], verbose='invalid_option')
+        _ = bobcat_parser.sentences2trees([sentence], verbose='invalid_option')
 
 
 def test_text_progress(bobcat_parser, sentence):
     with patch('sys.stderr', new=StringIO()) as fake_out:
-        _=bobcat_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
+        _ = bobcat_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
         assert fake_out.getvalue().rstrip() == 'Tagging sentences.\nParsing tagged sentences.\nTurning parse trees to diagrams.'
 
 
 def test_tqdm_progress(bobcat_parser, sentence):
     with patch('sys.stderr', new=StringIO()) as fake_out:
-        _=bobcat_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.TEXT.value)
+        _ = bobcat_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.PROGRESS.value)
         assert fake_out.getvalue().rstrip() != ''
 
 

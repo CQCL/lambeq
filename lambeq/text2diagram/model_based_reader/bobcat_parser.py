@@ -239,17 +239,17 @@ class BobcatParser(ModelBasedReader, CCGParser):
             raise ValueError(f'`{verbose}` is not a valid verbose value for '
                              'BobcatParser.')
 
-        sentences, empty_indices = self.validate_sentence_batch(
+        sentences_valid, empty_indices = self.validate_sentence_batch(
             sentences,
             tokenised=tokenised,
             suppress_exceptions=suppress_exceptions
         )
 
         trees: list[CCGTree] = []
-        if sentences:
+        if sentences_valid:
             if verbose == VerbosityLevel.TEXT.value:
                 print('Tagging sentences.', file=sys.stderr)
-            tag_results = self.tagger(sentences, verbose=verbose)
+            tag_results = self.tagger(sentences_valid, verbose=verbose)
             tags = tag_results.tags
             if verbose == VerbosityLevel.TEXT.value:
                 print('Parsing tagged sentences.', file=sys.stderr)

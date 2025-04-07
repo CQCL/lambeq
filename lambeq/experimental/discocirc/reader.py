@@ -26,7 +26,10 @@ from lambeq.experimental.discocirc import (CoreferenceResolver,
                                            SpacyCoreferenceResolver,
                                            TreeRewriter,
                                            TreeRewriteRule)
-from lambeq.text2diagram import BobcatParser, CCGParser, Reader
+from lambeq.text2diagram import (BobcatParser,
+                                 CCGParser,
+                                 OncillaParser,
+                                 Reader)
 from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 
 
@@ -38,18 +41,22 @@ class DisCoCircReader(Reader):
 
     def __init__(
         self,
-        ccg_parser: CCGParser | Callable[[], CCGParser] = BobcatParser,
+        parser:
+            CCGParser
+            | OncillaParser
+            | Callable[[], CCGParser | OncillaParser] = BobcatParser,
         coref_resolver:
             CoreferenceResolver
             | Callable[[], CoreferenceResolver] = SpacyCoreferenceResolver
     ) -> None:
 
-        if isinstance(ccg_parser, Callable):
-            ccg_parser = ccg_parser()
+        if isinstance(parser, Callable):
+            parser = parser()
 
-        if not isinstance(ccg_parser, CCGParser):
-            raise ValueError(f'{ccg_parser} should be a CCGParser or a '
-                             'function that returns a CCGParser.')
+        if not isinstance(parser, (CCGParser, OncillaParser)):
+            raise ValueError(f'{parser} should either be a CCGParser, '
+                             'an OncillaParser, or a function '
+                             'that returns either.')
 
         if isinstance(coref_resolver, Callable):
             coref_resolver = coref_resolver()
@@ -59,7 +66,8 @@ class DisCoCircReader(Reader):
                              'CoreferenceResolver or a function that '
                              'returns a CoreferenceResolver.')
 
-        self.ccg_parser = ccg_parser
+        self.parser = parser
+        self.uses_oncilla = isinstance(self.parser, OncillaParser)
         self.coref_resolver = coref_resolver
 
     def sentence2diagram(self,
