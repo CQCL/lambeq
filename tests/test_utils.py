@@ -29,6 +29,7 @@ def test_batch_type_check(sentence_list):
     assert tokenised_batch_type_check(tokenised_sentences)
     assert untokenised_batch_type_check(sentence_list)
     assert not untokenised_batch_type_check(tokenised_sentences)
+    assert tokenised_batch_type_check([[]])
 
 
 def test_normalise_duration():

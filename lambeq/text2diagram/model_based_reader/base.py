@@ -167,7 +167,7 @@ class ModelBasedReader(Reader):
                 raise ValueError('`tokenised` set to `True`, but variable '
                                  '`sentences` does not have type '
                                  '`List[List[str]]`.')
-            tokenised_sentences = sentences     # type: ignore[assignment]
+            tokenised_sentences = list(sentences)   # type: ignore[arg-type]
         else:
             if not untokenised_batch_type_check(sentences):
                 raise ValueError('`tokenised` set to `False`, but variable '

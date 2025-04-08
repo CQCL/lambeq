@@ -35,7 +35,7 @@ def diagram2tree(diagram: Diagram,
     ----------
     diagram : `grammar.Diagram`
         The diagram that will be converted into a pregroup tree.
-    break_cycles : bool
+    break_cycles : bool, default: False
         Flag that indicates whether cycles will be broken in
         the output pregroup tree. This is done by removing
         duplicate nodes, keeping the copy of the node that is closest
