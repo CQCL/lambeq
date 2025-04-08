@@ -38,7 +38,8 @@ from lambeq.oncilla import (BertForSentenceToTree,
                             SentenceToTreeBertConfig)
 from lambeq.text2diagram.model_based_reader.base import ModelBasedReader
 from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
-from lambeq.text2diagram.pregroup_tree_converter import generate_tree
+from lambeq.text2diagram.pregroup_tree_converter import (generate_tree,
+                                                         remove_cycles)
 from lambeq.typing import StrPathT
 
 
@@ -114,6 +115,7 @@ class OncillaParser(ModelBasedReader):
     def _sentences2pregrouptrees(
         self,
         sentences: SentenceBatchType,
+        break_cycles: bool = False,
         tokenised: bool = False,
         suppress_exceptions: bool = False,
         verbose: str | None = None,
@@ -124,6 +126,11 @@ class OncillaParser(ModelBasedReader):
         ----------
         sentences : list of str, or list of list of str
             The sentences to be parsed.
+        break_cycles : bool, default: False
+            Flag that indicates whether cycles will be broken in
+            the output pregroup tree. This is done by removing
+            duplicate nodes, keeping the copy of the node that is closest
+            to its parent in the original sentence.
         tokenised : bool, default: False
             Whether each sentence has been passed as a list of tokens.
         suppress_exceptions : bool, default: False
@@ -197,6 +204,9 @@ class OncillaParser(ModelBasedReader):
                     else:
                         pregroup_tree = root_nodes[0]
 
+                        if break_cycles:
+                            remove_cycles(pregroup_tree)
+
                 pregroup_trees.append(pregroup_tree)
 
         for i in empty_indices:
@@ -207,6 +217,7 @@ class OncillaParser(ModelBasedReader):
     def _sentence2pregrouptree(
         self,
         sentence: SentenceType,
+        break_cycles: bool = False,
         tokenised: bool = False,
         suppress_exceptions: bool = False,
         verbose: str | None = None,
@@ -217,7 +228,12 @@ class OncillaParser(ModelBasedReader):
         ----------
         sentence : str, list[str]
             The sentence to be parsed, passed either as a string, or as
-            a list of tokens
+            a list of tokens.
+        break_cycles : bool, default: False
+            Flag that indicates whether cycles will be broken in
+            the output pregroup tree. This is done by removing
+            duplicate nodes, keeping the copy of the node that is closest
+            to its parent in the original sentence.
         tokenised : bool, default: False
             Whether each sentence has been passed as a list of tokens.
         suppress_exceptions : bool, default: False
@@ -239,6 +255,7 @@ class OncillaParser(ModelBasedReader):
         """
         return self._sentences2pregrouptrees(
             [sentence],     # type: ignore[arg-type]
+            break_cycles=break_cycles,
             tokenised=tokenised,
             suppress_exceptions=suppress_exceptions,
             verbose=verbose

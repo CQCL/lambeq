@@ -27,6 +27,7 @@ __all__ = [
     'WebParser',
 
     # Model-based parsers
+    'ModelBasedReader',
     'BobcatParseError',
     'BobcatParser',
     'OncillaParseError',
@@ -57,7 +58,8 @@ from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccgbank_parser import CCGBankParseError, CCGBankParser
 from lambeq.text2diagram.depccg_parser import DepCCGParseError, DepCCGParser
-from lambeq.text2diagram.model_based_reader import (BobcatParser,
+from lambeq.text2diagram.model_based_reader import (ModelBasedReader,
+                                                    BobcatParser,
                                                     BobcatParseError,
                                                     OncillaParser,
                                                     OncillaParseError)
