@@ -175,6 +175,11 @@ class OncillaParser(ModelBasedReader):
 
                 pregroup_tree: PregroupTreeNode | None = None
                 try:
+                    if sent[-1] == '.':
+                        # Remove ending '.' as this was removed from
+                        # the training dataset for training.
+                        sent = sent[:-1]
+
                     # Predict types and parents
                     parse_output = self.model._sentence2pred(sent,
                                                              self.tokenizer)
@@ -307,8 +312,8 @@ class OncillaParser(ModelBasedReader):
             verbose = self.verbose
         if verbose is VerbosityLevel.TEXT.value:
             print('Turning pregroup trees to diagrams.', file=sys.stderr)
-        for tree, sentence in tqdm(
-            zip(pregroup_trees, sentences),
+        for tree in tqdm(
+            pregroup_trees,
             desc='Turning pregroup trees to diagrams',
             leave=False,
             total=len(pregroup_trees),
@@ -318,10 +323,11 @@ class OncillaParser(ModelBasedReader):
 
             if tree is not None:
                 try:
-                    diagram = tree.to_diagram(tokens=sentence)
+                    tokens = tree.get_words()
+                    diagram = tree.to_diagram(tokens=tokens)
                 except Exception as e:
                     if not suppress_exceptions:
-                        raise OncillaParseError(' '.join(sentence)) from e
+                        raise OncillaParseError(' '.join(tokens)) from e
 
             diagrams.append(diagram)
 
