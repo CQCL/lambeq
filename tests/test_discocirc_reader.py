@@ -55,7 +55,7 @@ class MockCorefResolver(CoreferenceResolver):
     'tree, diag_f, diag_s',
     zip(trees, frame_diags, sandwich_diags)
 )
-def test_discocirc_reader_w_ccgparser(monkeypatch, tree, diag_f, diag_s):
+def test_discocirc_reader_w_bobcatparser(tree, diag_f, diag_s):
     parser = MockBobcatParser()
     r = DisCoCircReader(parser=parser,
                         coref_resolver=MockCorefResolver())

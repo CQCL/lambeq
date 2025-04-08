@@ -33,14 +33,25 @@ def simple_diagram():
 
 
 @pytest.fixture
+def simple_diagram_w_fullstop():
+    n, s = map(Ty, 'ns')
+    return Diagram.create_pregroup_diagram(
+        words=[Word('Alice', n), Word('likes', n.r @ s @ n.l), Word('Bob.', n)],
+        morphisms=[(Cup, 3, 4),(Cup, 0, 1)]
+    )
+
+
+@pytest.fixture
 def tokenised_empty_sentence():
     return []
 
 
-def test_sentence2diagram(bobcat_parser, sentence, simple_diagram):
+def test_sentence2diagram(bobcat_parser, sentence, simple_diagram, simple_diagram_w_fullstop):
     assert bobcat_parser.sentence2diagram(sentence) is not None
 
     assert bobcat_parser.sentence2diagram('Alice likes Bob') == simple_diagram
+    assert bobcat_parser.sentence2diagram('Alice likes Bob .') == simple_diagram
+    assert bobcat_parser.sentence2diagram('Alice likes Bob.') == simple_diagram_w_fullstop
 
 
 def test_sentence2tree(bobcat_parser, sentence):
@@ -86,26 +97,40 @@ def test_sentence2tree_tokenised(bobcat_parser, tokenised_sentence):
     assert bobcat_parser.sentence2tree(tokenised_sentence, tokenised=True) is not None
 
 
-def test_sentences2diagrams(bobcat_parser, sentence, simple_diagram):
+def test_sentences2diagrams(bobcat_parser, sentence, simple_diagram, simple_diagram_w_fullstop):
     assert bobcat_parser.sentences2diagrams([sentence]) is not None
 
     assert bobcat_parser.sentences2diagrams(['Alice likes Bob']) == [simple_diagram]
+    assert bobcat_parser.sentences2diagrams(['Alice likes Bob .']) == [simple_diagram]
+    assert bobcat_parser.sentences2diagrams(['Alice likes Bob.']) == [simple_diagram_w_fullstop]
 
 
-def test_sentence2diagram_tokenised(bobcat_parser, tokenised_sentence, simple_diagram):
+def test_sentence2diagram_tokenised(bobcat_parser, tokenised_sentence, simple_diagram, simple_diagram_w_fullstop):
     assert bobcat_parser.sentence2diagram(tokenised_sentence, tokenised=True) is not None
 
     assert bobcat_parser.sentence2diagram(
         'Alice likes Bob'.split(), tokenised=True
     ) == simple_diagram
+    assert bobcat_parser.sentence2diagram(
+        'Alice likes Bob .'.split(), tokenised=True
+    ) == simple_diagram
+    assert bobcat_parser.sentence2diagram(
+        'Alice likes Bob.'.split(), tokenised=True
+    ) == simple_diagram_w_fullstop
 
 
-def test_sentences2diagrams_tokenised(bobcat_parser, tokenised_sentence, simple_diagram):
+def test_sentences2diagrams_tokenised(bobcat_parser, tokenised_sentence, simple_diagram, simple_diagram_w_fullstop):
     assert bobcat_parser.sentences2diagrams([tokenised_sentence], tokenised=True) is not None
 
     assert bobcat_parser.sentences2diagrams(
         ['Alice likes Bob'.split()], tokenised=True
     ) == [simple_diagram]
+    assert bobcat_parser.sentences2diagrams(
+        ['Alice likes Bob .'.split()], tokenised=True
+    ) == [simple_diagram]
+    assert bobcat_parser.sentences2diagrams(
+        ['Alice likes Bob.'.split()], tokenised=True
+    ) == [simple_diagram_w_fullstop]
 
 
 def test_tokenised_type_check_untokenised_sentence(bobcat_parser, sentence):

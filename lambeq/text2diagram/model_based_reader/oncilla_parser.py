@@ -175,6 +175,11 @@ class OncillaParser(ModelBasedReader):
 
                 pregroup_tree: PregroupTreeNode | None = None
                 try:
+                    if sent[-1] == '.':
+                        # Remove ending '.' as this was removed from
+                        # the training dataset for training.
+                        sent = sent[:-1]
+
                     # Predict types and parents
                     parse_output = self.model._sentence2pred(sent,
                                                              self.tokenizer)
