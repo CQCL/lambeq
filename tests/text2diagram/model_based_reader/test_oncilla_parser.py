@@ -4,7 +4,7 @@ from io import StringIO
 from unittest.mock import patch
 
 from lambeq import OncillaParseError, OncillaParser, VerbosityLevel
-from lambeq.backend.grammar import Ty
+from lambeq.backend.grammar import Cup, Diagram, Ty, Word
 from lambeq.text2diagram import PregroupTreeNode
 from lambeq.text2diagram.model_based_reader import oncilla_parser as oncilla_parser_module
 
@@ -25,12 +25,23 @@ def tokenised_sentence():
 
 
 @pytest.fixture
+def simple_diagram():
+    n, s = map(Ty, 'ns')
+    return Diagram.create_pregroup_diagram(
+        words=[Word('Alice', n), Word('likes', n.r @ s @ n.l), Word('Bob', n)],
+        morphisms=[(Cup, 0, 1), (Cup, 3, 4)]
+    )
+
+
+@pytest.fixture
 def tokenised_empty_sentence():
     return []
 
 
-def test_sentence2diagram(oncilla_parser, sentence):
+def test_sentence2diagram(oncilla_parser, sentence, simple_diagram):
     assert oncilla_parser.sentence2diagram(sentence) is not None
+
+    assert oncilla_parser.sentence2diagram('Alice likes Bob') == simple_diagram
 
 
 def test_empty_sentences(oncilla_parser):
@@ -102,17 +113,26 @@ def test_to_diagram_fail(oncilla_parser, monkeypatch):
     assert oncilla_parser.sentence2diagram('a', suppress_exceptions=True) is None
 
 
-def test_sentences2diagrams(oncilla_parser, sentence):
+def test_sentences2diagrams(oncilla_parser, sentence, simple_diagram):
     assert oncilla_parser.sentences2diagrams([sentence]) is not None
 
+    assert oncilla_parser.sentences2diagrams(['Alice likes Bob']) == [simple_diagram]
 
-def test_sentence2diagram_tokenised(oncilla_parser, tokenised_sentence):
+
+def test_sentence2diagram_tokenised(oncilla_parser, tokenised_sentence, simple_diagram):
     assert oncilla_parser.sentence2diagram(tokenised_sentence, tokenised=True) is not None
 
+    assert oncilla_parser.sentence2diagram(
+        'Alice likes Bob'.split(), tokenised=True
+    ) == simple_diagram
 
-def test_sentences2diagrams_tokenised(oncilla_parser, tokenised_sentence):
-    tokenised_sentence = ['What', 'Alice', 'is', 'and', 'is', 'not', '.']
+
+def test_sentences2diagrams_tokenised(oncilla_parser, tokenised_sentence, simple_diagram):
     assert oncilla_parser.sentences2diagrams([tokenised_sentence], tokenised=True) is not None
+
+    assert oncilla_parser.sentences2diagrams(
+        ['Alice likes Bob'.split()], tokenised=True
+    ) == [simple_diagram]
 
 
 def test_tokenised_type_check_untokenised_sentence(oncilla_parser, sentence):
