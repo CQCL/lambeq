@@ -222,7 +222,7 @@ class OncillaParser(ModelBasedReader):
         suppress_exceptions: bool = False,
         verbose: str | None = None,
     ) -> PregroupTreeNode | None:
-        """Parse a sentence into a pregroup trees.
+        """Parse a sentence into a pregroup tree.
 
         Parameters
         ----------
