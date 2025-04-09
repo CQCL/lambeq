@@ -25,8 +25,9 @@ __all__ = ['CollapseDomainRewriteRule',
            'RemoveSwapsRewriter',
            'UnifyCodomainRewriter']
 
-from lambeq.rewrite.base import (CollapseDomainRewriteRule, CoordinationRewriteRule, 
-                                 CurryRewriteRule, RewriteRule, Rewriter, 
+from lambeq.rewrite.base import (CollapseDomainRewriteRule,
+                                 CoordinationRewriteRule,
+                                 CurryRewriteRule, RewriteRule, Rewriter,
                                  SimpleRewriteRule, UnknownWordsRewriteRule)
 
 from lambeq.rewrite.rewrite_diagram import (DiagramRewriter,

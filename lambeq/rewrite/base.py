@@ -329,7 +329,7 @@ class CollapseDomainRewriteRule(RewriteRule):
     def __init__(self, left: bool = True) -> None:
         """Instantiate a CollapseDomainRewriteRule.
         This rules uncurries all the inputs of a box to create
-        a domain-less box. It can be used prior to applying an 
+        a domain-less box. It can be used prior to applying an
         ansatz that works only on domain-less boxes.
 
         Parameters
