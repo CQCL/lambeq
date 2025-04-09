@@ -442,7 +442,6 @@ class ParserModule(CLIModule):
                             root_cats=cl_args.root_categories)
 
         if cl_args.mode == 'ccg':
-            # assert isinstance(parser, CCGParser)
             trees = parser.sentences2trees(sentences,
                                            tokenised=cl_args.tokenise)
             return [t.without_trivial_unary_rules() for t in trees
@@ -605,13 +604,6 @@ class DiagramSaveModule(CLIModule):
 def main() -> None:
     parser = prepare_parser()
     cl_args = parser.parse_args()
-    all_modules = [FileReaderModule(),
-                   ParserModule(),
-                   RewriterModule(),
-                   AnsatzModule(),
-                   (DiagramSaveModule()
-                    if cl_args.mode in ['string-diagram', 'pregroups']
-                    else CCGTreeSaveModule())]
     if cl_args.load_args is not None:
         saved_args = yaml.load(open(cl_args.load_args, 'r'),
                                Loader=yaml.FullLoader)
@@ -627,6 +619,14 @@ def main() -> None:
             cl_args.store_args = None
             yaml.dump(vars(cl_args), f, default_flow_style=False)
     data = None
+
+    all_modules = [FileReaderModule(),
+                   ParserModule(),
+                   RewriterModule(),
+                   AnsatzModule(),
+                   (DiagramSaveModule()
+                    if cl_args.mode in ['string-diagram', 'pregroups']
+                    else CCGTreeSaveModule())]
     for module in all_modules:
         data = module(cl_args, data)
 
