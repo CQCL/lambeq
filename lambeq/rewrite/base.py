@@ -321,16 +321,16 @@ class CurryRewriteRule(RewriteRule):
         return new_box
 
 
-class UncurryRewriteRule(RewriteRule):
+class CollapseDomainRewriteRule(RewriteRule):
     """
     A rewrite rule that convert boxes into domain-less boxes
     by uncurrying.
     """
     def __init__(self, left: bool = True) -> None:
-        """Instantiate a UncurryRewriteRule.
+        """Instantiate a CollapseDomainRewriteRule.
         This rules uncurries all the inputs of a box to create
-        a domain-less box. This rule can be used prior to
-        applying an ansatz that works only on domain-less boxes.
+        a domain-less box. It can be used prior to applying an 
+        ansatz that works only on domain-less boxes.
 
         Parameters
         ----------

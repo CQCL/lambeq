@@ -29,7 +29,7 @@ from lambeq.ansatz.base import AnsatzWithFramesRuntimeError, BaseAnsatz
 from lambeq.backend import grammar, Symbol, tensor
 from lambeq.backend.grammar import Cup, Spider, Ty, Word
 from lambeq.backend.tensor import Dim
-from lambeq.rewrite import UncurryRewriteRule
+from lambeq.rewrite import CollapseDomainRewriteRule
 
 
 class TensorAnsatz(BaseAnsatz):
@@ -122,7 +122,7 @@ class SplitTensorAnsatz(TensorAnsatz):
     into smaller units."""
 
     split_functor: grammar.Functor
-    uncurry: UncurryRewriteRule
+    uncurry: CollapseDomainRewriteRule
 
     def __init__(self, ob_map: Mapping[grammar.Ty, tensor.Dim],
                  uncurry_left: bool) -> None:
@@ -140,7 +140,7 @@ class SplitTensorAnsatz(TensorAnsatz):
         """
 
         super().__init__(ob_map)
-        self.uncurry = UncurryRewriteRule(left=uncurry_left)
+        self.uncurry = CollapseDomainRewriteRule(left=uncurry_left)
 
     @abstractmethod
     def _split_ar(self, _: grammar.Functor, ar: Word) -> grammar.Diagrammable:
