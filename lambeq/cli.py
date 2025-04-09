@@ -41,17 +41,19 @@ from lambeq.rewrite import RemoveSwapsRewriter
 from lambeq.text2diagram.base import Reader
 from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_tree import CCGTree
-from lambeq.text2diagram.depccg_parser import DepCCGParser
 from lambeq.text2diagram.linear_reader import (cups_reader,
                                                stairs_reader)
-from lambeq.text2diagram.model_based_reader import BobcatParser
+from lambeq.text2diagram.model_based_reader import (BobcatParser,
+                                                    OncillaParser)
 from lambeq.text2diagram.spiders_reader import spiders_reader
 from lambeq.text2diagram.tree_reader import TreeReader
 from lambeq.tokeniser import SpacyTokeniser
 from lambeq.version import version
 
-AVAILABLE_PARSERS: dict[str, type[CCGParser]] = {'bobcat': BobcatParser,
-                                                 'depccg': DepCCGParser}
+AVAILABLE_PARSERS: dict[str, type] = {
+        'bobcat': BobcatParser,
+        'oncilla': OncillaParser,
+}
 
 AVAILABLE_READERS: dict[str, Reader | type[Reader]] = {
         'spiders': spiders_reader,
@@ -362,6 +364,8 @@ def validate_args(cl_args: argparse.Namespace) -> None:
             raise ValueError('Generating binary images from CCG diagrams is '
                              'currently not supported. Try text forms, `json` '
                              'or `pickle`.')
+        if AVAILABLE_PARSERS[cl_args.parser] != CCGParser:
+            raise ValueError('A CCG parser is needed for CGG mode.')
     if cl_args.output_format in ['text-ascii', 'text-unicode', 'json']:
         if cl_args.mode in ['string-diagram', 'pregroups']:
             if cl_args.ansatz is not None:
@@ -432,13 +436,13 @@ class ParserModule(CLIModule):
                                                    tokenised=cl_args.tokenise)
             return [sent for sent in read_sents if sent is not None]
         elif cl_args.parser is not None:
-            parser = AVAILABLE_PARSERS[cl_args.parser](
-                    root_cats=cl_args.root_categories)
+            parser = AVAILABLE_PARSERS[cl_args.parser]()
         else:
             parser = AVAILABLE_PARSERS['bobcat'](
-                    root_cats=cl_args.root_categories)
+                            root_cats=cl_args.root_categories)
 
         if cl_args.mode == 'ccg':
+            # assert isinstance(parser, CCGParser)
             trees = parser.sentences2trees(sentences,
                                            tokenised=cl_args.tokenise)
             return [t.without_trivial_unary_rules() for t in trees
