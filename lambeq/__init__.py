@@ -67,6 +67,7 @@ __all__ = [
         'stairs_reader',
         'word_sequence_reader',
 
+        'CollapseDomainRewriteRule',
         'CoordinationRewriteRule',
         'CurryRewriteRule',
         'DiagramRewriter',
@@ -115,11 +116,11 @@ from lambeq.ansatz import (BaseAnsatz, CircuitAnsatz, IQPAnsatz, MPSAnsatz,
                            StronglyEntanglingAnsatz, TensorAnsatz)
 from lambeq.core.globals import VerbosityLevel
 from lambeq.core.types import AtomicType
-from lambeq.rewrite import (CoordinationRewriteRule, CurryRewriteRule,
-                            DiagramRewriter, RemoveCupsRewriter,
-                            RemoveSwapsRewriter, Rewriter, RewriteRule,
-                            SimpleRewriteRule, UnifyCodomainRewriter,
-                            UnknownWordsRewriteRule)
+from lambeq.rewrite import (CollapseDomainRewriteRule, CoordinationRewriteRule,
+                            CurryRewriteRule, DiagramRewriter,
+                            RemoveCupsRewriter, RemoveSwapsRewriter, Rewriter,
+                            RewriteRule, SimpleRewriteRule,
+                            UnifyCodomainRewriter, UnknownWordsRewriteRule)
 from lambeq.text2diagram import (
         CCGType, CCGRule, CCGRuleUseError, CCGTree,
         CCGParser,

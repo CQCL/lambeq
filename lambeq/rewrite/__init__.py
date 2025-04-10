@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__all__ = ['CoordinationRewriteRule',
+__all__ = ['CollapseDomainRewriteRule',
+           'CoordinationRewriteRule',
            'CurryRewriteRule',
            'Rewriter',
            'RewriteRule',
@@ -24,9 +25,10 @@ __all__ = ['CoordinationRewriteRule',
            'RemoveSwapsRewriter',
            'UnifyCodomainRewriter']
 
-from lambeq.rewrite.base import (CoordinationRewriteRule, CurryRewriteRule,
-                                 RewriteRule, Rewriter, SimpleRewriteRule,
-                                 UnknownWordsRewriteRule)
+from lambeq.rewrite.base import (CollapseDomainRewriteRule,
+                                 CoordinationRewriteRule,
+                                 CurryRewriteRule, RewriteRule, Rewriter,
+                                 SimpleRewriteRule, UnknownWordsRewriteRule)
 
 from lambeq.rewrite.rewrite_diagram import (DiagramRewriter,
                                             RemoveCupsRewriter,
