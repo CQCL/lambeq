@@ -762,11 +762,6 @@ class BertForSentenceToTree(BertPreTrainedModel):
 
         type_logits = getattr(out, 'type_logits', out[0])
         parent_logits = getattr(out, 'parent_logits', out[1])
-        # print(f'{inputs_cpu["input_ids"] = }')
-        # print(f'{inputs_cpu["input_ids"].shape = }')
-        # print(f'{inputs_cpu["word_ids"] = }')
-        # print(f'{inputs.tokens(0) = }')
-        # print(f'{parent_logits.shape = }, {parent_logits = }')
         parent_preds = torch.argmax(parent_logits, 2).tolist()[0]
         type_preds = torch.argmax(type_logits, 2).tolist()[0]
         true_type_preds = []
@@ -785,14 +780,12 @@ class BertForSentenceToTree(BertPreTrainedModel):
                                for t in true_type_preds]
         true_parent_preds = [[p - 1] for p in true_parent_preds]
 
-        # print(f'orig parent_preds: {true_parent_preds}')
         # Check if root is not assigned or has multiple roots
         if (root_not_assigned(true_parent_preds)
                 or has_multiple_roots_assigned(true_parent_preds)):
             true_parent_preds = self._get_parent_preds_with_forced_root(
                 parent_logits, word_ids,
             )
-            # print(f'new parent_preds: {true_parent_preds}')
 
         return ParserOutput(sentence, true_type_preds_str, true_parent_preds)
 
@@ -801,11 +794,7 @@ class BertForSentenceToTree(BertPreTrainedModel):
         parent_logits: torch.Tensor,
         word_ids: list[int | None],
     ) -> list[list[int]]:
-        # print(f'{parent_logits.shape = }')
-        # print(f'{parent_logits = }')
-        # print(f'{word_ids = }')
         root_logits = parent_logits.clone()[0, :, 0]
-        # print(f'{root_logits = }')
 
         # Use `word_ids` to mask the root logits
         curr_word_id = None
@@ -816,7 +805,6 @@ class BertForSentenceToTree(BertPreTrainedModel):
 
         # Get root word
         root_word_id = torch.argmax(root_logits).item()
-        # print(f'{root_word = }')
 
         # Re-mask parent logits incorporating the root word index
         parent_logits_clone = parent_logits.clone()
@@ -824,9 +812,7 @@ class BertForSentenceToTree(BertPreTrainedModel):
             parent_logits_clone[0, i, 0] = (torch.inf if i == root_word_id
                                             else -torch.inf)
 
-        # print(f'{parent_logits_clone = }')
         parent_preds = torch.argmax(parent_logits_clone, 2).tolist()[0]
-        # print(f'temp parent_preds: {parent_preds}')
 
         true_parent_preds = []
         curr_word_id = None
