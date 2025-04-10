@@ -49,29 +49,37 @@ from lambeq.text2diagram.tree_reader import TreeReader
 from lambeq.tokeniser import SpacyTokeniser
 from lambeq.version import version
 
+
 AVAILABLE_PARSERS: dict[str, type] = {
-        'bobcat': BobcatParser,
-        'oncilla': OncillaParser,
+    'bobcat': BobcatParser,
+    'oncilla': OncillaParser,
 }
 
 AVAILABLE_READERS: dict[str, Reader | type[Reader]] = {
-        'spiders': spiders_reader,
-        'stairs': stairs_reader,
-        'cups': cups_reader,
-        'tree': TreeReader}
+    'spiders': spiders_reader,
+    'stairs': stairs_reader,
+    'cups': cups_reader,
+    'tree': TreeReader
+}
 
-AVAILABLE_ANSATZE: dict[str, type[BaseAnsatz]] = {'iqp': IQPAnsatz,
-                                                  'tensor': TensorAnsatz,
-                                                  'spider': SpiderAnsatz,
-                                                  'mps': MPSAnsatz}
+AVAILABLE_ANSATZE: dict[str, type[BaseAnsatz]] = {
+    'iqp': IQPAnsatz,
+    'tensor': TensorAnsatz,
+    'spider': SpiderAnsatz,
+    'mps': MPSAnsatz
+}
 
-AVAILABLE_IMAGE_TYPES: list[str] = ['png', 'pdf', 'jpeg', 'jpg', 'eps',
-                                    'pgf', 'ps', 'raw', 'rgba', 'svg',
-                                    'svgz', 'tif', 'tiff']
+AVAILABLE_IMAGE_TYPES: list[str] = [
+    'png', 'pdf', 'jpeg', 'jpg', 'eps',
+    'pgf', 'ps', 'raw', 'rgba', 'svg',
+    'svgz', 'tif', 'tiff'
+]
 
-DEFAULT_ARG_VALUES: dict[str, str] = {'output_format': 'text-unicode',
-                                      'image_format': 'png',
-                                      'mode': 'string-diagram'}
+DEFAULT_ARG_VALUES: dict[str, str] = {
+    'output_format': 'text-unicode',
+    'image_format': 'png',
+    'mode': 'string-diagram'
+}
 
 
 class ArgumentList:
@@ -364,7 +372,7 @@ def validate_args(cl_args: argparse.Namespace) -> None:
                              'currently not supported. Try text forms, `json` '
                              'or `pickle`.')
         if cl_args.parser is not None and cl_args.parser != 'bobcat':
-            raise ValueError('A CCG parser is needed for CGG mode.')
+            raise ValueError('A CCG parser is needed for CCG mode.')
     if cl_args.output_format in ['text-ascii', 'text-unicode', 'json']:
         if cl_args.mode in ['string-diagram', 'pregroups']:
             if cl_args.ansatz is not None:
@@ -438,7 +446,8 @@ class ParserModule(CLIModule):
             parser = AVAILABLE_PARSERS[cl_args.parser]()
         else:
             parser = AVAILABLE_PARSERS['bobcat'](
-                            root_cats=cl_args.root_categories)
+                root_cats=cl_args.root_categories
+            )
 
         if cl_args.mode == 'ccg':
             trees = parser.sentences2trees(sentences,
