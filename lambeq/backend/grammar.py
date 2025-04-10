@@ -36,7 +36,7 @@ from lambeq.core.utils import fast_deepcopy
 
 if TYPE_CHECKING:
     import discopy
-    from lambeq.backend.pregroup_tree import PregroupTreeNode
+    from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 
 
 @dataclass
@@ -1211,13 +1211,33 @@ class Diagram(Entity):
             Whenever :code:`normalizer` yields the same rewrite steps
             twice.
         """
-        from lambeq.backend.snake_removal import snake_removal
-        diagram, cache = self, set()
-        for _diagram in snake_removal(diagram, left=left):
+        from lambeq.backend.snake_removal import normalize
+        diagram, cache = self.remove_snakes(left=left), set()
+        for _diagram in normalize(diagram, left=left):
             if _diagram in cache:
                 raise NotImplementedError(f'{str(self)} is not connected.')
             diagram = _diagram
             cache.add(diagram)
+        return diagram
+
+    rigid_normal_form = normal_form
+
+    def remove_snakes(self, left: bool = False) -> Diagram:
+        """
+        Simplifies the diagram by removing all snakes using the snake
+        equation. A snake is a pair of a Cup and a Cap in the form
+        ``Id @ Cap >> Cup @ Id`` or ``Cap @ Id >> Id @ Cup``, which can
+        be straightened into an ``Id``.
+
+        Parameters
+        ----------
+        left : bool, optional
+            If True, applies left interchangers during the process.
+        """
+        from lambeq.backend.snake_removal import snake_removal
+        diagram = self
+        for _diagram in snake_removal(self, left=left):
+            diagram = _diagram
         return diagram
 
     def draw(self, draw_as_pregroup=True, **kwargs: Any) -> None:

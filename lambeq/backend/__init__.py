@@ -25,8 +25,6 @@ __all__ = ['Box',
            'Ty',
            'Word',
 
-           'PregroupTreeNode',
-
            'draw',
            'draw_equation',
            'to_gif',
@@ -35,6 +33,5 @@ __all__ = ['Box',
 
 from lambeq.backend.grammar import (Box, Cap, Category, Cup, Diagram,
                                     Frame, Functor, Id, Spider, Swap, Ty, Word)
-from lambeq.backend.pregroup_tree import PregroupTreeNode
 from lambeq.backend.symbol import lambdify, Symbol
 from lambeq.backend.drawing import draw, draw_equation, to_gif

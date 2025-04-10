@@ -35,11 +35,13 @@ class CCGParser(Reader):
 
     verbose = VerbosityLevel.SUPPRESS.value
 
-    @abstractmethod
     def __init__(self,
                  root_cats: Iterable[str] | None = None,
                  verbose: str = VerbosityLevel.SUPPRESS.value) -> None:
         """Initialise the CCG parser."""
+
+        super().__init__(verbose=verbose)
+        self.root_cats = root_cats
 
     @abstractmethod
     def sentences2trees(self,
@@ -106,19 +108,21 @@ class CCGParser(Reader):
                                  '`list[str]`.')
             sent: list[str] = [str(token) for token in sentence]
             return self.sentences2trees(
-                            [sent],
-                            suppress_exceptions=suppress_exceptions,
-                            tokenised=tokenised,
-                            verbose=VerbosityLevel.SUPPRESS.value)[0]
+                [sent],
+                suppress_exceptions=suppress_exceptions,
+                tokenised=tokenised,
+                verbose=VerbosityLevel.SUPPRESS.value
+            )[0]
         else:
             if not isinstance(sentence, str):
                 raise ValueError('`tokenised` set to `False`, but variable '
                                  '`sentence` does not have type `str`.')
             return self.sentences2trees(
-                            [sentence],
-                            suppress_exceptions=suppress_exceptions,
-                            tokenised=tokenised,
-                            verbose=VerbosityLevel.SUPPRESS.value)[0]
+                [sentence],
+                suppress_exceptions=suppress_exceptions,
+                tokenised=tokenised,
+                verbose=VerbosityLevel.SUPPRESS.value
+            )[0]
 
     def sentences2diagrams(self,
                            sentences: SentenceBatchType,
@@ -230,20 +234,22 @@ class CCGParser(Reader):
                                  '`list[str]`.')
             sent: list[str] = [str(token) for token in sentence]
             return self.sentences2diagrams(
-                            [sent],
-                            planar=planar,
-                            collapse_noun_phrases=collapse_noun_phrases,
-                            suppress_exceptions=suppress_exceptions,
-                            tokenised=tokenised,
-                            verbose=VerbosityLevel.SUPPRESS.value)[0]
+                [sent],
+                planar=planar,
+                collapse_noun_phrases=collapse_noun_phrases,
+                suppress_exceptions=suppress_exceptions,
+                tokenised=tokenised,
+                verbose=VerbosityLevel.SUPPRESS.value
+            )[0]
         else:
             if not isinstance(sentence, str):
                 raise ValueError('`tokenised` set to `False`, but variable '
                                  '`sentence` does not have type `str`.')
             return self.sentences2diagrams(
-                            [sentence],
-                            planar=planar,
-                            collapse_noun_phrases=collapse_noun_phrases,
-                            suppress_exceptions=suppress_exceptions,
-                            tokenised=tokenised,
-                            verbose=VerbosityLevel.SUPPRESS.value)[0]
+                [sentence],
+                planar=planar,
+                collapse_noun_phrases=collapse_noun_phrases,
+                suppress_exceptions=suppress_exceptions,
+                tokenised=tokenised,
+                verbose=VerbosityLevel.SUPPRESS.value
+            )[0]

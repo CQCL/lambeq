@@ -1,10 +1,10 @@
 import pytest
-from unittest import mock
+from unittest.mock import MagicMock
 
-from lambeq.text2diagram import CCGParser
+from lambeq.text2diagram import BobcatParser, OncillaParser
 from lambeq.experimental.discocirc import CoreferenceResolver, DisCoCircReader
-from lambeq.backend import PregroupTreeNode
-from lambeq.backend.grammar import Ty, Box, Id, Frame
+from lambeq.backend.grammar import Ty, Box, Id, Frame, Word
+from lambeq.text2diagram import PregroupTreeNode
 
 
 n, s = Ty('n'), Ty('s')
@@ -33,11 +33,17 @@ sandwich_diags = [
 ]
 
 
-class MockParser(CCGParser):
+class MockBobcatParser(BobcatParser):
     def __init__(self):
         pass
+
     def sentences2trees(self, sentences, **kwargs):
         return None
+
+
+class MockOncillaParser(OncillaParser):
+    def __init__(self):
+        pass
 
 
 class MockCorefResolver(CoreferenceResolver):
@@ -45,18 +51,50 @@ class MockCorefResolver(CoreferenceResolver):
         return None
 
 
-@pytest.mark.parametrize('tree, diag_f, diag_s', zip(trees, frame_diags, sandwich_diags))
-def test_discocirc_reader(tree, diag_f, diag_s):
-
-    r = DisCoCircReader(ccg_parser=MockParser(),
+@pytest.mark.parametrize(
+    'tree, diag_f, diag_s',
+    zip(trees, frame_diags, sandwich_diags)
+)
+def test_discocirc_reader_w_bobcatparser(tree, diag_f, diag_s):
+    parser = MockBobcatParser()
+    r = DisCoCircReader(parser=parser,
                         coref_resolver=MockCorefResolver())
 
     d, ns, _ = r._tree2frames_rec(tree, pruned_ids={})
     d = Id().tensor(*ns) >> d
-
     assert d == diag_f
 
     d, ns, _, _ = r._tree2sandwiches_rec(tree, pruned_ids={})
     d = Id().tensor(*ns) >> d
-
     assert d == diag_s
+
+
+def test_discocirc_reader_w_different_parsers(monkeypatch):
+    sentence = 'Alice really likes Bob'.split()
+    diag = Word('a', Ty('s'))
+
+    parser = MockOncillaParser()
+    monkeypatch.setattr(
+        parser, '_sentence2pregrouptree', MagicMock(return_value=trees[0])
+    )
+
+    r = DisCoCircReader(parser=parser,
+                        coref_resolver=MockCorefResolver())
+
+    r._sentence2tree(sentence, break_cycles=True)
+    parser._sentence2pregrouptree.assert_called_once_with(
+        sentence, tokenised=True, break_cycles=True
+    )
+
+    parser = MockBobcatParser()
+    monkeypatch.setattr(
+        parser, 'sentence2diagram', MagicMock(return_value=diag)
+    )
+
+    r = DisCoCircReader(parser=parser,
+                        coref_resolver=MockCorefResolver())
+
+    r._sentence2tree(sentence, break_cycles=True)
+    parser.sentence2diagram.assert_called_once_with(
+        sentence, tokenised=True,
+    )
