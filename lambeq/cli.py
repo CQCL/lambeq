@@ -39,7 +39,6 @@ from lambeq.ansatz.tensor import MPSAnsatz, SpiderAnsatz, TensorAnsatz
 from lambeq.backend import grammar, tensor
 from lambeq.rewrite import RemoveSwapsRewriter
 from lambeq.text2diagram.base import Reader
-from lambeq.text2diagram.ccg_parser import CCGParser
 from lambeq.text2diagram.ccg_tree import CCGTree
 from lambeq.text2diagram.linear_reader import (cups_reader,
                                                stairs_reader)
@@ -364,7 +363,7 @@ def validate_args(cl_args: argparse.Namespace) -> None:
             raise ValueError('Generating binary images from CCG diagrams is '
                              'currently not supported. Try text forms, `json` '
                              'or `pickle`.')
-        if AVAILABLE_PARSERS[cl_args.parser] != CCGParser:
+        if cl_args.parser is not None and cl_args.parser != 'bobcat':
             raise ValueError('A CCG parser is needed for CGG mode.')
     if cl_args.output_format in ['text-ascii', 'text-unicode', 'json']:
         if cl_args.mode in ['string-diagram', 'pregroups']:
