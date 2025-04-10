@@ -9,6 +9,8 @@ from lambeq.text2diagram import PregroupTreeNode
 from lambeq.text2diagram.model_based_reader import oncilla_parser as oncilla_parser_module
 
 
+n, s = map(Ty, 'ns')
+
 @pytest.fixture(scope='module')
 def oncilla_parser():
     return OncillaParser(verbose=VerbosityLevel.SUPPRESS.value)
@@ -26,7 +28,6 @@ def tokenised_sentence():
 
 @pytest.fixture
 def simple_diagram():
-    n, s = map(Ty, 'ns')
     return Diagram.create_pregroup_diagram(
         words=[Word('Alice', n), Word('likes', n.r @ s @ n.l), Word('Bob', n)],
         morphisms=[(Cup, 0, 1), (Cup, 3, 4)]
@@ -220,3 +221,25 @@ def test_tqdm_progress(oncilla_parser, sentence):
     with patch('sys.stderr', new=StringIO()) as fake_out:
         _ = oncilla_parser.sentences2diagrams([sentence], verbose=VerbosityLevel.PROGRESS.value)
         assert fake_out.getvalue().rstrip() != ''
+
+
+def test_empty_codomain(oncilla_parser):
+    diag = oncilla_parser.sentence2diagram('let me in now')
+
+    diag_expected = Diagram.create_pregroup_diagram(
+        words=[
+            Word('let', n.r @ s @ n.l),
+            Word('me', n),
+            Word('in', n.r @ s),
+            Word('now', s.r @ n.r.r @ s.r @ n.r.r @ n.r @ s),
+        ],
+        morphisms=[
+            (Cup, 5, 6),
+            (Cup, 2, 3),
+            (Cup, 4, 7),
+            (Cup, 1, 8),
+            (Cup, 0, 9),
+        ]
+    )
+
+    assert diag == diag_expected
