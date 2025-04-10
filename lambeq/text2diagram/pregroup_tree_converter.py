@@ -459,6 +459,14 @@ def has_self_as_parents(parents: list[list[int]]) -> bool:
     return any([i in parent for i, parent in enumerate(parents)])
 
 
+def has_multiple_roots_assigned(parents: list[list[int]]) -> bool:
+    return sum([pp == [ROOT_INDEX] for pp in parents]) > 1
+
+
+def root_not_assigned(parents: list[list[int]]) -> bool:
+    return [ROOT_INDEX] not in parents
+
+
 def str_to_type(type_str: str) -> Ty:
     """Convert the string representation of an atomic type
     to its `Ty` instance."""
