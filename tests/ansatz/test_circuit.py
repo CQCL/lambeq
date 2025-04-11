@@ -1,13 +1,13 @@
 import pytest
 
 from lambeq import (AtomicType, IQPAnsatz, Sim14Ansatz, Sim15Ansatz,
-                    Sim4Ansatz, StronglyEntanglingAnsatz,
-                    Symbol as sym)
+                    Sim4Ansatz, Sim9Ansatz, Sim9CxAnsatz,
+                    StronglyEntanglingAnsatz, Symbol as sym)
 from lambeq.backend.converters.tk import from_tk
 from lambeq.backend.grammar import Box, Cup, Frame, Ty, Word
 from lambeq.backend.quantum import (Bra, Controlled, CRx, CRz, CX,
                                     Discard, H, Id, Ket, qubit,
-                                    Rx, Ry, Rz, Sqrt, X)
+                                    Rx, Ry, Rz, Sqrt, X, CZ)
 
 
 N = AtomicType.NOUN
@@ -122,69 +122,62 @@ def test_sim4_ansatz(diagram):
     assert ansatz(diagram) == expected_circuit
 
 
-def test_iqp_ansatz_inverted():
+def test_sim9_ansatz(diagram):
+    ansatz = Sim9Ansatz({N: 1, S: 1}, n_layers=1)
+    expected_circuit = (Ket(0)
+                        >> Rx(sym('Alice__n_0'))
+                        >> Rz(sym('Alice__n_1'))
+                        >> Rx(sym('Alice__n_2'))
+                        >> Id(1) @ Ket(0, 0)
+                        >> Id(1) @ H @ Id(1)
+                        >> Id(2) @ H
+                        >> Id(1) @ CZ
+                        >> Id(1) @ Rx(sym('runs__n.r@s_0')) @ Id(1)
+                        >> Id(2) @ Rx(sym('runs__n.r@s_1'))
+                        >> CX @ Id(1)
+                        >> H @ Sqrt(2) @ Id(2)
+                        >> Bra(0, 0) @ Id(1))
+
+    assert ansatz(diagram) == expected_circuit
+
+def test_sim9Cx_ansatz(diagram):
+    ansatz = Sim9CxAnsatz({N: 1, S: 1}, n_layers=1)
+    expected_circuit = (Ket(0)
+                        >> Rx(sym('Alice__n_0'))
+                        >> Rz(sym('Alice__n_1'))
+                        >> Rx(sym('Alice__n_2'))
+                        >> Id(1) @ Ket(0, 0)
+                        >> Id(1) @ H @ Id(1)
+                        >> Id(2) @ H
+                        >> Id(1) @ CX
+                        >> Id(1) @ Rx(sym('runs__n.r@s_0')) @ Id(1)
+                        >> Id(2) @ Rx(sym('runs__n.r@s_1'))
+                        >> CX @ Id(1)
+                        >> H @ Sqrt(2) @ Id(2)
+                        >> Bra(0, 0) @ Id(1))
+
+    assert ansatz(diagram) == expected_circuit
+
+ansatze = [
+    IQPAnsatz, Sim14Ansatz, Sim15Ansatz,
+    Sim4Ansatz, Sim9Ansatz, Sim9CxAnsatz,
+]
+
+@pytest.mark.parametrize('Ansatz', ansatze)
+def test_ansatz_inverted(Ansatz):
     d = Box('inverted', S, Ty())
-    ansatz = IQPAnsatz({N: 0, S: 0}, n_layers=1)
+    ansatz = Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(d) == Id()
 
-
-def test_s14_ansatz_inverted():
-    d = Box('inverted', S, Ty())
-    ansatz = Sim14Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(d) == Id()
-
-
-def test_s15_ansatz_inverted():
-    d = Box('inverted', S, Ty())
-    ansatz = Sim15Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(d) == Id()
-
-
-def test_s4_ansatz_inverted():
-    d = Box('inverted', S, Ty())
-    ansatz = Sim4Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(d) == Id()
-
-
-def test_iqp_ansatz_empty(diagram):
-    ansatz = IQPAnsatz({N: 0, S: 0}, n_layers=1)
+@pytest.mark.parametrize('Ansatz', ansatze)
+def test_ansatz_empty(diagram, Ansatz):
+    ansatz = Ansatz({N: 0, S: 0}, n_layers=1)
     assert ansatz(diagram) == Id()
 
-
-def test_s14_ansatz_empty(diagram):
-    ansatz = Sim14Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(diagram) == Id()
-
-
-def test_s15_ansatz_empty(diagram):
-    ansatz = Sim15Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(diagram) == Id()
-
-
-def test_s4_ansatz_empty(diagram):
-    ansatz = Sim4Ansatz({N: 0, S: 0}, n_layers=1)
-    assert ansatz(diagram) == Id()
-
-
-def test_discard():
-    ansatz = IQPAnsatz({S: 2}, n_layers=0, discard=True)
+@pytest.mark.parametrize('Ansatz', ansatze)
+def test_discard(Ansatz):
+    ansatz = Ansatz({S: 2}, n_layers=0, discard=True)
     assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
-
-
-def test_s14_discard():
-    ansatz = Sim14Ansatz({S: 2}, n_layers=0, discard=True)
-    assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
-
-
-def test_s15_discard():
-    ansatz = Sim15Ansatz({S: 2}, n_layers=0, discard=True)
-    assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
-
-
-def test_s4_discard():
-    ansatz = Sim4Ansatz({S: 2}, n_layers=0, discard=True)
-    assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
-
 
 def test_postselection():
     ansatz_s15 = Sim15Ansatz({N: 1}, n_layers=1)
@@ -371,6 +364,8 @@ def test_ansatz_is_dagger_functor_sentence(diagram):
     (Sim14Ansatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
     (Sim15Ansatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
     (Sim4Ansatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
+    (Sim9Ansatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
+    (Sim9CxAnsatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
     (StronglyEntanglingAnsatz({N: 1, S: 1}, n_layers=1), 'diagram_with_frame'),
 ])
 def test_circuitansatz_raises_exception(ansatz, diagram_w_frame, request):

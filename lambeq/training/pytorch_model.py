@@ -21,15 +21,21 @@ Module implementing a basic lambeq model based on a Pytorch backend.
 from __future__ import annotations
 
 from math import sqrt
-import pickle
+from typing import Sequence
 
+from tensornetwork import AbstractNode
+from tensornetwork import Edge
 import torch
 
 from lambeq.backend.numerical_backend import backend
 from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
+from lambeq.core.utils import fast_deepcopy
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
+from lambeq.training.tn_path_optimizer import (
+    CachedTnPathOptimizer, ordered_nodes_contractor, TnPathOptimizer
+)
 
 
 class PytorchModel(Model, torch.nn.Module):
@@ -37,11 +43,31 @@ class PytorchModel(Model, torch.nn.Module):
 
     weights: torch.nn.ParameterList  # type: ignore[assignment]
     symbols: list[Symbol]
+    tn_path_optimizer: TnPathOptimizer
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        tn_path_optimizer: TnPathOptimizer | None = None
+    ) -> None:
         """Initialise a PytorchModel."""
         Model.__init__(self)
         torch.nn.Module.__init__(self)
+        self.tn_path_optimizer = (
+            tn_path_optimizer or CachedTnPathOptimizer()
+        )
+
+    def _tn_contract(
+        self,
+        nodes: list[AbstractNode],
+        output_edge_order: Sequence[Edge] | None = None,
+        ignore_edge_order: bool = False
+    ):
+        return ordered_nodes_contractor(
+            nodes,
+            self.tn_path_optimizer,
+            output_edge_order,
+            ignore_edge_order
+        )
 
     def _reinitialise_modules(self) -> None:
         """Reinitialise all modules in the model."""
@@ -92,6 +118,7 @@ class PytorchModel(Model, torch.nn.Module):
         self.symbols = checkpoint['model_symbols']
         self.weights = checkpoint['model_weights']
         self.load_state_dict(checkpoint['model_state_dict'])
+        self.tn_path_optimizer.restore_from_checkpoint(checkpoint)
 
     def _make_checkpoint(self) -> Checkpoint:
         """Create checkpoint that contains the model weights and symbols.
@@ -107,6 +134,7 @@ class PytorchModel(Model, torch.nn.Module):
         checkpoint.add_many({'model_symbols': self.symbols,
                              'model_weights': self.weights,
                              'model_state_dict': self.state_dict()})
+        checkpoint = self.tn_path_optimizer.store_to_checkpoint(checkpoint)
         return checkpoint
 
     def get_diagram_output(self, diagrams: list[Diagram]) -> torch.Tensor:
@@ -132,7 +160,7 @@ class PytorchModel(Model, torch.nn.Module):
         import tensornetwork as tn
 
         parameters = {k: v for k, v in zip(self.symbols, self.weights)}
-        diagrams = pickle.loads(pickle.dumps(diagrams))  # deepcopy, but faster
+        diagrams = fast_deepcopy(diagrams)
         for diagram in diagrams:
             for b in diagram.boxes:
                 if isinstance(b.data, Symbol):
@@ -144,8 +172,9 @@ class PytorchModel(Model, torch.nn.Module):
                         ) from e
 
         with backend('pytorch'), tn.DefaultBackend('pytorch'):
-            return torch.stack([tn.contractors.auto(
-                *d.to_tn()).tensor for d in diagrams])
+            return torch.stack(
+                [self._tn_contract(*d.to_tn()).tensor for d in diagrams]
+            )
 
     def forward(self, x: list[Diagram]) -> torch.Tensor:
         """Perform default forward pass by contracting tensors.

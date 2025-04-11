@@ -13,11 +13,12 @@
 # limitations under the License.
 
 __all__ = ['BaseAnsatz', 'CircuitAnsatz', 'IQPAnsatz', 'MPSAnsatz',
-           'Sim14Ansatz', 'Sim15Ansatz', 'Sim4Ansatz', 'SpiderAnsatz',
-           'StronglyEntanglingAnsatz', 'TensorAnsatz']
+           'Sim14Ansatz', 'Sim15Ansatz', 'Sim4Ansatz', 'Sim9Ansatz',
+           'Sim9CxAnsatz', 'SpiderAnsatz', 'StronglyEntanglingAnsatz',
+           'TensorAnsatz']
 
 from lambeq.ansatz.base import BaseAnsatz
-from lambeq.ansatz.circuit import (CircuitAnsatz, IQPAnsatz,
-                                   Sim14Ansatz, Sim15Ansatz, Sim4Ansatz,
-                                   StronglyEntanglingAnsatz)
+from lambeq.ansatz.circuit import (CircuitAnsatz, IQPAnsatz, Sim9Ansatz,
+                                   Sim9CxAnsatz, Sim14Ansatz, Sim15Ansatz,
+                                   Sim4Ansatz, StronglyEntanglingAnsatz)
 from lambeq.ansatz.tensor import MPSAnsatz, SpiderAnsatz, TensorAnsatz

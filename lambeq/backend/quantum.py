@@ -32,7 +32,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass, field, replace
 from functools import partial
-import pickle
 from typing import cast, Dict, Optional, Tuple, Union
 
 import numpy as np
@@ -42,6 +41,7 @@ from typing_extensions import Any, Self
 from lambeq.backend import Functor, grammar, Symbol, tensor
 from lambeq.backend.numerical_backend import backend, get_backend
 from lambeq.backend.symbol import lambdify
+from lambeq.core.utils import fast_deepcopy
 
 
 quantum = grammar.Category('quantum')
@@ -1246,8 +1246,7 @@ def to_circuital(diagram: Diagram) -> Diagram:
     # bits and qubits are lists of register indices, at layer i we want
     # len(bits) == circuit[:i].cod.count(bit) and same for qubits
     # Necessary to ensure editing boxes is localized.
-    serializedcircuit = pickle.dumps(diagram)
-    circuit = pickle.loads(serializedcircuit)
+    circuit = fast_deepcopy(diagram)
 
     qubits: list[Layer] = []
     gates: list[Layer] = []

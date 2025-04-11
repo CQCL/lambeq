@@ -25,6 +25,8 @@ from __future__ import annotations
 __all__ = ['CircuitAnsatz',
            'IQPAnsatz',
            'Sim4Ansatz',
+           'Sim9Ansatz',
+           'Sim9CxAnsatz',
            'Sim14Ansatz',
            'Sim15Ansatz',
            'StronglyEntanglingAnsatz']
@@ -497,3 +499,111 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
             for j in range(n_qubits):
                 circuit = circuit.CX(j, (j+step) % n_qubits)
         return circuit
+
+
+class Sim9CxAnsatz(CircuitAnsatz):
+    """Circuit 9 from Sim et al., with CZ gates replaced with CX.
+
+    Ansatz with a layer of H gates, followed by a ladder of CX,
+    followed by a layer of RX.
+
+    Paper at: https://arxiv.org/abs/1905.10876
+
+    """
+    def __init__(self,
+                 ob_map: Mapping[Ty, int],
+                 n_layers: int,
+                 n_single_qubit_params: int = 3,
+                 discard: bool = False) -> None:
+        """Instantiate a Sim9 ansatz with CZ gates replaced with CX gates.
+        Parameters
+        ----------
+        ob_map : dict
+            A mapping from :py:class:`discopy.rigid.Ty` to the number of
+            qubits it uses in a circuit.
+        n_layers : int
+            The number of layers used by the ansatz.
+        n_single_qubit_params : int, default: 3
+            The number of single qubit rotations used by the ansatz.
+        discard : bool, default: False
+            Discard open wires instead of post-selecting.
+        """
+        super().__init__(ob_map,
+                         n_layers,
+                         n_single_qubit_params,
+                         self.circuit,
+                         discard,
+                         [Rx, Rz])
+
+    def params_shape(self, n_qubits: int) -> tuple[int, ...]:
+        return (self.n_layers, n_qubits)
+
+    def circuit(self, n_qubits: int, params: np.ndarray) -> Circuit:
+        if n_qubits == 1:
+            circuit = Rx(params[0]) >> Rz(params[1]) >> Rx(params[2])
+        else:
+            circuit = Id(n_qubits)
+
+            for thetas in params:
+                circuit >>= Id().tensor(*(H for _ in range(n_qubits)))
+                cxs = Id(n_qubits)
+                for q in range(n_qubits - 1):
+                    cxs = cxs.CX(q, q + 1)
+                circuit >>= cxs
+
+                circuit >>= Id().tensor(*map(Rx, thetas))
+        return circuit   # type: ignore[return-value]
+
+
+class Sim9Ansatz(CircuitAnsatz):
+    """Circuit 9 from Sim et al.
+
+    Ansatz with a layer of H gates, followed by a ladder of CZ,
+    followed by a layer of RX.
+
+    Paper at: https://arxiv.org/abs/1905.10876
+
+    """
+    def __init__(self,
+                 ob_map: Mapping[Ty, int],
+                 n_layers: int,
+                 n_single_qubit_params: int = 3,
+                 discard: bool = False) -> None:
+        """Instantiate a Sim 9 ansatz.
+        Parameters
+        ----------
+        ob_map : dict
+            A mapping from :py:class:`discopy.rigid.Ty` to the number of
+            qubits it uses in a circuit.
+        n_layers : int
+            The number of layers used by the ansatz.
+        n_single_qubit_params : int, default: 3
+            The number of single qubit rotations used by the ansatz.
+        discard : bool, default: False
+            Discard open wires instead of post-selecting.
+        """
+        super().__init__(ob_map,
+                         n_layers,
+                         n_single_qubit_params,
+                         self.circuit,
+                         discard,
+                         [Rx, Rz])
+
+    def params_shape(self, n_qubits: int) -> tuple[int, ...]:
+        return (self.n_layers, n_qubits)
+
+    def circuit(self, n_qubits: int, params: np.ndarray) -> Circuit:
+        if n_qubits == 1:
+            circuit = Rx(params[0]) >> Rz(params[1]) >> Rx(params[2])
+        else:
+            circuit = Id(n_qubits)
+
+            for thetas in params:
+                circuit >>= Id().tensor(*(H for _ in range(n_qubits)))
+                czs = Id(n_qubits)
+                for q in range(n_qubits - 1):
+                    czs = czs.CZ(q, q + 1)
+                circuit >>= czs
+
+                circuit >>= Id().tensor(*map(Rx, thetas))
+        return circuit  # type: ignore[return-value]
