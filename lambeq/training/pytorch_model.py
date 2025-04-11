@@ -21,7 +21,6 @@ Module implementing a basic lambeq model based on a Pytorch backend.
 from __future__ import annotations
 
 from math import sqrt
-import pickle
 from typing import Sequence
 
 from tensornetwork import AbstractNode
@@ -31,6 +30,7 @@ import torch
 from lambeq.backend.numerical_backend import backend
 from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
+from lambeq.core.utils import fast_deepcopy
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
 from lambeq.training.tn_path_optimizer import (
@@ -160,7 +160,7 @@ class PytorchModel(Model, torch.nn.Module):
         import tensornetwork as tn
 
         parameters = {k: v for k, v in zip(self.symbols, self.weights)}
-        diagrams = pickle.loads(pickle.dumps(diagrams))  # deepcopy, but faster
+        diagrams = fast_deepcopy(diagrams)
         for diagram in diagrams:
             for b in diagram.boxes:
                 if isinstance(b.data, Symbol):
