@@ -31,11 +31,11 @@ import torch
 from lambeq.backend.numerical_backend import backend
 from lambeq.backend.symbol import Symbol
 from lambeq.backend.tensor import Diagram
-from lambeq.training.cached_tn_path_optimizer import (
-    CachedTnPathOptimizer, ordered_nodes_contractor, TnPathOptimizer
-)
 from lambeq.training.checkpoint import Checkpoint
 from lambeq.training.model import Model
+from lambeq.training.tn_path_optimizer import (
+    CachedTnPathOptimizer, ordered_nodes_contractor, TnPathOptimizer
+)
 
 
 class PytorchModel(Model, torch.nn.Module):
@@ -46,8 +46,8 @@ class PytorchModel(Model, torch.nn.Module):
     tn_path_optimizer: TnPathOptimizer
 
     def __init__(
-            self,
-            tn_path_optimizer: TnPathOptimizer | None = None
+        self,
+        tn_path_optimizer: TnPathOptimizer | None = None
     ) -> None:
         """Initialise a PytorchModel."""
         Model.__init__(self)
@@ -57,10 +57,10 @@ class PytorchModel(Model, torch.nn.Module):
         )
 
     def _tn_contract(
-            self,
-            nodes: list[AbstractNode],
-            output_edge_order: Sequence[Edge] | None = None,
-            ignore_edge_order: bool = False
+        self,
+        nodes: list[AbstractNode],
+        output_edge_order: Sequence[Edge] | None = None,
+        ignore_edge_order: bool = False
     ):
         return ordered_nodes_contractor(
             nodes,

@@ -23,7 +23,7 @@ from typing import (
     Collection, Iterable, Sequence, TypeVar
 )
 
-import opt_einsum as oe  # type: ignore[import-untyped]
+import opt_einsum as oe     # type: ignore[import-not-found]
 from tensornetwork import (
     AbstractNode, contract_between, contract_parallel,
     Edge, get_all_edges, get_subgraph_dangling
@@ -69,7 +69,7 @@ class TnPathOptimizer(oe.paths.PathOptimizer):
         """
         Parameters
         ----------
-        algorithm: :py:class:`str`
+        algorithm: :py:class:`str`, default: 'auto'
             Algorithm type to use when the path is not already cached.
             recommended options are:
 
@@ -111,12 +111,12 @@ class TnPathOptimizer(oe.paths.PathOptimizer):
         pass
 
     def __call__(
-            self,
-            inputs: list[set[Edge]],
-            output: set[Edge],
-            size_dict: dict[Edge, int],
-            memory_limit: int | None = None,
-            edge_list: list[Edge] | None = None
+        self,
+        inputs: list[set[Edge]],
+        output: set[Edge],
+        size_dict: dict[Edge, int],
+        memory_limit: int | None = None,
+        edge_list: list[Edge] | None = None
     ):
         return self._optimizer(
             inputs,
@@ -147,7 +147,7 @@ class CachedTnPathOptimizer(TnPathOptimizer):
         """
         Parameters
         ----------
-        algorithm: :py:class:`str`
+        algorithm: :py:class:`str`, default: 'auto-hq'
             Fallback algorithm type to use when the path is not
             already cached. Recommended options are:
 
@@ -162,13 +162,11 @@ class CachedTnPathOptimizer(TnPathOptimizer):
         save_file: :py:class:`Path` or :py:class:`None`
             (Optional) filepath to save the cached paths to.
             File contents is updated with each new path.
-        save_checkpoints: :py:class:`bool`
+        save_checkpoints: :py:class:`bool`, default: False
             Whether to include the cached paths in the checkpoints.
-            Default False.
-
         kwargs: Extra keyword arguments to pass to the fallback
             algorithm initializer. These will depend on the chosen
-            fallback algorithm. All options above accept a
+            fallback algorithm. All fallback algorithm above accept a
             max_memory kwarg:
 
             - ``memory_limit``: (optional) int
@@ -185,7 +183,7 @@ class CachedTnPathOptimizer(TnPathOptimizer):
               that many processes at once, otherwise use all
               available CPU cores.
         """
-        TnPathOptimizer.__init__(self, algorithm, **kwargs)
+        super().__init__(algorithm, **kwargs)
         self.cached_paths = {}
         self.filepath = save_file
         self.save_checkpoints = save_checkpoints
@@ -202,12 +200,12 @@ class CachedTnPathOptimizer(TnPathOptimizer):
                 pass
 
     def __call__(
-            self,
-            inputs: list[set[Edge]],
-            output: set[Edge],
-            size_dict: dict[Edge, int],
-            memory_limit: int | None = None,
-            edge_list: list[Edge] | None = None
+        self,
+        inputs: list[set[Edge]],
+        output: set[Edge],
+        size_dict: dict[Edge, int],
+        memory_limit: int | None = None,
+        edge_list: list[Edge] | None = None
     ) -> ContractionPath:
         if edge_list is None:
             raise ValueError(

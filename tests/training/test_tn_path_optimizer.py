@@ -4,13 +4,14 @@ from unittest.mock import mock_open, patch
 
 from lambeq import Checkpoint
 from lambeq.backend.quantum import CX, H, Ket, Rx, Rz
-from lambeq.training.cached_tn_path_optimizer import (
+from lambeq.training.tn_path_optimizer import (
     CachedTnPathOptimizer,
     ordered_nodes_contractor
 )
 
 diagram = Ket(0) @ Ket(0) >> H @ H >> CX >> Rx(0.5) @ Rz(0.2) >> CX
 diagram2 = Ket(0) >> H >> Rx(0.5)
+
 
 def test_path_finding():
     tn_path_optimizer = CachedTnPathOptimizer()
@@ -52,7 +53,7 @@ def test_tn_optimizer_checkpoint_loading(save_checkpoints):
 
 def test_tn_optimizer_save_file():
     # Init empty file
-    with patch('lambeq.training.cached_tn_path_optimizer.open',
+    with patch('lambeq.training.tn_path_optimizer.open',
                mock_open(read_data=pickle.dumps({}))) as m:
         tn_path_optimizer = CachedTnPathOptimizer(save_file="fake/file.pkl")
         assert isinstance(tn_path_optimizer, CachedTnPathOptimizer)
@@ -74,7 +75,7 @@ def test_tn_optimizer_load_save_file():
     ordered_nodes_contractor(nodes, tn_path_optimizer, out_edges)
     fake_paths = tn_path_optimizer.cached_paths
 
-    with patch('lambeq.training.cached_tn_path_optimizer.open',
+    with patch('lambeq.training.tn_path_optimizer.open',
                mock_open(read_data=pickle.dumps(fake_paths))) as m:
         path_optimizer_new = CachedTnPathOptimizer(save_file="fake/file.pkl")
         assert isinstance(path_optimizer_new, CachedTnPathOptimizer)

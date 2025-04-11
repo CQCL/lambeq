@@ -60,8 +60,8 @@ from lambeq.training.spsa_optimizer import SPSAOptimizer
 from lambeq.training.trainer import Trainer
 from lambeq.training.pytorch_trainer import PytorchTrainer
 from lambeq.training.quantum_trainer import QuantumTrainer
-from lambeq.training.cached_tn_path_optimizer import (CachedTnPathOptimizer,
-                                                      TnPathOptimizer)
+from lambeq.training.tn_path_optimizer import (CachedTnPathOptimizer,
+                                               TnPathOptimizer)
 
 from lambeq.training.loss import (BinaryCrossEntropyLoss,
                                   CrossEntropyLoss,

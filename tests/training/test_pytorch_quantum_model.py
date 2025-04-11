@@ -9,7 +9,7 @@ from lambeq.backend.grammar import Cup, Id, Word
 from lambeq.backend.quantum import CRz, CX, H, Ket, Measure, SWAP, Discard, qubit
 
 from lambeq import AtomicType, IQPAnsatz, PytorchQuantumModel, Symbol
-from lambeq.training.cached_tn_path_optimizer import CachedTnPathOptimizer
+from lambeq.training.tn_path_optimizer import CachedTnPathOptimizer
 
 
 def test_init():
@@ -49,6 +49,7 @@ def test_forward_mixed():
     pred = model.forward(diagrams)
     assert pred.shape == (len(diagrams), *density_matrix_dim)
 
+
 def test_contraction_path_is_cached():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
@@ -64,6 +65,7 @@ def test_contraction_path_is_cached():
     assert len(model.tn_path_optimizer.cached_paths.keys()) == 1
     model.forward(diagrams)
     assert len(model.tn_path_optimizer.cached_paths.keys()) == 1
+
 
 def test_backward():
     N = AtomicType.NOUN
@@ -94,6 +96,7 @@ def test_get_diagram_output_error():
     with pytest.raises(KeyError):
         model = PytorchQuantumModel()
         model.get_diagram_output([diagram])
+
 
 def test_checkpoint_roundtrip():
     N = AtomicType.NOUN

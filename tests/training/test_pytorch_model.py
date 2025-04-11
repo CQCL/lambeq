@@ -13,7 +13,7 @@ from torch import Size
 from torch.nn import Parameter
 
 from lambeq import AtomicType, PytorchModel, SpiderAnsatz, Symbol
-from lambeq.training.cached_tn_path_optimizer import CachedTnPathOptimizer
+from lambeq.training.tn_path_optimizer import CachedTnPathOptimizer
 
 N = AtomicType.NOUN
 S = AtomicType.SENTENCE
@@ -40,6 +40,7 @@ def test_init():
     assert len(model.weights) == 2
     assert all(isinstance(x, Parameter) for x in model.weights)
 
+
 def test_forward():
     s_dim = 2
     ansatz = SpiderAnsatz({N: Dim(2), S: Dim(s_dim)})
@@ -50,6 +51,7 @@ def test_forward():
     instance.initialise_weights()
     pred = instance.forward(diagrams)
     assert pred.size() == Size([len(diagrams), s_dim])
+
 
 def test_contraction_path_is_cached():
     s_dim = 2
@@ -68,6 +70,7 @@ def test_contraction_path_is_cached():
     model.forward(diagrams)
     assert len(model.tn_path_optimizer.cached_paths.keys()) == 1
 
+
 def test_initialise_weights():
     model = CustomPytorchModel()
     model.symbols = [Symbol('phi', directed_dom=2), Symbol('theta', directed_dom=2)]
@@ -75,6 +78,7 @@ def test_initialise_weights():
     model.initialise_weights()
     assert model.weights
     assert not torch.equal(model.fcc.weight, tmp_w)
+
 
 def test_pickling():
     phi = Symbol('phi', directed_dom=123)
@@ -102,6 +106,7 @@ def test_initialise_weights_error():
         model = PytorchModel()
         model.initialise_weights()
 
+
 def test_get_diagram_output_error():
     N = AtomicType.NOUN
     S = AtomicType.SENTENCE
@@ -110,6 +115,7 @@ def test_get_diagram_output_error():
     with pytest.raises(KeyError):
         model = PytorchModel()
         model.get_diagram_output([diagram])
+
 
 def test_checkpoint_loading():
     N = AtomicType.NOUN
@@ -131,6 +137,7 @@ def test_checkpoint_loading():
         assert np.all(model([diagram]).detach().numpy() == model_new([diagram]).detach().numpy())
         m.assert_called_with('model.lt', 'rb')
 
+
 def test_checkpoint_loading_errors():
     checkpoint = {'model_weights': np.array([1,2,3])}
     with patch('lambeq.training.checkpoint.open', mock_open(read_data=pickle.dumps(checkpoint))) as m, \
@@ -138,6 +145,7 @@ def test_checkpoint_loading_errors():
         with pytest.raises(KeyError):
             _ = PytorchModel.from_checkpoint('model.lt')
         m.assert_called_with('model.lt', 'rb')
+
 
 def test_checkpoint_loading_file_not_found_errors():
     with patch('lambeq.training.checkpoint.open', mock_open(read_data='Not a valid checkpoint.')) as m, \
