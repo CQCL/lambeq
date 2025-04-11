@@ -23,7 +23,7 @@ from typing import (
     Collection, Iterable, Sequence, TypeVar
 )
 
-import opt_einsum as oe     # type: ignore[import-not-found]
+import opt_einsum as oe     # type: ignore[import-untyped]
 from tensornetwork import (
     AbstractNode, contract_between, contract_parallel,
     Edge, get_all_edges, get_subgraph_dangling
