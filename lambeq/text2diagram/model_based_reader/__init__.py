@@ -17,6 +17,7 @@ This module contains concrete implementations of model-based readers that
 subclass from :py:class:`ModelBasedReader`.
 """
 
+from lambeq.text2diagram.model_based_reader.base import ModelBasedReader
 from lambeq.text2diagram.model_based_reader.bobcat_parser import (
     BobcatParser, BobcatParseError,
 )
@@ -25,5 +26,8 @@ from lambeq.text2diagram.model_based_reader.oncilla_parser import (
 )
 
 
-__all__ = ['BobcatParser', 'BobcatParseError',
-           'OncillaParser', 'OncillaParseError']
+__all__ = [
+    'ModelBasedReader',
+    'BobcatParser', 'BobcatParseError',
+    'OncillaParser', 'OncillaParseError'
+]

@@ -35,7 +35,7 @@ def diagram2tree(diagram: Diagram,
     ----------
     diagram : `grammar.Diagram`
         The diagram that will be converted into a pregroup tree.
-    break_cycles : bool
+    break_cycles : bool, default: False
         Flag that indicates whether cycles will be broken in
         the output pregroup tree. This is done by removing
         duplicate nodes, keeping the copy of the node that is closest
@@ -457,6 +457,14 @@ def has_out_of_bounds_parents(parents: list[list[int]]) -> bool:
 def has_self_as_parents(parents: list[list[int]]) -> bool:
     """Check if any node has its self as one if its parents."""
     return any([i in parent for i, parent in enumerate(parents)])
+
+
+def has_multiple_roots_assigned(parents: list[list[int]]) -> bool:
+    return sum([pp == [ROOT_INDEX] for pp in parents]) > 1
+
+
+def root_not_assigned(parents: list[list[int]]) -> bool:
+    return [ROOT_INDEX] not in parents
 
 
 def str_to_type(type_str: str) -> Ty:

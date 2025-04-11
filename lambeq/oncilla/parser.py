@@ -37,6 +37,10 @@ from transformers.modeling_outputs import ModelOutput
 from transformers.models.bert.modeling_bert import BertEncoder
 
 from lambeq.core.utils import TokenisedSentenceType
+from lambeq.text2diagram.pregroup_tree_converter import (
+    has_multiple_roots_assigned,
+    root_not_assigned,
+)
 
 
 logging.basicConfig()
@@ -763,7 +767,7 @@ class BertForSentenceToTree(BertPreTrainedModel):
         true_type_preds = []
         true_parent_preds = []
         current_wid = None
-        for wid, t, p in zip(inputs.word_ids(), type_preds, parent_preds):
+        for wid, t, p in zip(word_ids, type_preds, parent_preds):
             if wid is not None:
                 w = sentence_w_root[wid]
                 if w != ROOT_TOKEN and current_wid != wid:
@@ -776,4 +780,49 @@ class BertForSentenceToTree(BertPreTrainedModel):
                                for t in true_type_preds]
         true_parent_preds = [[p - 1] for p in true_parent_preds]
 
+        # Check if root is not assigned or has multiple roots
+        if (root_not_assigned(true_parent_preds)
+                or has_multiple_roots_assigned(true_parent_preds)):
+            true_parent_preds = self._get_parent_preds_with_forced_root(
+                parent_logits, word_ids,
+            )
+
         return ParserOutput(sentence, true_type_preds_str, true_parent_preds)
+
+    def _get_parent_preds_with_forced_root(
+        self,
+        parent_logits: torch.Tensor,
+        word_ids: list[int | None],
+    ) -> list[list[int]]:
+        root_logits = parent_logits.clone()[0, :, 0]
+
+        # Use `word_ids` to mask the root logits
+        curr_word_id = None
+        for i, word_id in enumerate(word_ids):
+            if word_id in {-1000, 0} or curr_word_id == word_id:
+                root_logits[i] = -torch.inf
+            curr_word_id = word_id
+
+        # Get root word
+        root_word_id = torch.argmax(root_logits).item()
+
+        # Re-mask parent logits incorporating the root word index
+        parent_logits_clone = parent_logits.clone()
+        for i, _ in enumerate(word_ids):
+            parent_logits_clone[0, i, 0] = (torch.inf if i == root_word_id
+                                            else -torch.inf)
+
+        parent_preds = torch.argmax(parent_logits_clone, 2).tolist()[0]
+
+        true_parent_preds = []
+        curr_word_id = None
+        for word_id, p in zip(word_ids, parent_preds):
+            if (word_id is not None
+                and (word_id not in {-1000, 0}
+                     and word_id != curr_word_id)):
+                curr_word_id = word_id
+                true_parent_preds.append(p)
+
+        true_parent_preds = [[p - 1] for p in true_parent_preds]
+
+        return true_parent_preds
