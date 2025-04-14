@@ -68,8 +68,8 @@ class CircuitAnsatz(BaseAnsatz):
                  discard: bool = False,
                  single_qubit_rotations: list[Type[Rotation]] | None = None,
                  postselection_basis: Circuit = computational_basis,
-                 n_ancillas: int | Mapping[Box, int] | Callable[Box, int] = 0
-    ) -> None:
+                 n_ancillas: int | Mapping[Box, int] | Callable[[Box], int] = 0
+                 ) -> None:
         """Instantiate a circuit ansatz.
 
         Parameters
@@ -127,7 +127,6 @@ class CircuitAnsatz(BaseAnsatz):
     def params_shape(self, n_qubits: int) -> tuple[int, ...]:
         """Calculate the shape of the parameters required."""
 
-
     @abstractmethod
     def circuit(self, n_qubits: int, params: np.ndarray) -> Circuit:
         """
@@ -150,7 +149,7 @@ class CircuitAnsatz(BaseAnsatz):
     def _get_n_ancillas(self, box: Box):
         if isinstance(self.n_ancillas, int):
             return self.n_ancillas
-        elif isinstance(self.n_ancillas, dict):
+        elif isinstance(self.n_ancillas, Mapping):
             if box in self.n_ancillas:
                 return self.n_ancillas[box]
             else:
@@ -358,8 +357,8 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
                  n_single_qubit_params: int = 3,
                  ranges: list[int] | None = None,
                  discard: bool = False,
-                 n_ancillas: int | Mapping[Box, int] | Callable[Box, int] = 0
-    ) -> None:
+                 n_ancillas: int | Mapping[Box, int] | Callable[[Box], int] = 0
+                 ) -> None:
         """Instantiate a strongly entangling ansatz.
 
         Parameters
@@ -390,7 +389,7 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
                          n_single_qubit_params,
                          discard,
                          [Rz, Ry],
-                         n_ancillas)
+                         n_ancillas=n_ancillas)
         self.ranges = ranges
 
         if self.ranges is not None and len(self.ranges) != self.n_layers:
