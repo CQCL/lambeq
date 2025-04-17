@@ -15,7 +15,6 @@
 from abc import ABC, abstractmethod
 import re
 
-from maverick import Maverick
 import spacy
 import torch
 
@@ -96,6 +95,8 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
         device: int | str | torch.device = 'cpu',
         eager: bool = False
     ):
+        from maverick import Maverick
+
         # Create basic tokenisation pipeline, for POS
         self.nlp = spacy.load('en_core_web_sm')
         self.model = Maverick(hf_name_or_path=hf_name_or_path,
