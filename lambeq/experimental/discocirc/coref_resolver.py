@@ -15,7 +15,9 @@
 from abc import ABC, abstractmethod
 import re
 
+from maverick import Maverick
 import spacy
+import torch
 
 
 class CoreferenceResolver(ABC):
@@ -84,10 +86,100 @@ class CoreferenceResolver(ABC):
         return corefd
 
 
+class MaverickCoreferenceResolver(CoreferenceResolver):
+    """Corefence resolution and tokenisation based on Maverick
+    (https://github.com/sapienzanlp/maverick-coref)."""
+
+    def __init__(
+        self,
+        hf_name_or_path: str = 'sapienzanlp/maverick-mes-ontonotes',
+        device: int | str | torch.device = 'cpu',
+        eager: bool = False
+    ):
+        # Create basic tokenisation pipeline, for POS
+        self.nlp = spacy.load('en_core_web_sm')
+        self.model = Maverick(hf_name_or_path=hf_name_or_path,
+                              device=device)
+        self.eager = eager
+
+    def tokenise_and_coref(self, text: str) -> tuple[list[list[str]],
+                                                     list[list[list[int]]]]:
+        text = self._clean_text(text)
+        doc = self.nlp(text)
+        coreferences = []
+        n_sents = len([_ for _ in doc.sents])
+
+        for tok in doc:
+            print(tok)
+
+        ontonotes_format = []
+        token_sent_ids = []
+        token_pos_vals = []
+        sent_token_offset = [0]
+        for i, sent in enumerate(doc.sents):
+            ontonotes_format.append([str(tok) for tok in sent])
+            token_sent_ids.extend([i for _ in sent])
+            token_pos_vals.extend([tok.pos_ for tok in sent])
+            sent_token_offset.append(
+                sent_token_offset[-1] + len(ontonotes_format[-1])
+            )
+            print(f'{i}th sentence: {sent}')
+
+        model_output = self.model.predict(ontonotes_format)
+        print(f'{model_output = }')
+
+        span_pos = list(zip(model_output['tokens'], token_pos_vals))
+        print(f'{span_pos = }')
+
+        SPACY_NOUN_POS = {'NOUN', 'PROPN', 'PRON'}
+
+        for coref_cluster in model_output['clusters_token_offsets']:
+            sent_clusters = [[] for _ in range(n_sents)]
+            for (span_start, span_end) in coref_cluster:
+                assert token_sent_ids[span_start] == token_sent_ids[span_end]
+                is_propn = False
+                start_id = span_start
+                for i in range(span_start, span_end + 1):
+                    token_pos = token_pos_vals[i]
+                    if self.eager:
+                        if token_pos in SPACY_NOUN_POS:
+                            start_id = i
+                            break
+                    else:
+                        if not is_propn:
+                            is_propn = token_pos == 'PROPN'
+                        if token_pos in SPACY_NOUN_POS:
+                            if (
+                                (is_propn and token_pos == 'PROPN')
+                                or (not is_propn and token_pos != 'PROPN')
+                            ):
+                                start_id = i
+                span_sent_id = token_sent_ids[start_id]
+                sent_clusters[span_sent_id].append(
+                    start_id - sent_token_offset[span_sent_id]
+                )
+            coreferences.append(sent_clusters)
+
+        print(f'{coreferences = }')
+
+        # Add trivial coreferences for all nouns, determined by spaCy POS
+        for i, sent in enumerate(doc.sents):
+            for tok in sent:
+                if tok.pos_ in SPACY_NOUN_POS:
+                    sent_clusters = [[] for _ in doc.sents]
+                    sent_clusters[i] = [tok.i - sent.start]
+                    coreferences.append(sent_clusters)
+
+        return [[str(w) for w in s] for s in doc.sents], coreferences
+
+
 class SpacyCoreferenceResolver(CoreferenceResolver):
     """Corefence resolution and tokenisation based on spaCy."""
 
     def __init__(self):
+        # TODO: Add warning that installing the necessary
+        # coreference models from spaCy is required for this to work.
+
         # Create basic tokenisation pipeline, for POS
         self.nlp = spacy.load('en_core_web_sm')
 
