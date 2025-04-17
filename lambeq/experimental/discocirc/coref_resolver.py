@@ -109,9 +109,6 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
         coreferences = []
         n_sents = len([_ for _ in doc.sents])
 
-        for tok in doc:
-            print(tok)
-
         ontonotes_format = []
         token_sent_ids = []
         token_pos_vals = []
@@ -123,13 +120,11 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
             sent_token_offset.append(
                 sent_token_offset[-1] + len(ontonotes_format[-1])
             )
-            print(f'{i}th sentence: {sent}')
 
         model_output = self.model.predict(ontonotes_format)
-        print(f'{model_output = }')
 
-        span_pos = list(zip(model_output['tokens'], token_pos_vals))
-        print(f'{span_pos = }')
+        # span_pos = list(zip(model_output['tokens'], token_pos_vals))
+        # print(f'{span_pos = }')
 
         SPACY_NOUN_POS = {'NOUN', 'PROPN', 'PRON'}
 
@@ -159,8 +154,6 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
                     start_id - sent_token_offset[span_sent_id]
                 )
             coreferences.append(sent_clusters)
-
-        print(f'{coreferences = }')
 
         # Add trivial coreferences for all nouns, determined by spaCy POS
         for i, sent in enumerate(doc.sents):
