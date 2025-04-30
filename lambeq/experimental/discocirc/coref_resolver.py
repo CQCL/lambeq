@@ -19,6 +19,9 @@ import spacy
 import torch
 
 
+SPACY_NOUN_POS = {'NOUN', 'PROPN', 'PRON'}
+
+
 class CoreferenceResolver(ABC):
     """Class implementing corefence resolution."""
 
@@ -122,11 +125,6 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
 
         model_output = self.model.predict(ontonotes_format)
 
-        # span_pos = list(zip(model_output['tokens'], token_pos_vals))
-        # print(f'{span_pos = }')
-
-        SPACY_NOUN_POS = {'NOUN', 'PROPN', 'PRON'}
-
         for coref_cluster in model_output['clusters_token_offsets']:
             sent_clusters = [[] for _ in range(n_sents)]
             for (span_start, span_end) in coref_cluster:
@@ -163,15 +161,22 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
     """Corefence resolution and tokenisation based on spaCy."""
 
     def __init__(self):
-        # TODO: Add warning that installing the necessary
-        # coreference models from spaCy is required for this to work.
-
         # Create basic tokenisation pipeline, for POS
         self.nlp = spacy.load('en_core_web_sm')
 
         # Add coreference resolver pipe stage
-        coref_stage = spacy.load('en_coreference_web_trf',
-                                 exclude=('span_resolver', 'span_cleaner'))
+        try:
+            coref_stage = spacy.load('en_coreference_web_trf',
+                                     exclude=('span_resolver', 'span_cleaner'))
+        except OSError as ose:
+            raise UserWarning(
+                '`SpacyCoreferenceResolver` requires the experimental'
+                ' `en_coreferenc_web_trf` model.'
+                ' See https://github.com/explosion/spacy-experimental/releases/tag/v0.6.1'  # noqa: W505, E501
+                ' for installation instructions. For a stable installation, '
+                ' please use Python 3.10.'
+            ) from ose
+
         self.nlp.add_pipe('transformer', source=coref_stage)
         self.nlp.add_pipe('coref', source=coref_stage)
 
@@ -191,11 +196,9 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
             coreferences.append(sent_clusters)
 
         # Add trivial coreferences for all nouns, determined by spacy POS
-        spacy_noun_pos = {'NOUN', 'PROPN', 'PRON'}
-
         for i, sent in enumerate(doc.sents):
             for tok in sent:
-                if tok.pos_ in spacy_noun_pos:
+                if tok.pos_ in SPACY_NOUN_POS:
                     sent_clusters = [[] for _ in doc.sents]
                     sent_clusters[i] = [tok.i - sent.start]
                     coreferences.append(sent_clusters)
