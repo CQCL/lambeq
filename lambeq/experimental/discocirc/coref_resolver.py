@@ -93,7 +93,6 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
         self,
         hf_name_or_path: str = 'sapienzanlp/maverick-mes-ontonotes',
         device: int | str | torch.device = 'cpu',
-        eager: bool = False
     ):
         from maverick import Maverick
 
@@ -101,7 +100,6 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
         self.nlp = spacy.load('en_core_web_sm')
         self.model = Maverick(hf_name_or_path=hf_name_or_path,
                               device=device)
-        self.eager = eager
 
     def tokenise_and_coref(self, text: str) -> tuple[list[list[str]],
                                                      list[list[list[int]]]]:
@@ -137,19 +135,13 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
                 start_id = span_start
                 for i in range(span_start, span_end + 1):
                     token_pos = token_pos_vals[i]
-                    if self.eager:
-                        if token_pos in SPACY_NOUN_POS:
-                            start_id = i
-                            break
-                    else:
-                        if not is_propn:
-                            is_propn = token_pos == 'PROPN'
-                        if token_pos in SPACY_NOUN_POS:
-                            if (
-                                (is_propn and token_pos == 'PROPN')
-                                or (not is_propn and token_pos != 'PROPN')
-                            ):
-                                start_id = i
+
+                    if not is_propn:
+                        is_propn = token_pos == 'PROPN'
+                    if (token_pos in SPACY_NOUN_POS
+                        and ((is_propn and token_pos == 'PROPN')
+                             or (not is_propn and token_pos != 'PROPN'))):
+                        start_id = i
                 span_sent_id = token_sent_ids[start_id]
                 sent_clusters[span_sent_id].append(
                     start_id - sent_token_offset[span_sent_id]
