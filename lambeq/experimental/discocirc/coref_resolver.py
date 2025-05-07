@@ -20,6 +20,8 @@ import torch
 
 
 SPACY_NOUN_POS = {'NOUN', 'PROPN', 'PRON'}
+TokenisedTextT = list[list[str]]
+CorefDataT = list[list[list[int]]]
 
 
 class CoreferenceResolver(ABC):
@@ -29,7 +31,7 @@ class CoreferenceResolver(ABC):
     def tokenise_and_coref(
         self,
         text: str
-    ) -> tuple[list[list[str]], list[list[list[int]]]]:
+    ) -> tuple[TokenisedTextT, CorefDataT]:
         """Tokenise text and return its coreferences.
 
         Given a text consisting of possibly multiple sentences,
@@ -44,9 +46,9 @@ class CoreferenceResolver(ABC):
 
         Returns
         -------
-        list of list of str
+        TokenisedTextT
             Each sentence in `text` as a list of tokens
-        list of list of list of int
+        CorefDataT
             Coreference information provided as a list for each
             coreferenced entity, consisting of a span for each sentence
             in `text`.
@@ -56,15 +58,16 @@ class CoreferenceResolver(ABC):
     def _clean_text(self, text: str) -> str:
         return re.sub('[\\s\\n]+', ' ', text)
 
-    def dict_from_corefs(self,
-                         corefs: list[list[list[int]]]
-                         ) -> dict[tuple[int, int], tuple[int, int]]:
+    def dict_from_corefs(
+        self,
+        corefs: CorefDataT
+    ) -> dict[tuple[int, int], tuple[int, int]]:
         """Convert coreferences into a dict mapping each coreference to
         its first instance.
 
         Parameters
         ----------
-        corefs : list[list[list[int]]]
+        corefs : CorefDataT
             Coreferences as returned by `tokenise_and_coref`
 
         Returns
@@ -104,8 +107,8 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
         self.model = Maverick(hf_name_or_path=hf_name_or_path,
                               device=device)
 
-    def tokenise_and_coref(self, text: str) -> tuple[list[list[str]],
-                                                     list[list[list[int]]]]:
+    def tokenise_and_coref(self, text: str) -> tuple[TokenisedTextT,
+                                                     CorefDataT]:
         text = self._clean_text(text)
         doc = self.nlp(text)
         coreferences = []
@@ -180,7 +183,8 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
         self.nlp.add_pipe('transformer', source=coref_stage)
         self.nlp.add_pipe('coref', source=coref_stage)
 
-    def tokenise_and_coref(self, text):
+    def tokenise_and_coref(self, text: str) -> tuple[TokenisedTextT,
+                                                     CorefDataT]:
         text = self._clean_text(text)
         doc = self.nlp(text)
         coreferences = []
