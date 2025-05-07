@@ -60,7 +60,7 @@ jobs:
     - name: Check package import works
       run: python -c 'import lambeq'
     - name: Install extra dependencies and tester
-      run: pip install .[extras] .[test]
+      run: pip install .[extras,test,experimental]
     - name: Locate bobcat pre-trained model cache
       id: loc-bobcat-cache
       run: echo "dir=$(python -c 'from lambeq.text2diagram.model_based_reader.model_downloader import ModelDownloader; print(ModelDownloader("bobcat").model_dir)')" >> $GITHUB_OUTPUT

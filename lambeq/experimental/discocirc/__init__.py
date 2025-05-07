@@ -15,6 +15,7 @@
 __all__ = ['DisCoCircReader',
 
            'CoreferenceResolver',
+           'MaverickCoreferenceResolver',
            'SpacyCoreferenceResolver',
 
            'TreeRewriter',
@@ -22,6 +23,7 @@ __all__ = ['DisCoCircReader',
 
 from lambeq.experimental.discocirc.coref_resolver import (
     CoreferenceResolver,
+    MaverickCoreferenceResolver,
     SpacyCoreferenceResolver)
 from lambeq.experimental.discocirc.pregroup_tree_rewriter import (
     TreeRewriter,
