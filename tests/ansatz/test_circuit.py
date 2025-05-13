@@ -179,6 +179,23 @@ def test_discard(Ansatz):
     ansatz = Ansatz({S: 2}, n_layers=0, discard=True)
     assert ansatz(Box('DISCARD', S, Ty())) == Discard() @ Discard()
 
+@pytest.mark.parametrize('Ansatz', ansatze)
+@pytest.mark.parametrize('discard', [True, False])
+def test_ansatz_ancillas(diagram, Ansatz, discard):
+    ansatz = Ansatz(
+        {N: 0, S: 0},
+        n_layers=1,
+        n_ancillas=lambda box: 1 if box.name == 'runs' else 0,
+        discard=discard
+    )
+    assert ansatz(diagram) == (
+        Ket(0)
+        >> Rx(sym('runs__n.r@s_0'))
+        >> Rz(sym('runs__n.r@s_1'))
+        >> Rx(sym('runs__n.r@s_2'))
+        >> (Discard() if discard else Bra(0))
+    )
+
 def test_postselection():
     ansatz_s15 = Sim15Ansatz({N: 1}, n_layers=1)
     ansatz_iqp = IQPAnsatz({N: 1}, n_layers=1)
