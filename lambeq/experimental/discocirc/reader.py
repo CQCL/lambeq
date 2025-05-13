@@ -23,7 +23,7 @@ from lambeq import AtomicType
 from lambeq.backend.grammar import Box, Diagram, Frame, Id, Spider, Ty
 from lambeq.core.utils import SentenceBatchType, SentenceType
 from lambeq.experimental.discocirc import (CoreferenceResolver,
-                                           SpacyCoreferenceResolver,
+                                           MaverickCoreferenceResolver,
                                            TreeRewriter,
                                            TreeRewriteRule)
 from lambeq.text2diagram import (BobcatParser,
@@ -46,7 +46,7 @@ class DisCoCircReader(Reader):
             | Callable[[], ModelBasedReader] = BobcatParser,
         coref_resolver:
             CoreferenceResolver
-            | Callable[[], CoreferenceResolver] = SpacyCoreferenceResolver
+            | Callable[[], CoreferenceResolver] = MaverickCoreferenceResolver
     ) -> None:
 
         if callable(parser):
