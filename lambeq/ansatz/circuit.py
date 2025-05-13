@@ -92,7 +92,7 @@ class CircuitAnsatz(BaseAnsatz):
             single qubit is present, the ansatz defaults to applying a
             series of rotations in a cycle, determined by this parameter
             and `n_single_qubit_params`.
-        n_ancillas: int, dict, callable, default 0
+        n_ancillas: int, dict, callable, default: 0
             Whether to add an ancilla qubit to the box implementations.
             If an int, this will be applied to all boxes. If a dict or
             callable is supplied, boxes can be configured individually.
@@ -378,7 +378,7 @@ class StronglyEntanglingAnsatz(CircuitAnsatz):
             increases by one for each subsequent layer.
         discard : bool, default: False
             Discard open wires instead of post-selecting.
-        n_ancillas: int, dict, callable, default 0
+        n_ancillas: int, dict, callable, default: 0
             Whether to add an ancilla qubit to the box implementations.
             If an int, this will be applied to all boxes. If a dict or
             callable is supplied, boxes can be configured individually.
