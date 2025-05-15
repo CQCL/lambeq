@@ -24,20 +24,15 @@ from __future__ import annotations
 __all__ = ['SpacyTokeniser']
 
 from collections.abc import Iterable
-import logging
 from typing import TYPE_CHECKING
 
+import spacy
+
+from lambeq.core.utils import get_spacy_tokeniser
 from lambeq.tokeniser import Tokeniser
 
+
 if TYPE_CHECKING:
-    import spacy
-    import spacy.cli
-
-
-def _import_spacy() -> None:
-    global spacy
-    import spacy
-    import spacy.lang.en
     import spacy.cli
 
 
@@ -45,15 +40,7 @@ class SpacyTokeniser(Tokeniser):
     """Tokeniser class based on SpaCy."""
 
     def __init__(self) -> None:
-        _import_spacy()
-        try:
-            self.tokeniser = spacy.load('en_core_web_sm')
-        except OSError:
-            logger = logging.getLogger(__name__)
-            logger.warning('Downloading SpaCy tokeniser. '
-                           'This action only has to happen once.')
-            spacy.cli.download('en_core_web_sm')
-            self.tokeniser = spacy.load('en_core_web_sm')
+        self.tokeniser = get_spacy_tokeniser()
         self.spacy_nlp = spacy.lang.en.English()
         self.spacy_nlp.add_pipe('sentencizer')
 
