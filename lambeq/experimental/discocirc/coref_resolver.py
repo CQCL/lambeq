@@ -14,9 +14,16 @@
 
 from abc import ABC, abstractmethod
 import re
+from typing import TYPE_CHECKING
 
 import spacy
 import torch
+
+from lambeq.core.utils import get_spacy_tokeniser
+
+
+if TYPE_CHECKING:
+    import spacy.cli
 
 
 SPACY_NOUN_POS = {'NOUN', 'PROPN', 'PRON'}
@@ -103,7 +110,7 @@ class MaverickCoreferenceResolver(CoreferenceResolver):
         from maverick import Maverick
 
         # Create basic tokenisation pipeline, for POS
-        self.nlp = spacy.load('en_core_web_sm')
+        self.nlp = get_spacy_tokeniser()
         self.model = Maverick(hf_name_or_path=hf_name_or_path,
                               device=device)
 
@@ -165,7 +172,7 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
 
     def __init__(self):
         # Create basic tokenisation pipeline, for POS
-        self.nlp = spacy.load('en_core_web_sm')
+        self.nlp = get_spacy_tokeniser()
 
         # Add coreference resolver pipe stage
         try:
@@ -174,9 +181,9 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
         except OSError as ose:
             raise UserWarning(
                 '`SpacyCoreferenceResolver` requires the experimental'
-                ' `en_coreferenc_web_trf` model.'
+                ' `en_coreference_web_trf` model.'
                 ' See https://github.com/explosion/spacy-experimental/releases/tag/v0.6.1'  # noqa: W505, E501
-                ' for installation instructions. For a stable installation, '
+                ' for installation instructions. For a stable installation,'
                 ' please use Python 3.10.'
             ) from ose
 

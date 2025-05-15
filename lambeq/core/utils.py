@@ -14,9 +14,16 @@
 
 from __future__ import annotations
 
+import logging
 from math import floor
 import pickle
-from typing import Any, List, Union
+from typing import Any, List, TYPE_CHECKING, Union
+
+import spacy
+
+
+if TYPE_CHECKING:
+    import spacy.cli
 
 
 TokenisedSentenceType = List[str]
@@ -94,3 +101,16 @@ def normalise_duration(duration_secs: float | None) -> str:
 def fast_deepcopy(obj: Any) -> Any:
     """Fast deepcopy (faster than `copy.deepcopy`)."""
     return pickle.loads(pickle.dumps(obj))
+
+
+def get_spacy_tokeniser(
+    model: str = 'en_core_web_sm'
+) -> spacy.language.Language:
+    try:
+        return spacy.load(model)
+    except OSError:
+        logger = logging.getLogger(__name__)
+        logger.warning('Downloading SpaCy tokeniser. '
+                       'This action only has to happen once.')
+        spacy.cli.download(model)
+        return spacy.load(model)
