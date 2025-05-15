@@ -183,7 +183,7 @@ class SpacyCoreferenceResolver(CoreferenceResolver):
                 '`SpacyCoreferenceResolver` requires the experimental'
                 ' `en_coreference_web_trf` model.'
                 ' See https://github.com/explosion/spacy-experimental/releases/tag/v0.6.1'  # noqa: W505, E501
-                ' for installation instructions. For a stable installation, '
+                ' for installation instructions. For a stable installation,'
                 ' please use Python 3.10.'
             ) from ose
 
