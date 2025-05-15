@@ -27,6 +27,7 @@ from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
 import spacy
+import spacy.lang.en
 
 from lambeq.core.utils import get_spacy_tokeniser
 from lambeq.tokeniser import Tokeniser
