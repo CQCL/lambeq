@@ -244,8 +244,8 @@ class Box(grammar.Box):
             if isinstance(data, Iterable):
                 if (
                     not hasattr(data, 'shape') or data.shape != ()
-                ) and (
-                    not hasattr(data, 'dtype') or data.dtype != object
+                ) and not (
+                    not isinstance(data, np.ndarray) or np.issubdtype(data.dtype, np.number)
                 ):
                     return set().union(*map(recursive_free_symbols, data))
             # Remove scale before adding to set
