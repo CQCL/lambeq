@@ -134,7 +134,7 @@ def draw(diagram: Diagram, **params) -> None:
         backend: DrawingBackend = params.pop('backend')
     elif params.get('to_tikz', False):
         backend = TikzBackend(
-            use_tikzstyles=params.get('use_tikzstyles', None),
+            use_tikzstyles=params.get('use_tikzstyles', False),
             box_linewidth=params.get('box_linewidth', TIKZ_BOX_LINEWIDTH),
             wire_linewidth=params.get('wire_linewidth',
                                       TIKZ_WIRE_LINEWIDTH),
@@ -221,7 +221,7 @@ def draw_pregroup(diagram: Diagram, **params) -> None:
         backend: DrawingBackend = params.pop('backend')
     elif params.get('to_tikz', False):
         backend = TikzBackend(
-            use_tikzstyles=params.get('use_tikzstyles', None))
+            use_tikzstyles=params.get('use_tikzstyles', False))
     else:
         backend = MatBackend(figsize=params.get('figsize', None))
 
@@ -372,7 +372,7 @@ def draw_equation(*terms: grammar.Diagram,
         backend: DrawingBackend = params.pop('backend')
     elif params.get('to_tikz', False):
         backend = TikzBackend(
-            use_tikzstyles=params.get('use_tikzstyles', None))
+            use_tikzstyles=params.get('use_tikzstyles', False))
     else:
         backend = MatBackend(figsize=params.get('figsize', None))
 
