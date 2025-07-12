@@ -1083,7 +1083,7 @@ class Scalar(Box):
         with backend() as np:
             return np.array(self.data)
 
-    __hash__: Callable[[Box], int] = Box.__hash__
+    __hash__: Callable[[Box], int] = Box.__hash__   # type: ignore[assignment]
 
     def dagger(self):
         return replace(self, data=self.data.conjugate())
@@ -1109,7 +1109,7 @@ class Sqrt(Scalar):
         with backend() as np:
             return np.array(self.data ** .5)
 
-    __hash__: Callable[[], int] = Scalar.__hash__
+    __hash__: Callable[[], int] = Scalar.__hash__   # type: ignore[assignment]
 
     def dagger(self):
         return replace(self, data=np.conjugate(self.data))
@@ -1150,8 +1150,8 @@ class Daggered(tensor.Daggered, Box):
     def dagger(self) -> Box:
         return self.box
 
-    __hash__: Callable[[Box], int] = Box.__hash__
-    __repr__: Callable[[Box], str] = Box.__repr__
+    __hash__: Callable[[Box], int] = Box.__hash__   # type: ignore[assignment]
+    __repr__: Callable[[Box], str] = Box.__repr__   # type: ignore[assignment]
 
 
 class Bit(Box):

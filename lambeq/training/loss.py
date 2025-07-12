@@ -26,8 +26,9 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 if TYPE_CHECKING:
-    from jax import numpy as jnp
     from types import ModuleType
+
+    from jax import numpy as jnp
 
 
 class LossFunction(ABC):

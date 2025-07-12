@@ -54,7 +54,6 @@ from lambeq.backend.quantum import (Gate, Measure,
                                     to_circuital)
 from lambeq.backend.symbol import lambdify, Symbol
 
-
 if TYPE_CHECKING:
     from lambeq.backend.quantum import Diagram
 
