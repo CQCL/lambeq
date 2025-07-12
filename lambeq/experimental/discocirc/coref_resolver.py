@@ -21,7 +21,6 @@ import torch
 
 from lambeq.core.utils import get_spacy_tokeniser
 
-
 if TYPE_CHECKING:
     import spacy.cli
 

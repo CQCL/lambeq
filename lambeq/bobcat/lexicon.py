@@ -37,7 +37,7 @@ class Atom(FastIntEnum):
 
 for atom in Atom._member_map_.values():
     if TYPE_CHECKING:
-        from typing import cast
+        from typing import cast     # noqa: I300
         atom = cast(Atom, atom)
     atom.is_punct = atom >= Atom.COMMA
 

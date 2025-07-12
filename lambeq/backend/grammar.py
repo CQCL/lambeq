@@ -33,9 +33,9 @@ from typing_extensions import Self
 
 from lambeq.core.utils import fast_deepcopy
 
-
 if TYPE_CHECKING:
     import discopy
+
     from lambeq.text2diagram.pregroup_tree import PregroupTreeNode
 
 

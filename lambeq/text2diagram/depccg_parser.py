@@ -42,6 +42,7 @@ if TYPE_CHECKING:
     from depccg.annotator import (annotate_XX, english_annotator,
                                   japanese_annotator)
     from depccg.cat import Category
+
     from lambeq.backend.grammar import Diagram
 
 
@@ -256,7 +257,7 @@ class DepCCGParser(CCGParser):
                                  '`sentences` does not have type '
                                  '`list[list[str]]`.')
             if TYPE_CHECKING:  # temporary fix
-                from typing import cast
+                from typing import cast     # noqa: I100
                 sentences = cast(list[list[str]], sentences)
         else:
             if not untokenised_batch_type_check(sentences):

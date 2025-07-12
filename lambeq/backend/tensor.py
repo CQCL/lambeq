@@ -53,7 +53,7 @@ class Dim(grammar.Ty):
         Product of contained dimensions.
 
     """
-    objects: list[Self]  # type: ignore[assignment,misc]
+    objects: list[Self]  # type: ignore[misc]
 
     def __init__(self,
                  *dim: int,

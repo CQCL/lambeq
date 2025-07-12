@@ -32,7 +32,6 @@ import spacy.lang.en
 from lambeq.core.utils import get_spacy_tokeniser
 from lambeq.tokeniser import Tokeniser
 
-
 if TYPE_CHECKING:
     import spacy.cli
 

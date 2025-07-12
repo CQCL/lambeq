@@ -37,7 +37,6 @@ from lambeq.backend.quantum import Diagram as Circuit
 from lambeq.backend.tensor import Diagram
 from lambeq.training.quantum_model import QuantumModel
 
-
 if TYPE_CHECKING:
     from jax import numpy as jnp
 

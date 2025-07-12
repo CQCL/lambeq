@@ -54,7 +54,6 @@ from lambeq.backend.drawing.tikz_backend import (
 )
 from lambeq.backend.grammar import Box, Diagram
 
-
 if TYPE_CHECKING:
     from IPython.core.display import HTML as HTML_ty
 

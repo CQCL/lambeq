@@ -21,7 +21,6 @@ from typing import Any, List, TYPE_CHECKING, Union
 
 import spacy
 
-
 if TYPE_CHECKING:
     import spacy.cli
 
