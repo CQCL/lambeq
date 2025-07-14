@@ -53,7 +53,7 @@ class Dim(grammar.Ty):
         Product of contained dimensions.
 
     """
-    objects: list[Self]  # type: ignore[assignment,misc]
+    objects: list[Self]  # type: ignore[misc]
 
     def __init__(self,
                  *dim: int,
@@ -242,7 +242,12 @@ class Box(grammar.Box):
             if isinstance(data, Mapping):
                 data = data.values()
             if isinstance(data, Iterable):
-                if not hasattr(data, 'shape') or data.shape != ():
+                if (
+                    not hasattr(data, 'shape') or data.shape != ()
+                ) and not (
+                    not isinstance(data, np.ndarray)
+                    or np.issubdtype(data.dtype, np.number)
+                ):
                     return set().union(*map(recursive_free_symbols, data))
             # Remove scale before adding to set
             return {data.unscaled} if isinstance(data, Symbol) else set()
